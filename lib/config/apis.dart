@@ -1,0 +1,89 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class APIs {
+  /// [App based APIs]
+  static String baseApi = dotenv.env['BASE_API']!;
+  static String signUp = '$baseApi/api/sign-up/';
+  static String signIn = '$baseApi/api/sign-in/';
+  static String generateMagicLink = '/api/magic-generate/';
+  static String googleAuth = '$baseApi/api/social-auth/';
+  static String magicValidate = '/api/magic-sign-in/';
+  static String profile = '/api/users/me/';
+  static String listWorkspaceInvitaion =
+      '/api/users/me/invitations/workspaces/';
+  static String joinWorkspace = '$baseApi/api/users/me/invitations/workspaces/';
+  static String createWorkspace = '$baseApi/api/workspaces/';
+  static String inviteToWorkspace = '$baseApi/api/workspaces/\$SLUG/invite/';
+  static String inviteToProject =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/add/';
+  static String listWorkspaces = "$baseApi/api/users/me/workspaces/";
+  static String retrieveWorkspace = '$baseApi/api/workspaces/\$SLUG/';
+  static String getWorkspaceMembers = '$baseApi/api/workspaces/\$SLUG/members/';
+  static String workspaceSlugCheck =
+      '$baseApi/api/workspace-slug-check/?slug=SLUG';
+  static String fileUpload = '$baseApi/api/users/file-assets/';
+  static String listProjects = '$baseApi/api/workspaces/\$SLUG/projects/';
+  static String listModules =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/';
+  static String listEstimates =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/estimates/';
+  static String favouriteModules =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-modules/';
+
+  static String createProjects = '$baseApi/api/workspaces/\$SLUG/projects/';
+  static String favouriteProjects =
+      '$baseApi/api/workspaces/\$SLUG/user-favorite-projects/';
+  static String states =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/states/';
+  static String orderByGroupByTypeIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
+  static String orderByGroupByIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY';
+  static String projectMembers =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/';
+  static String userIssueView =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
+  static String projectIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/';
+  static String moduleIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/';
+  static String cycleIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/';
+  static String issueAttachments =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/issue-attachments/';
+  static String issuelinks =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/issue-links/';
+  static String issueLabels =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-labels/';
+  static String projectViews =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-views/';
+  static String issueProperties =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-properties/';
+  static String issueDetails =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/';
+  static String subIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/sub-issues/';
+  static String joinProject = '$baseApi/api/workspaces/\$SLUG/projects/join/';
+  static String searchIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/search-issues/';
+  static String cycles =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/';
+  static String dateCheck =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/date-check/';
+  static String toggleFavoriteCycle =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-cycles/';
+  static String orderByGroupByCycleIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+  static String orderByGroupByModuleIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+  static String myIssues = '$baseApi/api/workspaces/\$SLUG/my-issues/';
+  static String projectIdentifier =
+      "$baseApi/api/workspaces/\$SLUG/project-identifiers/?name=\$IDENTIFIER";
+  static String activity = '$baseApi/api/users/activities/';
+  static String isOnboarded = '$baseApi/api/users/me/onboard/';
+  static String dashboard = "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
+  static String integrations= "$baseApi/api/integrations/";
+  static String wokspaceIntegrations= "$baseApi/api/workspaces/\$SLUG/workspace-integrations/";
+  static String sendForgotPassCode= "$baseApi/api/forgot-password/";
+  static String resetPassword= "$baseApi/api/reset-password/\$UID/\$TOKEN/";
+}

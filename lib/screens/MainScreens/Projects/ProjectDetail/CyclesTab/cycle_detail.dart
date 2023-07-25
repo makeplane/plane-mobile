@@ -17,6 +17,7 @@ import 'package:plane_startup/models/issues.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -47,6 +48,7 @@ class CycleDetail extends ConsumerStatefulWidget {
 class _CycleDetailState extends ConsumerState<CycleDetail> {
   List<ChartData> chartData = [];
   PageController? pageController = PageController();
+  List tempIssuesList = [];
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     log('Module Id: ${widget.moduleId}');
 
     var issuesProvider = ref.read(ProviderList.issuesProvider);
+    tempIssuesList = issuesProvider.issuesList;
     issuesProvider.issues.projectView = ProjectView.kanban;
     issuesProvider.issues.groupBY = GroupBY.state;
 
@@ -174,9 +177,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     return WillPopScope(
       onWillPop: () async {
         // await issueProvider.getProjectView();
+        // issueProvider.issuesList = tempIssuesList;
+        issueProvider.getIssues(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          projID: projectProvider.currentProject['id'],
+        );
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
+        log(issueProvider.tempProjectView.toString());
         issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
         issueProvider.issues.orderBY = issueProvider.tempOrderBy;
@@ -199,6 +211,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           centerTitle: true,
           leading: IconButton(
               onPressed: () {
+                // issueProvider.issuesList = tempIssuesList;
+                issueProvider.getIssues(
+                  slug: ref
+                      .read(ProviderList.workspaceProvider)
+                      .selectedWorkspace!
+                      .workspaceSlug,
+                  projID: projectProvider.currentProject['id'],
+                );
                 modulesProvider.selectedIssues = [];
                 cyclesProvider.selectedIssues = [];
                 issueProvider.issues.projectView =
@@ -418,18 +438,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             Expanded(
                               child:
                                   ((widget.fromModule &&
-                                              (modulesProvider
-                                                          .moduleIssueState ==
+                                              (modulesProvider.moduleIssueState ==
                                                       StateEnum.loading ||
-                                                  modulesProvider
-                                                          .moduleDetailState ==
+                                                  modulesProvider.moduleDetailState ==
                                                       StateEnum.loading)) ||
                                           (!widget.fromModule &&
-                                              (cyclesProvider
-                                                          .cyclesIssueState ==
+                                              (cyclesProvider.cyclesIssueState ==
                                                       StateEnum.loading ||
-                                                  cyclesProvider
-                                                          .cyclesDetailState ==
+                                                  cyclesProvider.cyclesDetailState ==
                                                       StateEnum.loading)))
                                       ? Center(
                                           child: SizedBox(
@@ -447,9 +463,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     Colors.transparent,
                                               )),
                                         )
-                                      : ((!widget.fromModule &&
-                                                  cyclesProvider
-                                                      .isIssuesEmpty) ||
+                                      : ((!widget.fromModule && cyclesProvider.isIssuesEmpty) ||
                                               (widget.fromModule &&
                                                   modulesProvider
                                                       .isIssuesEmpty))
@@ -459,12 +473,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               moduleId: widget.moduleId,
                                             )
                                           : ((!widget.fromModule &&
-                                                      issueProvider.issues
-                                                              .projectView ==
+                                                      issueProvider.issues.projectView ==
                                                           ProjectView.list) ||
                                                   (widget.fromModule &&
-                                                      issueProvider.issues
-                                                              .projectView ==
+                                                      issueProvider.issues.projectView ==
                                                           ProjectView.list))
                                               ? Container(
                                                   color: themeProvider
@@ -588,29 +600,33 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8),
-                                                  child: KanbanBoard(
-                                                    widget.fromModule
-                                                        ? modulesProvider
-                                                            .initializeBoard()
-                                                        : cyclesProvider
-                                                            .initializeBoard(),
-                                                    groupEmptyStates:
-                                                        !(widget.fromModule
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                                      (widget.fromModule &&
+                                                          issueProvider.issues.projectView ==
+                                                              ProjectView.kanban))
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8),
+                                                      child: KanbanBoard(
+                                                        widget.fromModule
+                                                            ? modulesProvider
+                                                                .initializeBoard()
+                                                            : cyclesProvider
+                                                                .initializeBoard(),
+                                                        groupEmptyStates: !(widget
+                                                                .fromModule
                                                             ? modulesProvider
                                                                 .showEmptyStates
                                                             : issueProvider
                                                                 .showEmptyStates),
-                                                    backgroundColor: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? const Color.fromRGBO(
-                                                            29, 30, 32, 1)
-                                                        : lightSecondaryBackgroundColor,
-                                                    listScrollConfig:
-                                                        ScrollConfig(
+                                                        backgroundColor: themeProvider
+                                                                .isDarkThemeEnabled
+                                                            ? const Color
+                                                                    .fromRGBO(
+                                                                29, 30, 32, 1)
+                                                            : lightSecondaryBackgroundColor,
+                                                        listScrollConfig: ScrollConfig(
                                                             offset: 65,
                                                             duration:
                                                                 const Duration(
@@ -618,21 +634,25 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                         100),
                                                             curve:
                                                                 Curves.linear),
-                                                    listTransitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    cardTransitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 400),
-                                                    textStyle: TextStyle(
-                                                        fontSize: 19,
-                                                        height: 1.3,
-                                                        color: Colors
-                                                            .grey.shade800,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
+                                                        listTransitionDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                        cardTransitionDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    400),
+                                                        textStyle: TextStyle(
+                                                            fontSize: 19,
+                                                            height: 1.3,
+                                                            color: Colors
+                                                                .grey.shade800,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    )
+                                                  : CalendarView(),
                             ),
                             SafeArea(
                               child: Container(
@@ -748,52 +768,62 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                       width: 0.5,
                                       color: greyColor,
                                     ),
-                                    Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.9),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
-                                            )),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return ViewsSheet(
-                                                issueCategory: widget.fromModule
-                                                    ? IssueCategory.moduleIssues
-                                                    : IssueCategory.cycleIssues,
-                                                cycleId: widget.cycleId,
-                                              );
-                                            });
-                                      },
-                                      child: const SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.view_sidebar,
-                                              color: Colors.white,
-                                              size: 19,
+                                    issueProvider.issues.projectView ==
+                                            ProjectView.calendar
+                                        ? Container()
+                                        : Expanded(
+                                            child: GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  enableDrag: true,
+                                                  constraints: BoxConstraints(
+                                                      maxHeight:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.9),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(30),
+                                                    topRight:
+                                                        Radius.circular(30),
+                                                  )),
+                                                  context: context,
+                                                  builder: (ctx) {
+                                                    return ViewsSheet(
+                                                      issueCategory:
+                                                          widget.fromModule
+                                                              ? IssueCategory
+                                                                  .moduleIssues
+                                                              : IssueCategory
+                                                                  .cycleIssues,
+                                                      cycleId: widget.cycleId,
+                                                    );
+                                                  });
+                                            },
+                                            child: const SizedBox(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.view_sidebar,
+                                                    color: Colors.white,
+                                                    size: 19,
+                                                  ),
+                                                  CustomText(
+                                                    ' Views',
+                                                    type: FontStyle.subtitle,
+                                                    color: Colors.white,
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                            CustomText(
-                                              ' Views',
-                                              type: FontStyle.subtitle,
-                                              color: Colors.white,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
+                                          )),
                                     Container(
                                       height: 50,
                                       width: 0.5,

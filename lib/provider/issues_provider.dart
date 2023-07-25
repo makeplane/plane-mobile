@@ -45,6 +45,7 @@ class IssuesProvider extends ChangeNotifier {
   var issueProperty = {};
   var createIssuedata = {};
   var issuesResponse = [];
+  var issuesList = [];
   var labels = [];
   var states = {};
   var statesData = {};
@@ -575,7 +576,7 @@ class IssuesProvider extends ChangeNotifier {
               .selectedWorkspace!
               .workspaceSlug,
           projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
-          // issueCategory: IssueCategory.moduleIssues,
+          issueCategory: IssueCategory.moduleIssues,
         );
       }
       if (issueCategory == IssueCategory.cycleIssues) {
@@ -598,7 +599,7 @@ class IssuesProvider extends ChangeNotifier {
               .selectedWorkspace!
               .workspaceSlug,
           projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
-          // issueCategory: IssueCategory.cycleIssues,
+          issueCategory: IssueCategory.cycleIssues,
         );
       }
       await ref!.read(ProviderList.myIssuesProvider).getMyIssues(
@@ -626,7 +627,7 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future getIssues({required String slug, required String projID}) async {
-    issueState = StateEnum.loading;
+    // issueState = StateEnum.loading;
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -638,8 +639,8 @@ class IssuesProvider extends ChangeNotifier {
       );
 
       log("DONE");
-
       issuesResponse = response.data;
+      issuesList = response.data;
       isISsuesEmpty = issuesResponse.isEmpty;
       issueState = StateEnum.success;
       notifyListeners();
@@ -924,7 +925,7 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future updateProjectView() async {
-    log(Issues.fromGroupBY(issues.groupBY));
+    log(tempProjectView.toString());
     dynamic filterPriority;
     if (issues.filters.priorities.isNotEmpty) {
       filterPriority = issues.filters.priorities
@@ -963,8 +964,11 @@ class IssuesProvider extends ChangeNotifier {
             },
             "type": null,
             "groupByProperty": Issues.fromGroupBY(issues.groupBY),
-            'issueView':
-                issues.projectView == ProjectView.kanban ? 'kanban' : 'list',
+            'issueView': issues.projectView == ProjectView.kanban
+                ? 'kanban'
+                : issues.projectView == ProjectView.list
+                    ? 'list'
+                    : 'calendar',
             "orderBy": Issues.fromGroupBY(issues.groupBY),
             "showEmptyGroups": showEmptyStates
           }
@@ -1003,7 +1007,9 @@ class IssuesProvider extends ChangeNotifier {
       log("project view=>${response.data["view_props"]}");
       issues.projectView = issueView["issueView"] == 'list'
           ? ProjectView.list
-          : ProjectView.kanban;
+          : issueView['issueView'] == 'calendar'
+              ? ProjectView.calendar
+              : ProjectView.kanban;
       issues.groupBY = Issues.toGroupBY(issueView["groupByProperty"]);
       issues.orderBY = Issues.toOrderBY(issueView["orderBy"]);
       issues.issueType = Issues.toIssueType(issueView["filters"]["type"]);
@@ -1154,22 +1160,34 @@ class IssuesProvider extends ChangeNotifier {
       );
       if (issueCategory == IssueCategory.cycleIssues) {
         // log('Cycle Issues :::: ${response.data}');
+        issuesList = [];
         temp = response.data;
+        for (var key in response.data.keys) {
+          issuesList.addAll(response.data[key]);
+        }
       } else if (issueCategory == IssueCategory.moduleIssues) {
         // log('Module Issues :::: ${response.data}');
         temp = response.data;
+        issuesList = [];
+        for (var key in response.data.keys) {
+          issuesList.addAll(response.data[key]);
+        }
       }
 
       if (issueCategory == IssueCategory.issues) {
         // log('Issues :::: ${response.data}');
+
         issuesResponse = [];
         isISsuesEmpty = true;
         shrinkStates = [];
+        issuesList = [];
         for (var key in response.data.keys) {
           //  log("KEY=$key");
           if (response.data[key].isNotEmpty) {
             isISsuesEmpty = false;
           }
+
+          issuesList.addAll(response.data[key]);
         }
       }
 

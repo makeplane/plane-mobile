@@ -53,6 +53,7 @@ dependencies:
   retry: ^3.1.1
   shared_preferences: ^2.1.1
   syncfusion_flutter_charts: ^21.2.9
+  table_calendar: ^3.0.9
   url_launcher: ^6.1.11
   xml: ^6.3.0
   xml2json: ^6.1.0

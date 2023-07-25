@@ -20,7 +20,11 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
   @override
   void initState() {
     var prov = ref.read(ProviderList.issuesProvider);
-    selected = prov.issues.projectView == ProjectView.kanban ? 0 : 1;
+    selected = prov.issues.projectView == ProjectView.kanban
+        ? 0
+        : prov.issues.projectView == ProjectView.list
+            ? 1
+            : 2;
     super.initState();
   }
 
@@ -145,6 +149,57 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                  color: themeProvider.isDarkThemeEnabled
+                      ? darkThemeBorder
+                      : Colors.grey[300],
+                ),
+              ),
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      selected = 2;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Radio(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          fillColor: selected == 2
+                              ? null
+                              : MaterialStateProperty.all<Color>(
+                                  Colors.grey.shade300),
+                          groupValue: selected,
+                          activeColor: primaryColor,
+                          value: 2,
+                          onChanged: (val) {}),
+                      // Text(
+                      //   'List View',
+                      //   style: TextStyle(
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.w400,
+                      //   ),
+                      // ),
+                      const SizedBox(width: 10),
+                      const CustomText(
+                        'Calendar View',
+                        type: FontStyle.subheading,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           //long blue button to apply filter
@@ -159,6 +214,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 } else if (selected == 1) {
                   prov.issues.projectView = ProjectView.list;
                   prov.tempProjectView = ProjectView.list;
+                } else if (selected == 2) {
+                  prov.issues.projectView = ProjectView.calendar;
+                  prov.tempProjectView = ProjectView.calendar;
                 }
                 prov.setsState();
                 if (widget.issueCategory == IssueCategory.issues) {

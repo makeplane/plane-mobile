@@ -13,6 +13,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final bool leading;
   final bool elevation;
   final bool centerTitle;
+  final IconData icon;
   final FontStyle fontType;
   const CustomAppBar({
     super.key,
@@ -21,6 +22,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.leading = true,
     this.elevation = true,
     this.centerTitle = true,
+    this.icon = Icons.close,
     this.fontType = FontStyle.appbarTitle,
     this.actions,
   });
@@ -37,7 +39,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 onPressed();
               },
               icon: Icon(
-                Icons.close,
+                icon,
                 color: themeProvider.isDarkThemeEnabled
                     ? darkPrimaryTextColor
                     : lightPrimaryTextColor,

@@ -5,8 +5,6 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/constants.dart';
 
-
-
 // ignore: constant_identifier_names
 // const APP_FONT = 'Lexend';
 const appFont = 'Poppins';
@@ -190,6 +188,7 @@ class CustomText extends ConsumerWidget {
               (themeProvider.isDarkThemeEnabled
                   ? darkSecondaryTextColor
                   : lightSecondaryTextColor),
+          overflow: overflow ?? TextOverflow.visible,
         );
       case FontStyle.boldTitle:
         // return GoogleFonts.getFont(APP_FONT).copyWith(

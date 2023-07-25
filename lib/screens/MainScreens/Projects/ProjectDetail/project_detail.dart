@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
 import 'package:plane_startup/bottom_sheets/views_sheet.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -24,7 +25,6 @@ import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
-
 
 class ProjectDetail extends ConsumerStatefulWidget {
   const ProjectDetail({super.key, required this.index});
@@ -97,7 +97,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                               : greyColor,
                         ),
                 )
-              : Container()
+              : Container(),
         ],
       ),
       floatingActionButton: selected != 0 &&
@@ -358,49 +358,55 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     width: 0.5,
                                     color: greyColor,
                                   ),
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          enableDrag: true,
-                                          constraints: BoxConstraints(
-                                              maxHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.9),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          )),
-                                          context: context,
-                                          builder: (ctx) {
-                                            return const ViewsSheet(
-                                              issueCategory:
-                                                  IssueCategory.issues,
-                                            );
-                                          });
-                                    },
-                                    child: const SizedBox.expand(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.view_sidebar,
-                                            color: Colors.white,
-                                            size: 19,
+                                  issueProvider.issues.projectView ==
+                                          ProjectView.calendar
+                                      ? Container()
+                                      : Expanded(
+                                          child: InkWell(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                enableDrag: true,
+                                                constraints: BoxConstraints(
+                                                    maxHeight:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.9),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight: Radius.circular(30),
+                                                )),
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return const ViewsSheet(
+                                                    issueCategory:
+                                                        IssueCategory.issues,
+                                                  );
+                                                });
+                                          },
+                                          child: const SizedBox.expand(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.view_sidebar,
+                                                  color: Colors.white,
+                                                  size: 19,
+                                                ),
+                                                CustomText(
+                                                  ' Views',
+                                                  type: FontStyle.subtitle,
+                                                  color: Colors.white,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          CustomText(
-                                            ' Views',
-                                            type: FontStyle.subtitle,
-                                            color: Colors.white,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
+                                        )),
                                   Container(
                                     height: 50,
                                     width: 0.5,
@@ -682,7 +688,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                                                 Icons.add,
                                                                                 color: primaryColor,
                                                                               ))
-                                                                          : Container(height: 40,),
+                                                                          : Container(
+                                                                              height: 40,
+                                                                            ),
                                                                       const SizedBox(
                                                                         width:
                                                                             10,
@@ -740,29 +748,32 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             .toList()),
                                   ),
                                 )
-                              : KanbanBoard(
-                                  issueProvider.initializeBoard(),
-                                  groupEmptyStates:
-                                      !issueProvider.showEmptyStates,
-                                  backgroundColor:
-                                      themeProvider.isDarkThemeEnabled
+                              : issueProvider.issues.projectView ==
+                                      ProjectView.kanban
+                                  ? KanbanBoard(
+                                      issueProvider.initializeBoard(),
+                                      groupEmptyStates:
+                                          !issueProvider.showEmptyStates,
+                                      backgroundColor: themeProvider
+                                              .isDarkThemeEnabled
                                           ? const Color.fromRGBO(29, 30, 32, 1)
                                           : lightSecondaryBackgroundColor,
-                                  listScrollConfig: ScrollConfig(
-                                      offset: 65,
-                                      duration:
-                                          const Duration(milliseconds: 100),
-                                      curve: Curves.linear),
-                                  listTransitionDuration:
-                                      const Duration(milliseconds: 200),
-                                  cardTransitionDuration:
-                                      const Duration(milliseconds: 400),
-                                  textStyle: TextStyle(
-                                      fontSize: 19,
-                                      height: 1.3,
-                                      color: Colors.grey.shade800,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                      listScrollConfig: ScrollConfig(
+                                          offset: 65,
+                                          duration:
+                                              const Duration(milliseconds: 100),
+                                          curve: Curves.linear),
+                                      listTransitionDuration:
+                                          const Duration(milliseconds: 200),
+                                      cardTransitionDuration:
+                                          const Duration(milliseconds: 400),
+                                      textStyle: TextStyle(
+                                          fontSize: 19,
+                                          height: 1.3,
+                                          color: Colors.grey.shade800,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  : const CalendarView(),
             ),
     );
   }

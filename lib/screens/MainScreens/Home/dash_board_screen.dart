@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -67,7 +68,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
@@ -77,6 +77,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
           children: [
+            headerWidget(),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +125,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         await themeProvider.changeTheme();
                       },
                       child: Icon(
-                        size: 30,
+                        size: 20,
                         !themeProvider.isDarkThemeEnabled
                             ? Icons.brightness_2_outlined
                             : Icons.wb_sunny_outlined,
@@ -130,95 +134,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             : Colors.white,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          enableDrag: true,
-                          constraints: BoxConstraints(
-                              minHeight: height * 0.5,
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.8),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
-                          )),
-                          context: context,
-                          builder: (ctx) {
-                            return const SelectWorkspace();
-                          },
-                        );
-                      },
-                      child: workspaceProvider.selectedWorkspace == null
-                          ? Container()
-                          : workspaceProvider
-                                      .selectedWorkspace!.workspaceLogo !=
-                                  ''
-                              ? CachedNetworkImage(
-                                  height: 35,
-                                  width: 35,
-                                  fit: BoxFit.fill,
-                                  imageUrl: workspaceProvider
-                                      .selectedWorkspace!.workspaceLogo,
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: primaryColor,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    child: Center(
-                                      child: CustomText(
-                                        workspaceProvider
-                                            .selectedWorkspace!.workspaceName[0]
-                                            .toUpperCase(),
-                                        type: FontStyle.buttonText,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              // ClipRRect(
-                              //     borderRadius: BorderRadius.circular(5),
-                              //     child: Image.network(
-                              //       workspaceProvider
-                              //           .selectedWorkspace!.workspaceLogo,
-                              //       width: 35,
-                              //       height: 35,
-                              //       fit: BoxFit.cover,
-                              //     ),
-                              //   )
-                              : Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: primaryColor,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  child: Center(
-                                    child: CustomText(
-                                      workspaceProvider
-                                          .selectedWorkspace!.workspaceName[0]
-                                          .toUpperCase(),
-                                      type: FontStyle.buttonText,
-                                    ),
-                                  ),
-                                ),
-                    ),
+                    // const SizedBox(
+                    //   width: 10,
+                    // ),
                   ],
                 ),
               ],
@@ -234,9 +152,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             border: Border.all(
                                 color: themeProvider.isDarkThemeEnabled
                                     ? darkThemeBorder
-                                    : Colors.grey.shade400),
+                                    : Colors.transparent),
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black),
+                            color: themeProvider.isDarkThemeEnabled ? Colors.black : lightGreyBoxColor),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25, vertical: 25),
                         child: Column(
@@ -249,16 +167,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.7,
-                                  // child: Text(
-                                  //   'Plane is open source, support us by staring us on GitHub.',
-                                  //   style: TextStylingWidget.description.copyWith(
-                                  //       color: Colors.white, fontWeight: FontWeight.w600),
-                                  // ),
-                                  child: const CustomText(
+                                  child: CustomText(
                                     'Plane is open source, support us by staring us on GitHub.',
                                     type: FontStyle.text,
                                     textAlign: TextAlign.start,
-                                    color: Colors.white,
+                                    color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
                                     overflow: TextOverflow.visible,
                                     maxLines: 5,
                                   ),
@@ -269,9 +182,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                       dashboardProvider.hideGithubBlock = true;
                                     });
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.close,
-                                    color: Colors.white,
+                                    color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
                                   ),
                                 ),
                               ],
@@ -284,13 +197,14 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                                    elevation: 0
                                   ),
                                   onPressed: () async {
                                     //redirect to github using url launcher.
                                     try {
                                       var url = Uri.parse(
-                                          'https://github.com/makeplane/plane');
+                                          'https://github.com/makeplane/plane-mobile');
 
                                       await launchUrl(url);
                                     } catch (e) {
@@ -306,10 +220,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                       );
                                     }
                                   },
-                                  child: const CustomText(
-                                    'Star Plane',
+                                  child: CustomText(
+                                    'Star us on GitHub',
                                     type: FontStyle.buttonText,
-                                    color: Colors.black,
+                                    color: themeProvider.isDarkThemeEnabled ? Colors.black : Colors.white,
                                   ),
                                 ),
                               ],
@@ -321,7 +235,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         bottom: 20,
                         right: 35,
                         child: Image.asset(
-                          'assets/images/github.png',
+                          themeProvider.isDarkThemeEnabled ? 'assets/images/github.png' : 'assets/images/github_black.png',
                           width: 70,
                           height: 70,
                         ),
@@ -438,6 +352,125 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 : Container()
           ],
         ),
+      ),
+    );
+  }
+
+  Widget headerWidget() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return Container(
+      padding: const EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: themeProvider.isDarkThemeEnabled ? darkThemeBorder : strokeColor),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    constraints: BoxConstraints(
+                        minHeight: height * 0.5,
+                        maxHeight: MediaQuery.of(context).size.height * 0.8),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return const SelectWorkspace();
+                    },
+                  );
+                },
+                child: workspaceProvider.selectedWorkspace == null
+                    ? Container()
+                    : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
+                        ? CachedNetworkImage(
+                            height: 35,
+                            width: 35,
+                            fit: BoxFit.fill,
+                            imageUrl: workspaceProvider
+                                .selectedWorkspace!.workspaceLogo,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: primaryColor,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              child: Center(
+                                child: CustomText(
+                                  workspaceProvider
+                                      .selectedWorkspace!.workspaceName[0]
+                                      .toUpperCase(),
+                                  type: FontStyle.buttonText,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: primaryColor,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            child: Center(
+                              child: CustomText(
+                                workspaceProvider
+                                    .selectedWorkspace!.workspaceName[0]
+                                    .toUpperCase(),
+                                type: FontStyle.buttonText,
+                              ),
+                            ),
+                          ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              CustomText(
+                workspaceProvider.selectedWorkspace!.workspaceName,
+                type: FontStyle.subheading,
+              )
+            ],
+          ),
+          InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                enableDrag: false,
+                context: context,
+                builder: (context) {
+                  return const GlobalSearchSheet();
+                },
+              );
+            },
+            child: Icon(
+              Icons.search,
+              color: !themeProvider.isDarkThemeEnabled
+                  ? Colors.black
+                  : Colors.white,
+            ),
+          )
+        ],
       ),
     );
   }

@@ -79,14 +79,6 @@ class _MyAppState extends ConsumerState<MyApp> {
             }
             return false;
           }).first['slug']);
-          // projectProv.favouriteProjects(
-          //     index: 0,
-          //     slug: workspaceProv.workspaces
-          //         .where((element) =>
-          //             element['id'] == prov.userProfile.lastWorkspaceId)
-          //         .first['slug'],
-          //     method: HttpMethod.get,
-          //     projectID: "");
         });
       });
     }
@@ -100,7 +92,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // transparent status bar
       //status bar icons' color
@@ -116,8 +107,9 @@ class _MyAppState extends ConsumerState<MyApp> {
 
         textTheme: TextTheme(
           titleMedium: TextStyle(
-            color:
-                themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+            color: themeProvider.isDarkThemeEnabled
+                ? Colors.white
+                : Colors.black,
           ),
         ),
 
@@ -224,8 +216,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
-      home:
-          Const.appBearerToken == null ? const OnBoardingScreen() : const App(),
+      home: Const.appBearerToken == null
+          ? const OnBoardingScreen()
+          : const App(),
     );
   }
 }

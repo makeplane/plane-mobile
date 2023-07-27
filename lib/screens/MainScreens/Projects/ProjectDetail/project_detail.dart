@@ -16,6 +16,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Modules
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
 import 'package:plane_startup/screens/settings_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -55,12 +56,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ref.read(ProviderList.projectProvider).initializeProject();
     });
 
-    pages = [
-      cycles(),
-      cycles(),
-      const ModuleScreen(),
-      const Views()
-    ];
+    pages = [cycles(), cycles(), const ModuleScreen(), const Views()];
 
     super.initState();
   }
@@ -105,7 +101,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ),
       floatingActionButton: selected != 0 &&
               (projectProvider.role == Role.admin ||
-                  projectProvider.role == Role.member)&&(selected == 3 &&
+                  projectProvider.role == Role.member) &&
+              (selected == 3 &&
                   viewsProvider.viewsState != StateEnum.loading &&
                   viewsProvider.views.isNotEmpty)
           ? FloatingActionButton(
@@ -442,7 +439,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           )),
                                           context: context,
                                           builder: (ctx) {
-                                            return  FilterSheet(
+                                            return FilterSheet(
                                               issueCategory:
                                                   IssueCategory.issues,
                                             );
@@ -557,302 +554,320 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     );
   }
 }
-  Widget issues(BuildContext context,WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    // log(issueProvider.issueState.name);
-    if (issueProvider.issues.projectView == ProjectView.list) {
-      issueProvider.initializeBoard();
-    }
 
-    return LoadingWidget(
-      loading: issueProvider.issuePropertyState == StateEnum.loading ||
-          issueProvider.issueState == StateEnum.loading ||
-          issueProvider.statesState == StateEnum.loading ||
-          issueProvider.projectViewState == StateEnum.loading ||
-          issueProvider.orderByState == StateEnum.loading,
-      widgetClass: issueProvider.statesState == StateEnum.restricted
-          ? EmptyPlaceholder.joinProject(
-              context,
-              ref,
-              projectProvider.currentProject['id'],
-              ref
-                  .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
-                  .workspaceSlug)
-          : Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? const Color.fromRGBO(29, 30, 32, 1)
-                  : lightSecondaryBackgroundColor,
-              padding: issueProvider.issues.projectView == ProjectView.kanban
-                  ? const EdgeInsets.only(top: 15, left: 0)
-                  : null,
-              child:
-                  issueProvider.issueState == StateEnum.loading ||
-                          issueProvider.statesState == StateEnum.loading ||
-                          issueProvider.projectViewState == StateEnum.loading ||
-                          issueProvider.orderByState == StateEnum.loading
-                      ? Container()
-                      : issueProvider.isISsuesEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                EmptyPlaceholder.emptyIssues(context),
-                              ],
-                            )
-                          : issueProvider.issues.projectView == ProjectView.list
-                              ? Container(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? const Color.fromRGBO(29, 30, 32, 1)
-                                      : lightSecondaryBackgroundColor,
-                                  margin: const EdgeInsets.only(top: 5),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: issueProvider.issues.issues
-                                            .map(
-                                                (state) =>
-                                                    state.items.isEmpty &&
-                                                            !issueProvider
-                                                                .showEmptyStates
-                                                        ? Container()
-                                                        : SizedBox(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Container(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 15),
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          10),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      state.leading ??
-                                                                          Container(),
-                                                                      Container(
-                                                                        padding:
-                                                                            const EdgeInsets.only(
-                                                                          left:
-                                                                              10,
-                                                                        ),
-                                                                        child:
-                                                                            CustomText(
-                                                                          state
-                                                                              .title!,
-                                                                          type:
-                                                                              FontStyle.subheading,
-                                                                          color: themeProvider.isDarkThemeEnabled
-                                                                              ? Colors.white
-                                                                              : Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        alignment:
-                                                                            Alignment.center,
-                                                                        margin:
-                                                                            const EdgeInsets.only(
-                                                                          left:
-                                                                              15,
-                                                                        ),
-                                                                        decoration: BoxDecoration(
-                                                                            borderRadius: BorderRadius.circular(
-                                                                                15),
-                                                                            color: themeProvider.isDarkThemeEnabled
-                                                                                ? const Color.fromRGBO(39, 42, 45, 1)
-                                                                                : const Color.fromRGBO(222, 226, 230, 1)),
-                                                                        height:
-                                                                            25,
-                                                                        width:
-                                                                            30,
-                                                                        child:
-                                                                            CustomText(
-                                                                          state
-                                                                              .items
-                                                                              .length
-                                                                              .toString(),
-                                                                          type:
-                                                                              FontStyle.subtitle,
-                                                                        ),
-                                                                      ),
-                                                                      const Spacer(),
-                                                                      projectProvider.role == Role.admin ||
-                                                                              projectProvider.role == Role.member
-                                                                          ? IconButton(
-                                                                              onPressed: () {
-                                                                                if (issueProvider.issues.groupBY == GroupBY.state) {
-                                                                                  issueProvider.createIssuedata['state'] = state.id;
-                                                                                } else {
-                                                                                  issueProvider.createIssuedata['prioriry'] = 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
-                                                                                  // createIssuedata['s'] = element.id;
-                                                                                }
-                                                                                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CreateIssue()));
-                                                                              },
-                                                                              icon: const Icon(
-                                                                                Icons.add,
-                                                                                color: primaryColor,
-                                                                              ))
-                                                                          : Container(
-                                                                              height: 40,
-                                                                            ),
-                                                                      const SizedBox(
-                                                                        width:
+Widget issues(BuildContext context, WidgetRef ref) {
+  var themeProvider = ref.watch(ProviderList.themeProvider);
+  var issueProvider = ref.watch(ProviderList.issuesProvider);
+  var projectProvider = ref.watch(ProviderList.projectProvider);
+  // log(issueProvider.issueState.name);
+  if (issueProvider.issues.projectView == ProjectView.list) {
+    issueProvider.initializeBoard();
+  }
+
+  return LoadingWidget(
+    loading: issueProvider.issuePropertyState == StateEnum.loading ||
+        issueProvider.issueState == StateEnum.loading ||
+        issueProvider.statesState == StateEnum.loading ||
+        issueProvider.projectViewState == StateEnum.loading ||
+        issueProvider.orderByState == StateEnum.loading,
+    widgetClass: issueProvider.statesState == StateEnum.restricted
+        ? EmptyPlaceholder.joinProject(
+            context,
+            ref,
+            projectProvider.currentProject['id'],
+            ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug)
+        : Container(
+            color: themeProvider.isDarkThemeEnabled
+                ? const Color.fromRGBO(29, 30, 32, 1)
+                : lightSecondaryBackgroundColor,
+            padding: issueProvider.issues.projectView == ProjectView.kanban
+                ? const EdgeInsets.only(top: 15, left: 0)
+                : null,
+            child:
+                issueProvider.issueState == StateEnum.loading ||
+                        issueProvider.statesState == StateEnum.loading ||
+                        issueProvider.projectViewState == StateEnum.loading ||
+                        issueProvider.orderByState == StateEnum.loading
+                    ? Container()
+                    : issueProvider.isISsuesEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              EmptyPlaceholder.emptyIssues(context),
+                            ],
+                          )
+                        : issueProvider.issues.projectView == ProjectView.list
+                            ? Container(
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? const Color.fromRGBO(29, 30, 32, 1)
+                                    : lightSecondaryBackgroundColor,
+                                margin: const EdgeInsets.only(top: 5),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: issueProvider.issues.issues
+                                          .map(
+                                              (state) =>
+                                                  state.items.isEmpty &&
+                                                          !issueProvider
+                                                              .showEmptyStates
+                                                      ? Container()
+                                                      : SizedBox(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            15),
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            10),
+                                                                child: Row(
+                                                                  children: [
+                                                                    state.leading ??
+                                                                        Container(),
+                                                                    Container(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .only(
+                                                                        left:
                                                                             10,
                                                                       ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: state
-                                                                        .items
-                                                                        .map((e) =>
-                                                                            e)
-                                                                        .toList()),
-                                                                state.items
-                                                                        .isEmpty
-                                                                    ? Container(
-                                                                        margin: const EdgeInsets.only(
-                                                                            bottom:
-                                                                                10),
-                                                                        width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width,
+                                                                      child:
+                                                                          CustomText(
+                                                                        state
+                                                                            .title!,
+                                                                        type: FontStyle
+                                                                            .subheading,
                                                                         color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkBackgroundColor
-                                                                            : Colors.white,
-                                                                        padding: const EdgeInsets.only(
-                                                                            top:
-                                                                                15,
-                                                                            bottom:
-                                                                                15,
-                                                                            left:
-                                                                                15),
-                                                                        child:
-                                                                            const CustomText(
-                                                                          'No issues.',
-                                                                          type:
-                                                                              FontStyle.title,
-                                                                          maxLines:
-                                                                              10,
-                                                                          textAlign:
-                                                                              TextAlign.start,
-                                                                        ),
-                                                                      )
-                                                                    : Container(
-                                                                        margin: const EdgeInsets.only(
-                                                                            bottom:
-                                                                                10),
-                                                                      )
-                                                              ],
-                                                            ),
-                                                          ))
-                                            .toList()),
-                                  ),
-                                )
-                              : issueProvider.issues.projectView ==
-                                      ProjectView.kanban
-                                  ? KanbanBoard(
-                                      issueProvider.initializeBoard(),
-                                      groupEmptyStates:
-                                          !issueProvider.showEmptyStates,
-                                      backgroundColor: themeProvider
-                                              .isDarkThemeEnabled
-                                          ? const Color.fromRGBO(29, 30, 32, 1)
-                                          : lightSecondaryBackgroundColor,
-                                      listScrollConfig: ScrollConfig(
-                                          offset: 65,
-                                          duration:
-                                              const Duration(milliseconds: 100),
-                                          curve: Curves.linear),
-                                      listTransitionDuration:
-                                          const Duration(milliseconds: 200),
-                                      cardTransitionDuration:
-                                          const Duration(milliseconds: 400),
-                                      textStyle: TextStyle(
-                                          fontSize: 19,
-                                          height: 1.3,
-                                          color: Colors.grey.shade800,
-                                          fontWeight: FontWeight.w500),
-                                    )
-                                  : const CalendarView(),
-            ),
-    );
-  }
+                                                                            ? Colors.white
+                                                                            : Colors.black,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      margin: const EdgeInsets
+                                                                          .only(
+                                                                        left:
+                                                                            15,
+                                                                      ),
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              15),
+                                                                          color: themeProvider.isDarkThemeEnabled
+                                                                              ? const Color.fromRGBO(39, 42, 45, 1)
+                                                                              : const Color.fromRGBO(222, 226, 230, 1)),
+                                                                      height:
+                                                                          25,
+                                                                      width: 30,
+                                                                      child:
+                                                                          CustomText(
+                                                                        state
+                                                                            .items
+                                                                            .length
+                                                                            .toString(),
+                                                                        type: FontStyle
+                                                                            .subtitle,
+                                                                      ),
+                                                                    ),
+                                                                    const Spacer(),
+                                                                    projectProvider.role == Role.admin ||
+                                                                            projectProvider.role ==
+                                                                                Role.member
+                                                                        ? IconButton(
+                                                                            onPressed: () {
+                                                                              if (issueProvider.issues.groupBY == GroupBY.state) {
+                                                                                issueProvider.createIssuedata['state'] = state.id;
+                                                                              } else {
+                                                                                issueProvider.createIssuedata['prioriry'] = 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
+                                                                                // createIssuedata['s'] = element.id;
+                                                                              }
+                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CreateIssue()));
+                                                                            },
+                                                                            icon: const Icon(
+                                                                              Icons.add,
+                                                                              color: primaryColor,
+                                                                            ))
+                                                                        : Container(
+                                                                            height:
+                                                                                40,
+                                                                          ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: state
+                                                                      .items
+                                                                      .map(
+                                                                          (e) =>
+                                                                              e)
+                                                                      .toList()),
+                                                              state.items
+                                                                      .isEmpty
+                                                                  ? Container(
+                                                                      margin: const EdgeInsets
+                                                                              .only(
+                                                                          bottom:
+                                                                              10),
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      color: themeProvider
+                                                                              .isDarkThemeEnabled
+                                                                          ? darkBackgroundColor
+                                                                          : Colors
+                                                                              .white,
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              15,
+                                                                          bottom:
+                                                                              15,
+                                                                          left:
+                                                                              15),
+                                                                      child:
+                                                                          const CustomText(
+                                                                        'No issues.',
+                                                                        type: FontStyle
+                                                                            .title,
+                                                                        maxLines:
+                                                                            10,
+                                                                        textAlign:
+                                                                            TextAlign.start,
+                                                                      ),
+                                                                    )
+                                                                  : Container(
+                                                                      margin: const EdgeInsets
+                                                                              .only(
+                                                                          bottom:
+                                                                              10),
+                                                                    )
+                                                            ],
+                                                          ),
+                                                        ))
+                                          .toList()),
+                                ),
+                              )
+                            : issueProvider.issues.projectView ==
+                                    ProjectView.kanban
+                                ? KanbanBoard(
+                                    issueProvider.initializeBoard(),
+                                    groupEmptyStates:
+                                        !issueProvider.showEmptyStates,
+                                    backgroundColor: themeProvider
+                                            .isDarkThemeEnabled
+                                        ? const Color.fromRGBO(29, 30, 32, 1)
+                                        : lightSecondaryBackgroundColor,
+                                    listScrollConfig: ScrollConfig(
+                                        offset: 65,
+                                        duration:
+                                            const Duration(milliseconds: 100),
+                                        curve: Curves.linear),
+                                    listTransitionDuration:
+                                        const Duration(milliseconds: 200),
+                                    cardTransitionDuration:
+                                        const Duration(milliseconds: 400),
+                                    textStyle: TextStyle(
+                                        fontSize: 19,
+                                        height: 1.3,
+                                        color: Colors.grey.shade800,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                : issueProvider.issues.projectView ==
+                                        ProjectView.calendar
+                                    ? const CalendarView()
+                                    : const SpreadSheetView(
+                                        issueCategory: IssueCategory.issues,
+                                      ),
+          ),
+  );
+}
 
-  Widget cycles() {
-    return const CycleWidget();
-  }
+Widget cycles() {
+  return const CycleWidget();
+}
 
-  // Widget modules() {
-  //   var themeProvider = ref.read(ProviderList.themeProvider);
-  //   return Container(
-  //     color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
-  //     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: const [
-  //         // SizedBox(
-  //         //   child: Text(
-  //         //     'Current Cycles',
-  //         //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-  //         //   ),
-  //         // ),
-  //         ModuleCard()
-  //       ],
-  //     ),
-  //   );
-  // }
+// Widget modules() {
+//   var themeProvider = ref.read(ProviderList.themeProvider);
+//   return Container(
+//     color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+//     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: const [
+//         // SizedBox(
+//         //   child: Text(
+//         //     'Current Cycles',
+//         //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+//         //   ),
+//         // ),
+//         ModuleCard()
+//       ],
+//     ),
+//   );
+// }
 
-  Widget page(WidgetRef ref) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // SizedBox(
-          //   child: Text(
-          //     'Current Cycles',
-          //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          //   ),
-          // ),
-          PageCard()
-        ],
-      ),
-    );
-  }
+Widget page(WidgetRef ref) {
+  var themeProvider = ref.read(ProviderList.themeProvider);
+  return Container(
+    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+    child: const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // SizedBox(
+        //   child: Text(
+        //     'Current Cycles',
+        //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        //   ),
+        // ),
+        PageCard()
+      ],
+    ),
+  );
+}
 
-  Widget view(WidgetRef ref) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // SizedBox(
-          //   child: Text(
-          //     'Current Cycles',
-          //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          //   ),
-          // ),
-          Views()
-        ],
-      ),
-    );
-  }
+Widget view(WidgetRef ref) {
+  var themeProvider = ref.read(ProviderList.themeProvider);
+  return Container(
+    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+    child: const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // SizedBox(
+        //   child: Text(
+        //     'Current Cycles',
+        //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        //   ),
+        // ),
+        Views()
+      ],
+    ),
+  );
+}
 
   // bool checkVisbility(int index) {
   //   var featuresProvider = ref.watch(ProviderList.featuresProvider);

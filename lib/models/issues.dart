@@ -12,31 +12,39 @@ class DisplayProperties {
   bool linkCount = false;
   bool attachmentCount = false;
   bool estimate = false;
+  bool createdOn = false;
+  bool updatedOn = false;
 
-  DisplayProperties(
-      {required this.assignee,
-      required this.dueDate,
-      required this.id,
-      required this.label,
-      required this.state,
-      required this.estimate,
-      required this.subIsseCount,
-      required this.linkCount,
-      required this.attachmentCount,
-      required this.priority});
+  DisplayProperties({
+    required this.assignee,
+    required this.dueDate,
+    required this.id,
+    required this.label,
+    required this.state,
+    required this.estimate,
+    required this.subIsseCount,
+    required this.linkCount,
+    required this.attachmentCount,
+    required this.priority,
+    required this.createdOn,
+    required this.updatedOn,
+  });
 
   static DisplayProperties initialize() {
     return DisplayProperties(
-        assignee: true,
-        estimate: false,
-        dueDate: false,
-        id: true,
-        label: false,
-        state: true,
-        subIsseCount: false,
-        linkCount: false,
-        attachmentCount: false,
-        priority: false);
+      assignee: true,
+      estimate: false,
+      dueDate: false,
+      id: true,
+      label: false,
+      state: true,
+      subIsseCount: false,
+      linkCount: false,
+      attachmentCount: false,
+      priority: false,
+      createdOn: false,
+      updatedOn: false,
+    );
   }
 }
 

@@ -82,7 +82,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   return;
                 } else if (result.files.single.size > 5000000) {
                   CustomToast()
-                      .showToast(context, 'File size is larger than 5 MB');
+                      .showToast(context, 'File size should be less than 5MB');
                   Navigator.pop(context);
                   return;
                 } else {

@@ -3,8 +3,6 @@ import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
-
-
 const primaryColor = Color.fromRGBO(63, 118, 255, 1);
 const primaryLightColor = Color.fromRGBO(63, 118, 255, 0.1);
 const greyColor = Color.fromRGBO(136, 136, 136, 1);
@@ -32,6 +30,8 @@ const darkSecondaryBGC = Color.fromRGBO(29, 30, 32, 1);
 const darkCircleAvatarColor = Color.fromRGBO(34, 34, 34, 1);
 const darkThemeBorder = Color.fromRGBO(39, 42, 45, 1);
 
+const textFieldFilledColor = Color(0xFFF5F5F5);
+
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
       fontFamily: 'SF Pro Display',
@@ -50,10 +50,10 @@ InputDecoration kTextFieldDecoration = InputDecoration(
   ),
   focusedErrorBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.red.shade600, width: 2.0),
-    borderRadius:  BorderRadius.circular(6
-      // topRight: Radius.circular(6),
-      // bottomRight: Radius.circular(6),
-    ),
+    borderRadius: BorderRadius.circular(6
+        // topRight: Radius.circular(6),
+        // bottomRight: Radius.circular(6),
+        ),
   ),
   border: OutlineInputBorder(
     borderSide: BorderSide(
@@ -79,6 +79,36 @@ InputDecoration kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(8)),
   ),
 );
+
+InputDecoration kTextFieldFilledDecoration = const InputDecoration(
+    fillColor: textFieldFilledColor,
+    alignLabelWithHint: true,
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+    filled: true,
+    errorStyle: TextStyle(
+        fontFamily: 'SF Pro Display',
+        fontSize: 14,
+        color: Colors.red,
+        fontWeight: FontWeight.w400),
+    labelStyle: TextStyle(color: greyColor),
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.all(
+        Radius.circular(10.0),
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color.fromARGB(255, 253, 17, 0)),
+      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: primaryColor, width: 2.0),
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    prefixIconColor: greyColor);
 
 const LinearGradient gradient = LinearGradient(
   begin: Alignment.topCenter,
@@ -111,6 +141,7 @@ Role roleParser({required int role}) {
       return Role.none;
   }
 }
+
 int fromRole({required Role role}) {
   switch (role) {
     case Role.admin:

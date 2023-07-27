@@ -19,7 +19,7 @@ import 'package:plane_startup/widgets/issue_card_widget.dart';
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
   Ref? ref;
-  StateEnum cyclesState = StateEnum.loading;
+  StateEnum cyclesState = StateEnum.empty;
   StateEnum cyclesDetailState = StateEnum.empty;
   StateEnum cyclesIssueState = StateEnum.loading;
   StateEnum allCyclesState = StateEnum.loading;

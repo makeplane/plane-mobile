@@ -95,6 +95,7 @@ flutter:
     - .env
     - assets/
     - assets/images/
+    - assets/images/global_search_icons/
     - assets/svg_images/logo.svg
     - assets/svg_images/settings.svg
     - assets/svg_images/graph_icon.svg

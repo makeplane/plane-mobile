@@ -6,6 +6,7 @@ import 'package:plane_startup/provider/auth_provider.dart';
 import 'package:plane_startup/provider/cycles_provider.dart';
 import 'package:plane_startup/provider/dashboard_provider.dart';
 import 'package:plane_startup/provider/file_upload_provider.dart';
+import 'package:plane_startup/provider/global_search_provider.dart';
 import 'package:plane_startup/provider/issue_provider.dart';
 import 'package:plane_startup/provider/my_issues_provider.dart';
 import 'package:plane_startup/provider/profile_provider.dart';
@@ -19,6 +20,7 @@ import 'integration_provider.dart';
 import 'issues_provider.dart';
 import 'modules_provider.dart';
 import 'theme_provider.dart';
+import 'views_provider.dart';
 
 class ProviderList {
   static final authProvider =
@@ -52,8 +54,12 @@ class ProviderList {
       ChangeNotifierProvider<ActivityProvider>((_) => ActivityProvider());
   static var dashboardProvider =
       ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(ref));
-       static var integrationProvider =
+  static var integrationProvider =
       ChangeNotifierProvider<IntegrationProvider>((ref) => IntegrationProvider(ref));
+static var viewsProvider =
+      StateNotifierProvider<ViewsNotifier,ViewsModel>((ref) => ViewsNotifier(ref));
+  static var globalSearchProvider =
+      StateNotifierProvider<GlobalSearchProvider, SearchModal>((ref) => GlobalSearchProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

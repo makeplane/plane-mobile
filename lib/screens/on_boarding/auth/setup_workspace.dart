@@ -211,7 +211,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   return null;
                                 },
                                 decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'e.g. My Workspace'),
+                                    labelText: 'e.g. My Workspace', floatingLabelBehavior: FloatingLabelBehavior.never),
                               ),
                               const SizedBox(
                                 height: 20,

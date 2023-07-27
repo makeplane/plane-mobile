@@ -59,8 +59,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     };
     prov.createIssuedata['members'] = null;
     prov.createIssuedata['labels'] = null;
-    prov.createIssuedata['state'] =
-        prov.createIssuedata['state'] ?? prov.states.keys.first;
+    prov.createIssuedata['state'] = prov.createIssuedata['state'] ??
+        (prov.states.isNotEmpty ? prov.states.keys.first : null);
     super.initState();
   }
 
@@ -85,7 +85,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     //var issueProvider = ref.watch(ProviderList.issueProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-
+    if (issuesProvider.createIssuedata['state'] == null &&
+        issuesProvider.states.isNotEmpty) {
+      issuesProvider.createIssuedata['state'] =
+          issuesProvider.states.keys.first;
+    }
     //log(ref.read(ProviderList.projectProvider).currentProject['id'].toString());
     return WillPopScope(
       onWillPop: () async {

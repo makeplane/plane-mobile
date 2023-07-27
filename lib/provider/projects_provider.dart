@@ -72,7 +72,7 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initializeProject({Filters? filters}) {
+  Future initializeProject({Filters? filters}) async {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
     var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);

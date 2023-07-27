@@ -92,4 +92,5 @@ class APIs {
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/views/";
   static String viewsFavourite =
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-views/";
+  static String globalSearch = "$baseApi/api/workspaces/\$SLUG/search/";
 }

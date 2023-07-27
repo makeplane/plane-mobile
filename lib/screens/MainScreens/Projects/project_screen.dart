@@ -426,6 +426,9 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                   ['created_at'])),
                                           // color: themeProvider.strokeColor,
                                           type: FontStyle.title,
+                                         color: themeProvider.isDarkThemeEnabled
+                                                    ? darkSecondaryTextColor
+                                                    : Colors.black,
                                           // fontSize: 16,
                                         ),
                                       ],

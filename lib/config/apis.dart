@@ -81,9 +81,15 @@ class APIs {
       "$baseApi/api/workspaces/\$SLUG/project-identifiers/?name=\$IDENTIFIER";
   static String activity = '$baseApi/api/users/activities/';
   static String isOnboarded = '$baseApi/api/users/me/onboard/';
-  static String dashboard = "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
-  static String integrations= "$baseApi/api/integrations/";
-  static String wokspaceIntegrations= "$baseApi/api/workspaces/\$SLUG/workspace-integrations/";
-  static String sendForgotPassCode= "$baseApi/api/forgot-password/";
-  static String resetPassword= "$baseApi/api/reset-password/\$UID/\$TOKEN/";
+  static String dashboard =
+      "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
+  static String integrations = "$baseApi/api/integrations/";
+  static String wokspaceIntegrations =
+      "$baseApi/api/workspaces/\$SLUG/workspace-integrations/";
+  static String sendForgotPassCode = "$baseApi/api/forgot-password/";
+  static String resetPassword = "$baseApi/api/reset-password/\$UID/\$TOKEN/";
+  static String views =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/views/";
+  static String viewsFavourite =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-views/";
 }

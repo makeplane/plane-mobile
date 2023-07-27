@@ -107,7 +107,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 10),
             child: const CustomText(
               //create issues text
-              'Issues help you track individual pieces of work. With Issues, keep track of what\'s going on, who is working on it, and what\'s done..',
+              'Issues help you track individual pieces of work. With Issues, keep track of what\'s going on, who is working on it, and what\'s done.',
 
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,

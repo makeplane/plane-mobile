@@ -955,7 +955,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         )),
                         context: context,
                         builder: (ctx) {
-                          return const FilterSheet(
+                          return  FilterSheet(
                             issueCategory: IssueCategory.issues,
                           );
                         });

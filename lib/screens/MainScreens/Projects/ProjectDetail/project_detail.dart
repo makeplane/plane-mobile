@@ -15,7 +15,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesT
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/view_card.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
 import 'package:plane_startup/screens/settings_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -25,6 +25,7 @@ import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
+import '../../../create_view_screen.dart';
 
 class ProjectDetail extends ConsumerStatefulWidget {
   const ProjectDetail({super.key, required this.index});
@@ -58,6 +59,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       cycles(),
       cycles(),
       const ModuleScreen(),
+      const Views()
     ];
 
     super.initState();
@@ -68,6 +70,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    var viewsProvider = ref.watch(ProviderList.viewsProvider);
     log(issueProvider.issues.groupBY.name);
 
     return Scaffold(
@@ -102,7 +105,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ),
       floatingActionButton: selected != 0 &&
               (projectProvider.role == Role.admin ||
-                  projectProvider.role == Role.member)
+                  projectProvider.role == Role.member)&&(selected == 3 &&
+                  viewsProvider.viewsState != StateEnum.loading &&
+                  viewsProvider.views.isNotEmpty)
           ? FloatingActionButton(
               backgroundColor: primaryColor,
               child: const Icon(
@@ -121,6 +126,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const CreateModule(),
+                    ),
+                  );
+                }
+                if (selected == 3) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreateView(),
                     ),
                   );
                 }
@@ -258,7 +270,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                 },
                 itemBuilder: (ctx, index) {
                   return Container(
-                      child: index == 0 ? issues(ctx) : pages[index]);
+                      child: index == 0 ? issues(ctx, ref) : pages[index]);
                 },
                 itemCount: pages.length,
               )),
@@ -430,7 +442,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           )),
                                           context: context,
                                           builder: (ctx) {
-                                            return const FilterSheet(
+                                            return  FilterSheet(
                                               issueCategory:
                                                   IssueCategory.issues,
                                             );
@@ -544,11 +556,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ),
     );
   }
-
-  Widget issues(BuildContext ctx) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var issueProvider = ref.read(ProviderList.issuesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+}
+  Widget issues(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    var issueProvider = ref.watch(ProviderList.issuesProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueState.name);
     if (issueProvider.issues.projectView == ProjectView.list) {
       issueProvider.initializeBoard();
@@ -713,7 +725,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                                         margin: const EdgeInsets.only(
                                                                             bottom:
                                                                                 10),
-                                                                        width: MediaQuery.of(ctx)
+                                                                        width: MediaQuery.of(context)
                                                                             .size
                                                                             .width,
                                                                         color: themeProvider.isDarkThemeEnabled
@@ -802,7 +814,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
   //   );
   // }
 
-  Widget page() {
+  Widget page(WidgetRef ref) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     return Container(
       color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
@@ -822,7 +834,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     );
   }
 
-  Widget view() {
+  Widget view(WidgetRef ref) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     return Container(
       color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
@@ -836,7 +848,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
           //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           //   ),
           // ),
-          ViewCard()
+          Views()
         ],
       ),
     );
@@ -849,4 +861,4 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
   //   }
   //   return false;
   // }
-}
+

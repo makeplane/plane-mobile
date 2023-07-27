@@ -126,6 +126,9 @@ class IssuesProvider extends ChangeNotifier {
     issues.issues = [];
     for (int j = 0; j < stateOrdering.length; j++) {
       List<Widget> items = [];
+      if (groupByResponse[stateOrdering[j]] == null) {
+        continue;
+      }
       // log(states[stateOrdering[j]]["name"]);
       for (int i = 0;
           groupByResponse[stateOrdering[j]] != null &&
@@ -1195,17 +1198,22 @@ class IssuesProvider extends ChangeNotifier {
       if (issueCategory == IssueCategory.issues) {
         if (issues.groupBY == GroupBY.state) {
           groupByResponse = {};
-          states.forEach((key, value) {
-            if (response.data[key] != null) {
-              groupByResponse[key] = response.data[key];
-            } else if (issues.filters.states.isEmpty) {
-              if (issues.issueType == IssueType.all) {
-                groupByResponse[key] = [];
+
+          if (issues.filters.states.isNotEmpty) {
+ 
+            for (var element in issues.filters.states) {
+              if (response.data[element] == null) {
+                groupByResponse[element] = [];
+              } else {
+                groupByResponse[element] = response.data[element];
               }
-              // groupByResponse[key] = [];
             }
-            shrinkStates.add(false);
-          });
+          } else {
+            for (var element in stateOrdering) {
+              groupByResponse[element] = response.data[element] ?? [];
+            }
+          }
+          shrinkStates = List.generate(stateOrdering.length, (index) => false);
         } else {
           stateOrdering = [];
           response.data.forEach((key, value) {

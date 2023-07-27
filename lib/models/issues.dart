@@ -1,5 +1,3 @@
-
-
 import 'package:plane_startup/kanban/models/inputs.dart';
 import 'package:plane_startup/utils/enums.dart';
 
@@ -171,4 +169,23 @@ class Filters {
     required this.createdBy,
     required this.labels,
   });
+
+  static Map<String,List<dynamic>> toJson(Filters filters) {
+    return {
+      "assignees": filters.assignees,
+      "created_by": filters.createdBy,
+      "labels": filters.labels,
+      "priority": filters.priorities,
+      "state": filters.states
+    };
+  }
+
+  factory Filters.fromJson(Map json) {
+    return Filters(
+        priorities: json['priority']??[],
+        states: json['state']??[],
+        assignees: json['assignees']??[],
+        createdBy: json['created_by']??[],
+        labels: json['labels']??[]);
+  }
 }

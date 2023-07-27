@@ -11,6 +11,8 @@ import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/enums.dart';
 
+import '../models/issues.dart';
+
 class ProjectsProvider extends ChangeNotifier {
   ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
   final Ref ref;
@@ -42,7 +44,7 @@ class ProjectsProvider extends ChangeNotifier {
     {'title': 'Issues', 'width': 60, 'show': true},
     {'title': 'Cycles', 'width': 60, 'show': true},
     {'title': 'Modules', 'width': 75, 'show': true},
-    // {'title': 'Views', 'width': 60, 'show': true},
+    {'title': 'Views', 'width': 60, 'show': true},
     // {'title': 'Pages', 'width': 50, 'show': true},
   ];
 
@@ -70,9 +72,10 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initializeProject() {
+  void initializeProject({Filters? filters}) {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
+    var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
@@ -91,6 +94,9 @@ class ProjectsProvider extends ChangeNotifier {
         );
     prov.getIssueProperties(issueCategory: IssueCategory.issues);
     prov.getProjectView().then((value) {
+         if (filters != null) {
+        prov.issues.filters = filters;
+      }
       prov.filterIssues(
         slug: workspaceSlug,
         projID: currentProject['id'],
@@ -101,6 +107,7 @@ class ProjectsProvider extends ChangeNotifier {
       slug: workspaceSlug,
       projId: currentProject['id'],
     );
+    viewsProvider.getViews();
     prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
 
     prov.getLabels(slug: workspaceSlug, projID: currentProject['id']);

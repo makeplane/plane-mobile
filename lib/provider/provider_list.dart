@@ -19,6 +19,7 @@ import 'integration_provider.dart';
 import 'issues_provider.dart';
 import 'modules_provider.dart';
 import 'theme_provider.dart';
+import 'views_provider.dart';
 
 class ProviderList {
   static final authProvider =
@@ -54,7 +55,8 @@ class ProviderList {
       ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(ref));
        static var integrationProvider =
       ChangeNotifierProvider<IntegrationProvider>((ref) => IntegrationProvider(ref));
-
+static var viewsProvider =
+      StateNotifierProvider<ViewsNotifier,ViewsModel>((ref) => ViewsNotifier(ref));
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();
     ref.read(issuesProvider).clear();

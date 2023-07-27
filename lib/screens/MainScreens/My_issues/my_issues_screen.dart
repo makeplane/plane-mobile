@@ -57,7 +57,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                     appBarTitle: myIssuesProvider.data[index]
                                         ['name'],
                                     issueId: myIssuesProvider.data[index]['id'],
-                                    index: index);
+                                    );
                               }));
                             },
                             child: Container(

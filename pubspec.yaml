@@ -96,6 +96,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/svg_images/logo.svg
+    - assets/svg_images/redirect.svg
     - assets/svg_images/settings.svg
     - assets/svg_images/graph_icon.svg
     - assets/svg_images/label_group.svg

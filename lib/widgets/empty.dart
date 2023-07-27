@@ -168,7 +168,7 @@ class EmptyPlaceholder {
                         issueId: '',
                         createIssue: false,
                         // blocking: true,
-                        index: -1,
+                        
                       ),
                     );
                   },

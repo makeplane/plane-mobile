@@ -664,7 +664,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => IssueDetail(
-                                index: index,
+                               
                                 appBarTitle:
                                     '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
                                 issueId: issuesProvider.issuesList[index]['id'],

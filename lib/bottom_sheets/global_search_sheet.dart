@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -36,6 +37,32 @@ class GlobalSearchSheet extends ConsumerStatefulWidget {
 
 class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   TextEditingController input = TextEditingController();
+  Timer? ticker;
+
+  void timer() {
+    ticker = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timer.tick < 1) return;
+      if (timer.tick > 1) {
+        timer.cancel();
+        return;
+      }
+      log(timer.tick.toString());
+
+      var prov = ref.read(ProviderList.globalSearchProvider.notifier);
+      if (input.text.isEmpty) {
+        prov.setState();
+      } else {
+        log("HERE");
+        prov.getGlobalData(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          input: input.text.trim(),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,58 +80,49 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             : lightBackgroundColor,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
+             
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: width - 120,
+                    Expanded(
                       child: TextFormField(
                         controller: input,
                         decoration: kTextFieldFilledDecoration.copyWith(
                           label: const Text('Search for anything...'),
-                          filled: true,
-                          fillColor: themeProvider.isDarkThemeEnabled ? darkThemeBorder : textFieldFilledColor,
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              if (input.text.isNotEmpty) {
-                                await globalSearchProviderRead.getGlobalData(
-                                  slug: ref
-                                      .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  input: input.text.trim(),
-                                );
-                              }
-                            },
-                            icon: const Icon(
+                          filled: true,alignLabelWithHint: true,
+                    hintText: 'Search for anything...',
+                    hintStyle: TextStyle(
+                      color: themeProvider.isDarkThemeEnabled
+                          ? darkStrokeColor
+                          : lightPrimaryTextColor,
+                    ),
+                          fillColor: themeProvider.isDarkThemeEnabled
+                              ? darkThemeBorder
+                              : textFieldFilledColor,
+                          prefixIcon:  const Icon(
                               Icons.search,
                               color: greyColor,
-                            ),
+                            
                           ),
                         ),
                         onChanged: (value) {
-                          if (value.isEmpty) {
-                            globalSearchProviderRead.setState();
-                          }
+                          ticker?.cancel();
+                          timer();
                         },
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                   
                     InkWell(
                       onTap: () {
+                        input.clear();
                         globalSearchProvider.data = null;
                         globalSearchProviderRead.setState();
-                        Navigator.of(context).pop();
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: const CustomText(
                           'Cancel',
                           type: FontStyle.description,
@@ -286,7 +304,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -399,7 +419,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -486,7 +508,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -550,7 +574,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                   globalSearchProvider.data!.issues[index].name,
                               issueId:
                                   globalSearchProvider.data!.issues[index].id,
-                              index: index,
                             ),
                           ),
                         );
@@ -559,7 +582,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/issue.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/issue.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -634,7 +664,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/project.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/project.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -924,7 +961,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/module.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/module.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -979,7 +1023,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/global_search_icons/view.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                          Image.asset(
+                            'assets/images/global_search_icons/view.png',
+                            width: 20,
+                            height: 20,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                           const SizedBox(
                             width: 10,
                           ),
@@ -1032,7 +1083,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/global_search_icons/page.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                          Image.asset(
+                            'assets/images/global_search_icons/page.png',
+                            width: 20,
+                            height: 20,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                           const SizedBox(
                             width: 10,
                           ),

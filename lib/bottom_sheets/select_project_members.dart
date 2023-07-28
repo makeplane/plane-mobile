@@ -10,9 +10,9 @@ import 'package:plane_startup/widgets/custom_text.dart';
 class SelectProjectMembers extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
-  final int? index;
+
   const SelectProjectMembers(
-      {this.index, this.issueId, required this.createIssue, super.key});
+      {this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectProjectMembers> createState() =>
@@ -324,7 +324,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                 .read(ProviderList.projectProvider)
                                 .currentProject['id'],
                             issueID: widget.issueId!,
-                            index: widget.index!,
+                          
                             refs: ref,
                             data: {
                               "assignees_list": issueDetailSelectedMembers

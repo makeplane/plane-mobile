@@ -29,12 +29,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 class IssueDetail extends ConsumerStatefulWidget {
   final String issueId;
-  final String appBarTitle;
-  final int index;
-  const IssueDetail(
+  String appBarTitle;
+  final String? projID;
+  final String? workspaceSlug;
+  IssueDetail(
       {required this.appBarTitle,
+      this.projID,
+      this.workspaceSlug,
       required this.issueId,
-      required this.index,
       super.key});
 
   @override
@@ -59,7 +61,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     super.initState();
     getIssueDetails();
     getCycles();
-    getModules();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getModules();
+    });
   }
 
   @override
@@ -72,32 +76,41 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var issueProvider = ref.watch(ProviderList.issueProvider);
       issueProvider.clearData();
-      await ref.read(ProviderList.issueProvider).getIssueDetails(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projID: ref.read(ProviderList.projectProvider).currentProject['id'],
+      await issueProvider.getIssueDetails(
+          slug: widget.workspaceSlug ??
+              ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+          projID: widget.projID ??
+              ref.read(ProviderList.projectProvider).currentProject['id'],
           issueID: widget.issueId);
-      await ref.read(ProviderList.issueProvider).getIssueActivity(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projID: ref.read(ProviderList.projectProvider).currentProject['id'],
+
+      await issueProvider.getIssueActivity(
+          slug: widget.workspaceSlug ??
+              ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+          projID: widget.projID ??
+              ref.read(ProviderList.projectProvider).currentProject['id'],
           issueID: widget.issueId);
 
       title.text = issueProvider.issueDetails['name'];
       description.text = issueProvider.issueDetails['description_stripped'];
-      ref.read(ProviderList.issueProvider).getSubIssues(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projectId:
-              ref.read(ProviderList.projectProvider).currentProject['id'],
-          issueId: widget.issueId,
-          index: widget.index);
+      issueProvider.getSubIssues(
+        slug: widget.workspaceSlug ??
+            ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug,
+        projectId: widget.projID ??
+            ref.read(ProviderList.projectProvider).currentProject['id'],
+        issueId: widget.issueId,
+      );
+      widget.appBarTitle = issueProvider.issueDetails['project_detail']
+              ['identifier'] +"-"+
+          issueProvider.issueDetails['sequence_id'].toString();
     });
   }
 
@@ -109,13 +122,15 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         .selectedWorkspace!
         .workspaceSlug;
     await cyclesProvider.cyclesCrud(
-        slug: slug,
-        projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
+        slug: widget.workspaceSlug ?? slug,
+        projectId: widget.projID ??
+            ref.read(ProviderList.projectProvider).currentProject['id'],
         method: CRUD.read,
         query: 'current');
     await cyclesProvider.cyclesCrud(
-        slug: slug,
-        projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
+        slug: widget.workspaceSlug ?? slug,
+        projectId: widget.projID ??
+            ref.read(ProviderList.projectProvider).currentProject['id'],
         method: CRUD.read,
         query: 'upcoming');
     for (var element in cyclesProvider.cyclesActiveData) {
@@ -139,8 +154,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         .workspaceSlug;
     issueProvider.modulesList.clear();
     ref.read(ProviderList.modulesProvider).getModules(
-        slug: slug,
-        projId: ref.read(ProviderList.projectProvider).currentProject['id']);
+        slug: widget.workspaceSlug ?? slug,
+        projId: widget.projID ??
+            ref.read(ProviderList.projectProvider).currentProject['id']);
     // ref.watch(ProviderList.issueProvider).modulesList = ref.watch(ProviderList.modulesProvider).modules
     for (var element in modulesProvider.modules) {
       issueProvider.modulesList.add(element);
@@ -381,7 +397,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 issueId: widget.issueId,
                                                 createIssue: false,
                                                 // blocking: true,
-                                                index: widget.index,
                                               ),
                                             );
                                           },
@@ -592,7 +607,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                               .workspaceSlug,
                                                           issueId:
                                                               widget.issueId,
-                                                          index: widget.index,
                                                         ),
                                                       );
                                                     },
@@ -695,7 +709,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                         child: AddLinkSheet(
                                                           issueId:
                                                               widget.issueId,
-                                                          index: widget.index,
                                                         ),
                                                       ),
                                                     );
@@ -1224,7 +1237,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               builder: (ctx) => SelectStates(
                     createIssue: false,
                     issueId: widget.issueId,
-                    index: widget.index,
                   ));
         },
         child: Padding(
@@ -1308,7 +1320,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               builder: (ctx) => SelectProjectMembers(
                     createIssue: false,
                     issueId: widget.issueId,
-                    index: widget.index,
                   ));
         },
         child: Padding(
@@ -1400,7 +1411,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               builder: (ctx) => SelectIssuePriority(
                     createIssue: false,
                     issueId: widget.issueId,
-                    index: widget.index,
                   ));
         },
         child: Padding(
@@ -1521,7 +1531,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                     builder: (ctx) => SelectEstimate(
                           createIssue: false,
                           issueId: widget.issueId,
-                          index: widget.index,
                         ));
               },
               child: issueProvider.issueDetails['estimate_point'] == null
@@ -1603,7 +1612,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               builder: (ctx) => SelectIssueLabels(
                     createIssue: false,
                     issueId: widget.issueId,
-                    index: widget.index,
                   ));
         },
         child: Padding(
@@ -1749,7 +1757,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                     data: {
                                                       "labels_list": labelIds
                                                     },
-                                                    index: widget.index,
                                                     refs: ref,
                                                   );
                                                 },
@@ -1837,7 +1844,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 projID:
                     ref.read(ProviderList.projectProvider).currentProject['id'],
                 issueID: widget.issueId,
-                index: widget.index,
                 data: {
                   "target_date": DateFormat('yyyy-MM-dd').format(date),
                 },
@@ -1897,7 +1903,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                     .read(ProviderList.projectProvider)
                                     .currentProject['id'],
                                 issueID: widget.issueId,
-                                index: widget.index,
                                 data: {
                                   "target_date": null,
                                 },
@@ -1951,7 +1956,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                     issueId: widget.issueId,
                     createIssue: false,
                     // blocking: false,
-                    index: widget.index,
                   ));
         },
         child: Padding(
@@ -2013,7 +2017,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   .currentProject['id'],
                               issueID: widget.issueId,
                               data: {"parent": null},
-                              index: widget.index,
                               refs: ref,
                             );
                           },
@@ -2123,7 +2126,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                   ProviderList.projectProvider)
                                               .currentProject['id'],
                                           issueId: widget.issueId,
-                                          index: index,
                                         ),
                                       );
                                   setState(
@@ -2200,7 +2202,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         createIssue: false,
                         type: IssueDetailCategory.blocking,
                         // blocking: true,
-                        index: widget.index,
                       ));
             },
             child: Row(
@@ -2313,7 +2314,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         //"blocker_issues": newBlockingList
                                         "blockers_list": newBlockingList
                                       },
-                                      index: widget.index,
                                       refs: ref,
                                       buildContext: context,
                                     );
@@ -2373,7 +2373,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   createIssue: false,
                   // blocking: false,
                   type: IssueDetailCategory.blocked,
-                  index: widget.index,
                 ),
               );
             },
@@ -2486,7 +2485,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         //"blocker_issues": newBlockingList
                                         "blocks_list": newBlockingList
                                       },
-                                      index: widget.index,
                                       refs: ref,
                                       buildContext: context,
                                     );
@@ -2887,7 +2885,6 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   .selectedWorkspace!
                                   .workspaceSlug,
                               issueId: widget.issueId,
-                              index: widget.index,
                               data: {},
                               method: CRUD.delete,
                               linkId: issueProvider.issueDetails['issue_link']

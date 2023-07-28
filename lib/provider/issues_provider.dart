@@ -78,16 +78,19 @@ class IssuesProvider extends ChangeNotifier {
         orderBY: OrderBY.manual,
         issueType: IssueType.all,
         displayProperties: DisplayProperties(
-            estimate: false,
-            assignee: false,
-            dueDate: false,
-            id: false,
-            label: false,
-            state: false,
-            subIsseCount: false,
-            priority: false,
-            attachmentCount: false,
-            linkCount: false));
+          estimate: false,
+          assignee: false,
+          dueDate: false,
+          id: false,
+          label: false,
+          state: false,
+          subIsseCount: false,
+          priority: false,
+          attachmentCount: false,
+          linkCount: false,
+          createdOn: false,
+          updatedOn: false,
+        ));
     stateIcons = {};
     issueProperty = {};
     createIssuedata = {};
@@ -835,6 +838,7 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issues.displayProperties;
         } else {
           issueProperty = response.data;
+          log('issueProperty ${issueProperty.toString()}');
           issues.displayProperties.assignee =
               issueProperty['properties']['assignee'];
           issues.displayProperties.dueDate =
@@ -852,6 +856,7 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['properties']['priority'];
           issues.displayProperties.estimate =
               issueProperty['properties']['estimate'];
+
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
         //log('ISSUE PROPERTY =====  > $issueProperty');
@@ -904,6 +909,8 @@ class IssuesProvider extends ChangeNotifier {
             "priority": properties.priority,
             "state": properties.state,
             "sub_issue_count": properties.subIsseCount,
+            'updated_on': properties.updatedOn,
+            'created_on': properties.createdOn,
           },
           "user": ref!.read(ProviderList.profileProvider).userProfile.id
         },
@@ -913,6 +920,7 @@ class IssuesProvider extends ChangeNotifier {
       // log(response.data.toString());
       if (issueCategory == IssueCategory.cycleIssues) {
         cyclesProvider.issueProperty = response.data;
+        log('cycle issue property ${cyclesProvider.issueProperty.toString()}');
       } else if (issueCategory == IssueCategory.moduleIssues) {
         modulesProvider.issueProperty = response.data;
       } else {
@@ -971,7 +979,9 @@ class IssuesProvider extends ChangeNotifier {
                 ? 'kanban'
                 : issues.projectView == ProjectView.list
                     ? 'list'
-                    : 'calendar',
+                    : issues.projectView == ProjectView.calendar
+                        ? 'calendar'
+                        : 'spreadsheet',
             "orderBy": Issues.fromGroupBY(issues.groupBY),
             "showEmptyGroups": showEmptyStates
           }
@@ -1012,7 +1022,9 @@ class IssuesProvider extends ChangeNotifier {
           ? ProjectView.list
           : issueView['issueView'] == 'calendar'
               ? ProjectView.calendar
-              : ProjectView.kanban;
+              : issueView['issueView'] == 'spreadsheet'
+                  ? ProjectView.spreadsheet
+                  : ProjectView.kanban;
       issues.groupBY = Issues.toGroupBY(issueView["groupByProperty"]);
       issues.orderBY = Issues.toOrderBY(issueView["orderBy"]);
       issues.issueType = Issues.toIssueType(issueView["filters"]["type"]);

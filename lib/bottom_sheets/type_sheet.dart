@@ -24,7 +24,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
         ? 0
         : prov.issues.projectView == ProjectView.list
             ? 1
-            : 2;
+            : prov.issues.projectView == ProjectView.calendar
+                ? 2
+                : 3;
     super.initState();
   }
 
@@ -133,13 +135,6 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           activeColor: primaryColor,
                           value: 1,
                           onChanged: (val) {}),
-                      // Text(
-                      //   'List View',
-                      //   style: TextStyle(
-                      //     fontSize: 18,
-                      //     fontWeight: FontWeight.w400,
-                      //   ),
-                      // ),
                       const SizedBox(width: 10),
                       const CustomText(
                         'List View',
@@ -184,16 +179,53 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           activeColor: primaryColor,
                           value: 2,
                           onChanged: (val) {}),
-                      // Text(
-                      //   'List View',
-                      //   style: TextStyle(
-                      //     fontSize: 18,
-                      //     fontWeight: FontWeight.w400,
-                      //   ),
-                      // ),
                       const SizedBox(width: 10),
                       const CustomText(
                         'Calendar View',
+                        type: FontStyle.subheading,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                  color: themeProvider.isDarkThemeEnabled
+                      ? darkThemeBorder
+                      : Colors.grey[300],
+                ),
+              ),
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      selected = 3;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Radio(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          fillColor: selected == 3
+                              ? null
+                              : MaterialStateProperty.all<Color>(
+                                  Colors.grey.shade300),
+                          groupValue: selected,
+                          activeColor: primaryColor,
+                          value: 3,
+                          onChanged: (val) {}),
+                      const SizedBox(width: 10),
+                      const CustomText(
+                        'Spreadsheet View',
                         type: FontStyle.subheading,
                       ),
                     ],
@@ -217,6 +249,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 } else if (selected == 2) {
                   prov.issues.projectView = ProjectView.calendar;
                   prov.tempProjectView = ProjectView.calendar;
+                } else if (selected == 3) {
+                  prov.issues.projectView = ProjectView.spreadsheet;
+                  prov.tempProjectView = ProjectView.spreadsheet;
                 }
                 prov.setsState();
                 if (widget.issueCategory == IssueCategory.issues) {

@@ -408,10 +408,11 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                   coverImage!.readAsBytesSync().lengthInBytes;
 
                               if (sizeOfImage > 5000000) {
-                                CustomToast()
-                                    .showToast(context, 'file exceeding 5MB');
+                                CustomToast().showToast(context,
+                                    'File size should be less than 5MB');
                                 return;
                               }
+
                               var url = await fileProvider.uploadFile(
                                 coverImage!,
                                 coverImage!.path.split('.').last,

@@ -107,11 +107,13 @@ class CustomText extends ConsumerWidget {
           fontSize: fontSize ?? 16,
           fontWeight: fontWeight ?? FontWeight.w400,
           fontFamily: 'SF Pro Display',
+
           // color: color ?? themeProvider.primaryTextColor,
           color: color ??
               (themeProvider.isDarkThemeEnabled
                   ? darkPrimaryTextColor
                   : Colors.black),
+          overflow: overflow ?? TextOverflow.visible,
         );
 
       case FontStyle.secondaryText:
@@ -264,7 +266,8 @@ class CustomText extends ConsumerWidget {
       default:
         return TextStyle(
           fontFamily: 'SF Pro Display',
-          color: color ?? Colors.black,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black),
           fontWeight: fontWeight ?? FontWeight.normal,
           fontSize: fontSize ?? 17,
         );

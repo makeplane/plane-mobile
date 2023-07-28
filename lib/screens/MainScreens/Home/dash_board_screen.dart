@@ -154,7 +154,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     ? darkThemeBorder
                                     : Colors.transparent),
                             borderRadius: BorderRadius.circular(10),
-                            color: themeProvider.isDarkThemeEnabled ? Colors.black : lightGreyBoxColor),
+                            color: themeProvider.isDarkThemeEnabled
+                                ? Colors.black
+                                : lightGreyBoxColor),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25, vertical: 25),
                         child: Column(
@@ -171,7 +173,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     'Plane is open source, support us by staring us on GitHub.',
                                     type: FontStyle.text,
                                     textAlign: TextAlign.start,
-                                    color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                                    color: themeProvider.isDarkThemeEnabled
+                                        ? Colors.white
+                                        : Colors.black,
                                     overflow: TextOverflow.visible,
                                     maxLines: 5,
                                   ),
@@ -184,7 +188,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   },
                                   child: Icon(
                                     Icons.close,
-                                    color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+                                    color: themeProvider.isDarkThemeEnabled
+                                        ? Colors.white
+                                        : greyColor,
                                   ),
                                 ),
                               ],
@@ -197,9 +203,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
-                                    elevation: 0
-                                  ),
+                                      backgroundColor:
+                                          themeProvider.isDarkThemeEnabled
+                                              ? Colors.white
+                                              : Colors.black,
+                                      elevation: 0),
                                   onPressed: () async {
                                     //redirect to github using url launcher.
                                     try {
@@ -223,7 +231,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   child: CustomText(
                                     'Star us on GitHub',
                                     type: FontStyle.buttonText,
-                                    color: themeProvider.isDarkThemeEnabled ? Colors.black : Colors.white,
+                                    color: themeProvider.isDarkThemeEnabled
+                                        ? Colors.black
+                                        : Colors.white,
                                   ),
                                 ),
                               ],
@@ -235,7 +245,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         bottom: 20,
                         right: 35,
                         child: Image.asset(
-                          themeProvider.isDarkThemeEnabled ? 'assets/images/github.png' : 'assets/images/github_black.png',
+                          themeProvider.isDarkThemeEnabled
+                              ? 'assets/images/github.png'
+                              : 'assets/images/github_black.png',
                           width: 70,
                           height: 70,
                         ),
@@ -363,7 +375,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       padding: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: themeProvider.isDarkThemeEnabled ? darkThemeBorder : strokeColor),
+          bottom: BorderSide(
+              color: themeProvider.isDarkThemeEnabled
+                  ? darkThemeBorder
+                  : strokeColor),
         ),
       ),
       child: Row(

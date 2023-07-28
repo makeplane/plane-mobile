@@ -18,6 +18,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -652,7 +653,16 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                     .w500),
                                                       ),
                                                     )
-                                                  : CalendarView(),
+                                                  : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar))
+                                                      ? const CalendarView()
+                                                      : SpreadSheetView(
+                                                          issueCategory:
+                                                              widget.fromModule
+                                                                  ? IssueCategory
+                                                                      .moduleIssues
+                                                                  : IssueCategory
+                                                                      .cycleIssues,
+                                                        ),
                             ),
                             SafeArea(
                               child: Container(
@@ -1393,8 +1403,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                       },
                                     );
                                   }
+                                  pageController!.animateTo(
+                                    0,
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut,
+                                  );
                                   if (fromModule) {
                                     modulesProvider.changeTabIndex(0);
+
                                     await modulesProvider.filterModuleIssues(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
@@ -1678,6 +1694,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                 ['labels'][index]['label_id']);
                                       }
                                     });
+                                    pageController!.animateTo(0,
+                                        duration: const Duration(
+                                            milliseconds: 300),
+                                        curve: Curves.easeInOut);
                                     if (fromModule) {
                                       modulesProvider.changeTabIndex(0);
                                       await modulesProvider.filterModuleIssues(

@@ -549,7 +549,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       if (image == null) return;
       int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
-        CustomToast().showToast(context, 'file exceeding 5MB');
+        // ignore: use_build_context_synchronously
+        CustomToast().showToast(context, 'File size should be less than 5MB');
         return;
       }
       setState(() {

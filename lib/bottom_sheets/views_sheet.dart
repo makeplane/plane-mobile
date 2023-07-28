@@ -63,6 +63,14 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     {
       'name': 'Estimate',
       'selected': false,
+    },
+    {
+      'name': 'Created on',
+      'selected': false,
+    },
+    {
+      'name': 'Updated on',
+      'selected': false,
     }
   ];
 
@@ -109,6 +117,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
         issueProvider.issues.displayProperties.linkCount;
     displayProperties[9]['selected'] =
         issueProvider.issues.displayProperties.estimate;
+    displayProperties[10]['selected'] =
+        issueProvider.issues.displayProperties.createdOn;
+    displayProperties[11]['selected'] =
+        issueProvider.issues.displayProperties.updatedOn;
     showEmptyStates = issueProvider.showEmptyStates;
     super.initState();
   }
@@ -143,286 +155,314 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             children: [
               Column(
                 children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  CustomExpansionTile(
-                    title: 'Group by',
-                    child: Wrap(
-                      children: [
-                        RadioListTile(
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                            // dense: true,
-                            groupValue: groupBy,
-                            title: const CustomText(
-                              'State',
-                              type: FontStyle.subheading,
-                              textAlign: TextAlign.start,
-                            ),
-                            value: 'state',
-                            onChanged: (newValue) {
-                              setState(() {
-                                groupBy = 'state';
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: primaryColor),
-                        RadioListTile(
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                            // dense: true,
-                            groupValue: groupBy,
-                            title: const CustomText(
-                              'Priority',
-                              type: FontStyle.subheading,
-                              textAlign: TextAlign.start,
-                            ),
-                            value: 'priority',
-                            onChanged: (newValue) {
-                              setState(() {
-                                groupBy = 'priority';
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: primaryColor),
-                        RadioListTile(
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                            // dense: true,
-                            groupValue: groupBy,
-                            title: const CustomText(
-                              'Labels',
-                              type: FontStyle.subheading,
-                              textAlign: TextAlign.start,
-                            ),
-                            value: 'labels',
-                            onChanged: (newValue) {
-                              setState(() {
-                                groupBy = 'labels';
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: primaryColor),
-                        RadioListTile(
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                            // dense: true,
-                            groupValue: groupBy,
-                            title: const CustomText(
-                              'Created by',
-                              type: FontStyle.subheading,
-                              textAlign: TextAlign.start,
-                            ),
-                            value: 'created_by',
-                            onChanged: (newValue) {
-                              setState(() {
-                                groupBy = 'created_by';
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: primaryColor),
-                      ],
-                    ),
-                  ),
+                  issueProvider.issues.projectView != ProjectView.spreadsheet
+                      ? const SizedBox(
+                          height: 40,
+                        )
+                      : Container(),
+                  issueProvider.issues.projectView != ProjectView.spreadsheet
+                      ? CustomExpansionTile(
+                          title: 'Group by',
+                          child: Wrap(
+                            children: [
+                              RadioListTile(
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: const CustomText(
+                                    'State',
+                                    type: FontStyle.subheading,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'state',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'state';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor: primaryColor),
+                              RadioListTile(
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: const CustomText(
+                                    'Priority',
+                                    type: FontStyle.subheading,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'priority',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'priority';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor: primaryColor),
+                              RadioListTile(
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: const CustomText(
+                                    'Labels',
+                                    type: FontStyle.subheading,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'labels',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'labels';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor: primaryColor),
+                              RadioListTile(
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: const CustomText(
+                                    'Created by',
+                                    type: FontStyle.subheading,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'created_by',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'created_by';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor: primaryColor),
+                            ],
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
 
-              customHorizontalLine(),
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? customHorizontalLine()
+                  : Container(),
 
               //expansion tile for order by having two checkboxes last created and last updated
-              CustomExpansionTile(
-                title: 'Order by',
-                child: Wrap(
-                  children: [
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: orderBy,
-                        title: const CustomText(
-                          'Manual',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: 'sort_order',
-                        onChanged: (newValue) {
-                          setState(() {
-                            orderBy = 'sort_order';
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: orderBy,
-                        title: const CustomText(
-                          'Last created',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: '-created_at',
-                        onChanged: (newValue) {
-                          setState(() {
-                            orderBy = '-created_at';
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: orderBy,
-                        title: const CustomText(
-                          'Last updated',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: 'updated_at',
-                        onChanged: (newValue) {
-                          setState(() {
-                            orderBy = 'updated_at';
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                  ],
-                ),
-              ),
-
-              customHorizontalLine(),
-
-              //expansion tile for issue type having three checkboxes all issues, active issues and backlog issues
-              CustomExpansionTile(
-                title: 'Issue type',
-                child: Wrap(
-                  children: [
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: issueType,
-                        title: const CustomText(
-                          'All issues',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: 'all',
-                        onChanged: (newValue) {
-                          setState(() {
-                            issueType = 'all';
-                          });
-                        },
-                        
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: issueType,
-                        title: const CustomText(
-                          'Active issues',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: 'active',
-                        onChanged: (newValue) {
-                          setState(() {
-                            issueType = 'active';
-                          });
-                        },
-
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                    RadioListTile(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        groupValue: issueType,
-                        title: const CustomText(
-                          'Backlog issues',
-                          type: FontStyle.subheading,
-                          textAlign: TextAlign.start,
-                        ),
-                        value: 'backlog',
-                        onChanged: (newValue) {
-                          setState(() {
-                            issueType = 'backlog';
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                        activeColor: primaryColor),
-                  ],
-                ),
-              ),
-
-              customHorizontalLine(),
-
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    showEmptyStates = !showEmptyStates;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Wrap(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? CustomExpansionTile(
+                      title: 'Order by',
+                      child: Wrap(
                         children: [
-                          const CustomText(
-                            'Show empty states',
-                            type: FontStyle.subheading,
-                          ),
-                          Container(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 30,
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: showEmptyStates
-                                    ? greenHighLight
-                                    : Colors.grey[300]),
-                            child: Align(
-                              alignment: showEmptyStates
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: const CircleAvatar(radius: 6),
-                            ),
-                          ),
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: orderBy,
+                              title: const CustomText(
+                                'Manual',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'sort_order',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  orderBy = 'sort_order';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: orderBy,
+                              title: const CustomText(
+                                'Last created',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: '-created_at',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  orderBy = '-created_at';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: orderBy,
+                              title: const CustomText(
+                                'Last updated',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'updated_at',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  orderBy = 'updated_at';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : Container(),
 
-              customHorizontalLine(),
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? customHorizontalLine()
+                  : Container(),
 
-              Container(
-                height: 20,
-              ),
+              //expansion tile for issue type having three checkboxes all issues, active issues and backlog issues
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? CustomExpansionTile(
+                      title: 'Issue type',
+                      child: Wrap(
+                        children: [
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: issueType,
+                              title: const CustomText(
+                                'All issues',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'all',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  issueType = 'all';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: issueType,
+                              title: const CustomText(
+                                'Active issues',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'active',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  issueType = 'active';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
+                          RadioListTile(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: issueType,
+                              title: const CustomText(
+                                'Backlog issues',
+                                type: FontStyle.subheading,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'backlog',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  issueType = 'backlog';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: primaryColor),
+                        ],
+                      ),
+                    )
+                  : Container(),
+
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? customHorizontalLine()
+                  : Container(),
+
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          showEmptyStates = !showEmptyStates;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Wrap(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomText(
+                                  'Show empty states',
+                                  type: FontStyle.subheading,
+                                ),
+                                Container(
+                                  width: 10,
+                                ),
+                                Container(
+                                  width: 30,
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: showEmptyStates
+                                          ? greenHighLight
+                                          : Colors.grey[300]),
+                                  child: Align(
+                                    alignment: showEmptyStates
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: const CircleAvatar(radius: 6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(),
+
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? customHorizontalLine()
+                  : Container(),
+
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? Container(
+                      height: 20,
+                    )
+                  : Container(),
+
+              issueProvider.issues.projectView == ProjectView.spreadsheet
+                  ? Container(
+                      height: 45,
+                    )
+                  : Container(),
 
               Container(height: 15),
 
@@ -441,52 +481,67 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               projectProvider.currentProject['estimate'] ==
                                   null)
                           ? const SizedBox()
-                          : GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  tag['selected'] = !(tag['selected'] ?? false);
-                                });
-                              },
-                              child: Container(
-                                height: 40,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 7),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: tag['selected'] ?? false
-                                      ? primaryColor
-                                    :  themeProvider.isDarkThemeEnabled
-                                            ? darkBackgroundColor
-                                      : Colors.transparent,
-                                  border: Border.all(
-                                    color: tag['selected'] ?? false
-                                        ? Colors.transparent
-                                        : themeProvider.isDarkThemeEnabled
+                          : (((tag['name'] == 'Created on' ||
+                                          tag['name'] == 'Updated on') &&
+                                      issueProvider.issues.projectView !=
+                                          ProjectView.spreadsheet) ||
+                                  ((tag['name'] == 'ID' ||
+                                          tag['name'] == 'Attachment Count' ||
+                                          tag['name'] == 'Link' ||
+                                          tag['name'] == 'Sub Issue Count') &&
+                                      issueProvider.issues.projectView ==
+                                          ProjectView.spreadsheet))
+                              ? const SizedBox()
+                              : GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      tag['selected'] =
+                                          !(tag['selected'] ?? false);
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: tag['selected'] ?? false
+                                          ? primaryColor
+                                          : themeProvider.isDarkThemeEnabled
+                                              ? darkBackgroundColor
+                                              : Colors.transparent,
+                                      border: Border.all(
+                                        color: tag['selected'] ?? false
                                             ? Colors.transparent
-                                            : const Color.fromARGB(
-                                                255, 193, 192, 192),
-                                  ),
-                                ),
-                                child: CustomText(tag['name'],
-                                    type: FontStyle.title,
-                                    color: themeProvider.isDarkThemeEnabled &&
-                                            (tag['selected'] ?? false)
-                                        ? Colors.white
-                                        : themeProvider.isDarkThemeEnabled &&
-                                                !(tag['selected'] ?? false)
+                                            : themeProvider.isDarkThemeEnabled
+                                                ? Colors.transparent
+                                                : const Color.fromARGB(
+                                                    255, 193, 192, 192),
+                                      ),
+                                    ),
+                                    child: CustomText(tag['name'],
+                                        type: FontStyle.title,
+                                        color: themeProvider
+                                                    .isDarkThemeEnabled &&
+                                                (tag['selected'] ?? false)
                                             ? Colors.white
-                                            : !themeProvider
+                                            : themeProvider
                                                         .isDarkThemeEnabled &&
-                                                    (tag['selected'] ?? false)
+                                                    !(tag['selected'] ?? false)
                                                 ? Colors.white
                                                 : !themeProvider
                                                             .isDarkThemeEnabled &&
-                                                        !(tag['selected'] ??
+                                                        (tag['selected'] ??
                                                             false)
-                                                    ? Colors.black
-                                                    : Colors.black),
-                              ),
-                            ))
+                                                    ? Colors.white
+                                                    : !themeProvider
+                                                                .isDarkThemeEnabled &&
+                                                            !(tag['selected'] ??
+                                                                false)
+                                                        ? Colors.black
+                                                        : Colors.black),
+                                  ),
+                                ))
                       .toList()),
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 30),
@@ -560,19 +615,22 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     }
 
                     DisplayProperties properties = DisplayProperties(
-                        estimate:
-                            projectProvider.currentProject['estimate'] == null
-                                ? false
-                                : displayProperties[9]['selected'],
-                        assignee: displayProperties[0]['selected'],
-                        dueDate: displayProperties[2]['selected'],
-                        id: displayProperties[1]['selected'],
-                        label: displayProperties[3]['selected'],
-                        state: displayProperties[5]['selected'],
-                        subIsseCount: displayProperties[6]['selected'],
-                        linkCount: displayProperties[8]['selected'],
-                        attachmentCount: displayProperties[7]['selected'],
-                        priority: displayProperties[4]['selected']);
+                      estimate:
+                          projectProvider.currentProject['estimate'] == null
+                              ? false
+                              : displayProperties[9]['selected'],
+                      assignee: displayProperties[0]['selected'],
+                      dueDate: displayProperties[2]['selected'],
+                      id: displayProperties[1]['selected'],
+                      label: displayProperties[3]['selected'],
+                      state: displayProperties[5]['selected'],
+                      subIsseCount: displayProperties[6]['selected'],
+                      linkCount: displayProperties[8]['selected'],
+                      attachmentCount: displayProperties[7]['selected'],
+                      priority: displayProperties[4]['selected'],
+                      createdOn: displayProperties[10]['selected'],
+                      updatedOn: displayProperties[11]['selected'],
+                    );
 
                     if (widget.issueCategory == IssueCategory.cycleIssues) {
                       issueProvider.updateIssueProperties(
@@ -588,6 +646,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueCategory: widget.issueCategory,
                       );
                       modulesProvider.issues.displayProperties = properties;
+
                       modulesProvider.showEmptyStates = showEmptyStates;
                     } else {
                       issueProvider.updateIssueProperties(
@@ -597,9 +656,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       issueProvider.issues.displayProperties = properties;
                       issueProvider.showEmptyStates = showEmptyStates;
                     }
-                    if (widget.issueCategory == IssueCategory.issues) {
-                      issueProvider.updateProjectView();
-                    }
+                    // if (widget.issueCategory == IssueCategory.issues) {
+                    issueProvider.updateProjectView();
+                    // }
 
                     log(displayProperties.toString());
 

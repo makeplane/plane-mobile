@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
-import 'package:plane_startup/bottom_sheets/views_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
@@ -24,123 +23,6 @@ class CalendarView extends ConsumerStatefulWidget {
 }
 
 class _CalendarViewState extends ConsumerState<CalendarView> {
-  // @override
-  // Widget build(BuildContext context) {
-  //   var themeProvider = ref.read(ProviderList.themeProvider);
-  //   return Scaffold(
-  //       body: SizedBox(
-  //     height: MediaQuery.of(context).size.height * 0.65,
-  //     child: TableCalendar(
-  //       firstDay: DateTime(2022),
-  //       lastDay: DateTime(2025),
-  //       focusedDay: DateTime.now(),
-  //       calendarFormat: CalendarFormat.month,
-  //       selectedDayPredicate: (day) {
-  //         return isSameDay(day, DateTime.now());
-  //       },
-  //       headerStyle: HeaderStyle(
-  //           formatButtonVisible: false,
-  //           titleCentered: true,
-  //           leftChevronIcon: Icon(
-  //             Icons.keyboard_arrow_left,
-  //             color: themeProvider.isDarkThemeEnabled
-  //                 ? lightGreeyColor
-  //                 : Colors.black,
-  //           ),
-  //           rightChevronIcon: Icon(
-  //             Icons.keyboard_arrow_right,
-  //             color: themeProvider.isDarkThemeEnabled
-  //                 ? lightGreeyColor
-  //                 : Colors.black,
-  //           ),
-  //           titleTextStyle: TextStyle(
-  //             color: themeProvider.isDarkThemeEnabled
-  //                 ? lightGreeyColor
-  //                 : Colors.black,
-  //             fontSize: 18,
-  //           )),
-  //       calendarStyle: CalendarStyle(
-  //           weekendTextStyle: TextStyle(
-  //             color: themeProvider.isDarkThemeEnabled
-  //                 ? lightGreeyColor.withOpacity(0.7)
-  //                 : Colors.black,
-  //           ),
-  //           defaultTextStyle: TextStyle(
-  //             color: themeProvider.isDarkThemeEnabled
-  //                 ? lightGreeyColor
-  //                 : Colors.black,
-  //           )),
-  //       eventLoader: (day) {
-  //         return ref
-  //             .read(ProviderList.issuesProvider)
-  //             .issuesList
-  //             .where((element) {
-  //           if (element['target_date'] == null) return false;
-  //           return DateFormat("MMM d, yyyy")
-  //                   .format(DateTime.parse(element['target_date'])) ==
-  //               DateFormat("MMM d, yyyy").format(day);
-  //         }).toList();
-  //       },
-  //       onDaySelected: (selectedDay, focusedDay) {
-  //         Navigator.of(context).push(
-  //           MaterialPageRoute(
-  //             builder: (context) => DayDetail(
-  //               selectedDay: selectedDay,
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //       calendarBuilders: CalendarBuilders(
-  //         selectedBuilder: (context, day, focusedDay) {
-  //           return Center(
-  //             child: Container(
-  //               decoration: BoxDecoration(
-  //                 color: primaryColor,
-  //                 borderRadius: BorderRadius.circular(20),
-  //               ),
-  //               height: 30,
-  //               width: 30,
-  //               child: Center(
-  //                 child: Text(
-  //                   day.day.toString(),
-  //                   style: const TextStyle(color: Colors.white),
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //         markerBuilder: (context, day, events) {
-  //           if (events.isNotEmpty) {
-  //             return Positioned(
-  //               // bottom: -2,
-  //               bottom: 2,
-  //               child: Container(
-  //                 decoration: BoxDecoration(
-  //                   // color: greyColor,
-  //                   color: primaryColor,
-  //                   borderRadius: BorderRadius.circular(15),
-  //                 ),
-  //                 width: 8,
-  //                 height: 8,
-  //                 // child: Center(
-  //                 //   child: Text(
-  //                 //     events.length.toString(),
-  //                 //     // textAlign: TextAlign.center,
-  //                 //     style: const TextStyle(
-  //                 //       color: Colors.white,
-  //                 //       fontSize: 12,
-  //                 //     ),
-  //                 //   ),
-  //                 // ),
-  //               ),
-  //             );
-  //           }
-  //           return Container();
-  //         },
-  //       ),
-  //     ),
-  //   ));
-
   final List<String> months = [
     'January',
     'February',
@@ -198,15 +80,6 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
       }
     });
     getDates(DateTime(DateTime.now().year), true);
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-
-    //   _pageController.animateTo(
-    //     6 * 312,
-    //     duration: const Duration(milliseconds: 100),
-    //     curve: Curves.easeInOut,
-    //   );
-    // });
   }
 
   @override
@@ -388,16 +261,6 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                             ),
                             width: 8,
                             height: 8,
-                            // child: Center(
-                            //   child: Text(
-                            //     events.length.toString(),
-                            //     // textAlign: TextAlign.center,
-                            //     style: const TextStyle(
-                            //       color: Colors.white,
-                            //       fontSize: 12,
-                            //     ),
-                            //   ),
-                            // ),
                           ),
                         );
                       }
@@ -444,19 +307,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
             .read(ProviderList.projectProvider)
             .currentProject['name']
             .toString(),
-
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   icon: Icon(
-        //     Icons.arrow_back_ios,
-        //     size: 22,
-        //     color: themeProvider.isDarkThemeEnabled
-        //         ? lightGreeyColor
-        //         : Colors.black,
-        //   ),
-        // ),
         actions: [
           //dropdown to show full moth calendar
           TextButton(
@@ -562,16 +412,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                               ),
                               width: 8,
                               height: 8,
-                              // child: Center(
-                              //   child: Text(
-                              //     events.length.toString(),
-                              //     // textAlign: TextAlign.center,
-                              //     style: const TextStyle(
-                              //       color: Colors.white,
-                              //       fontSize: 12,
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                           );
                         }
@@ -641,10 +481,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               ),
             ),
           ),
-          // Divider(
-          //   color:
-          //       themeProvider.isDarkThemeEnabled ? darkThemeBorder : greyColor,
-          // ),
           const SizedBox(
             height: 10,
           ),
@@ -822,6 +658,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     ? Expanded(
                         child: InkWell(
                           onTap: () {
+                            issuesProvider.createIssuedata = {
+                              'due_date': (widget.selectedDay),
+                            };
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const CreateIssue(),
@@ -895,45 +734,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                   width: 0.5,
                   color: greyColor,
                 ),
-                // Expanded(
-                //     child: InkWell(
-                //   onTap: () {
-                //     showModalBottomSheet(
-                //         isScrollControlled: true,
-                //         enableDrag: true,
-                //         constraints: BoxConstraints(
-                //             maxHeight:
-                //                 MediaQuery.of(context).size.height * 0.9),
-                //         shape: const RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.only(
-                //           topLeft: Radius.circular(30),
-                //           topRight: Radius.circular(30),
-                //         )),
-                //         context: context,
-                //         builder: (ctx) {
-                //           return const ViewsSheet(
-                //             issueCategory: IssueCategory.issues,
-                //           );
-                //         });
-                //   },
-                //   child: const SizedBox.expand(
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Icon(
-                //           Icons.view_sidebar,
-                //           color: Colors.white,
-                //           size: 19,
-                //         ),
-                //         CustomText(
-                //           ' Views',
-                //           type: FontStyle.subtitle,
-                //           color: Colors.white,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // )),
                 Container(
                   height: 50,
                   width: 0.5,
@@ -955,7 +755,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         )),
                         context: context,
                         builder: (ctx) {
-                          return  FilterSheet(
+                          return FilterSheet(
                             issueCategory: IssueCategory.issues,
                           );
                         });

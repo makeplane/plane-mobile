@@ -66,6 +66,7 @@ class IssueProvider with ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       issueDetails = response.data;
+      //log(issueDetails.toString());
       issuesProvider.blockingIssuesIds.clear();
       issuesProvider.blockedByIssuesIds.clear();
       issuesProvider.blockedByIssues.clear();
@@ -146,7 +147,6 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID,
       required Map data,
-      required int index,
       required WidgetRef refs,
       BuildContext? buildContext}) async {
     try {
@@ -168,8 +168,10 @@ class IssueProvider with ChangeNotifier {
             slug: slug,
           );
 
-      refs.watch(ProviderList.issuesProvider).issuesResponse[index] =
-          issueDetails;
+      refs.read(ProviderList.issuesProvider).issuesResponse[refs
+          .read(ProviderList.issuesProvider)
+          .issuesResponse
+          .indexWhere((element) => element["id"] == issueID)] = issueDetails;
 
       notifyListeners();
     } on DioException catch (e) {
@@ -224,8 +226,7 @@ class IssueProvider with ChangeNotifier {
       required String projectId,
       required String slug,
       required String issueId,
-      required int fileSize,
-      required int index}) async {
+      required int fileSize}) async {
     try {
       attachmentState = StateEnum.loading;
       notifyListeners();
@@ -268,8 +269,10 @@ class IssueProvider with ChangeNotifier {
       // );
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
-      ref.read(ProviderList.issuesProvider).issuesResponse[index] =
-          issueDetails;
+      ref.read(ProviderList.issuesProvider).issuesResponse[ref
+          .read(ProviderList.issuesProvider)
+          .issuesResponse
+          .indexWhere((element) => element["id"] == issueId)] = issueDetails;
       attachmentState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -277,9 +280,9 @@ class IssueProvider with ChangeNotifier {
       log(e.toString());
       ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
         SnackBar(
-          content: e.response!.data['detail'] != null ?
-          Text(e.response!.data['detail'].toString())
-          : Text(e.response.toString()),
+          content: e.response!.data['detail'] != null
+              ? Text(e.response!.data['detail'].toString())
+              : Text(e.response.toString()),
         ),
       );
       attachmentState = StateEnum.error;
@@ -291,7 +294,6 @@ class IssueProvider with ChangeNotifier {
       {required String projectId,
       required String slug,
       required String issueId,
-      required int index,
       required Map data,
       required CRUD method,
       required String linkId,
@@ -315,8 +317,10 @@ class IssueProvider with ChangeNotifier {
       addLinkState = StateEnum.success;
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
-      ref.read(ProviderList.issuesProvider).issuesResponse[index] =
-          issueDetails;
+      ref.read(ProviderList.issuesProvider).issuesResponse[ref
+          .read(ProviderList.issuesProvider)
+          .issuesResponse
+          .indexWhere((element) => element["id"] == issueId)] = issueDetails;
       notifyListeners();
     } catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
@@ -341,7 +345,6 @@ class IssueProvider with ChangeNotifier {
     required String projectId,
     required String slug,
     required String issueId,
-    required int index,
   }) async {
     getSubIssueState = StateEnum.loading;
     notifyListeners();
@@ -422,7 +425,6 @@ class IssueProvider with ChangeNotifier {
     required String projectId,
     required String slug,
     required String issueId,
-    required int index,
     required Map data,
   }) async {
     try {
@@ -438,7 +440,10 @@ class IssueProvider with ChangeNotifier {
           httpMethod: HttpMethod.post,
           data: data);
       getSubIssues(
-          projectId: projectId, slug: slug, issueId: issueId, index: index);
+        projectId: projectId,
+        slug: slug,
+        issueId: issueId,
+      );
       notifyListeners();
     } catch (e) {
       if (e is DioException) {

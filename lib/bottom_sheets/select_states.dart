@@ -12,9 +12,9 @@ import 'package:plane_startup/widgets/custom_text.dart';
 class SelectStates extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
-  final int? index;
+
   const SelectStates(
-      {this.index, required this.createIssue, this.issueId, super.key});
+      { required this.createIssue, this.issueId, super.key});
 
   @override
   ConsumerState<SelectStates> createState() => _SelectStatesState();
@@ -145,7 +145,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                           .currentProject['id'],
                                       issueID: widget.issueId!,
                                       refs: ref,
-                                      index: widget.index!,
+                                      
                                       data: {
                                         'state':
                                             '${issuesProvider.states[issuesProvider.states.keys.elementAt(i)]['id']}'

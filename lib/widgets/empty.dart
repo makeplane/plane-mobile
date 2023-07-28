@@ -168,7 +168,7 @@ class EmptyPlaceholder {
                         issueId: '',
                         createIssue: false,
                         // blocking: true,
-                        index: -1,
+                        
                       ),
                     );
                   },
@@ -710,7 +710,7 @@ class EmptyPlaceholder {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           SvgPicture.asset(
-            "assets/svg_images/lables_empty.svg",
+            "assets/svg_images/labels_empty.svg",
             width: 130,
           ),
           Container(

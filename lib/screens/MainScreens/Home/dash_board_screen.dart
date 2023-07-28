@@ -77,7 +77,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
           children: [
-            headerWidget(),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: headerWidget()),
             const SizedBox(
               height: 20,
             ),
@@ -114,31 +116,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     ],
                   ),
                 ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      //padding: const EdgeInsets.all(0),
-                      onTap: () async {
-                        await themeProvider.changeTheme();
-                      },
-                      child: Icon(
-                        size: 20,
-                        !themeProvider.isDarkThemeEnabled
-                            ? Icons.brightness_2_outlined
-                            : Icons.wb_sunny_outlined,
-                        color: !themeProvider.isDarkThemeEnabled
-                            ? Colors.black
-                            : Colors.white,
-                      ),
-                    ),
-                    // const SizedBox(
-                    //   width: 10,
-                    // ),
-                  ],
-                ),
+              
               ],
             ),
             const SizedBox(
@@ -372,6 +350,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
+width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         border: Border(
@@ -384,107 +363,112 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    constraints: BoxConstraints(
-                        minHeight: height * 0.5,
-                        maxHeight: MediaQuery.of(context).size.height * 0.8),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return const SelectWorkspace();
-                    },
-                  );
-                },
-                child: workspaceProvider.selectedWorkspace == null
-                    ? Container()
-                    : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
-                        ? CachedNetworkImage(
-                            height: 35,
-                            width: 35,
-                            fit: BoxFit.fill,
-                            imageUrl: workspaceProvider
-                                .selectedWorkspace!.workspaceLogo,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: primaryColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              child: Center(
-                                child: CustomText(
-                                  workspaceProvider
-                                      .selectedWorkspace!.workspaceName[0]
-                                      .toUpperCase(),
-                                  type: FontStyle.buttonText,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: primaryColor,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: Center(
-                              child: CustomText(
-                                workspaceProvider
-                                    .selectedWorkspace!.workspaceName[0]
-                                    .toUpperCase(),
-                                type: FontStyle.buttonText,
-                              ),
-                            ),
-                          ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              CustomText(
-                workspaceProvider.selectedWorkspace!.workspaceName,
-                type: FontStyle.subheading,
-              )
-            ],
-          ),
-          InkWell(
+          GestureDetector(
             onTap: () {
               showModalBottomSheet(
                 isScrollControlled: true,
-                enableDrag: false,
+                enableDrag: true,
+                constraints: BoxConstraints(
+                    minHeight: height * 0.5,
+                    maxHeight: MediaQuery.of(context).size.height * 0.8),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
                 context: context,
-                builder: (context) {
-                  return const GlobalSearchSheet();
+                builder: (ctx) {
+                  return const SelectWorkspace();
                 },
               );
             },
-            child: Icon(
-              Icons.search,
-              color: !themeProvider.isDarkThemeEnabled
-                  ? Colors.black
-                  : Colors.white,
+            child: workspaceProvider.selectedWorkspace == null
+                ? Container()
+                : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
+                    ? CachedNetworkImage(
+                        height: 35,
+                        width: 35,
+                        fit: BoxFit.fill,
+                        imageUrl: workspaceProvider
+                            .selectedWorkspace!.workspaceLogo,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: primaryColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          child: Center(
+                            child: CustomText(
+                              workspaceProvider
+                                  .selectedWorkspace!.workspaceName[0]
+                                  .toUpperCase(),
+                              type: FontStyle.buttonText,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: primaryColor,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        child: Center(
+                          child: CustomText(
+                            workspaceProvider
+                                .selectedWorkspace!.workspaceName[0]
+                                .toUpperCase(),
+                            type: FontStyle.buttonText,
+                          ),
+                        ),
+                      ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          CustomText(
+            workspaceProvider.selectedWorkspace!.workspaceName,
+            type: FontStyle.subheading,
+          ),
+           const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+             
+                GestureDetector(
+                  //padding: const EdgeInsets.all(0),
+                  onTap: () async {
+                    await themeProvider.changeTheme();
+                  },
+                  child: Icon(
+                    size: 20,
+                    !themeProvider.isDarkThemeEnabled
+                        ? Icons.brightness_2_outlined
+                        : Icons.wb_sunny_outlined,
+                    color: !themeProvider.isDarkThemeEnabled
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+                // const SizedBox(
+                //   width: 10,
+                // ),
+              ],
             ),
-          )
+       
         ],
       ),
     );

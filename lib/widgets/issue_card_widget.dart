@@ -54,7 +54,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ['project_detail']['identifier'] +
                             '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'
                         : '',
-                    index: widget.cardIndex)));
+                    )));
       },
       child: Container(
         margin: ref.watch(ProviderList.issuesProvider).issues.projectView ==

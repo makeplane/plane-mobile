@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Activity extends ConsumerStatefulWidget {
   const Activity({super.key});
@@ -97,21 +100,92 @@ class _ActivityState extends ConsumerState<Activity> {
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              SizedBox(
-                                                width: width * 0.7,
+                                              Container(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width -
+                                                        80,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    CustomText(
-                                                      activityProvider
-                                                              .data[index]
-                                                          ['comment'],
-                                                      fontSize: 14,
-                                                      type:
-                                                          FontStyle.description,
-                                                      textAlign: TextAlign.left,
-                                                      maxLines: 4,
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        if (activityProvider
+                                                            .data[index]
+                                                                ["comment"]
+                                                            .toString()
+                                                            .contains(
+                                                                "created the issue")) {
+                                                          Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                  builder: (_) =>
+                                                                      IssueDetail(
+                                                                        projID: activityProvider.data[index]
+                                                                            [
+                                                                            "project"],
+                                                                        workspaceSlug:
+                                                                            activityProvider.data[index]["workspace_detail"]["slug"],
+                                                                        appBarTitle:
+                                                                            '',
+                                                                        issueId:
+                                                                            activityProvider.data[index]["issue"],
+                                                                      )));
+                                                        } else if (activityProvider
+                                                            .data[index]
+                                                                ["comment"]
+                                                            .toString()
+                                                            .contains(
+                                                                "created a link")) {
+                                                          if (!await launchUrl(
+                                                              Uri.parse(activityProvider
+                                                            .data[index]
+                                                                ["new_value"].toString()))) {
+                                                             // ignore: use_build_context_synchronously
+                                                             CustomToast().showToast(context, 'Failed to launch');
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Wrap(
+                                                        children: [
+                                                          CustomText(
+                                                            activityProvider
+                                                                    .data[index]
+                                                                ['comment'],
+                                                            fontSize: 14,
+                                                            type: FontStyle
+                                                                .description,
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            maxLines: 4,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          activityProvider.data[
+                                                                          index]
+                                                                          [
+                                                                          "comment"]
+                                                                      .toString()
+                                                                      .contains(
+                                                                          "created the issue") ||
+                                                                  activityProvider
+                                                                      .data[
+                                                                          index]
+                                                                          [
+                                                                          "comment"]
+                                                                      .toString()
+                                                                      .contains(
+                                                                          "created a link")
+                                                              ? SvgPicture
+                                                                  .asset(
+                                                                  "assets/svg_images/redirect.svg",
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                )
+                                                              : Container()
+                                                        ],
+                                                      ),
                                                     ),
                                                     const SizedBox(height: 6),
                                                     CustomText(
@@ -223,17 +297,86 @@ class _ActivityState extends ConsumerState<Activity> {
                                               width: 10,
                                             ),
                                             SizedBox(
-                                              width: width * 0.7,
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width -
+                                                  80,
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  CustomText(
-                                                    '${activityFormat(activityProvider.data[index])} ',
-                                                    fontSize: 14,
-                                                    type: FontStyle.description,
-                                                    textAlign: TextAlign.left,
-                                                    maxLines: 4,
+                                                  GestureDetector(
+                                                    onTap: () async{
+                                                      if (activityProvider
+                                                          .data[index]
+                                                              ["comment"]
+                                                          .toString()
+                                                          .contains(
+                                                              "created the issue")) {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    IssueDetail(
+                                                                      projID: activityProvider
+                                                                              .data[index]
+                                                                          [
+                                                                          "project"],
+                                                                      workspaceSlug:
+                                                                          activityProvider.data[index]["workspace_detail"]
+                                                                              [
+                                                                              "slug"],
+                                                                      appBarTitle:
+                                                                          '',
+                                                                      issueId: activityProvider
+                                                                              .data[index]
+                                                                          [
+                                                                          "issue"],
+                                                                    )));
+                                                      } else if (activityProvider
+                                                          .data[index]
+                                                              ["comment"]
+                                                          .toString()
+                                                          .contains(
+                                                              "created a link")) { if (!await launchUrl(
+                                                              Uri.parse(activityProvider
+                                                            .data[index]
+                                                                ["new_value"].toString()),)) {
+                                                             // ignore: use_build_context_synchronously
+                                                             CustomToast().showToast(context, 'Failed to launch');
+                                                          }}
+                                                    },
+                                                    child: Wrap(
+                                                      children: [
+                                                        CustomText(
+                                                          '${activityFormat(activityProvider.data[index])} ',
+                                                          fontSize: 14,
+                                                          type: FontStyle
+                                                              .description,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          maxLines: 4,
+                                                        ),
+                                                        activityProvider
+                                                                    .data[index]
+                                                                        [
+                                                                        "comment"]
+                                                                    .toString()
+                                                                    .contains(
+                                                                        "created the issue") ||
+                                                                activityProvider
+                                                                    .data[index]
+                                                                        [
+                                                                        "comment"]
+                                                                    .toString()
+                                                                    .contains(
+                                                                        "created a link")
+                                                            ? SvgPicture.asset(
+                                                                "assets/svg_images/redirect.svg",
+                                                                height: 15,
+                                                                width: 15,
+                                                              )
+                                                            : Container()
+                                                      ],
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 6),
                                                   CustomText(

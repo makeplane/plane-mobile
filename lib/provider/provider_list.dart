@@ -9,6 +9,7 @@ import 'package:plane_startup/provider/file_upload_provider.dart';
 import 'package:plane_startup/provider/global_search_provider.dart';
 import 'package:plane_startup/provider/issue_provider.dart';
 import 'package:plane_startup/provider/my_issues_provider.dart';
+import 'package:plane_startup/provider/page_provider.dart';
 import 'package:plane_startup/provider/profile_provider.dart';
 import 'package:plane_startup/provider/projects_provider.dart';
 import 'package:plane_startup/provider/search_issue_provider.dart';
@@ -52,14 +53,17 @@ class ProviderList {
       ChangeNotifierProvider<MyIssuesProvider>((_) => MyIssuesProvider());
   static var activityProvider =
       ChangeNotifierProvider<ActivityProvider>((_) => ActivityProvider());
-  static var dashboardProvider =
-      ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(ref));
-  static var integrationProvider =
-      ChangeNotifierProvider<IntegrationProvider>((ref) => IntegrationProvider(ref));
-static var viewsProvider =
-      StateNotifierProvider<ViewsNotifier,ViewsModel>((ref) => ViewsNotifier(ref));
+  static var dashboardProvider = ChangeNotifierProvider<DashBoardProvider>(
+      (ref) => DashBoardProvider(ref));
+  static var integrationProvider = ChangeNotifierProvider<IntegrationProvider>(
+      (ref) => IntegrationProvider(ref));
+  static var viewsProvider = StateNotifierProvider<ViewsNotifier, ViewsModel>(
+      (ref) => ViewsNotifier(ref));
   static var globalSearchProvider =
-      StateNotifierProvider<GlobalSearchProvider, SearchModal>((ref) => GlobalSearchProvider(ref));
+      StateNotifierProvider<GlobalSearchProvider, SearchModal>(
+          (ref) => GlobalSearchProvider(ref));
+  static var pageProvider =
+      ChangeNotifierProvider<PageProvider>((ref) => PageProvider());
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

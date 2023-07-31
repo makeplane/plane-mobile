@@ -45,7 +45,7 @@ class ProjectsProvider extends ChangeNotifier {
     {'title': 'Cycles', 'width': 60, 'show': true},
     {'title': 'Modules', 'width': 75, 'show': true},
     {'title': 'Views', 'width': 60, 'show': true},
-    // {'title': 'Pages', 'width': 50, 'show': true},
+    {'title': 'Pages', 'width': 50, 'show': true},
   ];
 
   void clear() {
@@ -76,6 +76,7 @@ class ProjectsProvider extends ChangeNotifier {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
     var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
+    var pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
@@ -94,7 +95,7 @@ class ProjectsProvider extends ChangeNotifier {
         );
     prov.getIssueProperties(issueCategory: IssueCategory.issues);
     prov.getProjectView().then((value) {
-         if (filters != null) {
+      if (filters != null) {
         prov.issues.filters = filters;
       }
       prov.filterIssues(
@@ -143,6 +144,11 @@ class ProjectsProvider extends ChangeNotifier {
         projectId: projectID,
         method: CRUD.read,
         query: 'draft');
+
+    pageProv.updatepageList(
+        slug: workspaceSlug,
+        projectId: projectID,
+       );
   }
 
   void changeCoverUrl({required String url}) {

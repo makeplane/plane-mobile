@@ -32,7 +32,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return AppBar(
       elevation: elevation ? 1 : 0,
-      shadowColor: strokeColor,
+      shadowColor: themeProvider.isDarkThemeEnabled?darkThemeBorder:strokeColor,
       leading: leading
           ? IconButton(
               onPressed: () {

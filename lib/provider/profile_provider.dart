@@ -8,7 +8,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
 
-
 class ProfileProvider extends ChangeNotifier {
   // ProfileProvider(ChangeNotifierProviderRef<ProfileProvider> re) {
   //   if (re.exists(ProviderList.profileProvider)) {
@@ -111,6 +110,7 @@ class ProfileProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   Future updateIsOnBoarded({required bool val}) async {
     try {
       await DioConfig().dioServe(
@@ -118,10 +118,7 @@ class ProfileProvider extends ChangeNotifier {
           url: APIs.isOnboarded,
           hasBody: true,
           httpMethod: HttpMethod.patch,
-          data: {
-            "is_onboarded": val
-      
-          });
+          data: {"is_onboarded": val});
       userProfile.isOnboarded = val;
     } on DioException catch (e) {
       log(e.error.toString());

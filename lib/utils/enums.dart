@@ -11,7 +11,7 @@ enum StateEnum {
   restricted,
   idle,
 }
-
+enum PageFilters { all, recent, favourites, createdByMe, createdByOthers }
 enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
 // enum Theme { light, dark }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+enum ToastType { defult, success, failure }
+
 class CustomToast {
   void showSimpleToast(String message) {
     Fluttertoast.showToast(
@@ -14,12 +16,17 @@ class CustomToast {
     );
   }
 
-  void showToast(BuildContext context, String message, {int duration = 2}) {
+  void showToast(BuildContext context, String message,
+      {int duration = 2, ToastType toastType = ToastType.defult}) {
     FToast fToast = FToast();
     fToast.init(context);
     Widget toast = Container(
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: toastType == ToastType.defult
+            ? Colors.black
+            : toastType == ToastType.success
+                ? Colors.green
+                : Colors.red,
         borderRadius: BorderRadius.circular(15),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20),

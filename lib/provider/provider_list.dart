@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/Authentication/google_sign_in.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/activity_provider.dart';
+import 'package:plane_startup/provider/analytics_provider.dart';
 import 'package:plane_startup/provider/auth_provider.dart';
+import 'package:plane_startup/provider/custom_analytics_provider.dart';
 import 'package:plane_startup/provider/cycles_provider.dart';
 import 'package:plane_startup/provider/dashboard_provider.dart';
 import 'package:plane_startup/provider/file_upload_provider.dart';
@@ -56,10 +58,14 @@ class ProviderList {
       ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(ref));
   static var integrationProvider =
       ChangeNotifierProvider<IntegrationProvider>((ref) => IntegrationProvider(ref));
-static var viewsProvider =
+  static var viewsProvider =
       StateNotifierProvider<ViewsNotifier,ViewsModel>((ref) => ViewsNotifier(ref));
   static var globalSearchProvider =
       StateNotifierProvider<GlobalSearchProvider, SearchModal>((ref) => GlobalSearchProvider(ref));
+  static var workspaceAnalyticsProvider =
+      StateNotifierProvider<AnalyticsProvider, AnalyticsModal>((ref) => AnalyticsProvider(ref));
+  static var workspaceCustomAnalyticsProvider =
+      StateNotifierProvider<WorkspaceCusomtAnalyticsProvider, CustomAnalyticsModal>((ref) => WorkspaceCusomtAnalyticsProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

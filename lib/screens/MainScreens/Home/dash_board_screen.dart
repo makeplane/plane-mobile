@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/MainScreens/Home/analytics_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
@@ -467,24 +468,47 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               )
             ],
           ),
-          InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                enableDrag: false,
-                context: context,
-                builder: (context) {
-                  return const GlobalSearchSheet();
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AnalyticsScreen(),
+                    ),
+                  );
                 },
-              );
-            },
-            child: Icon(
-              Icons.search,
-              color: !themeProvider.isDarkThemeEnabled
-                  ? Colors.black
-                  : Colors.white,
-            ),
-          )
+                child: Icon(
+                  Icons.analytics_outlined,
+                  color: !themeProvider.isDarkThemeEnabled
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: false,
+                    context: context,
+                    builder: (context) {
+                      return const GlobalSearchSheet();
+                    },
+                  );
+                },
+                child: Icon(
+                  Icons.search,
+                  color: !themeProvider.isDarkThemeEnabled
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );

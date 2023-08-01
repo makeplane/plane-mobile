@@ -144,8 +144,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             : Colors.white,
 
         scaffoldBackgroundColor: themeProvider.isDarkThemeEnabled
-            ? const Color.fromRGBO(19, 20, 22, 1)
-            : Colors.white,
+            ? darkPrimaryBackgroundDefaultColor
+            : lightPrimaryBackgroundDefaultColor,
         //bottom sheet theme
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: themeProvider.isDarkThemeEnabled

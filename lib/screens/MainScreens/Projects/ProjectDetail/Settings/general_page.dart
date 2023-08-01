@@ -76,8 +76,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
         loading: projectProvider.updateProjectState == StateEnum.loading,
         widgetClass: Container(
           color: themeProvider.isDarkThemeEnabled
-              ? darkSecondaryBGC
-              : lightSecondaryBackgroundColor,
+              ? darkSecondaryBackgroundDefaultColor
+              : lightSecondaryBackgroundDefaultColor,
           padding: const EdgeInsets.only(
             left: 15,
             top: 20,
@@ -396,7 +396,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   LoadingWidget(
-                    loading: ref.watch(ProviderList.fileUploadProvider).fileUploadState == StateEnum.loading,
+                    loading: ref
+                            .watch(ProviderList.fileUploadProvider)
+                            .fileUploadState ==
+                        StateEnum.loading,
                     widgetClass: Stack(
                       children: [
                         Container(
@@ -436,7 +439,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                   ),
                                   context: context,
                                   builder: (ctx) {
-                                    return const SelectCoverImage(creatProject: false,);
+                                    return const SelectCoverImage(
+                                      creatProject: false,
+                                    );
                                   });
                               // var file = await ImagePicker.platform
                               //     .pickImage(source: ImageSource.gallery);
@@ -742,7 +747,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 'identifier': identifier.text,
                                 'network': isProjectPublic ? 2 : 0,
                                 'emoji': selectedEmoji,
-                                'cover_image': projectProvider.projectDetailModel!.coverImage
+                                'cover_image': projectProvider
+                                    .projectDetailModel!.coverImage
                               });
                         } else {
                           // ignore: use_build_context_synchronously
@@ -770,7 +776,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                               'identifier': identifier.text,
                               'network': isProjectPublic ? 2 : 0,
                               'emoji': selectedEmoji,
-                              'cover_image': projectProvider.projectDetailModel!.coverImage
+                              'cover_image':
+                                  projectProvider.projectDetailModel!.coverImage
                             });
                       }
                       // await projectProvider.updateProject(

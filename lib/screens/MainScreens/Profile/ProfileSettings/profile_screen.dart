@@ -179,8 +179,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     return Material(
       color: themeProvider.isDarkThemeEnabled
-          ? darkBackgroundColor
-          : lightBackgroundColor,
+          ? darkPrimaryBackgroundDefaultColor
+          : lightPrimaryBackgroundDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
@@ -301,8 +301,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryBGC
-            : lightSecondaryBackgroundColor,
+            ? darkSecondaryBackgroundDefaultColor
+            : lightSecondaryBackgroundDefaultColor,
       ),
       padding: const EdgeInsets.all(15),
       child: Row(

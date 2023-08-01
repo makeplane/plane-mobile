@@ -27,6 +27,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
   @override
   Widget build(BuildContext context) {
     var notificationProvider = ref.watch(ProviderList.notificationProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {},
@@ -49,14 +50,19 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               //circle
               height: 30,
               width: 30,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: lightGreeyColor,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkSecondaryBackgroundSelectedColor
+                    : lightSecondaryBackgroundSelectedColor,
               ),
 
-              child: const Icon(
+              child: Icon(
                 Icons.refresh,
                 size: 20,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkPrimaryTextColor
+                    : lightPrimaryTextColor,
               ),
             ),
           ),
@@ -77,18 +83,23 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               //circle
               height: 30,
               width: 30,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: lightGreeyColor,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkSecondaryBackgroundSelectedColor
+                    : lightSecondaryBackgroundSelectedColor,
               ),
 
               child: Stack(
                 children: [
-                  const Center(
+                  Center(
                     child: Icon(
                       Icons.notifications_outlined,
                       // color: greyColor,
                       size: 20,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? darkPrimaryTextColor
+                          : lightPrimaryTextColor,
                     ),
                   ),
 
@@ -128,14 +139,19 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               //circle
               height: 30,
               width: 30,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: lightGreeyColor,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkSecondaryBackgroundSelectedColor
+                    : lightSecondaryBackgroundSelectedColor,
               ),
 
-              child: const Icon(
+              child: Icon(
                 Icons.access_time_outlined,
                 size: 20,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkPrimaryTextColor
+                    : lightPrimaryTextColor,
               ),
             ),
           ),
@@ -156,14 +172,19 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               //circle
               height: 30,
               width: 30,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: lightGreeyColor,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkSecondaryBackgroundSelectedColor
+                    : lightSecondaryBackgroundSelectedColor,
               ),
 
-              child: const Icon(
+              child: Icon(
                 Icons.archive_outlined,
                 size: 20,
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkPrimaryTextColor
+                    : lightPrimaryTextColor,
               ),
             ),
           ),

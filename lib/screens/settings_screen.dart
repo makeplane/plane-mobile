@@ -83,8 +83,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
           ),
           centerTitle: true,
           backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+              ? darkPrimaryBackgroundDefaultColor
+              : lightPrimaryBackgroundDefaultColor,
           title: CustomText(
             'Settings',
             type: FontStyle.appbarTitle,

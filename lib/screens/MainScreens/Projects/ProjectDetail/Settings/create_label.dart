@@ -83,7 +83,12 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            icon: const Icon(Icons.close),
+                            icon: Icon(
+                              Icons.close,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? lightSecondaryBackgroundColor
+                                  : darkSecondaryBGC,
+                            ),
                           )
                         ],
                       ),

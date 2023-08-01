@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:plane_startup/utils/constants.dart';
 
 enum ToastType { defult, success, failure }
 
@@ -10,8 +11,8 @@ class CustomToast {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 2,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: lightPrimaryBackgroundActiveColor,
+      textColor: darkPrimaryTextColor,
       fontSize: 16.0,
     );
   }
@@ -23,10 +24,10 @@ class CustomToast {
     Widget toast = Container(
       decoration: BoxDecoration(
         color: toastType == ToastType.defult
-            ? Colors.black
+            ? lightPrimaryBackgroundActiveColor
             : toastType == ToastType.success
-                ? Colors.green
-                : Colors.red,
+                ? lightTextSuccessColor
+                : lightPrimaryButtonDangerColor,
         borderRadius: BorderRadius.circular(15),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20),

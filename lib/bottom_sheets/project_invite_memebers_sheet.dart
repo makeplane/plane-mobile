@@ -76,7 +76,12 @@ class _ProjectInviteMembersSheetState
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            child: const Icon(Icons.close),
+                            child: Icon(
+                              Icons.close,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? lightSecondaryBackgroundColor
+                                  : darkSecondaryBGC,
+                            ),
                           )
                         ],
                       ),

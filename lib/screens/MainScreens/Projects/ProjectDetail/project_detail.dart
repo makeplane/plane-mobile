@@ -703,8 +703,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                 .workspaceSlug)
         : Container(
             color: themeProvider.isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+                ? darkSecondaryBackgroundDefaultColor
+                : lightSecondaryBackgroundDefaultColor,
             padding: issueProvider.issues.projectView == ProjectView.kanban
                 ? const EdgeInsets.only(top: 15, left: 0)
                 : null,
@@ -724,8 +724,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                         : issueProvider.issues.projectView == ProjectView.list
                             ? Container(
                                 color: themeProvider.isDarkThemeEnabled
-                                    ? const Color.fromRGBO(29, 30, 32, 1)
-                                    : lightSecondaryBackgroundColor,
+                                    ? darkSecondaryBackgroundDefaultColor
+                                    : lightSecondaryBackgroundDefaultColor,
                                 margin: const EdgeInsets.only(top: 5),
                                 child: SingleChildScrollView(
                                   child: Column(
@@ -900,8 +900,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                         !issueProvider.showEmptyStates,
                                     backgroundColor: themeProvider
                                             .isDarkThemeEnabled
-                                        ? const Color.fromRGBO(29, 30, 32, 1)
-                                        : lightSecondaryBackgroundColor,
+                                        ? darkSecondaryBackgroundDefaultColor
+                                        : lightSecondaryBackgroundDefaultColor,
                                     listScrollConfig: ScrollConfig(
                                         offset: 65,
                                         duration:

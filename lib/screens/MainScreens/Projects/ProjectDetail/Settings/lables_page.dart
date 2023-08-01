@@ -39,8 +39,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
     return LoadingWidget(
       loading: issuesProvider.labelState == StateEnum.loading,
       widgetClass: Container(
-        color:
-            themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+        color: themeProvider.isDarkThemeEnabled
+            ? darkSecondaryBackgroundDefaultColor
+            : lightSecondaryBackgroundDefaultColor,
         child: issuesProvider.labels.isEmpty
             ? EmptyPlaceholder.emptyLabels(context)
             : ListView.builder(

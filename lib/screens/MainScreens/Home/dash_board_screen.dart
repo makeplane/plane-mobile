@@ -472,8 +472,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 },
                 child: CircleAvatar(
                   backgroundColor: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightGreeyColor,
+                      ? darkSecondaryBackgroundSelectedColor
+                      : lightSecondaryBackgroundSelectedColor,
                   radius: 20,
                   child: Icon(
                     size: 20,

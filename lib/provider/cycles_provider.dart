@@ -15,7 +15,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 
-
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
   Ref? ref;
@@ -114,19 +113,15 @@ class CyclesProvider with ChangeNotifier {
     required String query,
     Map<String, dynamic>? data,
   }) async {
-
-    if(query=='all'){
+    if (query == 'all') {
       allCyclesState = StateEnum.loading;
-    }else if(query=='current'){
+    } else if (query == 'current') {
       activeCyclesState = StateEnum.loading;
-    }
-    else if(query=='upcoming'){
+    } else if (query == 'upcoming') {
       upcomingCyclesState = StateEnum.loading;
-    }
-    else if(query=='completed'){
+    } else if (query == 'completed') {
       completedCyclesState = StateEnum.loading;
-    }
-    else if(query=='draft'){
+    } else if (query == 'draft') {
       draftCyclesState = StateEnum.loading;
     }
     var url = query == ''
@@ -428,8 +423,8 @@ class CyclesProvider with ChangeNotifier {
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
         backgroundColor:
             ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+                ? darkSecondaryBackgroundDefaultColor
+                : lightSecondaryBackgroundDefaultColor,
       ));
     }
 

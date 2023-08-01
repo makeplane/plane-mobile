@@ -14,16 +14,16 @@ const greenWithOpacity = Color.fromRGBO(9, 169, 83, 0.08);
 const greenHighLight = Color(0xFF09A953);
 const lightGreyBoxColor = Color(0xFFF5F5F5);
 
-const lightPrimaryTextColor = Colors.black;
-const lightSecondaryTextColor = Color.fromARGB(255, 97, 97, 97);
+// const lightPrimaryTextColor = Colors.black;
+// const lightSecondaryTextColor = Color.fromARGB(255, 97, 97, 97);
 const lightStrokeColor = Color.fromARGB(255, 158, 158, 158);
 const lightBackgroundColor = Colors.white;
 const lightSecondaryBackgroundColor = Color(0xFFFAFAFA);
 const bottomNavTextColor = Color(0xFF8F8F93);
 //Color(0xFFE5E5E5),
 
-const darkPrimaryTextColor = Colors.white;
-const darkSecondaryTextColor = Color.fromRGBO(142, 148, 146, 1);
+// const darkPrimaryTextColor = Colors.white;
+// const darkSecondaryTextColor = Color.fromRGBO(142, 148, 146, 1);
 const darkStrokeColor = Color.fromARGB(255, 189, 189, 189);
 const darkBackgroundColor = Color.fromRGBO(19, 20, 22, 1);
 const darkSecondaryBGC = Color.fromRGBO(29, 30, 32, 1);
@@ -31,6 +31,175 @@ const darkCircleAvatarColor = Color.fromRGBO(34, 34, 34, 1);
 const darkThemeBorder = Color.fromRGBO(39, 42, 45, 1);
 
 const textFieldFilledColor = Color(0xFFF5F5F5);
+
+const lightPrimaryBackgroundDefaultColor =
+    Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkPrimaryBackgroundDefaultColor =
+    Color.fromRGBO(0, 0, 0, 1); // grey 1000
+const lightPrimaryBackgroundHoverColor =
+    Color.fromRGBO(245, 245, 245, 1); // grey 20
+const darkPrimaryBackgroundHoverColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightPrimaryBackgroundSelectedColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkPrimaryBackgroundSelectedColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightPrimaryBackgroundActiveColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const darkPrimaryBackgroundActiveColor =
+    Color.fromRGBO(13, 24, 51, 1); // blue 900
+const lightPrimaryBackgroundBrandColor =
+    Color.fromRGBO(63, 118, 255, 1); // blue 100
+const darkPrimaryBackgroundBrandColor =
+    Color.fromRGBO(63, 118, 255, 1); // blue 100
+const lightSecondaryBackgroundDefaultColor =
+    Color.fromRGBO(250, 250, 250, 1); // grey 10
+const darkSecondaryBackgroundDefaultColor =
+    Color.fromRGBO(13, 13, 13, 1); // grey 950
+const lightSecondaryBackgroundHoverColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkSecondaryBackgroundDeHoverColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightSecondaryBackgroundSelectedColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkSecondaryBackgroundSelectedColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightSecondaryBackgroundActiveColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const darkSecondaryBackgroundActiveColor =
+    Color.fromRGBO(13, 24, 51, 1); // blue 900
+const lightTertiaryBackgroundDefaultColor =
+    Color.fromRGBO(245, 245, 245, 1); // grey 20
+const darkTertiaryBackgroundDefaultColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightTertiaryBackgroundHoverColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkTertiaryBackgroundDeHoverColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightTertiaryBackgroundSelectedColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkTertiaryBackgroundSelectedColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+const lightTertiaryBackgroundActiveColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkTertiaryBackgroundActiveColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+// Text Color,
+const lightPrimaryTextColor = Color.fromRGBO(23, 23, 23, 1); // grey 900
+const darkPrimaryTextColor = Color.fromRGBO(229, 229, 229, 1); // grey 40
+const lightContrastPrimaryTextColor = Color.fromRGBO(13, 13, 13, 1); // grey 950
+const darkContrastPrimaryTextColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const lightSecondaryTextColor = Color.fromRGBO(58, 58, 58, 1); // grey 500
+const darkSecondaryTextColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const lightContrastSecondaryTextColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+const darkContrastSecondaryTextColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const lightTertiaryTextColor = Color.fromRGBO(82, 82, 82, 1); // grey 300
+const darkTertiaryTextColor = Color.fromRGBO(115, 115, 115, 1); // grey 100
+const lightContrastTertiaryTextColor =
+    Color.fromRGBO(58, 58, 58, 1); // grey 500
+const darkContrastTertiaryTextColor =
+    Color.fromRGBO(212, 212, 212, 1); // grey 50
+const lightPlaceholderTextColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkPlaceholderTextColor = Color.fromRGBO(82, 82, 82, 1); // grey 300
+const lightContrastPlaceholderTextColor =
+    Color.fromRGBO(115, 115, 115, 1); // grey 100
+const darkPContrastlaceholderTextColor =
+    Color.fromRGBO(115, 115, 115, 1); // grey 100
+const lightTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const lightContrastTextOnColorColor =
+    Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkContrastTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const lightTextOnColorDisabledColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkTextOnColorDisabledColor = Color.fromRGBO(38, 38, 38, 1); // grey 700
+const lightContrastTextOnColorDisabledColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkContrastTextOnColorDisabledColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+// const lightTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const darkTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const lightContrastTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const darkContrastTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+const lightTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const darkTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const lightContrastTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const darkContrastTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const lightTextWarningColor = Color.fromRGBO(254, 243, 199, 1); // warning 100
+const darkTextWarningColor = Color.fromRGBO(254, 243, 199, 1); // warning 100
+const lightContrastTextWarningColor =
+    Color.fromRGBO(254, 243, 199, 1); // warning 100
+const darkContrastTextWarningColor =
+    Color.fromRGBO(254, 243, 199, 1); // warning 100
+const lightTextSuccessColor = Color.fromRGBO(220, 252, 231, 1); // success 100
+const darkTextSuccessColor = Color.fromRGBO(220, 252, 231, 1); // success 100
+const lightContrastTextSuccessColor =
+    Color.fromRGBO(220, 252, 231, 1); // success 100
+const darkContrastTextSuccessColor =
+    Color.fromRGBO(220, 252, 231, 1); // success 100
+const lightTextDisabledColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkTextDisabledColor = Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightContrastTextDisabledColor =
+    Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkContrastTextDisabledColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800 (edited)
+
+const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+const darkBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+const lightContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+const darkContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+
+const lightBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
+const darkBorderSubtleColor = Color.fromRGBO(34, 34, 34, 1);
+const lightContrastBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
+const darkContrastBorderSubtleColor = Color.fromRGBO(34, 34, 34, 1);
+
+const lightBorderStrongColor = Color.fromRGBO(212, 212, 212, 1);
+const darkBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
+const lightContrastBorderStrongColor = Color.fromRGBO(212, 212, 212, 1);
+const darkContrastBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
+
+const lightBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);
+const darkBorderDisabledColor = Color.fromRGBO(23, 23, 23, 1);
+const lightContrastBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);
+const darkContrastBorderDisabledColor = Color.fromRGBO(23, 23, 23, 1);
+
+const lightPrimaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const darkPrimaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const lightPrimaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const darkPrimaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const lightPrimaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+const darkPrimaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+
+const lightSecondaryButtonColor = Color.fromRGBO(236, 241, 255, 1);
+const darkSecondaryButtonColor = Color.fromRGBO(13, 24, 51, 1);
+const lightSecondaryButtonSelectedColor = Color.fromRGBO(197, 214, 255, 1);
+const darkSecondaryButtonSelectedColor = Color.fromRGBO(19, 35, 76, 1);
+const lightSecondaryButtonDisabledColor = Color.fromRGBO(236, 241, 255, 1);
+const darkSecondaryButtonDisabledColor = Color.fromRGBO(13, 24, 51, 1);
+
+const lightTertiaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const darkTertiaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const lightTertiaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const darkTertiaryButtonSelectedColor = Color.fromRGBO(13, 24, 51, 1);
+const lightTertiaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+const darkTertiaryButtonDisabledColor = Color.fromRGBO(25, 47, 102, 1);
+
+const lightPrimaryButtonDangerColor = Color.fromRGBO(239, 68, 68, 1);
+const darkPrimaryButtonDangerSelectedColor = Color.fromRGBO(220, 38, 38, 1);
+
+const lightPrimaryLinkColor = Color.fromRGBO(63, 118, 255, 1);
+const darkPrimaryLinkColor = Color.fromRGBO(63, 118, 255, 1);
+const lightSecondaryLinkColor = Color.fromRGBO(57, 106, 230, 1);
+const darkSecondaryLinkColor = Color.fromRGBO(57, 106, 230, 1);
+
+const lightPrimaryIconColor = Color.fromRGBO(38, 38, 38, 1);
+const darkPrimaryIconColor = Color.fromRGBO(163, 163, 163, 1);
+const lightSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
+const darkSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
 
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
@@ -1674,13 +1843,6 @@ const List icons = [
 //   {'skull': FaIcon(FontAwesomeIcons.skull)},
 // ];
 
-
-
- 
-
-
-  
-// ]; 
+// ];
 
 // //convert this list according to icon name present in FontAwesome Icons
-

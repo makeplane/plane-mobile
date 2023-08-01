@@ -32,7 +32,8 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return AppBar(
       elevation: elevation ? 1 : 0,
-      shadowColor: themeProvider.isDarkThemeEnabled?darkThemeBorder:strokeColor,
+      shadowColor:
+          themeProvider.isDarkThemeEnabled ? darkThemeBorder : strokeColor,
       leading: leading
           ? IconButton(
               onPressed: () {
@@ -50,8 +51,8 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       actions: actions,
       centerTitle: centerTitle ? true : false,
       backgroundColor: themeProvider.isDarkThemeEnabled
-          ? darkBackgroundColor
-          : lightBackgroundColor,
+          ? darkPrimaryBackgroundDefaultColor
+          : lightPrimaryBackgroundDefaultColor,
       title: CustomText(
         text,
         type: fontType,

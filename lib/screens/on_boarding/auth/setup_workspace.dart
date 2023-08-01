@@ -211,7 +211,9 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   return null;
                                 },
                                 decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'e.g. My Workspace', floatingLabelBehavior: FloatingLabelBehavior.never),
+                                    labelText: 'e.g. My Workspace',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never),
                               ),
                               const SizedBox(
                                 height: 20,
@@ -315,9 +317,10 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   decoration: BoxDecoration(
                                     color: Colors.transparent,
                                     border: Border.all(
-                                        color: themeProv.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : Colors.grey.shade300),
+                                      color: themeProv.isDarkThemeEnabled
+                                          ? darkThemeBorder
+                                          : const Color(0xFFE5E5E5),
+                                    ),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Row(

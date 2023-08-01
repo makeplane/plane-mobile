@@ -45,7 +45,9 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      color: themeProvider.isDarkThemeEnabled
+          ? darkSecondaryBackgroundDefaultColor
+          : lightSecondaryBackgroundDefaultColor,
       child: ListView.builder(
           padding: const EdgeInsets.only(top: 20),
           itemCount: cardData.length,
@@ -95,7 +97,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                         projectsProvider.features[index + 1]['show'] =
                             !projectsProvider.features[index + 1]['show'];
                         projectsProvider.setState();
-                       // print(projectsProvider.features[index + 1]);
+                        // print(projectsProvider.features[index + 1]);
                         // projectsProvider.updateProject(
                         //     slug: ref
                         //         .read(ProviderList.workspaceProvider)

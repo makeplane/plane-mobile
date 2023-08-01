@@ -210,8 +210,8 @@ class IssuesProvider extends ChangeNotifier {
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
         backgroundColor:
             ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+                ? darkSecondaryBackgroundDefaultColor
+                : lightSecondaryBackgroundDefaultColor,
       ));
     }
 
@@ -1212,7 +1212,6 @@ class IssuesProvider extends ChangeNotifier {
           groupByResponse = {};
 
           if (issues.filters.states.isNotEmpty) {
- 
             for (var element in issues.filters.states) {
               if (response.data[element] == null) {
                 groupByResponse[element] = [];

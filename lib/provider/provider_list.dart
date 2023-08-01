@@ -10,6 +10,7 @@ import 'package:plane_startup/provider/global_search_provider.dart';
 import 'package:plane_startup/provider/issue_provider.dart';
 import 'package:plane_startup/provider/my_issues_provider.dart';
 import 'package:plane_startup/provider/page_provider.dart';
+import 'package:plane_startup/provider/notification_provider.dart';
 import 'package:plane_startup/provider/profile_provider.dart';
 import 'package:plane_startup/provider/projects_provider.dart';
 import 'package:plane_startup/provider/search_issue_provider.dart';
@@ -64,6 +65,10 @@ class ProviderList {
           (ref) => GlobalSearchProvider(ref));
   static var pageProvider =
       ChangeNotifierProvider<PageProvider>((ref) => PageProvider());
+
+  static var notificationProvider =
+      ChangeNotifierProvider<NotificationProvider>(
+          (ref) => NotificationProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -77,9 +76,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: headerWidget()),
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: headerWidget()),
             const SizedBox(
               height: 20,
             ),
@@ -116,7 +115,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     ],
                   ),
                 ),
-              
               ],
             ),
             const SizedBox(
@@ -350,7 +348,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
-width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         border: Border(
@@ -389,8 +387,8 @@ width: MediaQuery.of(context).size.width,
                         height: 35,
                         width: 35,
                         fit: BoxFit.fill,
-                        imageUrl: workspaceProvider
-                            .selectedWorkspace!.workspaceLogo,
+                        imageUrl:
+                            workspaceProvider.selectedWorkspace!.workspaceLogo,
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
                         errorWidget: (context, url, error) => Container(
@@ -442,33 +440,31 @@ width: MediaQuery.of(context).size.width,
             workspaceProvider.selectedWorkspace!.workspaceName,
             type: FontStyle.subheading,
           ),
-           const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-             
-                GestureDetector(
-                  //padding: const EdgeInsets.all(0),
-                  onTap: () async {
-                    await themeProvider.changeTheme();
-                  },
-                  child: Icon(
-                    size: 20,
-                    !themeProvider.isDarkThemeEnabled
-                        ? Icons.brightness_2_outlined
-                        : Icons.wb_sunny_outlined,
-                    color: !themeProvider.isDarkThemeEnabled
-                        ? Colors.black
-                        : Colors.white,
-                  ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                //padding: const EdgeInsets.all(0),
+                onTap: () async {
+                  await themeProvider.changeTheme();
+                },
+                child: Icon(
+                  size: 20,
+                  !themeProvider.isDarkThemeEnabled
+                      ? Icons.brightness_2_outlined
+                      : Icons.wb_sunny_outlined,
+                  color: !themeProvider.isDarkThemeEnabled
+                      ? Colors.black
+                      : Colors.white,
                 ),
-                // const SizedBox(
-                //   width: 10,
-                // ),
-              ],
-            ),
-       
+              ),
+              // const SizedBox(
+              //   width: 10,
+              // ),
+            ],
+          ),
         ],
       ),
     );

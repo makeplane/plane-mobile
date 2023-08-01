@@ -12,7 +12,6 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
-
 class SelectWorkspace extends ConsumerStatefulWidget {
   const SelectWorkspace({super.key});
 
@@ -105,6 +104,31 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                   method: HttpMethod.get,
                                   projectID: "",
                                 );
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getUnreadCount();
+
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(type: 'assigned');
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(type: 'created');
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(type: 'watching');
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(
+                                    type: 'unread', getUnread: true);
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(
+                                    type: 'archived', getArchived: true);
+                            ref
+                                .read(ProviderList.notificationProvider)
+                                .getNotifications(
+                                    type: 'snoozed', getSnoozed: true);
                             ref
                                 .watch(ProviderList.myIssuesProvider)
                                 .getMyIssues(

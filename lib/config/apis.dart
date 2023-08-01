@@ -113,4 +113,6 @@ class APIs {
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/\$BLOCKID/";
   static String deletePage =
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/";
+  static String notifications =
+      "$baseApi/api/workspaces/\$SLUG/users/notifications/";
 }

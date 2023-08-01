@@ -17,6 +17,7 @@ class IssueProvider with ChangeNotifier {
   Ref ref;
   StateEnum issueDetailState = StateEnum.empty;
   StateEnum issueActivityState = StateEnum.empty;
+  StateEnum subscriptionState = StateEnum.empty;
 
   // set setUpdateIssueState(StateEnum value) {
   //   updateIssueState = value;
@@ -39,6 +40,7 @@ class IssueProvider with ChangeNotifier {
     issueActivityState = StateEnum.empty;
     updateIssueState = StateEnum.empty;
     attachmentState = StateEnum.empty;
+    subscriptionState = StateEnum.empty;
     //updateIssueState = StateEnum.empty;
     addLinkState = StateEnum.empty;
     getSubIssueState = StateEnum.empty;
@@ -139,6 +141,38 @@ class IssueProvider with ChangeNotifier {
       log(e.message.toString());
       issueActivityState = StateEnum.error;
       notifyListeners();
+    }
+  }
+
+  Future getSubscriptionStatus({
+    required String slug,
+    required String projID,
+    required String issueID,
+    required HttpMethod httpMethod,
+  }) async {
+    try {
+      subscriptionState = StateEnum.loading;
+      notifyListeners();
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url:
+            '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}subscribe/',
+        hasBody: false,
+        httpMethod: httpMethod,
+      );
+      log('SABI : getSubscriptionStatus ${response.data}');
+      issueDetails['subscribed'] = httpMethod == HttpMethod.get
+          ? response.data['subscribed']
+          : httpMethod == HttpMethod.post
+              ? true
+              : false;
+      subscriptionState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.message.toString());
+      subscriptionState = StateEnum.error;
+      notifyListeners();
+      return null;
     }
   }
 

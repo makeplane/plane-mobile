@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -53,25 +54,62 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                 // color: themeProvider.primaryTextColor,
                 type: FontStyle.mainHeading,
               ),
-              const SizedBox(width: 10),
-              workspaceProvider.role != Role.admin &&
-                      workspaceProvider.role != Role.member
-                  ? Container()
-                  : GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  workspaceProvider.role != Role.admin &&
+                          workspaceProvider.role != Role.member
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CreateProject(),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: themeProvider.isDarkThemeEnabled
+                                ? darkSecondaryBGC
+                                : lightGreeyColor,
+                            radius: 20,
+                            child: Icon(
+                              size: 20,
+                              Icons.add,
+                              color: !themeProvider.isDarkThemeEnabled
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                          ),
+                        ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CreateProject(),
-                          ),
-                        );
-                      },
-                      child: const CircleAvatar(
-                        radius: 11,
-                        backgroundColor: primaryColor,
-                        child: Icon(Icons.add, size: 20, color: Colors.white),
+                              builder: (context) => const GlobalSearchSheet()));
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: themeProvider.isDarkThemeEnabled
+                          ? darkSecondaryBGC
+                          : lightGreeyColor,
+                      radius: 20,
+                      child: Icon(
+                        size: 20,
+                        Icons.search,
+                        color: !themeProvider.isDarkThemeEnabled
+                            ? Colors.black
+                            : Colors.white,
                       ),
                     ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -342,11 +380,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                       height: 54,
                                       width: 54,
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color:themeProvider.isDarkThemeEnabled
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: themeProvider.isDarkThemeEnabled
                                             ? darkThemeBorder
-                                            : const Color(0xFFF5F5F5),),
+                                            : const Color(0xFFF5F5F5),
+                                      ),
                                       child: Center(
                                         child: Text(
                                           int.tryParse(projectProvider
@@ -426,9 +464,10 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                   ['created_at'])),
                                           // color: themeProvider.strokeColor,
                                           type: FontStyle.title,
-                                         color: themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : Colors.black,
+                                          color:
+                                              themeProvider.isDarkThemeEnabled
+                                                  ? darkSecondaryTextColor
+                                                  : Colors.black,
                                           // fontSize: 16,
                                         ),
                                       ],

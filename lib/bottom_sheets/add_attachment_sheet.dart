@@ -86,7 +86,6 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   return;
                 } else {
                   String? path = result.files.single.path;
-                  print('SABI : file size : ${result.files.single.size} ');
 
                   issueProvider.addIssueAttachment(
                       fileSize: result.files.single.size,

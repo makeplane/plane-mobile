@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
+import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-
-
+import 'package:plane_startup/widgets/loading_widget.dart';
 
 class CreatePage extends ConsumerWidget {
   const CreatePage({super.key});
@@ -14,6 +15,8 @@ class CreatePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var pageProvider = ref.watch(ProviderList.pageProvider);
+    TextEditingController pageTitleController = TextEditingController();
     return Scaffold(
       backgroundColor: themeProvider.isDarkThemeEnabled
           ? darkSecondaryBGC
@@ -25,70 +28,79 @@ class CreatePage extends ConsumerWidget {
         text: 'Create Page',
       ),
       body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //form conatining title and description
-                      const Row(
-                        children: [
-                          // Text(
-                          //   'Page Title',
-                          //   style: TextStyle(
-                          //     fontSize: 15,
-                          //     fontWeight: FontWeight.w400,
-                          //     color: themeProvider.secondaryTextColor,
-                          //   ),
-                          // ),
-                          CustomText(
-                            'Page Title',
-                            type: FontStyle.title,
-                            // color: themeProvider.secondaryTextColor,
-                          ),
-                          // const Text(
-                          //   ' *',
-                          //   style: TextStyle(
-                          //     fontSize: 15,
-                          //     fontWeight: FontWeight.w400,
-                          //     color: Colors.red,
-                          //   ),
-                          // ),
-                          CustomText(
-                            ' *',
-                            type: FontStyle.title,
-                            color: Colors.red,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      TextField(
-                        decoration: kTextFieldDecoration.copyWith(
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkBackgroundColor
-                              : lightBackgroundColor,
-                          filled: true,
+        return LoadingWidget(
+          loading: pageProvider.pagesListState == StateEnum.loading,
+          widgetClass: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //form conatining title and description
+                        const Row(
+                          children: [
+                            CustomText(
+                              'Page Title',
+                              type: FontStyle.title,
+                              // color: themeProvider.secondaryTextColor,
+                            ),
+                            CustomText(
+                              ' *',
+                              type: FontStyle.title,
+                              color: Colors.red,
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        TextField(
+                          controller: pageTitleController,
+                          decoration: kTextFieldDecoration.copyWith(
+                            fillColor: themeProvider.isDarkThemeEnabled
+                                ? darkBackgroundColor
+                                : lightBackgroundColor,
+                            filled: true,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                  child: Button(
-                    text: 'Create Page',
-                    ontap: () {},
-                    textColor: Colors.white,
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
+                    child: Button(
+                      text: 'Create Page',
+                      ontap: () async {
+                        if (pageTitleController.text.isEmpty ||
+                            pageTitleController.text.trim() == "") {
+                          CustomToast().showToast(context, 'Title is required');
+                          return;
+                        }
+                        await ref.read(ProviderList.pageProvider).addPage(
+                              userId: ref
+                                  .read(ProviderList.profileProvider)
+                                  .userProfile
+                                  .id!,
+                              pageTitle: pageTitleController.text,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject['id'],
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                            );
+                        Navigator.pop(context);
+                      },
+                      textColor: Colors.white,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

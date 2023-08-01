@@ -66,8 +66,8 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                       icon: Icon(
                         Icons.close,
                         color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryTextColor
-                            : Colors.black,
+                            ? lightSecondaryBackgroundColor
+                            : darkSecondaryBGC,
                       ))
                 ],
               ),

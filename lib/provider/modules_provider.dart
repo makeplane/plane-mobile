@@ -15,7 +15,6 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 
-
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
   Ref? ref;
@@ -500,8 +499,8 @@ class ModuleProvider with ChangeNotifier {
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
         backgroundColor:
             ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+                ? darkSecondaryBackgroundDefaultColor
+                : lightSecondaryBackgroundDefaultColor,
       ));
     }
 

@@ -46,14 +46,14 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             Const.globalKey.currentContext!,
             MaterialPageRoute(
                 builder: (context) => IssueDetail(
-                    issueId: provider.issuesResponse[widget.cardIndex]['id'],
-                    appBarTitle: provider.issuesResponse[widget.cardIndex]
-                                ['project_detail']['identifier'] !=
-                            null
-                        ? provider.issuesResponse[widget.cardIndex]
-                                ['project_detail']['identifier'] +
-                            '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'
-                        : '',
+                      issueId: provider.issuesResponse[widget.cardIndex]['id'],
+                      appBarTitle: provider.issuesResponse[widget.cardIndex]
+                                  ['project_detail']['identifier'] !=
+                              null
+                          ? provider.issuesResponse[widget.cardIndex]
+                                  ['project_detail']['identifier'] +
+                              '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'
+                          : '',
                     )));
       },
       child: Container(
@@ -64,7 +64,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         decoration: BoxDecoration(
           color: themeProvider.isDarkThemeEnabled
               ? darkBackgroundColor
-              : darkPrimaryTextColor,
+              : lightBackgroundColor,
           border: Border(
               bottom: BorderSide(
                   color: themeProvider.isDarkThemeEnabled

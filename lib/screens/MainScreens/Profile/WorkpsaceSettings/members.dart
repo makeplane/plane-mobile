@@ -12,7 +12,6 @@ import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
-
 class Members extends ConsumerStatefulWidget {
   final bool fromWorkspace;
   const Members({
@@ -106,8 +105,8 @@ class _MembersListWidgetState extends ConsumerState<MembersListWidget> {
       loading: projectsProvider.updateProjectMemberState == StateEnum.loading,
       widgetClass: Container(
           color: themeProvider.isDarkThemeEnabled
-              ? darkSecondaryBGC
-              : Colors.white,
+              ? darkSecondaryBackgroundDefaultColor
+              : lightSecondaryBackgroundDefaultColor,
           child: widget.fromWorkspace
               ? const WrokspaceMebersWidget()
               : const ProjectMembersWidget()),
@@ -354,11 +353,9 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                             ['member']['first_name'],
                         lastName: projectsProvider.projectMembers[index]
                             ['member']['last_name'],
-                        role:{
-                          "role": projectsProvider.projectMembers[index]
-                              ['role']
+                        role: {
+                          "role": projectsProvider.projectMembers[index]['role']
                         },
-                       
                         userId: projectsProvider.projectMembers[index]['id'],
                         isInviteMembers: false,
                       );
@@ -501,7 +498,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                   projectsProvider.projectMembers[index]['role']
                               ? Colors.white
                               : darkSecondaryTextColor
-                          : fromRole(role: projectsProvider.role)>=
+                          : fromRole(role: projectsProvider.role) >=
                                   projectsProvider.projectMembers[index]['role']
                               ? Colors.black
                               : greyColor,

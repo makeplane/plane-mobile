@@ -17,7 +17,9 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      color: themeProvider.isDarkThemeEnabled
+          ? darkSecondaryBackgroundDefaultColor
+          : lightSecondaryBackgroundDefaultColor,
       child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {

@@ -38,7 +38,9 @@ class _ControlPageState extends ConsumerState<ControlPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      color: themeProvider.isDarkThemeEnabled
+          ? darkSecondaryBackgroundDefaultColor
+          : lightSecondaryBackgroundDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

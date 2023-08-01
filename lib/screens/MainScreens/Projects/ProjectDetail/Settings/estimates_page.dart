@@ -37,8 +37,9 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
           estimatesProvider.estimateState == StateEnum.loading),
       widgetClass: Container(
         width: MediaQuery.of(context).size.width,
-        color:
-            themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+        color: themeProvider.isDarkThemeEnabled
+            ? darkSecondaryBackgroundDefaultColor
+            : lightSecondaryBackgroundDefaultColor,
         child: estimatesProvider.estimates.isEmpty
             ? const EmptyEstimatesWidget()
             : Column(
@@ -65,14 +66,16 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 7),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: themeProvider.isDarkThemeEnabled
+                            ? darkBackgroundColor
+                            : lightBackgroundColor,
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
                           color: Colors.grey.shade300,
                         ),
                       ),
                       child: const CustomText('Disable Estimate',
-                          color: Colors.black, type: FontStyle.subtitle),
+                          type: FontStyle.subtitle),
                     ),
                   ),
                   ListView.builder(

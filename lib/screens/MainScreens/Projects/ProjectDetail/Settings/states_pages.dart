@@ -36,7 +36,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      color: themeProvider.isDarkThemeEnabled
+          ? darkSecondaryBackgroundDefaultColor
+          : lightSecondaryBackgroundDefaultColor,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: states.length,
@@ -323,7 +325,12 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            icon: const Icon(Icons.close)),
+                            icon: Icon(
+                              Icons.close,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? lightSecondaryBackgroundColor
+                                  : darkSecondaryBGC,
+                            )),
                       ],
                     ),
                     Container(

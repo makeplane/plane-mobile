@@ -206,8 +206,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: AppBar(
           backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+              ? darkPrimaryBackgroundDefaultColor
+              : lightPrimaryBackgroundDefaultColor,
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
@@ -482,9 +482,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               ? Container(
                                                   color: themeProvider
                                                           .isDarkThemeEnabled
-                                                      ? const Color.fromRGBO(
-                                                          29, 30, 32, 1)
-                                                      : lightSecondaryBackgroundColor,
+                                                      ? darkSecondaryBackgroundDefaultColor
+                                                      : lightSecondaryBackgroundDefaultColor,
                                                   margin: const EdgeInsets.only(
                                                       top: 5),
                                                   child: SingleChildScrollView(
@@ -623,10 +622,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                 .showEmptyStates),
                                                         backgroundColor: themeProvider
                                                                 .isDarkThemeEnabled
-                                                            ? const Color
-                                                                    .fromRGBO(
-                                                                29, 30, 32, 1)
-                                                            : lightSecondaryBackgroundColor,
+                                                            ? darkSecondaryBackgroundDefaultColor
+                                                            : lightSecondaryBackgroundDefaultColor,
                                                         listScrollConfig: ScrollConfig(
                                                             offset: 65,
                                                             duration:
@@ -893,15 +890,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         widget.fromModule
                             ? Container(
                                 color: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
+                                    ? darkSecondaryBackgroundDefaultColor
+                                    : lightSecondaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(25),
                                 child: activeCycleDetails(fromModule: true),
                               )
                             : Container(
                                 color: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
+                                    ? darkSecondaryBackgroundDefaultColor
+                                    : lightSecondaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(25),
                                 child: activeCycleDetails(),
                               ),
@@ -1695,8 +1692,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                       }
                                     });
                                     pageController!.animateTo(0,
-                                        duration: const Duration(
-                                            milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.easeInOut);
                                     if (fromModule) {
                                       modulesProvider.changeTabIndex(0);

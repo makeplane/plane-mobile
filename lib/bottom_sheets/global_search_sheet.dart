@@ -70,133 +70,152 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     var globalSearchProviderRead =
         ref.read(ProviderList.globalSearchProvider.notifier);
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            child: Column(
-              children: [
-             
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            color: themeProvider.isDarkThemeEnabled
+                ? darkBackgroundColor
+                : lightBackgroundColor,
+            child: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: input,
-                        decoration: kTextFieldFilledDecoration.copyWith(
-                          label: const Text('Search for anything...'),
-                          filled: true,alignLabelWithHint: true,
-                    hintText: 'Search for anything...',
-                    hintStyle: TextStyle(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkStrokeColor
-                          : lightPrimaryTextColor,
-                    ),
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : textFieldFilledColor,
-                          prefixIcon:  const Icon(
-                              Icons.search,
-                              color: greyColor,
-                            
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? lightBackgroundColor
+                                : darkBackgroundColor,
                           ),
                         ),
-                        onChanged: (value) {
-                          ticker?.cancel();
-                          timer();
-                        },
-                      ),
-                    ),
-                   
-                    InkWell(
-                      onTap: () {
-                        input.clear();
-                        globalSearchProvider.data = null;
-                        globalSearchProviderRead.setState();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: const CustomText(
-                          'Cancel',
-                          type: FontStyle.description,
+                        Expanded(
+                          child: TextFormField(
+                            controller: input,
+                            decoration: kTextFieldFilledDecoration.copyWith(
+                              label: const Text('Search for anything...'),
+                              filled: true,
+                              alignLabelWithHint: true,
+                              hintText: 'Search for anything...',
+                              hintStyle: TextStyle(
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? darkStrokeColor
+                                    : lightPrimaryTextColor,
+                              ),
+                              fillColor: themeProvider.isDarkThemeEnabled
+                                  ? darkThemeBorder
+                                  : textFieldFilledColor,
+                              prefixIcon: const Icon(
+                                Icons.search,
+                                color: greyColor,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              ticker?.cancel();
+                              timer();
+                            },
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: ref
-                                  .watch(ProviderList.workspaceProvider)
-                                  .selectWorkspaceState ==
-                              StateEnum.loading ||
-                          ref
-                                  .watch(ProviderList.projectProvider)
-                                  .projectState ==
-                              StateEnum.loading
-                      ? Center(
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: LoadingIndicator(
-                              indicatorType: Indicator.lineSpinFadeLoader,
-                              colors: themeProvider.isDarkThemeEnabled
-                                  ? [Colors.white]
-                                  : [Colors.black],
-                              strokeWidth: 1.0,
-                              backgroundColor: Colors.transparent,
+                        InkWell(
+                          onTap: () {
+                            input.clear();
+                            globalSearchProvider.data = null;
+                            globalSearchProviderRead.setState();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: const CustomText(
+                              'Cancel',
+                              type: FontStyle.description,
                             ),
                           ),
                         )
-                      : ListView(
-                          children: [
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.workspaces.isNotEmpty
-                                ? workspaceListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.projects.isNotEmpty
-                                ? projectsListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.cycles.isNotEmpty
-                                ? cyclesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.modules.isNotEmpty
-                                ? modulesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.views.isNotEmpty
-                                ? viewsListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.pages.isNotEmpty
-                                ? pagesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.issues.isNotEmpty
-                                ? issuesList()
-                                : Container(),
-                            createWidget(),
-                            workspaceWidget(),
-                            helpWidget(),
-                          ],
-                        ),
-                )
-              ],
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                      child: ref
+                                      .watch(ProviderList.workspaceProvider)
+                                      .selectWorkspaceState ==
+                                  StateEnum.loading ||
+                              ref
+                                      .watch(ProviderList.projectProvider)
+                                      .projectState ==
+                                  StateEnum.loading
+                          ? Center(
+                              child: SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.lineSpinFadeLoader,
+                                  colors: themeProvider.isDarkThemeEnabled
+                                      ? [Colors.white]
+                                      : [Colors.black],
+                                  strokeWidth: 1.0,
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                            )
+                          : ListView(
+                              children: [
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.workspaces.isNotEmpty
+                                    ? workspaceListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.projects.isNotEmpty
+                                    ? projectsListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.cycles.isNotEmpty
+                                    ? cyclesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.modules.isNotEmpty
+                                    ? modulesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.views.isNotEmpty
+                                    ? viewsListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.pages.isNotEmpty
+                                    ? pagesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.issues.isNotEmpty
+                                    ? issuesList()
+                                    : Container(),
+                                createWidget(),
+                                workspaceWidget(),
+                                helpWidget(),
+                              ],
+                            ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),

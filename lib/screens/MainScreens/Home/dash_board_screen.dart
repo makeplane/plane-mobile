@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
+import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -76,7 +78,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
           children: [
-            SizedBox(
+            Container(
                 width: MediaQuery.of(context).size.width,
                 child: headerWidget()),
             const SizedBox(
@@ -460,9 +462,67 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       : Colors.white,
                 ),
               ),
-              // const SizedBox(
-              //   width: 10,
-              // ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SetupWorkspace()));
+                },
+                child: CircleAvatar(
+                  backgroundColor: themeProvider.isDarkThemeEnabled
+                      ? darkSecondaryBGC
+                      : lightGreeyColor,
+                  radius: 20,
+                  child: Icon(
+                    size: 20,
+                    Icons.add,
+                    color: !themeProvider.isDarkThemeEnabled
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {},
+                child: CircleAvatar(
+                  backgroundColor: themeProvider.isDarkThemeEnabled
+                      ? darkSecondaryBGC
+                      : lightGreeyColor,
+                  radius: 20,
+                  child: Icon(
+                    size: 20,
+                    Icons.bar_chart_rounded,
+                    color: !themeProvider.isDarkThemeEnabled
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GlobalSearchSheet()));
+                },
+                child: CircleAvatar(
+                  backgroundColor: themeProvider.isDarkThemeEnabled
+                      ? darkSecondaryBGC
+                      : lightGreeyColor,
+                  radius: 20,
+                  child: Icon(
+                    size: 20,
+                    Icons.search,
+                    color: !themeProvider.isDarkThemeEnabled
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         ],

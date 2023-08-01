@@ -96,6 +96,16 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               ref.read(ProviderList.projectProvider).currentProject['id'],
           issueID: widget.issueId);
 
+      await ref.read(ProviderList.issueProvider).getSubscriptionStatus(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          httpMethod: HttpMethod.get,
+          projID: widget.projID ??
+              ref.read(ProviderList.projectProvider).currentProject['id'],
+          issueID: widget.issueId);
+
       title.text = issueProvider.issueDetails['name'];
       description.text = issueProvider.issueDetails['description_stripped'];
       issueProvider.getSubIssues(
@@ -109,7 +119,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         issueId: widget.issueId,
       );
       widget.appBarTitle = issueProvider.issueDetails['project_detail']
-              ['identifier'] +"-"+
+              ['identifier'] +
+          "-" +
           issueProvider.issueDetails['sequence_id'].toString();
     });
   }
@@ -187,6 +198,66 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           Navigator.pop(context);
         },
         text: widget.appBarTitle,
+        actions: [
+          (ref.read(ProviderList.profileProvider).userProfile.id ==
+                      issueProvider.issueDetails['created_by'] ||
+                  issueProvider.issueDetailState == StateEnum.loading)
+              ? Container()
+              : InkWell(
+                  onTap: () {
+                    (issueProvider.subscriptionState == StateEnum.loading ||
+                            issueProvider.issueDetails['subscribed'] == null)
+                        ? null
+                        : ref
+                            .read(ProviderList.issueProvider)
+                            .getSubscriptionStatus(
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              httpMethod:
+                                  issueProvider.issueDetails['subscribed']
+                                      ? HttpMethod.delete
+                                      : HttpMethod.post,
+                              projID: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject['id'],
+                              issueID: widget.issueId,
+                            );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.all(5),
+                    //container with blue border and white background with a row as chld with blue bell icon and text
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: primaryColor,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.notifications,
+                          color: primaryColor,
+                        ),
+                        CustomText(
+                          (issueProvider.subscriptionState ==
+                                      StateEnum.loading ||
+                                  issueProvider.issueDetails['subscribed'] ==
+                                      null)
+                              ? 'Loading...'
+                              : issueProvider.issueDetails['subscribed']
+                                  ? 'Unsubscribe'
+                                  : 'Subscribe',
+                          type: FontStyle.text,
+                          color: primaryColor,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+        ],
       ),
       body:
           issueProvider.issueDetailState == StateEnum.loading ||

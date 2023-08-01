@@ -37,7 +37,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  flutter_local_notifications: ^15.1.0+1
   flutter_riverpod: ^2.3.6
+  flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.5
   fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.4.0
@@ -155,6 +157,8 @@ flutter:
     - assets/images/slack_logo.png
     - assets/svg_images/labels_empty.svg
     - assets/svg_images/arrow_forward.svg
+    - assets/svg_images/empty_notification.svg
+    - assets/svg_images/notification.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

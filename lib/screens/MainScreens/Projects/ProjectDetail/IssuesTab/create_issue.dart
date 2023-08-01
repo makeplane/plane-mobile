@@ -12,6 +12,7 @@ import 'package:plane_startup/bottom_sheets/select_priority.dart';
 import 'package:plane_startup/bottom_sheets/select_project_members.dart';
 import 'package:plane_startup/bottom_sheets/select_states.dart';
 import 'package:plane_startup/config/const.dart';
+import 'package:plane_startup/config/notification_serivce.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -35,10 +36,11 @@ class CreateIssue extends ConsumerStatefulWidget {
 }
 
 class _CreateIssueState extends ConsumerState<CreateIssue> {
+  NotificationsServices notificationsServices = NotificationsServices();
   @override
   void initState() {
     var prov = ref.read(ProviderList.issuesProvider);
-
+    notificationsServices.initialiseNotifications();
     var themeProvider = ref.read(ProviderList.themeProvider);
     if (prov.states.isEmpty) {
       prov.getStates(
@@ -1301,7 +1303,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                               issueCategory = IssueCategory.cycleIssues;
                             }
 
-                            await issuesProvider.createIssue(
+                            await issuesProvider
+                                .createIssue(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
                                   .selectedWorkspace!
@@ -1310,7 +1313,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   .read(ProviderList.projectProvider)
                                   .currentProject["id"],
                               issueCategory: issueCategory,
-                            );
+                            )
+                                .then((_) {
+                              notificationsServices.sendNotification(
+                                  'Plane', 'Issue Created Successfully');
+                            });
 
                             // if (widget.moduleId != null) {
                             //   await ref

@@ -79,6 +79,26 @@ class _MyAppState extends ConsumerState<MyApp> {
             }
             return false;
           }).first['slug']);
+          ref.read(ProviderList.notificationProvider).getUnreadCount();
+
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'assigned');
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'created');
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'watching');
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'unread', getUnread: true);
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'archived', getArchived: true);
+          ref
+              .read(ProviderList.notificationProvider)
+              .getNotifications(type: 'snoozed', getSnoozed: true);
         });
       });
     }
@@ -107,9 +127,8 @@ class _MyAppState extends ConsumerState<MyApp> {
 
         textTheme: TextTheme(
           titleMedium: TextStyle(
-            color: themeProvider.isDarkThemeEnabled
-                ? Colors.white
-                : Colors.black,
+            color:
+                themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
           ),
         ),
 
@@ -216,9 +235,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
-      home: Const.appBearerToken == null
-          ? const OnBoardingScreen()
-          : const App(),
+      home:
+          Const.appBearerToken == null ? const OnBoardingScreen() : const App(),
     );
   }
 }

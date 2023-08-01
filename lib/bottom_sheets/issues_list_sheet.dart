@@ -18,7 +18,6 @@ class IssuesListSheet extends ConsumerStatefulWidget {
   final String issueId;
   final bool createIssue;
   // bool blocking;
-  final int index;
   final IssueDetailCategory type;
   const IssuesListSheet(
       {
@@ -27,7 +26,6 @@ class IssuesListSheet extends ConsumerStatefulWidget {
       required this.createIssue,
       required this.type,
       // required this.blocking,
-      required this.index,
       super.key});
 
   @override
@@ -202,7 +200,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                         "parent": searchIssueProvider
                                             .issues[index]['id']
                                       },
-                                      index: index,
+                                     
                                       refs: ref,
                                     );
                                   }
@@ -428,7 +426,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                           .watch(ProviderList.projectProvider)
                                           .currentProject['id'],
                                       issueId: widget.issueId,
-                                      index: widget.index,
+                                     
                                       data: {
                                         'sub_issue_ids':
                                             issuesProvider.subIssuesIds
@@ -472,7 +470,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                             "blocks_list": issuesProvider
                                                 .blockedByIssuesIds
                                           },
-                                    index: widget.index,
+                                   
                                     refs: ref,
                                   );
                                 }

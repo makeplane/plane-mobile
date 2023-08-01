@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -29,6 +33,65 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
         elevation: false,
         centerTitle: false,
         fontType: FontStyle.mainHeading,
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              if (ref.watch(ProviderList.projectProvider).projects.isEmpty) {
+                CustomToast().showSimpleToast(
+                    'You dont have any projects yet, try creating one');
+              } else {
+                ref.watch(ProviderList.projectProvider).currentProject =
+                    ref.watch(ProviderList.projectProvider).projects[0];
+                ref.watch(ProviderList.projectProvider).setState();
+                await ref
+                    .read(ProviderList.projectProvider)
+                    .initializeProject();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateIssue(),
+                  ),
+                );
+              }
+            },
+            child: CircleAvatar(
+              backgroundColor: themeProvider.isDarkThemeEnabled
+                  ? darkSecondaryBGC
+                  : lightGreeyColor,
+              radius: 20,
+              child: Icon(
+                size: 20,
+                Icons.add,
+                color: !themeProvider.isDarkThemeEnabled
+                    ? Colors.black
+                    : Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const GlobalSearchSheet()));
+            },
+            child: CircleAvatar(
+              backgroundColor: themeProvider.isDarkThemeEnabled
+                  ? darkSecondaryBGC
+                  : lightGreeyColor,
+              radius: 20,
+              child: Icon(
+                size: 20,
+                Icons.search,
+                color: !themeProvider.isDarkThemeEnabled
+                    ? Colors.black
+                    : Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,10 +117,10 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return IssueDetail(
-                                    appBarTitle: myIssuesProvider.data[index]
-                                        ['name'],
-                                    issueId: myIssuesProvider.data[index]['id'],
-                                    index: index);
+                                  appBarTitle: myIssuesProvider.data[index]
+                                      ['name'],
+                                  issueId: myIssuesProvider.data[index]['id'],
+                                );
                               }));
                             },
                             child: Container(

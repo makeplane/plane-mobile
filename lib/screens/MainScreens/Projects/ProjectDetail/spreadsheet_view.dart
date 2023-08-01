@@ -213,7 +213,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             MaterialPageRoute(
               builder: (context) => IssueDetail(
                 issueId: issuesProvider.issuesList[index]['id'],
-                index: index,
+        
                 appBarTitle:
                     '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
               ),

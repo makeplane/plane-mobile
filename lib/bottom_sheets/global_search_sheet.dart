@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -36,6 +37,32 @@ class GlobalSearchSheet extends ConsumerStatefulWidget {
 
 class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   TextEditingController input = TextEditingController();
+  Timer? ticker;
+
+  void timer() {
+    ticker = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timer.tick < 1) return;
+      if (timer.tick > 1) {
+        timer.cancel();
+        return;
+      }
+      log(timer.tick.toString());
+
+      var prov = ref.read(ProviderList.globalSearchProvider.notifier);
+      if (input.text.isEmpty) {
+        prov.setState();
+      } else {
+        log("HERE");
+        prov.getGlobalData(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          input: input.text.trim(),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,142 +70,152 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     var globalSearchProviderRead =
         ref.read(ProviderList.globalSearchProvider.notifier);
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            color: themeProvider.isDarkThemeEnabled
+                ? darkBackgroundColor
+                : lightBackgroundColor,
+            child: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                child: Column(
                   children: [
-                    SizedBox(
-                      width: width - 120,
-                      child: TextFormField(
-                        controller: input,
-                        decoration: kTextFieldFilledDecoration.copyWith(
-                          label: const Text('Search for anything...'),
-                          filled: true,
-                          fillColor: themeProvider.isDarkThemeEnabled ? darkThemeBorder : textFieldFilledColor,
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              if (input.text.isNotEmpty) {
-                                await globalSearchProviderRead.getGlobalData(
-                                  slug: ref
-                                      .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  input: input.text.trim(),
-                                );
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.search,
-                              color: greyColor,
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? lightBackgroundColor
+                                : darkBackgroundColor,
                           ),
                         ),
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            globalSearchProviderRead.setState();
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        globalSearchProvider.data = null;
-                        globalSearchProviderRead.setState();
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        child: const CustomText(
-                          'Cancel',
-                          type: FontStyle.description,
+                        Expanded(
+                          child: TextFormField(
+                            controller: input,
+                            decoration: kTextFieldFilledDecoration.copyWith(
+                              label: const Text('Search for anything...'),
+                              filled: true,
+                              alignLabelWithHint: true,
+                              hintText: 'Search for anything...',
+                              hintStyle: TextStyle(
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? darkStrokeColor
+                                    : lightPrimaryTextColor,
+                              ),
+                              fillColor: themeProvider.isDarkThemeEnabled
+                                  ? darkThemeBorder
+                                  : textFieldFilledColor,
+                              prefixIcon: const Icon(
+                                Icons.search,
+                                color: greyColor,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              ticker?.cancel();
+                              timer();
+                            },
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: ref
-                                  .watch(ProviderList.workspaceProvider)
-                                  .selectWorkspaceState ==
-                              StateEnum.loading ||
-                          ref
-                                  .watch(ProviderList.projectProvider)
-                                  .projectState ==
-                              StateEnum.loading
-                      ? Center(
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: LoadingIndicator(
-                              indicatorType: Indicator.lineSpinFadeLoader,
-                              colors: themeProvider.isDarkThemeEnabled
-                                  ? [Colors.white]
-                                  : [Colors.black],
-                              strokeWidth: 1.0,
-                              backgroundColor: Colors.transparent,
+                        InkWell(
+                          onTap: () {
+                            input.clear();
+                            globalSearchProvider.data = null;
+                            globalSearchProviderRead.setState();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: const CustomText(
+                              'Cancel',
+                              type: FontStyle.description,
                             ),
                           ),
                         )
-                      : ListView(
-                          children: [
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.workspaces.isNotEmpty
-                                ? workspaceListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.projects.isNotEmpty
-                                ? projectsListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.cycles.isNotEmpty
-                                ? cyclesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider
-                                        .data!.modules.isNotEmpty
-                                ? modulesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.views.isNotEmpty
-                                ? viewsListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.pages.isNotEmpty
-                                ? pagesListWidget()
-                                : Container(),
-                            globalSearchProvider.data != null &&
-                                    globalSearchProvider.data!.issues.isNotEmpty
-                                ? issuesList()
-                                : Container(),
-                            createWidget(),
-                            workspaceWidget(),
-                            helpWidget(),
-                          ],
-                        ),
-                )
-              ],
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                      child: ref
+                                      .watch(ProviderList.workspaceProvider)
+                                      .selectWorkspaceState ==
+                                  StateEnum.loading ||
+                              ref
+                                      .watch(ProviderList.projectProvider)
+                                      .projectState ==
+                                  StateEnum.loading
+                          ? Center(
+                              child: SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.lineSpinFadeLoader,
+                                  colors: themeProvider.isDarkThemeEnabled
+                                      ? [Colors.white]
+                                      : [Colors.black],
+                                  strokeWidth: 1.0,
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                            )
+                          : ListView(
+                              children: [
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.workspaces.isNotEmpty
+                                    ? workspaceListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.projects.isNotEmpty
+                                    ? projectsListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.cycles.isNotEmpty
+                                    ? cyclesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.modules.isNotEmpty
+                                    ? modulesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.views.isNotEmpty
+                                    ? viewsListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.pages.isNotEmpty
+                                    ? pagesListWidget()
+                                    : Container(),
+                                globalSearchProvider.data != null &&
+                                        globalSearchProvider
+                                            .data!.issues.isNotEmpty
+                                    ? issuesList()
+                                    : Container(),
+                                createWidget(),
+                                workspaceWidget(),
+                                helpWidget(),
+                              ],
+                            ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -286,7 +323,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -399,7 +438,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -486,7 +527,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                      color: themeProvider.isDarkThemeEnabled
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     const SizedBox(
                       width: 10,
@@ -550,7 +593,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                   globalSearchProvider.data!.issues[index].name,
                               issueId:
                                   globalSearchProvider.data!.issues[index].id,
-                              index: index,
                             ),
                           ),
                         );
@@ -559,7 +601,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/issue.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/issue.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -634,7 +683,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/project.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/project.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -924,7 +980,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/global_search_icons/module.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                            Image.asset(
+                              'assets/images/global_search_icons/module.png',
+                              width: 20,
+                              height: 20,
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -979,7 +1042,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/global_search_icons/view.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                          Image.asset(
+                            'assets/images/global_search_icons/view.png',
+                            width: 20,
+                            height: 20,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                           const SizedBox(
                             width: 10,
                           ),
@@ -1032,7 +1102,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/global_search_icons/page.png', width: 20, height: 20, color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,),
+                          Image.asset(
+                            'assets/images/global_search_icons/page.png',
+                            width: 20,
+                            height: 20,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                           const SizedBox(
                             width: 10,
                           ),

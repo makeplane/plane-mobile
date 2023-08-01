@@ -13,7 +13,6 @@ import 'package:plane_startup/screens/create_view_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 
-
 import 'custom_text.dart';
 
 class EmptyPlaceholder {
@@ -168,7 +167,7 @@ class EmptyPlaceholder {
                         issueId: '',
                         createIssue: false,
                         // blocking: true,
-                        index: -1,
+                        
                       ),
                     );
                   },
@@ -270,6 +269,41 @@ class EmptyPlaceholder {
                   )
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget emptyNotification() {
+    return Container(
+      alignment: Alignment.center,
+      //  margin: const EdgeInsets.only(top: 150),
+      child: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/svg_images/empty_notification.svg",
+            width: 130,
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 35),
+            child: const CustomText(
+              'Notifications',
+              type: FontStyle.heading,
+            ),
+          ),
+          Container(
+            width: 300,
+            padding: const EdgeInsets.only(top: 10),
+            child: const CustomText(
+              "You're updated with all the notifications",
+              color: Color.fromRGBO(133, 142, 150, 1),
+              textAlign: TextAlign.center,
+              type: FontStyle.title,
+              maxLines: 3,
             ),
           ),
         ],
@@ -710,7 +744,7 @@ class EmptyPlaceholder {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           SvgPicture.asset(
-            "assets/svg_images/lables_empty.svg",
+            "assets/svg_images/labels_empty.svg",
             width: 130,
           ),
           Container(

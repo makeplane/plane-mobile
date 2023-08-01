@@ -10,9 +10,9 @@ import 'package:plane_startup/widgets/custom_text.dart';
 class SelectEstimate extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
-  final int? index;
+
   const SelectEstimate(
-      {this.index, this.issueId, required this.createIssue, super.key});
+      { this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectEstimate> createState() => _SelectEstimateState();
@@ -95,7 +95,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace!
                                 .workspaceSlug,
-                            index: widget.index!,
+                           
                             refs: ref,
                             projID: ref
                                 .read(ProviderList.projectProvider)
@@ -232,7 +232,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                       .read(ProviderList.workspaceProvider)
                                       .selectedWorkspace!
                                       .workspaceSlug,
-                                  index: widget.index!,
+                                 
                                   refs: ref,
                                   projID: ref
                                       .read(ProviderList.projectProvider)

@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
+import 'package:plane_startup/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
 import 'package:plane_startup/bottom_sheets/views_sheet.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +19,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Modules
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.dart';
 import 'package:plane_startup/screens/settings_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -56,7 +59,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ref.read(ProviderList.projectProvider).initializeProject();
     });
 
-    pages = [cycles(), cycles(), const ModuleScreen(), const Views()];
+    pages = [
+      cycles(),
+      cycles(),
+      const ModuleScreen(),
+      const Views(),
+      const PageScreen()
+    ];
 
     super.initState();
   }
@@ -67,6 +76,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
+    var pageProvider = ref.watch(ProviderList.pageProvider);
     log(issueProvider.issues.groupBY.name);
 
     return Scaffold(
@@ -130,6 +140,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const CreateView(),
+                    ),
+                  );
+                }
+                if (selected == 4) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreatePage(),
                     ),
                   );
                 }
@@ -467,7 +484,112 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                 ],
                               ),
                             )
-                          : Container()
+                          : Container(),
+              selected == 4
+                  ? Container(
+                      height: 51,
+                      width: MediaQuery.of(context).size.width,
+                      color: darkBackgroundColor,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: themeProvider.isDarkThemeEnabled
+                                ? darkThemeBorder
+                                : strokeColor,
+                          ),
+                          Container(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                projectProvider.role == Role.admin
+                                    ? Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const CreatePage(),
+                                              ),
+                                            );
+                                          },
+                                          child: const SizedBox.expand(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                                CustomText(
+                                                  ' Page',
+                                                  type: FontStyle.subtitle,
+                                                  color: Colors.white,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                                Container(
+                                  height: 50,
+                                  width: 1,
+                                  color: themeProvider.isDarkThemeEnabled
+                                      ? darkThemeBorder
+                                      : strokeColor,
+                                ),
+                                Expanded(
+                                    child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        enableDrag: true,
+                                        constraints: BoxConstraints(
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.8),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(30),
+                                        )),
+                                        context: context,
+                                        builder: (ctx) {
+                                          return const FilterPageSheet();
+                                        });
+                                  },
+                                  child: const SizedBox.expand(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.filter_alt,
+                                          color: Colors.white,
+                                          size: 19,
+                                        ),
+                                        CustomText(
+                                          ' Filters',
+                                          type: FontStyle.subtitle,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+
               // GestureDetector(
               //     onTap: () {
               //       selected == 1
@@ -828,26 +950,6 @@ Widget cycles() {
 //     ),
 //   );
 // }
-
-Widget page(WidgetRef ref) {
-  var themeProvider = ref.read(ProviderList.themeProvider);
-  return Container(
-    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-    child: const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // SizedBox(
-        //   child: Text(
-        //     'Current Cycles',
-        //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-        //   ),
-        // ),
-        PageCard()
-      ],
-    ),
-  );
-}
 
 Widget view(WidgetRef ref) {
   var themeProvider = ref.read(ProviderList.themeProvider);

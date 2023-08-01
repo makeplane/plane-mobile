@@ -93,4 +93,26 @@ class APIs {
   static String viewsFavourite =
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-views/";
   static String globalSearch = "$baseApi/api/workspaces/\$SLUG/search/";
+  static String listAllPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=all";
+  static String listAllFavoritePages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=favorite";
+  static String listAllRecentPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=recent";
+  static String getPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/";
+  static String pageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/";
+  static String createPage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/";
+  static String favouritePage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-pages/";
+  static String updatePageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/\$BLOCKID/";
+  static String deletePageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/\$BLOCKID/";
+  static String deletePage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/";
+  static String notifications =
+      "$baseApi/api/workspaces/\$SLUG/users/notifications/";
 }

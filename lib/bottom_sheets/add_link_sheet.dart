@@ -8,8 +8,7 @@ import 'package:plane_startup/widgets/custom_text.dart';
 
 class AddLinkSheet extends ConsumerStatefulWidget {
   final String issueId;
-  final int index;
-  const AddLinkSheet({required this.issueId, required this.index, super.key});
+  const AddLinkSheet({required this.issueId, super.key});
 
   @override
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
@@ -106,7 +105,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
                         .selectedWorkspace!
                         .workspaceSlug,
                     issueId: widget.issueId,
-                    index: widget.index,
+             
                     data: {
                       'metadata': {},
                       'title': title.text.trim(),

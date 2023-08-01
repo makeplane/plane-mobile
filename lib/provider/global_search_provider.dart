@@ -30,6 +30,7 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
   Future getGlobalData({required String slug, String? input}) async {
     var url =
         '${APIs.globalSearch.replaceFirst('\$SLUG', slug)}?search=$input&workspace_search=true';
+    log("REQUEST URL: $url");
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,

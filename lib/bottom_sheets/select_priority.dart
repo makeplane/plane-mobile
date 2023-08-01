@@ -8,9 +8,9 @@ import 'package:plane_startup/widgets/custom_text.dart';
 class SelectIssuePriority extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
-  final int? index;
+
   const SelectIssuePriority(
-      {this.index, this.issueId, required this.createIssue, super.key});
+      { this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssuePriority> createState() =>
@@ -140,7 +140,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                     .read(ProviderList.workspaceProvider)
                                     .selectedWorkspace!
                                     .workspaceSlug,
-                                index: widget.index!,
+                               
                                 refs: ref,
                                 projID: ref
                                     .read(ProviderList.projectProvider)

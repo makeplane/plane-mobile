@@ -12,9 +12,9 @@ import 'package:plane_startup/widgets/custom_text.dart';
 class SelectIssueLabels extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
-  final int? index;
+
   const SelectIssueLabels(
-      {this.index, this.issueId, required this.createIssue, super.key});
+      { this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssueLabels> createState() => _SelectIssueLabelsState();
@@ -579,7 +579,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace!
                                 .workspaceSlug,
-                            index: widget.index!,
+                            
                             refs: ref,
                             projID: ref
                                 .read(ProviderList.projectProvider)

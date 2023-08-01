@@ -15,12 +15,11 @@ class AddAttachmentsSheet extends ConsumerStatefulWidget {
       required this.projectId,
       required this.slug,
       required this.issueId,
-      required this.index});
+ });
 
   String projectId;
   String slug;
   String issueId;
-  int index;
 
   @override
   ConsumerState<AddAttachmentsSheet> createState() =>
@@ -87,7 +86,6 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   return;
                 } else {
                   String? path = result.files.single.path;
-                  print('SABI : file size : ${result.files.single.size} ');
 
                   issueProvider.addIssueAttachment(
                       fileSize: result.files.single.size,
@@ -95,7 +93,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                       projectId: widget.projectId,
                       slug: widget.slug,
                       issueId: widget.issueId,
-                      index: widget.index);
+                    );
                   Navigator.pop(context);
                 }
               })

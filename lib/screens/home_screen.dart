@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
 import 'package:plane_startup/screens/MainScreens/My_issues/my_issues_screen.dart';
+import 'package:plane_startup/screens/MainScreens/Notification/notification.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profile_screen.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -25,7 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     {'icon': 'assets/svg_images/home.svg', 'label': 'Home'},
     {'icon': 'assets/svg_images/projects.svg', 'label': 'Projects'},
     {'icon': 'assets/svg_images/issues.svg', 'label': 'My Issues'},
-    {'icon': 'assets/svg_images/activity.svg', 'label': 'Activity'},
+    {'icon': 'assets/svg_images/notification.svg', 'label': 'Updates'},
     {'icon': 'assets/svg_images/settings.svg', 'label': 'Settings'},
   ];
 
@@ -52,7 +52,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       const ProjectScreen(),
       const MyIssuesScreen(),
-      const Activity(),
+      const NotifiactionScreen(),
       const ProfileScreen(),
     ];
     return Scaffold(

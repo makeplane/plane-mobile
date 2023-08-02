@@ -8,6 +8,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesT
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
+import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -25,6 +26,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
   Widget build(BuildContext context) {
     var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Scaffold(
       appBar: CustomAppBar(
         text: 'My Issues',
@@ -34,40 +36,46 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
         centerTitle: false,
         fontType: FontStyle.mainHeading,
         actions: [
-          GestureDetector(
-            onTap: () async {
-              if (ref.watch(ProviderList.projectProvider).projects.isEmpty) {
-                CustomToast().showSimpleToast(
-                    'You dont have any projects yet, try creating one');
-              } else {
-                ref.watch(ProviderList.projectProvider).currentProject =
-                    ref.watch(ProviderList.projectProvider).projects[0];
-                ref.watch(ProviderList.projectProvider).setState();
-                await ref
-                    .read(ProviderList.projectProvider)
-                    .initializeProject();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateIssue(),
+          workspaceProvider.role != Role.admin &&
+                  workspaceProvider.role != Role.member
+              ? Container()
+              : GestureDetector(
+                  onTap: () async {
+                    if (ref
+                        .watch(ProviderList.projectProvider)
+                        .projects
+                        .isEmpty) {
+                      CustomToast().showSimpleToast(
+                          'You dont have any projects yet, try creating one');
+                    } else {
+                      ref.watch(ProviderList.projectProvider).currentProject =
+                          ref.watch(ProviderList.projectProvider).projects[0];
+                      ref.watch(ProviderList.projectProvider).setState();
+                      await ref
+                          .read(ProviderList.projectProvider)
+                          .initializeProject();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateIssue(),
+                        ),
+                      );
+                    }
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: themeProvider.isDarkThemeEnabled
+                        ? darkSecondaryBGC
+                        : lightGreeyColor,
+                    radius: 20,
+                    child: Icon(
+                      size: 20,
+                      Icons.add,
+                      color: !themeProvider.isDarkThemeEnabled
+                          ? Colors.black
+                          : Colors.white,
+                    ),
                   ),
-                );
-              }
-            },
-            child: CircleAvatar(
-              backgroundColor: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : lightGreeyColor,
-              radius: 20,
-              child: Icon(
-                size: 20,
-                Icons.add,
-                color: !themeProvider.isDarkThemeEnabled
-                    ? Colors.black
-                    : Colors.white,
-              ),
-            ),
-          ),
+                ),
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {

@@ -382,87 +382,97 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 },
               );
             },
-            child: workspaceProvider.selectedWorkspace == null
-                ? Container()
-                : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
-                    ? CachedNetworkImage(
-                        height: 35,
-                        width: 35,
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            workspaceProvider.selectedWorkspace!.workspaceLogo,
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: primaryColor,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          child: Center(
-                            child: CustomText(
-                              workspaceProvider
-                                  .selectedWorkspace!.workspaceName[0]
-                                  .toUpperCase(),
-                              type: FontStyle.buttonText,
+            child: Row(
+              children: [
+                workspaceProvider.selectedWorkspace == null
+                    ? Container()
+                    : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
+                        ? CachedNetworkImage(
+                            height: 35,
+                            width: 35,
+                            fit: BoxFit.fill,
+                            imageUrl: workspaceProvider
+                                .selectedWorkspace!.workspaceLogo,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: primaryColor,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              child: Center(
+                                child: CustomText(
+                                  workspaceProvider
+                                      .selectedWorkspace!.workspaceName[0]
+                                      .toUpperCase(),
+                                  type: FontStyle.buttonText,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: primaryColor,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            child: Center(
+                              child: CustomText(
+                                workspaceProvider
+                                    .selectedWorkspace!.workspaceName[0]
+                                    .toUpperCase(),
+                                type: FontStyle.buttonText,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    : Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: primaryColor,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        child: Center(
-                          child: CustomText(
-                            workspaceProvider
-                                .selectedWorkspace!.workspaceName[0]
-                                .toUpperCase(),
-                            type: FontStyle.buttonText,
-                          ),
-                        ),
-                      ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          CustomText(
-            workspaceProvider.selectedWorkspace!.workspaceName,
-            type: FontStyle.subheading,
+                const SizedBox(
+                  width: 10,
+                ),
+                CustomText(
+                  workspaceProvider.selectedWorkspace!.workspaceName,
+                  type: FontStyle.subheading,
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                //padding: const EdgeInsets.all(0),
-                onTap: () async {
-                  await themeProvider.changeTheme();
-                },
-                child: Icon(
-                  size: 20,
-                  !themeProvider.isDarkThemeEnabled
-                      ? Icons.brightness_2_outlined
-                      : Icons.wb_sunny_outlined,
-                  color: !themeProvider.isDarkThemeEnabled
-                      ? Colors.black
-                      : Colors.white,
-                ),
-              ),
-              const SizedBox(width: 10),
+              // GestureDetector(
+              //   //padding: const EdgeInsets.all(0),
+              //   onTap: () async {
+              //     await themeProvider.changeTheme();
+              //   },
+              //   child: CircleAvatar(
+              //     backgroundColor: themeProvider.isDarkThemeEnabled
+              //         ? darkSecondaryBGC
+              //         : lightGreeyColor,
+              //     radius: 20,
+              //     child: Icon(
+              //       size: 20,
+              //       !themeProvider.isDarkThemeEnabled
+              //           ? Icons.brightness_2_outlined
+              //           : Icons.wb_sunny_outlined,
+              //       color: !themeProvider.isDarkThemeEnabled
+              //           ? Colors.black
+              //           : Colors.white,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -478,23 +488,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   child: Icon(
                     size: 20,
                     Icons.add,
-                    color: !themeProvider.isDarkThemeEnabled
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {},
-                child: CircleAvatar(
-                  backgroundColor: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightGreeyColor,
-                  radius: 20,
-                  child: Icon(
-                    size: 20,
-                    Icons.bar_chart_rounded,
                     color: !themeProvider.isDarkThemeEnabled
                         ? Colors.black
                         : Colors.white,

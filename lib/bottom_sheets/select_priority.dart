@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -10,7 +12,7 @@ class SelectIssuePriority extends ConsumerStatefulWidget {
   final String? issueId;
 
   const SelectIssuePriority(
-      { this.issueId, required this.createIssue, super.key});
+      {this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssuePriority> createState() =>
@@ -39,7 +41,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     },
     {
       'name': 'None',
-      'icon': const Icon(Icons.remove_circle_outline_rounded),
+      'icon': const Icon(Icons.block),
     }
   ];
 
@@ -121,6 +123,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
+                          print("SABI : Index : $index");
                           if (widget.createIssue) {
                             setState(() {
                               selectedPriority = index;
@@ -135,27 +138,31 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                               issueDetailSelectedPriorityItem =
                                   priorities[index]['name'];
                             });
-                            await issueProvider.upDateIssue(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                               
-                                refs: ref,
-                                projID: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                issueID: widget.issueId!,
-                                data: {
-                                  "priority": priorities[index]['name']
-                                      .toString()
-                                      .replaceAll(
-                                          priorities[index]['name']
-                                              .toString()[0],
-                                          priorities[index]['name']
-                                              .toString()[0]
-                                              .toLowerCase())
-                                }).then((value) {
+                            await issueProvider
+                                .upDateIssue(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    refs: ref,
+                                    projID: ref
+                                        .read(ProviderList.projectProvider)
+                                        .currentProject['id'],
+                                    issueID: widget.issueId!,
+                                    data: index != 4
+                                        ? {
+                                            "priority": priorities[index]
+                                                    ['name']
+                                                .toString()
+                                                .replaceAll(
+                                                    priorities[index]['name']
+                                                        .toString()[0],
+                                                    priorities[index]['name']
+                                                        .toString()[0]
+                                                        .toLowerCase())
+                                          }
+                                        : {"priority": null})
+                                .then((value) {
                               ref
                                   .read(ProviderList.issueProvider)
                                   .getIssueDetails(
@@ -207,13 +214,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     alignment: Alignment.center,
-                                    child: index == 4
-                                        ? Transform.rotate(
-                                            angle: 40,
-                                            child: priorities[index]['icon']
-                                                as Widget,
-                                          )
-                                        : priorities[index]['icon'] as Widget,
+                                    child: priorities[index]['icon'] as Widget,
                                   ),
                                   Container(
                                     width: 10,
@@ -261,10 +262,13 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
 
   Widget issueDetailSelectedPriority(int idx) {
     var issueProvider = ref.watch(ProviderList.issueProvider);
-    return issueProvider.issueDetails['priority'] ==
-            priorities[idx]['name'].toString().replaceAll(
-                priorities[idx]['name'].toString()[0],
-                priorities[idx]['name'].toString()[0].toLowerCase())
+    String? nameOfThisPriority = priorities[idx]['name'].toString().replaceAll(
+        priorities[idx]['name'].toString()[0],
+        priorities[idx]['name'].toString()[0].toLowerCase());
+    if (idx == 4) nameOfThisPriority = null;
+    print(
+        'SABI : ${issueProvider.issueDetails['priority']} == ${nameOfThisPriority} : ${issueProvider.issueDetails['priority'] == nameOfThisPriority}');
+    return issueProvider.issueDetails['priority'] == nameOfThisPriority
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),

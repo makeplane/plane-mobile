@@ -104,7 +104,29 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         Expanded(
                           child: TextFormField(
                             controller: input,
+                            style: TextStyle(
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? lightBackgroundColor
+                                    : darkBackgroundColor),
                             decoration: kTextFieldFilledDecoration.copyWith(
+                              suffixIcon: input.text != ''
+                                  ? IconButton(
+                                      onPressed: () {
+                                        input.clear();
+                                        globalSearchProvider.data = null;
+                                        globalSearchProviderRead.setState();
+                                      },
+                                      icon: Icon(Icons.cancel,
+                                          color:
+                                              themeProvider.isDarkThemeEnabled
+                                                  ? greyColor
+                                                  : greyColor))
+                                  : IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.clear_outlined,
+                                        color: Colors.transparent,
+                                      )),
                               label: const Text('Search for anything...'),
                               filled: true,
                               alignLabelWithHint: true,
@@ -128,20 +150,22 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             },
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            input.clear();
-                            globalSearchProvider.data = null;
-                            globalSearchProviderRead.setState();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: const CustomText(
-                              'Cancel',
-                              type: FontStyle.description,
-                            ),
-                          ),
-                        )
+                        // input.text == ''
+                        //     ? Container()
+                        //     : InkWell(
+                        //         onTap: () {
+                        //           input.clear();
+                        //           globalSearchProvider.data = null;
+                        //           globalSearchProviderRead.setState();
+                        //         },
+                        //         child: Container(
+                        //           padding: const EdgeInsets.only(left: 10),
+                        //           child: const CustomText(
+                        //             'Cancel',
+                        //             type: FontStyle.description,
+                        //           ),
+                        //         ),
+                        //       )
                       ],
                     ),
                     const SizedBox(

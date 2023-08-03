@@ -381,42 +381,44 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 borderRadius: BorderRadius.circular(8),
                 color: primaryLightColor,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width - 105,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 10),
-                    child: CustomText(
-                      menus[index]['menu'],
-                      type: FontStyle.description,
-                      color: primaryColor,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  menus[index]['menu'] != 'Workspace Settings'
-                      ? Container()
-                      : GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              constraints: BoxConstraints(
-                                  minHeight: height * 0.5,
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height * 0.8),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              )),
-                              context: context,
-                              builder: (ctx) {
-                                return const SelectWorkspace();
-                              },
-                            );
+              child: GestureDetector(
+                onTap: menus[index]['menu'] == 'Workspace Settings'
+                    ? () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          constraints: BoxConstraints(
+                              minHeight: height * 0.5,
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.8),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          )),
+                          context: context,
+                          builder: (ctx) {
+                            return const SelectWorkspace();
                           },
-                          child: Container(
+                        );
+                      }
+                    : () {},
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 105,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
+                      child: CustomText(
+                        menus[index]['menu'],
+                        type: FontStyle.description,
+                        color: primaryColor,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    menus[index]['menu'] != 'Workspace Settings'
+                        ? Container()
+                        : Container(
                             height: 35,
                             width: 65,
                             decoration: BoxDecoration(
@@ -483,9 +485,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 )
                               ],
                             ),
-                          ),
-                        )
-                ],
+                          )
+                  ],
+                ),
               ),
             ),
             const SizedBox(

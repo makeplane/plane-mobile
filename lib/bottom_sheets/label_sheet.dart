@@ -80,9 +80,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               Container(height: 5),
               TextField(
                 controller: search,
-                onChanged: (val) {
-                  setState(() {});
-                },
+                onChanged: (val) {},
                 decoration: kTextFieldDecoration.copyWith(
                   fillColor: themeProvider.isDarkThemeEnabled
                       ? darkBackgroundColor
@@ -105,6 +103,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                               selectedLabels.add(label["id"]);
                             }
                             setState(() {});
+                            print(selectedLabels);
                           },
                           child: Container(
                             margin:
@@ -113,12 +112,10 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                 horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: selectedLabels.contains(label["id"])
-                                  ? themeProvider.isDarkThemeEnabled
-                                      ? primaryColor
-                                      : lightBackgroundColor
-                                  : themeProvider.isDarkThemeEnabled
+                                  ? primaryColor
+                                  : (themeProvider.isDarkThemeEnabled
                                       ? darkBackgroundColor
-                                      : lightBackgroundColor,
+                                      : lightBackgroundColor),
                               borderRadius: BorderRadius.circular(4),
                               border: Border.all(
                                 color: themeProvider.isDarkThemeEnabled
@@ -126,9 +123,32 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                     : const Color.fromARGB(255, 193, 192, 192),
                               ),
                             ),
-                            child: CustomText(
-                              label["name"],
-                              type: FontStyle.smallText,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircleAvatar(
+                                  radius: 6,
+                                  backgroundColor: Color(
+                                    int.parse(
+                                      label["color"]
+                                          .toString()
+                                          .replaceAll('#', '0xFF'),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                CustomText(
+                                  label["name"],
+                                  type: FontStyle.smallText,
+                                  color: selectedLabels.contains(label["id"])
+                                      ? Colors.white
+                                      : (themeProvider.isDarkThemeEnabled
+                                          ? darkPrimaryTextColor
+                                          : lightPrimaryTextColor),
+                                ),
+                              ],
                             ),
                           ),
                         )
@@ -148,7 +168,15 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                       data: {
                         "labels_list": selectedLabels,
                       });
-
+                  if (pageProvider.blockSheetState == StateEnum.success) {
+                    pageProvider.selectedLabels.clear();
+                    for (var element in (pageProvider.pages[
+                            pageProvider.selectedFilter]![widget.pageIndex]
+                        ['label_details'] as List)) {
+                      pageProvider.selectedLabels.add(element['id']);
+                    }
+                    pageProvider.setState();
+                  }
                   // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 },

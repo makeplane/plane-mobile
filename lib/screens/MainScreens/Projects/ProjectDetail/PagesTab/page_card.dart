@@ -4,18 +4,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_detail.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class PageCard extends ConsumerStatefulWidget {
   const PageCard({super.key, required this.index});
   final int index;
-  
 
   @override
   ConsumerState<PageCard> createState() => _PageCardState();
 }
 
 class _PageCardState extends ConsumerState<PageCard> {
+
   String timeAgo({bool numericDates = true, required DateTime date}) {
     final date2 = DateTime.now();
     final difference = date2.difference(date);
@@ -47,6 +48,8 @@ class _PageCardState extends ConsumerState<PageCard> {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+
+    checkAccess();
 
     return GestureDetector(
       onTap: () {
@@ -125,96 +128,96 @@ class _PageCardState extends ConsumerState<PageCard> {
                   ),
                 ),
                 const Spacer(),
-          
-                
-                InkWell(
-                  onTap: () {
-                    pageProvider
-                            .pages[pageProvider.selectedFilter]![widget.index]
-                        ['access'] = pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['access'] ==
-                            1
-                        ? 0
-                        : 1;
-                    pageProvider.editPage(
-                      pageId: pageProvider
-                              .pages[pageProvider.selectedFilter]![widget.index]
-                          ['id'],
-                      slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
-                      projectId: projectProvider.currentProject['id'],
-                      data: {
-                        "access": pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['access']
-                      },
-                    );
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: pageProvider.pages[pageProvider.selectedFilter]![
-                                widget.index]['access'] ==
-                            0 // 1 = locked || 0 = unlocked
-                        ? const Icon(
-                            Icons.lock_open_outlined,
+                checkAccess()
+                    ?
+                    InkWell(
+                        onTap: () {
+                          pageProvider.pages[pageProvider
+                                        .selectedFilter]![widget.index]
+                                    ['access'] = pageProvider.pages[pageProvider
+                                                .selectedFilter]![widget.index]
+                                            ['access'] ==
+                                        1
+                                    ? 0
+                                    : 1;
+                          pageProvider.editPage(
+                            pageId: pageProvider.pages[pageProvider
+                                .selectedFilter]![widget.index]['id'],
+                            slug: workspaceProvider
+                                .selectedWorkspace!.workspaceSlug,
+                            projectId: projectProvider.currentProject['id'],
+                            data: {
+                              "access": pageProvider.pages[pageProvider
+                                  .selectedFilter]![widget.index]['access']
+                            },
+                          );
+                          setState(() {});
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          child:
+                              pageProvider.pages[pageProvider.selectedFilter]![
+                                          widget.index]['access'] ==
+                                      0 // 1 = locked || 0 = unlocked
+                                  ? const Icon(
+                                      Icons.lock_open_outlined,
+                                      size: 18,
+                                      color: Color.fromRGBO(172, 181, 189, 1),
+                                    )
+                                  : const Icon(
+                                      Icons.lock_clock_outlined,
+                                      size: 18,
+                                      color: Color.fromRGBO(255, 0, 0, 1),
+                                    ),
+                        ),
+                      )
+                    : Container(),
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: pageProvider.pages[pageProvider.selectedFilter]![
+                              widget.index]['is_favorite'] ==
+                          true
+                      ? InkWell(
+                          onTap: () {
+                            setState(() {
+                              pageProvider.pages[pageProvider.selectedFilter]![
+                                  widget.index]['is_favorite'] = !pageProvider
+                                      .pages[pageProvider.selectedFilter]![
+                                  widget.index]['is_favorite'];
+                            });
+                            pageProvider.makePageFavorite(
+                                pageId: pageProvider.pages[pageProvider
+                                    .selectedFilter]![widget.index]['id'],
+                                slug: workspaceProvider
+                                    .selectedWorkspace!.workspaceSlug,
+                                projectId: projectProvider.currentProject['id'],
+                                shouldItBeFavorite: false);
+                          },
+                          child: const Icon(Icons.star,
+                              size: 18, color: Colors.amber))
+                      : InkWell(
+                          onTap: () {
+                            setState(() {
+                              pageProvider.pages[pageProvider.selectedFilter]![
+                                  widget.index]['is_favorite'] = !pageProvider
+                                      .pages[pageProvider.selectedFilter]![
+                                  widget.index]['is_favorite'];
+                            });
+                            pageProvider.makePageFavorite(
+                                pageId: pageProvider.pages[pageProvider
+                                    .selectedFilter]![widget.index]['id'],
+                                slug: workspaceProvider
+                                    .selectedWorkspace!.workspaceSlug,
+                                projectId: projectProvider.currentProject['id'],
+                                shouldItBeFavorite: true);
+                          },
+                          child: const Icon(
+                            Icons.star_border,
                             size: 18,
                             color: Color.fromRGBO(172, 181, 189, 1),
-                          )
-                        : const Icon(
-                            Icons.lock_clock_outlined,
-                            size: 18,
-                            color: Color.fromRGBO(255, 0, 0, 1),
                           ),
-                  ),
+                        ),
                 ),
-              
-                Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: pageProvider.pages[pageProvider.selectedFilter]![
-                                widget.index]['is_favorite'] ==
-                            true
-                        ? InkWell(
-                            onTap: () {
-                              setState(() {
-                                pageProvider.pages[pageProvider
-                                        .selectedFilter]![widget.index]
-                                    ['is_favorite'] = !pageProvider
-                                        .pages[pageProvider.selectedFilter]![
-                                    widget.index]['is_favorite'];
-                              });
-                              pageProvider.makePageFavorite(
-                                  pageId: pageProvider.pages[pageProvider
-                                      .selectedFilter]![widget.index]['id'],
-                                  slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
-                                  projectId:
-                                      projectProvider.currentProject['id'],
-                                  shouldItBeFavorite: false);
-                            },
-                            child: const Icon(Icons.star,
-                                size: 18, color: Colors.amber))
-                        : InkWell(
-                            onTap: () {
-                              setState(() {
-                                pageProvider.pages[pageProvider
-                                        .selectedFilter]![widget.index]
-                                    ['is_favorite'] = !pageProvider
-                                        .pages[pageProvider.selectedFilter]![
-                                    widget.index]['is_favorite'];
-                              });
-                              pageProvider.makePageFavorite(
-                                  pageId: pageProvider.pages[pageProvider
-                                      .selectedFilter]![widget.index]['id'],
-                                  slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
-                                  projectId:
-                                      projectProvider.currentProject['id'],
-                                  shouldItBeFavorite: true);
-                            },
-                            child: const Icon(Icons.star_border,
-                                size: 18,
-                                color: Color.fromRGBO(172, 181, 189, 1))))
               ],
             ),
             const SizedBox(
@@ -224,5 +227,22 @@ class _PageCardState extends ConsumerState<PageCard> {
         ),
       ),
     );
+  }
+
+  bool checkAccess() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool hasAccess = false;
+
+    for (var element in projectProvider.projectMembers) {
+      if (element['member']['id'] == profileProvider.userProfile.id &&
+          (element['role'] == 20 || element['role'] == 15)) {
+        hasAccess = true;
+      } else {
+        hasAccess = false;
+      }
+    }
+
+    return hasAccess;
   }
 }

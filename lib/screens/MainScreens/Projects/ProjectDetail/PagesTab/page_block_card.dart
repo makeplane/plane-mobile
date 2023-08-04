@@ -21,14 +21,12 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var pageProvider = ref.watch(ProviderList.pageProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
 
     String description = "";
     return InkWell(
       onTap: () async {
         //  ref.read(ProviderList.pageProvider).setSelectedPageBlock(widget.block);
-
+        checkAccess() ?
         await showModalBottomSheet(
             isScrollControlled: true,
             enableDrag: true,
@@ -50,7 +48,8 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                   operation: CRUD.update,
                 ),
               );
-            });
+            })
+            : null;
       },
       child: Container(
         width: double.infinity,
@@ -113,6 +112,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                       ),
                     ],
                   ),
+            checkAccess() ? 
             Row(
               children: [
                 const Spacer(),
@@ -162,9 +162,28 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                 ),
               ],
             )
+            : Container()
           ],
         ),
       ),
     );
   }
+
+  bool checkAccess() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool hasAccess = false;
+
+    for (var element in projectProvider.projectMembers) {
+      if (element['member']['id'] == profileProvider.userProfile.id &&
+          (element['role'] == 20 || element['role'] == 15)) {
+        hasAccess = true;
+      } else {
+        hasAccess = false;
+      }
+    }
+
+    return hasAccess;
+  }
+
 }

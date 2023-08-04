@@ -36,6 +36,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
     '#75A0C8',
     '#E96B6B'
   ];
+
+  Map deletedLabel = {};
+
+  bool showLockLoading = false;
   @override
   void initState() {
     var prov = ref.read(ProviderList.pageProvider);
@@ -54,6 +58,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             .selectedWorkspace!
             .workspaceSlug,
         projID: ref.read(ProviderList.projectProvider).currentProject["id"]);
+    for (var element in (prov.pages[prov.selectedFilter]![widget.index]
+        ['label_details'] as List)) {
+      prov.selectedLabels.add(element['id']);
+    }
 
     titleController.text =
         prov.pages[prov.selectedFilter]![widget.index]['name'] ?? '';
@@ -70,7 +78,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-  //  log(projectProvider.currentProject["id"]);
+    //  log(projectProvider.currentProject["id"]);
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -92,7 +100,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               data: {
                 "color": '#${colorController.text}',
                 "name": titleController.text
-              });
+              },
+              fromDispose: true);
           Navigator.pop(context);
         },
         text: pageProvider.pages[pageProvider.selectedFilter]![widget.index]
@@ -135,222 +144,278 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               width: double.infinity,
             ),
             //contaier containing a text ands four small icons
-            Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : lightSecondaryBackgroundColor,
-              //margin: const EdgeInsets.only(top: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Row(
-                children: [
-                  //container containing a add icon and a text
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                          isScrollControlled: true,
-                          enableDrag: true,
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.8),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
-                          )),
-                          context: context,
-                          builder: (ctx) {
-                            return Padding(
-                              padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                              child: LabelSheet(
-                                selectedLabels: pageProvider.pages[pageProvider.selectedFilter]![widget.index]["labels"]??[],
-                                pageIndex: widget.index,
+            checkAccess()
+                ? Column(
+                    children: [
+                      Container(
+                        color: themeProvider.isDarkThemeEnabled
+                            ? darkSecondaryBGC
+                            : lightSecondaryBackgroundColor,
+                        //margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        child: Row(
+                          children: [
+                            //container containing a add icon and a text
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    enableDrag: true,
+                                    constraints: BoxConstraints(
+                                        maxHeight:
+                                            MediaQuery.of(context).size.height *
+                                                0.8),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    )),
+                                    context: context,
+                                    builder: (ctx) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: LabelSheet(
+                                          selectedLabels: pageProvider.pages[
+                                                      pageProvider
+                                                          .selectedFilter]![
+                                                  widget.index]["labels"] ??
+                                              [],
+                                          pageIndex: widget.index,
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? darkBackgroundColor
+                                    : lightBackgroundColor,
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    //add icon
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: themeProvider.isDarkThemeEnabled
+                                            ? darkPrimaryTextColor
+                                            : lightPrimaryTextColor,
+                                        size: 22,
+                                      ),
+                                    ),
+                                    const CustomText(
+                                      'Add Labels',
+                                      type: FontStyle.text,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            );
-                          });
-                    },
-                    child: Container(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkBackgroundColor
-                          : lightBackgroundColor,
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          //add icon
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: Icon(
-                              Icons.add,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkPrimaryTextColor
-                                  : lightPrimaryTextColor,
-                              size: 22,
                             ),
-                          ),
-                          const CustomText(
-                            'Add Labels',
-                            type: FontStyle.text,
-                          ),
-                        ],
+                            const Spacer(),
+                            //four small icons
+                            Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: const Icon(
+                                Icons.link,
+                                color: greyColor,
+                                size: 22,
+                              ),
+                            ),
+                            //icon 2
+                            Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showColor = !showColor;
+                                  });
+                                  int.tryParse("FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
+                                                  radix: 16) ==
+                                              null ||
+                                          colorController.text.trim().isEmpty
+                                      ? colorController.text = lables[0]
+                                      : null;
+                                  if (showColor == false) {
+                                    pageProvider.pages[pageProvider
+                                            .selectedFilter]![widget.index]
+                                        ['color'] = '#${colorController.text}';
+                                    pageProvider.editPage(
+                                        slug: workspaceProvider
+                                            .selectedWorkspace!.workspaceSlug,
+                                        projectId: projectProvider
+                                            .currentProject['id'],
+                                        pageId: pageProvider.pages[pageProvider
+                                                .selectedFilter]![widget.index]
+                                            ['id'],
+                                        data: {
+                                          "color": '#${colorController.text}'
+                                        });
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.color_lens,
+                                  color: int.tryParse(
+                                                  "FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
+                                                  radix: 16) ==
+                                              null ||
+                                          colorController.text.trim().isEmpty
+                                      ? Color(int.parse(
+                                          lables[0]
+                                              .toUpperCase()
+                                              .replaceAll("#", "FF"),
+                                          radix: 16))
+                                      : Color(int.parse(
+                                          "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
+                                          radix: 16)),
+                                  size: 22,
+                                ),
+                              ),
+                            ),
+                            //icon 3
+                            showLockLoading == true
+                                ? Container(
+                                    margin: const EdgeInsets.only(right: 10),
+                                    height: 15,
+                                    width: 15,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 1.0,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () async {
+                                      showLockLoading = !showLockLoading;
+                                      await pageProvider.editPage(
+                                        pageId: pageProvider.pages[pageProvider
+                                                .selectedFilter]![widget.index]
+                                            ['id'],
+                                        slug: workspaceProvider
+                                            .selectedWorkspace!.workspaceSlug,
+                                        projectId: projectProvider
+                                            .currentProject['id'],
+                                        data: {
+                                          "access": pageProvider.pages[
+                                                  pageProvider.selectedFilter]![
+                                              widget.index]['access']
+                                        },
+                                      ).then((value) {
+                                        if (pageProvider.blockSheetState ==
+                                            StateEnum.success) {
+                                          pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]
+                                              ['access'] = pageProvider.pages[
+                                                          pageProvider
+                                                              .selectedFilter]![
+                                                      widget.index]['access'] ==
+                                                  1
+                                              ? 0
+                                              : 1;
+                                        }
+                                      });
+                                      showLockLoading = !showLockLoading;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      child: pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]['access'] ==
+                                              0 // 1 = locked || 0 = unlocked
+                                          ? const Icon(
+                                              Icons.lock_open_outlined,
+                                              size: 20,
+                                              color: Color.fromRGBO(
+                                                  172, 181, 189, 1),
+                                            )
+                                          : const Icon(
+                                              Icons.lock_clock_outlined,
+                                              size: 20,
+                                              color:
+                                                  Color.fromRGBO(255, 0, 0, 1),
+                                            ),
+                                    ),
+                                  ),
+                            //icon 4
+                            Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              child: pageProvider.pages[pageProvider
+                                              .selectedFilter]![widget.index]
+                                          ['is_favorite'] ==
+                                      true
+                                  ? InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]['is_favorite'] =
+                                              !pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]['is_favorite'];
+                                        });
+                                        pageProvider.makePageFavorite(
+                                            pageId: pageProvider.pages[
+                                                    pageProvider
+                                                        .selectedFilter]![
+                                                widget.index]['id'],
+                                            slug: workspaceProvider
+                                                .selectedWorkspace!
+                                                .workspaceSlug,
+                                            projectId: projectProvider
+                                                .currentProject['id'],
+                                            shouldItBeFavorite: false);
+                                      },
+                                      child: const Icon(Icons.star,
+                                          size: 20, color: Colors.amber))
+                                  : InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]['is_favorite'] =
+                                              !pageProvider.pages[pageProvider
+                                                      .selectedFilter]![
+                                                  widget.index]['is_favorite'];
+                                        });
+                                        pageProvider.makePageFavorite(
+                                            pageId: pageProvider.pages[
+                                                    pageProvider
+                                                        .selectedFilter]![
+                                                widget.index]['id'],
+                                            slug: workspaceProvider
+                                                .selectedWorkspace!
+                                                .workspaceSlug,
+                                            projectId: projectProvider
+                                                .currentProject['id'],
+                                            shouldItBeFavorite: true);
+                                      },
+                                      child: const Icon(
+                                        Icons.star_border,
+                                        size: 20,
+                                        color: Color.fromRGBO(172, 181, 189, 1),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  const Spacer(),
-                  //four small icons
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: const Icon(
-                      Icons.link,
-                      color: greyColor,
-                      size: 22,
-                    ),
-                  ),
-                  //icon 2
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          showColor = !showColor;
-                        });
-                        int.tryParse("FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
-                                        radix: 16) ==
-                                    null ||
-                                colorController.text.trim().isEmpty
-                            ? colorController.text = lables[0]
-                            : null;
-                        if (showColor == false) {
-                          pageProvider.pages[pageProvider.selectedFilter]![
-                                  widget.index]['color'] =
-                              '#${colorController.text}';
-                          pageProvider.editPage(
-                              slug: workspaceProvider
-                                  .selectedWorkspace!.workspaceSlug,
-                              projectId: projectProvider.currentProject['id'],
-                              pageId: pageProvider.pages[pageProvider
-                                  .selectedFilter]![widget.index]['id'],
-                              data: {"color": '#${colorController.text}'});
-                        }
-                      },
-                      icon: Icon(
-                        Icons.color_lens,
-                        color: int.tryParse(
-                                        "FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
-                                        radix: 16) ==
-                                    null ||
-                                colorController.text.trim().isEmpty
-                            ? Color(int.parse(
-                                lables[0].toUpperCase().replaceAll("#", "FF"),
-                                radix: 16))
-                            : Color(int.parse(
-                                "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
-                                radix: 16)),
-                        size: 22,
+                      Container(
+                        height: 1,
+                        color: themeProvider.isDarkThemeEnabled
+                            ? darkThemeBorder
+                            : strokeColor,
+                        width: double.infinity,
                       ),
-                    ),
-                  ),
-                  //icon 3
- InkWell(
-                  onTap: () {
-                    pageProvider
-                            .pages[pageProvider.selectedFilter]![widget.index]
-                        ['access'] = pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['access'] ==
-                            1
-                        ? 0
-                        : 1;
-                    pageProvider.editPage(
-                      pageId: pageProvider
-                              .pages[pageProvider.selectedFilter]![widget.index]
-                          ['id'],
-                      slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
-                      projectId: projectProvider.currentProject['id'],
-                      data: {
-                        "access": pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['access']
-                      },
-                    );
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: pageProvider.pages[pageProvider.selectedFilter]![
-                                widget.index]['access'] ==
-                            0 // 1 = locked || 0 = unlocked
-                        ? const Icon(
-                            Icons.lock_open_outlined,
-                            size: 20,
-                            color: Color.fromRGBO(172, 181, 189, 1),
-                          )
-                        : const Icon(
-                            Icons.lock_clock_outlined,
-                            size: 20,
-                            color: Color.fromRGBO(255, 0, 0, 1),
-                          ),
-                  ),
-                ),
-                  //icon 4
-                       Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    child: pageProvider.pages[pageProvider.selectedFilter]![
-                                widget.index]['is_favorite'] ==
-                            true
-                        ? InkWell(
-                            onTap: () {
-                              setState(() {
-                                pageProvider.pages[pageProvider
-                                        .selectedFilter]![widget.index]
-                                    ['is_favorite'] = !pageProvider
-                                        .pages[pageProvider.selectedFilter]![
-                                    widget.index]['is_favorite'];
-                              });
-                              pageProvider.makePageFavorite(
-                                  pageId: pageProvider.pages[pageProvider
-                                      .selectedFilter]![widget.index]['id'],
-                                  slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
-                                  projectId:
-                                      projectProvider.currentProject['id'],
-                                  shouldItBeFavorite: false);
-                            },
-                            child: const Icon(Icons.star,
-                                size: 20, color: Colors.amber))
-                        : InkWell(
-                            onTap: () {
-                              setState(() {
-                                pageProvider.pages[pageProvider
-                                        .selectedFilter]![widget.index]
-                                    ['is_favorite'] = !pageProvider
-                                        .pages[pageProvider.selectedFilter]![
-                                    widget.index]['is_favorite'];
-                              });
-                              pageProvider.makePageFavorite(
-                                  pageId: pageProvider.pages[pageProvider
-                                      .selectedFilter]![widget.index]['id'],
-                                  slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
-                                  projectId:
-                                      projectProvider.currentProject['id'],
-                                  shouldItBeFavorite: true);
-                            },
-                            child: const Icon(Icons.star_border,
-                                size: 20,
-                                color: Color.fromRGBO(172, 181, 189, 1))))
-                ],
-              ),
-            ),
-            Container(
-              height: 1,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : strokeColor,
-              width: double.infinity,
-            ),
+                    ],
+                  )
+                : Container(),
             const SizedBox(
               height: 15,
             ),
-
             showColor
                 ? Card(
                     color: themeProvider.isDarkThemeEnabled
@@ -392,8 +457,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                         borderRadius: BorderRadius.circular(5),
                                         boxShadow: const [
                                           BoxShadow(
-                                              blurRadius: 1.0,
-                                              color: greyColor),
+                                            blurRadius: 1.0,
+                                            color: greyColor,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -517,15 +583,46 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                     ),
                   )
                 : Container(),
-
-            Container(
-              child: Wrap(
-                  direction: Axis.horizontal,
-                  children: (pageProvider
-                              .pages[pageProvider.selectedFilter]![widget.index]
-                          ['label_details'] as List)
-                      .map((element) {
-                    return Container(
+            Wrap(
+                runSpacing: 10,
+                spacing: 10,
+                direction: Axis.horizontal,
+                children: (pageProvider
+                            .pages[pageProvider.selectedFilter]![widget.index]
+                        ['label_details'] as List)
+                    .map((element) {
+                  return InkWell(
+                    onTap: () {
+                      if (checkAccess()) {
+                        setState(() {
+                          deletedLabel.addAll(element);
+                          pageProvider.selectedLabels.remove(element['id']);
+                          (pageProvider.pages[pageProvider.selectedFilter]![
+                                  widget.index]['label_details'] as List)
+                              .remove(element);
+                          log((pageProvider.pages[pageProvider.selectedFilter]![
+                                  widget.index]['label_details'] as List).toString());
+                        });
+                        pageProvider.editPage(
+                            slug: workspaceProvider
+                                .selectedWorkspace!.workspaceSlug,
+                            projectId: projectProvider.currentProject['id'],
+                            pageId: pageProvider.pages[pageProvider
+                                .selectedFilter]![widget.index]['id'],
+                            data: {
+                              "labels_list": pageProvider.selectedLabels,
+                            }).then((value) {
+                          if (pageProvider.blockSheetState == StateEnum.error) {
+                            setState(() {
+                              (pageProvider.pages[pageProvider.selectedFilter]![
+                                      widget.index]['label_details'] as List)
+                                  .add(deletedLabel);
+                            });
+                          }
+                        });
+                      }
+                    },
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 5),
                       decoration: BoxDecoration(
@@ -535,7 +632,6 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                 : strokeColor),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      margin: const EdgeInsets.only(left: 15),
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
@@ -553,17 +649,15 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             width: 10,
                           ),
                           //container 2
-                          Container(
-                            child: CustomText(
-                              element["name"],
-                              type: FontStyle.title,
-                            ),
+                          CustomText(
+                            element["name"],
+                            type: FontStyle.title,
                           ),
                         ],
                       ),
-                    );
-                  }).toList()),
-            ),
+                    ),
+                  );
+                }).toList()),
             (pageProvider.pages[pageProvider.selectedFilter]![widget.index]
                         ['label_details'] as List)
                     .isNotEmpty
@@ -585,55 +679,58 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             const SizedBox(
               height: 10,
             ),
+            checkAccess()
+                ? GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        enableDrag: true,
+                        constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.8),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        context: context,
+                        builder: (ctx) {
+                          return Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: BlockSheet(
+                                operation: CRUD.create,
+                                pageID: pageProvider.pages[pageProvider
+                                    .selectedFilter]![widget.index]['id'],
+                              ));
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: const Row(
+                        children: [
+                          //add icon
+                          Icon(
+                            Icons.add,
+                            color: primaryColor,
+                            size: 22,
+                          ),
 
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  enableDrag: true,
-                  constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.8),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+                          //text
+                          CustomText(
+                            'Add new block',
+                            type: FontStyle.text,
+                            color: primaryColor,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  context: context,
-                  builder: (ctx) {
-                    return Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: BlockSheet(
-                          operation: CRUD.create,
-                          pageID: pageProvider.pages[
-                              pageProvider.selectedFilter]![widget.index]['id'],
-                        ));
-                  },
-                );
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: const Row(
-                  children: [
-                    //add icon
-                    Icon(
-                      Icons.add,
-                      color: primaryColor,
-                      size: 22,
-                    ),
-
-                    //text
-                    CustomText(
-                      'Add new block',
-                      type: FontStyle.text,
-                      color: primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             Expanded(
               child: LoadingWidget(
                 loading: pageProvider.pagesListState == StateEnum.loading ||
@@ -658,5 +755,22 @@ class _PageDetailState extends ConsumerState<PageDetail> {
         ),
       ),
     );
+  }
+
+  bool checkAccess() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool hasAccess = false;
+
+    for (var element in projectProvider.projectMembers) {
+      if (element['member']['id'] == profileProvider.userProfile.id &&
+          (element['role'] == 20 || element['role'] == 15)) {
+        hasAccess = true;
+      } else {
+        hasAccess = false;
+      }
+    }
+
+    return hasAccess;
   }
 }

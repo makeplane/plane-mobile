@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 
 class PageProvider with ChangeNotifier {
@@ -20,6 +21,7 @@ class PageProvider with ChangeNotifier {
     PageFilters.createdByOthers: [],
   };
   List blocks = [];
+  List selectedLabels = [];
 
   String getQuery(PageFilters filters) {
     switch (filters) {
@@ -102,6 +104,8 @@ class PageProvider with ChangeNotifier {
     } on DioException catch (e) {
       //log(e.response.toString());
       log(e.response!.data.toString());
+      CustomToast()
+          .showSimpleToast(e.response!.data['detail'] ?? e.response!.data);
       blockSheetState = StateEnum.failed;
       blockState = StateEnum.error;
       notifyListeners();
@@ -180,12 +184,12 @@ class PageProvider with ChangeNotifier {
     }
   }
 
-  Future editPage({
-    required String slug,
-    required String projectId,
-    required String pageId,
-    required dynamic data,
-  }) async {
+  Future editPage(
+      {required String slug,
+      required String projectId,
+      required String pageId,
+      required dynamic data,
+      bool? fromDispose = false}) async {
     blockSheetState = StateEnum.loading;
     notifyListeners();
     try {
@@ -206,6 +210,11 @@ class PageProvider with ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       //log(e.response.toString());
+      if (fromDispose == false) {
+        CustomToast().showSimpleToast(e.response!.data['detail'] != null
+            ? e.response!.data['detail'].toString()
+            : e.response!.data.toString());
+      }
       log(e.response!.data.toString());
       blockSheetState = StateEnum.error;
       notifyListeners();
@@ -239,7 +248,10 @@ class PageProvider with ChangeNotifier {
 
       log(res.data.toString());
       notifyListeners();
-    } on DioException catch (err) {
+    } on DioException catch (e) {
+      print(e.response!.data.toString());
+      CustomToast()
+          .showSimpleToast(e.response!.data['detail'] ?? e.response!.data);
       blockState = StateEnum.error;
       notifyListeners();
     }

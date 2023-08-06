@@ -96,7 +96,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     children: [
                       CustomText(
                         '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
-                        type: FontStyle.mainHeading,
+                        type: FontStyle.headingH5SemiBold,
                         maxLines: 2,
                       ),
                       const SizedBox(height: 4),
@@ -109,7 +109,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             DateFormat('EEEE, MMM dd')
                                 .add_jm()
                                 .format(DateTime.now()),
-                            type: FontStyle.description,
+                            type: FontStyle.paragraphXSmallMedium,
                             color: greyColor,
                           ),
                         ],
@@ -149,7 +149,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                       MediaQuery.of(context).size.width * 0.7,
                                   child: CustomText(
                                     'Plane is open source, support us by staring us on GitHub.',
-                                    type: FontStyle.text,
+                                    type: FontStyle.paragraphMediumRegular,
                                     textAlign: TextAlign.start,
                                     color: themeProvider.isDarkThemeEnabled
                                         ? Colors.white
@@ -174,7 +174,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               ],
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 16,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -208,7 +208,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   },
                                   child: CustomText(
                                     'Star us on GitHub',
-                                    type: FontStyle.buttonText,
+                                    type: FontStyle.paragraphXSmallMedium,
                                     color: themeProvider.isDarkThemeEnabled
                                         ? Colors.black
                                         : Colors.white,
@@ -248,11 +248,13 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       children: [
                         const CustomText(
                           'Create a project',
-                          type: FontStyle.heading,
+                          type: FontStyle.headingH5SemiBold,
                         ),
                         const SizedBox(height: 15),
                         const CustomText(
-                            'Manage your projects by creating issues, cycles, modules, views and pages.'),
+                          'Manage your projects by creating issues, cycles, modules, views and pages.',
+                          type: FontStyle.paragraphXSmallRegular,
+                        ),
                         const SizedBox(height: 15),
                         GestureDetector(
                           onTap: () {
@@ -264,7 +266,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           },
                           child: Container(
                             height: 40,
-                            width: 150,
+                            width: 120,
                             //margin: const EdgeInsets.only(top: 30),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -273,7 +275,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             ),
                             child: const CustomText(
                               'Create Project',
-                              type: FontStyle.buttonText,
+                              type: FontStyle.paragraphXSmallMedium,
+                              color: Colors.white,
                             ),
                           ),
                         )
@@ -314,7 +317,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               // ),
                               CustomText(
                                 gridCards[index],
-                                type: FontStyle.smallText,
+                                type: FontStyle.paragraphOverlineSmallRegular,
                               ),
                               const SizedBox(
                                 height: 5,
@@ -441,7 +444,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 ),
                 CustomText(
                   workspaceProvider.selectedWorkspace!.workspaceName,
-                  type: FontStyle.subheading,
+                  type: FontStyle.headingH4SemiBold,
                 ),
               ],
             ),

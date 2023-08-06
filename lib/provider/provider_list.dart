@@ -29,7 +29,7 @@ class ProviderList {
       ChangeNotifierProvider<AuthProvider>((ref) => AuthProvider(ref));
   static final profileProvider =
       ChangeNotifierProvider<ProfileProvider>((_) => ProfileProvider());
-  static final workspaceProvider = ChangeNotifierProvider<WorkspaceProvider>(
+  static var workspaceProvider = ChangeNotifierProvider<WorkspaceProvider>(
       (ref) => WorkspaceProvider(ref));
   static var themeProvider =
       ChangeNotifierProvider<ThemeProvider>((_) => ThemeProvider());

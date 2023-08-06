@@ -4,7 +4,6 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/constants.dart';
 
-
 enum RichFontStyle {
   heading,
   heading2,
@@ -20,11 +19,11 @@ enum RichFontStyle {
   text,
   smallText,
   secondaryText,
+  paragraphSmallRegular,
 }
 
 class CustomRichText extends ConsumerWidget {
-  const CustomRichText(
-   {
+  const CustomRichText({
     this.maxLines,
     this.style,
     this.color,
@@ -245,6 +244,18 @@ class CustomRichText extends ConsumerWidget {
                   ? darkPrimaryTextColor
                   : lightPrimaryTextColor),
         );
+
+      case RichFontStyle.paragraphSmallRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
       default:
         return TextStyle(
           fontFamily: 'SF Pro Display',
@@ -254,6 +265,4 @@ class CustomRichText extends ConsumerWidget {
         );
     }
   }
-
-
 }

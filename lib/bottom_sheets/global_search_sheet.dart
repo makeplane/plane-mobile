@@ -290,7 +290,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       children: [
         CustomText(
           'Create',
-          type: FontStyle.boldTitle,
+          type: FontStyle.paragraphMediumMedium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -356,7 +356,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.description,
+                      type: FontStyle.paragraphMediumRegular,
                     ),
                   ],
                 ),
@@ -405,7 +405,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       children: [
         CustomText(
           'Workspace Settings',
-          type: FontStyle.boldTitle,
+          type: FontStyle.paragraphMediumMedium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -471,7 +471,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.description,
+                      type: FontStyle.paragraphMediumRegular,
                     ),
                   ],
                 ),
@@ -521,7 +521,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         ),
         CustomText(
           'Help',
-          type: FontStyle.boldTitle,
+          type: FontStyle.paragraphMediumMedium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -560,7 +560,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.description,
+                      type: FontStyle.paragraphMediumRegular,
                     ),
                   ],
                 ),

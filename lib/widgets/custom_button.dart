@@ -37,7 +37,9 @@ class _ButtonState extends State<Button> {
       child: InkWell(
         onTap: widget.ontap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          height: 48,
+          // padding: const EdgeInsets.symmetric(vertical: 16),
           width: widget.width ?? MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             border: widget.filledButton
@@ -69,7 +71,7 @@ class _ButtonState extends State<Button> {
                 widget.widget ?? Container(),
                 CustomText(
                   widget.text,
-                  type: FontStyle.buttonText,
+                  type: FontStyle.paragraphMediumSemiBold,
                   color: widget.textColor ?? Colors.white,
                   fontWeight: FontWeight.w600,
                 ),

@@ -50,7 +50,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                   ),
                   const CustomText(
                     'Invite co-workers to team',
-                    type: FontStyle.heading,
+                    type: FontStyle.headingH4SemiBold,
                   ),
                   const SizedBox(
                     height: 30,
@@ -60,7 +60,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                       TextSpan(text: 'Email'),
                       TextSpan(text: '*', style: TextStyle(color: Colors.red))
                     ],
-                    type: RichFontStyle.text,
+                    type: RichFontStyle.paragraphSmallRegular,
                   ),
                   const SizedBox(
                     height: 10,
@@ -300,8 +300,8 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                           }
                         });
                         await ref
-                          .read(ProviderList.workspaceProvider)
-                          .getWorkspaces();
+                            .read(ProviderList.workspaceProvider)
+                            .getWorkspaces();
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -316,6 +316,35 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                   ),
                   const SizedBox(
                     height: 20,
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.arrow_back,
+                          color: greyColor,
+                          size: 18,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const CustomText(
+                            'Go back',
+                            type: FontStyle.heading2,
+                            color: greyColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

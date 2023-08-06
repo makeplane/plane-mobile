@@ -42,7 +42,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
             const CustomText(
               'Projects',
               // color: themeProvider.primaryTextColor,
-              type: FontStyle.mainHeading,
+              type: FontStyle.headingH4SemiBold,
             ),
             const Spacer(),
             Row(
@@ -222,7 +222,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                     child: CustomText(
                                       projectProvider.projects[index]['name'],
                                       // color: themeProvider.primaryTextColor,
-                                      type: FontStyle.heading2,
+                                      type: FontStyle.headingH6Medium,
                                       textAlign: TextAlign.start,
                                       maxLines: 1,
                                     ),
@@ -243,7 +243,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             ? 'Member'
                                             : 'Not a Member',
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.title,
+                                        type: FontStyle.paragraphMediumMedium,
                                       ),
                                       const SizedBox(width: 10),
                                       //dot as a separator
@@ -261,7 +261,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 projectProvider.projects[index]
                                                     ['created_at'])),
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.title,
+                                        type: FontStyle.paragraphMediumMedium,
                                         // fontSize: 16,
                                       ),
                                       // Text(
@@ -403,7 +403,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                     child: CustomText(
                                       projectProvider.projects[index]['name'],
                                       // color: themeProvider.primaryTextColor,
-                                      type: FontStyle.heading2,
+                                      type: FontStyle.headingH6Medium,
                                       textAlign: TextAlign.start,
                                       maxLines: 1,
                                     ),
@@ -424,7 +424,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             ? 'Member'
                                             : 'Not a Member',
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.title,
+                                        type: FontStyle.paragraphMediumMedium,
                                       ),
                                       const SizedBox(width: 10),
                                       //dot as a separator
@@ -450,7 +450,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 projectProvider.projects[index]
                                                     ['created_at'])),
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.title,
+                                        type: FontStyle.paragraphMediumMedium,
                                         color: themeProvider.isDarkThemeEnabled
                                             ? darkSecondaryTextColor
                                             : Colors.black,

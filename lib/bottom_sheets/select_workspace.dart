@@ -53,7 +53,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                 children: [
                   const CustomText(
                     'Workspace',
-                    type: FontStyle.heading,
+                    type: FontStyle.headingH4SemiBold,
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -215,7 +215,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                 ),
                                 CustomText(
                                   prov.workspaces[index]['name'],
-                                  type: FontStyle.heading2,
+                                  type: FontStyle.headingH5Regular,
                                 ),
                                 const Spacer(),
                                 ref
@@ -267,7 +267,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     ),
                     CustomText(
                       'Create Workspace',
-                      type: FontStyle.appbarTitle,
+                      type: FontStyle.headingH5Regular,
                       fontWeight: FontWeight.normal,
                       fontSize: 19,
                       color: primaryColor,

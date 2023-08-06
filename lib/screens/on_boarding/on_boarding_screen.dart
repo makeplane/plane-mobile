@@ -600,7 +600,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                         // ),
                         CustomText(
                           data[index]['title'],
-                          type: FontStyle.heading,
+                          type: FontStyle.headingH4SemiBold,
                         ),
                         const SizedBox(
                           height: 20,
@@ -616,7 +616,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           // ),
                           child: CustomText(
                             data[index]['description'],
-                            type: FontStyle.description,
+                            type: FontStyle.paragraphMediumRegular,
                             textAlign: TextAlign.center,
                             maxLines: 5,
                           ),
@@ -674,7 +674,11 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => dotenv.env['ENABLE_O_AUTH'] != null && isEnableAuth() ? const SignInScreen() : const SignUp(),
+                        builder: (context) =>
+                            dotenv.env['ENABLE_O_AUTH'] != null &&
+                                    isEnableAuth()
+                                ? const SignInScreen()
+                                : const SignUp(),
                       ),
                     );
                   },
@@ -692,14 +696,13 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 
   bool isEnableAuth() {
     bool enableAuth = false;
-    String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? ''; 
+    String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
     int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
     if (enableOAuthValue == 1) {
-        enableAuth = true;
+      enableAuth = true;
     } else {
-        enableAuth = false;
+      enableAuth = false;
     }
     return enableAuth;
   }
-
 }

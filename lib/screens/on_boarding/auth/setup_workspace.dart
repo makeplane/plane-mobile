@@ -55,375 +55,332 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
         child: LoadingWidget(
           loading: prov.checkWorkspaceState == StateEnum.loading ||
               prov.createWorkspaceState == StateEnum.loading,
-          widgetClass: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height - 80,
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset('assets/svg_images/logo.svg'),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    // const Text(
-                    //   'Workspaces',
-                    //   style: TextStylingWidget.mainHeading,
-                    // ),
-                    const CustomText(
-                      ' Create Workspaces',
-                      type: FontStyle.heading,
-                    ),
-                    // const SizedBox(
-                    //   height: 30,
-                    // ),
-                    // !widget.fromHomeScreen
-                    //     ? Container(
-                    //         width: MediaQuery.of(context).size.width,
-                    //         decoration: BoxDecoration(
-                    //             color: Colors.grey[200],
-                    //             borderRadius: BorderRadius.circular(5)),
-                    //         padding: const EdgeInsets.all(6),
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.center,
-                    //           children: [
-                    //             Expanded(
-                    //               child: InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     newWorkSpace = true;
-                    //                   });
-                    //                 },
-                    //                 child: Container(
-                    //                   decoration: BoxDecoration(
-                    //                       borderRadius:
-                    //                           BorderRadius.circular(5),
-                    //                       color: newWorkSpace
-                    //                           ? primaryColor
-                    //                           : Colors.transparent),
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 8, horizontal: 8),
-                    //                   child: Center(
-                    //                     // child: Text(
-                    //                     //   'New Workspace',
-                    //                     //   style: TextStylingWidget.buttonText
-                    //                     //       .copyWith(
-                    //                     //           color: newWorkSpace
-                    //                     //               ? Colors.white
-                    //                     //               : greyColor),
-                    //                     // ),
-                    //                     child: CustomText(
-                    //                       'New Workspace',
-                    //                       type: FontStyle.buttonText,
-                    //                       color: newWorkSpace
-                    //                           ? Colors.white
-                    //                           : greyColor,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             const SizedBox(
-                    //               width: 10,
-                    //             ),
-                    //             Expanded(
-                    //               child: InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     newWorkSpace = false;
-                    //                   });
-                    //                 },
-                    //                 child: Container(
-                    //                   decoration: BoxDecoration(
-                    //                       borderRadius:
-                    //                           BorderRadius.circular(5),
-                    //                       color: !newWorkSpace
-                    //                           ? primaryColor
-                    //                           : Colors.transparent),
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 8, horizontal: 8),
-                    //                   child: Center(
-                    //                     // child: Text(
-                    //                     //   'Join Workspace',
-                    //                     //   style: TextStylingWidget.buttonText
-                    //                     //       .copyWith(
-                    //                     //           color: !newWorkSpace
-                    //                     //               ? Colors.white
-                    //                     //               : greyColor),
-                    //                     // ),
-                    //                     child: CustomText(
-                    //                       'Join Workspace',
-                    //                       type: FontStyle.buttonText,
-                    //                       color: !newWorkSpace
-                    //                           ? Colors.white
-                    //                           : greyColor,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             )
-                    //           ],
-                    //         ),
-                    //       )
-                    //     : const SizedBox(),
-                    newWorkSpace
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const CustomRichText(
-                                widgets: [
-                                  TextSpan(text: 'Workspace name'),
-                                  TextSpan(
-                                    text: '*',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ],
-                                type: RichFontStyle.text,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller: nameController,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(
-                                      r'^[a-zA-Z0-9_\- ]*',
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (val) {
-                                  setState(() {
-                                    urlController.text =
-                                        val.replaceAll(" ", "-").toLowerCase();
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return '*Workspace name is required';
-                                  }
-                                  // Name can only contain (" "), ( - ), ( _ ) & Alphanumeric characters.
-                                  return null;
-                                },
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'e.g. My Workspace',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const CustomRichText(
-                                widgets: [
-                                  TextSpan(text: 'Workspace URL'),
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red))
-                                ],
-                                type: RichFontStyle.text,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return '*Workspace url is required';
-                                  }
-                                  // Name can only contain (" "), ( - ), ( _ ) & Alphanumeric characters.
-                                  return null;
-                                },
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(
-                                      r'^[a-zA-Z0-9_\-]*',
-                                    ),
-                                  ),
-                                ],
-                                controller: urlController,
-                                //enabled: false,
+          widgetClass: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Form(
+                  key: formKey,
+                  child: Container(
+                    // height: MediaQuery.of(context).size.height - 80,
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset('assets/svg_images/logo.svg'),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        // const Text(
+                        //   'Workspaces',
+                        //   style: TextStylingWidget.mainHeading,
+                        // ),
+                        const CustomText(
+                          ' Create Workspaces',
+                          type: FontStyle.headingH4SemiBold,
+                        ),
 
-                                // style: GoogleFonts.getFont(APP_FONT).copyWith(
-                                //     fontSize: 16,
-                                //     color: Colors.black,
-                                //     fontWeight: FontWeight.normal),
-                                decoration: kTextFieldDecoration.copyWith(
-                                  isDense: true,
-                                  prefixIcon: const Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    // child: Text(
-                                    //   "https://takeoff.plane.so/",
-                                    //   style: TextStyle(fontSize: 16),
-                                    // ),
-                                    child: CustomText(
-                                      'https://takeoff.plane.so/',
-                                      type: FontStyle.text,
-                                    ),
+                        newWorkSpace
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                                  prefixIconConstraints: const BoxConstraints(
-                                      minWidth: 0, minHeight: 0),
-                                ),
-                              ),
-                              // prov.urlAvailable
-                              //     ? CustomText(
-                              //         'Workspace URL is already taken!',
-                              //         color: Colors.red.shade700,
-                              //         type: FontStyle.subtitle,
-                              //         fontWeight: FontWeight.bold,
-                              //       )
-                              //     : Container(),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const CustomRichText(
-                                widgets: [
-                                  TextSpan(text: 'How large is your company?'),
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red))
-                                ],
-                                type: RichFontStyle.text,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      constraints: BoxConstraints(
-                                        maxHeight:
-                                            MediaQuery.of(context).size.height *
-                                                0.5,
+                                  const CustomRichText(
+                                    widgets: [
+                                      TextSpan(text: 'Workspace name'),
+                                      TextSpan(
+                                        text: '*',
+                                        style: TextStyle(color: Colors.red),
                                       ),
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
-                                      ),
-                                      builder: (context) {
-                                        return const CompanySize();
-                                      });
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: Border.all(
-                                      color: themeProv.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
+                                    ],
+                                    type: RichFontStyle.paragraphSmallRegular,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 16),
-                                        child: CustomText(
-                                          prov.companySize == ''
-                                              ? 'Select Company Size'
-                                              : prov.companySize,
-                                          type: FontStyle.title,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin:
-                                            const EdgeInsets.only(right: 16),
-                                        child: Icon(
-                                          Icons.keyboard_arrow_down,
-                                          color: themeProv.isDarkThemeEnabled
-                                              ? darkPrimaryTextColor
-                                              : lightPrimaryTextColor,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: nameController,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(
+                                          r'^[a-zA-Z0-9_\- ]*',
                                         ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                // ),
-                              ),
-                              dropdownEmpty
-                                  ? const CustomText(
-                                      "*required",
-                                      fontSize: 14,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    )
-                                  : Container(),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Button(
-                                  text: 'Create Workspace',
-                                  ontap: () async {
-                                    if (!formKey.currentState!.validate()) {
-                                      if (prov.companySize == '') {
-                                        setState(() {
-                                          dropdownEmpty = true;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          dropdownEmpty = false;
-                                        });
-                                      }
-                                      return;
-                                    }
-                                    if (prov.companySize == '') {
+                                    onChanged: (val) {
                                       setState(() {
-                                        dropdownEmpty = true;
+                                        urlController.text = val
+                                            .replaceAll(" ", "-")
+                                            .toLowerCase();
                                       });
-                                      return;
-                                    }
-                                    if (await prov.checkWorspaceSlug(
-                                        slug: urlController.text)) {
-                                      await prov.createWorkspace(
-                                          name: nameController.text.trim(),
-                                          slug: urlController.text.trim(),
-                                          size: prov.companySize,
-                                          context: context);
-                                      if (prov.createWorkspaceState ==
-                                          StateEnum.success) {
-                                        if (!widget.fromHomeScreen) {
-                                          profileProvider.updateProfile(data: {
-                                            'onboarding_step': {
-                                              "workspace_join": false,
-                                              "profile_complete": true,
-                                              "workspace_create": true,
-                                              "workspace_invite": false
-                                            }
-                                          });
-                                          Navigator.push(
-                                            Const.globalKey.currentContext!,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const InviteCOWorkers(),
-                                            ),
-                                          );
-                                        } else {
-                                          Navigator.of(context).pop();
-                                        }
+                                    },
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return '*Workspace name is required';
                                       }
-                                    } else {
-                                      CustomToast().showToast(context,
-                                          'Workspace url is already taken');
-                                    }
-                                  })
+                                      // Name can only contain (" "), ( - ), ( _ ) & Alphanumeric characters.
+                                      return null;
+                                    },
+                                    decoration: kTextFieldDecoration.copyWith(
+                                        labelText: 'e.g. My Workspace',
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const CustomRichText(
+                                    widgets: [
+                                      TextSpan(text: 'Workspace URL'),
+                                      TextSpan(
+                                          text: '*',
+                                          style: TextStyle(color: Colors.red))
+                                    ],
+                                    type: RichFontStyle.paragraphSmallRegular,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return '*Workspace url is required';
+                                      }
+                                      // Name can only contain (" "), ( - ), ( _ ) & Alphanumeric characters.
+                                      return null;
+                                    },
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(
+                                          r'^[a-zA-Z0-9_\-]*',
+                                        ),
+                                      ),
+                                    ],
+                                    controller: urlController,
+                                    //enabled: false,
+
+                                    // style: GoogleFonts.getFont(APP_FONT).copyWith(
+                                    //     fontSize: 16,
+                                    //     color: Colors.black,
+                                    //     fontWeight: FontWeight.normal),
+                                    decoration: kTextFieldDecoration.copyWith(
+                                      isDense: true,
+                                      prefixIcon: const Padding(
+                                        padding: EdgeInsets.only(left: 15),
+                                        // child: Text(
+                                        //   "https://takeoff.plane.so/",
+                                        //   style: TextStyle(fontSize: 16),
+                                        // ),
+                                        child: CustomText(
+                                          'https://takeoff.plane.so/',
+                                          type: FontStyle.text,
+                                        ),
+                                      ),
+                                      prefixIconConstraints:
+                                          const BoxConstraints(
+                                              minWidth: 0, minHeight: 0),
+                                    ),
+                                  ),
+                                  // prov.urlAvailable
+                                  //     ? CustomText(
+                                  //         'Workspace URL is already taken!',
+                                  //         color: Colors.red.shade700,
+                                  //         type: FontStyle.subtitle,
+                                  //         fontWeight: FontWeight.bold,
+                                  //       )
+                                  //     : Container(),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const CustomRichText(
+                                    widgets: [
+                                      TextSpan(
+                                          text: 'How large is your company?'),
+                                      TextSpan(
+                                          text: '*',
+                                          style: TextStyle(color: Colors.red))
+                                    ],
+                                    type: RichFontStyle.paragraphSmallRegular,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                    key: const Key('companySize'),
+                                    onTap: () {
+                                      FocusScope.of(context).unfocus();
+                                      showModalBottomSheet(
+                                          context: context,
+                                          constraints: BoxConstraints(
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.5,
+                                          ),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                          builder: (context) {
+                                            return const CompanySize();
+                                          });
+                                    },
+                                    child: Container(
+                                      height: 55,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        border: Border.all(
+                                          color: themeProv.isDarkThemeEnabled
+                                              ? darkThemeBorder
+                                              : const Color(0xFFE5E5E5),
+                                        ),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 16),
+                                            child: CustomText(
+                                              prov.companySize == ''
+                                                  ? 'Select Company Size'
+                                                  : prov.companySize,
+                                              type: FontStyle.title,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 16),
+                                            child: Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color:
+                                                  themeProv.isDarkThemeEnabled
+                                                      ? darkPrimaryTextColor
+                                                      : lightPrimaryTextColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // ),
+                                  ),
+                                  dropdownEmpty
+                                      ? const CustomText(
+                                          "*required",
+                                          fontSize: 14,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        )
+                                      : Container(),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  Button(
+                                      text: 'Create Workspace',
+                                      ontap: () async {
+                                        //unfocus
+                                        FocusScope.of(context).unfocus();
+                                        if (!formKey.currentState!.validate()) {
+                                          if (prov.companySize == '') {
+                                            setState(() {
+                                              dropdownEmpty = true;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              dropdownEmpty = false;
+                                            });
+                                          }
+                                          return;
+                                        }
+                                        if (prov.companySize == '') {
+                                          setState(() {
+                                            dropdownEmpty = true;
+                                          });
+                                          return;
+                                        }
+                                        if (await prov.checkWorspaceSlug(
+                                            slug: urlController.text)) {
+                                          await prov.createWorkspace(
+                                              name: nameController.text.trim(),
+                                              slug: urlController.text.trim(),
+                                              size: prov.companySize,
+                                              context: context);
+                                          if (prov.createWorkspaceState ==
+                                              StateEnum.success) {
+                                            if (!widget.fromHomeScreen) {
+                                              // profileProvider
+                                              //     .updateProfile(data: {
+                                              //   'onboarding_step': {
+                                              //     "workspace_join": false,
+                                              //     "profile_complete": true,
+                                              //     "workspace_create": true,
+                                              //     "workspace_invite": false
+                                              //   }
+                                              // });
+                                              Navigator.push(
+                                                Const.globalKey.currentContext!,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const InviteCOWorkers(),
+                                                ),
+                                              );
+                                            } else {
+                                              Navigator.of(context).pop();
+                                            }
+                                          }
+                                        } else {
+                                          CustomToast().showToast(context,
+                                              'Workspace url is already taken');
+                                        }
+                                      })
+                                ],
+                              )
+                            : Container(),
+
+                        const Spacer(),
+
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.arrow_back,
+                                color: greyColor,
+                                size: 18,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const CustomText(
+                                  'Go back',
+                                  type: FontStyle.heading2,
+                                  color: greyColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ],
-                          )
-                        : Container()
-                  ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

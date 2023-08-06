@@ -24,6 +24,54 @@ enum FontStyle {
   text,
   smallText,
   secondaryText,
+  headingH1Regular,
+  headingH1Medium,
+  headingH1SemiBold,
+  headingH1Bold,
+  headingH1ExtraBold,
+  headingH2Regular,
+  headingH2Medium,
+  headingH2SemiBold,
+  headingH2Bold,
+  headingH2ExtraBold,
+  headingH3Regular,
+  headingH3Medium,
+  headingH3SemiBold,
+  headingH3Bold,
+  headingH3ExtraBold,
+  headingH4Regular,
+  headingH4Medium,
+  headingH4SemiBold,
+  headingH4Bold,
+  headingH4ExtraBold,
+  headingH5Regular,
+  headingH5Medium,
+  headingH5SemiBold,
+  headingH5Bold,
+  headingH5ExtraBold,
+  headingH6Regular,
+  headingH6Medium,
+  headingH6SemiBold,
+  headingH6Bold,
+  headingH6ExtraBold,
+  paragraphLargeRegular,
+  paragraphLargeMedium,
+  paragraphLargeSemiBold,
+  paragraphMediumRegular,
+  paragraphMediumMedium,
+  paragraphMediumSemiBold,
+  paragraphSmallRegular,
+  paragraphSmallMedium,
+  paragraphSmallSemiBold,
+  paragraphXSmallRegular,
+  paragraphXSmallMedium,
+  paragraphXSmallSemiBold,
+  paragraphOverlineLargeRegular,
+  paragraphOverlineLargeMedium,
+  paragraphOverlineLargeSemiBold,
+  paragraphOverlineSmallRegular,
+  paragraphOverlineSmallMedium,
+  paragraphOverlineSmallSemiBold,
 }
 
 // ignore: non_constant_identifier_names
@@ -263,6 +311,529 @@ class CustomText extends ConsumerWidget {
                   ? darkPrimaryTextColor
                   : lightPrimaryTextColor),
         );
+
+      case FontStyle.headingH1Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 36,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH1Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 36,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH1SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 36,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH1Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 36,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH1ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 36,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH2Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 32,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH2Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 32,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH2SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 32,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH2Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 32,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          // color: color ?? themeProvider.primaryTextColor,
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH2ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 32,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH3Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 28,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH3Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 28,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH3SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 28,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH3Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 28,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH3ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 28,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH4Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 24,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH4Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 24,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH4SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 24,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH4Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 24,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH4ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 24,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH5Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH5Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH5SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH5Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH5ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 20,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH6Regular:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH6Medium:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH6SemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH6Bold:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w700,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.headingH6ExtraBold:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkTextHeadingColor
+                  : lightTextHeadingColor),
+        );
+
+      case FontStyle.paragraphLargeRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphLargeMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphLargeSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 18,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphMediumRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 16,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphMediumMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 16,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphMediumSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 16,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphSmallRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphSmallMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphSmallSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphXSmallRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 13,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphXSmallMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 13,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphXSmallSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 13,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphOverlineLargeRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ??
+              (themeProvider.isDarkThemeEnabled
+                  ? darkPrimaryTextColor
+                  : lightPrimaryTextColor),
+        );
+
+      case FontStyle.paragraphOverlineLargeMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ?? lightPrimaryTextColor,
+        );
+
+      case FontStyle.paragraphOverlineLargeSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 14,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ?? lightPrimaryTextColor,
+        );
+
+      case FontStyle.paragraphOverlineSmallRegular:
+        return TextStyle(
+          fontSize: fontSize ?? 12,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          fontFamily: 'SF Pro Display',
+          color: color ?? lightPrimaryTextColor,
+        );
+
+      case FontStyle.paragraphOverlineSmallMedium:
+        return TextStyle(
+          fontSize: fontSize ?? 12,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          fontFamily: 'SF Pro Display',
+          color: color ?? lightPrimaryTextColor,
+        );
+
+      case FontStyle.paragraphOverlineSmallSemiBold:
+        return TextStyle(
+          fontSize: fontSize ?? 12,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontFamily: 'SF Pro Display',
+          color: color ?? lightPrimaryTextColor,
+        );
+
       default:
         return TextStyle(
           fontFamily: 'SF Pro Display',

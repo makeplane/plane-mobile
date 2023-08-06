@@ -23,7 +23,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.elevation = true,
     this.centerTitle = true,
     this.icon = Icons.close,
-    this.fontType = FontStyle.appbarTitle,
+    this.fontType = FontStyle.paragraphLargeSemiBold,
     this.actions,
   });
 

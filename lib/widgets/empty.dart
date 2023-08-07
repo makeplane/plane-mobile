@@ -32,7 +32,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Cycles',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -42,7 +42,7 @@ class EmptyPlaceholder {
               'Sprint more effectively with Cycles by confining your project to a fixed amount of time. Create new cycle now.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 3,
             ),
           ),
@@ -98,7 +98,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Create New Issue',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -110,7 +110,7 @@ class EmptyPlaceholder {
 
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 6,
             ),
           ),
@@ -167,7 +167,6 @@ class EmptyPlaceholder {
                         issueId: '',
                         createIssue: false,
                         // blocking: true,
-                        
                       ),
                     );
                   },
@@ -222,7 +221,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Modules',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -232,7 +231,7 @@ class EmptyPlaceholder {
               'Modules are smaller, focused projects that help you group and organize issues within a specific time frame.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 3,
             ),
           ),
@@ -292,7 +291,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Notifications',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -302,7 +301,7 @@ class EmptyPlaceholder {
               "You're updated with all the notifications",
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 3,
             ),
           ),
@@ -409,7 +408,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Pages',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -420,7 +419,7 @@ class EmptyPlaceholder {
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
             ),
           ),
           GestureDetector(
@@ -527,7 +526,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'Views',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -536,7 +535,7 @@ class EmptyPlaceholder {
             child: const CustomText(
               'Views aid in saving your issues by applying various filters and grouping options.',
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
             ),
@@ -594,7 +593,7 @@ class EmptyPlaceholder {
             width: width * 0.7,
             child: const CustomText(
               'You are not a member of this project',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
               textAlign: TextAlign.center,
               maxLines: 5,
             ),
@@ -605,7 +604,7 @@ class EmptyPlaceholder {
             child: const CustomText(
               'You are not a member of this project, but you can join this project by clicking the button below.',
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
             ),
@@ -681,7 +680,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'No projects yet',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -691,7 +690,7 @@ class EmptyPlaceholder {
               'Get started by creating your first project.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 3,
             ),
           ),
@@ -751,7 +750,7 @@ class EmptyPlaceholder {
             padding: const EdgeInsets.only(top: 35),
             child: const CustomText(
               'No labels yet',
-              type: FontStyle.heading,
+              type: FontStyle.headingH5SemiBold,
             ),
           ),
           Container(
@@ -761,7 +760,7 @@ class EmptyPlaceholder {
               'Create labels to help organize and filter issues in you project',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.title,
+              type: FontStyle.paragraphSmallRegular,
               maxLines: 3,
             ),
           ),

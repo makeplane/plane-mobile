@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
@@ -109,6 +108,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
     return false;
   }
 
+  PageController pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     var projectProvider = ref.watch(ProviderList.projectProvider);
@@ -116,229 +117,275 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return NotificationListener<ScrollNotification>(
       onNotification: onNotification,
-      child: Stack(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              //color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Row(
               children: [
-                const SizedBox(
-                  height: 10,
+                // const Text(
+                //   'Views',
+                //   style: TextStyle(
+                //     fontSize: 24,
+                //     fontWeight: FontWeight.w600,
+                //   ),
+                // ),
+                const CustomText(
+                  'Choose Cover Image',
+                  type: FontStyle.headingH4SemiBold,
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    size: 27,
+                    color: Color.fromRGBO(143, 143, 147, 1),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            //bottom border
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: lightGreeyColor,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      pageController.jumpToPage(0);
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: CustomText(
+                            'Unsplash',
+                            color: selected == 0
+                                ? primaryColor
+                                : lightGreyTextColor,
+                            type: FontStyle.headingH5Medium,
+                          ),
+                        ),
+                        selected == 0
+                            ? Container(
+                                height: 2,
+                                color: primaryColor,
+                              )
+                            : Container(
+                                height: 2,
+                                color: lightGreeyColor,
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      pageController.jumpToPage(1);
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: CustomText(
+                            'Upload',
+                            color: selected == 1
+                                ? primaryColor
+                                : lightGreyTextColor,
+                            type: FontStyle.headingH5Medium,
+                          ),
+                        ),
+                        selected == 1
+                            ? Container(
+                                height: 2,
+                                color: primaryColor,
+                              )
+                            : Container(
+                                height: 2,
+                                color: lightGreeyColor,
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (value) {
+                setState(() {
+                  selected = value;
+                });
+              },
+              children: [
+                Column(
                   children: [
                     Row(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selected = 0;
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            height: 35,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: selected == 0 ? primaryColor : null,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: CustomText(
-                              'Unsplash',
-                              type: FontStyle.title,
-                              color: selected == 0
-                                  ? Colors.white
-                                  : themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
-                            ),
-                          ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 15, left: 10),
+                          //   height: 50,
+                          width: MediaQuery.of(context).size.width - 130,
+                          child: TextFormField(
+                              controller: searchController,
+                              decoration: kTextFieldDecoration.copyWith(
+                                labelText: 'Search for images',
+                                labelStyle: TextStyle(
+                                    color: themeProvider.isDarkThemeEnabled
+                                        ? darkSecondaryTextColor
+                                        : lightSecondaryTextColor),
+                              )),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selected = 1;
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            height: 35,
-                            width: 80,
-                            decoration: BoxDecoration(
-                                color: selected == 1 ? primaryColor : null,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: CustomText(
-                              'Upload',
-                              type: FontStyle.title,
-                              color: selected == 1
-                                  ? Colors.white
-                                  : themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              images.clear();
+                              page = 1;
+
+                              isSearched ? getImages(true) : getImages(false);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10, top: 15),
+                              height: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: CustomText(
+                                isSearched ? 'Clear' : 'Search',
+                                type: FontStyle.buttonText,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Icon(
-                          Icons.close,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? lightBackgroundColor
-                              : darkBackgroundColor,
-                        ))
+                    (images.isNotEmpty)
+                        ? Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child:
+                                  // isSearching
+                                  //     ? const Center(
+                                  //         child: CircularProgressIndicator(
+                                  //           color: primaryColor,
+                                  //         ),
+                                  //       )
+                                  // :
+                                  GridView.builder(
+                                itemCount: images.length + 1,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 5 / 3,
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10),
+                                itemBuilder: (context, index) {
+                                  if (index == images.length) {
+                                    return isLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(
+                                              color: primaryColor,
+                                            ),
+                                          )
+                                        : Container();
+                                  }
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (!widget.creatProject) {
+                                        projectProvider.projectDetailModel!
+                                            .coverImage = images[index];
+                                        projectProvider.setState();
+                                      } else {
+                                        projectProvider.changeCoverUrl(
+                                            url: images[index]);
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: Image.network(
+                                              images[index],
+                                            ).image,
+                                          )),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                selected == 1
-                    ? Container()
-                    : Row(
-                        children: [
-                          SizedBox(
-                            //   height: 50,
-                            width: MediaQuery.of(context).size.width - 130,
-                            child: TextFormField(
-                                controller: searchController,
-                                decoration: kTextFieldDecoration.copyWith(
-                                  labelText: 'Search for images',
-                                  labelStyle: TextStyle(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : lightSecondaryTextColor),
-                                )),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                images.clear();
-                                page = 1;
+                Column(
+                  children: [
+                    coverImage == null
+                        ? Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  var file = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
 
-                                isSearched ? getImages(true) : getImages(false);
-                              },
-                              child: Container(
-                                height: 50,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: CustomText(
-                                  isSearched ? 'Clear' : 'Search',
-                                  type: FontStyle.buttonText,
+                                  if (file != null) {
+                                    setState(() {
+                                      coverImage = File(file.path);
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.file_upload_outlined),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      CustomText(
+                                        'Upload',
+                                        type: FontStyle.subheading,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-
-                (selected == 0 && images.isNotEmpty)
-                    ? Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child:
-                              // isSearching
-                              //     ? const Center(
-                              //         child: CircularProgressIndicator(
-                              //           color: primaryColor,
-                              //         ),
-                              //       )
-                              // :
-                              GridView.builder(
-                            itemCount: images.length + 1,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 5 / 3,
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10),
-                            itemBuilder: (context, index) {
-                              if (index == images.length) {
-                                return isLoading
-                                    ? const Center(
-                                        child: CircularProgressIndicator(
-                                          color: primaryColor,
-                                        ),
-                                      )
-                                    : Container();
-                              }
-                              return GestureDetector(
-                                onTap: () {
-                                  if (!widget.creatProject) {
-                                    projectProvider.projectDetailModel!
-                                        .coverImage = images[index];
-                                    projectProvider.setState();
-                                  } else {
-                                    projectProvider.changeCoverUrl(
-                                        url: images[index]);
-                                  }
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: Image.network(
-                                          images[index],
-                                        ).image,
-                                      )),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      )
-                    : Container(),
-                // Wrap(
-                //   children: projectProvider.unsplashImages.map((e) => GestureDetector(
-                //     onTap: (){
-                //     },
-                //     child:
-                //       Container(
-                //           height: 100,
-                //           width: 120,
-                //           decoration: BoxDecoration(
-                //               color: Colors.grey[300],
-                //               image:  DecorationImage(
-                //                       fit: BoxFit.cover,
-                //                       image: Image.network(e['urls']['raw']!).image)
-                //                  ),
-
-                //         ),
-                //   )).toList()
-
-                // )
-
-                selected == 1 && coverImage == null
-                    ? Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
+                          )
+                        : Container(),
+                    coverImage != null
+                        ? GestureDetector(
                             onTap: () async {
                               var file = await ImagePicker()
                                   .pickImage(source: ImageSource.gallery);
-
                               if (file != null) {
                                 setState(() {
                                   coverImage = File(file.path);
@@ -346,126 +393,60 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               }
                             },
                             child: Container(
-                              height: 40,
-                              width: 120,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 10),
+                              height: 250,
+                              width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.file_upload_outlined),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  CustomText(
-                                    'Upload',
-                                    type: FontStyle.subheading,
-                                    color: Colors.black,
-                                  ),
-                                ],
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: Image.file(coverImage!).image,
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                    : Container(),
+                          )
+                        : Container(),
+                    coverImage != null
+                        ? Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 10),
+                                child: Button(
+                                  text: 'UPLOAD',
+                                  ontap: () async {
+                                    int sizeOfImage = coverImage!
+                                        .readAsBytesSync()
+                                        .lengthInBytes;
 
-                selected == 1 && coverImage != null
-                    ? GestureDetector(
-                        onTap: () async {
-                          var file = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          if (file != null) {
-                            setState(() {
-                              coverImage = File(file.path);
-                            });
-                          }
-                        },
-                        child: Container(
-                          height: 250,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: Image.file(coverImage!).image,
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(),
-                selected == 1 && coverImage != null
-                    ? Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Button(
-                            text: 'UPLOAD',
-                            ontap: () async {
-                              int sizeOfImage =
-                                  coverImage!.readAsBytesSync().lengthInBytes;
+                                    if (sizeOfImage > 5000000) {
+                                      CustomToast().showToast(context,
+                                          'File size should be less than 5MB');
+                                      return;
+                                    }
 
-                              if (sizeOfImage > 5000000) {
-                                CustomToast().showToast(context,
-                                    'File size should be less than 5MB');
-                                return;
-                              }
-
-                              var url = await fileProvider.uploadFile(
-                                coverImage!,
-                                coverImage!.path.split('.').last,
-                              );
-                              if (url != null) {
-                                projectProvider.changeCoverUrl(url: url);
-                              }
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      )
-                    : Container()
+                                    var url = await fileProvider.uploadFile(
+                                      coverImage!,
+                                      coverImage!.path.split('.').last,
+                                    );
+                                    if (url != null) {
+                                      projectProvider.changeCoverUrl(url: url);
+                                    }
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container()
+                  ],
+                ),
               ],
             ),
-          ),
-          projectProvider.unsplashImageState == StateEnum.loading ||
-                  fileProvider.fileUploadState == StateEnum.loading
-              ? Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryBGC.withOpacity(0.7)
-                        : lightSecondaryBackgroundColor.withOpacity(0.7),
-                    //color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                  ),
-                  alignment: Alignment.center,
-
-                  // height: 25,
-                  // width: 25,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: LoadingIndicator(
-                          indicatorType: Indicator.lineSpinFadeLoader,
-                          colors: [
-                            themeProvider.isDarkThemeEnabled
-                                ? darkPrimaryTextColor
-                                : lightPrimaryTextColor
-                          ],
-                          strokeWidth: 1.0,
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
+          )
         ],
       ),
     );

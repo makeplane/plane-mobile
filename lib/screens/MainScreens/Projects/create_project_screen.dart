@@ -125,7 +125,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                     MediaQuery.of(context)
                                                             .size
                                                             .height *
-                                                        0.75),
+                                                        0.85),
                                             shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(30),

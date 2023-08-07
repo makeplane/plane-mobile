@@ -75,7 +75,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                           // ),
                           const CustomText(
                             'Setup your profile',
-                            type: FontStyle.mainHeading,
+                            type: FontStyle.headingH4SemiBold,
                           ),
                           const SizedBox(
                             height: 30,
@@ -91,7 +91,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         text: '*',
                                         style: TextStyle(color: Colors.red))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: RichFontStyle.paragraphSmallRegular,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -116,7 +116,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         text: '*',
                                         style: TextStyle(color: Colors.red))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: RichFontStyle.paragraphSmallRegular,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -140,13 +140,14 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         text: '*',
                                         style: TextStyle(color: Colors.red))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: RichFontStyle.paragraphSmallRegular,
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    FocusScope.of(context).unfocus();
                                     showModalBottomSheet(
                                         context: context,
                                         constraints: BoxConstraints(
@@ -166,7 +167,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         });
                                   },
                                   child: Container(
-                                    height: 50,
+                                    height: 55,
                                     width: MediaQuery.of(context).size.width,
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
@@ -216,7 +217,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       )
                                     : Container(),
                                 const SizedBox(
-                                  height: 30,
+                                  height: 40,
                                 ),
                                 GestureDetector(
                                   onTap: () async {

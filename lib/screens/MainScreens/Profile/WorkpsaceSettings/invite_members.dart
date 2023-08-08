@@ -11,7 +11,6 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/submit_button.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
-
 class InviteMembers extends ConsumerStatefulWidget {
   final bool isProject;
   const InviteMembers({super.key, required this.isProject});
@@ -83,11 +82,11 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               children: [
                                 CustomText(
                                   'Email',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                                 CustomText(
                                   '*',
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                   color: Colors.red,
                                 ),
                               ],
@@ -200,8 +199,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                         value: value,
                                         child: CustomText(
                                           value,
-                                          type: FontStyle.subtitle,
-                                          fontWeight: FontWeight.bold,
+                                          type: FontStyle.Medium,
+                                        
                                         ),
                                       );
                                     }).toList(),
@@ -219,11 +218,11 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               children: [
                                 CustomText(
                                   'Role',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                                 CustomText(
                                   '*',
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                   color: Colors.red,
                                 ),
                               ],
@@ -340,7 +339,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         //           value: 'Admin',
                         //           child: CustomText(
                         //             'Admin',
-                        //             type: FontStyle.subtitle,
+                        //             type: FontStyle.Medium,
                         //             fontWeight: FontWeight.bold,
                         //           ),
                         //         ),
@@ -348,7 +347,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         //           value: 'Member',
                         //           child: CustomText(
                         //             'Member',
-                        //             type: FontStyle.subtitle,
+                        //             type: FontStyle.Medium,
                         //             fontWeight: FontWeight.bold,
                         //           ),
                         //         ),
@@ -356,7 +355,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         //           value: 'Viewer',
                         //           child: CustomText(
                         //             'Viewer',
-                        //             type: FontStyle.subtitle,
+                        //             type: FontStyle.Medium,
                         //             fontWeight: FontWeight.bold,
                         //           ),
                         //         ),
@@ -364,7 +363,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         //           value: 'Guest',
                         //           child: CustomText(
                         //             'Guest',
-                        //             type: FontStyle.subtitle,
+                        //             type: FontStyle.Medium,
                         //             fontWeight: FontWeight.bold,
                         //           ),
                         //         ),
@@ -390,7 +389,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 left: 20, right: 20, top: 20, bottom: 5),
                             child: const CustomText(
                               'Message ',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                             )),
                         Container(
                           padding: const EdgeInsets.only(
@@ -481,7 +480,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               .showSnackBar(const SnackBar(
                             content: CustomText(
                               'Invitation sent successfully',
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               color: Colors.white,
                             ),
                             backgroundColor: Colors.green,
@@ -496,7 +495,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               .showSnackBar(const SnackBar(
                             content: CustomText(
                               'Invitation sent successfully',
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               color: Colors.white,
                             ),
                             backgroundColor: greenHighLight,

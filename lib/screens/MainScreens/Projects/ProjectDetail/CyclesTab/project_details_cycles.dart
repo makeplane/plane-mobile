@@ -121,7 +121,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
           color: cycleNaveBarSelectedIndex == itemIndex
               ? textColorOnSelected
               : null,
-          type: FontStyle.text,
+          type: FontStyle.Small,
         ),
       ),
     );
@@ -146,7 +146,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.allCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesAllData.isEmpty &&
               cyclesProvider.cycleFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context)
+          ? EmptyPlaceholder.emptyCycles(context,ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +209,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -457,7 +457,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesAllData[index]
                                                       ['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -653,13 +653,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         child: Center(
           child: CustomText(
             'No active cycle is present.',
-            type: FontStyle.subheading,
+            type: FontStyle.Small,
           ),
         ),
       );
     } else {
       return cyclesProvider.cyclesActiveData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context)
+          ? EmptyPlaceholder.emptyCycles(context,ref)
           : ListView.builder(
               itemCount: cyclesProvider.cyclesActiveData.length,
               itemBuilder: (context, index) {
@@ -679,7 +679,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.completedCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesCompletedData.isEmpty &&
               cyclesProvider.cycleCompletedFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context)
+          ? EmptyPlaceholder.emptyCycles(context,ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -752,7 +752,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleCompletedFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -976,7 +976,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesCompletedData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1153,7 +1153,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.upcomingCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesUpcomingData.isEmpty &&
               cyclesProvider.cycleUpcomingFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context)
+          ? EmptyPlaceholder.emptyCycles(context,ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1224,7 +1224,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleUpcomingFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1448,7 +1448,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesUpcomingData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1625,7 +1625,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.draftCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesDraftData.isEmpty &&
               cyclesProvider.cycleDraftFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context)
+          ? EmptyPlaceholder.emptyCycles(context,ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1695,7 +1695,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleDraftFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1951,7 +1951,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesDraftData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.heading2,
+                                                  type: FontStyle.H5,
                                                 ),
                                               ),
                                               const SizedBox(

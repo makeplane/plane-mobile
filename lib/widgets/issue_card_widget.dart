@@ -138,7 +138,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             ? Container(
                 margin: const EdgeInsets.only(top: 15),
                 child: CustomRichText(
-                    //ype: RichFontStyle.title,
+                    //ype: RichFontStyle.Small,
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
                     widgets: [
@@ -155,7 +155,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         ),
         CustomText(
           provider.issuesResponse[widget.cardIndex]['name'],
-          type: FontStyle.description,
+          type: FontStyle.Small,
+          fontWeight: FontWeightt.Medium,
           maxLines: 2,
           textAlign: TextAlign.start,
         ),
@@ -249,7 +250,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                     //                 provider
                     //                         .issuesResponse[widget.cardIndex]
                     //                     ['state_detail']['name'],
-                    //                 type: FontStyle.subtitle,
+                    //                 type: FontStyle.Medium,
                     //                 fontSize: 13,
                     //               ),
                     //             ),
@@ -437,8 +438,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                               provider.issuesResponse[widget.cardIndex]
                                       ['start_date'] ??
                                   'Due date',
-                              type: FontStyle.subtitle,
-                              fontSize: 13,
+                              type: FontStyle.XSmall,
+                              color:
+                                  themeProvider.themeManager.secondaryTextColor,
                             ),
                           )
                         : Container(),
@@ -642,8 +644,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                                   .cardIndex]['estimate_point'];
                                         })['value']
                                       : 'Estimate',
-                                  type: FontStyle.smallText,
-                                  fontSize: 13,
+                                  type: FontStyle.XSmall,
                                 ),
                               ],
                             ),
@@ -716,7 +717,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               ? Container(
                   margin: const EdgeInsets.only(right: 8),
                   child: CustomRichText(
-                      //ype: RichFontStyle.title,
+                      //ype: RichFontStyle.Small,
                       fontSize: 14,
                       color: themeProvider.isDarkThemeEnabled
                           ? Colors.grey.shade400
@@ -750,7 +751,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
 
               child: CustomText(
                 provider.issuesResponse[widget.cardIndex]['name'],
-                type: FontStyle.description,
+                type: FontStyle.Small,
+                fontWeight: FontWeightt.Medium,
                 maxLines: 1,
                 textAlign: TextAlign.start,
               ),

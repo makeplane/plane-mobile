@@ -6,7 +6,7 @@ import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-
+import '/utils/enums.dart';
 class JiraImport extends ConsumerStatefulWidget {
   const JiraImport({super.key});
 
@@ -51,8 +51,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                       color: Colors.grey.shade200),
                   child: SvgPicture.asset(
                     'assets/svg_images/slack.svg',
-                      colorFilter: const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
-                
+                    colorFilter:
+                        const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
                     height: 45,
                     width: 45,
                   ),
@@ -61,7 +61,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                 //text
                 const CustomText(
                   'Jira',
-                  type: FontStyle.mainHeading,
+                  type: FontStyle.H4,
+                  fontWeight: FontWeightt.Semibold,
                 ),
               ],
             ),
@@ -199,7 +200,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               'Jira personal access token (Attlasian settings)',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               // color: themeProvider.secondaryTextColor,
                             ),
                             // const Text(
@@ -212,7 +213,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               ' *',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Colors.red,
                             ),
                           ],
@@ -235,32 +236,32 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   value: 'Admin',
                                   child: CustomText(
                                     'Admin',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Member',
                                   child: CustomText(
                                     'Member',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                     fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Viewer',
                                   child: CustomText(
                                     'Viewer',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                     fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Guest',
                                   child: CustomText(
                                     'Guest',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                     fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                               ],
@@ -279,7 +280,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               'Jira Project Key',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               // color: themeProvider.secondaryTextColor,
                             ),
                             // const Text(
@@ -292,7 +293,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               ' *',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Colors.red,
                             ),
                           ],
@@ -319,7 +320,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               'Jira Email Address',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               // color: themeProvider.secondaryTextColor,
                             ),
                             // const Text(
@@ -332,7 +333,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               ' *',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Colors.red,
                             ),
                           ],
@@ -359,7 +360,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               'Jira installation or Cloud host name',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               // color: themeProvider.secondaryTextColor,
                             ),
                             // const Text(
@@ -372,7 +373,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                             // ),
                             CustomText(
                               ' *',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Colors.red,
                             ),
                           ],
@@ -394,32 +395,32 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   value: 'Admin',
                                   child: CustomText(
                                     'Admin',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                     fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Member',
                                   child: CustomText(
                                     'Member',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Viewer',
                                   child: CustomText(
                                     'Viewer',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Guest',
                                   child: CustomText(
                                     'Guest',
-                                    type: FontStyle.subtitle,
-                                    fontWeight: FontWeight.bold,
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                               ],

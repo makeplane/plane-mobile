@@ -147,19 +147,19 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 //   style: TextStyle(
                                 //     color: themeProvider.secondaryTextColor,
                                 //     fontSize: 16,
-                                //     fontWeight: FontWeight.w500,
+                                //     fontWeight: FontWeightt.Medium,
                                 //   ),
                                 // ),
                                 const Row(
                                   children: [
                                     CustomText(
                                       'Title',
-                                      type: FontStyle.title,
+                                      type: FontStyle.Small,
                                       // color: themeProvider.secondaryTextColor,
                                     ),
                                     CustomText(
                                       ' *',
-                                      type: FontStyle.title,
+                                      type: FontStyle.Small,
                                       color: Colors.red,
                                       // color: themeProvider.secondaryTextColor,
                                     ),
@@ -210,7 +210,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
 
                                 // const CustomText(
                                 //   'Description',
-                                //   type: FontStyle.title,
+                                //   type: FontStyle.Small,
                                 //   // color: themeProvider.secondaryTextColor,
                                 // ),
                                 // const SizedBox(height: 10),
@@ -248,7 +248,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 const SizedBox(height: 20),
                                 const CustomText(
                                   'Details',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                   // color: themeProvider.secondaryTextColor,
                                 ),
                                 const SizedBox(height: 5),
@@ -297,7 +297,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           const SizedBox(width: 15),
                                           const CustomText(
                                             'State',
-                                            type: FontStyle.subheading,
+                                            type: FontStyle.Small,
                                             color: Color.fromRGBO(
                                                 143, 143, 147, 1),
                                           ),
@@ -328,7 +328,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         .states[issuesProvider
                                                             .createIssuedata[
                                                         'state']]['name'],
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                               ),
                                               issuesProvider.createIssuedata[
                                                           'state'] ==
@@ -407,7 +407,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           // ),
                                           const CustomText(
                                             'Assignees',
-                                            type: FontStyle.subheading,
+                                            type: FontStyle.Small,
                                             color: Color.fromRGBO(
                                                 143, 143, 147, 1),
                                           ),
@@ -419,7 +419,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                   children: [
                                                     const CustomText(
                                                       'Select',
-                                                      type: FontStyle.title,
+                                                      type: FontStyle.Small,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
@@ -492,7 +492,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                               .toString()
                                                                               .toUpperCase(),
                                                                           type:
-                                                                              FontStyle.title,
+                                                                              FontStyle.Small,
                                                                           color:
                                                                               Colors.white,
                                                                         ),
@@ -568,7 +568,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           // ),
                                           const CustomText(
                                             'Priority',
-                                            type: FontStyle.subheading,
+                                            type: FontStyle.Small,
                                             color: Color.fromRGBO(
                                                 143, 143, 147, 1),
                                           ),
@@ -580,7 +580,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                   children: [
                                                     const CustomText(
                                                       'Select',
-                                                      type: FontStyle.title,
+                                                      type: FontStyle.Small,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
@@ -606,7 +606,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                       issuesProvider
                                                               .createIssuedata[
                                                           'priority']['name'],
-                                                      type: FontStyle.title,
+                                                      type: FontStyle.Small,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
@@ -662,7 +662,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                               const SizedBox(width: 15),
                                               const CustomText(
                                                 'Estimate',
-                                                type: FontStyle.subheading,
+                                                type: FontStyle.Small,
                                                 color: Color.fromRGBO(
                                                     143, 143, 147, 1),
                                               ),
@@ -714,7 +714,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           const CustomText(
                                                             'Estimate',
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -752,7 +752,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                       'estimate_point'];
                                                             })['value'].toString(),
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -848,7 +848,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 // ),
                                                 const CustomText(
                                                   'Label',
-                                                  type: FontStyle.subheading,
+                                                  type: FontStyle.Small,
                                                   color: Color.fromRGBO(
                                                       143, 143, 147, 1),
                                                 ),
@@ -861,7 +861,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           const CustomText(
                                                             'Select',
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1007,7 +1007,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 const SizedBox(width: 15),
                                                 const CustomText(
                                                   'Due Date',
-                                                  type: FontStyle.subheading,
+                                                  type: FontStyle.Small,
                                                   color: Color.fromRGBO(
                                                       143, 143, 147, 1),
                                                 ),
@@ -1020,7 +1020,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           const CustomText(
                                                             'Select',
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -1046,7 +1046,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                         .createIssuedata[
                                                                     'due_date']),
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                           ),
                                                           const SizedBox(
                                                               width: 10),
@@ -1111,7 +1111,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 issueId: '',
                                                 createIssue: true,
                                                 // blocking: false,
-                                                
                                               ),
                                             );
                                           },
@@ -1130,7 +1129,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 const SizedBox(width: 15),
                                                 const CustomText(
                                                   'Parent',
-                                                  type: FontStyle.subheading,
+                                                  type: FontStyle.Small,
                                                   color: Color.fromRGBO(
                                                       143, 143, 147, 1),
                                                 ),
@@ -1142,7 +1141,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           const CustomText(
                                                             'Select issue',
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1164,7 +1163,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             issuesProvider
                                                                 .createIssueParent,
                                                             type:
-                                                                FontStyle.title,
+                                                                FontStyle.Small,
                                                           ),
                                                           const SizedBox(
                                                               width: 10),
@@ -1226,7 +1225,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         // ),
                                         CustomText(
                                           expanded ? "View less" : 'View all',
-                                          type: FontStyle.title,
+                                          type: FontStyle.Small,
                                           color: const Color.fromRGBO(
                                               63, 118, 255, 1),
                                         ),

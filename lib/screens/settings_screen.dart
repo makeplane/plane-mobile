@@ -85,13 +85,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
           backgroundColor: themeProvider.isDarkThemeEnabled
               ? darkPrimaryBackgroundDefaultColor
               : lightPrimaryBackgroundDefaultColor,
-          title: CustomText(
+          title: const CustomText(
             'Settings',
-            type: FontStyle.appbarTitle,
-            fontWeight: FontWeight.w600,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkPrimaryTextColor
-                : lightPrimaryTextColor,
+            type: FontStyle.Large,
+            fontWeight: FontWeightt.Semibold,
             maxLines: 1,
           ),
           bottom: TabBar(
@@ -117,10 +114,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 .map(
                   (e) => CustomText(
                     tabs[tabs.indexOf(e)],
-                    type: FontStyle.secondaryText,
+                    type: FontStyle.Medium,
                     color: tabs.indexOf(e) == selectedIndex
                         ? primaryColor
-                        : lightGreyTextColor,
+                        : themeProvider.themeManager.secondaryTextColor,
                   ),
                 )
                 .toList(),
@@ -244,7 +241,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 //             children: [
                 //               CustomText(
                 //                 tabs[index],
-                //                 type: FontStyle.secondaryText,
+                //                 type: FontStyle.Medium,
                 //                 color: index == selectedIndex
                 //                     ? primaryColor
                 //                     : lightGreyTextColor,

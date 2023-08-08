@@ -16,8 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
 
-SharedPreferences? prefs;
-
+late SharedPreferences prefs;
+late String selectedTheme;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
@@ -34,11 +34,12 @@ void main() async {
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.appBearerToken = null;
   prefs = pref;
-  if (!prefs!.containsKey('isDarkThemeEnabled')) {
-    await prefs!.setBool('isDarkThemeEnabled', false);
+  if (!prefs.containsKey('selected-theme')) {
+    await prefs.setString('selected-theme', 'L');
   } else {
-    Const.dark = prefs!.getBool('isDarkThemeEnabled') ?? false;
+    selectedTheme = prefs.getString('selected-theme')!;
   }
+  
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -52,6 +53,7 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
+    var themeProv = ref.read(ProviderList.themeProvider);
     if (Const.appBearerToken != null) {
       log(Const.appBearerToken.toString());
       var prov = ref.read(ProviderList.profileProvider);
@@ -102,10 +104,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         });
       });
     }
-    ref.read(ProviderList.themeProvider).prefs = prefs;
-    ref.read(ProviderList.themeProvider).isDarkThemeEnabled =
-        prefs!.getBool('isDarkThemeEnabled') ?? false;
-    super.initState();
+    
+   themeProv.prefs = prefs;
+   themeProv.getTheme();
+   super.initState();
   }
 
   // This widget is the root of your application.

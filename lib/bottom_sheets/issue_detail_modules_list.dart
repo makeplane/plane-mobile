@@ -4,6 +4,8 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class IssueDetailMoudlesList extends ConsumerStatefulWidget {
   final String moduleId;
   final String issueId;
@@ -38,7 +40,8 @@ class _IssueDetailMoudlesListState
             children: [
               const CustomText(
                 'Select Module',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               IconButton(
                 onPressed: () {
@@ -111,7 +114,7 @@ class _IssueDetailMoudlesListState
                           children: [
                             CustomText(
                               issueProvider.modulesList[index]['name'],
-                              type: FontStyle.subheading,
+                              type: FontStyle.Small,
                             ),
                             widget.moduleId != '' &&
                                     widget.moduleId ==

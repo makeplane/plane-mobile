@@ -76,7 +76,8 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             widget.method == CRUD.update
                                 ? ' Edit Label'
                                 : 'Add Label',
-                            type: FontStyle.heading,
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Semibold,
                             fontSize: 22,
                           ),
                           IconButton(
@@ -97,7 +98,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                       ),
                       const CustomText(
                         'Color',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -176,7 +177,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,

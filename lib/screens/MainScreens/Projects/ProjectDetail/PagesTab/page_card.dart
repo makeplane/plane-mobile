@@ -16,7 +16,6 @@ class PageCard extends ConsumerStatefulWidget {
 }
 
 class _PageCardState extends ConsumerState<PageCard> {
-
   String timeAgo({bool numericDates = true, required DateTime date}) {
     final date2 = DateTime.now();
     final difference = date2.difference(date);
@@ -99,7 +98,8 @@ class _PageCardState extends ConsumerState<PageCard> {
                     pageProvider
                             .pages[pageProvider.selectedFilter]![widget.index]
                         ['name'],
-                    type: FontStyle.boldTitle,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                 ),
               ],
@@ -121,7 +121,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                             .pages[pageProvider.selectedFilter]![widget.index]
                                 ['updated_at']
                             .toString())),
-                    type: FontStyle.title,
+                    type: FontStyle.Small,
                     color: themeProvider.isDarkThemeEnabled
                         ? const Color.fromRGBO(172, 181, 189, 1)
                         : greyColor,
@@ -129,17 +129,15 @@ class _PageCardState extends ConsumerState<PageCard> {
                 ),
                 const Spacer(),
                 checkAccess()
-                    ?
-                    InkWell(
+                    ? InkWell(
                         onTap: () {
-                          pageProvider.pages[pageProvider
-                                        .selectedFilter]![widget.index]
-                                    ['access'] = pageProvider.pages[pageProvider
-                                                .selectedFilter]![widget.index]
-                                            ['access'] ==
-                                        1
-                                    ? 0
-                                    : 1;
+                          pageProvider.pages[pageProvider.selectedFilter]![
+                                  widget.index]['access'] =
+                              pageProvider.pages[pageProvider.selectedFilter]![
+                                          widget.index]['access'] ==
+                                      1
+                                  ? 0
+                                  : 1;
                           pageProvider.editPage(
                             pageId: pageProvider.pages[pageProvider
                                 .selectedFilter]![widget.index]['id'],

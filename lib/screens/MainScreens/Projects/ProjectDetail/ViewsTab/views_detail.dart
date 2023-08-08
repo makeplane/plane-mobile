@@ -97,7 +97,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           width: MediaQuery.sizeOf(context).width - 120,
                           child: CustomText(
                             viewsProv.views[widget.index]['name'],
-                            type: FontStyle.heading,
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Semibold,
                           ),
                         ),
                         const Spacer(),
@@ -105,7 +106,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           'Update',
                           color: primaryColor,
                           fontSize: 17,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeightt.Medium,
                         ),
                       ],
                     ),
@@ -128,7 +129,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             '# Filters : ${countFilters()}',
                             color: greyColor,
                             fontSize: 17,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeightt.Medium,
                           ),
                           const SizedBox(
                             width: 10,
@@ -179,7 +180,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                     ),
                                     CustomText(
                                       ' Issue',
-                                      type: FontStyle.subtitle,
+                                      type: FontStyle.Medium,
                                       color: Colors.white,
                                     )
                                   ],
@@ -224,7 +225,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             ),
                             CustomText(
                               ' Layout',
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               color: Colors.white,
                             )
                           ],
@@ -268,7 +269,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             ),
                             CustomText(
                               ' Views',
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               color: Colors.white,
                             )
                           ],
@@ -312,7 +313,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             ),
                             CustomText(
                               ' Filters',
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               color: Colors.white,
                             )
                           ],

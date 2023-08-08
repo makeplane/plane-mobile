@@ -33,6 +33,7 @@ class _SignInState extends ConsumerState<SignIn> {
     var authProvider = ref.watch(ProviderList.authProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -56,29 +57,40 @@ class _SignInState extends ConsumerState<SignIn> {
                         const SizedBox(
                           height: 30,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             CustomText(
                               'Sign In to',
-                              type: FontStyle.heading,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             CustomText(
                               ' Plane',
-                              type: FontStyle.heading,
-                              color: primaryColor,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color: themeProvider.themeManager.primaryColour,
                             ),
                           ],
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Email'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Email',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -108,13 +120,20 @@ class _SignInState extends ConsumerState<SignIn> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Password'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Password',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -141,7 +160,7 @@ class _SignInState extends ConsumerState<SignIn> {
                               onTap: () {},
                               child: const CustomText(
                                 'Forgot Password?',
-                                type: FontStyle.text,
+                                type: FontStyle.Small,
                                 color: primaryColor,
                               ),
                             ),
@@ -237,11 +256,12 @@ class _SignInState extends ConsumerState<SignIn> {
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
-                                child: const CustomText(
+                                child: CustomText(
                                   'Go back',
-                                  type: FontStyle.heading2,
-                                  color: greyColor,
-                                  fontWeight: FontWeight.w600,
+                                  type: FontStyle.Small,
+                                  fontWeight: FontWeightt.Semibold,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 ),
                               ),
                             ],

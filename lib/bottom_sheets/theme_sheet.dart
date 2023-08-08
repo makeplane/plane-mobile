@@ -5,6 +5,8 @@ import 'package:plane_startup/utils/constants.dart';
 
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class ThemeSheet extends ConsumerStatefulWidget {
   const ThemeSheet({super.key});
 
@@ -31,7 +33,8 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
               // ),
               const CustomText(
                 'Theme',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               const Spacer(),
               IconButton(
@@ -103,7 +106,7 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
                   const SizedBox(width: 10),
                   const CustomText(
                     'Dark',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -172,7 +175,7 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
                   const SizedBox(width: 10),
                   const CustomText(
                     'Light',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),

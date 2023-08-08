@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-
 import '../utils/constants.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/custom_text.dart';
-
+import '../utils/enums.dart';
 class CreateEstimate extends ConsumerStatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final estimatedata;
@@ -91,7 +90,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type:  FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -119,7 +118,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           //   ),
                           // ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -141,7 +140,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type:FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -169,7 +168,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -197,7 +196,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -225,7 +224,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -253,7 +252,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -281,7 +280,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type: RichFontStyle.text,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -423,7 +422,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
             children: [
               CustomText(
                 widget.estimatedata != null ? 'Edit Estimate' : 'Add Estimate',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
                 fontSize: 22,
               ),
               IconButton(

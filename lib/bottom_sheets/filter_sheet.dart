@@ -41,7 +41,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     if (!widget.fromCreateView) {
       filters = ref.read(ProviderList.issuesProvider).issues.filters;
     } else {
-     filters= Filters.fromJson(widget.filtersData["Filters"]);
+      filters = Filters.fromJson(widget.filtersData["Filters"]);
     }
     super.initState();
   }
@@ -104,34 +104,34 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       //     : lightSecondaryBackgroundColor,
       child: Stack(
         children: [
-               SizedBox(
-             //   color: Colors.white,
-                 child: Row(
-                    children: [
-                      const CustomText(
-                        'Filter',
-                        type: FontStyle.heading,
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          size: 27,
-                          color: Color.fromRGBO(143, 143, 147, 1),
-                        ),
-                      ),
-                    ],
+          SizedBox(
+            //   color: Colors.white,
+            child: Row(
+              children: [
+                const CustomText(
+                  'Filter',
+                  type: FontStyle.H6,
+                  fontWeight: FontWeightt.Semibold,
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    size: 27,
+                    color: Color.fromRGBO(143, 143, 147, 1),
                   ),
-               ),
+                ),
+              ],
+            ),
+          ),
           Container(
-            margin: const EdgeInsets.only(top: 40,bottom: 80),
+            margin: const EdgeInsets.only(top: 40, bottom: 80),
             child: SingleChildScrollView(
               child: Wrap(
                 children: [
-             
                   CustomExpansionTile(
                     title: 'Priority',
                     child: Wrap(
@@ -139,7 +139,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             .map((e) => GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (filters.priorities.contains(e['text'])) {
+                                    if (filters.priorities
+                                        .contains(e['text'])) {
                                       filters.priorities.remove(e['text']);
                                     } else {
                                       filters.priorities.add(e['text']);
@@ -150,23 +151,25 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     icon: Icon(
                                       e['icon'],
                                       size: 15,
-                                      color: filters.priorities.contains(e['text'])
-                                          ? Colors.white
-                                          : greyColor,
+                                      color:
+                                          filters.priorities.contains(e['text'])
+                                              ? Colors.white
+                                              : greyColor,
                                     ),
                                     text: e['text'],
-                                    color: filters.priorities.contains(e['text'])
-                                        ? primaryColor
-                                        : themeProvider.isDarkThemeEnabled
-                                            ? darkBackgroundColor
-                                            : Colors.white,
-                                    selected:
-                                        filters.priorities.contains(e['text']))))
+                                    color:
+                                        filters.priorities.contains(e['text'])
+                                            ? primaryColor
+                                            : themeProvider.isDarkThemeEnabled
+                                                ? darkBackgroundColor
+                                                : Colors.white,
+                                    selected: filters.priorities
+                                        .contains(e['text']))))
                             .toList()),
                   ),
-            
+
                   horizontalLine(),
-            
+
                   CustomExpansionTile(
                     title: 'State',
                     child: Wrap(
@@ -195,7 +198,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                       colorFilter: ColorFilter.mode(
                                           filters.states.contains(e['id'])
                                               ? (Colors.white)
-                                              : (themeProvider.isDarkThemeEnabled
+                                              : (themeProvider
+                                                      .isDarkThemeEnabled
                                                   ? darkPrimaryTextColor
                                                   : greyColor),
                                           BlendMode.srcIn),
@@ -226,9 +230,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         // ],
                         ),
                   ),
-            
+
                   horizontalLine(),
-            
+
                   CustomExpansionTile(
                     title: 'Assignees',
                     child: Wrap(
@@ -237,7 +241,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             (e) => GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  if (filters.assignees.contains(e['member']['id'])) {
+                                  if (filters.assignees
+                                      .contains(e['member']['id'])) {
                                     filters.assignees.remove(e['member']['id']);
                                   } else {
                                     filters.assignees.add(e['member']['id']);
@@ -268,9 +273,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         e['member']['first_name'] != ''
                                     ? e['member']['first_name']
                                     : '',
-                                selected:
-                                    filters.assignees.contains(e['member']['id']),
-                                color: filters.assignees.contains(e['member']['id'])
+                                selected: filters.assignees
+                                    .contains(e['member']['id']),
+                                color: filters.assignees
+                                        .contains(e['member']['id'])
                                     ? primaryColor
                                     : themeProvider.isDarkThemeEnabled
                                         ? darkBackgroundColor
@@ -281,9 +287,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                           .toList(),
                     ),
                   ),
-            
+
                   horizontalLine(),
-            
+
                   CustomExpansionTile(
                     title: 'Created by',
                     child: Wrap(
@@ -292,7 +298,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             (e) => GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  if (filters.createdBy.contains(e['member']['id'])) {
+                                  if (filters.createdBy
+                                      .contains(e['member']['id'])) {
                                     filters.createdBy.remove(e['member']['id']);
                                   } else {
                                     filters.createdBy.add(e['member']['id']);
@@ -323,9 +330,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         e['member']['first_name'] != ''
                                     ? e['member']['first_name']
                                     : '',
-                                selected:
-                                    filters.createdBy.contains(e['member']['id']),
-                                color: filters.createdBy.contains(e['member']['id'])
+                                selected: filters.createdBy
+                                    .contains(e['member']['id']),
+                                color: filters.createdBy
+                                        .contains(e['member']['id'])
                                     ? primaryColor
                                     : themeProvider.isDarkThemeEnabled
                                         ? darkBackgroundColor
@@ -336,9 +344,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                           .toList(),
                     ),
                   ),
-            
+
                   horizontalLine(),
-            
+
                   CustomExpansionTile(
                     title: 'Labels',
                     child: Wrap(
@@ -370,13 +378,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                 ))
                             .toList()),
                   ),
-            
+
                   // horizontalLine(),
-            
+
                   // Expanded(child: Container()),
-            
+
                   //long blue button to apply filter
-                  
                 ],
               ),
             ),
@@ -385,66 +392,66 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
             bottom: 0,
             child: Container(
               height: 50,
-              width: MediaQuery.sizeOf(context).width-40,
-                      margin: const EdgeInsets.only(bottom: 18),
-                      child: Button(
-                        text: widget.fromCreateView ? 'Add Filter' : 'Apply Filter',
-                        ontap: () {
-                          if (widget.fromCreateView) {
-                            widget.filtersData["Filters"] = Filters.toJson(filters);
-              
-                            Navigator.pop(context);
-                            return;
-                          }
-                          issuesProvider.issues.filters = filters;
-                          if (widget.issueCategory == IssueCategory.cycleIssues) {
-                            ref
-                                .watch(ProviderList.cyclesProvider)
-                                .filterCycleIssues(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  projectId: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject["id"],
-                                )
-                                .then((value) => ref
-                                    .watch(ProviderList.cyclesProvider)
-                                    .initializeBoard());
-                          } else if (widget.issueCategory ==
-                              IssueCategory.moduleIssues) {
-                            ref
-                                .watch(ProviderList.modulesProvider)
-                                .filterModuleIssues(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  projectId: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject["id"],
-                                )
-                                .then((value) => ref
-                                    .watch(ProviderList.modulesProvider)
-                                    .initializeBoard());
-                          } else {
-                            issuesProvider.updateProjectView();
-                            issuesProvider.filterIssues(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
-                                  .workspaceSlug,
-                              projID: ref
-                                  .read(ProviderList.projectProvider)
-                                  .currentProject["id"],
-                            );
-                          }
-                          Navigator.of(context).pop();
-                        },
-                        textColor: Colors.white,
-                      ),
-                    ),
+              width: MediaQuery.sizeOf(context).width - 40,
+              margin: const EdgeInsets.only(bottom: 18),
+              child: Button(
+                text: widget.fromCreateView ? 'Add Filter' : 'Apply Filter',
+                ontap: () {
+                  if (widget.fromCreateView) {
+                    widget.filtersData["Filters"] = Filters.toJson(filters);
+
+                    Navigator.pop(context);
+                    return;
+                  }
+                  issuesProvider.issues.filters = filters;
+                  if (widget.issueCategory == IssueCategory.cycleIssues) {
+                    ref
+                        .watch(ProviderList.cyclesProvider)
+                        .filterCycleIssues(
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace!
+                              .workspaceSlug,
+                          projectId: ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject["id"],
+                        )
+                        .then((value) => ref
+                            .watch(ProviderList.cyclesProvider)
+                            .initializeBoard());
+                  } else if (widget.issueCategory ==
+                      IssueCategory.moduleIssues) {
+                    ref
+                        .watch(ProviderList.modulesProvider)
+                        .filterModuleIssues(
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace!
+                              .workspaceSlug,
+                          projectId: ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject["id"],
+                        )
+                        .then((value) => ref
+                            .watch(ProviderList.modulesProvider)
+                            .initializeBoard());
+                  } else {
+                    issuesProvider.updateProjectView();
+                    issuesProvider.filterIssues(
+                      slug: ref
+                          .read(ProviderList.workspaceProvider)
+                          .selectedWorkspace!
+                          .workspaceSlug,
+                      projID: ref
+                          .read(ProviderList.projectProvider)
+                          .currentProject["id"],
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+                textColor: Colors.white,
+              ),
+            ),
           ),
         ],
       ),

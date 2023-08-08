@@ -6,6 +6,7 @@ import 'package:plane_startup/kanban/custom/text_field.dart';
 import 'package:plane_startup/kanban/models/item_state.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../../utils/enums.dart';
 import 'provider_list.dart';
 
 class BoardListProvider extends ChangeNotifier {
@@ -114,9 +115,8 @@ class BoardListProvider extends ChangeNotifier {
               // ),
               child: CustomText(
                 prov.board.lists[listIndex].title,
-                fontSize: 20,
-                type: FontStyle.heading2,
-                fontWeight: FontWeight.bold,
+                type: FontStyle.H4,
+                fontWeight: FontWeightt.Semibold,
               ),
             ),
             Expanded(

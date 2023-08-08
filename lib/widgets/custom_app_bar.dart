@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
-
+import 'package:plane_startup/utils/enums.dart';
 import 'custom_text.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -23,7 +23,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.elevation = true,
     this.centerTitle = true,
     this.icon = Icons.close,
-    this.fontType = FontStyle.paragraphLargeSemiBold,
+    this.fontType = FontStyle.Large,
     this.actions,
   });
 
@@ -56,7 +56,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       title: CustomText(
         text,
         type: fontType,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeightt.Semibold,
         color: themeProvider.isDarkThemeEnabled
             ? darkPrimaryTextColor
             : lightPrimaryTextColor,

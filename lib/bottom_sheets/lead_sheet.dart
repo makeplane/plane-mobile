@@ -53,7 +53,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                     // ),
                     const CustomText(
                       'Lead',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     const Spacer(),
                     IconButton(
@@ -157,7 +158,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                           ['member']['email'][0]
                                       .toString()
                                       .toUpperCase(),
-                                  type: FontStyle.subheading,
+                                  type: FontStyle.Small,
                                   color: Colors.white,
                                 ),
                               ),
@@ -170,7 +171,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                     " " +
                                     projectProvider.projectMembers[index]
                                         ['member']['last_name'],
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                               ),
                               const Spacer(),
                               createIsseuSelectedMembersWidget(index),

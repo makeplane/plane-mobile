@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
-
+import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class ResendCodeButton extends ConsumerStatefulWidget {
@@ -63,7 +63,7 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
             },
             child: const CustomText(
               'Resend code',
-              type: FontStyle.appbarTitle,
+              type: FontStyle.Small,
               color: primaryColor,
             )),
       );
@@ -71,7 +71,7 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
       return Center(
         child: CustomText(
           'Didn’t receive code? Get new code in ${start < 10 ? "0$start" : start} secs.',
-          type: FontStyle.subtitle,
+          type: FontStyle.Small,
         ),
       );
     }

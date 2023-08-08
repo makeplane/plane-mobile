@@ -98,34 +98,20 @@ class _CreateViewState extends ConsumerState<CreateView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             //form conatining title and description
-                            const Row(
+                             Row(
                               children: [
-                                // Text(
-                                //   'View Title',
-                                //   style: TextStyle(
-                                //     fontSize: 15,
-                                //     fontWeight: FontWeight.w400,
-                                //     color: themeProvider.secondaryTextColor,
-                                //   ),
-                                // ),
-                                CustomText(
-                                  'Title',
-                                  type: FontStyle.title,
-                                  // color: themeProvider.secondaryTextColor,
-                                ),
-                                // const Text(
-                                //   ' *',
-                                //   style: TextStyle(
-                                //     fontSize: 15,
-                                //     fontWeight: FontWeight.w400,
-                                //     color: Colors.red,
-                                //   ),
-                                // ),
-                                CustomText(
-                                  ' *',
-                                  type: FontStyle.title,
-                                  color: Colors.red,
-                                ),
+                                
+                               CustomText(
+                              'Title ',
+                              color: themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
+                            ),
+                            CustomText(
+                              '*',
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
+                              
+                            ),
                               ],
                             ),
                             const SizedBox(height: 5),
@@ -139,18 +125,11 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            // Text(
-                            //   'Description',
-                            //   style: TextStyle(
-                            //     fontSize: 15,
-                            //     fontWeight: FontWeight.w400,
-                            //     color: themeProvider.secondaryTextColor,
-                            //   ),
-                            // ),
-                            const CustomText(
+                           
+                             CustomText(
                               'Description',
-                              type: FontStyle.title,
-                              // color: themeProvider.secondaryTextColor,
+                              type: FontStyle.Small,
+                              color: themeProvider.themeManager.tertiaryTextColor,
                             ),
                             const SizedBox(height: 5),
                             TextField(
@@ -217,17 +196,12 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                           : lightSecondaryTextColor,
                                     ),
                                     const SizedBox(width: 10),
-                                    // const Text(
-                                    //   'Add Filter',
-                                    //   style: TextStyle(
-                                    //     fontSize: 15,
-                                    //     fontWeight: FontWeight.w400,
-                                    //     color: Color.fromRGBO(65, 65, 65, 1),
-                                    //   ),
-                                    // ),
-                                    const CustomText(
+                                    
+                                     CustomText(
                                       'Add Filter',
-                                      type: FontStyle.title,
+                                      type: FontStyle.Small,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
                                     ),
                                   ],
                                 ),
@@ -272,7 +246,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                           children: [
                                             CustomText(
                                               filterKeys[index],
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeightt.Semibold,
                                             ),
                                             const SizedBox(
                                               height: 10,
@@ -518,9 +492,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               //   'processing...',
                               //   style: TextStylingWidget.smallText,
                               // )
-                              const CustomText(
+                               const CustomText(
                                 'Loading...',
-                                type: FontStyle.subtitle,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Medium,
                               ),
                             ],
                           ),

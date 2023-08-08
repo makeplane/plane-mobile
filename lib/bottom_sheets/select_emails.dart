@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+
+import '../utils/enums.dart';
 
 class SelectEmails extends ConsumerStatefulWidget {
   const SelectEmails({required this.email, super.key});
@@ -49,7 +50,8 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                   children: [
                     const CustomText(
                       'Select Member',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -103,11 +105,11 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                     const EdgeInsets.fromLTRB(5, 15, 15, 15),
                                 child: CustomText(
                                   emails[index]["email"],
-                                  type: FontStyle.subheading,
+                                  type: FontStyle.Small,
                                   color: themeProv.isDarkThemeEnabled
                                       ? darkSecondaryTextColor
                                       : Colors.black,
-                                  fontWeight: FontWeight.w400,
+                  
                                 ),
                               ),
                             ],

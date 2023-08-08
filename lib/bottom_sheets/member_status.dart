@@ -97,7 +97,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: CustomText(
                           name,
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -148,18 +149,18 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                           .text =
                                                       options[index]['role'];
                                                 }
-                                              //  Navigator.pop(context);
+                                                //  Navigator.pop(context);
                                               });
                                             },
                                           ),
                                           CustomText(
                                             options[index]['role'],
-                                            type: FontStyle.subheading,
+                                            type: FontStyle.Small,
                                             color:
                                                 themeProvider.isDarkThemeEnabled
                                                     ? darkSecondaryTextColor
                                                     : Colors.black,
-                                            fontWeight: FontWeight.w400,
+                                            
                                           ),
                                         ],
                                       ),

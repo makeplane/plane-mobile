@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plane_startup/utils/constants.dart';
 
+import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class Button extends StatefulWidget {
@@ -71,9 +72,9 @@ class _ButtonState extends State<Button> {
                 widget.widget ?? Container(),
                 CustomText(
                   widget.text,
-                  type: FontStyle.paragraphMediumSemiBold,
+                  type: FontStyle.Medium,
                   color: widget.textColor ?? Colors.white,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeightt.Semibold,
                 ),
               ],
             ),

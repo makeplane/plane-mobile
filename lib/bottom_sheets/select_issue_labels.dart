@@ -13,8 +13,7 @@ class SelectIssueLabels extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
 
-  const SelectIssueLabels(
-      { this.issueId, required this.createIssue, super.key});
+  const SelectIssueLabels({this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssueLabels> createState() => _SelectIssueLabelsState();
@@ -113,7 +112,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                     children: [
                       const CustomText(
                         'Select Labels',
-                        type: FontStyle.heading,
+                        type: FontStyle.H6,
+                        fontWeight: FontWeightt.Semibold,
                       ),
                       IconButton(
                         onPressed: () {
@@ -179,7 +179,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                               //       ? darkSecondaryBGC
                               //       : const Color.fromRGBO(248, 249, 250, 1),
                               // ),
-                              margin: issuesProvider.labels.length==index+1 ?const EdgeInsets.only(bottom: 35):null,
+                              margin: issuesProvider.labels.length == index + 1
+                                  ? const EdgeInsets.only(bottom: 35)
+                                  : null,
                               child: Column(
                                 children: [
                                   Row(
@@ -197,7 +199,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       CustomText(
                                         issuesProvider.labels[index]['name']
                                             .toString(),
-                                        type: FontStyle.subheading,
+                                        type: FontStyle.Small,
                                       ),
                                       const Spacer(),
                                       widget.createIssue
@@ -381,7 +383,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                 child: const CustomText(
                                   '#',
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeightt.Semibold,
                                   fontSize: 20,
                                 ),
                               ),
@@ -449,7 +451,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     Container(width: 10),
                                     const CustomText(
                                       'Create New Label',
-                                      type: FontStyle.subheading,
+                                      type: FontStyle.Small,
                                     ),
                                   ],
                                 ),
@@ -519,7 +521,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                   //         },
                   //         child: const CustomText(
                   //           'Add',
-                  //           type: FontStyle.buttonText,
+                  //           type: FontStyle.Medium,
+                  //            fontWeight: FontWeightt.Bold,
                   //         ),
                   //       ),
                   //     ],
@@ -579,7 +582,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace!
                                 .workspaceSlug,
-                            
                             refs: ref,
                             projID: ref
                                 .read(ProviderList.projectProvider)

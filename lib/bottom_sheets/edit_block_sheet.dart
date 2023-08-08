@@ -9,10 +9,10 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 class EditBlockSheet extends ConsumerStatefulWidget {
-  EditBlockSheet({super.key, required this.title, required this.description});
+  const EditBlockSheet({super.key, required this.title, required this.description});
 
-  String title;
-  String description;
+  final String title;
+  final String description;
 
   @override
   ConsumerState<EditBlockSheet> createState() => _TempEditBlockState();
@@ -31,8 +31,7 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+
     var pageProvider = ref.watch(ProviderList.pageProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
@@ -49,7 +48,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
               children: [
                 const CustomText(
                   'Update block',
-                  type: FontStyle.heading,
+                  type: FontStyle.H6,
+                  fontWeight: FontWeightt.Semibold,
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -70,12 +70,12 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
               children: [
                 CustomText(
                   'Title',
-                  type: FontStyle.text,
+                  type: FontStyle.Small,
                   // color: themeProvider.secondaryTextColor,
                 ),
                 // CustomText(
                 //   ' *',
-                //   type: FontStyle.title,
+                //   type: FontStyle.Small,
                 //   color: Colors.red,
                 // ),
               ],
@@ -96,11 +96,11 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
               children: [
                 CustomText(
                   'Write something',
-                  type: FontStyle.text,
+                  type: FontStyle.Small,
                 ),
                 // CustomText(
                 //   ' *',
-                //   type: FontStyle.title,
+                //   type: FontStyle.Small,
                 //   color: Colors.red,
                 // ),
               ],

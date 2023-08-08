@@ -69,7 +69,8 @@ class _ProjectInviteMembersSheetState
                         children: [
                           const CustomText(
                             'Invite Members',
-                            type: FontStyle.heading,
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Semibold,
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -98,11 +99,11 @@ class _ProjectInviteMembersSheetState
                               children: [
                                 CustomText(
                                   'Email',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                                 CustomText(
                                   '*',
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                   color: Colors.red,
                                 ),
                               ],
@@ -176,7 +177,7 @@ class _ProjectInviteMembersSheetState
                                       left: 20, right: 20, bottom: 5),
                                   child: const CustomText(
                                     '*required',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     fontSize: 14,
                                     color: Colors.red,
                                   ),
@@ -189,11 +190,11 @@ class _ProjectInviteMembersSheetState
                                 children: [
                                   CustomText(
                                     'Role',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                   CustomText(
                                     '*',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     color: Colors.red,
                                   ),
                                 ],
@@ -248,7 +249,7 @@ class _ProjectInviteMembersSheetState
                                   left: 20, right: 20, top: 20, bottom: 5),
                               child: const CustomText(
                                 'Message ',
-                                type: FontStyle.title,
+                                type: FontStyle.Small,
                               )),
                           Container(
                             padding: const EdgeInsets.only(
@@ -314,7 +315,7 @@ class _ProjectInviteMembersSheetState
                               const SnackBar(
                                 content: CustomText(
                                   'Invitation sent successfully',
-                                  type: FontStyle.subtitle,
+                                  type: FontStyle.Medium,
                                   color: Colors.white,
                                 ),
                                 backgroundColor: greenHighLight,

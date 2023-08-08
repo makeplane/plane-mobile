@@ -136,12 +136,12 @@ const lightContrastTextWarningColor =
     Color.fromRGBO(254, 243, 199, 1); // warning 100
 const darkContrastTextWarningColor =
     Color.fromRGBO(254, 243, 199, 1); // warning 100
-const lightTextSuccessColor = Color.fromRGBO(220, 252, 231, 1); // success 100
-const darkTextSuccessColor = Color.fromRGBO(220, 252, 231, 1); // success 100
+const lightTextSuccessColor = Color.fromRGBO(22, 163, 74, 1); // success 100
+const darkTextSuccessColor = Color.fromRGBO(22, 163, 74, 1); // success 100
 const lightContrastTextSuccessColor =
-    Color.fromRGBO(220, 252, 231, 1); // success 100
+    Color.fromRGBO(22, 163, 74, 1); // success 100
 const darkContrastTextSuccessColor =
-    Color.fromRGBO(220, 252, 231, 1); // success 100
+    Color.fromRGBO(22, 163, 74, 1); // success 100
 const lightTextDisabledColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
 const darkTextDisabledColor = Color.fromRGBO(34, 34, 34, 1); // grey 800
 const lightContrastTextDisabledColor =
@@ -326,6 +326,37 @@ int fromRole({required Role role}) {
     default:
       return 0;
   }
+}
+
+THEME themeParser({required String theme}) {
+  switch (theme) {
+    case "L":
+      return THEME.light;
+    case "D":
+      return THEME.dark;
+    case "LHC":
+      return THEME.lightHighContrast;
+    case "DHC":
+      return THEME.darkHighContrast;
+    default:
+      return THEME.light;
+  }
+}
+
+String fromTHEME({required THEME theme}){
+  switch (theme) {
+    case THEME.light:
+      return "L";
+    case THEME.dark:
+      return "D";
+    case THEME.lightHighContrast:
+      return "LHC";
+    case THEME.darkHighContrast:
+      return "DHC";
+    default:
+      return "L";
+  }
+
 }
 
 double height = MediaQuery.of(Const.globalKey.currentContext!).size.height;

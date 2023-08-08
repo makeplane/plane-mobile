@@ -4,6 +4,8 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class RoleSheet extends ConsumerStatefulWidget {
   const RoleSheet({super.key});
 
@@ -40,7 +42,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               // ),
               const CustomText(
                 'Role',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               const Spacer(),
               IconButton(
@@ -94,7 +97,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[0],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -145,7 +148,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[1],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -197,7 +200,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[2],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -251,7 +254,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[3],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -304,7 +307,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[4],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -357,7 +360,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[5],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),

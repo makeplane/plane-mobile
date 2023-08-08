@@ -32,7 +32,7 @@ class _ViewsState extends ConsumerState<Views> {
     return LoadingWidget(
       loading: viewsProvider.viewsState == StateEnum.loading,
       widgetClass: viewsProvider.views.isEmpty
-          ? EmptyPlaceholder.emptyView(context)
+          ? EmptyPlaceholder.emptyView(context,ref)
           : SingleChildScrollView(
               child: Column(children: [
                 ListView.builder(
@@ -110,7 +110,8 @@ class _ViewsState extends ConsumerState<Views> {
                   padding: const EdgeInsets.only(left: 5, right: 15, top: 20),
                   child: CustomText(
                     viewsProvider.views[index]["name"],
-                    type: FontStyle.boldTitle,
+                    type: FontStyle.H5,
+                    fontWeight: FontWeightt.Medium,
                   ),
                 ),
                 const Spacer(),
@@ -124,7 +125,7 @@ class _ViewsState extends ConsumerState<Views> {
                   height: 28,
                   child: Center(
                     child: CustomText('${countFilters(index)} Filters',
-                        type: FontStyle.subtitle,
+                        type: FontStyle.XSmall,
                         color: themeProvider.isDarkThemeEnabled
                             ? greyColor
                             : const Color.fromRGBO(73, 80, 87, 1)),
@@ -175,7 +176,8 @@ class _ViewsState extends ConsumerState<Views> {
                         const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                     child: CustomText(
                       viewsProvider.views[index]["description"] ?? '',
-                      type: FontStyle.description,
+                      type: FontStyle.Medium,
+                      color: themeProvider.themeManager.secondaryTextColor,
                     ),
                   ),
           ],

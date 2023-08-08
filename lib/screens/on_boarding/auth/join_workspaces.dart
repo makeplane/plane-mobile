@@ -37,6 +37,7 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
   Widget build(BuildContext context) {
     var prov = ref.watch(ProviderList.workspaceProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: !widget.fromOnboard
           ? CustomAppBar(
@@ -66,9 +67,11 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                         )
                       : Container(),
                   widget.fromOnboard
-                      ? const CustomText(
+                      ?  CustomText(
                           'Join Workspaces',
-                          type: FontStyle.heading,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
                         )
                       : Container(),
                   const SizedBox(
@@ -81,7 +84,7 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                               width: MediaQuery.of(context).size.width * 0.6,
                               child: const CustomText(
                                 'Currently you have no invited workspaces to join.',
-                                type: FontStyle.description,
+                                type: FontStyle.Small,
                                 color: greyColor,
                                 textAlign: TextAlign.center,
                               ),
@@ -149,10 +152,10 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                                               .toString()
                                                               .toUpperCase()
                                                               .substring(0, 1),
-                                                          type: FontStyle.title,
+                                                          type: FontStyle.Small,
                                                           color: Colors.white,
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                              FontWeightt.Semibold,
                                                         ),
                                                       )
                                                     : ClipRRect(
@@ -179,16 +182,17 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                               CustomText(
                                                 prov.workspaceInvitations[index]
                                                     ['workspace']['name'],
-                                                type: FontStyle.title,
-                                                fontWeight: FontWeight.bold,
+                                                type: FontStyle.Small,
+                                                fontWeight: FontWeightt.Semibold,
                                               ),
                                               const SizedBox(
                                                 height: 3,
                                               ),
-                                              const CustomText(
+                                               CustomText(
                                                 'Invited',
-                                                type: FontStyle.subtitle,
-                                                color: greyColor,
+                                                type: FontStyle.XSmall,
+                                                color: themeProvider.themeManager
+                                                    .placeholderTextColor,
                                               ),
                                             ],
                                           )

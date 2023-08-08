@@ -40,7 +40,7 @@
 //                   left: 15, right: 15, top: 15, bottom: 15),
 //               child: CustomText(
 //                 'Cycle Name',
-//                 type: FontStyle.subheading,
+//                 type: FontStyle.Small,
 //                 // color: themeProvider.primaryTextColor,
 //               ),
 //             ),
@@ -59,7 +59,7 @@
 //                   CustomText(
 //                     ' Jan 16, 2022',
 //                     // color: themeProvider.secondaryTextColor,
-//                     type: FontStyle.subtitle,
+//                     type: FontStyle.Medium,
 //                   ),
 //                   const SizedBox(
 //                     width: 40,
@@ -72,7 +72,7 @@
 //                   CustomText(
 //                     ' Jan 16, 2022',
 //                     // color: themeProvider.secondaryTextColor,
-//                     type: FontStyle.subtitle,
+//                     type: FontStyle.Medium,
 //                   ),
 //                 ],
 //               ),
@@ -95,7 +95,7 @@
 //                   CustomText(
 //                     'Vamsi Kurama',
 //                     // color: themeProvider.secondaryTextColor,
-//                     type: FontStyle.subtitle,
+//                     type: FontStyle.Medium,
 //                   ),
 //                 ],
 //               ),
@@ -119,7 +119,7 @@
 //               ),
 //               child: CustomText(
 //                 'Progress -10%',
-//                 type: FontStyle.title,
+//                 type: FontStyle.Small,
 //               ),
 //             )
 //           ],

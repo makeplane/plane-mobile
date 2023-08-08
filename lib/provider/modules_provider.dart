@@ -550,7 +550,7 @@ class ModuleProvider with ChangeNotifier {
                     element.title.toString().toUpperCase()[0],
                     fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                 )
               : issues.groupBY == GroupBY.labels
@@ -581,9 +581,10 @@ class ModuleProvider with ChangeNotifier {
               width: element.width - 150,
               child: CustomText(
                 element.title.toString(),
-                type: FontStyle.heading,
+                type: FontStyle.Large,
+                fontWeight: FontWeightt.Semibold,
                 textAlign: TextAlign.start,
-                fontSize: 20,
+
                 maxLines: 3,
               ),
             ),
@@ -601,7 +602,8 @@ class ModuleProvider with ChangeNotifier {
               width: 35,
               child: CustomText(
                 element.items.length.toString(),
-                type: FontStyle.subtitle,
+                type: FontStyle.Small,
+                
               ),
             ),
             const Spacer(),

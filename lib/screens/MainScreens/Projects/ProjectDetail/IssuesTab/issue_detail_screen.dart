@@ -27,6 +27,7 @@ import 'package:plane_startup/widgets/profile_circle_avatar_widget.dart';
 import 'package:plane_startup/widgets/simple_loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: must_be_immutable
 class IssueDetail extends ConsumerStatefulWidget {
   final String issueId;
   String appBarTitle;
@@ -250,7 +251,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                               : issueProvider.issueDetails['subscribed']
                                   ? 'Unsubscribe'
                                   : 'Subscribe',
-                          type: FontStyle.text,
+                          type: FontStyle.Small,
                           color: primaryColor,
                         )
                       ],
@@ -301,7 +302,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                     children: [
                                       const CustomText(
                                         'Title',
-                                        type: FontStyle.description,
+                                        type: FontStyle.Medium,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -358,7 +359,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                           height: spaceBetweenSections),
                                       const CustomText(
                                         'Description',
-                                        type: FontStyle.description,
+                                        type: FontStyle.Medium,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -416,7 +417,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         children: [
                                           CustomText(
                                             'Sub Issue',
-                                            type: FontStyle.description,
+                                            type: FontStyle.Medium,
                                           ),
                                           Spacer(),
                                         ],
@@ -486,7 +487,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                           height: spaceBetweenSections),
                                       const CustomText(
                                         'Details',
-                                        type: FontStyle.description,
+                                        type: FontStyle.Medium,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -577,7 +578,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 expanded
                                                     ? "View less"
                                                     : 'View all',
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                                 color: const Color.fromRGBO(
                                                     63, 118, 255, 1),
                                               ),
@@ -614,7 +615,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                               height: spaceBetweenSections),
                                           const CustomText(
                                             'Attachments',
-                                            type: FontStyle.description,
+                                            type: FontStyle.Medium,
                                             // color: themeProvider.secondaryTextColor,
                                           ),
                                           const SizedBox(
@@ -711,7 +712,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             children: [
                                               CustomText(
                                                 'Links',
-                                                type: FontStyle.description,
+                                                type: FontStyle.Medium,
                                                 // color: themeProvider.secondaryTextColor,
                                               ),
                                             ],
@@ -803,7 +804,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                           height: spaceBetweenSections),
                                       const CustomText(
                                         'Activity',
-                                        type: FontStyle.description,
+                                        type: FontStyle.Medium,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -878,7 +879,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                                 CustomText(
                                                                               issueProvider.issueActivity[index]['actor_detail']['email'][0].toString().toUpperCase(),
                                                                               // color: Colors.black,
-                                                                              type: FontStyle.buttonText,
+                                                                              type: FontStyle.Medium,
+                                                                              fontWeight: FontWeightt.Bold,
                                                                               color: themeProvider.isDarkThemeEnabled ? Colors.black : Colors.white,
                                                                             ),
                                                                           ),
@@ -920,7 +922,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           issueProvider.issueActivity[index]['actor_detail']['first_name'] + ' ${issueProvider.issueActivity[index]['actor_detail']['last_name']}' ??
                                                                               '',
                                                                           type:
-                                                                              FontStyle.description,
+                                                                              FontStyle.Medium,
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
@@ -929,7 +931,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                         CustomText(
                                                                           'Commented ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
                                                                           type:
-                                                                              FontStyle.description,
+                                                                              FontStyle.Medium,
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
@@ -950,7 +952,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                             children: [
                                                                               CustomText(
                                                                                 issueProvider.issueActivity[index]['comment_stripped'],
-                                                                                type: FontStyle.description,
+                                                                                type: FontStyle.Medium,
                                                                               ),
                                                                             ],
                                                                           ),
@@ -1048,7 +1050,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                             fontSize:
                                                                                 14,
                                                                             type:
-                                                                                FontStyle.description,
+                                                                                FontStyle.Medium,
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             maxLines:
@@ -1062,7 +1064,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                                 ? lightSecondaryBackgroundColor
                                                                                 : greyColor,
                                                                             type:
-                                                                                FontStyle.smallText,
+                                                                                FontStyle.Small,
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             maxLines:
@@ -1093,7 +1095,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           child: CustomText(
                                                                               issueProvider.issueActivity[index]['actor_detail']['email'][0].toString().toUpperCase(),
                                                                               // color: Colors.black,
-                                                                              type: FontStyle.buttonText,
+                                                                              type: FontStyle.Medium,
+                                                                              fontWeight: FontWeightt.Bold,
                                                                               color: Colors.white),
                                                                         ),
                                                                       ),
@@ -1111,7 +1114,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           children: [
                                                                             CustomText(
                                                                               issueProvider.issueActivity[index]['comment'],
-                                                                              type: FontStyle.description,
+                                                                              type: FontStyle.Medium,
                                                                               textAlign: TextAlign.left,
                                                                               maxLines: 4,
                                                                             ),
@@ -1119,7 +1122,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                             CustomText(
                                                                               checkTimeDifferenc(issueProvider.issueActivity[index]['created_at']),
                                                                               color: themeProvider.isDarkThemeEnabled ? lightSecondaryBackgroundColor : greyColor,
-                                                                              type: FontStyle.smallText,
+                                                                              type: FontStyle.Small,
                                                                               textAlign: TextAlign.left,
                                                                               maxLines: 4,
                                                                             ),
@@ -1323,7 +1326,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               const SizedBox(width: 10),
               const CustomText(
                 'State',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -1331,7 +1334,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 children: [
                   CustomText(
                     issueProvider.issueDetails['state_detail']['name'],
-                    type: FontStyle.title,
+                    type: FontStyle.Small,
                   ),
                   //issuesProvider.createIssuedata['state'] == null
                   //?
@@ -1407,7 +1410,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
 
               const CustomText(
                 'Assignees',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -1416,7 +1419,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         const CustomText(
                           'Select',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           width: 5,
@@ -1498,7 +1501,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
 
               const CustomText(
                 'Priority',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -1507,7 +1510,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         const CustomText(
                           'Select',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           width: 5,
@@ -1531,7 +1534,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   issueProvider.issueDetails['priority'][0]
                                       .toString()
                                       .toUpperCase()),
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           width: 5,
@@ -1581,7 +1584,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
 
             const CustomText(
               'Estimate',
-              type: FontStyle.subheading,
+              type: FontStyle.Small,
               color: Color.fromRGBO(143, 143, 147, 1),
             ),
             Expanded(child: Container()),
@@ -1609,7 +1612,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         const CustomText(
                           'No Estimate',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           width: 5,
@@ -1637,7 +1640,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             return element['key'] ==
                                 issueProvider.issueDetails['estimate_point'];
                           })['value'],
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                       ],
                     ),
@@ -1703,7 +1706,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
 
                   const CustomText(
                     'Label',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                     color: Color.fromRGBO(143, 143, 147, 1),
                   ),
                   Expanded(child: Container()),
@@ -1714,7 +1717,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                           children: [
                             const CustomText(
                               'Select',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                             ),
                             const SizedBox(
                               width: 5,
@@ -1739,7 +1742,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   children: [
                                     CustomText(
                                       'Select',
-                                      type: FontStyle.title,
+                                      type: FontStyle.Small,
                                     ),
                                     SizedBox(
                                       width: 5,
@@ -1934,7 +1937,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               const SizedBox(width: 10),
               const CustomText(
                 'Due Date',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -1943,7 +1946,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         CustomText(
                           'Select',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         SizedBox(
                           width: 5,
@@ -1960,7 +1963,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         CustomText(
                           DateFormat('yyyy-MM-dd').format(DateTime.parse(
                               issueProvider.issueDetails['target_date'])),
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(width: 10),
                         InkWell(
@@ -2043,7 +2046,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               const SizedBox(width: 8),
               const CustomText(
                 'Parent',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -2052,7 +2055,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         CustomText(
                           'Select issue',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         SizedBox(
                           width: 5,
@@ -2073,7 +2076,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                               issueProvider.issueDetails['parent_detail']
                                       ['sequence_id']
                                   .toString(),
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(width: 10),
                         InkWell(
@@ -2165,7 +2168,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   color: themeProvider.isDarkThemeEnabled
                                       ? Colors.white
                                       : Colors.black,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeightt.Medium,
                                 ),
                               ),
                               InkWell(
@@ -2286,7 +2289,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 const SizedBox(width: 15),
                 const CustomText(
                   'Blocking',
-                  type: FontStyle.subheading,
+                  type: FontStyle.Small,
                   color: Color.fromRGBO(143, 143, 147, 1),
                 ),
                 Expanded(child: Container()),
@@ -2294,7 +2297,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   children: [
                     CustomText(
                       'Select issues',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     SizedBox(
                       width: 5,
@@ -2458,7 +2461,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 const SizedBox(width: 15),
                 const CustomText(
                   'Blocked by',
-                  type: FontStyle.subheading,
+                  type: FontStyle.Small,
                   color: Color.fromRGBO(143, 143, 147, 1),
                 ),
                 Expanded(child: Container()),
@@ -2466,7 +2469,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   children: [
                     CustomText(
                       'Select issues',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     SizedBox(
                       width: 5,
@@ -2636,7 +2639,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               const SizedBox(width: 8),
               const CustomText(
                 'Cycle',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -2647,7 +2650,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         ? issueProvider.issueDetails['issue_cycle']
                             ['cycle_detail']['name']
                         : 'No Cycle',
-                    type: FontStyle.title,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     width: 5,
@@ -2728,7 +2731,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               const SizedBox(width: 10),
               const CustomText(
                 'Module',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 color: Color.fromRGBO(143, 143, 147, 1),
               ),
               Expanded(child: Container()),
@@ -2743,7 +2746,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             child: CustomText(
                               issueProvider.issueDetails['issue_module']
                                   ['module_detail']['name'],
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
@@ -2766,7 +2769,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       children: [
                         const CustomText(
                           'No Module',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           width: 5,
@@ -2845,7 +2848,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                     issueProvider.issueDetails['issue_attachment'][index]
                             ['attributes']['name'] ??
                         '',
-                    type: FontStyle.description,
+                    type: FontStyle.Medium,
                     maxLines: 1,
                   ),
                 ),
@@ -2933,7 +2936,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                       CustomText(
                         issueProvider.issueDetails['issue_link'][index]
                             ['title'],
-                        type: FontStyle.description,
+                        type: FontStyle.Medium,
                       ),
                     ],
                   ),

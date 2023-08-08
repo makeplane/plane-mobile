@@ -40,7 +40,7 @@ class _PageScreenState extends ConsumerState<PageScreen> {
                   ],
                 ),
               )
-            : EmptyPlaceholder.emptyPages(context),
+            : EmptyPlaceholder.emptyPages(context,ref),
       ),
     );
   }

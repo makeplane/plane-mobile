@@ -209,7 +209,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     ),
                                     const CustomText(
                                       'Add Labels',
-                                      type: FontStyle.text,
+                                      type: FontStyle.Small,
                                     ),
                                   ],
                                 ),
@@ -498,7 +498,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                 child: const CustomText(
                                   '#',
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeightt.Semibold,
                                   fontSize: 20,
                                 ),
                               ),
@@ -601,7 +601,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                   widget.index]['label_details'] as List)
                               .remove(element);
                           log((pageProvider.pages[pageProvider.selectedFilter]![
-                                  widget.index]['label_details'] as List).toString());
+                                  widget.index]['label_details'] as List)
+                              .toString());
                         });
                         pageProvider.editPage(
                             slug: workspaceProvider
@@ -651,7 +652,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                           //container 2
                           CustomText(
                             element["name"],
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                           ),
                         ],
                       ),
@@ -723,7 +724,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                           //text
                           CustomText(
                             'Add new block',
-                            type: FontStyle.text,
+                            type: FontStyle.Small,
                             color: primaryColor,
                           ),
                         ],

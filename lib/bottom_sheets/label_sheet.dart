@@ -8,6 +8,7 @@ import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
 
+// ignore: must_be_immutable
 class LabelSheet extends ConsumerStatefulWidget {
   LabelSheet({required this.pageIndex, this.selectedLabels, super.key});
   final int pageIndex;
@@ -59,7 +60,8 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                 children: [
                   const CustomText(
                     'Add Label',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   IconButton(
                       onPressed: () => Navigator.pop(context),
@@ -74,7 +76,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               Container(height: 20),
               const CustomText(
                 'Search',
-                type: FontStyle.text,
+                type: FontStyle.Small,
                 // color: themeProvider.secondaryTextColor,
               ),
               Container(height: 5),
@@ -103,7 +105,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                               selectedLabels.add(label["id"]);
                             }
                             setState(() {});
-                            print(selectedLabels);
+                            // print(selectedLabels);
                           },
                           child: Container(
                             margin:
@@ -141,7 +143,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                 ),
                                 CustomText(
                                   label["name"],
-                                  type: FontStyle.smallText,
+                                  type: FontStyle.Small,
                                   color: selectedLabels.contains(label["id"])
                                       ? Colors.white
                                       : (themeProvider.isDarkThemeEnabled

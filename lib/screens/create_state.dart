@@ -10,7 +10,6 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
-
 class CreateState extends ConsumerStatefulWidget {
   const CreateState({super.key});
 
@@ -84,17 +83,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 15, bottom: 5),
-                        child: const Row(
+                        child:  Row(
                           children: [
                             CustomText(
                               'Name ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color: themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
+                              
                             ),
                           ],
                         )),
@@ -143,17 +143,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 20, bottom: 5),
-                        child: const Row(
+                        child:  Row(
                           children: [
                             CustomText(
                               'State ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color: themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
+                              
                             ),
                           ],
                         )),
@@ -217,17 +218,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             right: 20, left: 15, bottom: 10),
-                        child: const Row(
+                        child:  Row(
                           children: [
-                            CustomText(
+                           CustomText(
                               'Color ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color: themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
+                              
                             ),
                           ],
                         )),
@@ -287,7 +289,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             child: const CustomText(
                               '#',
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeightt.Semibold,
                               fontSize: 20,
                             ),
                           ),
@@ -362,11 +364,12 @@ class _CreateStateState extends ConsumerState<CreateState> {
                       ),
                     ),
                     Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 5,left: 15),
+                        margin:
+                            const EdgeInsets.only(top: 20, bottom: 5, left: 15),
                         child: const CustomText(
                           'Description ',
                           // color: themeProvider.secondaryTextColor,
-                          type: FontStyle.subheading,
+                          type: FontStyle.Small,
                         )),
                     Container(
                       // height: 45,
@@ -377,13 +380,19 @@ class _CreateStateState extends ConsumerState<CreateState> {
                         decoration: kTextFieldDecoration.copyWith(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled?darkThemeBorder:Colors.grey.shade300, width: 1.0),
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? darkThemeBorder
+                                    : Colors.grey.shade300,
+                                width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:  themeProvider.isDarkThemeEnabled?darkThemeBorder:Colors.grey.shade300, width: 1.0),
+                                color: themeProvider.isDarkThemeEnabled
+                                    ? darkThemeBorder
+                                    : Colors.grey.shade300,
+                                width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),

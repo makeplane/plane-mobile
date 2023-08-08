@@ -55,7 +55,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                   ? notificationProvider.getWatchingState == StateEnum.loading
                   : false,
       widgetClass: widget.data.isEmpty
-          ? EmptyPlaceholder.emptyNotification()
+          ? EmptyPlaceholder.emptyNotification(ref)
           : ListView.builder(
               itemCount: widget.data.length,
               itemBuilder: (context, index) {
@@ -158,7 +158,8 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                               .toString()
                                               .toUpperCase(),
                                           // color: Colors.black,
-                                          type: FontStyle.buttonText,
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Bold,
                                           color: Colors.white),
                                     ),
                                   ),
@@ -179,7 +180,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                 child: CustomRichText(
                                                   // '${widget.data[index]['triggered_by_details']['first_name']} ${widget.data[index]['triggered_by_details']['last_name']}',
                                                   // fontSize: 14,
-                                                  // type: FontStyle.text,
+                                                  // type: FontStyle.Small,
                                                   widgets: [
                                                     TextSpan(
                                                       text:
@@ -233,7 +234,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                               //   child: CustomText(
                                               //     '${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '')}.',
                                               //     // fontSize: 14,
-                                              //     type: FontStyle.text,
+                                              //     type: FontStyle.Small,
                                               //     textAlign: TextAlign.left,
                                               //     maxLines: 4,
                                               //   ),
@@ -250,7 +251,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                               width: width * 0.40,
                                               child: CustomText(
                                                 '${widget.data[index]['data']['issue']['identifier']} - ${widget.data[index]['data']['issue']['sequence_id']}  ${widget.data[index]['data']['issue']['name']}',
-                                                type: FontStyle.smallText,
+                                                type: FontStyle.Small,
                                                 color: themeProvider
                                                         .isDarkThemeEnabled
                                                     ? lightSecondaryBackgroundColor
@@ -302,7 +303,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                             .isDarkThemeEnabled
                                                         ? lightSecondaryBackgroundColor
                                                         : greyColor,
-                                                    type: FontStyle.smallText,
+                                                    type: FontStyle.Small,
                                                     textAlign: TextAlign.left,
                                                     overflow:
                                                         TextOverflow.ellipsis,

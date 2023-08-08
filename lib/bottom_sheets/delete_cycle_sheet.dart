@@ -10,7 +10,6 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
-
 class DeleteCycleSheet extends ConsumerStatefulWidget {
   final String cycleName;
   final String cycleId;
@@ -43,7 +42,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                       children: [
                         const CustomText(
                           'Delete Cycle',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         IconButton(
                           onPressed: () {

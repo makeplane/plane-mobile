@@ -193,7 +193,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                     ),
                                     CustomText(
                                       'Upload',
-                                      type: FontStyle.buttonText,
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Bold,
                                       color: themeProvider.isDarkThemeEnabled
                                           ? const Color.fromRGBO(
                                               142, 148, 146, 1)
@@ -230,7 +231,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   children: [
                                     CustomText(
                                       'Remove',
-                                      type: FontStyle.buttonText,
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Bold,
                                       color: Colors.red,
                                     )
                                   ],
@@ -248,7 +250,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: const CustomText(
                           'Full Name *',
-                          type: FontStyle.description,
+                          type: FontStyle.Medium,
                           //color: const Color.fromRGBO(142, 148, 146, 1),
                         ),
                       ),
@@ -300,7 +302,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: const CustomText(
                           'Email *',
-                          type: FontStyle.description,
+                          type: FontStyle.Medium,
                         ),
                       ),
                       const SizedBox(
@@ -350,7 +352,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Role *',
-                            type: FontStyle.description,
+                            type: FontStyle.Medium,
                             color: themeProvider.isDarkThemeEnabled
                                 ? darkSecondaryTextColor
                                 : Colors.black),
@@ -397,7 +399,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   profileProvider.dropDownValue == null
                                       ? 'Select Role'
                                       : profileProvider.dropDownValue!,
-                                  type: FontStyle.text,
+                                  type: FontStyle.Small,
                                 ),
                               ),
                               Container(
@@ -422,7 +424,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Theme',
-                            type: FontStyle.description,
+                            type: FontStyle.Medium,
                             color: themeProvider.isDarkThemeEnabled
                                 ? darkSecondaryTextColor
                                 : Colors.black),
@@ -467,7 +469,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                 margin: const EdgeInsets.only(left: 16),
                                 child: CustomText(
                                   profileProvider.theme,
-                                  type: FontStyle.text,
+                                  type: FontStyle.Small,
                                 ),
                               ),
                               Container(

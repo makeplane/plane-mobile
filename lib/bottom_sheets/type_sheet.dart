@@ -46,7 +46,8 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 children: [
                   const CustomText(
                     'Type',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
                   IconButton(
@@ -94,7 +95,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       const SizedBox(width: 10),
                       const CustomText(
                         'Board View',
-                        type: FontStyle.subheading,
+                        type: FontStyle.Small,
                       ),
                     ],
                   ),
@@ -138,7 +139,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       const SizedBox(width: 10),
                       const CustomText(
                         'List View',
-                        type: FontStyle.subheading,
+                        type: FontStyle.Small,
                       ),
                     ],
                   ),
@@ -182,7 +183,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       const SizedBox(width: 10),
                       const CustomText(
                         'Calendar View',
-                        type: FontStyle.subheading,
+                        type: FontStyle.Small,
                       ),
                     ],
                   ),
@@ -226,7 +227,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       const SizedBox(width: 10),
                       const CustomText(
                         'Spreadsheet View',
-                        type: FontStyle.subheading,
+                        type: FontStyle.Small,
                       ),
                     ],
                   ),

@@ -39,10 +39,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
         leading: const Text(''),
         title: Row(
           children: [
-            const CustomText(
+            CustomText(
               'Projects',
-              // color: themeProvider.primaryTextColor,
-              type: FontStyle.headingH4SemiBold,
+              type: FontStyle.H4,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
             const Spacer(),
             Row(
@@ -109,7 +110,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
           child: projectProvider.projects.isEmpty &&
                   projectProvider.starredProjects.isEmpty
               ? Center(
-                  child: EmptyPlaceholder.emptyProject(context),
+                  child: EmptyPlaceholder.emptyProject(context, ref),
                 )
               : SingleChildScrollView(
                   // physics: NeverScrollableScrollPhysics(),
@@ -120,9 +121,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                           ? const SizedBox(height: 10)
                           : Container(),
                       checkStarredProjects(projects: projectProvider.projects)
-                          ? const CustomText(
+                          ? CustomText(
                               'Favorites',
-                              type: FontStyle.description,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             )
                           : const SizedBox.shrink(),
                       checkStarredProjects(projects: projectProvider.projects)
@@ -216,34 +220,31 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                     //   style: TextStyle(
                                     //     color: themeProvider.primaryTextColor,
                                     //     fontSize: 18,
-                                    //     fontWeight: FontWeight.w500,
+                                    //     fontWeight: FontWeightt.Medium,
                                     //   ),
                                     // ),
                                     child: CustomText(
                                       projectProvider.projects[index]['name'],
-                                      // color: themeProvider.primaryTextColor,
-                                      type: FontStyle.headingH6Medium,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                      type: FontStyle.H6,
+                                      fontWeight: FontWeightt.Medium,
                                       textAlign: TextAlign.start,
                                       maxLines: 1,
                                     ),
                                   ),
                                   subtitle: Row(
                                     children: [
-                                      // Text(
-                                      //   starredProject[index].subtitle,
-                                      //   style: TextStyle(
-                                      //     color: themeProvider.strokeColor,
-                                      //     fontSize: 16,
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
                                       CustomText(
                                         projectProvider.projects[index]
                                                 ['is_member']
                                             ? 'Member'
                                             : 'Not a Member',
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.paragraphMediumMedium,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
                                       ),
                                       const SizedBox(width: 10),
                                       //dot as a separator
@@ -261,7 +262,10 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 projectProvider.projects[index]
                                                     ['created_at'])),
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.paragraphMediumMedium,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
                                         // fontSize: 16,
                                       ),
                                       // Text(
@@ -269,7 +273,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                       //   style: TextStyle(
                                       //     color: themeProvider.strokeColor,
                                       //     fontSize: 16,
-                                      //     fontWeight: FontWeight.w500,
+                                      //     fontWeight: FontWeightt.Medium,
                                       //   ),
                                       // ),
                                     ],
@@ -308,7 +312,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                           ? const CustomText(
                               'All',
                               // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.description,
+                              type: FontStyle.Small,
                             )
                           : Container(),
                       const SizedBox(height: 7),
@@ -397,13 +401,17 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                     //   style: TextStyle(
                                     //     color: themeProvider.primaryTextColor,
                                     //     fontSize: 18,
-                                    //     fontWeight: FontWeight.w500,
+                                    //     fontWeight: FontWeightt.Medium,
                                     //   ),
                                     // ),
                                     child: CustomText(
                                       projectProvider.projects[index]['name'],
                                       // color: themeProvider.primaryTextColor,
-                                      type: FontStyle.headingH6Medium,
+
+                                      type: FontStyle.H6,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                       textAlign: TextAlign.start,
                                       maxLines: 1,
                                     ),
@@ -415,7 +423,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                       //   style: TextStyle(
                                       //     color: themeProvider.strokeColor,
                                       //     fontSize: 16,
-                                      //     fontWeight: FontWeight.w500,
+                                      //     fontWeight: FontWeightt.Medium,
                                       //   ),
                                       // ),
                                       CustomText(
@@ -424,7 +432,10 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             ? 'Member'
                                             : 'Not a Member',
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.paragraphMediumMedium,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
                                       ),
                                       const SizedBox(width: 10),
                                       //dot as a separator
@@ -441,7 +452,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                       //   style: TextStyle(
                                       //     color: themeProvider.strokeColor,
                                       //     fontSize: 16,
-                                      //     fontWeight: FontWeight.w500,
+                                      //     fontWeight: FontWeightt.Medium,
                                       //   ),
                                       // ),
                                       CustomText(
@@ -450,10 +461,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 projectProvider.projects[index]
                                                     ['created_at'])),
                                         // color: themeProvider.strokeColor,
-                                        type: FontStyle.paragraphMediumMedium,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkSecondaryTextColor
-                                            : Colors.black,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
+
                                         // fontSize: 16,
                                       ),
                                     ],

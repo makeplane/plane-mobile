@@ -75,7 +75,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                         ),
                       ),
                       child: const CustomText('Disable Estimate',
-                          type: FontStyle.subtitle),
+                          type: FontStyle.Medium),
                     ),
                   ),
                   ListView.builder(
@@ -114,7 +114,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                 CustomText(
                                   estimatesProvider.estimates[index]['name'],
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                 ),
                                 Row(
                                   children: [
@@ -178,7 +178,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                                         .estimates[index]['id']
                                                 ? greenHighLight
                                                 : Colors.black,
-                                            type: FontStyle.subtitle),
+                                            type: FontStyle.Medium),
                                       ),
                                     ),
 
@@ -280,7 +280,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                   '',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: const Color.fromRGBO(133, 142, 150, 1),
                             ),
                             (estimatesProvider.estimates[index]
@@ -296,7 +296,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                             CustomText(
                               'Estimates ($est)',
                               textAlign: TextAlign.left,
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                             ),
                           ],
                         ),
@@ -356,7 +356,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                         ),
                         CustomText(
                           '3',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -388,7 +388,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                         ),
                         CustomText(
                           '2',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -420,7 +420,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                         ),
                         CustomText(
                           '1',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -433,7 +433,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
         const SizedBox(height: 20),
         const CustomText(
           'No Estimates Yet',
-          type: FontStyle.heading,
+          type: FontStyle.H6,
+          fontWeight: FontWeightt.Semibold,
           fontSize: 20,
         ),
         const SizedBox(height: 20),
@@ -441,7 +442,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
           width: width * 0.8,
           child: const CustomText(
             'There are no estimates available for this project at the moment.',
-            type: FontStyle.title,
+            type: FontStyle.Small,
             maxLines: 5,
             textAlign: TextAlign.center,
           ),
@@ -492,7 +493,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                 ),
                 CustomText(
                   'Add Estimate',
-                  type: FontStyle.buttonText,
+                  type: FontStyle.Medium,
+                  fontWeight: FontWeightt.Bold,
                 ),
               ],
             ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'custom_text.dart';
+import '../utils/enums.dart';
 
 class CustomExpansionTile extends StatefulWidget {
-  const CustomExpansionTile({super.key, required this.title, required this.child});
+  const CustomExpansionTile(
+      {super.key, required this.title, required this.child});
 
   final String title;
   final Widget child;
@@ -49,7 +50,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               const SizedBox(width: 10),
               CustomText(
                 widget.title,
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ],
           ),

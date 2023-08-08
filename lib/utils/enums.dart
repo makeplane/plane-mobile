@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum Environment { production, staging, dev }
 
 enum StateEnum {
@@ -11,10 +13,10 @@ enum StateEnum {
   restricted,
   idle,
 }
-enum PageFilters { all, recent, favourites, createdByMe, createdByOthers }
-enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
-// enum Theme { light, dark }
+enum PageFilters { all, recent, favourites, createdByMe, createdByOthers }
+
+enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
 enum ProjectView { kanban, list, calendar, spreadsheet }
 
@@ -38,3 +40,26 @@ enum IssueDetailCategory {
 }
 
 enum Role { admin, member, viewer, guest, none }
+
+enum FontStyle {
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Large,
+  Medium,
+  Small,
+  XSmall,
+}
+
+enum FontWeightt {
+  Regular,
+  Medium,
+  Semibold,
+  Bold,
+  ExtraBold,
+}
+
+enum THEME { light, dark, lightHighContrast, darkHighContrast, custom }

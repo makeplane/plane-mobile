@@ -30,7 +30,7 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
         ),
         child: (modulesProvider.favModules.isEmpty &&
                 modulesProvider.modules.isEmpty)
-            ? EmptyPlaceholder.emptyModules(context)
+            ? EmptyPlaceholder.emptyModules(context,ref)
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +38,7 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                     modulesProvider.favModules.isNotEmpty
                         ? const CustomText(
                             'Favourite',
-                            type: FontStyle.description,
+                            type: FontStyle.Medium,
                           )
                         : Container(),
                     modulesProvider.favModules.isNotEmpty
@@ -70,7 +70,7 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                             modulesProvider.favModules.isNotEmpty
                         ? const CustomText(
                             'All Modules',
-                            type: FontStyle.description,
+                            type: FontStyle.Medium,
                           )
                         : Container(),
                     Container(

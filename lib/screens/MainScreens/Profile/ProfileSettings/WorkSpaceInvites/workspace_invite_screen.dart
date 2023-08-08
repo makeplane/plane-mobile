@@ -64,7 +64,7 @@
 //                           width: MediaQuery.of(context).size.width * 0.6,
 //                           child: const CustomText(
 //                             'Currently you have no invited workspaces to join.',
-//                             type: FontStyle.description,
+//                             type: FontStyle.Medium,
 //                             color: greyColor,
 //                             textAlign: TextAlign.center,
 //                           ),
@@ -123,7 +123,7 @@
 //                                                             .toString()
 //                                                             .toUpperCase()
 //                                                             .substring(0, 1),
-//                                                         type: FontStyle.title,
+//                                                         type: FontStyle.Small,
 //                                                         color: Colors.white,
 //                                                         fontWeight:
 //                                                             FontWeight.bold,
@@ -154,7 +154,7 @@
 //                                                   prov.workspaceInvitations[
 //                                                           index]['workspace']
 //                                                       ['name'],
-//                                                   type: FontStyle.title,
+//                                                   type: FontStyle.Small,
 //                                                   fontWeight: FontWeight.bold,
 //                                                 ),
 //                                                 const SizedBox(
@@ -162,7 +162,7 @@
 //                                                 ),
 //                                                 const CustomText(
 //                                                   'Invited',
-//                                                   type: FontStyle.subtitle,
+//                                                   type: FontStyle.Medium,
 //                                                   color: greyColor,
 //                                                 ),
 //                                               ],

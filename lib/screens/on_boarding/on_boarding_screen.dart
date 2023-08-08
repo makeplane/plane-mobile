@@ -13,6 +13,7 @@ import '../../widgets/custom_text.dart';
 import '../../widgets/status_widget.dart';
 import '../../widgets/three_dots_widget.dart';
 import 'auth/sign_in.dart';
+import 'package:plane_startup/utils/enums.dart';
 
 class OnBoardingScreen extends ConsumerStatefulWidget {
   const OnBoardingScreen({super.key});
@@ -42,520 +43,496 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
     }
   ];
 
-  List cards = [
-    Container(
-      height: 160,
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        shadowColor: primaryColor.withOpacity(0.5),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Text(
-              //   'FC-7',
-              //   style: TextStylingWidget.description.copyWith(color: greyColor),
-              // ),
-              const CustomText(
-                'FC-7',
-                type: FontStyle.description,
-                color: greyColor,
-                fontSize: 16,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              // Text(
-              //   'Issue details activities and comments API endpoints and documnetaion',
-              //   style: TextStylingWidget.description
-              //       .copyWith(fontSize: 15, fontWeight: FontWeight.w500),
-              // ),
-              const CustomText(
-                'Issue details activities and comments API endpoints and documentation',
-                type: FontStyle.description,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-                maxLines: 4,
-              ),
-              const Spacer(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.orange.withOpacity(0.2)),
-                    child: SvgPicture.asset('assets/svg_images/graph_icon.svg',
-                        height: 10,
-                        width: 10,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.orange, BlendMode.srcIn)),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const StautsWidget(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const ThreeDotsWidget()
-                ],
-              )
-            ],
+  List cards = [];
+  @override
+  void initState() {
+    var themeProvider = ref.read(ProviderList.themeProvider);
+    ProviderList.clear(ref: ref);
+    cards = [
+      Container(
+        height: 160,
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shadowColor: primaryColor.withOpacity(0.5),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text(
+                //   'FC-7',
+                //   style: TextStylingWidget.description.copyWith(color: greyColor),
+                // ),
+                CustomText(
+                  'FC-7',
+                  type: FontStyle.Small,
+                  color: themeProvider.themeManager.tertiaryTextColor,
+                  fontSize: 16,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                // Text(
+                //   'Issue details activities and comments API endpoints and documnetaion',
+                //   style: TextStylingWidget.description
+                //       .copyWith(fontSize: 15, fontWeight: FontWeight.w500),
+                // ),
+                CustomText(
+                  'Issue details activities and comments API endpoints and documentation',
+                  type: FontStyle.Small,
+                  fontSize: 15,
+                  fontWeight: FontWeightt.Medium,
+                  color: themeProvider.themeManager.primaryTextColor,
+                  maxLines: 4,
+                ),
+                const Spacer(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.orange.withOpacity(0.2)),
+                      child: SvgPicture.asset(
+                          'assets/svg_images/graph_icon.svg',
+                          height: 10,
+                          width: 10,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.orange, BlendMode.srcIn)),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const StautsWidget(),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const ThreeDotsWidget()
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
-    ),
-    Container(
-      height: 160,
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        shadowColor: primaryColor.withOpacity(0.5),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text(
-                  //   'Plane Launch Cycle',
-                  //   style: TextStylingWidget.subHeading,
-                  // ),
-                  CustomText(
-                    'Plane Launch Cycle',
-                    type: FontStyle.subheading,
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  Icon(
-                    Icons.star_outline,
-                    color: greyColor,
-                    size: 20,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset(
-                            'assets/svg_images/calendar_icon.svg',
-                            height: 15,
-                            width: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '  Start : ',
-                          style: TextStylingWidget.smallText.copyWith(
-                            color: greyColor,
-                          ),
-                        ),
-                        const TextSpan(
-                            text: 'Jan 16, 2022',
-                            style: TextStylingWidget.smallText),
-                      ],
+      Container(
+        height: 160,
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shadowColor: primaryColor.withOpacity(0.5),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text(
+                    //   'Plane Launch Cycle',
+                    //   style: TextStylingWidget.subHeading,
+                    // ),
+                    CustomText(
+                      'Plane Launch Cycle',
+                      type: FontStyle.H4,
+                      color: themeProvider.themeManager.primaryTextColor,
+                      fontWeight: FontWeightt.Bold,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset(
-                            'assets/svg_images/calendar_icon.svg',
-                            height: 15,
-                            width: 15,
+                    const Icon(
+                      Icons.star_outline,
+                      color: greyColor,
+                      size: 20,
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              'assets/svg_images/calendar_icon.svg',
+                              height: 15,
+                              width: 15,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: '  End : ',
-                          style: TextStylingWidget.smallText.copyWith(
-                            color: greyColor,
+                          TextSpan(
+                            text: '  Start : ',
+                            style: TextStylingWidget.smallText.copyWith(
+                              color: greyColor,
+                            ),
                           ),
-                        ),
-                        const TextSpan(
-                            text: 'Apr 16, 2023',
-                            style: TextStylingWidget.smallText),
-                      ],
+                          const TextSpan(
+                              text: 'Jan 16, 2022',
+                              style: TextStylingWidget.smallText),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.orange,
-                        // child: Text(
-                        //   'V',
-                        //   style: TextStylingWidget.smallText
-                        //       .copyWith(color: Colors.white),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              'assets/svg_images/calendar_icon.svg',
+                              height: 15,
+                              width: 15,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '  End : ',
+                            style: TextStylingWidget.smallText.copyWith(
+                              color: greyColor,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: 'Apr 16, 2023',
+                              style: TextStylingWidget.smallText),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.orange,
+                          // child: Text(
+                          //   'V',
+                          //   style: TextStylingWidget.smallText
+                          //       .copyWith(color: Colors.white),
+                          // ),
+                          child: CustomText(
+                            'V',
+                            type: FontStyle.XSmall,
+                            color: themeProvider.themeManager.textonColor,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        // const Text(
+                        //   'Vamsi kurama',
+                        //   style: TextStylingWidget.smallText,
                         // ),
-                        child: CustomText(
-                          'V',
-                          type: FontStyle.smallText,
-                          color: Colors.white,
-                          fontSize: 14,
+                        CustomText(
+                          'Vamsi kurama',
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      // const Text(
-                      //   'Vamsi kurama',
-                      //   style: TextStylingWidget.smallText,
-                      // ),
-                      CustomText(
-                        'Vamsi kurama',
-                        type: FontStyle.smallText,
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/svg_images/edit_icon.svg',
-                        height: 15,
-                        width: 15,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      // SvgPicture.asset(
-                      //   'assets/svg_images/options_icon.svg',
-                      //   width: 15,
-                      // ),
-                      const Icon(
-                        Icons.more_vert,
-                        size: 20,
-                        color: greyColor,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              const Divider(
-                color: greyColor,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text(
-                  //   'Progress',
-                  //   style: TextStylingWidget.smallText.copyWith(fontSize: 12),
-                  // ),
-                  const CustomText(
-                    'Progress',
-                    type: FontStyle.smallText,
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: Row(
+                      ],
+                    ),
+                    Row(
                       children: [
-                        Flexible(
-                          child: Container(
+                        SvgPicture.asset(
+                          'assets/svg_images/edit_icon.svg',
+                          height: 15,
+                          width: 15,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        // SvgPicture.asset(
+                        //   'assets/svg_images/options_icon.svg',
+                        //   width: 15,
+                        // ),
+                        const Icon(
+                          Icons.more_vert,
+                          size: 20,
+                          color: greyColor,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                const Divider(
+                  color: greyColor,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text(
+                    //   'Progress',
+                    //   style: TextStylingWidget.smallText.copyWith(fontSize: 12),
+                    // ),
+                    CustomText(
+                      'Progress',
+                      type: FontStyle.Small,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Container(
+                              height: 5,
+                              constraints: const BoxConstraints(maxWidth: 60),
+                              margin: const EdgeInsets.only(right: 2),
+                              color: Colors.grey[300],
+                            ),
+                          ),
+                          Container(
+                            height: 5,
+                            constraints: const BoxConstraints(maxWidth: 30),
+                            margin: const EdgeInsets.only(right: 2),
+                            color: Colors.blue,
+                          ),
+                          Container(
+                            height: 5,
+                            constraints: const BoxConstraints(maxWidth: 50),
+                            margin: const EdgeInsets.only(right: 2),
+                            color: Colors.orange,
+                          ),
+                          Container(
+                            height: 5,
+                            constraints: const BoxConstraints(maxWidth: 40),
+                            margin: const EdgeInsets.only(right: 2),
+                            color: Colors.purple,
+                          ),
+                          Container(
                             height: 5,
                             constraints: const BoxConstraints(maxWidth: 60),
                             margin: const EdgeInsets.only(right: 2),
-                            color: Colors.grey[300],
+                            color: Colors.green,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.expand_more,
+                      size: 18,
+                      color: greyColor,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      Container(
+        height: 160,
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shadowColor: primaryColor.withOpacity(0.5),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      'Github Integrations',
+                      type: FontStyle.Small,
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star_outline,
+                          color: greyColor,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Icon(
+                          Icons.more_vert,
+                          size: 20,
+                          color: greyColor,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              'assets/svg_images/calendar_icon.svg',
+                              height: 15,
+                              width: 15,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '  Start : ',
+                            style: TextStylingWidget.smallText.copyWith(
+                              color: greyColor,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: 'Jan 16, 2022',
+                              style: TextStylingWidget.smallText),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              'assets/svg_images/calendar_icon.svg',
+                              height: 15,
+                              width: 15,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '  End : ',
+                            style: TextStylingWidget.smallText.copyWith(
+                              color: greyColor,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: 'Apr 16, 2023',
+                              style: TextStylingWidget.smallText),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.person_outline,
+                          size: 15,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        CustomText(
+                          'Lead:',
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.tertiaryTextColor,
+                          fontSize: 14,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.orange,
+                          child: CustomText(
+                            'V',
+                            type: FontStyle.XSmall,
+                            color: themeProvider.themeManager.textonColor,
                           ),
                         ),
-                        Container(
-                          height: 5,
-                          constraints: const BoxConstraints(maxWidth: 30),
-                          margin: const EdgeInsets.only(right: 2),
-                          color: Colors.blue,
+                        const SizedBox(
+                          width: 5,
                         ),
-                        Container(
-                          height: 5,
-                          constraints: const BoxConstraints(maxWidth: 50),
-                          margin: const EdgeInsets.only(right: 2),
-                          color: Colors.orange,
+                        CustomText(
+                          'Vamsi kurama',
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.people,
+                          size: 15,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        CustomText(
+                          'Members:',
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.tertiaryTextColor,
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Transform.scale(
+                          scale: 0.7,
+                          child: const ThreeDotsWidget(),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                const Divider(
+                  color: greyColor,
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    CustomText(
+                      'Progress',
+                      type: FontStyle.Small,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Row(
+                      children: [
                         Container(
                           height: 5,
-                          constraints: const BoxConstraints(maxWidth: 40),
-                          margin: const EdgeInsets.only(right: 2),
-                          color: Colors.purple,
+                          constraints: const BoxConstraints(maxWidth: 190),
+                          color: Colors.green,
                         ),
                         Container(
                           height: 5,
                           constraints: const BoxConstraints(maxWidth: 60),
-                          margin: const EdgeInsets.only(right: 2),
-                          color: Colors.green,
+                          color: Colors.grey[300],
                         ),
                       ],
-                    ),
-                  ),
-                  const Icon(
-                    Icons.expand_more,
-                    size: 18,
-                    color: greyColor,
-                  )
-                ],
-              )
-            ],
+                    ))
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    ),
-    Container(
-      height: 160,
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        shadowColor: primaryColor.withOpacity(0.5),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text(
-                  //   'Github Integrations',
-                  //   style: TextStylingWidget.subHeading,
-                  // ),
-
-                  CustomText(
-                    'Github Integrations',
-                    type: FontStyle.subheading,
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                  Spacer(),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star_outline,
-                        color: greyColor,
-                        size: 20,
-                      ),
-                      SizedBox(width: 5),
-                      Icon(
-                        Icons.more_vert,
-                        size: 20,
-                        color: greyColor,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset(
-                            'assets/svg_images/calendar_icon.svg',
-                            height: 15,
-                            width: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '  Start : ',
-                          style: TextStylingWidget.smallText.copyWith(
-                            color: greyColor,
-                          ),
-                        ),
-                        const TextSpan(
-                            text: 'Jan 16, 2022',
-                            style: TextStylingWidget.smallText),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset(
-                            'assets/svg_images/calendar_icon.svg',
-                            height: 15,
-                            width: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '  End : ',
-                          style: TextStylingWidget.smallText.copyWith(
-                            color: greyColor,
-                          ),
-                        ),
-                        const TextSpan(
-                            text: 'Apr 16, 2023',
-                            style: TextStylingWidget.smallText),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  const Row(
-                    children: [
-                      Icon(
-                        Icons.person_outline,
-                        size: 15,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      // Text(
-                      //   'Lead:',
-                      //   style: TextStylingWidget.smallText
-                      //       .copyWith(color: greyColor),
-                      // ),
-                      CustomText(
-                        'Lead:',
-                        type: FontStyle.smallText,
-                        color: greyColor,
-                        fontSize: 14,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.orange,
-                        // child: Text(
-                        //   'V',
-                        //   style: TextStylingWidget.smallText
-                        //       .copyWith(color: Colors.white),
-                        // ),
-                        child: CustomText(
-                          'V',
-                          type: FontStyle.smallText,
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      // const Text(
-                      //   'Vamsi kurama',
-                      //   style: TextStylingWidget.smallText,
-                      // ),
-                      CustomText(
-                        'Vamsi kurama',
-                        type: FontStyle.smallText,
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.people,
-                        size: 15,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const CustomText(
-                        'Members:',
-                        type: FontStyle.smallText,
-                        color: greyColor,
-                        fontSize: 14,
-                      ),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      Transform.scale(
-                        scale: 0.7,
-                        child: const ThreeDotsWidget(),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              const Divider(
-                color: greyColor,
-              ),
-              const SizedBox(height: 5),
-              Row(
-                children: [
-                  const CustomText(
-                    'Progress',
-                    type: FontStyle.smallText,
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      child: Row(
-                    children: [
-                      Container(
-                        height: 5,
-                        constraints: const BoxConstraints(maxWidth: 190),
-                        color: Colors.green,
-                      ),
-                      Container(
-                        height: 5,
-                        constraints: const BoxConstraints(maxWidth: 60),
-                        color: Colors.grey[300],
-                      ),
-                    ],
-                  ))
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    )
-  ];
-  @override
-  void initState() {
-    ProviderList.clear(ref: ref);
+      )
+    ];
     super.initState();
   }
 
@@ -600,23 +577,18 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                         // ),
                         CustomText(
                           data[index]['title'],
-                          type: FontStyle.headingH4SemiBold,
+                          type: FontStyle.H4,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         const SizedBox(
                           height: 20,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
-                          // child: Text(
-                          //   data[index]['description'],
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStylingWidget.description.copyWith(
-                          //       // color: themeProvider.secondaryTextCol
-                          //       ),
-                          // ),
                           child: CustomText(
                             data[index]['description'],
-                            type: FontStyle.paragraphMediumRegular,
+                            type: FontStyle.Medium,
                             textAlign: TextAlign.center,
                             maxLines: 5,
                           ),

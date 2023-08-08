@@ -9,17 +9,19 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class AddAttachmentsSheet extends ConsumerStatefulWidget {
-  AddAttachmentsSheet(
+  const AddAttachmentsSheet(
       {super.key,
       required this.projectId,
       required this.slug,
       required this.issueId,
  });
 
-  String projectId;
-  String slug;
-  String issueId;
+  final String projectId;
+  final String slug;
+  final String issueId;
 
   @override
   ConsumerState<AddAttachmentsSheet> createState() =>
@@ -50,7 +52,8 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
             children: [
               const CustomText(
                 'Insert File',
-                type: FontStyle.heading,
+                type: FontStyle.H4,
+                fontWeight: FontWeightt.Semibold,
                 // color: themeProvider.secondaryTextColor,
               ),
               IconButton(

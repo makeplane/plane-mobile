@@ -249,7 +249,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             child: CustomText(
               widget.fromModule ? widget.moduleName! : widget.cycleName!,
               // color: themeProvider.primaryTextColor,
-              type: FontStyle.appbarTitle,
+              type: FontStyle.Small,
             ),
           ),
         ),
@@ -308,7 +308,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                   // color: selected == 0
                                   //     ? primaryColor
                                   // : themeProvider.strokeColor,
-                                  type: FontStyle.subheading,
+                                  type: FontStyle.Small,
                                   color: !themeProvider.isDarkThemeEnabled &&
                                           (widget.fromModule
                                               ? modulesProvider
@@ -373,7 +373,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     // color: selected == 1
                                     //     ? primaryColor
                                     // : themeProvider.strokeColor,
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                     color: !themeProvider.isDarkThemeEnabled &&
                                             (widget.fromModule
                                                 ? modulesProvider
@@ -531,9 +531,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 ),
                                                                                 child: CustomText(
                                                                                   state.title!,
-                                                                                  type: FontStyle.subheading,
+                                                                                  type: FontStyle.Small,
                                                                                   color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
-                                                                                  fontWeight: FontWeight.w500,
+                                                                                  fontWeight: FontWeightt.Medium,
                                                                                 ),
                                                                               ),
                                                                               Container(
@@ -546,7 +546,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 width: 30,
                                                                                 child: CustomText(
                                                                                   state.items.length.toString(),
-                                                                                  type: FontStyle.subtitle,
+                                                                                  type: FontStyle.Medium,
                                                                                 ),
                                                                               ),
                                                                               const Spacer(),
@@ -586,7 +586,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
                                                                                 child: const CustomText(
                                                                                   'No issues.',
-                                                                                  type: FontStyle.title,
+                                                                                  type: FontStyle.Small,
                                                                                   maxLines: 10,
                                                                                   textAlign: TextAlign.start,
                                                                                 ),
@@ -711,7 +711,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     ),
                                                     CustomText(
                                                       ' Issue',
-                                                      type: FontStyle.subtitle,
+                                                      type: FontStyle.Medium,
                                                       color: Colors.white,
                                                     )
                                                   ],
@@ -763,7 +763,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                             ),
                                             CustomText(
                                               ' Layout',
-                                              type: FontStyle.subtitle,
+                                              type: FontStyle.Medium,
                                               color: Colors.white,
                                             )
                                           ],
@@ -824,7 +824,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                   ),
                                                   CustomText(
                                                     ' Views',
-                                                    type: FontStyle.subtitle,
+                                                    type: FontStyle.Medium,
                                                     color: Colors.white,
                                                   )
                                                 ],
@@ -874,7 +874,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                             ),
                                             CustomText(
                                               ' Filters',
-                                              type: FontStyle.subtitle,
+                                              type: FontStyle.Medium,
                                               color: Colors.white,
                                             )
                                           ],
@@ -1116,7 +1116,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('Start Date', type: FontStyle.smallText)
+                    ? const CustomText('Start Date', type: FontStyle.Small)
                     : Row(
                         children: [
                           const Icon(Icons.calendar_today_outlined,
@@ -1124,7 +1124,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           const SizedBox(width: 7),
                           CustomText(
                             '${dateFormating(detailData['start_date'])} ',
-                            type: FontStyle.smallText,
+                            type: FontStyle.Small,
                           ),
                         ],
                       ),
@@ -1224,7 +1224,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('End Date', type: FontStyle.smallText)
+                    ? const CustomText('End Date', type: FontStyle.Small)
                     : Row(
                         children: [
                           const Icon(Icons.calendar_today_outlined,
@@ -1232,7 +1232,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           const SizedBox(width: 7),
                           CustomText(
                               '${dateFormating(detailData[widget.fromModule ? 'target_date' : 'end_date'])} ',
-                              type: FontStyle.smallText),
+                              type: FontStyle.Small),
                         ],
                       ),
               ),
@@ -1248,7 +1248,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       children: [
         const Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Details', type: FontStyle.heading2)),
+            child: CustomText('Details', type: FontStyle.H5)),
         const SizedBox(height: 10),
         stateWidget(),
         const SizedBox(height: 10),
@@ -1271,7 +1271,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       children: [
         const Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Progress', type: FontStyle.heading2)),
+            child: CustomText('Progress', type: FontStyle.H5)),
         const SizedBox(height: 20),
         SizedBox(
           height: 200,
@@ -1349,7 +1349,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       children: [
         const Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Assignees', type: FontStyle.heading2)),
+            child: CustomText('Assignees', type: FontStyle.H5)),
         const SizedBox(height: 10),
         detailData['distribution']['assignees'].length == 0 ||
                 (detailData['distribution']['assignees'].length == 1 &&
@@ -1552,7 +1552,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       children: [
         const Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('States', type: FontStyle.heading2)),
+            child: CustomText('States', type: FontStyle.H5)),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -1645,7 +1645,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       children: [
         const Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Labels', type: FontStyle.heading2)),
+            child: CustomText('Labels', type: FontStyle.H5)),
         const SizedBox(height: 10),
         detailData['distribution']['labels'].length == 1 &&
                 detailData['distribution']['labels'][0]['label_id'] == null
@@ -1863,7 +1863,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             const SizedBox(width: 15),
             const CustomText(
               'Progress',
-              type: FontStyle.subheading,
+              type: FontStyle.Small,
               color: Color.fromRGBO(143, 143, 147, 1),
             ),
             Expanded(child: Container()),
@@ -1917,7 +1917,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             // ),
             const CustomText(
               'Members',
-              type: FontStyle.subheading,
+              type: FontStyle.Small,
               color: Color.fromRGBO(143, 143, 147, 1),
             ),
             Expanded(child: Container()),
@@ -1938,7 +1938,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         children: [
                           const CustomText(
                             'No members',
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                           ),
                           const SizedBox(
                             width: 5,
@@ -1999,7 +1999,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                           e['first_name'][0]
                                               .toString()
                                               .toUpperCase(),
-                                          type: FontStyle.title,
+                                          type: FontStyle.Small,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -2049,7 +2049,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             const SizedBox(width: 15),
             const CustomText(
               'Lead',
-              type: FontStyle.subheading,
+              type: FontStyle.Small,
               color: Color.fromRGBO(143, 143, 147, 1),
             ),
             Expanded(child: Container()),
@@ -2113,7 +2113,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                       .toString()
                                       .toUpperCase()
                                   : '',
-                              type: FontStyle.subheading,
+                              type: FontStyle.Small,
                               textAlign: TextAlign.center,
                               color: lightSecondaryBackgroundColor,
                             ),
@@ -2138,7 +2138,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                   : 'owned_by']['first_name'] ??
                               ''
                           : '',
-                      type: FontStyle.subheading,
+                      type: FontStyle.Small,
                       maxLines: 1,
                     ),
                   ),

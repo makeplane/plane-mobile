@@ -11,8 +11,7 @@ class SelectEstimate extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
 
-  const SelectEstimate(
-      { this.issueId, required this.createIssue, super.key});
+  const SelectEstimate({this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectEstimate> createState() => _SelectEstimateState();
@@ -95,7 +94,6 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace!
                                 .workspaceSlug,
-                           
                             refs: ref,
                             projID: ref
                                 .read(ProviderList.projectProvider)
@@ -162,7 +160,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               ),
                               const CustomText(
                                 'No Estimate',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                               ),
                               const Spacer(),
                               if ((widget.createIssue &&
@@ -232,7 +230,6 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                       .read(ProviderList.workspaceProvider)
                                       .selectedWorkspace!
                                       .workspaceSlug,
-                                 
                                   refs: ref,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -316,7 +313,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                                   .currentProject['estimate'])[
                                               'points'][index]['value']
                                           .toString(),
-                                      type: FontStyle.subheading,
+                                      type: FontStyle.Small,
                                     ),
                                     const Spacer(),
                                     widget.createIssue
@@ -351,7 +348,8 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                 children: [
                   const CustomText(
                     'Select Estimate',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   IconButton(
                       onPressed: () {

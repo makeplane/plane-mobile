@@ -39,7 +39,8 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
                       children: [
                         const CustomText(
                           'Delete Module',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         IconButton(
                           onPressed: () {

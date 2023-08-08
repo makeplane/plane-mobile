@@ -42,16 +42,16 @@ class CreatePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //form conatining title and description
-                        const Row(
+                         Row(
                           children: [
                             CustomText(
                               'Page Title',
-                              type: FontStyle.title,
-                              // color: themeProvider.secondaryTextColor,
+                              type: FontStyle.Small,
+                             color: themeProvider.themeManager.tertiaryTextColor,
                             ),
-                            CustomText(
+                            const CustomText(
                               ' *',
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Colors.red,
                             ),
                           ],
@@ -94,6 +94,7 @@ class CreatePage extends ConsumerWidget {
                                   .selectedWorkspace!
                                   .workspaceSlug,
                             );
+                        // ignore: use_build_context_synchronously
                         Navigator.pop(context);
                       },
                       textColor: Colors.white,

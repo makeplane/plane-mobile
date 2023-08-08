@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/screens/on_boarding/auth/signIn.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/home_screen.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
@@ -15,6 +14,7 @@ import 'package:plane_startup/widgets/loading_widget.dart';
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';
 import 'setup_workspace.dart';
+import 'signIn.dart';
 
 class SignUp extends ConsumerStatefulWidget {
   const SignUp({super.key});
@@ -35,6 +35,7 @@ class _SignUpState extends ConsumerState<SignUp> {
     var authProvider = ref.watch(ProviderList.authProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -58,29 +59,40 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 30,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             CustomText(
                               'Sign Up to',
-                              type: FontStyle.heading,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             CustomText(
                               ' Plane',
-                              type: FontStyle.heading,
-                              color: primaryColor,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color: themeProvider.themeManager.primaryColour,
                             ),
                           ],
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Email'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Email',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -110,13 +122,20 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Password'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Password',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -136,13 +155,20 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Confirm Password'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Confirm Password',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -228,7 +254,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                           children: [
                             const CustomText(
                               'Already have an account?',
-                              type: FontStyle.text,
+                              type: FontStyle.Small,
                               // color: primaryColor,
                             ),
                             const SizedBox(
@@ -244,9 +270,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                               },
                               child: const CustomText(
                                 'Sign In',
-                                type: FontStyle.text,
+                                type: FontStyle.Small,
                                 color: primaryColor,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeightt.Semibold,
                               ),
                             ),
                           ],
@@ -272,11 +298,12 @@ class _SignUpState extends ConsumerState<SignUp> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const CustomText(
+                                child: CustomText(
                                   'Go back',
-                                  type: FontStyle.heading2,
-                                  color: greyColor,
-                                  fontWeight: FontWeight.w600,
+                                  type: FontStyle.Small,
+                                  fontWeight: FontWeightt.Semibold,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 ),
                               ),
                             ],

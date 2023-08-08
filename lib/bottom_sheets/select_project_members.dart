@@ -4,8 +4,9 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+
+import '../widgets/custom_button.dart';
 
 class SelectProjectMembers extends ConsumerStatefulWidget {
   final bool createIssue;
@@ -84,7 +85,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                       children: [
                         const CustomText(
                           'Select Members',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         IconButton(
                             onPressed: () {
@@ -171,7 +173,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                                     ['member']['email'][0]
                                                 .toString()
                                                 .toUpperCase(),
-                                            type: FontStyle.subheading,
+                                            type: FontStyle.Small,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -184,7 +186,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                               " " +
                                               issuesProvider.members[index]
                                                   ['member']['last_name'],
-                                          type: FontStyle.subheading,
+                                          type: FontStyle.Small,
                                         ),
                                         const Spacer(),
                                         widget.createIssue
@@ -275,7 +277,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
             //               },
             //               child: const CustomText(
             //                 'Add',
-            //                 type: FontStyle.buttonText,
+            //                 type: FontStyle.Medium,
+            //                  fontWeight: FontWeightt.Bold,
             //               ),
             //             ),
             //           ],
@@ -324,7 +327,6 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                 .read(ProviderList.projectProvider)
                                 .currentProject['id'],
                             issueID: widget.issueId!,
-                          
                             refs: ref,
                             data: {
                               "assignees_list": issueDetailSelectedMembers

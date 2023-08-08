@@ -21,6 +21,7 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     var authProvider = ref.watch(ProviderList.authProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
@@ -39,15 +40,16 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      CustomText(
-                        'Reset Password',
-                        type: FontStyle.heading,
-                      ),
-                      CustomText(
+                      CustomText('Reset Password',
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor),
+                      const CustomText(
                         '',
-                        type: FontStyle.heading,
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
                         color: primaryColor,
                       ),
                     ],
@@ -75,7 +77,7 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                           ),
                           CustomText(
                             'Please check your mail for code',
-                            type: FontStyle.text,
+                            type: FontStyle.Small,
                             color: Color.fromRGBO(9, 169, 83, 1),
                           ),
                         ],
@@ -85,12 +87,17 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 25,
                   ),
-                  const CustomRichText(
+                   CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Code'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
-                    ],
-                    type: RichFontStyle.text,
+                      TextSpan(text: 'Code',   style: TextStyle(color: themeProvider
+                                                .themeManager.tertiaryTextColor)),
+                                    TextSpan(
+                                        text: '*',
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
+                                    ],
+                                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
@@ -102,12 +109,19 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'New Password'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
+                      TextSpan(
+                          text: 'New Password',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
                     ],
-                    type: RichFontStyle.text,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
@@ -119,12 +133,17 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const CustomRichText(
+                   CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Confirm Password'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
-                    ],
-                    type: RichFontStyle.text,
+                      TextSpan(text: 'Confirm Password',   style: TextStyle(color: themeProvider
+                                                .themeManager.tertiaryTextColor)),
+                                    TextSpan(
+                                        text: '*',
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
+                                    ],
+                                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,

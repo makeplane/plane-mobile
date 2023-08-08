@@ -162,7 +162,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         //           padding: const EdgeInsets.only(left: 10),
                         //           child: const CustomText(
                         //             'Cancel',
-                        //             type: FontStyle.description,
+                        //             type: FontStyle.Medium,
                         //           ),
                         //         ),
                         //       )
@@ -290,7 +290,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       children: [
         CustomText(
           'Create',
-          type: FontStyle.paragraphMediumMedium,
+          type: FontStyle.Medium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -356,7 +356,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.paragraphMediumRegular,
+                      type: FontStyle.Medium,
                     ),
                   ],
                 ),
@@ -405,7 +405,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       children: [
         CustomText(
           'Workspace Settings',
-          type: FontStyle.paragraphMediumMedium,
+          type: FontStyle.Medium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -471,7 +471,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.paragraphMediumRegular,
+                      type: FontStyle.Medium,
                     ),
                   ],
                 ),
@@ -521,7 +521,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         ),
         CustomText(
           'Help',
-          type: FontStyle.paragraphMediumMedium,
+          type: FontStyle.Medium,
           color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
         ),
         const SizedBox(
@@ -560,7 +560,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ),
                     CustomText(
                       items[index]['title'],
-                      type: FontStyle.paragraphMediumRegular,
+                      type: FontStyle.Medium,
                     ),
                   ],
                 ),
@@ -583,7 +583,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         children: [
           CustomText(
             'Issues',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -640,7 +641,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               width: width * 0.8,
                               child: CustomText(
                                 globalSearchProvider.data!.issues[index].name,
-                                type: FontStyle.description,
+                                type: FontStyle.Medium,
                                 maxLines: 2,
                               ),
                             ),
@@ -670,7 +671,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Projects',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -723,7 +725,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 child: CustomText(
                                   globalSearchProvider
                                       .data!.projects[index].name,
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   maxLines: 2,
                                 )),
                           ],
@@ -755,7 +757,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Workspaces',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -836,7 +839,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 child: CustomText(
                                   globalSearchProvider
                                       .data!.workspaces[index].name,
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   maxLines: 2,
                                 )),
                           ],
@@ -865,7 +868,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Cycles',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -931,7 +935,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 width: width * 0.8,
                                 child: CustomText(
                                   globalSearchProvider.data!.cycles[index].name,
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   maxLines: 2,
                                 )),
                           ],
@@ -960,7 +964,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Modules',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -1020,7 +1025,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 child: CustomText(
                                   globalSearchProvider
                                       .data!.modules[index].name,
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   maxLines: 2,
                                 )),
                           ],
@@ -1048,7 +1053,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Views',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -1081,7 +1087,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               width: width * 0.8,
                               child: CustomText(
                                 globalSearchProvider.data!.views[index].name,
-                                type: FontStyle.description,
+                                type: FontStyle.Medium,
                                 maxLines: 2,
                               )),
                         ],
@@ -1108,7 +1114,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           ),
           CustomText(
             'Pages',
-            type: FontStyle.boldTitle,
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Semibold,
             color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
@@ -1141,7 +1148,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               width: width * 0.8,
                               child: CustomText(
                                 globalSearchProvider.data!.pages[index].name,
-                                type: FontStyle.description,
+                                type: FontStyle.Medium,
                                 maxLines: 2,
                               )),
                         ],

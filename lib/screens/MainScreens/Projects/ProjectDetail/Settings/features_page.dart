@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 
+import '/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class FeaturesPage extends ConsumerStatefulWidget {
@@ -78,7 +79,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                           cardData[index]['title'],
                           textAlign: TextAlign.left,
                           // color: Colors.black,
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         ),
                         const SizedBox(
                           height: 10,

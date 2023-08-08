@@ -4,6 +4,8 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class SnoozeTimeSheet extends ConsumerStatefulWidget {
   const SnoozeTimeSheet({super.key});
 
@@ -25,7 +27,8 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             children: [
               const CustomText(
                 'Snooze until...',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               const Spacer(),
               IconButton(
@@ -56,7 +59,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 '1 day',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),
@@ -82,7 +85,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 '2 days',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),
@@ -108,7 +111,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 '5 days',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),
@@ -134,7 +137,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 '1 week',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),
@@ -160,7 +163,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 '2 weeks',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),
@@ -207,7 +210,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               },
               child: const CustomText(
                 'Custom',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
               ),
             ),
           ),

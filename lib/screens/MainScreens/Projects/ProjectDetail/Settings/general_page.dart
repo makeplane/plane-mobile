@@ -94,11 +94,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     children: [
                       CustomText(
                         'Icon & Name',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                       ),
                       CustomText(
                         '*',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Colors.red,
                       )
                     ],
@@ -181,7 +181,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                                     child: CustomText(
                                                       String.fromCharCode(
                                                           int.parse(e)),
-                                                      type: FontStyle.heading2,
+                                                      type: FontStyle.H5,
                                                     ),
                                                   ),
                                                 ),
@@ -219,7 +219,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                                   EdgeInsets.only(left: 25),
                                               child: CustomText(
                                                 'Choose your project icon',
-                                                type: FontStyle.heading,
+                                                type: FontStyle.H6,
+                                                fontWeight:
+                                                    FontWeightt.Semibold,
                                               ),
                                             ),
                                             // const Spacer(),
@@ -272,7 +274,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 ? CustomText(
                                     String.fromCharCode(
                                         int.parse(selectedEmoji!)),
-                                    type: FontStyle.heading,
+                                    type: FontStyle.H6,
+                                    fontWeight: FontWeightt.Semibold,
                                   )
                                 : CustomText(
                                     projectProvider.projectDetailModel !=
@@ -333,12 +336,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     children: [
                       CustomText(
                         'Description',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         // color: themeProvider.secondaryTextColor,
                       ),
                       CustomText(
                         '*',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Colors.red,
                       )
                     ],
@@ -383,12 +386,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     children: [
                       CustomText(
                         'Cover',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         // color: themeProvider.secondaryTextColor,
                       ),
                       CustomText(
                         '*',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Colors.red,
                       )
                     ],
@@ -486,12 +489,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       // ),
                       CustomText(
                         'Identifier',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         // color: themeProvider.secondaryTextColor,
                       ),
                       CustomText(
                         '*',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Colors.red,
                       )
                     ],
@@ -599,7 +602,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                         children: [
                           CustomText(
                             !isProjectPublic ? 'Secret' : 'Public',
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                             color: themeProvider.isDarkThemeEnabled
                                 ? Colors.white
                                 : Colors.black,
@@ -628,14 +631,14 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //       value: 'Secret',
                   //       child: CustomText(
                   //         'Secret',
-                  //         type: FontStyle.description,
+                  //         type: FontStyle.Medium,
                   //       ),
                   //     ),
                   //     DropdownMenuItem(
                   //       value: 'Public',
                   //       child: CustomText(
                   //         'Public',
-                  //         type: FontStyle.description,
+                  //         type: FontStyle.Medium,
                   //       ),
                   //     ),
                   //   ],
@@ -667,13 +670,13 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       title: const CustomText(
                         'Danger Zone',
                         textAlign: TextAlign.left,
-                        type: FontStyle.heading2,
+                        type: FontStyle.H5,
                         color: Color.fromRGBO(255, 12, 12, 1),
                       ),
                       children: [
                         const CustomText(
                           'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.',
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                           maxLines: 8,
                           textAlign: TextAlign.left,
                           color: Colors.grey,
@@ -711,7 +714,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                   child: CustomText(
                                 'Delete Project',
                                 color: Colors.white,
-                                type: FontStyle.buttonText,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Bold,
                               ))),
                         ),
                       ],
@@ -829,7 +833,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                       },
                                       child: CustomText(
                                         String.fromCharCode(int.parse(e)),
-                                        type: FontStyle.heading,
+                                        type: FontStyle.H6,
+                                        fontWeight: FontWeightt.Semibold,
                                       ),
                                     ),
                                   )
@@ -858,7 +863,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
           const SizedBox(height: 33),
           CustomText(
             title,
-            type: FontStyle.title,
+            type: FontStyle.Small,
             // color: Colors.black,
           ),
           const Spacer(),

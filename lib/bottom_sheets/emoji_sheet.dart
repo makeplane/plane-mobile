@@ -4,6 +4,8 @@ import 'package:plane_startup/utils/constants.dart';
 
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class EmojiSheet extends ConsumerStatefulWidget {
   final List<String> emojisWidgets;
   const EmojiSheet({super.key, required this.emojisWidgets});
@@ -44,7 +46,8 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                             },
                             child: CustomText(
                               e,
-                              type: FontStyle.heading,
+                              type: FontStyle.H6,
+                              fontWeight: FontWeightt.Semibold,
                             ),
                           ),
                         )
@@ -77,7 +80,8 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                     padding: EdgeInsets.only(left: 25),
                     child: CustomText(
                       'Choose your project icon',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                   ),
                   // const Spacer(),
@@ -125,8 +129,8 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                         ),
                         child: CustomText(
                           'Emoji',
-                          type: FontStyle.mainHeading,
-                          fontWeight: FontWeight.w400,
+                          type: FontStyle.H4,
+                          
                           color: selected == 0 ? primaryColor : greyColor,
                         ),
                       ),
@@ -154,8 +158,9 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                         ),
                         child: CustomText(
                           'Icon',
-                          type: FontStyle.mainHeading,
-                          fontWeight: FontWeight.w400,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          
                           color: selected == 1 ? primaryColor : greyColor,
                         ),
                       ),

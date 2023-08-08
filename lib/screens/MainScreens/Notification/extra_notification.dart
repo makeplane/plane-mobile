@@ -4,7 +4,6 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Notification/notifications_list.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 class ExtraNotifications extends ConsumerStatefulWidget {
@@ -34,7 +33,7 @@ class _ExtraNotificationsState extends ConsumerState<ExtraNotifications> {
         text: widget.title,
         centerTitle: true,
         // leading: false,
-        fontType: FontStyle.appbarTitle,
+        fontType: FontStyle.Small,
       ),
       body: LoadingWidget(
         loading: widget.type == 'archived'

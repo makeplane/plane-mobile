@@ -5,7 +5,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
-
 class DeleteLabelSheet extends ConsumerStatefulWidget {
   final String labelName;
   final String labelId;
@@ -31,7 +30,8 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
                 children: [
                   const CustomText(
                     'Delete Label',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
                   IconButton(
@@ -51,7 +51,7 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
               ),
               CustomText(
                 'Are you sure you want to delete label- ${widget.labelName}? The label will be removed from all the issues.',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
               )
             ],

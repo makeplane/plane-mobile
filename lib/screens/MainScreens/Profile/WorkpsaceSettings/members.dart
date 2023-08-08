@@ -67,7 +67,7 @@ class _MembersState extends ConsumerState<Members> {
                       color: Color.fromRGBO(63, 118, 255, 1),
                     ),
                     CustomText('Add',
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Color.fromRGBO(63, 118, 255, 1)),
                   ],
                 ),
@@ -206,7 +206,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                             .toString()
                             .toUpperCase(),
                         color: Colors.black,
-                        type: FontStyle.boldTitle,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Semibold,
                       ),
                     ),
                   )
@@ -217,7 +218,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                   ),
             title: CustomText(
               '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
-              type: FontStyle.heading2,
+              type: FontStyle.H5,
               maxLines: 1,
               fontSize: 18,
             ),
@@ -226,7 +227,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                 workspaceProvider.workspaceMembers[index]['member']['email'],
                 color: const Color.fromRGBO(133, 142, 150, 1),
                 textAlign: TextAlign.left,
-                type: FontStyle.subtitle,
+                type: FontStyle.Medium,
               ),
             ),
             trailing: Container(
@@ -248,8 +249,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                         10
                                     ? 'Viewer'
                                     : 'Guest',
-                        type: FontStyle.description,
-                        fontWeight: FontWeight.w500,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Medium,
                         color: themeProvider.isDarkThemeEnabled
                             ? fromRole(role: workspaceProvider.role) >=
                                     workspaceProvider.workspaceMembers[index]
@@ -378,7 +379,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                             .toString()
                             .toUpperCase(),
                         color: Colors.black,
-                        type: FontStyle.boldTitle,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Semibold,
                       ),
                     ),
                   )
@@ -389,7 +391,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                   ),
             title: CustomText(
               '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
-              type: FontStyle.heading2,
+              type: FontStyle.H5,
               maxLines: 1,
               fontSize: 18,
             ),
@@ -398,7 +400,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                 projectsProvider.projectMembers[index]['member']['email'],
                 color: const Color.fromRGBO(133, 142, 150, 1),
                 textAlign: TextAlign.left,
-                type: FontStyle.subtitle,
+                type: FontStyle.Medium,
               ),
             ),
             trailing: GestureDetector(
@@ -474,8 +476,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                           10
                                       ? 'Viewer'
                                       : 'Guest',
-                          type: FontStyle.description,
-                          fontWeight: FontWeight.w500,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Medium,
                           color: themeProvider.isDarkThemeEnabled
                               ? fromRole(role: projectsProvider.role) >=
                                       projectsProvider.projectMembers[index]

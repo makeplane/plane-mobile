@@ -112,7 +112,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                         .selectedWorkspace!.workspaceName
                                         .toString()
                                         .toUpperCase()[0],
-                                    type: FontStyle.boldTitle,
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
                                     // fontWeight: FontWeight.w400,
                                     color: Colors.white,
                                   ),
@@ -181,7 +182,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 const SizedBox(width: 5),
                                 const CustomText(
                                   'Upload',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                               ],
                             )),
@@ -213,7 +214,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   child: CustomText(
                                     'Remove',
                                     color: Colors.red.shade600,
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   )),
                             )
                           : Container(),
@@ -227,11 +228,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       children: [
                         CustomText(
                           'Workspace Name ',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         CustomText(
                           '*',
-                          type: FontStyle.appbarTitle,
+                          type: FontStyle.Small,
                           color: Colors.red,
                         ),
                       ],
@@ -261,11 +262,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       children: [
                         CustomText(
                           'Workspace URL ',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         CustomText(
                           '*',
-                          type: FontStyle.appbarTitle,
+                          type: FontStyle.Small,
                           color: Colors.red,
                         ),
                       ],
@@ -300,11 +301,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       children: [
                         CustomText(
                           'Company Size ',
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                         ),
                         CustomText(
                           '*',
-                          type: FontStyle.appbarTitle,
+                          type: FontStyle.Small,
                           color: Colors.red,
                         ),
                       ],
@@ -345,7 +346,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                 //         // child: Text(items),
                 //         child: CustomText(
                 //           items,
-                //           type: FontStyle.title,
+                //           type: FontStyle.Small,
                 //         ),
                 //       ),
                 //     );
@@ -404,7 +405,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             workspaceProvider.companySize == ''
                                 ? 'Select Company Size'
                                 : workspaceProvider.companySize,
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                           ),
                         ),
                         Container(
@@ -454,7 +455,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           child: CustomText(
                         'Update',
                         color: Colors.white,
-                        type: FontStyle.buttonText,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Bold,
                       ))),
                 ),
                 Container(
@@ -479,13 +481,13 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     title: const CustomText(
                       'Danger Zone',
                       textAlign: TextAlign.left,
-                      type: FontStyle.heading2,
+                      type: FontStyle.H5,
                       color: Color.fromRGBO(255, 12, 12, 1),
                     ),
                     children: [
                       const CustomText(
                         'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.',
-                        type: FontStyle.subtitle,
+                        type: FontStyle.Medium,
                         maxLines: 8,
                         textAlign: TextAlign.left,
                         color: Colors.grey,
@@ -528,7 +530,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 child: CustomText(
                               'Delete Workspace',
                               color: Colors.white,
-                              type: FontStyle.buttonText,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Bold,
                             ))),
                       ),
                     ],

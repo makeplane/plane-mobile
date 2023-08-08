@@ -49,11 +49,13 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                       children: [
                         CustomText(
                           'Forgot Password',
-                          type: FontStyle.heading,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         CustomText(
                           '',
-                          type: FontStyle.heading,
+                     type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
                           color: primaryColor,
                         ),
                       ],
@@ -66,7 +68,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                         TextSpan(text: 'Email'),
                         TextSpan(text: '*', style: TextStyle(color: Colors.red))
                       ],
-                      type: RichFontStyle.text,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       height: 5,

@@ -35,14 +35,15 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
             children: [
               const CustomText(
                 'Delete Project',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               Container(
                 height: 20,
               ),
               const CustomText(
                 'Are you sure you want to delete this project?',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
               ),
               Container(
@@ -106,7 +107,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 20),
               // CustomText(
               //   'To confirm, type "delete my project".',
-              //   type: FontStyle.subheading,
+              //   type: FontStyle.Small,
               // ),
               //use textspan to bold "delete my project"
               RichText(
@@ -182,7 +183,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       ),
                       child: CustomText(
                         'Cancel',
-                        type: FontStyle.boldTitle,
+                        type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
                         color: themeProvider.isDarkThemeEnabled
                             ? Colors.white
                             : Colors.black,
@@ -252,7 +254,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                             )
                           : const CustomText(
                               'Delete Project',
-                              type: FontStyle.boldTitle,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
                               color: Colors.white,
                             ),
                     ),

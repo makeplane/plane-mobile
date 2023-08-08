@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import '../utils/enums.dart';
 
 class SquareAvatarWidget extends ConsumerStatefulWidget {
   final List details;
@@ -36,8 +37,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                         ? darkThemeBorder
                         : strokeColor,
                     width: 1),
-                color:  Colors.transparent
-                    ,
+                color: Colors.transparent,
               ),
               child: widget.details[0]['avatar'] != "" &&
                       widget.details[0]['avatar'] != null
@@ -50,8 +50,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                   : Center(
                       child: CustomText(
                         widget.details[0]['email'][0].toString().toUpperCase(),
-                        type: FontStyle.description,
-                      //  color: Colors.white,
+                        type: FontStyle.Small,
+                        //  color: Colors.white,
                       ),
                     )),
           widget.details.length >= 2
@@ -79,7 +79,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                 widget.details[1]['email'][0]
                                     .toString()
                                     .toUpperCase(),
-                                type: FontStyle.description,
+                                type: FontStyle.Small,
                                 color: Colors.white,
                               ),
                             )),
@@ -110,7 +110,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                 widget.details[2]['email'][0]
                                     .toString()
                                     .toUpperCase(),
-                                type: FontStyle.description,
+                                type: FontStyle.Small,
                                 color: Colors.white,
                               ),
                             )),
@@ -130,7 +130,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                     child: Center(
                       child: CustomText(
                         '+${widget.details.length - 3}',
-                        type: FontStyle.description,
+                        type: FontStyle.Small,
                         color: greyColor,
                       ),
                     ),

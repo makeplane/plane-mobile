@@ -32,7 +32,7 @@ class ProviderList {
   static var workspaceProvider = ChangeNotifierProvider<WorkspaceProvider>(
       (ref) => WorkspaceProvider(ref));
   static var themeProvider =
-      ChangeNotifierProvider<ThemeProvider>((_) => ThemeProvider());
+      ChangeNotifierProvider<ThemeProvider>((ref) => ThemeProvider(ref));
   static var projectProvider =
       ChangeNotifierProvider<ProjectsProvider>((ref) => ProjectsProvider(ref));
   static var fileUploadProvider = ChangeNotifierProvider<FileUploadProvider>(
@@ -81,7 +81,6 @@ class ProviderList {
     GoogleSignInApi.logout();
     SharedPrefrenceServices.sharedPreferences!.clear();
     Const.appBearerToken = null;
-    Const.isLoggedIn = false;
-    Const.signUp = false;
+
   }
 }

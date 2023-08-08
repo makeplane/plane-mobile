@@ -12,8 +12,7 @@ import 'package:plane_startup/widgets/custom_progress_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/profile_circle_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
-
+import '/utils/enums.dart';
 class CycleActiveCard extends ConsumerStatefulWidget {
   final int index;
   const CycleActiveCard({required this.index, super.key});
@@ -102,7 +101,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                 children: [
                   const CustomText(
                     'Progress',
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   ),
                   CustomProgressBar(width: width * 0.5, itemValue: [
                     cyclesProvider.cyclesActiveData[0]['backlog_issues'] ?? 0,
@@ -137,7 +136,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Assignees',
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   )),
               children: [
                 fourthPart(),
@@ -163,7 +162,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Lables',
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   )),
               children: [
                 fifthPart(),
@@ -189,7 +188,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Pending Issues - ${cyclesProvider.cyclesActiveData[widget.index]['total_issues'] - cyclesProvider.cyclesActiveData[widget.index]['completed_issues']}',
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   )),
               children: [
                 sixthPart(),
@@ -226,7 +225,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                 children: [
                   CustomText(
                     cyclesProvider.cyclesActiveData[index]['name'],
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   ),
                   const SizedBox(
                     height: 14,
@@ -363,7 +362,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                             cyclesProvider.cyclesActiveData[index]
                                 ['start_date'],
                           )),
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                         ),
                       ],
                     ),
@@ -406,7 +405,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                       ['first_name'] ??
                                   '',
                               // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                               maxLines: 2,
                             ),
                           ),
@@ -452,7 +451,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                           DateFormat("MMM d, yyyy").format(DateTime.parse(
                             cyclesProvider.cyclesActiveData[index]['end_date'],
                           )),
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                         ),
                       ],
                     ),
@@ -474,7 +473,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                       3
                                   ? CustomText(
                                       '+ ${cyclesProvider.cyclesActiveData[index]['assignees'].length - 3}',
-                                      type: FontStyle.smallText,
+                                      type: FontStyle.Small,
                                     )
                                   : Container()
                             ],
@@ -497,7 +496,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                           cyclesProvider.cyclesActiveData[index]
                                   ['completed_issues']
                               .toString(),
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                         ),
                       ],
                     )
@@ -572,7 +571,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     const CustomText(
                       'View Cycle',
                       color: Colors.blueAccent,
-                      type: FontStyle.heading2,
+                      type: FontStyle.H5,
                     ),
                     const SizedBox(width: 8),
                     SvgPicture.asset(
@@ -677,7 +676,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           //     alignment: Alignment.centerLeft,
           //     child: CustomText(
           //       'Assignees',
-          //       type: FontStyle.heading2,
+          //       type: FontStyle.H5,
           //     )),
           // const SizedBox(height: 10),
           ...List.generate(
@@ -767,7 +766,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           //   alignment: Alignment.centerLeft,
           //   child: CustomText(
           //     'Labels',
-          //     type: FontStyle.heading2,
+          //     type: FontStyle.H5,
           //   ),
           // ),
           // const SizedBox(height: 15),
@@ -781,14 +780,14 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                       null
               ? const CustomText(
                   'No labels found',
-                  type: FontStyle.description,
+                  type: FontStyle.Medium,
                 )
               : cyclesProvider.cyclesActiveData[widget.index]['distribution']
                           ['labels'] ==
                       null
                   ? const CustomText(
                       'No labels found',
-                      type: FontStyle.description,
+                      type: FontStyle.Medium,
                     )
                   : ListView.builder(
                       shrinkWrap: true,
@@ -877,7 +876,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
       child: Column(children: [
         // Align(
         //   alignment: Alignment.centerLeft,
-        //   child: CustomText('Pending Issues - ${cyclesProvider.cycleFavoriteData[widget.index]['backlog_issues'] ?? '0'}', type: FontStyle.heading2),
+        //   child: CustomText('Pending Issues - ${cyclesProvider.cycleFavoriteData[widget.index]['backlog_issues'] ?? '0'}', type: FontStyle.H5),
         // ),
         const SizedBox(height: 10),
         SizedBox(

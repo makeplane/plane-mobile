@@ -91,7 +91,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                       children: [
                         CustomText(
                           'Add new issues',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                           color: themeProvider.isDarkThemeEnabled
                               ? Colors.white
                               : Colors.black,
@@ -118,7 +119,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                           widget.type == IssueDetailCategory.parent
                               ? 'Add parent'
                               : 'Add sub issues',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         const Spacer(),
                         IconButton(
@@ -200,7 +202,6 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                         "parent": searchIssueProvider
                                             .issues[index]['id']
                                       },
-                                     
                                       refs: ref,
                                     );
                                   }
@@ -302,7 +303,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                   ['sequence_id']
                                               .toString() +
                                           ' ',
-                                      type: FontStyle.description,
+                                      type: FontStyle.Medium,
                                     ),
                                     const SizedBox(
                                       width: 10,
@@ -313,7 +314,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                         searchIssueProvider.issues[index]
                                                 ['name'] ??
                                             '',
-                                        type: FontStyle.description,
+                                        type: FontStyle.Medium,
                                         maxLines: 4,
                                         textAlign: TextAlign.start,
                                         overflow: TextOverflow.visible,
@@ -426,7 +427,6 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                           .watch(ProviderList.projectProvider)
                                           .currentProject['id'],
                                       issueId: widget.issueId,
-                                     
                                       data: {
                                         'sub_issue_ids':
                                             issuesProvider.subIssuesIds
@@ -470,7 +470,6 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                             "blocks_list": issuesProvider
                                                 .blockedByIssuesIds
                                           },
-                                   
                                     refs: ref,
                                   );
                                 }

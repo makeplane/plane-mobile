@@ -4,6 +4,7 @@ import 'package:plane_startup/bottom_sheets/project_lead_assignee_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import '/utils/enums.dart';
 
 class ControlPage extends ConsumerStatefulWidget {
   const ControlPage({super.key});
@@ -50,11 +51,11 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               children: [
                 CustomText(
                   'Project Lead',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 CustomText(
                   '*',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                   color: Colors.red,
                 )
               ],
@@ -141,7 +142,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             //           value: e['member']['first_name'],
             //           child: CustomText(
             //             e['member']['first_name'],
-            //             type: FontStyle.subtitle,
+            //             type: FontStyle.Medium,
             //             fontWeight: FontWeight.bold,
             //           ),
             //         ),
@@ -154,11 +155,11 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               children: [
                 CustomText(
                   'Default Assignee',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 CustomText(
                   '*',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                   color: Colors.red,
                 )
               ],
@@ -181,7 +182,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             //           value: e['member']['first_name'],
             //           child: CustomText(
             //             e['member']['first_name'],
-            //             type: FontStyle.subtitle,
+            //             type: FontStyle.Medium,
             //             fontWeight: FontWeight.bold,
             //           ),
             //         ),

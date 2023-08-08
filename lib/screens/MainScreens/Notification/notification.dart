@@ -6,6 +6,7 @@ import 'package:plane_startup/screens/MainScreens/Notification/notifications_lis
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import '/utils/enums.dart';
 
 class NotifiactionScreen extends ConsumerStatefulWidget {
   const NotifiactionScreen({super.key});
@@ -34,7 +35,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
         text: "Notifications",
         centerTitle: false,
         leading: false,
-        fontType: FontStyle.mainHeading,
+        fontType: FontStyle.H4,
         actions: [
           GestureDetector(
             onTap: () {
@@ -221,7 +222,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                 color: selected == 0
                                     ? primaryColor
                                     : lightGreyTextColor,
-                                type: FontStyle.secondaryText,
+                                type: FontStyle.Medium,
                               ),
                             ),
                             notificationProvider.getAssignedCount == 0
@@ -238,7 +239,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                       notificationProvider.getAssignedCount
                                           .toString(),
                                       color: Colors.white,
-                                      type: FontStyle.smallText,
+                                      type: FontStyle.Small,
                                     ),
                                   )
                           ],
@@ -272,7 +273,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                 color: selected == 1
                                     ? primaryColor
                                     : lightGreyTextColor,
-                                type: FontStyle.secondaryText,
+                                type: FontStyle.Medium,
                               ),
                             ),
                             notificationProvider.getCreatedCount == 0
@@ -289,7 +290,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                       notificationProvider.getCreatedCount
                                           .toString(),
                                       color: Colors.white,
-                                      type: FontStyle.smallText,
+                                      type: FontStyle.Small,
                                     ),
                                   )
                           ],
@@ -323,7 +324,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                 color: selected == 2
                                     ? primaryColor
                                     : lightGreyTextColor,
-                                type: FontStyle.secondaryText,
+                                type: FontStyle.Medium,
                               ),
                             ),
                             notificationProvider.getWatchingCount == 0
@@ -340,7 +341,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                       notificationProvider.getWatchingCount
                                           .toString(),
                                       color: Colors.white,
-                                      type: FontStyle.smallText,
+                                      type: FontStyle.Small,
                                     ),
                                   )
                           ],

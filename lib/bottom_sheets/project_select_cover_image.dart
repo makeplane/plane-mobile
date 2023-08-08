@@ -132,7 +132,9 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                 // ),
                 const CustomText(
                   'Choose Cover Image',
-                  type: FontStyle.headingH4SemiBold,
+                  type: FontStyle.H4,
+                  fontWeight: FontWeightt.Semibold,
+  
                 ),
                 const Spacer(),
                 IconButton(
@@ -174,7 +176,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                             color: selected == 0
                                 ? primaryColor
                                 : lightGreyTextColor,
-                            type: FontStyle.headingH5Medium,
+                            type: FontStyle.H5,
+                  fontWeight: FontWeightt.Medium,
                           ),
                         ),
                         selected == 0
@@ -204,7 +207,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                             color: selected == 1
                                 ? primaryColor
                                 : lightGreyTextColor,
-                            type: FontStyle.headingH5Medium,
+                            type: FontStyle.H5,
+                  fontWeight: FontWeightt.Medium,
                           ),
                         ),
                         selected == 1
@@ -271,7 +275,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               ),
                               child: CustomText(
                                 isSearched ? 'Clear' : 'Search',
-                                type: FontStyle.buttonText,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Bold,
                               ),
                             ),
                           ),
@@ -371,7 +376,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                       ),
                                       CustomText(
                                         'Upload',
-                                        type: FontStyle.subheading,
+                                        type: FontStyle.Small,
                                         color: Colors.black,
                                       ),
                                     ],

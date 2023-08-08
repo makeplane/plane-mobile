@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -96,7 +95,8 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                   children: [
                     const CustomText(
                       'Select Priority',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                         onPressed: () {
@@ -123,7 +123,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
-                          print("SABI : Index : $index");
+                         
                           if (widget.createIssue) {
                             setState(() {
                               selectedPriority = index;
@@ -221,7 +221,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                   ),
                                   CustomText(
                                     priorities[index]['name'].toString(),
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                   ),
                                   const Spacer(),
                                   widget.createIssue
@@ -266,8 +266,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
         priorities[idx]['name'].toString()[0],
         priorities[idx]['name'].toString()[0].toLowerCase());
     if (idx == 4) nameOfThisPriority = null;
-    print(
-        'SABI : ${issueProvider.issueDetails['priority']} == ${nameOfThisPriority} : ${issueProvider.issueDetails['priority'] == nameOfThisPriority}');
+   
     return issueProvider.issueDetails['priority'] == nameOfThisPriority
         ? const Icon(
             Icons.done,

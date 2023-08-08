@@ -7,7 +7,7 @@ import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profil
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-
+import 'package:plane_startup/utils/enums.dart';
 import 'MainScreens/Home/dash_board_screen.dart';
 import 'MainScreens/Projects/project_screen.dart';
 
@@ -124,13 +124,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                               CustomText(
                                 e['label'],
-                                type: FontStyle.smallText,
+                                type: FontStyle.Small,
                                 color: currentIndex == i
                                     ? primaryColor
                                     : (themeProvider.isDarkThemeEnabled
                                         ? darkSecondaryTextColor
                                         : bottomNavTextColor),
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeightt.Semibold,
                               )
                             ],
                           ),

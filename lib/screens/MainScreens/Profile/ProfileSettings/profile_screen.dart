@@ -19,6 +19,8 @@ import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../../../../utils/enums.dart';
+
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
@@ -190,7 +192,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 const CustomText(
                   'Profile',
-                  type: FontStyle.mainHeading,
+                  type: FontStyle.H4,
+                  fontWeight: FontWeightt.Semibold,
                 ),
                 const Spacer(),
                 MaterialButton(
@@ -208,7 +211,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       CustomText(
                         'Logout',
                         color: Colors.red,
-                        type: FontStyle.description,
+                        type: FontStyle.Medium,
                       )
                     ],
                   ),
@@ -255,7 +258,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 children: [
                   const CustomText(
                     'Logout',
-                    type: FontStyle.mainHeading,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
                   IconButton(
@@ -271,7 +275,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const CustomText(
                 'Are you sure you want to logout from your account?',
-                type: FontStyle.subheading,
+                type: FontStyle.Small,
                 textAlign: TextAlign.left,
                 maxLines: 4,
               ),
@@ -343,7 +347,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 width: width * 0.5,
                 child: CustomText(
                   profileProvider.userProfile.firstName ?? 'User name',
-                  type: FontStyle.mainHeading,
+                  type: FontStyle.H4,
+                  fontWeight: FontWeightt.Semibold,
                   maxLines: 1,
                 ),
               ),
@@ -355,7 +360,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: CustomText(
                   profileProvider.userProfile.email ??
                       'rameshkumar2299@gmail.com',
-                  type: FontStyle.secondaryText,
+                  type: FontStyle.Medium,
                   maxLines: 1,
                 ),
               ),
@@ -411,7 +416,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           vertical: 12, horizontal: 10),
                       child: CustomText(
                         menus[index]['menu'],
-                        type: FontStyle.description,
+                        type: FontStyle.Medium,
                         color: primaryColor,
                         textAlign: TextAlign.start,
                       ),
@@ -459,7 +464,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                 .workspaceName[0]
                                                 .toUpperCase(),
                                             fontSize: 14,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeightt.Semibold,
                                             color: const Color.fromRGBO(
                                                 48, 0, 240, 1),
                                           ),
@@ -516,7 +521,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             ),
                             CustomText(
                               menus[index]['items'][idx]['title'],
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Const.dark
                                   ? darkSecondaryTextColor
                                   : Colors.black,

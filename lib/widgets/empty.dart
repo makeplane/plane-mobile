@@ -16,7 +16,8 @@ import 'package:plane_startup/utils/enums.dart';
 import 'custom_text.dart';
 
 class EmptyPlaceholder {
-  static Widget emptyCycles(BuildContext context) {
+  static Widget emptyCycles(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -30,9 +31,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Cycles',
-              type: FontStyle.headingH5SemiBold,
+              type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -42,7 +45,7 @@ class EmptyPlaceholder {
               'Sprint more effectively with Cycles by confining your project to a fixed amount of time. Create new cycle now.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 3,
             ),
           ),
@@ -73,7 +76,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Cycle',
-                    type: FontStyle.buttonText,
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   )
                 ],
               ),
@@ -85,7 +89,8 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyIssues(BuildContext context,
-      {String? cycleId, String? moduleId}) {
+      {String? cycleId, String? moduleId, WidgetRef? ref}) {
+        var themeProvider = ref!.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -96,9 +101,11 @@ class EmptyPlaceholder {
         children: [
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Create New Issue',
-              type: FontStyle.headingH5SemiBold,
+             type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -110,7 +117,7 @@ class EmptyPlaceholder {
 
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 6,
             ),
           ),
@@ -146,7 +153,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Issues',
-                    type: FontStyle.buttonText,
+                     type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   )
                 ],
               ),
@@ -193,7 +201,9 @@ class EmptyPlaceholder {
                         ),
                         CustomText(
                           'Add Existing Issues',
-                          type: FontStyle.buttonText,
+                            type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
+                
                         )
                       ],
                     ),
@@ -205,7 +215,8 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyModules(BuildContext context) {
+  static Widget emptyModules(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -219,9 +230,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Modules',
-              type: FontStyle.headingH5SemiBold,
+         type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -231,7 +244,7 @@ class EmptyPlaceholder {
               'Modules are smaller, focused projects that help you group and organize issues within a specific time frame.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 3,
             ),
           ),
@@ -264,7 +277,9 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Module',
-                    type: FontStyle.buttonText,
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
+                  
                   )
                 ],
               ),
@@ -275,7 +290,8 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyNotification() {
+  static Widget emptyNotification(WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -289,9 +305,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Notifications',
-              type: FontStyle.headingH5SemiBold,
+              type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -301,7 +319,7 @@ class EmptyPlaceholder {
               "You're updated with all the notifications",
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 3,
             ),
           ),
@@ -310,7 +328,8 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyPages(BuildContext context) {
+  static Widget emptyPages(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -336,7 +355,7 @@ class EmptyPlaceholder {
                       child: const CustomText(
                         'Client Meeting Notes',
                         color: Color.fromRGBO(133, 142, 150, 1),
-                        type: FontStyle.subtitle,
+                        type: FontStyle.XSmall,
                       ),
                     ),
                     const SizedBox(
@@ -361,7 +380,7 @@ class EmptyPlaceholder {
                       child: const CustomText(
                         'Evening Standup Notes',
                         color: Color.fromRGBO(133, 142, 150, 1),
-                        type: FontStyle.subtitle,
+                        type: FontStyle.XSmall,
                       ),
                     ),
                     const SizedBox(
@@ -406,9 +425,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Pages',
-              type: FontStyle.headingH5SemiBold,
+          type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -419,7 +440,7 @@ class EmptyPlaceholder {
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
             ),
           ),
           GestureDetector(
@@ -449,7 +470,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Page',
-                    type: FontStyle.buttonText,
+                 type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   )
                 ],
               ),
@@ -460,7 +482,8 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyView(BuildContext context) {
+  static Widget emptyView(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -482,7 +505,7 @@ class EmptyPlaceholder {
                   padding: const EdgeInsets.only(left: 10, top: 10),
                   child: const CustomText(
                     'Completed Urgent Issues',
-                    type: FontStyle.subtitle,
+                    type: FontStyle.XSmall,
                     color: Color.fromRGBO(133, 142, 150, 1),
                   ),
                 ),
@@ -502,7 +525,7 @@ class EmptyPlaceholder {
                       padding: const EdgeInsets.only(left: 10, top: 10),
                       child: const CustomText(
                         'Active High Priority Issues',
-                        type: FontStyle.subtitle,
+                        type: FontStyle.XSmall,
                         color: Color.fromRGBO(133, 142, 150, 1),
                       ),
                     ),
@@ -524,9 +547,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'Views',
-              type: FontStyle.headingH5SemiBold,
+        type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -535,7 +560,7 @@ class EmptyPlaceholder {
             child: const CustomText(
               'Views aid in saving your issues by applying various filters and grouping options.',
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
             ),
@@ -567,7 +592,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add View',
-                    type: FontStyle.buttonText,
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   ),
                 ],
               ),
@@ -580,6 +606,7 @@ class EmptyPlaceholder {
 
   static Widget joinProject(
       BuildContext context, WidgetRef ref, String projectId, String slug) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -591,9 +618,11 @@ class EmptyPlaceholder {
           Container(
             padding: const EdgeInsets.only(top: 35),
             width: width * 0.7,
-            child: const CustomText(
+            child:  CustomText(
               'You are not a member of this project',
-              type: FontStyle.headingH5SemiBold,
+        type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
               textAlign: TextAlign.center,
               maxLines: 5,
             ),
@@ -604,7 +633,7 @@ class EmptyPlaceholder {
             child: const CustomText(
               'You are not a member of this project, but you can join this project by clicking the button below.',
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               color: Color.fromRGBO(133, 142, 150, 1),
               maxLines: 3,
             ),
@@ -649,7 +678,8 @@ class EmptyPlaceholder {
                         ),
                         CustomText(
                           'Click to join',
-                          type: FontStyle.buttonText,
+           type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                         ),
                       ],
                     ),
@@ -660,7 +690,9 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyProject(BuildContext context) {
+  static Widget emptyProject(BuildContext context,WidgetRef ref) {
+
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -678,9 +710,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'No projects yet',
-              type: FontStyle.headingH5SemiBold,
+     type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -690,7 +724,7 @@ class EmptyPlaceholder {
               'Get started by creating your first project.',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 3,
             ),
           ),
@@ -723,7 +757,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Project',
-                    type: FontStyle.buttonText,
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   )
                 ],
               ),
@@ -734,7 +769,8 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyLabels(BuildContext context) {
+  static Widget emptyLabels(BuildContext context,WidgetRef ref) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -748,9 +784,11 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child: const CustomText(
+            child:  CustomText(
               'No labels yet',
-              type: FontStyle.headingH5SemiBold,
+type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           Container(
@@ -760,7 +798,7 @@ class EmptyPlaceholder {
               'Create labels to help organize and filter issues in you project',
               color: Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.center,
-              type: FontStyle.paragraphSmallRegular,
+              type: FontStyle.Small,
               maxLines: 3,
             ),
           ),
@@ -812,7 +850,8 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Label',
-                    type: FontStyle.buttonText,
+                  type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
                   )
                 ],
               ),

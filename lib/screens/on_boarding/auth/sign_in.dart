@@ -10,7 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/Authentication/google_sign_in.dart';
-import 'package:plane_startup/screens/on_boarding/auth/signUp.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/home_screen.dart';
@@ -76,16 +75,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             const SizedBox(
                               height: 30,
                             ),
-                            const Row(
+                            Row(
                               children: [
                                 CustomText(
                                   'Sign In to',
-                                  type: FontStyle.headingH4SemiBold,
+                                  type: FontStyle.H4,
+                                  fontWeight: FontWeightt.Semibold,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 CustomText(
                                   ' Plane',
-                                  type: FontStyle.headingH4SemiBold,
-                                  color: primaryColor,
+                                  type: FontStyle.H4,
+                                  fontWeight: FontWeightt.Semibold,
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
                                 ),
                               ],
                             ),
@@ -100,24 +104,25 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                       color: const Color.fromRGBO(
                                           9, 169, 83, 0.15),
                                     ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(16),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
                                       child: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.check_circle,
                                             color:
                                                 Color.fromRGBO(9, 169, 83, 1),
                                             size: 18,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           CustomText(
                                             'Please check your mail for code',
-                                            type: FontStyle.text,
-                                            color:
-                                                Color.fromRGBO(9, 169, 83, 1),
+                                            type: FontStyle.Small,
+                                            fontWeight: FontWeightt.Medium,
+                                            color: themeProvider
+                                                .themeManager.textSuccessColor,
                                           ),
                                         ],
                                       ),
@@ -129,14 +134,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     height: 20,
                                   )
                                 : Container(),
-                            const CustomRichText(
+                            CustomRichText(
                               widgets: [
-                                TextSpan(text: 'Email'),
+                                TextSpan(
+                                    text: 'Email',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
                                 TextSpan(
                                     text: '*',
-                                    style: TextStyle(color: Colors.red))
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
                               ],
-                              type: RichFontStyle.paragraphSmallRegular,
+                              type: FontStyle.Small,
                             ),
                             const SizedBox(
                               height: 5,
@@ -167,14 +178,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               height: 15,
                             ),
                             sentCode
-                                ? const CustomRichText(
+                                ? CustomRichText(
                                     widgets: [
-                                      TextSpan(text: 'Enter code'),
+                                      TextSpan(
+                                          text: 'Enter code',
+                                          style: TextStyle(
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor)),
                                       TextSpan(
                                           text: '*',
-                                          style: TextStyle(color: Colors.red))
+                                          style: TextStyle(
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor))
                                     ],
-                                    type: RichFontStyle.paragraphSmallRegular,
+                                    type: FontStyle.Small,
                                   )
                                 : Container(),
                             sentCode
@@ -343,10 +360,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                       SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width,
-                                        child: const Center(
+                                        child: Center(
                                           child: CustomText(
                                             'or',
-                                            type: FontStyle.smallText,
+                                            type: FontStyle.Small,
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                         ),
                                       ),
@@ -504,11 +523,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                         sentCode = false;
                                       });
                                     },
-                                    child: const CustomText(
+                                    child: CustomText(
                                       'Go back',
-                                      type: FontStyle.heading2,
-                                      color: greyColor,
-                                      fontWeight: FontWeight.w600,
+                                      type: FontStyle.Small,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                      fontWeight: FontWeightt.Semibold,
                                     ),
                                   ),
                                 ],

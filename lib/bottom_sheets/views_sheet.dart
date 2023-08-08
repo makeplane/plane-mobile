@@ -174,7 +174,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'State',
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'state',
@@ -195,7 +195,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Priority',
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'priority',
@@ -216,7 +216,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Labels',
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'labels',
@@ -237,7 +237,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Created by',
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'created_by',
@@ -274,7 +274,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: orderBy,
                               title: const CustomText(
                                 'Manual',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: 'sort_order',
@@ -293,7 +293,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: orderBy,
                               title: const CustomText(
                                 'Last created',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: '-created_at',
@@ -312,7 +312,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: orderBy,
                               title: const CustomText(
                                 'Last updated',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: 'updated_at',
@@ -346,7 +346,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: issueType,
                               title: const CustomText(
                                 'All issues',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: 'all',
@@ -365,7 +365,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: issueType,
                               title: const CustomText(
                                 'Active issues',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: 'active',
@@ -384,7 +384,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               groupValue: issueType,
                               title: const CustomText(
                                 'Backlog issues',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
                               value: 'backlog',
@@ -420,7 +420,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               children: [
                                 const CustomText(
                                   'Show empty states',
-                                  type: FontStyle.subheading,
+                                  type: FontStyle.Small,
                                 ),
                                 Container(
                                   width: 10,
@@ -467,8 +467,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
               Container(height: 15),
 
               const CustomText('Display Properties',
-                  type: FontStyle.subheading,
-                  fontWeight: FontWeight.w600,
+                  type: FontStyle.Small,
+                  fontWeight: FontWeightt.Semibold,
                   textAlign: TextAlign.start),
 
               Container(height: 20),
@@ -520,7 +520,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                       ),
                                     ),
                                     child: CustomText(tag['name'],
-                                        type: FontStyle.title,
+                                        type: FontStyle.Medium,
                                         color: themeProvider
                                                     .isDarkThemeEnabled &&
                                                 (tag['selected'] ?? false)
@@ -685,7 +685,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                 // ),
                 const CustomText(
                   'Views',
-                  type: FontStyle.heading,
+                  type: FontStyle.H6,
+                  fontWeight: FontWeightt.Semibold,
                 ),
                 const Spacer(),
                 IconButton(

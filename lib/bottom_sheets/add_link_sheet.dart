@@ -42,7 +42,8 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
                 children: [
                   const CustomText(
                     'Add Link',
-                    type: FontStyle.heading,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
                     // color: themeProvider.secondaryTextColor,
                   ),
                   IconButton(
@@ -62,7 +63,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               const CustomText(
                 'Title',
-                type: FontStyle.description,
+                type: FontStyle.Small,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -77,7 +78,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               const CustomText(
                 'URL',
-                type: FontStyle.description,
+                 type: FontStyle.Small,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -105,7 +106,6 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
                         .selectedWorkspace!
                         .workspaceSlug,
                     issueId: widget.issueId,
-             
                     data: {
                       'metadata': {},
                       'title': title.text.trim(),

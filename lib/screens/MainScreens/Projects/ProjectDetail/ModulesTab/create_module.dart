@@ -75,11 +75,11 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 children: [
                                   CustomText(
                                     'Module Title ',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                   CustomText(
                                     '*',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     color: Colors.red,
                                   ),
                                 ],
@@ -130,7 +130,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           //       left: 20, right: 20, top: 20, bottom: 5),
                           //   child: const CustomText(
                           //     'Description',
-                          //     type: FontStyle.title,
+                          //     type: FontStyle.Small,
                           //   ),
                           // ),
                           // Container(
@@ -174,7 +174,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 children: [
                                   CustomText(
                                     'Start Date ',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                 ],
                               )),
@@ -232,7 +232,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                         ? 'Select Date'
                                         : DateFormat('yyyy-MM-dd')
                                             .format(startDate!),
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                   ),
                                 ],
                               ),
@@ -246,7 +246,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                   CustomText(
                                     'End Date ',
                                     // color: themeProvider.secondaryTextColor,
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                 ],
                               )),
@@ -303,7 +303,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                         ? 'Select Date'
                                         : DateFormat('yyyy-MM-dd')
                                             .format(endDate!),
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                   ),
                                 ],
                               ),
@@ -317,11 +317,11 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 children: [
                                   CustomText(
                                     'Status ',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                   CustomText(
                                     '*',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     color: Colors.red,
                                   ),
                                 ],
@@ -378,7 +378,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                         ? 'Select Status'
                                         : modulesProvider.createModule['status']
                                             .toString(),
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                   ),
                                 ],
                               ),
@@ -391,7 +391,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 children: [
                                   CustomText(
                                     'Lead ',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                 ],
                               )),
@@ -455,7 +455,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                     element['member']['id'] ==
                                                     modulesProvider
                                                         .createModule['lead'])['member']['last_name'],
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                   ),
                                 ],
                               ),
@@ -469,7 +469,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 children: [
                                   CustomText(
                                     'Assignee ',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                 ],
                               )),
@@ -539,7 +539,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                         (modulesProvider.createModule['members']
                                                             as List)[0])['member']['last_name']
                                             : 'Multiple Assignees',
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                   ),
                                 ],
                               ),
@@ -557,7 +557,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           //   width: MediaQuery.of(context).size.width,
                           //   child: CustomText(
                           //     'Create Module ',
-                          //     type: FontStyle.buttonText,
+                          //     type: FontStyle.Medium,
+                          //    fontWeight: FontWeightt.Bold,
                           //     color: Colors.white,
                           //   ),
                           // ),
@@ -579,7 +580,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 backgroundColor: Colors.redAccent,
                                 content: CustomText(
                                   'Please select module status',
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   color: Colors.white,
                                 ),
                               ),

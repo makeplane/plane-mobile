@@ -238,7 +238,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                                             child:
                                                                                 CustomText(
                                                                               String.fromCharCode(int.parse(e)),
-                                                                              type: FontStyle.heading2,
+                                                                              type: FontStyle.H4,
                                                                             ),
                                                                           ),
                                                                         ),
@@ -284,8 +284,11 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                                     left: 25),
                                                             child: CustomText(
                                                               'Choose your project icon',
-                                                              type: FontStyle
-                                                                  .heading,
+                                                              type:
+                                                                  FontStyle.H4,
+                                                              fontWeight:
+                                                                  FontWeightt
+                                                                      .Semibold,
                                                             ),
                                                           ),
                                                           // const Spacer(),
@@ -354,7 +357,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                       child: CustomText(
                                         String.fromCharCode(
                                             int.parse(selectedEmoji)),
-                                        type: FontStyle.heading,
+                                        type: FontStyle.H5,
                                       ),
                                     ),
                                   ),
@@ -384,7 +387,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                   //           value: 2,
                                   //           child: CustomText(
                                   //             'Public',
-                                  //             type: FontStyle.title,
+                                  //             type: FontStyle.Small,
                                   //             fontWeight: FontWeight.bold,
                                   //           ),
                                   //         ),
@@ -392,7 +395,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                   //           value: 0,
                                   //           child: CustomText(
                                   //             'Private',
-                                  //             type: FontStyle.title,
+                                  //             type: FontStyle.Small,
                                   //             fontWeight: FontWeight.bold,
                                   //           ),
                                   //         ),
@@ -425,8 +428,8 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                       ),
                                       const CustomText(
                                         'Public',
-                                        type: FontStyle.title,
-                                        fontWeight: FontWeight.bold,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -449,8 +452,8 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                       ),
                                       const CustomText(
                                         'Secret',
-                                        type: FontStyle.title,
-                                        fontWeight: FontWeight.bold,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
                                       ),
                                     ],
                                   ),

@@ -249,7 +249,7 @@ class PageProvider with ChangeNotifier {
       log(res.data.toString());
       notifyListeners();
     } on DioException catch (e) {
-      print(e.response!.data.toString());
+      log(e.response!.data.toString());
       CustomToast()
           .showSimpleToast(e.response!.data['detail'] ?? e.response!.data);
       blockState = StateEnum.error;

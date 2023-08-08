@@ -155,7 +155,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       child: Center(
                         child: CustomText(
                           e,
-                          type: FontStyle.text,
+                          type: FontStyle.Small,
                         ),
                       ),
                     );
@@ -320,7 +320,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 CustomText(
                   //month full name
                   DateFormat("MMMM").format(widget.selectedDay),
-                  type: FontStyle.text,
+                  type: FontStyle.Small,
                 ),
                 Icon(
                   showFull
@@ -500,7 +500,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => IssueDetail(
-                               
                                 appBarTitle:
                                     '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
                                 issueId: issuesProvider.issuesList[index]['id'],
@@ -517,8 +516,8 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                 children: [
                                   CustomText(
                                     '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
-                                    type: FontStyle.heading2,
-                                    fontWeight: FontWeight.normal,
+                                    type: FontStyle.H5,
+                                    
                                   ),
                                   const SizedBox(
                                     width: 20,
@@ -530,7 +529,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                       issuesProvider.issuesList[index]['name'],
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
-                                      type: FontStyle.subheading,
+                                      type: FontStyle.Small,
                                     ),
                                   ),
                                 ],
@@ -678,7 +677,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                 ),
                                 CustomText(
                                   ' Issue',
-                                  type: FontStyle.subtitle,
+                                  type: FontStyle.Medium,
                                   color: Colors.white,
                                 )
                               ],
@@ -722,7 +721,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         ),
                         CustomText(
                           ' Layout',
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                           color: Colors.white,
                         )
                       ],
@@ -771,7 +770,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         ),
                         CustomText(
                           ' Filters',
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                           color: Colors.white,
                         )
                       ],

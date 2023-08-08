@@ -6,6 +6,8 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 class IssueDetailCyclesList extends ConsumerStatefulWidget {
   final String cycleId;
   final String issueId;
@@ -46,7 +48,8 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
             children: [
               const CustomText(
                 'Select Cycle',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               IconButton(
                 onPressed: () {
@@ -119,7 +122,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           children: [
                             CustomText(
                               issueProvider.cyclesList[index]['name'],
-                              type: FontStyle.subheading,
+                              type: FontStyle.Small,
                             ),
                             widget.cycleId != '' &&
                                     widget.cycleId ==

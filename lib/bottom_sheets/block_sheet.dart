@@ -55,7 +55,8 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                   children: [
                     const CustomText(
                       'Add block',
-                      type: FontStyle.heading,
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -76,11 +77,11 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                   children: [
                     CustomText(
                       'Title',
-                      type: FontStyle.text,
+                      type: FontStyle.Small,
                     ),
                     CustomText(
                       ' *',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                       color: Colors.red,
                     ),
                   ],
@@ -100,11 +101,11 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                   children: [
                     CustomText(
                       'Write something',
-                      type: FontStyle.text,
+                      type: FontStyle.Small,
                     ),
                     // CustomText(
                     //   ' *',
-                    //   type: FontStyle.title,
+                    //   type: FontStyle.Small,
                     //   color: Colors.red,
                     // ),
                   ],

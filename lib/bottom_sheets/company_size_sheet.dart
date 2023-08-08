@@ -4,6 +4,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
 
 class CompanySize extends ConsumerStatefulWidget {
   const CompanySize({super.key});
@@ -25,7 +26,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             children: [
               const CustomText(
                 'Company Size',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               const Spacer(),
               IconButton(
@@ -69,7 +71,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     'Just myself',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -113,7 +115,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     '2-10',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -157,7 +159,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     '11-50',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -201,7 +203,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     '51-200',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -245,7 +247,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     '201-500',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -289,7 +291,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                   const SizedBox(width: 10),
                   const CustomText(
                     '500+',
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),

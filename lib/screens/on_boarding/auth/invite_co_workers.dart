@@ -32,6 +32,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
   Widget build(BuildContext context) {
     var prov = ref.watch(ProviderList.workspaceProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: LoadingWidget(
         loading: prov.workspaceInvitationState == StateEnum.loading ||
@@ -48,9 +49,11 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const CustomText(
+                  CustomText(
                     'Invite co-workers to team',
-                    type: FontStyle.headingH4SemiBold,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   const SizedBox(
                     height: 30,
@@ -60,7 +63,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                       TextSpan(text: 'Email'),
                       TextSpan(text: '*', style: TextStyle(color: Colors.red))
                     ],
-                    type: RichFontStyle.paragraphSmallRegular,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 10,
@@ -131,7 +134,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                                 .toString()
                                                 .toUpperCase()[0],
                                             color: Colors.white,
-                                            type: FontStyle.title,
+                                            type: FontStyle.Small,
                                           ),
                                         ),
                                         const SizedBox(
@@ -143,16 +146,19 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                           children: [
                                             CustomText(
                                               emails[index]['email'],
-                                              type: FontStyle.title,
-                                              fontWeight: FontWeight.w500,
+                                              type: FontStyle.XSmall,
+                                              fontWeight: FontWeightt.Semibold,
+                                              color: themeProvider
+                                                  .themeManager.textonColor,
                                             ),
-                                            const Row(
+                                            Row(
                                               children: [
                                                 CustomText(
                                                   'Invited',
-                                                  type: FontStyle.title,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: greyColor,
+                                                  type: FontStyle.Small,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                               ],
                                             )
@@ -336,11 +342,12 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: const CustomText(
+                          child: CustomText(
                             'Go back',
-                            type: FontStyle.heading2,
-                            color: greyColor,
-                            fontWeight: FontWeight.w600,
+                            type: FontStyle.Small,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                            fontWeight: FontWeightt.Semibold,
                           ),
                         ),
                       ],

@@ -2,12 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/page_provider.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_divider.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../utils/enums.dart';
 
@@ -46,7 +44,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           children: [
             const CustomText(
               'Filters',
-              type: FontStyle.heading,
+              type: FontStyle.H6,
+              fontWeight: FontWeightt.Semibold,
             ),
             const Spacer(),
             GestureDetector(
@@ -74,7 +73,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('All', type: FontStyle.subheading)
+              const CustomText('All', type: FontStyle.Small)
             ],
           ),
         ),
@@ -90,7 +89,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('Recent', type: FontStyle.subheading)
+              const CustomText('Recent', type: FontStyle.Small)
             ],
           ),
         ),
@@ -106,7 +105,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('Favourites', type: FontStyle.subheading)
+              const CustomText('Favourites', type: FontStyle.Small)
             ],
           ),
         ),
@@ -122,7 +121,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('CreatedByMe', type: FontStyle.subheading)
+              const CustomText('CreatedByMe', type: FontStyle.Small)
             ],
           ),
         ),
@@ -138,7 +137,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('CreatedByOthers', type: FontStyle.subheading)
+              const CustomText('CreatedByOthers', type: FontStyle.Small)
             ],
           ),
         ),

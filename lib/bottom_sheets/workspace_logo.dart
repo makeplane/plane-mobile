@@ -73,7 +73,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                           ),
                           CustomText(
                             'Upload',
-                            type: FontStyle.subheading,
+                            type: FontStyle.Small,
                             color: Colors.black,
                           ),
                         ],

@@ -1,65 +1,48 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/config/const.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane_startup/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/enums.dart';
+import '../utils/theme_manager.dart';
 
 class ThemeProvider extends ChangeNotifier {
+  ThemeProvider(ChangeNotifierProviderRef<ThemeProvider> this.ref);
+  Ref ref;
   BuildContext? context;
-  SharedPreferences? prefs;
+  late SharedPreferences prefs;
   bool isDarkThemeEnabled = false;
-  // Color primaryTextColor = lightPrimaryTextColor;
-  // Color secondaryTextColor = lightSecondaryTextColor;
-  // Color strokeColor = lightStrokeColor;
-  // Color backgroundColor = lightBackgroundColor;
-  // Color secondaryBackgroundColor = lightSecondaryBackgroundColor;
-  // Color buttonColor = primaryColor;
-
+  THEME theme = THEME.light;
+  late ThemeManager themeManager;
   //function to change theme and stor the theme in shared preferences
-
-  void clear(){
+  void clear() {
     isDarkThemeEnabled = false;
   }
+
   Future<void> changeTheme() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
     if (isDarkThemeEnabled) {
       isDarkThemeEnabled = false;
-      Const.dark = false;
-      // primaryTextColor = lightPrimaryTextColor;
-      // secondaryTextColor = lightSecondaryTextColor;
-      // strokeColor = lightStrokeColor;
-      // backgroundColor = lightBackgroundColor;
-      // secondaryBackgroundColor = lightSecondaryBackgroundColor;
-
+      theme = THEME.dark;
+      themeManager = ThemeManager(theme);
       notifyListeners();
       await pref.setBool('isDarkThemeEnabled', isDarkThemeEnabled);
     } else {
       isDarkThemeEnabled = true;
-   Const.dark = true;
-      // primaryTextColor = darkPrimaryTextColor;
-      // secondaryTextColor = darkSecondaryTextColor;
-      // strokeColor = darkStrokeColor;
-      // backgroundColor = darkBackgroundColor;
-      // secondaryBackgroundColor = darkSecondaryBackgroundColor;
-
+      theme = THEME.light;
+      themeManager = ThemeManager(theme);
       notifyListeners();
       await pref.setBool('isDarkThemeEnabled', isDarkThemeEnabled);
     }
   }
 
   Future<void> getTheme() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    isDarkThemeEnabled = pref.getBool('isDarkThemeEnabled') ?? false;
-    if (isDarkThemeEnabled) {
-      // primaryTextColor = darkPrimaryTextColor;
-      // secondaryTextColor = darkSecondaryTextColor;
-      // strokeColor = darkStrokeColor;
-      // backgroundColor = darkBackgroundColor;
-      // secondaryBackgroundColor = darkSecondaryBackgroundColor;
+    if (!prefs.containsKey('selected-theme')) {
+      await prefs.setString('selected-theme', 'L');
+    } else {
+      theme = themeParser(theme: prefs.getString('selected-theme')!);
     }
-    log('isDarkThemeEnabled: $isDarkThemeEnabled');
-    notifyListeners();
+    themeManager = ThemeManager(theme);
+    // print(themeManager);
   }
-
-  //function to get the theme data
 }

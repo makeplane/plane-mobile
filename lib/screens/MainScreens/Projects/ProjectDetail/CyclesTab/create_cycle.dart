@@ -79,11 +79,11 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 CustomText(
                                   'Create Cycle ',
                                   // color: themeProvider.secondaryTextColor,
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                                 CustomText(
                                   '*',
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                   color: Colors.red,
                                 ),
                               ],
@@ -135,7 +135,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                         //   child: const CustomText(
                         //     'Description',
                         //     // color: themeProvider.secondaryTextColor,
-                        //     type: FontStyle.title,
+                        //     type: FontStyle.Small,
                         //   ),
                         // ),
                         // Container(
@@ -179,7 +179,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 CustomText(
                                   'Start Date ',
                                   // color: themeProvider.secondaryTextColor,
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                               ],
                             )),
@@ -236,7 +236,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                       ? 'Select Date'
                                       : DateFormat('yyyy-MM-dd')
                                           .format(startDate!),
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                 ),
                               ],
                             ),
@@ -250,7 +250,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 CustomText(
                                   'End Date ',
                                   // color: themeProvider.secondaryTextColor,
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                               ],
                             )),
@@ -307,7 +307,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                       ? 'Select Date'
                                       : DateFormat('yyyy-MM-dd')
                                           .format(endDate!),
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                 ),
                               ],
                             ),
@@ -334,7 +334,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                           //       backgroundColor: Colors.redAccent,
                           //       content: CustomText(
                           //         'Please select start and end date',
-                          //         type: FontStyle.description,
+                          //         type: FontStyle.Medium,
                           //         color: Colors.white,
                           //       ),
                           //     ),
@@ -349,7 +349,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                   backgroundColor: Colors.redAccent,
                                   content: CustomText(
                                     'Start date cannot be after end date',
-                                    type: FontStyle.description,
+                                    type: FontStyle.Medium,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -433,7 +433,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 backgroundColor: Colors.redAccent,
                                 content: CustomText(
                                   'Cycle date is conflicted with other cycle',
-                                  type: FontStyle.description,
+                                  type: FontStyle.Medium,
                                   color: Colors.white,
                                 ),
                               ),

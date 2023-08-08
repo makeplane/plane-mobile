@@ -5,6 +5,8 @@ import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
+
 
 class AssigneeSheet extends ConsumerStatefulWidget {
   final bool fromModuleDetail;
@@ -57,9 +59,10 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(
+                       const CustomText(
                         'Select Assignees',
-                        type: FontStyle.heading,
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
                       ),
                       IconButton(
                           onPressed: () {
@@ -177,7 +180,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                               ['member']['email'][0]
                                           .toString()
                                           .toUpperCase(),
-                                      type: FontStyle.subheading,
+                                      type: FontStyle.Small,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -190,7 +193,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                         " " +
                                         projectProvider.projectMembers[index]
                                             ['member']['last_name'],
-                                    type: FontStyle.subheading,
+                                    type: FontStyle.Small,
                                   ),
                                   const Spacer(),
                                   createIsseuSelectedMembersWidget(index),

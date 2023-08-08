@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -58,7 +58,7 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
                     const CustomText(
                       'Github',
                       textAlign: TextAlign.left,
-                      type: FontStyle.appbarTitle,
+                      type: FontStyle.Small,
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
@@ -67,7 +67,7 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
                         'Select GitHub repository to enable sync.',
                         textAlign: TextAlign.left,
                         maxLines: 3,
-                        type: FontStyle.title,
+                        type: FontStyle.Small,
                         color: Color.fromRGBO(133, 142, 150, 1),
                       ),
                     ),

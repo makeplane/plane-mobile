@@ -5,7 +5,6 @@ import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -34,7 +33,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
         leading: false,
         elevation: false,
         centerTitle: false,
-        fontType: FontStyle.mainHeading,
+        fontType: FontStyle.H4,
+        
         actions: [
           workspaceProvider.role != Role.admin &&
                   workspaceProvider.role != Role.member
@@ -54,10 +54,11 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       await ref
                           .read(ProviderList.projectProvider)
                           .initializeProject();
+                      // ignore: use_build_context_synchronously
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateIssue(),
+                          builder: (context) => const CreateIssue(),
                         ),
                       );
                     }
@@ -169,7 +170,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                     width: 15,
                                   ),
                                   CustomRichText(
-                                    //ype: RichFontStyle.title,
+                                    //ype: RichFontStyle.Small,
                                     fontSize: 14,
                                     color: themeProvider.isDarkThemeEnabled
                                         ? Colors.grey.shade400
@@ -203,7 +204,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                     child: CustomText(
                                       myIssuesProvider.data[index]['name'],
                                       maxLines: 1,
-                                      type: FontStyle.description,
+                                      type: FontStyle.Medium,
                                     ),
                                   ),
                                   const SizedBox(

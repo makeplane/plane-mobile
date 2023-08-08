@@ -9,6 +9,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+import '../../utils/enums.dart';
 
 class BoardProvider extends ChangeNotifier {
   BoardProvider(ChangeNotifierProviderRef<BoardProvider> this.ref);
@@ -134,7 +135,7 @@ class BoardProvider extends ChangeNotifier {
               ),
               CustomText(
                 data[i].title!,
-                type: FontStyle.title,
+                type: FontStyle.Small,
                 // fontSize: 20,
               ),
             ],
@@ -178,7 +179,8 @@ class BoardProvider extends ChangeNotifier {
           children: [
             const CustomText(
               'Hidden groups',
-              type: FontStyle.heading,
+              type: FontStyle.H6,
+              fontWeight: FontWeightt.Semibold,
               fontSize: 20,
             ),
             Container(
@@ -195,7 +197,7 @@ class BoardProvider extends ChangeNotifier {
               width: 35,
               child: CustomText(
                 emptyStates.items.length.toString(),
-                type: FontStyle.subtitle,
+                type: FontStyle.Medium,
               ),
             ),
           ],

@@ -13,8 +13,7 @@ class SelectStates extends ConsumerStatefulWidget {
   final bool createIssue;
   final String? issueId;
 
-  const SelectStates(
-      { required this.createIssue, this.issueId, super.key});
+  const SelectStates({required this.createIssue, this.issueId, super.key});
 
   @override
   ConsumerState<SelectStates> createState() => _SelectStatesState();
@@ -83,7 +82,8 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                     children: [
                       const CustomText(
                         'Select State',
-                        type: FontStyle.heading,
+                        type: FontStyle.H6,
+                        fontWeight: FontWeightt.Semibold,
                       ),
                       IconButton(
                           onPressed: () {
@@ -145,7 +145,6 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                           .currentProject['id'],
                                       issueID: widget.issueId!,
                                       refs: ref,
-                                      
                                       data: {
                                         'state':
                                             '${issuesProvider.states[issuesProvider.states.keys.elementAt(i)]['id']}'
@@ -190,7 +189,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                           issuesProvider.states[issuesProvider
                                               .states.keys
                                               .elementAt(i)]["name"],
-                                          type: FontStyle.subheading,
+                                          type: FontStyle.Small,
                                         ),
                                         const Spacer(),
                                         widget.createIssue
@@ -236,7 +235,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                 ),
                                 const CustomText(
                                   'Create New State',
-                                  type: FontStyle.subheading,
+                                  type: FontStyle.Small,
                                 )
                               ],
                             ),

@@ -73,9 +73,11 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                           //   'Setup up your profile',
                           //   style: TextStylingWidget.mainHeading,
                           // ),
-                          const CustomText(
+                          CustomText(
                             'Setup your profile',
-                            type: FontStyle.headingH4SemiBold,
+                            type: FontStyle.H4,
+                            fontWeight: FontWeightt.Semibold,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const SizedBox(
                             height: 30,
@@ -84,14 +86,20 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'First name'),
+                                    TextSpan(
+                                        text: 'First name',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
                                     TextSpan(
                                         text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.paragraphSmallRegular,
+                                  type: FontStyle.Small,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -109,14 +117,20 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'Last name'),
+                                    TextSpan(
+                                        text: 'Last name',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
                                     TextSpan(
                                         text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.paragraphSmallRegular,
+                                  type: FontStyle.Small,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -133,14 +147,20 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'What is your Role?'),
+                                    TextSpan(
+                                        text: 'What is your Role?',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
                                     TextSpan(
                                         text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.paragraphSmallRegular,
+                                  type: FontStyle.Small,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -189,7 +209,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             prov.dropDownValue == null
                                                 ? 'Select Role'
                                                 : prov.dropDownValue!,
-                                            type: FontStyle.text,
+                                            type: FontStyle.Small,
                                           ),
                                         ),
                                         Container(
@@ -209,11 +229,12 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                   // ),
                                 ),
                                 dropdownEmpty
-                                    ? const CustomText(
+                                    ? CustomText(
                                         "*required",
-                                        fontSize: 14,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
+                                        type: FontStyle.Small,
+                                        fontWeight: FontWeightt.Semibold,
+                                        color: themeProvider
+                                            .themeManager.textErrorColor,
                                       )
                                     : Container(),
                                 const SizedBox(
@@ -280,30 +301,23 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                   //   currentPage--;
                                   // });
                                 },
-                                child: const Row(
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.arrow_back,
                                       color: greyColor,
                                       size: 18,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
-                                    // Text(
-                                    //   'Go back',
-                                    //   style: TextStylingWidget.description
-                                    //       .copyWith(
-                                    //     color: greyColor,
-                                    //     fontWeight: FontWeight.w600,
-                                    //   ),
-                                    // ),
                                     CustomText(
                                       'Go back',
-                                      type: FontStyle.description,
-                                      color: greyColor,
-                                      fontWeight: FontWeight.w600,
+                                      type: FontStyle.Small,
+                                      fontWeight: FontWeightt.Semibold,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                   ],
                                 ),

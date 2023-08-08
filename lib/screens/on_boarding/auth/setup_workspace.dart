@@ -48,7 +48,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
   Widget build(BuildContext context) {
     var prov = ref.watch(ProviderList.workspaceProvider);
     var themeProv = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -76,9 +77,11 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                         //   'Workspaces',
                         //   style: TextStylingWidget.mainHeading,
                         // ),
-                        const CustomText(
+                        CustomText(
                           ' Create Workspaces',
-                          type: FontStyle.headingH4SemiBold,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
 
                         newWorkSpace
@@ -88,15 +91,20 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  const CustomRichText(
+                                  CustomRichText(
                                     widgets: [
-                                      TextSpan(text: 'Workspace name'),
                                       TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
+                                          text: 'Workspace name',
+                                          style: TextStyle(
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor)),
+                                      TextSpan(
+                                          text: '*',
+                                          style: TextStyle(
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor))
                                     ],
-                                    type: RichFontStyle.paragraphSmallRegular,
+                                    type: FontStyle.Small,
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -132,14 +140,20 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  const CustomRichText(
+                                  CustomRichText(
                                     widgets: [
-                                      TextSpan(text: 'Workspace URL'),
+                                      TextSpan(
+                                          text: 'Workspace URL',
+                                          style: TextStyle(
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor)),
                                       TextSpan(
                                           text: '*',
-                                          style: TextStyle(color: Colors.red))
+                                          style: TextStyle(
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor))
                                     ],
-                                    type: RichFontStyle.paragraphSmallRegular,
+                                    type: FontStyle.Small,
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -168,15 +182,17 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                     //     fontWeight: FontWeight.normal),
                                     decoration: kTextFieldDecoration.copyWith(
                                       isDense: true,
-                                      prefixIcon: const Padding(
-                                        padding: EdgeInsets.only(left: 15),
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsets.only(left: 15),
                                         // child: Text(
                                         //   "https://takeoff.plane.so/",
                                         //   style: TextStyle(fontSize: 16),
                                         // ),
                                         child: CustomText(
                                           'https://takeoff.plane.so/',
-                                          type: FontStyle.text,
+                                          type: FontStyle.Small,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
                                         ),
                                       ),
                                       prefixIconConstraints:
@@ -188,22 +204,27 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                   //     ? CustomText(
                                   //         'Workspace URL is already taken!',
                                   //         color: Colors.red.shade700,
-                                  //         type: FontStyle.subtitle,
+                                  //         type: FontStyle.Medium,
                                   //         fontWeight: FontWeight.bold,
                                   //       )
                                   //     : Container(),
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  const CustomRichText(
+                                  CustomRichText(
                                     widgets: [
                                       TextSpan(
-                                          text: 'How large is your company?'),
+                                          text: 'How large is your company?',
+                                          style: TextStyle(
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor)),
                                       TextSpan(
                                           text: '*',
-                                          style: TextStyle(color: Colors.red))
+                                          style: TextStyle(
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor))
                                     ],
-                                    type: RichFontStyle.paragraphSmallRegular,
+                                    type: FontStyle.Small,
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -250,11 +271,13 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                             margin:
                                                 const EdgeInsets.only(left: 16),
                                             child: CustomText(
-                                              prov.companySize == ''
-                                                  ? 'Select Company Size'
-                                                  : prov.companySize,
-                                              type: FontStyle.title,
-                                            ),
+                                                prov.companySize == ''
+                                                    ? 'Select Company Size'
+                                                    : prov.companySize,
+                                                type: FontStyle.Small,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(
@@ -273,11 +296,12 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                     // ),
                                   ),
                                   dropdownEmpty
-                                      ? const CustomText(
+                                      ? CustomText(
                                           "*required",
-                                          fontSize: 14,
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider
+                                              .themeManager.textErrorColor,
+                                          type: FontStyle.Small,
+                                          fontWeight: FontWeightt.Semibold,
                                         )
                                       : Container(),
                                   const SizedBox(
@@ -365,11 +389,12 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const CustomText(
+                                child: CustomText(
                                   'Go back',
-                                  type: FontStyle.heading2,
-                                  color: greyColor,
-                                  fontWeight: FontWeight.w600,
+                                  type: FontStyle.Small,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
+                                  fontWeight: FontWeightt.Semibold,
                                 ),
                               ),
                             ],

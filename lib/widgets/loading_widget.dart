@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
-
+import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class LoadingWidget extends ConsumerStatefulWidget {
@@ -61,9 +61,11 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                       //   'processing...',
                       //   style: TextStylingWidget.smallText,
                       // )
-                      const CustomText(
+                       CustomText(
                         'Loading...',
-                        type: FontStyle.subtitle,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Medium,
+                        color: themeProvider.themeManager.secondaryTextColor,
                       ),
                     ],
                   ),

@@ -7,7 +7,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/utils/constants.dart';
-
+import '/utils/enums.dart';
 // ignore: must_be_immutable
 class ModuleCard extends ConsumerStatefulWidget {
   bool isFav;
@@ -75,7 +75,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                         : modulesProvider.modules[widget.index]['name']
                             .toString(),
                     overflow: TextOverflow.ellipsis,
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   ),
                 ),
                 const Spacer(),
@@ -108,7 +108,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                   .toString()
                               : modulesProvider.modules[widget.index]['status']
                                   .toString(),
-                          type: FontStyle.subtitle,
+                          type: FontStyle.Medium,
                           color: themeProvider.isDarkThemeEnabled
                               ? darkPrimaryTextColor
                               : lightPrimaryTextColor),
@@ -241,7 +241,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                     DateTime.now())
                                 .toString())),
 
-                    type: FontStyle.smallText,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     width: 40,
@@ -268,7 +268,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                         ['target_date'] ??
                                     DateTime.now())
                                 .toString())),
-                    type: FontStyle.smallText,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -293,7 +293,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
             //       ),
             //       CustomText(
             //         ' Vamsi Kurama',
-            //         type: FontStyle.subtitle,
+            //         type: FontStyle.Medium,
             //       ),
             //     ],
             //   ),
@@ -314,7 +314,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   children: [
                     const CustomText(
                       'Progress',
-                      type: FontStyle.smallText,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       width: 15,
@@ -356,7 +356,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       widget.isFav
                           ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(2)} %'
                           : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(2)} %',
-                      type: FontStyle.smallText,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       width: 15,
@@ -372,7 +372,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                     padding: const EdgeInsets.only(left: 15, top: 20),
                     child: const CustomText(
                       'Last Updated: ',
-                      type: FontStyle.subtitle,
+                      type: FontStyle.Medium,
                     ),
                   ),
                   Container(
@@ -392,7 +392,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                               modulesProvider.modules[widget.index]
                                       ['updated_at']
                                   .toString())),
-                      type: FontStyle.subtitle,
+                      type: FontStyle.Medium,
                     ),
                   ),
                   const Spacer(),
@@ -460,7 +460,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                                 e['first_name'][0]
                                                     .toString()
                                                     .toUpperCase(),
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -548,7 +548,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                                 e['first_name'][0]
                                                     .toString()
                                                     .toUpperCase(),
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                                 color: Colors.white,
                                               ),
                                             ),

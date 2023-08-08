@@ -53,7 +53,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                     states[index].toString().replaceFirst(states[index][0],
                         states[index][0].toString().toUpperCase()),
                     // values['group'].replaceFirst(values['group'][0], values['group'][0].toUpperCase()),
-                    type: FontStyle.appbarTitle,
+                    type: FontStyle.Small,
                   ),
                   IconButton(
                     onPressed: () {
@@ -142,7 +142,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                             CustomText(
                               issuesProvider.statesData[states[index]][idx]
                                   ['name'],
-                              type: FontStyle.description,
+                              type: FontStyle.Medium,
                             ),
                           ],
                         ),
@@ -318,7 +318,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                           widget.method == CRUD.update
                               ? 'Update ${widget.name} state'
                               : 'Add ${widget.name} state',
-                          type: FontStyle.heading,
+                          type: FontStyle.H6,
+                          fontWeight: FontWeightt.Semibold,
                           fontSize: 22,
                         ),
                         IconButton(
@@ -338,7 +339,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                     ),
                     const CustomText(
                       'Color',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     Container(
                       height: 10,
@@ -407,7 +408,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                     ),
                     const CustomText(
                       'Name *',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     Container(
                       height: 5,
@@ -423,7 +424,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                         ? Container()
                         : const CustomText(
                             'State *',
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                           ),
                     widget.method == CRUD.create
                         ? Container()
@@ -464,7 +465,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                                 e.toString().replaceFirst(
                                                     e[0], e[0].toUpperCase()),
                                                 // color: Colors.white,
-                                                type: FontStyle.description,
+                                                type: FontStyle.Medium,
                                               ),
                                             ))
                                         .toList(),

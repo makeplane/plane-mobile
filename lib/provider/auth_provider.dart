@@ -314,16 +314,15 @@ class AuthProvider extends ChangeNotifier {
     } on DioException catch (e) {
       log(e.toString());
       signInState = StateEnum.failed;
-      if (e is DioException) {
+
         CustomToast().showSimpleToast(
           e.error.toString(),
           
         );
-      } else {
         CustomToast().showSimpleToast(
           'Something went wrong, please try again.',
         );
-      }
+      
       notifyListeners();
     }
   }

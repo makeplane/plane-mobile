@@ -62,8 +62,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
         child: Center(
           child: CustomText(
             text,
-            type: FontStyle.subheading,
-            fontWeight: FontWeight.normal,
+            type: FontStyle.Small,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -213,7 +212,6 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             MaterialPageRoute(
               builder: (context) => IssueDetail(
                 issueId: issuesProvider.issuesList[index]['id'],
-        
                 appBarTitle:
                     '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
               ),
@@ -268,7 +266,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                       width: 320,
                       child: CustomText(
                         issuesProvider.issuesList[index]['name'],
-                        type: FontStyle.text,
+                        type: FontStyle.Small,
                         maxLines: 1,
                         fontSize: 17,
                         overflow: TextOverflow.ellipsis,
@@ -314,7 +312,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                   // width: 50,
                   child: CustomText(
                     stateName,
-                    type: FontStyle.text,
+                    type: FontStyle.Small,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -542,7 +540,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                       ),
                     )
                   : 'No Due Date',
-              type: FontStyle.text,
+              type: FontStyle.Small,
             ),
           ),
           Container(
@@ -597,8 +595,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                   ['estimate_point'];
                         })['value']
                       : 'Estimate',
-                  type: FontStyle.smallText,
-                  fontSize: 13,
+                  type: FontStyle.Small,
                 ),
               ],
             ),
@@ -633,7 +630,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                   issuesProvider.issuesList[index]['created_at'],
                 ),
               ),
-              type: FontStyle.text,
+              type: FontStyle.Small,
             ),
           ),
           Container(
@@ -667,7 +664,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                   issuesProvider.issuesList[index]['created_at'],
                 ),
               ),
-              type: FontStyle.text,
+              type: FontStyle.Small,
             ),
           ),
           Container(
@@ -1000,7 +997,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           child: Center(
                             child: CustomText(
                               '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
-                              type: FontStyle.text,
+                              type: FontStyle.Small,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -1038,8 +1035,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             child: const Center(
               child: CustomText(
                 'Key',
-                type: FontStyle.subheading,
-                fontWeight: FontWeight.normal,
+                type: FontStyle.Small,
+                
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

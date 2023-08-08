@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
+import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -31,7 +31,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
         modulesProvider.currentModule = widget.isFav
             ? modulesProvider.favModules[widget.index]
             : modulesProvider.modules[widget.index];
-       // modulesProvider.setState();
+        // modulesProvider.setState();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -53,10 +53,10 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
             color: themeProvider.isDarkThemeEnabled
                 ? darkBackgroundColor
                 : lightBackgroundColor,
-            border: Border.all(color:
-            themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : strokeColor,
+            border: Border.all(
+                color: themeProvider.isDarkThemeEnabled
+                    ? darkThemeBorder
+                    : strokeColor,
                 width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Padding(
@@ -68,17 +68,14 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/svg_images/group.svg',
-                    width: 17,
-                    height: 17,
-                    colorFilter: ColorFilter.mode(
-                        themeProvider.isDarkThemeEnabled
-                            ? Colors.grey
-                            : lightPrimaryTextColor,
-                        BlendMode.srcIn)
-                   
-                  ),
+                  SvgPicture.asset('assets/svg_images/group.svg',
+                      width: 17,
+                      height: 17,
+                      colorFilter: ColorFilter.mode(
+                          themeProvider.isDarkThemeEnabled
+                              ? Colors.grey
+                              : lightPrimaryTextColor,
+                          BlendMode.srcIn)),
                   const SizedBox(width: 10),
                   Expanded(
                     child: CustomText(
@@ -88,7 +85,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                           : modulesProvider.modules[widget.index]['name']
                               .toString(),
                       overflow: TextOverflow.ellipsis,
-                      type: FontStyle.heading2,
+                      type: FontStyle.H5,
                     ),
                   ),
                   Container(
@@ -103,7 +100,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                           widget.isFav
                               ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %'
                               : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
-                          type: FontStyle.smallText,
+                          type: FontStyle.Small,
                         ),
                       ),
                     ),
@@ -118,8 +115,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                   .favModules[widget.index]['id'];
                               modulesProvider.modules.add(
                                   modulesProvider.favModules[widget.index]);
-                              modulesProvider.favModules
-                                  .removeAt(widget.index);
+                              modulesProvider.favModules.removeAt(widget.index);
                               modulesProvider.setState();
                               modulesProvider.favouriteModule(
                                 slug: ref
@@ -170,8 +166,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
               const SizedBox(height: 5),
               Container(
                 margin: const EdgeInsets.only(left: 25),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 color: themeProvider.isDarkThemeEnabled
                     ? darkSecondaryBGC
                     : lightSecondaryBackgroundColor,
@@ -181,7 +176,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                             .toString()
                         : modulesProvider.modules[widget.index]['status']
                             .toString(),
-                    type: FontStyle.subtitle,
+                    type: FontStyle.Medium,
                     color: themeProvider.isDarkThemeEnabled
                         ? darkPrimaryTextColor
                         : lightPrimaryTextColor),

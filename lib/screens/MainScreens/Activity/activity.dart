@@ -48,7 +48,8 @@ class _ActivityState extends ConsumerState<Activity> {
                 ),
                 const CustomText(
                   'Activity',
-                  type: FontStyle.mainHeading,
+                  type: FontStyle.H4,
+                  fontWeight: FontWeightt.Semibold,
                 ),
                 Expanded(
                   child: activityProvider.data.isEmpty
@@ -93,14 +94,14 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           .toUpperCase(),
                                                       // color: Colors.black,
                                                       type:
-                                                          FontStyle.buttonText,
+                                                          FontStyle.Medium,
                                                       color: Colors.white),
                                                 ),
                                               ),
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              Container(
+                                              SizedBox(
                                                 width:
                                                     MediaQuery.sizeOf(context)
                                                             .width -
@@ -137,12 +138,15 @@ class _ActivityState extends ConsumerState<Activity> {
                                                             .toString()
                                                             .contains(
                                                                 "created a link")) {
-                                                          if (!await launchUrl(
-                                                              Uri.parse(activityProvider
-                                                            .data[index]
-                                                                ["new_value"].toString()))) {
-                                                             // ignore: use_build_context_synchronously
-                                                             CustomToast().showToast(context, 'Failed to launch');
+                                                          if (!await launchUrl(Uri
+                                                              .parse(activityProvider
+                                                                  .data[index][
+                                                                      "new_value"]
+                                                                  .toString()))) {
+                                                            // ignore: use_build_context_synchronously
+                                                            CustomToast().showToast(
+                                                                context,
+                                                                'Failed to launch');
                                                           }
                                                         }
                                                       },
@@ -154,7 +158,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                 ['comment'],
                                                             fontSize: 14,
                                                             type: FontStyle
-                                                                .description,
+                                                                .Medium,
                                                             textAlign:
                                                                 TextAlign.left,
                                                             maxLines: 4,
@@ -197,7 +201,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                               .isDarkThemeEnabled
                                                           ? lightSecondaryBackgroundColor
                                                           : greyColor,
-                                                      type: FontStyle.smallText,
+                                                      type: FontStyle.Small,
                                                       textAlign: TextAlign.left,
                                                       maxLines: 4,
                                                     ),
@@ -305,7 +309,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () async{
+                                                    onTap: () async {
                                                       if (activityProvider
                                                           .data[index]
                                                               ["comment"]
@@ -336,13 +340,20 @@ class _ActivityState extends ConsumerState<Activity> {
                                                               ["comment"]
                                                           .toString()
                                                           .contains(
-                                                              "created a link")) { if (!await launchUrl(
-                                                              Uri.parse(activityProvider
-                                                            .data[index]
-                                                                ["new_value"].toString()),)) {
-                                                             // ignore: use_build_context_synchronously
-                                                             CustomToast().showToast(context, 'Failed to launch');
-                                                          }}
+                                                              "created a link")) {
+                                                        if (!await launchUrl(
+                                                          Uri.parse(
+                                                              activityProvider
+                                                                  .data[index][
+                                                                      "new_value"]
+                                                                  .toString()),
+                                                        )) {
+                                                          // ignore: use_build_context_synchronously
+                                                          CustomToast().showToast(
+                                                              context,
+                                                              'Failed to launch');
+                                                        }
+                                                      }
                                                     },
                                                     child: Wrap(
                                                       children: [
@@ -350,7 +361,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           '${activityFormat(activityProvider.data[index])} ',
                                                           fontSize: 14,
                                                           type: FontStyle
-                                                              .description,
+                                                              .Medium,
                                                           textAlign:
                                                               TextAlign.left,
                                                           maxLines: 4,
@@ -385,7 +396,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                             .isDarkThemeEnabled
                                                         ? lightSecondaryBackgroundColor
                                                         : greyColor,
-                                                    type: FontStyle.smallText,
+                                                    type: FontStyle.Small,
                                                     textAlign: TextAlign.left,
                                                     maxLines: 4,
                                                   ),

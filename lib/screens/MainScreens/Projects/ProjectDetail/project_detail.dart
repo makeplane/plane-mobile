@@ -16,7 +16,6 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesT
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.dart';
@@ -76,7 +75,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
     log(issueProvider.issues.groupBY.name);
 
     return Scaffold(
@@ -194,7 +192,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               //                           color: index == selected
               //                               ? primaryColor
               //                               : lightGreyTextColor,
-              //                           type: FontStyle.secondaryText,
+              //                           type: FontStyle.Medium,
               //                         ),
               //                       ),
               //                       selected == index
@@ -241,7 +239,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 selected
                                             ? primaryColor
                                             : lightGreyTextColor,
-                                    type: FontStyle.secondaryText,
+                                    type: FontStyle.Medium,
                                   ),
                                 ),
                                 selected ==
@@ -325,7 +323,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   ),
                                                   CustomText(
                                                     ' Issue',
-                                                    type: FontStyle.subtitle,
+                                                    type: FontStyle.Medium,
                                                     color: Colors.white,
                                                   )
                                                 ],
@@ -372,7 +370,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           ),
                                           CustomText(
                                             ' Layout',
-                                            type: FontStyle.subtitle,
+                                            type: FontStyle.Medium,
                                             color: Colors.white,
                                           )
                                         ],
@@ -426,7 +424,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 ),
                                                 CustomText(
                                                   ' Views',
-                                                  type: FontStyle.subtitle,
+                                                  type: FontStyle.Medium,
                                                   color: Colors.white,
                                                 )
                                               ],
@@ -474,7 +472,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           ),
                                           CustomText(
                                             ' Filters',
-                                            type: FontStyle.subtitle,
+                                            type: FontStyle.Medium,
                                             color: Colors.white,
                                           )
                                         ],
@@ -499,7 +497,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                 ? darkThemeBorder
                                 : strokeColor,
                           ),
-                          Container(
+                          SizedBox(
                             height: 50,
                             child: Row(
                               children: [
@@ -526,7 +524,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 ),
                                                 CustomText(
                                                   ' Page',
-                                                  type: FontStyle.subtitle,
+                                                  type: FontStyle.Medium,
                                                   color: Colors.white,
                                                 )
                                               ],
@@ -575,7 +573,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                         ),
                                         CustomText(
                                           ' Filters',
-                                          type: FontStyle.subtitle,
+                                          type: FontStyle.Medium,
                                           color: Colors.white,
                                         )
                                       ],
@@ -636,7 +634,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               //                           : selected == 3
               //                               ? 'Add View'
               //                               : 'Add Page',
-              //                   type: FontStyle.subtitle,
+              //                   type: FontStyle.Medium,
               //                   color: Colors.white,
               //                 )
               //               ],
@@ -659,7 +657,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               //                 ),
               //                 CustomText(
               //                   ' Filters',
-              //                   type: FontStyle.subtitle,
+              //                   type: FontStyle.Medium,
               //                   color: Colors.white,
               //                 )
               //               ],
@@ -771,12 +769,12 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                                         state
                                                                             .title!,
                                                                         type: FontStyle
-                                                                            .subheading,
+                                                                            .Large,
                                                                         color: themeProvider.isDarkThemeEnabled
                                                                             ? Colors.white
                                                                             : Colors.black,
                                                                         fontWeight:
-                                                                            FontWeight.w500,
+                                                                            FontWeightt.Semibold,
                                                                       ),
                                                                     ),
                                                                     Container(
@@ -804,7 +802,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                                             .length
                                                                             .toString(),
                                                                         type: FontStyle
-                                                                            .subtitle,
+                                                                            .Small,
                                                                       ),
                                                                     ),
                                                                     const Spacer(),
@@ -873,7 +871,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                                           const CustomText(
                                                                         'No issues.',
                                                                         type: FontStyle
-                                                                            .title,
+                                                                            .Small,
                                                                         maxLines:
                                                                             10,
                                                                         textAlign:
@@ -942,7 +940,7 @@ Widget cycles() {
 //         // SizedBox(
 //         //   child: Text(
 //         //     'Current Cycles',
-//         //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+//         //     style: TextStyle(fontSize: 20, fontWeight: FontWeightt.Medium),
 //         //   ),
 //         // ),
 //         ModuleCard()
@@ -962,7 +960,7 @@ Widget view(WidgetRef ref) {
         // SizedBox(
         //   child: Text(
         //     'Current Cycles',
-        //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        //     style: TextStyle(fontSize: 20, fontWeight: FontWeightt.Medium),
         //   ),
         // ),
         Views()

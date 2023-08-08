@@ -69,8 +69,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                     CustomText(
                       'Relocation Guide',
                       textAlign: TextAlign.left,
-                      type: FontStyle.subheading,
-                      fontWeight: FontWeight.bold,
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     SizedBox(
                       height: 10,
@@ -79,7 +79,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                       'You can now transfer all the issues that you\'ve created in other tracking services. This tool will guide you to relocate the issue to Plane.',
                       textAlign: TextAlign.left,
                       maxLines: 7,
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     SizedBox(
                       height: 10,
@@ -89,7 +89,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                         CustomText(
                           'Read more',
                           textAlign: TextAlign.left,
-                          type: FontStyle.title,
+                          type: FontStyle.Small,
                           color: Color.fromRGBO(63, 118, 255, 1),
                         ),
                         SizedBox(
@@ -155,7 +155,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                 const CustomText(
                                   'Github',
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.boldSubtitle,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(5),
@@ -179,7 +180,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                 ["installed"]
                                         ? "Installed"
                                         : 'Not Installed',
-                                    type: FontStyle.subtitle,
+                                    type: FontStyle.XSmall,
                                     color: integrationProvider
                                                     .integrations["github"] !=
                                                 null &&
@@ -200,7 +201,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                               'Connect with GitHub with your Plane workspace to sync project issues.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
+                              type: FontStyle.Medium,
                               color: Color.fromRGBO(133, 142, 150, 1),
                             ),
                           ),
@@ -260,7 +261,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                 const CustomText(
                                   'Jira',
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.boldSubtitle,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(5),
@@ -282,7 +284,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                 ["installed"]
                                         ? "Installed"
                                         : 'Not Installed',
-                                    type: FontStyle.subtitle,
+                                    type: FontStyle.XSmall,
                                     color: integrationProvider
                                                     .integrations["jira"] !=
                                                 null &&
@@ -303,7 +305,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                               'Import issues and epics from Jira projects and epics.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
+                              type: FontStyle.Medium,
                               color: Color.fromRGBO(133, 142, 150, 1),
                             ),
                           ),
@@ -319,7 +321,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
               //   child: const CustomText(
               //     'Billing History',
               //     textAlign: TextAlign.left,
-              //     type: FontStyle.heading,
+              //     type: FontStyle.H6,
+              // fontWeight: FontWeightt.Semibold,
               //   ),
               // ),
               // Container(
@@ -346,7 +349,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
               //       CustomText(
               //         'No previous imports available.',
               //         textAlign: TextAlign.center,
-              //         type: FontStyle.title,
+              //         type: FontStyle.Small,
               //       ),
               //     ],
               //   ),

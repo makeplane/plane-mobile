@@ -8,7 +8,6 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
-
 class DeleteWorkspace extends ConsumerStatefulWidget {
   final String workspaceName;
   const DeleteWorkspace({required this.workspaceName, super.key});
@@ -36,7 +35,8 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                 children: [
                   const CustomText(
                     'Delete Workspace',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   IconButton(
                     onPressed: () {
@@ -55,7 +55,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
               ),
               CustomText(
                 'Are you sure you want to delete workspace ${widget.workspaceName}? All of the data related to the workspace will be permanently removed. This action cannot be undone.',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
               ),
               Container(
@@ -80,7 +80,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                             ? Colors.white
                             : Colors.black,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        
                       ),
                     ),
                     TextSpan(
@@ -113,11 +113,11 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                   return null;
                 },
               ),
-    
+
               Container(height: 20),
               // CustomText(
               //   'To confirm, type "delete my project".',
-              //   type: FontStyle.subheading,
+              //   type: FontStyle.Small,
               // ),
               //use textspan to bold "delete my project"
               RichText(
@@ -138,7 +138,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                             ? Colors.white
                             : Colors.black,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     TextSpan(
@@ -193,7 +193,8 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                       ),
                       child: CustomText(
                         'Cancel',
-                        type: FontStyle.boldTitle,
+                        type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
                         color: themeProvider.isDarkThemeEnabled
                             ? Colors.white
                             : Colors.black,
@@ -203,21 +204,20 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                   Container(
                     width: 10,
                   ),
-    
+
                   //container with red background having delete text
                   GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         if (workspaceProvider.role != Role.admin &&
                             workspaceProvider.role != Role.member) {
-                              CustomToast().showToast(
-                                context,
-                                 'You don\'t have permissions to delete this workspace',
-                                
-                              );
+                          CustomToast().showToast(
+                            context,
+                            'You don\'t have permissions to delete this workspace',
+                          );
                           return;
                         }
-    
+
                         var isSuccesfullyDeleted =
                             await workspaceProvider.deleteWorkspace();
                         if (isSuccesfullyDeleted) {
@@ -278,7 +278,8 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                             )
                           : const CustomText(
                               'Delete Workspace',
-                              type: FontStyle.boldTitle,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
                               color: Colors.white,
                             ),
                     ),

@@ -6,7 +6,7 @@ import 'package:plane_startup/screens/integrations.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-
+import 'package:plane_startup/utils/enums.dart';
 
 class BillingPlans extends ConsumerStatefulWidget {
   const BillingPlans({super.key});
@@ -29,7 +29,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
       //     children: [
       //       CustomText(
       //         'Billings & Plans',
-      //         type: FontStyle.appbarTitle,
+      //         type: FontStyle.Small,
       //       ),
       //       Container(
       //         child: Row(
@@ -39,7 +39,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
       //               color: Color.fromRGBO(63, 118, 255, 1),
       //             ),
       //             CustomText('Add',
-      //                 type: FontStyle.title,
+      //                 type: FontStyle.Small,
       //                 color: const Color.fromRGBO(63, 118, 255, 1)),
       //           ],
       //         ),
@@ -73,7 +73,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                   color: Color.fromRGBO(63, 118, 255, 1),
                 ),
                 CustomText('Add',
-                    type: FontStyle.title,
+                    type: FontStyle.Small,
                     color: Color.fromRGBO(63, 118, 255, 1)),
               ],
             ),
@@ -109,7 +109,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 ),
                 const CustomText(
                   'Free launch Pro Plan',
-                  type: FontStyle.buttonText,
+                  type: FontStyle.Small,
                 )
               ],
             ),
@@ -130,14 +130,14 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
               children: [
                 CustomText(
                   'Payment Due',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
                   '__',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 )
               ],
             ),
@@ -148,7 +148,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             child: const CustomText(
               'Current Plan',
               textAlign: TextAlign.left,
-              type: FontStyle.heading,
+              type: FontStyle.H4,
             ),
           ),
           Container(
@@ -166,7 +166,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 const CustomText(
                   'You are currently using free plan. ',
                   textAlign: TextAlign.center,
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -186,7 +186,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                           child: CustomText(
                         'View plans & Upgrade',
                         color: Colors.white,
-                        type: FontStyle.buttonText,
+                        type: FontStyle.Medium,
                       ))),
                 ),
               ],
@@ -198,7 +198,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             child: const CustomText(
               'Billing History',
               textAlign: TextAlign.left,
-              type: FontStyle.heading,
+              type: FontStyle.H4,
             ),
           ),
           Container(
@@ -225,7 +225,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 CustomText(
                   'There are no invoices to display',
                   textAlign: TextAlign.center,
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
               ],
             ),

@@ -40,7 +40,8 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                   children: [
                     const CustomText(
                       'Delete State',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                       onPressed: () {

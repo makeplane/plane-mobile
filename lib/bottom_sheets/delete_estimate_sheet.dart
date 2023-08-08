@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
+import '../utils/enums.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text.dart';
 
@@ -33,7 +34,8 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 children: [
                   const CustomText(
                     'Delete Estimate',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
                   IconButton(
@@ -53,7 +55,7 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
               ),
               CustomText(
                 'Are you sure you want to delete extimate - ${widget.estimateName}? The estimate will be removed from all the issues.',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
               )
             ],

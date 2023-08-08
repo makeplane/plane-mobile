@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,7 +42,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
             ? darkSecondaryBackgroundDefaultColor
             : lightSecondaryBackgroundDefaultColor,
         child: issuesProvider.labels.isEmpty
-            ? EmptyPlaceholder.emptyLabels(context)
+            ? EmptyPlaceholder.emptyLabels(context,ref)
             : ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -93,7 +92,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         ),
                                         CustomText(
                                           issuesProvider.labels[index]['name'],
-                                          type: FontStyle.heading2,
+                                          type: FontStyle.H5,
                                           maxLines: 3,
                                         ),
                                       ],
@@ -405,7 +404,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                 CustomText(
                                                                   e['name'],
                                                                   type: FontStyle
-                                                                      .heading2,
+                                                                      .Medium,
                                                                   maxLines: 3,
                                                                 ),
                                                               ],
@@ -692,7 +691,8 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                   children: [
                     const CustomText(
                       'Select Labels',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                       onPressed: () {
@@ -707,7 +707,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                 ),
                 Container(height: 15),
                 isLabelsAvailable(iterate: true)
-                    ? EmptyPlaceholder.emptyLabels(context)
+                    ? EmptyPlaceholder.emptyLabels(context,ref)
                     : ListView.builder(
                         itemCount: issuesProvider.labels.length,
                         shrinkWrap: true,
@@ -758,7 +758,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                               issuesProvider.labels[index]
                                                       ['name']
                                                   .toString(),
-                                              type: FontStyle.subheading,
+                                              type: FontStyle.Small,
                                             ),
                                             const Spacer(),
                                             const SizedBox(width: 10)

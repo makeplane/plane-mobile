@@ -49,7 +49,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       ))
                   : Center(
                       child: CustomText(
-                        widget.details[0]['email'][0].toString().toUpperCase(),
+                        widget.details[0]['display_name'][0].toString().toUpperCase(),
                         type: FontStyle.Small,
                         //  color: Colors.white,
                       ),
@@ -76,7 +76,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               ))
                           : Center(
                               child: CustomText(
-                                widget.details[1]['email'][0]
+                                widget.details[1]['display_name'][0]
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
@@ -107,7 +107,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               ))
                           : Center(
                               child: CustomText(
-                                widget.details[2]['email'][0]
+                                widget.details[2]['display_name'][0]
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,

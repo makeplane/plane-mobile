@@ -77,7 +77,8 @@ class WorkspaceProvider extends ChangeNotifier {
       //log(response.data.toString());
       notifyListeners();
       // return response.data;
-    } catch (e) {
+    } on DioException catch (e) {
+      log(e.error.toString());
       workspaceInvitationState = StateEnum.error;
       notifyListeners();
     }

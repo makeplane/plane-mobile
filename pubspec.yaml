@@ -59,6 +59,7 @@ dependencies:
   url_launcher: ^6.1.11
   xml: ^6.3.0
   xml2json: ^6.1.0
+  connectivity_plus: ^4.0.2
 
 dev_dependencies:
   build_runner: ^2.1.7

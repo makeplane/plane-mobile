@@ -716,7 +716,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              EmptyPlaceholder.emptyIssues(context),
+                              EmptyPlaceholder.emptyIssues(context, ref: ref),
                             ],
                           )
                         : issueProvider.issues.projectView == ProjectView.list

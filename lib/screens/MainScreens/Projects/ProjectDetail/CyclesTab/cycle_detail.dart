@@ -472,6 +472,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               context,
                                               cycleId: widget.cycleId,
                                               moduleId: widget.moduleId,
+                                              ref: ref
                                             )
                                           : ((!widget.fromModule &&
                                                       issueProvider.issues.projectView ==

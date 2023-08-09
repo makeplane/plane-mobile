@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
@@ -774,7 +775,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () async {
-                        workspaceProv
+                        await workspaceProv
                             .selectWorkspace(
                                 id: globalSearchProvider
                                     .data!.workspaces[index].id)
@@ -818,7 +819,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         );
                         globalSearchProvider.data = null;
                         globalSearchProviderRead.setState();
-                        Navigator.of(context).pop();
+                        Navigator.of(Const.globalKey.currentContext!).pop();
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15),

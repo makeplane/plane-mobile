@@ -116,7 +116,7 @@ class IssueProvider with ChangeNotifier {
       issueDetailState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log(e.message.toString());
+      log(e.error.toString());
       issueDetailState = StateEnum.error;
       notifyListeners();
     }
@@ -127,6 +127,8 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
+      print(
+          '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}history/');
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
@@ -138,7 +140,7 @@ class IssueProvider with ChangeNotifier {
       issueActivityState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log(e.message.toString());
+      log(e.response!.data.toString());
       issueActivityState = StateEnum.error;
       notifyListeners();
     }
@@ -160,7 +162,7 @@ class IssueProvider with ChangeNotifier {
         hasBody: false,
         httpMethod: httpMethod,
       );
-      log('SABI : getSubscriptionStatus ${response.data}');
+      log('getSubscriptionStatus ${response.data}');
       issueDetails['subscribed'] = httpMethod == HttpMethod.get
           ? response.data['subscribed']
           : httpMethod == HttpMethod.post
@@ -169,7 +171,8 @@ class IssueProvider with ChangeNotifier {
       subscriptionState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log(e.message.toString());
+      print('===== ERROR ');
+      log(e.response.toString());
       subscriptionState = StateEnum.error;
       notifyListeners();
       return null;

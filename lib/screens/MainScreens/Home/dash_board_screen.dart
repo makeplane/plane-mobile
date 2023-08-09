@@ -79,8 +79,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         child: Column(
           children: [
             SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: headerWidget()),
+              width: MediaQuery.of(context).size.width,
+              child: headerWidget(),
+            ),
             const SizedBox(
               height: 20,
             ),

@@ -261,7 +261,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         ],
       ),
       body:
-          issueProvider.issueDetailState == StateEnum.loading ||
+          issueProvider.issueDetailState == StateEnum.loading 
+          ||
                   issueProvider.issueActivityState == StateEnum.loading
               ? Center(
                   child: SizedBox(
@@ -877,7 +878,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                               Center(
                                                                             child:
                                                                                 CustomText(
-                                                                              issueProvider.issueActivity[index]['actor_detail']['email'][0].toString().toUpperCase(),
+                                                                              issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
                                                                               // color: Colors.black,
                                                                               type: FontStyle.Medium,
                                                                               fontWeight: FontWeightt.Bold,
@@ -1093,7 +1094,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                         child:
                                                                             Center(
                                                                           child: CustomText(
-                                                                              issueProvider.issueActivity[index]['actor_detail']['email'][0].toString().toUpperCase(),
+                                                                              issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
                                                                               // color: Colors.black,
                                                                               type: FontStyle.Medium,
                                                                               fontWeight: FontWeightt.Bold,
@@ -1273,7 +1274,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       }
       return formattedActivity;
     } else {
-      return activity['actor_detail']['email'];
+      return activity['actor_detail']['display_name'];
     }
   }
 

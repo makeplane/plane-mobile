@@ -29,7 +29,9 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
 
   @override
   void initState() {
-    ref.read(ProviderList.workspaceProvider).getWorkspaceInvitations();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(ProviderList.workspaceProvider).getWorkspaceInvitations();
+	  });
     super.initState();
   }
 

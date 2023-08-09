@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,8 +8,10 @@ import 'package:plane_startup/screens/MainScreens/Notification/notification.dart
 import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profile_screen.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane_startup/widgets/error_state.dart';
+
 import 'MainScreens/Home/dash_board_screen.dart';
 import 'MainScreens/Projects/project_screen.dart';
 
@@ -45,6 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
     themeProvider.context = context;
     final screens = [
       DashBoardScreen(
@@ -57,12 +62,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ];
     return Scaffold(
       body: SafeArea(
-        child: screens[currentIndex],
+        child: 
+        profileProvider.getProfileState == StateEnum.success ?
+        screens[currentIndex]
+        : profileProvider.getProfileState == StateEnum.error ?
+        errorState(context: context) : Container(),
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          height: 63,
+          margin: Platform.isAndroid ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+          height: 65,
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(

@@ -12,6 +12,7 @@ import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 
 class MyIssuesScreen extends ConsumerStatefulWidget {
   const MyIssuesScreen({super.key});
@@ -102,12 +103,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
           const SizedBox(width: 10),
         ],
       ),
-      body: Column(
+      body: 
+      myIssuesProvider.getMyIssuesState == StateEnum.loading ?
+      Container() :
+      myIssuesProvider.getMyIssuesState == StateEnum.success ?
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: myIssuesProvider.data.isEmpty
-                ? EmptyPlaceholder.emptyIssues(context)
+                ? EmptyPlaceholder.emptyIssues(context, ref: ref)
                 : ListView.builder(
                     itemCount: myIssuesProvider.data.length,
                     itemBuilder: (context, index) {
@@ -265,7 +270,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                     }),
           ),
         ],
-      ),
+      )
+      : errorState(context: context, showButton: false)
     );
   }
 }

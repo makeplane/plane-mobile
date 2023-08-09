@@ -263,7 +263,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                             const Color.fromRGBO(55, 65, 81, 1),
                                         child: Center(
                                             child: CustomText(
-                                          e['member']['email'][0]
+                                          e['member']['display_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.white,
@@ -320,7 +320,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                             const Color.fromRGBO(55, 65, 81, 1),
                                         child: Center(
                                             child: CustomText(
-                                          e['member']['email'][0]
+                                          e['member']['display_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.white,

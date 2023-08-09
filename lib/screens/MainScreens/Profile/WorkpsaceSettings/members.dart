@@ -10,6 +10,7 @@ import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/member_status.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 class Members extends ConsumerStatefulWidget {
@@ -38,49 +39,51 @@ class _MembersState extends ConsumerState<Members> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     log(workspaceProvider.role.name);
     return Scaffold(
-
-        // backgroundColor: themeProvider.isDarkThemeEnabled
-        //     ? darkSecondaryBackgroundColor
-        //     : lightSecondaryBackgroundColor,
-        appBar: CustomAppBar(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          text: 'Members',
-          actions: [
-            //row of add button and Add text
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const InviteMembers(
-                          isProject: false,
-                        )));
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: Color.fromRGBO(63, 118, 255, 1),
-                    ),
-                    CustomText('Add',
-                        type: FontStyle.Small,
-                        color: Color.fromRGBO(63, 118, 255, 1)),
-                  ],
-                ),
+      // backgroundColor: themeProvider.isDarkThemeEnabled
+      //     ? darkSecondaryBackgroundColor
+      //     : lightSecondaryBackgroundColor,
+      appBar: CustomAppBar(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        text: 'Members',
+        actions: [
+          //row of add button and Add text
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const InviteMembers(
+                        isProject: false,
+                      )));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Color.fromRGBO(63, 118, 255, 1),
+                  ),
+                  CustomText('Add',
+                      type: FontStyle.Small,
+                      color: Color.fromRGBO(63, 118, 255, 1)),
+                ],
               ),
             ),
-          ],
-        ),
-        body: LoadingWidget(
-          loading: workspaceProvider.getMembersState == StateEnum.loading,
-          widgetClass: MembersListWidget(
-            fromWorkspace: widget.fromWorkspace,
           ),
-        ));
+        ],
+      ),
+      body: LoadingWidget(
+        loading: workspaceProvider.getMembersState == StateEnum.loading,
+        widgetClass: workspaceProvider.getMembersState == StateEnum.success
+            ? MembersListWidget(
+                fromWorkspace: widget.fromWorkspace,
+              )
+            : errorState(context: context),
+      ),
+    );
   }
 }
 
@@ -202,7 +205,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                     child: Center(
                       child: CustomText(
                         workspaceProvider.workspaceMembers[index]['member']
-                                ['email'][0]
+                                ['first_name'][0]
                             .toString()
                             .toUpperCase(),
                         color: Colors.black,
@@ -224,7 +227,9 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
             ),
             subtitle: SizedBox(
               child: CustomText(
-                workspaceProvider.workspaceMembers[index]['member']['email'],
+                checkIfWorkspaceAdmin() ?
+                workspaceProvider.workspaceMembers[index]['member']['email']
+                : workspaceProvider.workspaceMembers[index]['member']['display_name'],
                 color: const Color.fromRGBO(133, 142, 150, 1),
                 textAlign: TextAlign.left,
                 type: FontStyle.Medium,
@@ -286,6 +291,19 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
           );
         });
   }
+
+  bool checkIfWorkspaceAdmin() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool isAdmin = false;
+    for (var element in workspaceProvider.workspaceMembers) {
+      if(element['member']['id'] == profileProvider.userProfile.id && element['role'] == 20) {
+        isAdmin = true;
+      }
+    }
+    return isAdmin;
+  }
+
 }
 
 class ProjectMembersWidget extends ConsumerStatefulWidget {
@@ -301,12 +319,124 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   Widget build(BuildContext context) {
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
 
     return ListView.builder(
-        itemCount: projectsProvider.projectMembers.length,
-        itemBuilder: (context, index) {
-          return ListTile(
+      itemCount: projectsProvider.projectMembers.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          onTap: () {
+            if (fromRole(role: projectsProvider.role) <
+                projectsProvider.projectMembers[index]['role']) {
+              CustomToast().showToast(context, accessRestrictedMSG);
+            } else if (projectsProvider.projectMembers[index]['member']["id"] ==
+                ref.read(ProviderList.profileProvider).userProfile.id) {
+              CustomToast()
+                  .showToast(context, "You can't change your own role");
+            }
+            // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
+            //         projectsProvider.projectMembers[index]['member']['id']) &&
+            //     projectsProvider.projectMembers[index]['member']['role'] !=
+            //         '20') {
+            //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
+            //       .showSnackBar(
+            //     const SnackBar(
+            //       duration: Duration(seconds: 2),
+            //       content: Text('Sorry, you can\'t make changes to anyone'),
+            //     ),
+            //   );
+            // } else if (projectsProvider.projectMembers[index]['role'] == 20) {
+            //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
+            //       .showSnackBar(
+            //     const SnackBar(
+            //       duration: Duration(seconds: 2),
+            //       content: Text('Sorry, you can\'t make changes to an admin'),
+            //     ),
+            //   );
+            // }
+
+            else {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return MemberStatus(
+                      fromWorkspace: false,
+                      firstName: projectsProvider.projectMembers[index]
+                          ['member']['first_name'],
+                      lastName: projectsProvider.projectMembers[index]['member']
+                          ['last_name'],
+                      role: {
+                        "role": projectsProvider.projectMembers[index]['role']
+                      },
+                      userId: projectsProvider.projectMembers[index]['id'],
+                      isInviteMembers: false,
+                    );
+                  });
+            }
+          },
+          leading: projectsProvider.projectMembers[index]['member']['avatar'] ==
+                      null ||
+                  projectsProvider.projectMembers[index]['member']['avatar'] ==
+                      ""
+              ? CircleAvatar(
+                  radius: 20,
+                  backgroundColor: strokeColor,
+                  child: Center(
+                    child: CustomText(
+                      projectsProvider.projectMembers[index]['member']
+                              ['first_name'][0]
+                          .toString()
+                          .toUpperCase(),
+                      color: Colors.black,
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Semibold,
+                    ),
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(projectsProvider
+                      .projectMembers[index]['member']['avatar']),
+                ),
+          title: CustomText(
+            '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
+            type: FontStyle.H5,
+            maxLines: 1,
+            fontSize: 18,
+          ),
+          subtitle: SizedBox(
+            child: CustomText(
+              checkIfProjectAdmin()
+                  ? projectsProvider.projectMembers[index]['member']['email']
+                  : projectsProvider.projectMembers[index]['member']
+                      ['display_name'],
+              color: const Color.fromRGBO(133, 142, 150, 1),
+              textAlign: TextAlign.left,
+              type: FontStyle.Medium,
+            ),
+          ),
+          trailing: GestureDetector(
             onTap: () {
+              // var profileProv = ref.read(ProviderList.profileProvider);
+              // if (profileProv.userProfile.id ==
+              //     projectsProvider.projectMembers[index]['member']['id']) {
+              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
+              //       .showSnackBar(
+              //     const SnackBar(
+              //       backgroundColor: Colors.red,
+              //       duration: Duration(seconds: 1),
+              //       content:
+              //           Text('Sorry, you can\'t make changes to yourself'),
+              //     ),
+              //   );
+              // } else {
               if (fromRole(role: projectsProvider.role) <
                   projectsProvider.projectMembers[index]['role']) {
                 CustomToast().showToast(context, accessRestrictedMSG);
@@ -315,29 +445,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                   ref.read(ProviderList.profileProvider).userProfile.id) {
                 CustomToast()
                     .showToast(context, "You can't change your own role");
-              }
-              // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
-              //         projectsProvider.projectMembers[index]['member']['id']) &&
-              //     projectsProvider.projectMembers[index]['member']['role'] !=
-              //         '20') {
-              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-              //       .showSnackBar(
-              //     const SnackBar(
-              //       duration: Duration(seconds: 2),
-              //       content: Text('Sorry, you can\'t make changes to anyone'),
-              //     ),
-              //   );
-              // } else if (projectsProvider.projectMembers[index]['role'] == 20) {
-              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-              //       .showSnackBar(
-              //     const SnackBar(
-              //       duration: Duration(seconds: 2),
-              //       content: Text('Sorry, you can\'t make changes to an admin'),
-              //     ),
-              //   );
-              // }
-
-              else {
+              } else {
+                // if (projectsProvider.role == Role.admin) {
                 showModalBottomSheet(
                     isScrollControlled: true,
                     enableDrag: true,
@@ -362,154 +471,75 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       );
                     });
               }
-            },
-            leading: projectsProvider.projectMembers[index]['member']
-                            ['avatar'] ==
-                        null ||
-                    projectsProvider.projectMembers[index]['member']
-                            ['avatar'] ==
-                        ""
-                ? CircleAvatar(
-                    radius: 20,
-                    backgroundColor: strokeColor,
-                    child: Center(
-                      child: CustomText(
-                        projectsProvider.projectMembers[index]['member']
-                                ['email'][0]
-                            .toString()
-                            .toUpperCase(),
-                        color: Colors.black,
-                        type: FontStyle.Medium,
-                        fontWeight: FontWeightt.Semibold,
-                      ),
-                    ),
-                  )
-                : CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(projectsProvider
-                        .projectMembers[index]['member']['avatar']),
-                  ),
-            title: CustomText(
-              '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
-              type: FontStyle.H5,
-              maxLines: 1,
-              fontSize: 18,
-            ),
-            subtitle: SizedBox(
-              child: CustomText(
-                projectsProvider.projectMembers[index]['member']['email'],
-                color: const Color.fromRGBO(133, 142, 150, 1),
-                textAlign: TextAlign.left,
-                type: FontStyle.Medium,
-              ),
-            ),
-            trailing: GestureDetector(
-              onTap: () {
-                // var profileProv = ref.read(ProviderList.profileProvider);
-                // if (profileProv.userProfile.id ==
-                //     projectsProvider.projectMembers[index]['member']['id']) {
-                //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-                //       .showSnackBar(
-                //     const SnackBar(
-                //       backgroundColor: Colors.red,
-                //       duration: Duration(seconds: 1),
-                //       content:
-                //           Text('Sorry, you can\'t make changes to yourself'),
-                //     ),
-                //   );
-                // } else {
-                if (fromRole(role: projectsProvider.role) <
-                    projectsProvider.projectMembers[index]['role']) {
-                  CustomToast().showToast(context, accessRestrictedMSG);
-                } else if (projectsProvider.projectMembers[index]['member']
-                        ["id"] ==
-                    ref.read(ProviderList.profileProvider).userProfile.id) {
-                  CustomToast()
-                      .showToast(context, "You can't change your own role");
-                } else {
-                  // if (projectsProvider.role == Role.admin) {
-                  showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
-                      context: context,
-                      builder: (ctx) {
-                        return MemberStatus(
-                          fromWorkspace: false,
-                          firstName: projectsProvider.projectMembers[index]
-                              ['member']['first_name'],
-                          lastName: projectsProvider.projectMembers[index]
-                              ['member']['last_name'],
-                          role: {
-                            "role": projectsProvider.projectMembers[index]
-                                ['role']
-                          },
-                          userId: projectsProvider.projectMembers[index]['id'],
-                          isInviteMembers: false,
-                        );
-                      });
-                }
-                // }
+              // }
 
-                //}
-              },
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 80),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    SizedBox(
-                      child: SizedBox(
-                        child: CustomText(
-                          projectsProvider.projectMembers[index]['role'] == 20
-                              ? 'Admin'
-                              : projectsProvider.projectMembers[index]
-                                          ['role'] ==
-                                      15
-                                  ? 'Member'
-                                  : projectsProvider.projectMembers[index]
-                                              ['role'] ==
-                                          10
-                                      ? 'Viewer'
-                                      : 'Guest',
-                          type: FontStyle.Medium,
-                          fontWeight: FontWeightt.Medium,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? fromRole(role: projectsProvider.role) >=
-                                      projectsProvider.projectMembers[index]
-                                          ['role']
-                                  ? Colors.white
-                                  : darkSecondaryTextColor
-                              : fromRole(role: projectsProvider.role) >=
-                                      projectsProvider.projectMembers[index]
-                                          ['role']
-                                  ? Colors.black
-                                  : greyColor,
-                          fontSize: 15,
-                        ),
+              //}
+            },
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 84),
+              child: Row(
+                // crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  SizedBox(
+                    child: SizedBox(
+                      child: CustomText(
+                        projectsProvider.projectMembers[index]['role'] == 20
+                            ? 'Admin'
+                            : projectsProvider.projectMembers[index]['role'] ==
+                                    15
+                                ? 'Member'
+                                : projectsProvider.projectMembers[index]
+                                            ['role'] ==
+                                        10
+                                    ? 'Viewer'
+                                    : 'Guest',
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Medium,
+                        color: themeProvider.isDarkThemeEnabled
+                            ? fromRole(role: projectsProvider.role) >=
+                                    projectsProvider.projectMembers[index]
+                                        ['role']
+                                ? Colors.white
+                                : darkSecondaryTextColor
+                            : fromRole(role: projectsProvider.role) >=
+                                    projectsProvider.projectMembers[index]
+                                        ['role']
+                                ? Colors.black
+                                : greyColor,
+                        fontSize: 15,
                       ),
                     ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? fromRole(role: projectsProvider.role) >=
-                                  projectsProvider.projectMembers[index]['role']
-                              ? Colors.white
-                              : darkSecondaryTextColor
-                          : fromRole(role: projectsProvider.role) >=
-                                  projectsProvider.projectMembers[index]['role']
-                              ? Colors.black
-                              : greyColor,
-                    )
-                  ],
-                ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: themeProvider.isDarkThemeEnabled
+                        ? fromRole(role: projectsProvider.role) >=
+                                projectsProvider.projectMembers[index]['role']
+                            ? Colors.white
+                            : darkSecondaryTextColor
+                        : fromRole(role: projectsProvider.role) >=
+                                projectsProvider.projectMembers[index]['role']
+                            ? Colors.black
+                            : greyColor,
+                  )
+                ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
+  }
+
+  bool checkIfProjectAdmin() {
+    var projectsProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool isAdmin = false;
+    for (var element in projectsProvider.projectMembers) {
+      if(element['member']['id'] == profileProvider.userProfile.id && element['role'] == 20) {
+        isAdmin = true;
+      }
+    }
+    return isAdmin;
   }
 }

@@ -10,6 +10,7 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 class NotificationsList extends ConsumerStatefulWidget {
@@ -54,7 +55,18 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
               : widget.type == 'watching'
                   ? notificationProvider.getWatchingState == StateEnum.loading
                   : false,
-      widgetClass: widget.data.isEmpty
+      widgetClass: 
+      // notificationProvider.getCreatedState == StateEnum.error || 
+      // notificationProvider.getAssignedState == StateEnum.error || 
+      // notificationProvider.getArchivedState == StateEnum.error ?
+      // errorState(context: context, showButton: false) :
+      widget.type == 'assigned' && notificationProvider.getAssignedState == StateEnum.error ?
+      errorState(context: context, showButton: false) :
+      widget.type == 'created' && notificationProvider.getCreatedState == StateEnum.error ?
+      errorState(context: context, showButton: false) :
+      widget.type == 'watching' && notificationProvider.getWatchingState == StateEnum.error ?
+      errorState(context: context, showButton: false) :
+       widget.data.isEmpty
           ? EmptyPlaceholder.emptyNotification(ref)
           : ListView.builder(
               itemCount: widget.data.length,

@@ -7,6 +7,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
@@ -105,7 +106,9 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
       ),
       body: LoadingWidget(
         loading: projectProvider.projectState == StateEnum.loading,
-        widgetClass: Container(
+        widgetClass: 
+        projectProvider.projectState == StateEnum.success ?
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: projectProvider.projects.isEmpty &&
                   projectProvider.starredProjects.isEmpty
@@ -511,7 +514,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                     ],
                   ),
                 ),
-        ),
+        )
+        : errorState(context: context, showButton: false)
       ),
     );
   }

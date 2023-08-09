@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/models/workspace_model.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane_startup/services/connection_service.dart';
 
 import 'package:plane_startup/services/shared_preference_service.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -39,7 +40,7 @@ void main() async {
   } else {
     selectedTheme = prefs.getString('selected-theme')!;
   }
-  
+  ConnectionService().checkConnectivity();
   runApp(const ProviderScope(child: MyApp()));
 }
 

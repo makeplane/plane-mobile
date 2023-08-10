@@ -1143,7 +1143,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             //   children: [
                                             //     Expanded(
                                             //       child: TextFormField(
-                                            //         decoration: kTextFieldDecoration
+                                            //         decoration: themeProvider.themeManager.textFieldDecoration
                                             //             .copyWith(
                                             //                 enabledBorder:
                                             //                     OutlineInputBorder(

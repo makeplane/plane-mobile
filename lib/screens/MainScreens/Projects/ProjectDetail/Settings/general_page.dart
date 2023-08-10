@@ -301,7 +301,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       Expanded(
                         child: TextField(
                           controller: name,
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: themeProvider.isDarkThemeEnabled
@@ -356,7 +358,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     readOnly: true,
                     controller: description,
                     maxLines: 4,
-                    decoration: kTextFieldDecoration.copyWith(
+                    decoration:
+                        themeProvider.themeManager.textFieldDecoration.copyWith(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: themeProvider.isDarkThemeEnabled
@@ -507,7 +510,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[A-Z]')),
                     ],
-                    decoration: kTextFieldDecoration.copyWith(
+                    decoration:
+                        themeProvider.themeManager.textFieldDecoration.copyWith(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: themeProvider.isDarkThemeEnabled
@@ -617,7 +621,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //   value: projectProvider.projectDetailModel!.network == 1
                   //       ? 'Secret'
                   //       : 'Public',
-                  //   decoration: kTextFieldDecoration.copyWith(
+                  //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
                   //     fillColor: themeProvider.isDarkThemeEnabled
                   //         ? darkBackgroundColor
                   //         : lightBackgroundColor,

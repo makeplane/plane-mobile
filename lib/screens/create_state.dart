@@ -83,18 +83,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 15, bottom: 5),
-                        child:  Row(
+                        child: Row(
                           children: [
                             CustomText(
                               'Name ',
-                              color: themeProvider.themeManager.tertiaryTextColor,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                               type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
                               color: themeProvider.themeManager.textErrorColor,
                               type: FontStyle.Small,
-                              
                             ),
                           ],
                         )),
@@ -109,7 +109,9 @@ class _CreateStateState extends ConsumerState<CreateState> {
                           }
                           return null;
                         },
-                        decoration: kTextFieldDecoration.copyWith(
+                        decoration: themeProvider
+                            .themeManager.textFieldDecoration
+                            .copyWith(
                           border: InputBorder.none,
                           errorStyle: const TextStyle(
                               fontSize: 16,
@@ -143,18 +145,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 20, bottom: 5),
-                        child:  Row(
+                        child: Row(
                           children: [
                             CustomText(
                               'State ',
-                              color: themeProvider.themeManager.tertiaryTextColor,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                               type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
                               color: themeProvider.themeManager.textErrorColor,
                               type: FontStyle.Small,
-                              
                             ),
                           ],
                         )),
@@ -218,18 +220,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             right: 20, left: 15, bottom: 10),
-                        child:  Row(
+                        child: Row(
                           children: [
-                           CustomText(
+                            CustomText(
                               'Color ',
-                              color: themeProvider.themeManager.tertiaryTextColor,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                               type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
                               color: themeProvider.themeManager.textErrorColor,
                               type: FontStyle.Small,
-                              
                             ),
                           ],
                         )),
@@ -309,7 +311,9 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                     TextSelection.fromPosition(TextPosition(
                                         offset: colorController.text.length));
                               },
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 counterText: '',
                                 errorStyle: const TextStyle(
                                     fontSize: 16,
@@ -377,7 +381,9 @@ class _CreateStateState extends ConsumerState<CreateState> {
                       child: TextFormField(
                         controller: description,
                         maxLines: 5,
-                        decoration: kTextFieldDecoration.copyWith(
+                        decoration: themeProvider
+                            .themeManager.textFieldDecoration
+                            .copyWith(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: themeProvider.isDarkThemeEnabled

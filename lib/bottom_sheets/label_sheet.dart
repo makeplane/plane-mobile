@@ -83,7 +83,8 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               TextField(
                 controller: search,
                 onChanged: (val) {},
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   fillColor: themeProvider.isDarkThemeEnabled
                       ? darkBackgroundColor
                       : lightBackgroundColor,

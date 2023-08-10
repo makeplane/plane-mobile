@@ -321,7 +321,6 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   Widget build(BuildContext context) {
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
 
     return ListView.builder(
       itemCount: projectsProvider.projectMembers.length,

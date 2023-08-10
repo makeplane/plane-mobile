@@ -3,15 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/screens/on_boarding/auth/signUp.dart';
-
 import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/text_styles.dart';
-
 import '../../provider/provider_list.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text.dart';
-import '../../widgets/status_widget.dart';
-import '../../widgets/three_dots_widget.dart';
 import 'auth/sign_in.dart';
 import 'package:plane_startup/utils/enums.dart';
 
@@ -48,54 +43,44 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   void initState() {
     var themeProvider = ref.read(ProviderList.themeProvider);
     ProviderList.clear(ref: ref);
-    cards = [
-      Container(
-        height: 160,
-        constraints: const BoxConstraints(maxWidth: 500),
+  cards = [
+      SizedBox(
+        height: 150,
         child: Card(
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           shadowColor: primaryColor.withOpacity(0.5),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Text(
-                //   'FC-7',
-                //   style: TextStylingWidget.description.copyWith(color: greyColor),
-                // ),
-                CustomText(
-                  'FC-7',
+                const CustomText(
+                  'FIR 3',
                   type: FontStyle.Small,
-                  color: themeProvider.themeManager.tertiaryTextColor,
+                  color: Color.fromRGBO(82, 82, 82, 1),
                   fontSize: 16,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                // Text(
-                //   'Issue details activities and comments API endpoints and documnetaion',
-                //   style: TextStylingWidget.description
-                //       .copyWith(fontSize: 15, fontWeight: FontWeight.w500),
-                // ),
                 CustomText(
-                  'Issue details activities and comments API endpoints and documentation',
-                  type: FontStyle.Small,
-                  fontSize: 15,
+                  'Add Responsive Design Landing Page',
+                  type: FontStyle.Large,
                   fontWeight: FontWeightt.Medium,
                   color: themeProvider.themeManager.primaryTextColor,
                   maxLines: 4,
                 ),
                 const Spacer(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Wrap(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Colors.orange.withOpacity(0.2)),
+                          border: Border.all(
+                              color: const Color.fromRGBO(212, 212, 212, 1))),
                       child: SvgPicture.asset(
                           'assets/svg_images/graph_icon.svg',
                           height: 10,
@@ -106,11 +91,107 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const StautsWidget(),
+                    SizedBox(
+                      height: 32,
+                      width: 75,
+                      child: Stack(
+                        children: List.generate(
+                            4,
+                            (index) => Positioned(
+                                left: (13 * index).toDouble(),
+                                child: index == 3
+                                    ? Container(
+                                        height: 32,
+                                        width: 32,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              245, 245, 245, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const CustomText(
+                                          '+2',
+                                          color: Color.fromRGBO(82, 82, 82, 1),
+                                          type: FontStyle.Small,
+                                          fontWeight: FontWeightt.Medium,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 32,
+                                        width: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        child: Image.asset(
+                                            index == 0
+                                                ? "assets/images/avatar2.jpg"
+                                                : "assets/images/avatar1.jpg",
+                                            fit: BoxFit.cover),
+                                      ))),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: const Color.fromRGBO(212, 212, 212, 1))),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 10,
+                            margin: const EdgeInsets.only(right: 5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color.fromRGBO(151, 71, 255, 1)),
+                          ),
+                          const CustomText(
+                            '3 Labels',
+                            type: FontStyle.Small,
+                            color: Color.fromRGBO(104, 104, 104, 1),
+                          )
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
-                    const ThreeDotsWidget()
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: const Color.fromRGBO(212, 212, 212, 1))),
+                      child: const Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.date_range_outlined,
+                            size: 18,
+                            color: lightTextErrorColor,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          CustomText(
+                            '21 Jun',
+                            type: FontStyle.Small,
+                            color: Color.fromRGBO(104, 104, 104, 1),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -123,7 +204,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         constraints: const BoxConstraints(maxWidth: 500),
         child: Card(
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           shadowColor: primaryColor.withOpacity(0.5),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -131,198 +212,137 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   'Plane Launch Cycle',
-                    //   style: TextStylingWidget.subHeading,
-                    // ),
-                    CustomText(
-                      'Plane Launch Cycle',
-                      type: FontStyle.H4,
-                      color: themeProvider.themeManager.primaryTextColor,
-                      fontWeight: FontWeightt.Bold,
+                    Container(
+                      height: 35,
+                      width: 35,
+                      margin: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color.fromRGBO(240, 253, 244, 1),
+                      ),
+                      child: SvgPicture.asset(
+                        "assets/svg_images/cycles_icon.svg",
+                        height: 30,
+                        width: 30,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.green, BlendMode.srcIn),
+                      ),
                     ),
-                    const Icon(
-                      Icons.star_outline,
-                      color: greyColor,
-                      size: 20,
-                    )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          'Release 0.9',
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Bold,
+                        ),
+                        const CustomText(
+                          'Current',
+                          type: FontStyle.XSmall,
+                          color: Color.fromRGBO(163, 163, 163, 1),
+                          fontWeight: FontWeightt.Medium,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: SvgPicture.asset(
-                              'assets/svg_images/calendar_icon.svg',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '  Start : ',
-                            style: TextStylingWidget.smallText.copyWith(
-                              color: greyColor,
-                            ),
-                          ),
-                          const TextSpan(
-                              text: 'Jan 16, 2022',
-                              style: TextStylingWidget.smallText),
-                        ],
+                    Container(
+                      margin: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: const Color.fromRGBO(245, 245, 245, 1),
+                      ),
+                      child: const CustomText(
+                        '24 Jul -> 12 Aug',
+                        type: FontStyle.Small,
+                        color: Color.fromRGBO(104, 104, 104, 1),
+                        fontWeight: FontWeightt.Medium,
                       ),
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: SvgPicture.asset(
-                              'assets/svg_images/calendar_icon.svg',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '  End : ',
-                            style: TextStylingWidget.smallText.copyWith(
-                              color: greyColor,
-                            ),
-                          ),
-                          const TextSpan(
-                              text: 'Apr 16, 2023',
-                              style: TextStylingWidget.smallText),
-                        ],
+                    SizedBox(
+                      height: 25,
+                      width: 65,
+                      child: Stack(
+                        children: List.generate(
+                            4,
+                            (index) => Positioned(
+                                left: (13 * index).toDouble(),
+                                child: index == 3
+                                    ? Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              245, 245, 245, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const CustomText(
+                                          '+2',
+                                          color: Color.fromRGBO(82, 82, 82, 1),
+                                          type: FontStyle.XSmall,
+                                          fontWeight: FontWeightt.Medium,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        child: Image.asset(
+                                            index == 0
+                                                ? "assets/images/avatar2.jpg"
+                                                : "assets/images/avatar1.jpg",
+                                            fit: BoxFit.cover),
+                                      ))),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 14),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.orange,
-                          // child: Text(
-                          //   'V',
-                          //   style: TextStylingWidget.smallText
-                          //       .copyWith(color: Colors.white),
-                          // ),
-                          child: CustomText(
-                            'V',
-                            type: FontStyle.XSmall,
-                            color: themeProvider.themeManager.textonColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        // const Text(
-                        //   'Vamsi kurama',
-                        //   style: TextStylingWidget.smallText,
-                        // ),
-                        CustomText(
-                          'Vamsi kurama',
-                          type: FontStyle.Small,
-                          color: themeProvider.themeManager.primaryTextColor,
-                        ),
-                      ],
+                    CustomText(
+                      '5 days left',
+                      color: Color.fromRGBO(82, 82, 82, 1),
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
                     ),
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/svg_images/edit_icon.svg',
-                          height: 15,
+                        Icon(
+                          Icons.star_border,
+                          size: 18,
+                        ),
+                        SizedBox(
                           width: 15,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        // SvgPicture.asset(
-                        //   'assets/svg_images/options_icon.svg',
-                        //   width: 15,
-                        // ),
-                        const Icon(
-                          Icons.more_vert,
-                          size: 20,
-                          color: greyColor,
+                        Icon(
+                          Icons.more_horiz,
+                          size: 18,
                         )
                       ],
-                    )
-                  ],
-                ),
-                const Divider(
-                  color: greyColor,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Text(
-                    //   'Progress',
-                    //   style: TextStylingWidget.smallText.copyWith(fontSize: 12),
-                    // ),
-                    CustomText(
-                      'Progress',
-                      type: FontStyle.Small,
-                      color: themeProvider.themeManager.primaryTextColor,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Container(
-                              height: 5,
-                              constraints: const BoxConstraints(maxWidth: 60),
-                              margin: const EdgeInsets.only(right: 2),
-                              color: Colors.grey[300],
-                            ),
-                          ),
-                          Container(
-                            height: 5,
-                            constraints: const BoxConstraints(maxWidth: 30),
-                            margin: const EdgeInsets.only(right: 2),
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            height: 5,
-                            constraints: const BoxConstraints(maxWidth: 50),
-                            margin: const EdgeInsets.only(right: 2),
-                            color: Colors.orange,
-                          ),
-                          Container(
-                            height: 5,
-                            constraints: const BoxConstraints(maxWidth: 40),
-                            margin: const EdgeInsets.only(right: 2),
-                            color: Colors.purple,
-                          ),
-                          Container(
-                            height: 5,
-                            constraints: const BoxConstraints(maxWidth: 60),
-                            margin: const EdgeInsets.only(right: 2),
-                            color: Colors.green,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.expand_more,
-                      size: 18,
-                      color: greyColor,
                     )
                   ],
                 )
@@ -332,206 +352,220 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         ),
       ),
       Container(
-        height: 160,
+        height: 200,
         constraints: const BoxConstraints(maxWidth: 500),
         child: Card(
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           shadowColor: primaryColor.withOpacity(0.5),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CustomText(
-                      'Github Integrations',
-                      type: FontStyle.Small,
-                      color: Colors.black,
-                      fontSize: 20,
+                    Container(
+                      height: 35,
+                      width: 35,
+                      margin: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color.fromRGBO(240, 253, 244, 1),
+                      ),
+                      child: SvgPicture.asset(
+                        "assets/svg_images/cycles_icon.svg",
+                        height: 30,
+                        width: 30,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.green, BlendMode.srcIn),
+                      ),
                     ),
-                    Spacer(),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.star_outline,
-                          color: greyColor,
-                          size: 20,
+                        CustomText(
+                          'Module Title',
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Semibold,
                         ),
-                        SizedBox(width: 5),
-                        Icon(
-                          Icons.more_vert,
-                          size: 20,
-                          color: greyColor,
-                        )
+                        const CustomText(
+                          'In Progress',
+                          type: FontStyle.XSmall,
+                          color: Color.fromRGBO(163, 163, 163, 1),
+                          fontWeight: FontWeightt.Medium,
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: SvgPicture.asset(
-                              'assets/svg_images/calendar_icon.svg',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '  Start : ',
-                            style: TextStylingWidget.smallText.copyWith(
-                              color: greyColor,
-                            ),
-                          ),
-                          const TextSpan(
-                              text: 'Jan 16, 2022',
-                              style: TextStylingWidget.smallText),
-                        ],
-                      ),
+                    CustomText(
+                      '30% complete',
+                      type: FontStyle.Small,
+                      color: Color.fromRGBO(38, 38, 38, 1),
+                      fontWeight: FontWeightt.Medium,
                     ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: SvgPicture.asset(
-                              'assets/svg_images/calendar_icon.svg',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '  End : ',
-                            style: TextStylingWidget.smallText.copyWith(
-                              color: greyColor,
-                            ),
-                          ),
-                          const TextSpan(
-                              text: 'Apr 16, 2023',
-                              style: TextStylingWidget.smallText),
-                        ],
-                      ),
+                    CustomText(
+                      '6 days left ',
+                      type: FontStyle.Small,
+                      color: Color.fromRGBO(38, 38, 38, 1),
+                      fontWeight: FontWeightt.Medium,
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    Row(
+                Container(
+                    margin: const EdgeInsets.only(top: 5, bottom: 15),
+                    height: 4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(229, 229, 229, 1)),
+                    child: Row(
                       children: [
-                        const Icon(
-                          Icons.person_outline,
-                          size: 15,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CustomText(
-                          'Lead:',
-                          type: FontStyle.Small,
-                          color: themeProvider.themeManager.tertiaryTextColor,
-                          fontSize: 14,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.orange,
-                          child: CustomText(
-                            'V',
-                            type: FontStyle.XSmall,
-                            color: themeProvider.themeManager.textonColor,
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            constraints: const BoxConstraints(maxWidth: 150),
+                            height: 4,
+                            width: 50,
+                            decoration: const BoxDecoration(
+                                color: Color.fromRGBO(22, 163, 74, 1)),
                           ),
                         ),
-                        const SizedBox(
-                          width: 5,
+                        Expanded(
+                          child: Container(),
                         ),
-                        CustomText(
-                          'Vamsi kurama',
-                          type: FontStyle.Small,
-                          color: themeProvider.themeManager.primaryTextColor,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.people,
-                          size: 15,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CustomText(
-                          'Members:',
-                          type: FontStyle.Small,
-                          color: themeProvider.themeManager.tertiaryTextColor,
-                        ),
-                        const SizedBox(
-                          width: 3,
-                        ),
-                        Transform.scale(
-                          scale: 0.7,
-                          child: const ThreeDotsWidget(),
+                        Expanded(
+                          child: Container(),
                         )
+                      ],
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 25,
+                      width: 65,
+                      child: Stack(
+                        children: List.generate(
+                            4,
+                            (index) => Positioned(
+                                left: (13 * index).toDouble(),
+                                child: index == 3
+                                    ? Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              245, 245, 245, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const CustomText(
+                                          '+2',
+                                          color: Color.fromRGBO(82, 82, 82, 1),
+                                          type: FontStyle.XSmall,
+                                          fontWeight: FontWeightt.Medium,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  212, 212, 212, 1)),
+                                        ),
+                                        child: Image.asset(
+                                            index == 0
+                                                ? "assets/images/avatar2.jpg"
+                                                : "assets/images/avatar1.jpg",
+                                            fit: BoxFit.cover),
+                                      ))),
+                      ),
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.date_range_outlined,
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomText(
+                          'Start Jun 21 ',
+                          type: FontStyle.XSmall,
+                          color: Color.fromRGBO(104, 104, 104, 1),
+                          fontWeight: FontWeightt.Medium,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Icon(
+                          Icons.date_range_outlined,
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CustomText(
+                          'End Jul 16 ',
+                          type: FontStyle.XSmall,
+                          color: Color.fromRGBO(104, 104, 104, 1),
+                          fontWeight: FontWeightt.Medium,
+                        ),
                       ],
                     )
                   ],
                 ),
-                const Divider(
-                  color: greyColor,
-                ),
-                const SizedBox(height: 5),
-                Row(
+                const SizedBox(height: 14),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomText(
-                      'Progress',
+                     CustomText(
+                      '5 days left',
+                      color: Color.fromRGBO(82, 82, 82, 1),
                       type: FontStyle.Small,
-                      color: themeProvider.themeManager.primaryTextColor,
+                      fontWeight: FontWeightt.Medium,
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: Row(
+                    Row(
                       children: [
-                        Container(
-                          height: 5,
-                          constraints: const BoxConstraints(maxWidth: 190),
-                          color: Colors.green,
+                        Icon(
+                          Icons.star_border,
+                          size: 18,
                         ),
-                        Container(
-                          height: 5,
-                          constraints: const BoxConstraints(maxWidth: 60),
-                          color: Colors.grey[300],
+                        SizedBox(
+                          width: 15,
                         ),
+                        Icon(
+                          Icons.more_horiz,
+                          size: 18,
+                        )
                       ],
-                    ))
+                    )
                   ],
                 )
               ],
             ),
           ),
         ),
-      )
+      ),
     ];
     super.initState();
   }
@@ -539,13 +573,17 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
+  
     return Scaffold(
       body: SafeArea(
         top: false,
         child: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-            gradient: themeProvider.isDarkThemeEnabled ? null : gradient,
+            gradient: themeProvider.theme == THEME.dark ||
+                    themeProvider.theme == THEME.darkHighContrast
+                ? null
+                : gradient,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -560,21 +598,15 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                   },
                   itemBuilder: (context, index) {
                     return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      //mainAxisAlignment: MainAxisAlignment.start,
+                     
                       children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height / 3),
+                        const Spacer(),
+                       
                         cards[index],
                         const SizedBox(
                           height: 20,
                         ),
-                        // Text(
-                        //   data[index]['title'],
-                        //   style: TextStylingWidget.mainHeading.copyWith(
-                        //     // color: themeProvider.primaryTextCol
-                        //   ),
-                        // ),
+                       
                         CustomText(
                           data[index]['title'],
                           type: FontStyle.H4,
@@ -589,10 +621,12 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           child: CustomText(
                             data[index]['description'],
                             type: FontStyle.Medium,
+                            color: themeProvider.themeManager.tertiaryTextColor,
                             textAlign: TextAlign.center,
                             maxLines: 5,
                           ),
-                        )
+                        ),
+                        const Spacer()
                       ],
                     );
                   },

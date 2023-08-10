@@ -470,8 +470,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                               ),
                               child: TextFormField(
                                 controller: name,
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter project name'),
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(labelText: 'Enter project name'),
                                 onChanged: (value) {
                                   if (value.length < 6) {
                                     getIdentifier(name.text);
@@ -496,8 +497,10 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(5),
                                 ],
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter project identifier'),
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                        labelText: 'Enter project identifier'),
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Identifier is required';
@@ -521,8 +524,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                               child: TextFormField(
                                 controller: description,
                                 maxLines: 5,
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter description'),
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(labelText: 'Enter description'),
                               ),
                             ),
                             // const SizedBox(

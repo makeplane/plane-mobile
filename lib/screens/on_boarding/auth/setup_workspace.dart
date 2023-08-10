@@ -14,7 +14,6 @@ import 'package:plane_startup/widgets/loading_widget.dart';
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../bottom_sheets/company_size_sheet.dart';
-import '../../../utils/constants.dart';
 import '../../../widgets/custom_text.dart';
 
 class SetupWorkspace extends ConsumerStatefulWidget {
@@ -99,7 +98,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                               color: themeProvider.themeManager
                                                   .tertiaryTextColor)),
                                       TextSpan(
-                                          text: '*',
+                                          text: ' *',
                                           style: TextStyle(
                                               color: themeProvider
                                                   .themeManager.textErrorColor))
@@ -132,10 +131,13 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       // Name can only contain (" "), ( - ), ( _ ) & Alphanumeric characters.
                                       return null;
                                     },
-                                    decoration: kTextFieldDecoration.copyWith(
-                                        labelText: 'e.g. My Workspace',
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never),
+                                    style: themeProvider
+                                        .themeManager.textFieldTextStyle,
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration
+                                        .copyWith(
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.never),
                                   ),
                                   const SizedBox(
                                     height: 20,
@@ -148,7 +150,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                               color: themeProvider.themeManager
                                                   .tertiaryTextColor)),
                                       TextSpan(
-                                          text: '*',
+                                          text: ' *',
                                           style: TextStyle(
                                               color: themeProvider
                                                   .themeManager.textErrorColor))
@@ -174,21 +176,15 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       ),
                                     ],
                                     controller: urlController,
-                                    //enabled: false,
-
-                                    // style: GoogleFonts.getFont(APP_FONT).copyWith(
-                                    //     fontSize: 16,
-                                    //     color: Colors.black,
-                                    //     fontWeight: FontWeight.normal),
-                                    decoration: kTextFieldDecoration.copyWith(
-                                      isDense: true,
+                                    style: themeProvider
+                                        .themeManager.textFieldTextStyle,
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration
+                                        .copyWith(
                                       prefixIcon: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15),
-                                        // child: Text(
-                                        //   "https://takeoff.plane.so/",
-                                        //   style: TextStyle(fontSize: 16),
-                                        // ),
+                                        padding: const EdgeInsets.only(
+                                          left: 15,
+                                        ),
                                         child: CustomText(
                                           'https://takeoff.plane.so/',
                                           type: FontStyle.Small,
@@ -201,26 +197,18 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                               minWidth: 0, minHeight: 0),
                                     ),
                                   ),
-                                  // prov.urlAvailable
-                                  //     ? CustomText(
-                                  //         'Workspace URL is already taken!',
-                                  //         color: Colors.red.shade700,
-                                  //         type: FontStyle.Medium,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       )
-                                  //     : Container(),
                                   const SizedBox(
                                     height: 20,
                                   ),
                                   CustomRichText(
                                     widgets: [
                                       TextSpan(
-                                          text: 'How large is your company?',
+                                          text: 'How large is your company',
                                           style: TextStyle(
                                               color: themeProvider.themeManager
                                                   .tertiaryTextColor)),
                                       TextSpan(
-                                          text: '*',
+                                          text: ' *',
                                           style: TextStyle(
                                               color: themeProvider
                                                   .themeManager.textErrorColor))
@@ -258,9 +246,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       decoration: BoxDecoration(
                                         color: Colors.transparent,
                                         border: Border.all(
-                                          color: themeProv.isDarkThemeEnabled
-                                              ? const Color(0xFFE5E5E5)
-                                              : const Color(0xFFE5E5E5),
+                                          color: themeProv
+                                              .themeManager.borderSubtle01Color,
                                         ),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
@@ -285,10 +272,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                 right: 16),
                                             child: Icon(
                                               Icons.keyboard_arrow_down,
-                                              color:
-                                                  themeProv.isDarkThemeEnabled
-                                                      ? darkPrimaryTextColor
-                                                      : lightPrimaryTextColor,
+                                              color: themeProv.themeManager
+                                                  .primaryTextColor,
                                             ),
                                           ),
                                         ],
@@ -376,7 +361,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                 text: 'Skip',
                                 filledButton: false,
                                 removeStroke: true,
-                                textColor: greyColor,
+                                textColor: themeProvider
+                                    .themeManager.placeholderTextColor,
                                 ontap: () async {
                                   // await prov.getWorkspaceInvitations();
                                   // if (prov.workspaceInvitations.isNotEmpty) {
@@ -433,9 +419,10 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.arrow_back,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                                 size: 18,
                               ),
                               const SizedBox(

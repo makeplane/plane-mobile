@@ -109,7 +109,9 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                     return null;
                                   },
                                   controller: emailController,
-                                  decoration: kTextFieldDecoration.copyWith(
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color:
@@ -166,7 +168,9 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                         themeProvider.isDarkThemeEnabled
                                             ? darkSecondaryBGC
                                             : lightSecondaryBackgroundColor,
-                                    decoration: kTextFieldDecoration.copyWith(
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration
+                                        .copyWith(
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color:
@@ -200,7 +204,6 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                         child: CustomText(
                                           value,
                                           type: FontStyle.Medium,
-                                        
                                         ),
                                       );
                                     }).toList(),
@@ -278,7 +281,9 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                     });
                               },
                               controller: workspaceProvider.invitingMembersRole,
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: themeProvider.isDarkThemeEnabled
@@ -399,7 +404,9 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                           child: TextFormField(
                             controller: messageController,
                             maxLines: 6,
-                            decoration: kTextFieldDecoration.copyWith(
+                            decoration: themeProvider
+                                .themeManager.textFieldDecoration
+                                .copyWith(
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: themeProvider.isDarkThemeEnabled

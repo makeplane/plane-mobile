@@ -95,7 +95,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.lead,
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: themeProvider.isDarkThemeEnabled
@@ -127,7 +128,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             ),
             // DropdownButtonFormField(
             //   value: projectProvider.projectDetailModel!.projectLead!['first_name'] ?? '',
-            //   decoration: kTextFieldDecoration.copyWith(
+            //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
             //     fillColor: themeProvider.isDarkThemeEnabled
             //         ? darkBackgroundColor
             //         : lightBackgroundColor,
@@ -167,7 +168,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             const SizedBox(height: 5),
             // DropdownButtonFormField(
             //   value: projectProvider.projectDetailModel!.defaultAssignee!['first_name'],
-            //   decoration: kTextFieldDecoration.copyWith(
+            //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
             //     fillColor: themeProvider.isDarkThemeEnabled
             //         ? darkBackgroundColor
             //         : lightBackgroundColor,
@@ -225,7 +226,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.assignee,
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: themeProvider.isDarkThemeEnabled

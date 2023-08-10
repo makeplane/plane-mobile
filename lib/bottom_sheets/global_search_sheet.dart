@@ -109,7 +109,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 color: themeProvider.isDarkThemeEnabled
                                     ? lightBackgroundColor
                                     : darkBackgroundColor),
-                            decoration: kTextFieldFilledDecoration.copyWith(
+                            decoration: themeProvider
+                                .themeManager.textFieldDecoration
+                                .copyWith(
+                            
                               suffixIcon: input.text != ''
                                   ? IconButton(
                                       onPressed: () {
@@ -128,22 +131,22 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                         Icons.clear_outlined,
                                         color: Colors.transparent,
                                       )),
-                              label: const Text('Search for anything...'),
+
+                              
                               filled: true,
-                              alignLabelWithHint: true,
+
                               hintText: 'Search for anything...',
                               hintStyle: TextStyle(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkStrokeColor
-                                    : lightPrimaryTextColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
-                              fillColor: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : textFieldFilledColor,
-                              prefixIcon: const Icon(
-                                Icons.search,
-                                color: greyColor,
-                              ),
+                              fillColor: themeProvider
+                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              // prefixIcon:  Icon(
+                              //   Icons.search,
+                              //   color:  themeProvider
+                              //     .themeManager.placeholderTextColor,
+                              // ),
                             ),
                             onChanged: (value) {
                               ticker?.cancel();

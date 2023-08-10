@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/models/workspace_model.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/services/connection_service.dart';
 
 import 'package:plane_startup/services/shared_preference_service.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +14,7 @@ import 'package:plane_startup/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
+import 'utils/enums.dart';
 
 late SharedPreferences prefs;
 late String selectedTheme;
@@ -35,12 +34,6 @@ void main() async {
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.appBearerToken = null;
   prefs = pref;
-  if (!prefs.containsKey('selected-theme')) {
-    await prefs.setString('selected-theme', 'L');
-  } else {
-    selectedTheme = prefs.getString('selected-theme')!;
-  }
-  ConnectionService().checkConnectivity();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -105,10 +98,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         });
       });
     }
-    
-   themeProv.prefs = prefs;
-   themeProv.getTheme();
-   super.initState();
+
+    themeProv.prefs = prefs;
+    themeProv.getTheme();
+    super.initState();
   }
 
   // This widget is the root of your application.
@@ -118,8 +111,10 @@ class _MyAppState extends ConsumerState<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // transparent status bar
       //status bar icons' color
-      statusBarIconBrightness:
-          themeProvider.isDarkThemeEnabled ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness: themeProvider.theme == THEME.dark ||
+              themeProvider.theme == THEME.darkHighContrast
+          ? Brightness.light
+          : Brightness.dark,
     ));
     // themeProvider.getTheme();
     return MaterialApp(
@@ -131,7 +126,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         textTheme: TextTheme(
           titleMedium: TextStyle(
             color:
-                themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+                themeProvider.themeManager.primaryTextColor,
           ),
         ),
 
@@ -142,13 +137,9 @@ class _MyAppState extends ConsumerState<MyApp> {
             selectionColor: primaryColor.withOpacity(0.2),
             selectionHandleColor: primaryColor),
 
-        primaryColor: themeProvider.isDarkThemeEnabled
-            ? const Color.fromRGBO(19, 20, 22, 1)
-            : Colors.white,
+        primaryColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
 
-        scaffoldBackgroundColor: themeProvider.isDarkThemeEnabled
-            ? darkPrimaryBackgroundDefaultColor
-            : lightPrimaryBackgroundDefaultColor,
+        scaffoldBackgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
         //bottom sheet theme
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: themeProvider.isDarkThemeEnabled

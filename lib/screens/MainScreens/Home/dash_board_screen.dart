@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../on_boarding/auth/setup_workspace.dart';
 
 class DashBoardScreen extends ConsumerStatefulWidget {
   final bool fromSignUp;
@@ -72,7 +74,20 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
+
     return Scaffold(
+      floatingActionButton: GestureDetector(
+        onTap: () {
+
+
+          themeProvider.toggleTheme(THEME.dark);
+        },
+        child: Container(
+          color: Colors.amber,
+          height: 30,
+          width: 30,
+        ),
+      ),
       //backgroundColor: themeProvider.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
@@ -95,11 +110,20 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(
-                        '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
-                        type: FontStyle.H5,
-                        fontWeight: FontWeightt.Semibold,
-                        maxLines: 2,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const OnBoardingScreen()));
+                        },
+                        child: CustomText(
+                          '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
+                          type: FontStyle.H5,
+                          fontWeight: FontWeightt.Semibold,
+                          maxLines: 2,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Row(
@@ -113,7 +137,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                 .format(DateTime.now()),
                             type: FontStyle.XSmall,
                             fontWeight: FontWeightt.Medium,
-                            color: greyColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         ],
                       ),
@@ -130,16 +155,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.transparent),
                             borderRadius: BorderRadius.circular(10),
-                            color: themeProvider.isDarkThemeEnabled
-                                ? Colors.black
-                                : lightGreyBoxColor),
+                            color: themeProvider
+                                .themeManager.secondaryBackgroundDefaultColor),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 25),
+                            horizontal: 20, vertical: 25),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -153,10 +173,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   child: CustomText(
                                     'Plane is open source, support us by staring us on GitHub.',
                                     type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Medium,
                                     textAlign: TextAlign.start,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? Colors.white
-                                        : Colors.black,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
                                     overflow: TextOverflow.visible,
                                     maxLines: 5,
                                   ),
@@ -169,9 +189,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   },
                                   child: Icon(
                                     Icons.close,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? Colors.white
-                                        : greyColor,
+                                    color: themeProvider
+                                        .themeManager.secondaryTextColor,
                                   ),
                                 ),
                               ],
@@ -184,10 +203,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          themeProvider.isDarkThemeEnabled
-                                              ? Colors.white
-                                              : Colors.black,
+                                      backgroundColor: themeProvider
+                                          .themeManager.primaryTextColor,
                                       elevation: 0),
                                   onPressed: () async {
                                     //redirect to github using url launcher.
@@ -211,8 +228,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   },
                                   child: CustomText(
                                     'Star us on GitHub',
-                                    type: FontStyle.XSmall,
-                                    color: themeProvider.isDarkThemeEnabled
+                                    type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Medium,
+                                    color: themeProvider.theme == THEME.dark ||
+                                            themeProvider.theme ==
+                                                THEME.darkHighContrast
                                         ? Colors.black
                                         : Colors.white,
                                   ),
@@ -226,7 +246,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         bottom: 20,
                         right: 35,
                         child: Image.asset(
-                          themeProvider.isDarkThemeEnabled
+                          themeProvider.theme == THEME.dark ||
+                                  themeProvider.theme == THEME.darkHighContrast
                               ? 'assets/images/github.png'
                               : 'assets/images/github_black.png',
                           width: 70,
@@ -254,10 +275,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           type: FontStyle.H5,
                           fontWeight: FontWeightt.Semibold,
                         ),
-                        const SizedBox(height: 15),
-                        const CustomText(
+                        const SizedBox(height: 10),
+                         CustomText(
                           'Manage your projects by creating issues, cycles, modules, views and pages.',
-                          type: FontStyle.XSmall,
+                          type: FontStyle.Small,
+                          color: themeProvider.themeManager.tertiaryTextColor,
                         ),
                         const SizedBox(height: 15),
                         GestureDetector(
@@ -269,7 +291,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                         const CreateProject()));
                           },
                           child: Container(
-                            height: 40,
+                            height: 45,
                             width: 120,
                             //margin: const EdgeInsets.only(top: 30),
                             alignment: Alignment.center,
@@ -279,7 +301,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             ),
                             child: const CustomText(
                               'Create Project',
-                              type: FontStyle.XSmall,
+                              type: FontStyle.Small,
                               fontWeight: FontWeightt.Medium,
                               color: Colors.white,
                             ),
@@ -304,9 +326,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : strokeColor),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Container(
@@ -351,10 +372,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       padding: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : strokeColor),
+          bottom:
+              BorderSide(color: themeProvider.themeManager.borderDisabledColor),
         ),
       ),
       child: Row(
@@ -410,6 +429,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                       .toUpperCase(),
                                   type: FontStyle.Medium,
                                   fontWeight: FontWeightt.Bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -421,10 +441,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               borderRadius: BorderRadius.circular(5),
                               color: primaryColor,
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
+                            
                             child: Center(
                               child: CustomText(
                                 workspaceProvider
@@ -432,6 +449,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     .toUpperCase(),
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
+                                 color: Colors.white,
                               ),
                             ),
                           ),
@@ -451,28 +469,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // GestureDetector(
-              //   //padding: const EdgeInsets.all(0),
-              //   onTap: () async {
-              //     await themeProvider.changeTheme();
-              //   },
-              //   child: CircleAvatar(
-              //     backgroundColor: themeProvider.isDarkThemeEnabled
-              //         ? darkSecondaryBGC
-              //         : lightGreeyColor,
-              //     radius: 20,
-              //     child: Icon(
-              //       size: 20,
-              //       !themeProvider.isDarkThemeEnabled
-              //           ? Icons.brightness_2_outlined
-              //           : Icons.wb_sunny_outlined,
-              //       color: !themeProvider.isDarkThemeEnabled
-              //           ? Colors.black
-              //           : Colors.white,
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -483,16 +479,13 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               )));
                 },
                 child: CircleAvatar(
-                  backgroundColor: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBackgroundSelectedColor
-                      : lightSecondaryBackgroundSelectedColor,
+                  backgroundColor:
+                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                   radius: 20,
                   child: Icon(
                     size: 20,
                     Icons.add,
-                    color: !themeProvider.isDarkThemeEnabled
-                        ? Colors.black
-                        : Colors.white,
+                    color: themeProvider.themeManager.secondaryTextColor,
                   ),
                 ),
               ),
@@ -502,19 +495,16 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const GlobalSearchSheet()));
+                          builder: (context) =>  const GlobalSearchSheet()));
                 },
                 child: CircleAvatar(
-                  backgroundColor: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightGreeyColor,
+                  backgroundColor:
+                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                   radius: 20,
                   child: Icon(
                     size: 20,
                     Icons.search,
-                    color: !themeProvider.isDarkThemeEnabled
-                        ? Colors.black
-                        : Colors.white,
+                    color: themeProvider.themeManager.secondaryTextColor,
                   ),
                 ),
               ),

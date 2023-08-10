@@ -101,7 +101,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               return null;
                             },
                             controller: cycleNameController,
-                            decoration: kTextFieldDecoration.copyWith(
+                            decoration: themeProvider
+                                .themeManager.textFieldDecoration
+                                .copyWith(
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: themeProvider.isDarkThemeEnabled
@@ -143,7 +145,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                         //   child: TextFormField(
                         //     maxLines: 7,
                         //     controller: descriptionController,
-                        //     decoration: kTextFieldDecoration.copyWith(
+                        //     decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
                         //       enabledBorder: OutlineInputBorder(
                         //         borderSide: BorderSide(
                         //             color: themeProvider.isDarkThemeEnabled

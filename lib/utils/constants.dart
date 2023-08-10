@@ -154,6 +154,11 @@ const darkBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const lightContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const darkContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 
+const lightBorderSubtle00Color = Color.fromRGBO(245, 245, 245, 1);
+const darkBorderSubtle00Color = Color.fromRGBO(34, 34, 34, 1);
+
+const lightBorderSubtle01Color = Color.fromRGBO(229, 229, 229, 1);
+const darkBorderSubtle01Color = Color.fromRGBO(38, 38, 38, 1);
 const lightBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
 const darkBorderSubtleColor = Color.fromRGBO(34, 34, 34, 1);
 const lightContrastBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
@@ -251,36 +256,9 @@ InputDecoration kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(8)),
   ),
 );
+const lightdisabledButtonColor = Color.fromRGBO(229, 229, 229, 1);
+const darkdisabledButtonColor = Color.fromRGBO(38, 38, 38, 1);
 
-InputDecoration kTextFieldFilledDecoration = const InputDecoration(
-    fillColor: textFieldFilledColor,
-    alignLabelWithHint: true,
-    floatingLabelBehavior: FloatingLabelBehavior.never,
-    filled: true,
-    errorStyle: TextStyle(
-        fontFamily: 'SF Pro Display',
-        fontSize: 14,
-        color: Colors.red,
-        fontWeight: FontWeight.w400),
-    labelStyle: TextStyle(color: greyColor),
-    border: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Color.fromARGB(255, 253, 17, 0)),
-      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: primaryColor, width: 2.0),
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-    ),
-    disabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-    ),
-    prefixIconColor: greyColor);
 
 const LinearGradient gradient = LinearGradient(
   begin: Alignment.topCenter,

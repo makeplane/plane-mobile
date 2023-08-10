@@ -52,6 +52,7 @@ enum FontStyle {
   Medium,
   Small,
   XSmall,
+  overline
 }
 
 enum FontWeightt {

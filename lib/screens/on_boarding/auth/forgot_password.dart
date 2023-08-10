@@ -25,6 +25,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     var authProvider = ref.watch(ProviderList.authProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
@@ -54,7 +55,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                         ),
                         CustomText(
                           '',
-                     type: FontStyle.H4,
+                          type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
                           color: primaryColor,
                         ),
@@ -75,7 +76,8 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                     ),
                     TextFormField(
                       controller: email,
-                      decoration: kTextFieldDecoration.copyWith(),
+                      decoration: themeProvider.themeManager.textFieldDecoration
+                          .copyWith(),
                       validator: (val) {
                         if (val!.isEmpty) {
                           return '*Enter your email';
@@ -113,8 +115,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                               // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text(
-                                          'Please check the email')));
+                                      content: Text('Please check the email')));
                             }
                           }
                         }),

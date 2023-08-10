@@ -89,7 +89,8 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 Container(height: 5),
                 TextField(
                   controller: titleController,
-                  decoration: kTextFieldDecoration.copyWith(
+                  decoration:
+                      themeProvider.themeManager.textFieldDecoration.copyWith(
                     fillColor: themeProvider.isDarkThemeEnabled
                         ? darkBackgroundColor
                         : lightBackgroundColor,
@@ -114,7 +115,8 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 TextField(
                   controller: descriptionController,
                   maxLines: 4,
-                  decoration: kTextFieldDecoration.copyWith(
+                  decoration:
+                      themeProvider.themeManager.textFieldDecoration.copyWith(
                     fillColor: themeProvider.isDarkThemeEnabled
                         ? darkBackgroundColor
                         : lightBackgroundColor,

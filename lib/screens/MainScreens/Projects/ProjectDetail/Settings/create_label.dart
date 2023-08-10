@@ -184,7 +184,8 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                       ),
                       TextField(
                         controller: lableController,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                     ],
                   ),

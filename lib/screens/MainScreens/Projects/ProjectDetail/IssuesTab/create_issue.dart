@@ -176,7 +176,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   },
                                   maxLines: null,
                                   controller: title,
-                                  decoration: kTextFieldDecoration.copyWith(
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color:
@@ -216,7 +218,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 // const SizedBox(height: 10),
                                 // TextField(
                                 //     maxLines: 4,
-                                //     decoration: kTextFieldDecoration.copyWith(
+                                //     decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
                                 //       enabledBorder: OutlineInputBorder(
                                 //         borderSide: BorderSide(
                                 //             color:

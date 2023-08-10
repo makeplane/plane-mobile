@@ -415,7 +415,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                     ),
                     TextField(
                       controller: nameController,
-                      decoration: kTextFieldDecoration,
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration,
                     ),
                     Container(
                       height: 20,

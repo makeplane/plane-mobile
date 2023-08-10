@@ -520,7 +520,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                 colorController.text.length));
                                     setState(() {});
                                   },
-                                  decoration: kTextFieldDecoration.copyWith(
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
                                     counterText: '',
                                     errorStyle: const TextStyle(
                                         fontSize: 16,

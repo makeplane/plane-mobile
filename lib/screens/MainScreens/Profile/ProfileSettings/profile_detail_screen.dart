@@ -266,7 +266,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               color: themeProvider.isDarkThemeEnabled
                                   ? Colors.white
                                   : Colors.black),
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: themeProvider.isDarkThemeEnabled
@@ -318,7 +320,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               color: themeProvider.isDarkThemeEnabled
                                   ? Colors.white
                                   : Colors.black),
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: themeProvider.isDarkThemeEnabled

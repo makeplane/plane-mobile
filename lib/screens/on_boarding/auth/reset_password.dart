@@ -87,24 +87,27 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 25,
                   ),
-                   CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Code',   style: TextStyle(color: themeProvider
-                                                .themeManager.tertiaryTextColor)),
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(
-                                            color: themeProvider
-                                                .themeManager.textErrorColor))
-                                    ],
-                                    type: FontStyle.Small,
+                      TextSpan(
+                          text: 'Code',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
+                    ],
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 15,
@@ -128,29 +131,33 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                   CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Confirm Password',   style: TextStyle(color: themeProvider
-                                                .themeManager.tertiaryTextColor)),
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(
-                                            color: themeProvider
-                                                .themeManager.textErrorColor))
-                                    ],
-                                    type: FontStyle.Small,
+                      TextSpan(
+                          text: 'Confirm Password',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
+                    ],
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 25,

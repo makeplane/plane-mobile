@@ -39,6 +39,7 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
               const Spacer(),
               IconButton(
                 onPressed: () {
+
                   Navigator.pop(context);
                 },
                 icon: const Icon(
@@ -55,11 +56,8 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
             width: double.infinity,
             child: InkWell(
               onTap: () {
-                if (!themeProvider.isDarkThemeEnabled) {
-                  themeProvider.changeTheme();
-                } else {
-                  return;
-                }
+                themeProvider.isDarkThemeEnabled = true;
+                themeProvider.changeTheme(THEME.dark);
                 Navigator.of(context).pop();
               },
               child: Row(
@@ -77,32 +75,6 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
                               ? lightSecondaryTextColor
                               : darkSecondaryTextColor,
                         ),
-                  // Radio(
-                  //   visualDensity: const VisualDensity(
-                  //     horizontal: VisualDensity.minimumDensity,
-                  //     vertical: VisualDensity.minimumDensity,
-                  //   ),
-                  //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //   fillColor: profileProvider.theme == 'Dark'
-                  //       ? null
-                  //       : MaterialStateProperty.all<Color>(
-                  //           Colors.grey.shade300,
-                  //         ),
-                  //   groupValue: profileProvider.theme,
-                  //   activeColor: primaryColor,
-                  //   value: 'Dark',
-                  //   onChanged: (val) async {
-                  //     await themeProvider.changeTheme();
-                  //   },
-                  // ),
-
-                  // Text(
-                  //   'Board View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   const CustomText(
                     'Dark',
@@ -126,11 +98,8 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
             width: double.infinity,
             child: InkWell(
               onTap: () {
-                if (themeProvider.isDarkThemeEnabled) {
-                  themeProvider.changeTheme();
-                } else {
-                  return;
-                }
+                 themeProvider.isDarkThemeEnabled = false;
+                themeProvider.changeTheme(THEME.light);
                 Navigator.of(context).pop();
               },
               child: Row(
@@ -148,30 +117,6 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
                               ? lightSecondaryTextColor
                               : darkSecondaryTextColor,
                         ),
-                  // Radio(
-                  //     visualDensity: const VisualDensity(
-                  //       horizontal: VisualDensity.minimumDensity,
-                  //       vertical: VisualDensity.minimumDensity,
-                  //     ),
-                  //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //     fillColor: profileProvider.theme == 'Light'
-                  //         ? null
-                  //         : MaterialStateProperty.all<Color>(
-                  //             Colors.grey.shade300),
-                  //     groupValue: profileProvider.theme,
-                  //     activeColor: primaryColor,
-                  //     value: 'Light',
-                  //     onChanged: (val) async {
-                  //     await themeProvider.changeTheme();
-                  //   },
-                  // ),
-                  // Text(
-                  //   'List View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   const CustomText(
                     'Light',

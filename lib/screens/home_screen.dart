@@ -71,14 +71,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: Platform.isAndroid ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
-          height: 65,
+          height: 68,
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : strokeColor,
-                  width: 2),
+                  color: themeProvider.themeManager.borderSubtle01Color,
+                  width: 1),
             ),
           ),
           // padding: const EdgeInsets.only(
@@ -124,9 +122,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   colorFilter: ColorFilter.mode(
                                       currentIndex == i
                                           ? primaryColor
-                                          : (themeProvider.isDarkThemeEnabled
-                                              ? darkSecondaryTextColor
-                                              : bottomNavTextColor),
+                                          : (themeProvider.themeManager.placeholderTextColor),
                                       BlendMode.srcIn)),
                               const SizedBox(
                                 height: 8,
@@ -136,10 +132,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 type: FontStyle.Small,
                                 color: currentIndex == i
                                     ? primaryColor
-                                    : (themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : bottomNavTextColor),
-                                fontWeight: FontWeightt.Semibold,
+                                    : (themeProvider.themeManager.placeholderTextColor),
+                                fontWeight: FontWeightt.Medium,
                               )
                             ],
                           ),

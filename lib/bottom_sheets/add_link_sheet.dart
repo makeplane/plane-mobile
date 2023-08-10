@@ -71,14 +71,14 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               TextFormField(
                 controller: title,
-                decoration: kTextFieldDecoration,
+                decoration: themeProvider.themeManager.textFieldDecoration,
               ),
               const SizedBox(
                 height: 20,
               ),
               const CustomText(
                 'URL',
-                 type: FontStyle.Small,
+                type: FontStyle.Small,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -86,7 +86,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               TextFormField(
                 controller: url,
-                decoration: kTextFieldDecoration,
+                decoration: themeProvider.themeManager.textFieldDecoration,
               ),
             ],
           ),

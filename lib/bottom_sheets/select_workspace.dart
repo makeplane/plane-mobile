@@ -55,6 +55,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     'Workspace',
                     type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
+                    
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -220,6 +221,8 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                 CustomText(
                                   prov.workspaces[index]['name'],
                                   type: FontStyle.H5,
+                                  color: themeProvider
+                                              .themeManager.tertiaryTextColor,
                                 ),
                                 const Spacer(),
                                 ref
@@ -241,9 +244,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                           Container(
                             height: 2,
                             margin: const EdgeInsets.only(bottom: 15),
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : Colors.grey.shade300,
+                            color: themeProvider.themeManager.borderDisabledColor,
                           )
                         ],
                       ),
@@ -272,8 +273,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     CustomText(
                       'Create Workspace',
                       type: FontStyle.H5,
-
-                      fontSize: 19,
+                    
                       color: primaryColor,
                     ),
                   ],
@@ -288,9 +288,12 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color: themeProvider.theme == THEME.dark ||
+                          themeProvider.theme == THEME.darkHighContrast
+                      ? themeProvider.themeManager.primaryBackgroundDefaultColor
+                          .withOpacity(0.7)
+                      : themeProvider.themeManager.primaryBackgroundDefaultColor
+                          .withOpacity(0.7),
                   // height: 25,
                   // width: 25,
                   child: Center(
@@ -300,7 +303,8 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
                         colors: [
-                          themeProvider.isDarkThemeEnabled
+                          themeProvider.theme == THEME.dark ||
+                          themeProvider.theme == THEME.darkHighContrast
                               ? Colors.white
                               : Colors.black
                         ],

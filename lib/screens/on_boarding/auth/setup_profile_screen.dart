@@ -47,7 +47,6 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     final prov = ref.watch(ProviderList.profileProvider);
     final workspaceProv = ref.watch(ProviderList.workspaceProvider);
-    final profileProvider = ref.watch(ProviderList.profileProvider);
     // log(dropDownValue.toString());
     return Scaffold(
       //backgroundColor: themeProvider.backgroundColor,
@@ -97,7 +96,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider.themeManager
                                                 .tertiaryTextColor)),
                                     TextSpan(
-                                        text: '*',
+                                        text: ' *',
                                         style: TextStyle(
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
@@ -115,7 +114,9 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                     return null;
                                   },
                                   controller: prov.firstName,
-                                  decoration: kTextFieldDecoration,
+                                  style: themeProvider.themeManager.textFieldTextStyle,
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration,
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -128,7 +129,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider.themeManager
                                                 .tertiaryTextColor)),
                                     TextSpan(
-                                        text: '*',
+                                        text: ' *',
                                         style: TextStyle(
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
@@ -145,8 +146,10 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       }
                                       return null;
                                     },
+                                    style: themeProvider.themeManager.textFieldTextStyle,
                                     controller: prov.lastName,
-                                    decoration: kTextFieldDecoration),
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -158,7 +161,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider.themeManager
                                                 .tertiaryTextColor)),
                                     TextSpan(
-                                        text: '*',
+                                        text: ' *',
                                         style: TextStyle(
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
@@ -196,9 +199,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       color: Colors.transparent,
                                       border: Border.all(
                                           color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.grey.shade300),
+                                              themeProvider.themeManager.borderSubtle01Color,),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Row(
@@ -213,6 +214,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                                 ? 'Select Role'
                                                 : prov.dropDownValue!,
                                             type: FontStyle.Small,
+                                            color: themeProvider.themeManager.placeholderTextColor,
                                           ),
                                         ),
                                         Container(
@@ -221,9 +223,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                           child: Icon(
                                             Icons.keyboard_arrow_down,
                                             color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkPrimaryTextColor
-                                                    : lightPrimaryTextColor,
+                                                themeProvider.themeManager.primaryTextColor,
                                           ),
                                         ),
                                       ],

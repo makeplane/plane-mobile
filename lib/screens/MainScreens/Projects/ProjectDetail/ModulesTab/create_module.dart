@@ -97,7 +97,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 }
                                 return null;
                               },
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: themeProvider.isDarkThemeEnabled
@@ -138,7 +140,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           //   child: TextFormField(
                           //     maxLines: 5,
                           //     controller: descriptionController,
-                          //     decoration: kTextFieldDecoration.copyWith(
+                          //     decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
                           //       enabledBorder: OutlineInputBorder(
                           //         borderSide: BorderSide(
                           //             color: themeProvider.isDarkThemeEnabled

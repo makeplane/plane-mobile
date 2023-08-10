@@ -80,7 +80,6 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                             ? Colors.white
                             : Colors.black,
                         fontSize: 18,
-                        
                       ),
                     ),
                     TextSpan(
@@ -99,7 +98,8 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   // hintText: 'Enter project name',
                   labelText: 'Workspace Name',
                   //avaid the label text from floating
@@ -157,11 +157,12 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
-                    // hintText: 'Enter detele my project',
-                    labelText: 'Enter "Delete my workspace"',
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    filled: true),
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
+                        // hintText: 'Enter detele my project',
+                        labelText: 'Enter "Delete my workspace"',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        filled: true),
                 validator: (value) {
                   if (value!.trim().toLowerCase() != 'delete my workspace') {
                     return 'Please enter "Delete my workspace"';
@@ -194,7 +195,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                       child: CustomText(
                         'Cancel',
                         type: FontStyle.Medium,
-                              fontWeight: FontWeightt.Semibold,
+                        fontWeight: FontWeightt.Semibold,
                         color: themeProvider.isDarkThemeEnabled
                             ? Colors.white
                             : Colors.black,

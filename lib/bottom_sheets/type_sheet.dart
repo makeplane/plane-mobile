@@ -4,7 +4,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class TypeSheet extends ConsumerStatefulWidget {
@@ -68,6 +67,50 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 child: InkWell(
                   onTap: () {
                     setState(() {
+                      selected = 1;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Radio(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          fillColor: selected == 1
+                              ? null
+                              : MaterialStateProperty.all<Color>(
+                                  Colors.grey.shade300),
+                          groupValue: selected,
+                          activeColor: primaryColor,
+                          value: 1,
+                          onChanged: (val) {}),
+                      const SizedBox(width: 10),
+                      const CustomText(
+                        'List View',
+                        type: FontStyle.Small,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                  color: themeProvider.isDarkThemeEnabled
+                      ? darkThemeBorder
+                      : Colors.grey[300],
+                ),
+              ),
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
                       selected = 0;
                     });
                   },
@@ -95,50 +138,6 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       const SizedBox(width: 10),
                       const CustomText(
                         'Board View',
-                        type: FontStyle.Small,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 1,
-                width: double.infinity,
-                child: Container(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : Colors.grey[300],
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      selected = 1;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Radio(
-                          visualDensity: const VisualDensity(
-                            horizontal: VisualDensity.minimumDensity,
-                            vertical: VisualDensity.minimumDensity,
-                          ),
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          fillColor: selected == 1
-                              ? null
-                              : MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
-                          groupValue: selected,
-                          activeColor: primaryColor,
-                          value: 1,
-                          onChanged: (val) {}),
-                      const SizedBox(width: 10),
-                      const CustomText(
-                        'List View',
                         type: FontStyle.Small,
                       ),
                     ],

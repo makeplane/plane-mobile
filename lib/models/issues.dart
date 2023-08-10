@@ -14,6 +14,7 @@ class DisplayProperties {
   bool estimate = false;
   bool createdOn = false;
   bool updatedOn = false;
+  bool startDate = false;
 
   DisplayProperties({
     required this.assignee,
@@ -28,6 +29,7 @@ class DisplayProperties {
     required this.priority,
     required this.createdOn,
     required this.updatedOn,
+    required this.startDate,
   });
 
   static DisplayProperties initialize() {
@@ -44,6 +46,7 @@ class DisplayProperties {
       priority: false,
       createdOn: false,
       updatedOn: false,
+      startDate: false,
     );
   }
 }
@@ -178,7 +181,7 @@ class Filters {
     required this.labels,
   });
 
-  static Map<String,List<dynamic>> toJson(Filters filters) {
+  static Map<String, List<dynamic>> toJson(Filters filters) {
     return {
       "assignees": filters.assignees,
       "created_by": filters.createdBy,
@@ -190,10 +193,10 @@ class Filters {
 
   factory Filters.fromJson(Map json) {
     return Filters(
-        priorities: json['priority']??[],
-        states: json['state']??[],
-        assignees: json['assignees']??[],
-        createdBy: json['created_by']??[],
-        labels: json['labels']??[]);
+        priorities: json['priority'] ?? [],
+        states: json['state'] ?? [],
+        assignees: json['assignees'] ?? [],
+        createdBy: json['created_by'] ?? [],
+        labels: json['labels'] ?? []);
   }
 }

@@ -112,6 +112,19 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 ? width += 151
                 : width += 0;
 
+    //for start date
+    widget.issueCategory == IssueCategory.issues
+        ? issuesProvider.issues.displayProperties.startDate
+            ? width += 151
+            : width += 0
+        : widget.issueCategory == IssueCategory.cycleIssues
+            ? cyclesProvider.issueProperty['properties']['start_date']
+                ? width += 151
+                : width += 0
+            : modulesProvider.issueProperty['properties']['start_date']
+                ? width += 151
+                : width += 0;
+
     //for due date
     widget.issueCategory == IssueCategory.issues
         ? issuesProvider.issues.displayProperties.dueDate
@@ -552,6 +565,41 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
       );
     }
 
+    Widget startDateWidget(int index) {
+      return Row(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+            ),
+            width: 150,
+            child: CustomText(
+              issuesProvider.issuesList[index]['start_date'] != null
+                  ? DateFormat('dd MMM yyyy').format(
+                      DateTime.parse(
+                        issuesProvider.issuesList[index]['start_date'],
+                      ),
+                    )
+                  : 'No Start Date',
+              type: FontStyle.Small,
+            ),
+          ),
+          Container(
+            // margin: const EdgeInsets.symmetric(horizontal: 10),
+            width: 1,
+            color: Colors.grey,
+          )
+        ],
+      );
+    }
+
     Widget estimatesWidget(int index) {
       return Row(
         children: [
@@ -759,6 +807,21 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                     ? labelsWidget(index)
                                     : Container(),
 
+                        //for start date
+                        widget.issueCategory == IssueCategory.issues
+                            ? issuesProvider.issues.displayProperties.startDate
+                                ? startDateWidget(index)
+                                : Container()
+                            : widget.issueCategory == IssueCategory.cycleIssues
+                                ? cyclesProvider.issueProperty['properties']
+                                        ['start_date']
+                                    ? startDateWidget(index)
+                                    : Container()
+                                : modulesProvider.issueProperty['properties']
+                                        ['start_date']
+                                    ? startDateWidget(index)
+                                    : Container(),
+
                         //for due date
                         widget.issueCategory == IssueCategory.issues
                             ? issuesProvider.issues.displayProperties.dueDate
@@ -889,6 +952,20 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           : Container()
                       : modulesProvider.issueProperty['properties']['labels']
                           ? headingText('Labels', 151)
+                          : Container(),
+
+              //for start date
+              widget.issueCategory == IssueCategory.issues
+                  ? issuesProvider.issues.displayProperties.startDate
+                      ? headingText('Start Date', 151)
+                      : Container()
+                  : widget.issueCategory == IssueCategory.cycleIssues
+                      ? cyclesProvider.issueProperty['properties']['start_date']
+                          ? headingText('Start Date', 151)
+                          : Container()
+                      : modulesProvider.issueProperty['properties']
+                              ['start_date']
+                          ? headingText('Start Date', 151)
                           : Container(),
 
               //for due date
@@ -1036,7 +1113,6 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               child: CustomText(
                 'Key',
                 type: FontStyle.Small,
-                
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

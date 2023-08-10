@@ -64,9 +64,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -150,17 +148,19 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.change_history,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 ),
                               ),
                               Container(
                                 width: 10,
                               ),
-                              const CustomText(
+                              CustomText(
                                 'No Estimate',
-                                type: FontStyle.Small,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Regular,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               const Spacer(),
                               if ((widget.createIssue &&
@@ -196,10 +196,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                           ),
                           const SizedBox(height: 20),
                           Container(
-                            height: 1,
-                            width: width,
-                            color: strokeColor,
-                          ),
+                              height: 1,
+                              width: width,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
                         ],
                       ),
                     ),
@@ -293,12 +293,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.change_history,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkPrimaryTextColor
-                                            : lightPrimaryTextColor,
-                                      ),
+                                      child: Icon(Icons.change_history,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor),
                                     ),
                                     Container(
                                       width: 10,
@@ -313,7 +310,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                                   .currentProject['estimate'])[
                                               'points'][index]['value']
                                           .toString(),
-                                      type: FontStyle.Small,
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const Spacer(),
                                     widget.createIssue
@@ -326,10 +326,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 ),
                                 const SizedBox(height: 20),
                                 Container(
-                                  height: 1,
-                                  width: width,
-                                  color: strokeColor,
-                                ),
+                                    height: 1,
+                                    width: width,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor),
                               ],
                             ),
                           ),
@@ -340,15 +340,13 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
             ),
             Container(
               height: 50,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkBackgroundColor
-                  : lightBackgroundColor,
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomText(
                     'Select Estimate',
-                    type: FontStyle.H6,
+                    type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
                   ),
                   IconButton(
@@ -370,12 +368,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                         prov.setsState();
                         Navigator.pop(context);
                       },
-                      icon: Icon(
-                        Icons.close,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkPrimaryTextColor
-                            : lightPrimaryTextColor,
-                      ))
+                      icon: Icon(Icons.close,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor))
                 ],
               ),
             ),

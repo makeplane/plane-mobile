@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -193,9 +191,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     var projectProvider = ref.watch(ProviderList.projectProvider);
     return Scaffold(
       //#f5f5f5f5 color
-      backgroundColor: themeProvider.isDarkThemeEnabled
-          ? darkBackgroundColor
-          : lightBackgroundColor,
+      // backgroundColor: themeProvider.isDarkThemeEnabled
+      //     ? darkBackgroundColor
+      //     : lightBackgroundColor,
       appBar: CustomAppBar(
         onPressed: () {
           Navigator.pop(context);
@@ -271,9 +269,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                     height: 30,
                     child: LoadingIndicator(
                       indicatorType: Indicator.lineSpinFadeLoader,
-                      colors: themeProvider.isDarkThemeEnabled
-                          ? [Colors.white]
-                          : [Colors.black],
+                      colors: [themeProvider.themeManager.primaryTextColor],
                       strokeWidth: 1.0,
                       backgroundColor: Colors.transparent,
                     ),
@@ -302,9 +298,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const CustomText(
+                                      CustomText(
                                         'Title',
                                         type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -356,13 +355,17 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         //   //show hint text always
                                         //   //  floatingLabelBehavior: FloatingLabelBehavior.always,
                                         // ),
-                                        decoration: kTextFieldDecoration,
+                                        decoration: themeProvider
+                                            .themeManager.textFieldDecoration,
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSections),
-                                      const CustomText(
+                                      CustomText(
                                         'Description',
                                         type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -378,51 +381,21 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         readOnly: projectProvider.role !=
                                                 Role.admin &&
                                             projectProvider.role != Role.member,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? darkThemeBorder
-                                                    : Colors.grey.shade200,
-                                                width: 1.0),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(8)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? darkThemeBorder
-                                                    : Colors.grey.shade200,
-                                                width: 1.0),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(8)),
-                                          ),
-                                          //set background color of text field
-                                          fillColor:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? Colors.grey.shade900
-                                                  : lightBackgroundColor,
-                                          filled: true,
-
-                                          //show hint text always
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                        ),
+                                        decoration: themeProvider
+                                            .themeManager.textFieldDecoration,
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSections),
-                                      const Row(
+                                      Row(
                                         children: [
                                           CustomText(
                                             'Sub Issue',
                                             type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Medium,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
                                         ],
                                       ),
                                       const SizedBox(
@@ -434,19 +407,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : const Color.fromRGBO(
-                                                      250, 250, 250, 1),
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkThemeBorder
-                                                    : Colors.grey.shade200,
-                                          ),
                                         ),
                                         margin:
                                             const EdgeInsets.only(bottom: 10),
@@ -475,12 +442,24 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                               ),
                                             );
                                           },
-                                          child: const Row(
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.add, color: greyColor),
-                                              CustomText('Add'),
+                                              Icon(
+                                                Icons.add,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
+                                              ),
+                                              CustomText(
+                                                'Add',
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Regular,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -488,9 +467,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
 
                                       const SizedBox(
                                           height: spaceBetweenSections),
-                                      const CustomText(
+                                      CustomText(
                                         'Details',
                                         type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
@@ -564,18 +546,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                           height: 45,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkBackgroundColor
-                                                    : lightBackgroundColor,
+                                            color: Colors.transparent,
+                                            border: Border.all(
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(5),
-                                            border: Border.all(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.grey.shade200,
-                                            ),
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
@@ -585,9 +562,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 expanded
                                                     ? "View less"
                                                     : 'View all',
-                                                type: FontStyle.Small,
-                                                color: const Color.fromRGBO(
-                                                    63, 118, 255, 1),
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Regular,
+                                                color: primaryColor,
                                               ),
 
                                               const SizedBox(width: 10),
@@ -620,9 +597,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         children: [
                                           const SizedBox(
                                               height: spaceBetweenSections),
-                                          const CustomText(
+                                          CustomText(
                                             'Attachments',
                                             type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Medium,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
                                             // color: themeProvider.secondaryTextColor,
                                           ),
                                           const SizedBox(
@@ -633,16 +613,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             height: 45,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : const Color.fromRGBO(
-                                                      250, 250, 250, 1),
+                                              color:
+                                                  primaryColor.withOpacity(0.2),
+                                              border: Border.all(
+                                                color: primaryColor,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              border: Border.all(
-                                                color: Colors.blueAccent,
-                                              ),
                                             ),
                                             margin: const EdgeInsets.only(
                                                 bottom: 10),
@@ -713,13 +690,17 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Row(
+                                          Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomText(
                                                 'Links',
                                                 type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Medium,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
                                                 // color: themeProvider.secondaryTextColor,
                                               ),
                                             ],
@@ -732,17 +713,15 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             height: 45,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : const Color.fromRGBO(
-                                                      250, 250, 250, 1),
+                                              color: themeProvider.themeManager
+                                                  .secondaryBackgroundDefaultColor,
+                                              border: Border.all(
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .borderSubtle01Color,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              border: Border.all(
-                                                color: getBorderColor(
-                                                    themeProvider),
-                                              ),
                                             ),
                                             margin: const EdgeInsets.only(
                                                 bottom: 10),
@@ -794,13 +773,25 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                   },
                                                 );
                                               },
-                                              child: const Row(
+                                              child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.add,
-                                                      color: greyColor),
-                                                  CustomText('Add'),
+                                                  Icon(
+                                                    Icons.add,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .placeholderTextColor,
+                                                  ),
+                                                  CustomText(
+                                                    'Add',
+                                                    type: FontStyle.Medium,
+                                                    fontWeight:
+                                                        FontWeightt.Regular,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .placeholderTextColor,
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -809,25 +800,26 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSections),
-                                      const CustomText(
+                                      CustomText(
                                         'Activity',
                                         type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                         // color: themeProvider.secondaryTextColor,
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSectionsAndItems),
                                       Container(
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: themeProvider.themeManager
+                                              .secondaryBackgroundDefaultColor,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         padding: const EdgeInsets.all(15),
                                         child: Column(
@@ -930,6 +922,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                               '',
                                                                           type:
                                                                               FontStyle.Medium,
+                                                                          fontWeight:
+                                                                              FontWeightt.Regular,
+                                                                          color: themeProvider
+                                                                              .themeManager
+                                                                              .primaryTextColor,
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
@@ -938,7 +935,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                         CustomText(
                                                                           'Commented ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
                                                                           type:
-                                                                              FontStyle.Medium,
+                                                                              FontStyle.Small,
+                                                                          fontWeight:
+                                                                              FontWeightt.Regular,
+                                                                          color: themeProvider
+                                                                              .themeManager
+                                                                              .placeholderTextColor,
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
@@ -960,6 +962,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                               CustomText(
                                                                                 issueProvider.issueActivity[index]['comment_stripped'],
                                                                                 type: FontStyle.Medium,
+                                                                                fontWeight: FontWeightt.Regular,
+                                                                                color: themeProvider.themeManager.primaryTextColor,
                                                                               ),
                                                                             ],
                                                                           ),
@@ -1054,22 +1058,21 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                         children: [
                                                                           CustomText(
                                                                             '${activityFormat(issueProvider.issueActivity[index])} ',
-                                                                            fontSize:
-                                                                                14,
                                                                             type:
                                                                                 FontStyle.Medium,
                                                                             textAlign:
                                                                                 TextAlign.left,
                                                                             maxLines:
                                                                                 4,
+                                                                            fontWeight:
+                                                                                FontWeightt.Regular,
                                                                           ),
                                                                           const SizedBox(
                                                                               height: 6),
                                                                           CustomText(
                                                                             ' ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
-                                                                            color: themeProvider.isDarkThemeEnabled
-                                                                                ? lightSecondaryBackgroundColor
-                                                                                : greyColor,
+                                                                            color:
+                                                                                themeProvider.themeManager.placeholderTextColor,
                                                                             type:
                                                                                 FontStyle.Small,
                                                                             textAlign:
@@ -1128,8 +1131,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                             const SizedBox(height: 6),
                                                                             CustomText(
                                                                               checkTimeDifferenc(issueProvider.issueActivity[index]['created_at']),
-                                                                              color: themeProvider.isDarkThemeEnabled ? lightSecondaryBackgroundColor : greyColor,
+                                                                              color: themeProvider.themeManager.placeholderTextColor,
                                                                               type: FontStyle.Small,
+                                                                              fontWeight: FontWeightt.Regular,
                                                                               textAlign: TextAlign.left,
                                                                               maxLines: 4,
                                                                             ),
@@ -1292,13 +1296,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -1328,20 +1330,24 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               SvgPicture.asset('assets/svg_images/state_icon.svg',
                   height: 15,
                   width: 15,
-                  colorFilter:
-                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.placeholderTextColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 10),
-              const CustomText(
+              CustomText(
                 'State',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
               Row(
                 children: [
                   CustomText(
                     issueProvider.issueDetails['state_detail']['name'],
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   //issuesProvider.createIssuedata['state'] == null
                   //?
@@ -1353,9 +1359,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   //?
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryTextColor
-                        : lightSecondaryTextColor,
+                    color: themeProvider.themeManager.primaryTextColor,
                   )
                   // : Container(),
                 ],
@@ -1375,13 +1379,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -1411,31 +1413,33 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               SvgPicture.asset('assets/svg_images/assignee.svg',
                   height: 17,
                   width: 17,
-                  colorFilter:
-                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.placeholderTextColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 10),
 
-              const CustomText(
+              CustomText(
                 'Assignees',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['assignee_details'].isEmpty
                   ? Row(
                       children: [
-                        const CustomText(
+                        CustomText(
                           'Select',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1450,9 +1454,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1471,13 +1473,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -1502,31 +1502,33 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               SvgPicture.asset('assets/svg_images/priority.svg',
                   height: 15,
                   width: 15,
-                  colorFilter:
-                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.placeholderTextColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 10),
 
-              const CustomText(
+              CustomText(
                 'Priority',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['priority'] == null
                   ? Row(
                       children: [
-                        const CustomText(
+                        CustomText(
                           'Select',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1541,16 +1543,16 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   issueProvider.issueDetails['priority'][0]
                                       .toString()
                                       .toUpperCase()),
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1569,30 +1571,29 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Row(
           children: [
             //icon
-            const Icon(
+            Icon(
               Icons.change_history,
               size: 17,
-              color: greyColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             const SizedBox(width: 10),
 
-            const CustomText(
+            CustomText(
               'Estimate',
-              type: FontStyle.Small,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Regular,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             Expanded(child: Container()),
             GestureDetector(
@@ -1617,18 +1618,18 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               child: issueProvider.issueDetails['estimate_point'] == null
                   ? Row(
                       children: [
-                        const CustomText(
+                        CustomText(
                           'No Estimate',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1647,7 +1648,16 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             return element['key'] ==
                                 issueProvider.issueDetails['estimate_point'];
                           })['value'],
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     ),
@@ -1667,13 +1677,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       //height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -1705,16 +1713,15 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   Icon(
                     Icons.local_offer_outlined,
                     size: 17,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryTextColor
-                        : greyColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                   const SizedBox(width: 8),
 
-                  const CustomText(
+                  CustomText(
                     'Label',
-                    type: FontStyle.Small,
-                    color: Color.fromRGBO(143, 143, 147, 1),
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                   Expanded(child: Container()),
                   issueProvider.issueDetails['label_details'].isEmpty
@@ -1722,18 +1729,20 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const CustomText(
+                            CustomText(
                               'Select',
-                              type: FontStyle.Small,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Regular,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             const SizedBox(
                               width: 5,
                             ),
                             Icon(
                               Icons.keyboard_arrow_down,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryTextColor
-                                  : lightSecondaryTextColor,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                           ],
                         )
@@ -1745,19 +1754,23 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                 height: 30,
                                 constraints: const BoxConstraints(
                                     maxWidth: 80, minWidth: 30),
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     CustomText(
                                       'Select',
-                                      type: FontStyle.Small,
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Icon(
                                       //antenna signal icon
                                       Icons.keyboard_arrow_down_outlined,
-                                      color: Color.fromRGBO(143, 143, 147, 1),
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                   ],
                                 )),
@@ -1808,7 +1821,14 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 radius: 8,
                                               ),
                                               const SizedBox(width: 6),
-                                              CustomText(e['name'].toString()),
+                                              CustomText(
+                                                e['name'].toString(),
+                                                fontWeight: FontWeightt.Regular,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                                type: FontStyle.Small,
+                                              ),
                                               const SizedBox(width: 2),
                                               GestureDetector(
                                                 onTap: () {
@@ -1841,10 +1861,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                     refs: ref,
                                                   );
                                                 },
-                                                child: const Icon(
+                                                child: Icon(
                                                   Icons.close,
-                                                  size: 20,
-                                                  color: greyColor,
+                                                  size: 17,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryTextColor,
                                                 ),
                                               )
                                             ],
@@ -1872,13 +1894,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () async {
@@ -1939,29 +1959,33 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               SvgPicture.asset('assets/svg_images/calendar_icon.svg',
                   height: 15,
                   width: 15,
-                  colorFilter:
-                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.placeholderTextColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 10),
-              const CustomText(
+              CustomText(
                 'Due Date',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                color: themeProvider.themeManager.placeholderTextColor,
+                fontWeight: FontWeightt.Regular,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['target_date'] == null
-                  ? const Row(
+                  ? Row(
                       children: [
                         CustomText(
                           'Select',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           //antenna signal icon
                           Icons.keyboard_arrow_down_outlined,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -1970,7 +1994,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         CustomText(
                           DateFormat('yyyy-MM-dd').format(DateTime.parse(
                               issueProvider.issueDetails['target_date'])),
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
                         const SizedBox(width: 10),
                         InkWell(
@@ -1989,10 +2015,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                 },
                                 refs: ref);
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.close,
                             size: 20,
-                            color: greyColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         )
                       ],
@@ -2012,13 +2038,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () async {
@@ -2085,29 +2109,33 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               SvgPicture.asset('assets/svg_images/calendar_icon.svg',
                   height: 15,
                   width: 15,
-                  colorFilter:
-                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.placeholderTextColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 10),
-              const CustomText(
+              CustomText(
                 'Start Date',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                color: themeProvider.themeManager.placeholderTextColor,
+                fontWeight: FontWeightt.Regular,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['start_date'] == null
-                  ? const Row(
+                  ? Row(
                       children: [
                         CustomText(
                           'Select',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           //antenna signal icon
                           Icons.keyboard_arrow_down_outlined,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -2116,7 +2144,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         CustomText(
                           DateFormat('yyyy-MM-dd').format(DateTime.parse(
                               issueProvider.issueDetails['start_date'])),
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
                         const SizedBox(width: 10),
                         InkWell(
@@ -2135,10 +2165,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                 },
                                 refs: ref);
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.close,
                             size: 20,
-                            color: greyColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         )
                       ],
@@ -2158,13 +2188,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () async {
@@ -2190,33 +2218,36 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           child: Row(
             children: [
               //icon
-              const Icon(
+              Icon(
                 //antenna signal icon
                 Icons.person_outline_rounded,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 18,
               ),
               const SizedBox(width: 8),
-              const CustomText(
+              CustomText(
                 'Parent',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                color: themeProvider.themeManager.placeholderTextColor,
+                fontWeight: FontWeightt.Regular,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['parent_detail'] == null
-                  ? const Row(
+                  ? Row(
                       children: [
                         CustomText(
                           'Select issue',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           //antenna signal icon
                           Icons.keyboard_arrow_down_outlined,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -2229,7 +2260,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                               issueProvider.issueDetails['parent_detail']
                                       ['sequence_id']
                                   .toString(),
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Regular,
                         ),
                         const SizedBox(width: 10),
                         InkWell(
@@ -2247,10 +2280,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                               refs: ref,
                             );
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.close,
                             size: 20,
-                            color: greyColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         )
                       ],
@@ -2270,15 +2303,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
-            borderRadius: BorderRadius.circular(5),
+            color: Colors.transparent,
             border: Border.all(
-              color: issueProvider.subIssues.isNotEmpty
-                  ? getBorderColor(themeProvider)
-                  : Colors.transparent,
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
+            borderRadius: BorderRadius.circular(5),
           ),
           //padding: const EdgeInsets.all(10),
           child: ListView.builder(
@@ -2310,18 +2339,19 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                     issueProvider.subIssues[index]
                                             ['sequence_id']
                                         .toString(),
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryTextColor
-                                    : lightSecondaryTextColor,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Regular,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               Expanded(
                                 child: CustomText(
                                   '  ${issueProvider.subIssues[index]['name']}',
                                   maxLines: 1,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeightt.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                  fontWeight: FontWeightt.Regular,
+                                  type: FontStyle.Medium,
                                 ),
                               ),
                               InkWell(
@@ -2361,10 +2391,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                     },
                                   );
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.close,
                                   size: 20,
-                                  color: greyColor,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                             ],
@@ -2400,13 +2431,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       // height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -2440,25 +2469,28 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   width: 15,
                 ),
                 const SizedBox(width: 15),
-                const CustomText(
+                CustomText(
                   'Blocking',
-                  type: FontStyle.Small,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  type: FontStyle.Medium,
+                  fontWeight: FontWeightt.Regular,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
                 Expanded(child: Container()),
-                const Row(
+                Row(
                   children: [
                     CustomText(
                       'Select issues',
-                      type: FontStyle.Small,
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Icon(
                       //antenna signal icon
                       Icons.keyboard_arrow_down_outlined,
-                      color: Color.fromRGBO(143, 143, 147, 1),
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ],
                 )
@@ -2571,13 +2603,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -2612,25 +2642,28 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   width: 15,
                 ),
                 const SizedBox(width: 15),
-                const CustomText(
+                CustomText(
                   'Blocked by',
-                  type: FontStyle.Small,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  type: FontStyle.Medium,
+                  fontWeight: FontWeightt.Regular,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
                 Expanded(child: Container()),
-                const Row(
+                Row(
                   children: [
                     CustomText(
                       'Select issues',
-                      type: FontStyle.Small,
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Icon(
                       //antenna signal icon
                       Icons.keyboard_arrow_down_outlined,
-                      color: Color.fromRGBO(143, 143, 147, 1),
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ],
                 )
@@ -2743,13 +2776,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -2790,10 +2821,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               //icon
               SvgPicture.asset('assets/svg_images/cycles_icon.svg'),
               const SizedBox(width: 8),
-              const CustomText(
+              CustomText(
                 'Cycle',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
               Row(
@@ -2803,16 +2835,16 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         ? issueProvider.issueDetails['issue_cycle']
                             ['cycle_detail']['name']
                         : 'No Cycle',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   const SizedBox(
                     width: 5,
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryTextColor
-                        : lightSecondaryTextColor,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               )
@@ -2831,13 +2863,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
         onTap: () {
@@ -2882,10 +2912,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                   colorFilter:
                       const ColorFilter.mode(greyColor, BlendMode.srcIn)),
               const SizedBox(width: 10),
-              const CustomText(
+              CustomText(
                 'Module',
-                type: FontStyle.Small,
-                color: Color.fromRGBO(143, 143, 147, 1),
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
               issueProvider.issueDetails['issue_module'] != null
@@ -2899,10 +2930,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             child: CustomText(
                               issueProvider.issueDetails['issue_module']
                                   ['module_detail']['name'],
-                              type: FontStyle.Small,
+                              type: FontStyle.Medium,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
+                              fontWeight: FontWeightt.Regular,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                           ),
                           const SizedBox(
@@ -2911,27 +2945,25 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                           const Spacer(),
                           Icon(
                             Icons.keyboard_arrow_down,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         ],
                       ),
                     )
                   : Row(
                       children: [
-                        const CustomText(
+                        CustomText(
                           'No Module',
-                          type: FontStyle.Small,
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                       ],
                     )
@@ -2959,13 +2991,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           child: Container(
             width: width * 0.4 + 50,
             decoration: BoxDecoration(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkBackgroundColor
-                  : lightBackgroundColor,
-              borderRadius: BorderRadius.circular(5),
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
               border: Border.all(
-                color: getBorderColor(themeProvider),
+                color: themeProvider.themeManager.borderSubtle01Color,
               ),
+              borderRadius: BorderRadius.circular(5),
             ),
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.only(bottom: 10),
@@ -2983,17 +3013,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         width: 23,
                         height: 23,
                         colorFilter: ColorFilter.mode(
-                            themeProvider.isDarkThemeEnabled
-                                ? darkPrimaryTextColor
-                                : lightPrimaryTextColor,
+                            themeProvider.themeManager.primaryTextColor,
                             BlendMode.srcIn))
                     : SvgPicture.asset("assets/svg_images/file.svg",
                         width: 23,
                         height: 23,
                         colorFilter: ColorFilter.mode(
-                            themeProvider.isDarkThemeEnabled
-                                ? darkPrimaryTextColor
-                                : lightPrimaryTextColor,
+                            themeProvider.themeManager.primaryTextColor,
                             BlendMode.srcIn)),
                 const SizedBox(width: 5),
                 Expanded(
@@ -3003,6 +3029,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         '',
                     type: FontStyle.Medium,
                     maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ),
                 //const Spacer(),
@@ -3029,11 +3058,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                               .issueDetails['issue_attachment'][index]['id'],
                           index: index);
                     },
-                    child: SvgPicture.asset(
-                      'assets/svg_images/delete.svg',
-                      height: 20,
-                      width: 20,
-                    ),
+                    child: SvgPicture.asset('assets/svg_images/delete.svg',
+                        height: 20,
+                        width: 20,
+                        colorFilter: ColorFilter.mode(
+                            themeProvider.themeManager.textErrorColor,
+                            BlendMode.srcIn)),
                   ),
                 ),
               ],
@@ -3062,13 +3092,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
             height: 45,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkBackgroundColor
-                  : lightBackgroundColor,
-              borderRadius: BorderRadius.circular(5),
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
               border: Border.all(
-                color: getBorderColor(themeProvider),
+                color: themeProvider.themeManager.borderSubtle01Color,
               ),
+              borderRadius: BorderRadius.circular(5),
             ),
             margin: const EdgeInsets.only(bottom: 10),
             child: Padding(
@@ -3078,11 +3106,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset(
-                        'assets/svg_images/link.svg',
-                        height: 15,
-                        width: 15,
-                      ),
+                      SvgPicture.asset('assets/svg_images/link.svg',
+                          height: 15,
+                          width: 15,
+                          colorFilter: ColorFilter.mode(
+                              themeProvider.themeManager.primaryTextColor,
+                              BlendMode.srcIn)),
                       const SizedBox(
                         width: 10,
                       ),
@@ -3090,6 +3119,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         issueProvider.issueDetails['issue_link'][index]
                             ['title'],
                         type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                     ],
                   ),
@@ -3122,6 +3153,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                           'assets/svg_images/delete.svg',
                           height: 20,
                           width: 20,
+                          colorFilter: ColorFilter.mode(
+                              themeProvider.themeManager.textErrorColor,
+                              BlendMode.srcIn),
                         )),
                   )
                 ],

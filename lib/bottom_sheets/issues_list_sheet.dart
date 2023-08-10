@@ -60,9 +60,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(30),
           topLeft: Radius.circular(30),
@@ -76,9 +74,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                 height: 30,
                 child: LoadingIndicator(
                   indicatorType: Indicator.lineSpinFadeLoader,
-                  colors: themeProvider.isDarkThemeEnabled
-                      ? [Colors.white]
-                      : [Colors.black],
+                  colors: [themeProvider.themeManager.primaryTextColor],
                   strokeWidth: 1.0,
                   backgroundColor: Colors.transparent,
                 ),
@@ -91,17 +87,18 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                       children: [
                         CustomText(
                           'Add new issues',
-                          type: FontStyle.H6,
+                          type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const Spacer(),
                         IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon: const Icon(Icons.close,
-                                color: Color.fromRGBO(143, 143, 147, 1)))
+                            icon: Icon(
+                              Icons.close,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ))
                       ],
                     ),
                     const Spacer(),
@@ -119,15 +116,17 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                           widget.type == IssueDetailCategory.parent
                               ? 'Add parent'
                               : 'Add sub issues',
-                          type: FontStyle.H6,
+                          type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const Spacer(),
                         IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.close,
-                              color: Color.fromRGBO(143, 143, 147, 1),
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ))
                       ],
                     ),
@@ -305,6 +304,9 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                               .toString() +
                                           ' ',
                                       type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const SizedBox(
                                       width: 10,
@@ -316,9 +318,10 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                 ['name'] ??
                                             '',
                                         type: FontStyle.Medium,
-                                        maxLines: 4,
-                                        textAlign: TextAlign.start,
-                                        overflow: TextOverflow.visible,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeightt.Regular,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       ),
                                     ),
                                   ],
@@ -498,12 +501,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
               Icons.check_box,
               color: primaryColor,
             )
-          : Icon(
-              Icons.check_box_outline_blank,
-              color: themeProvider.isDarkThemeEnabled
-                  ? lightBackgroundColor
-                  : darkBackgroundColor,
-            );
+          : Icon(Icons.check_box_outline_blank,
+              color: themeProvider.themeManager.placeholderTextColor);
     }
     if (type == IssueDetailCategory.addModuleIssue) {
       return modulesProvider.selectedIssues
@@ -512,12 +511,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
               Icons.check_box,
               color: primaryColor,
             )
-          : Icon(
-              Icons.check_box_outline_blank,
-              color: themeProvider.isDarkThemeEnabled
-                  ? lightBackgroundColor
-                  : darkBackgroundColor,
-            );
+          : Icon(Icons.check_box_outline_blank,
+              color: themeProvider.themeManager.placeholderTextColor);
     }
     if (type == IssueDetailCategory.addCycleIssue) {
       return cyclesProvider.selectedIssues
@@ -526,12 +521,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
               Icons.check_box,
               color: primaryColor,
             )
-          : Icon(
-              Icons.check_box_outline_blank,
-              color: themeProvider.isDarkThemeEnabled
-                  ? lightBackgroundColor
-                  : darkBackgroundColor,
-            );
+          : Icon(Icons.check_box_outline_blank,
+              color: themeProvider.themeManager.placeholderTextColor);
     }
     if (type == IssueDetailCategory.subIssue) {
       return issuesProvider.subIssuesIds
@@ -540,12 +531,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
               Icons.check_box,
               color: primaryColor,
             )
-          : Icon(
-              Icons.check_box_outline_blank,
-              color: themeProvider.isDarkThemeEnabled
-                  ? lightBackgroundColor
-                  : darkBackgroundColor,
-            );
+          : Icon(Icons.check_box_outline_blank,
+              color: themeProvider.themeManager.placeholderTextColor);
     } else {
       return issuesProvider.blockedByIssuesIds
               .contains(searchIssueProvider.issues[index]['id'])
@@ -553,12 +540,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
               Icons.check_box,
               color: primaryColor,
             )
-          : Icon(
-              Icons.check_box_outline_blank,
-              color: themeProvider.isDarkThemeEnabled
-                  ? lightBackgroundColor
-                  : darkBackgroundColor,
-            );
+          : Icon(Icons.check_box_outline_blank,
+              color: themeProvider.themeManager.placeholderTextColor);
     }
   }
 }

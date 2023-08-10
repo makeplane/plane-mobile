@@ -25,9 +25,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),
@@ -40,12 +38,10 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CustomText(
-                    'Add Link',
-                    type: FontStyle.H4,
-                    fontWeight: FontWeightt.Semibold,
-                    // color: themeProvider.secondaryTextColor,
-                  ),
+                  CustomText('Add Link',
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor),
                   IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -61,9 +57,11 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               const SizedBox(
                 height: 10,
               ),
-              const CustomText(
+              CustomText(
                 'Title',
-                type: FontStyle.Small,
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.primaryTextColor,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -76,9 +74,11 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               const SizedBox(
                 height: 20,
               ),
-              const CustomText(
+              CustomText(
                 'URL',
-                type: FontStyle.Small,
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.primaryTextColor,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(

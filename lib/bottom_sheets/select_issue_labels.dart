@@ -94,9 +94,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -112,7 +110,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                     children: [
                       const CustomText(
                         'Select Labels',
-                        type: FontStyle.H6,
+                        type: FontStyle.H4,
                         fontWeight: FontWeightt.Semibold,
                       ),
                       IconButton(
@@ -133,9 +131,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                           prov.setsState();
                           Navigator.pop(context);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                       )
                     ],
@@ -199,7 +198,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       CustomText(
                                         issuesProvider.labels[index]['name']
                                             .toString(),
-                                        type: FontStyle.Small,
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Regular,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       ),
                                       const Spacer(),
                                       widget.createIssue
@@ -212,12 +214,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   ),
                                   const SizedBox(height: 20),
                                   Container(
-                                    height: 2,
-                                    // margin: const EdgeInsets.only(bottom: 5),
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : strokeColor,
-                                  )
+                                      height: 1,
+                                      // margin: const EdgeInsets.only(bottom: 5),
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor)
                                 ],
                               ),
                             ),
@@ -537,9 +537,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                 ? Center(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.black.withOpacity(0.7)
-                            : Colors.white.withOpacity(0.7),
+                        color: themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(23),
                           topRight: Radius.circular(23),
@@ -557,9 +556,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                             width: 25,
                             child: LoadingIndicator(
                               indicatorType: Indicator.lineSpinFadeLoader,
-                              colors: themeProvider.isDarkThemeEnabled
-                                  ? [Colors.white]
-                                  : [Colors.black],
+                              colors: [
+                                themeProvider.themeManager.primaryTextColor
+                              ],
                               strokeWidth: 1.0,
                               backgroundColor: Colors.transparent,
                             ),

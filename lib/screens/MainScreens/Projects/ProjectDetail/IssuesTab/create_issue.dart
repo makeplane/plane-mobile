@@ -153,14 +153,15 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 //     fontWeight: FontWeightt.Medium,
                                 //   ),
                                 // ),
-                                const Row(
+                                Row(
                                   children: [
                                     CustomText(
                                       'Title',
-                                      type: FontStyle.Small,
-                                      // color: themeProvider.secondaryTextColor,
+                                      type: FontStyle.Medium,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
-                                    CustomText(
+                                    const CustomText(
                                       ' *',
                                       type: FontStyle.Small,
                                       color: Colors.red,
@@ -180,35 +181,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   maxLines: null,
                                   controller: title,
                                   decoration: themeProvider
-                                      .themeManager.textFieldDecoration
-                                      .copyWith(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8)),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8)),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: primaryColor, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                  ),
+                                      .themeManager.textFieldDecoration,
                                 ),
 
                                 // const SizedBox(height: 20),
@@ -251,9 +224,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 //     )),
 
                                 const SizedBox(height: 20),
-                                const CustomText(
+                                CustomText(
                                   'Details',
-                                  type: FontStyle.Small,
+                                  type: FontStyle.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                   // color: themeProvider.secondaryTextColor,
                                 ),
                                 const SizedBox(height: 5),
@@ -262,13 +237,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   height: 45,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : lightBackgroundColor,
-                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.transparent,
                                     border: Border.all(
-                                      color: getBorderColor(themeProvider),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: InkWell(
                                     onTap: () {
@@ -293,18 +267,18 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       child: Row(
                                         children: [
                                           //icon
-                                          const Icon(
+                                          Icon(
                                             //four squares icon
                                             Icons.view_cozy_rounded,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           const SizedBox(width: 15),
-                                          const CustomText(
+                                          CustomText(
                                             'State',
                                             type: FontStyle.Small,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           Expanded(child: Container()),
                                           Row(
@@ -334,6 +308,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             .createIssuedata[
                                                         'state']]['name'],
                                                 type: FontStyle.Small,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
                                               ),
                                               issuesProvider.createIssuedata[
                                                           'state'] ==
@@ -345,9 +322,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                               Icon(
                                                 Icons.keyboard_arrow_down,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : lightSecondaryTextColor,
+                                                    .themeManager
+                                                    .primaryTextColor,
                                               )
                                             ],
                                           )
@@ -361,13 +337,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   height: 45,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : lightBackgroundColor,
-                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.transparent,
                                     border: Border.all(
-                                      color: getBorderColor(themeProvider),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: InkWell(
                                     onTap: () {
@@ -395,11 +370,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       child: Row(
                                         children: [
                                           //icon
-                                          const Icon(
+                                          Icon(
                                             //two people icon
                                             Icons.people_alt_rounded,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           const SizedBox(width: 15),
                                           // const Text(
@@ -410,11 +385,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           //     color: Color.fromRGBO(143, 143, 147, 1),
                                           //   ),
                                           // ),
-                                          const CustomText(
+                                          CustomText(
                                             'Assignees',
                                             type: FontStyle.Small,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           Expanded(child: Container()),
                                           issuesProvider.createIssuedata[
@@ -432,9 +407,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                     Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? darkSecondaryTextColor
-                                                          : lightSecondaryTextColor,
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                     ),
                                                   ],
                                                 )
@@ -530,13 +504,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   height: 45,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : lightBackgroundColor,
-                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.transparent,
                                     border: Border.all(
-                                      color: getBorderColor(themeProvider),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: InkWell(
                                     onTap: () {
@@ -556,11 +529,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       child: Row(
                                         children: [
                                           //icon
-                                          const Icon(
+                                          Icon(
                                             //antenna signal icon
                                             Icons.signal_cellular_alt_sharp,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           const SizedBox(width: 15),
                                           // const Text(
@@ -571,11 +544,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           //     color: Color.fromRGBO(143, 143, 147, 1),
                                           //   ),
                                           // ),
-                                          const CustomText(
+                                          CustomText(
                                             'Priority',
                                             type: FontStyle.Small,
-                                            color: Color.fromRGBO(
-                                                143, 143, 147, 1),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                           Expanded(child: Container()),
                                           issuesProvider.createIssuedata[
@@ -583,9 +556,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                   null
                                               ? Row(
                                                   children: [
-                                                    const CustomText(
+                                                    CustomText(
                                                       'Select',
                                                       type: FontStyle.Small,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
@@ -593,9 +569,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                     Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? darkSecondaryTextColor
-                                                          : lightSecondaryTextColor,
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                     ),
                                                   ],
                                                 )
@@ -612,6 +587,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                               .createIssuedata[
                                                           'priority']['name'],
                                                       type: FontStyle.Small,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
@@ -619,9 +597,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                     Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? darkSecondaryTextColor
-                                                          : lightSecondaryTextColor,
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                     ),
                                                   ],
                                                 )
@@ -641,16 +618,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -658,18 +632,20 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           child: Row(
                                             children: [
                                               //icon
-                                              const Icon(
+                                              Icon(
                                                 //antenna signal icon
                                                 Icons.change_history,
-                                                color: Color.fromRGBO(
-                                                    143, 143, 147, 1),
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
                                               ),
                                               const SizedBox(width: 15),
-                                              const CustomText(
+                                              CustomText(
                                                 'Estimate',
                                                 type: FontStyle.Small,
-                                                color: Color.fromRGBO(
-                                                    143, 143, 147, 1),
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
                                               ),
                                               Expanded(child: Container()),
                                               GestureDetector(
@@ -716,10 +692,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         null
                                                     ? Row(
                                                         children: [
-                                                          const CustomText(
+                                                          CustomText(
                                                             'Estimate',
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -730,9 +709,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -758,6 +736,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             })['value'].toString(),
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -768,9 +749,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       ),
@@ -788,16 +768,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         child: InkWell(
                                           onTap: () {
@@ -836,11 +813,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                             child: Row(
                                               children: [
                                                 //icon
-                                                const Icon(
+                                                Icon(
                                                   //antenna signal icon
                                                   Icons.label,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 const SizedBox(width: 15),
                                                 // const Text(
@@ -851,11 +829,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 //     color: Color.fromRGBO(143, 143, 147, 1),
                                                 //   ),
                                                 // ),
-                                                const CustomText(
+                                                CustomText(
                                                   'Label',
                                                   type: FontStyle.Small,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 Expanded(child: Container()),
                                                 issuesProvider.createIssuedata[
@@ -863,10 +842,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         null
                                                     ? Row(
                                                         children: [
-                                                          const CustomText(
+                                                          CustomText(
                                                             'Select',
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -875,9 +857,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -928,9 +909,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -946,16 +926,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         child: InkWell(
                                           onTap: () async {
@@ -1008,18 +985,20 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                             child: Row(
                                               children: [
                                                 //icon
-                                                const Icon(
+                                                Icon(
                                                   //antenna signal icon
                                                   Icons.calendar_month,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 const SizedBox(width: 15),
-                                                const CustomText(
+                                                CustomText(
                                                   'Start Date',
                                                   type: FontStyle.Small,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 Expanded(child: Container()),
                                                 issuesProvider.createIssuedata[
@@ -1027,10 +1006,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         null
                                                     ? Row(
                                                         children: [
-                                                          const CustomText(
+                                                          CustomText(
                                                             'Select',
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                             // color: Colors.black,
                                                           ),
                                                           const SizedBox(
@@ -1041,9 +1023,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -1057,6 +1038,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                     'start_date']),
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                               width: 10),
@@ -1070,10 +1054,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                     'start_date'] = null;
                                                               });
                                                             },
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons.close,
                                                               size: 20,
-                                                              color: greyColor,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryTextColor,
                                                             ),
                                                           )
                                                         ],
@@ -1097,16 +1083,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         child: InkWell(
                                           onTap: () async {
@@ -1159,18 +1142,20 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                             child: Row(
                                               children: [
                                                 //icon
-                                                const Icon(
+                                                Icon(
                                                   //antenna signal icon
                                                   Icons.calendar_month,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 const SizedBox(width: 15),
-                                                const CustomText(
+                                                CustomText(
                                                   'Due Date',
                                                   type: FontStyle.Small,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 Expanded(child: Container()),
                                                 issuesProvider.createIssuedata[
@@ -1178,11 +1163,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         null
                                                     ? Row(
                                                         children: [
-                                                          const CustomText(
+                                                          CustomText(
                                                             'Select',
                                                             type:
                                                                 FontStyle.Small,
-                                                            // color: Colors.black,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1192,9 +1179,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -1208,6 +1194,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                     'due_date']),
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                               width: 10),
@@ -1220,10 +1209,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                     'due_date'] = null;
                                                               });
                                                             },
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons.close,
                                                               size: 20,
-                                                              color: greyColor,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryTextColor,
                                                             ),
                                                           )
                                                         ],
@@ -1247,16 +1238,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            color: themeProvider.themeManager
+                                                .borderSubtle01Color,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color:
-                                                getBorderColor(themeProvider),
-                                          ),
                                         ),
                                         child: InkWell(
                                           onTap: () async {
@@ -1282,28 +1270,33 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                             child: Row(
                                               children: [
                                                 //icon
-                                                const Icon(
+                                                Icon(
                                                   //antenna signal icon
                                                   Icons.person_outline_rounded,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 const SizedBox(width: 15),
-                                                const CustomText(
+                                                CustomText(
                                                   'Parent',
                                                   type: FontStyle.Small,
-                                                  color: Color.fromRGBO(
-                                                      143, 143, 147, 1),
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
                                                 ),
                                                 Expanded(child: Container()),
                                                 issuesProvider.createIssueParent
                                                         .isEmpty
                                                     ? Row(
                                                         children: [
-                                                          const CustomText(
+                                                          CustomText(
                                                             'Select issue',
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1313,9 +1306,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             Icons
                                                                 .keyboard_arrow_down,
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : lightSecondaryTextColor,
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                         ],
                                                       )
@@ -1326,6 +1318,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                 .createIssueParent,
                                                             type:
                                                                 FontStyle.Small,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                               width: 10),
@@ -1338,10 +1333,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                               issuesProvider
                                                                   .setsState();
                                                             },
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons.close,
                                                               size: 20,
-                                                              color: greyColor,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryTextColor,
                                                             ),
                                                           )
                                                         ],
@@ -1365,13 +1362,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                     height: 45,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : lightBackgroundColor,
-                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.transparent,
                                       border: Border.all(
-                                        color: getBorderColor(themeProvider),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
                                       ),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -1388,8 +1384,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         CustomText(
                                           expanded ? "View less" : 'View all',
                                           type: FontStyle.Small,
-                                          color: const Color.fromRGBO(
-                                              63, 118, 255, 1),
+                                          color: primaryColor,
                                         ),
 
                                         const SizedBox(width: 10),

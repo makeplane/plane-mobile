@@ -112,7 +112,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             decoration: themeProvider
                                 .themeManager.textFieldDecoration
                                 .copyWith(
-                            
                               suffixIcon: input.text != ''
                                   ? IconButton(
                                       onPressed: () {
@@ -132,7 +131,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                         color: Colors.transparent,
                                       )),
 
-                              
                               filled: true,
 
                               hintText: 'Search for anything...',
@@ -918,13 +916,12 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SvgPicture.asset(
-                              'assets/svg_images/cycles_icon.svg',
-                              height: 20,
-                              width: 20,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
+                                'assets/svg_images/cycles_icon.svg',
+                                height: 20,
+                                width: 20,
+                                colorFilter: ColorFilter.mode(
+                                    themeProvider.themeManager.primaryTextColor,
+                                    BlendMode.srcIn)),
                             // Icon(
                             //   Icons.work_outline,
                             //   size: 16,

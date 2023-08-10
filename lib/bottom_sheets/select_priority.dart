@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -79,9 +78,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -95,7 +92,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                   children: [
                     const CustomText(
                       'Select Priority',
-                      type: FontStyle.H6,
+                      type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
@@ -106,12 +103,9 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                           prov.setsState();
                           Navigator.pop(context);
                         },
-                        icon: Icon(
-                          Icons.close,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor,
-                        ))
+                        icon: Icon(Icons.close,
+                            color: themeProvider
+                                .themeManager.placeholderTextColor))
                   ],
                 ),
                 Container(
@@ -123,7 +117,6 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
-                         
                           if (widget.createIssue) {
                             setState(() {
                               selectedPriority = index;
@@ -220,9 +213,11 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                     width: 10,
                                   ),
                                   CustomText(
-                                    priorities[index]['name'].toString(),
-                                    type: FontStyle.Small,
-                                  ),
+                                      priorities[index]['name'].toString(),
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
                                   const Spacer(),
                                   widget.createIssue
                                       ? createIssueSelectedPriority(index)
@@ -234,10 +229,10 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                height: 1,
-                                width: width,
-                                color: strokeColor,
-                              ),
+                                  height: 1,
+                                  width: width,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor),
                             ],
                           ),
                         ),
@@ -266,7 +261,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
         priorities[idx]['name'].toString()[0],
         priorities[idx]['name'].toString()[0].toLowerCase());
     if (idx == 4) nameOfThisPriority = null;
-   
+
     return issueProvider.issueDetails['priority'] == nameOfThisPriority
         ? const Icon(
             Icons.done,

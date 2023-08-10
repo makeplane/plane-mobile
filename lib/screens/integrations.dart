@@ -54,10 +54,7 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                   : Colors.grey[300],
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ImportEport()));
-              },
+              onTap: () {},
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(top: 16, bottom: 16),

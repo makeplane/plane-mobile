@@ -133,7 +133,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                     ),
                     const SizedBox(height: 20),
                     TextField(
-                      decoration: kTextFieldDecoration.copyWith(
+                      decoration: themeProvider.themeManager.textFieldDecoration
+                          .copyWith(
                         prefixIcon: const Icon(
                           Icons.search,
                           color: greyColor,

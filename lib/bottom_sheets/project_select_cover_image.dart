@@ -134,7 +134,6 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                   'Choose Cover Image',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
-  
                 ),
                 const Spacer(),
                 IconButton(
@@ -177,7 +176,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 ? primaryColor
                                 : lightGreyTextColor,
                             type: FontStyle.H5,
-                  fontWeight: FontWeightt.Medium,
+                            fontWeight: FontWeightt.Medium,
                           ),
                         ),
                         selected == 0
@@ -208,7 +207,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 ? primaryColor
                                 : lightGreyTextColor,
                             type: FontStyle.H5,
-                  fontWeight: FontWeightt.Medium,
+                            fontWeight: FontWeightt.Medium,
                           ),
                         ),
                         selected == 1
@@ -246,7 +245,9 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                           width: MediaQuery.of(context).size.width - 130,
                           child: TextFormField(
                               controller: searchController,
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 labelText: 'Search for images',
                                 labelStyle: TextStyle(
                                     color: themeProvider.isDarkThemeEnabled

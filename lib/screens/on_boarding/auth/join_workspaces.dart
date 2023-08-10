@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/home_screen.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -84,10 +83,10 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                         ? Center(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.6,
-                              child: const CustomText(
+                              child:  CustomText(
                                 'Currently you have no invited workspaces to join.',
                                 type: FontStyle.Small,
-                                color: greyColor,
+                                color: themeProvider.themeManager.primaryTextColor,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -185,7 +184,7 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                                     ['workspace']['name'],
                                                 type: FontStyle.Small,
                                                 fontWeight:
-                                                    FontWeightt.Semibold,
+                                                    FontWeightt.Medium,
                                               ),
                                               const SizedBox(
                                                 height: 3,

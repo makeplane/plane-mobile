@@ -57,15 +57,6 @@ class _ButtonState extends State<Button> {
                         : Colors.transparent),
           ),
           child: Center(
-            // child: Text(
-            //   widget.text,
-            //   style: TextStylingWidget.buttonText.copyWith(
-            //       color: (widget.filledButton && !widget.disable)
-            //           ? Colors.white
-            //           : widget.disable
-            //               ? greyColor
-            //               : widget.textColor ?? Colors.black),
-            // ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

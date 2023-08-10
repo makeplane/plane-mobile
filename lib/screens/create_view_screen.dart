@@ -117,7 +117,9 @@ class _CreateViewState extends ConsumerState<CreateView> {
                             const SizedBox(height: 5),
                             TextField(
                               controller: title,
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 fillColor: themeProvider.isDarkThemeEnabled
                                     ? darkBackgroundColor
                                     : lightBackgroundColor,
@@ -136,7 +138,9 @@ class _CreateViewState extends ConsumerState<CreateView> {
                             TextField(
                               maxLines: 6,
                               controller: description,
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 fillColor: themeProvider.isDarkThemeEnabled
                                     ? darkBackgroundColor
                                     : lightBackgroundColor,

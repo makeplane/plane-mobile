@@ -9,7 +9,8 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 class EditBlockSheet extends ConsumerStatefulWidget {
-  const EditBlockSheet({super.key, required this.title, required this.description});
+  const EditBlockSheet(
+      {super.key, required this.title, required this.description});
 
   final String title;
   final String description;
@@ -31,7 +32,6 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
 
   @override
   Widget build(BuildContext context) {
-
     var pageProvider = ref.watch(ProviderList.pageProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
@@ -84,7 +84,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
             TextField(
               controller: titleController,
               maxLines: 1,
-              decoration: kTextFieldDecoration.copyWith(
+              decoration:
+                  themeProvider.themeManager.textFieldDecoration.copyWith(
                 fillColor: themeProvider.isDarkThemeEnabled
                     ? darkBackgroundColor
                     : lightBackgroundColor,
@@ -109,7 +110,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
             TextField(
               controller: descriptionController,
               maxLines: 4,
-              decoration: kTextFieldDecoration.copyWith(
+              decoration:
+                  themeProvider.themeManager.textFieldDecoration.copyWith(
                 fillColor: themeProvider.isDarkThemeEnabled
                     ? darkBackgroundColor
                     : lightBackgroundColor,

@@ -154,7 +154,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             ),
                             TextFormField(
                               controller: email,
-                              decoration: kTextFieldDecoration.copyWith(),
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(),
                               validator: (val) {
                                 if (val!.isEmpty) {
                                   return '*Enter your email';
@@ -202,7 +204,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             sentCode
                                 ? TextFormField(
                                     controller: code,
-                                    decoration: kTextFieldDecoration,
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Please enter the code";

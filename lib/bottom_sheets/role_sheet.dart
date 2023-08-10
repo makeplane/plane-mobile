@@ -33,13 +33,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
         children: [
           Row(
             children: [
-              // const Text(
-              //   'Type',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.w600,
-              //   ),
-              // ),
               const CustomText(
                 'Role',
                 type: FontStyle.H6,
@@ -138,13 +131,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       onChanged: (val) {
                         // profileProvider.changeIndex(1);
                       }),
-                  // Text(
-                  //   'List View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
+                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[1],
@@ -190,13 +177,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       onChanged: (val) {
                         //profileProvider.changeIndex(2);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
+                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[2],
@@ -244,13 +225,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       onChanged: (val) {
                         // profileProvider.changeIndex(3);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
+               
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[3],
@@ -297,13 +272,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       onChanged: (val) {
                         //profileProvider.changeIndex(4);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
+                  
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[4],
@@ -350,13 +319,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       onChanged: (val) {
                         // profileProvider.changeIndex(5);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
+                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[5],
@@ -372,9 +335,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             width: double.infinity,
           ),
 
-          //  Expanded(child: Container()),
-
-          //long blue button to apply filter
         ],
       ),
     );

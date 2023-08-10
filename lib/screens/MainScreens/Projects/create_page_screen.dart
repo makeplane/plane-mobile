@@ -42,12 +42,13 @@ class CreatePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //form conatining title and description
-                         Row(
+                        Row(
                           children: [
                             CustomText(
                               'Page Title',
                               type: FontStyle.Small,
-                             color: themeProvider.themeManager.tertiaryTextColor,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                             const CustomText(
                               ' *',
@@ -59,7 +60,9 @@ class CreatePage extends ConsumerWidget {
                         const SizedBox(height: 5),
                         TextField(
                           controller: pageTitleController,
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             fillColor: themeProvider.isDarkThemeEnabled
                                 ? darkBackgroundColor
                                 : lightBackgroundColor,

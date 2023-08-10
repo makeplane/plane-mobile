@@ -87,7 +87,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   // hintText: 'Enter project name',
                   labelText: 'Project Name',
                   //avaid the label text from floating
@@ -147,11 +148,12 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
-                    // hintText: 'Enter detele my project',
-                    labelText: 'Enter "Delete my project"',
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    filled: true),
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
+                        // hintText: 'Enter detele my project',
+                        labelText: 'Enter "Delete my project"',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        filled: true),
                 validator: (value) {
                   if (value!.trim().toLowerCase() != 'delete my project') {
                     return 'Please enter "Delete my project"';
@@ -184,7 +186,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       child: CustomText(
                         'Cancel',
                         type: FontStyle.Medium,
-                              fontWeight: FontWeightt.Semibold,
+                        fontWeight: FontWeightt.Semibold,
                         color: themeProvider.isDarkThemeEnabled
                             ? Colors.white
                             : Colors.black,

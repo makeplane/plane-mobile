@@ -7,6 +7,7 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import '/utils/enums.dart';
+
 class JiraImport extends ConsumerStatefulWidget {
   const JiraImport({super.key});
 
@@ -245,7 +246,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   child: CustomText(
                                     'Member',
                                     type: FontStyle.Medium,
-                                     fontWeight: FontWeightt.Semibold,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
@@ -253,7 +254,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   child: CustomText(
                                     'Viewer',
                                     type: FontStyle.Medium,
-                                     fontWeight: FontWeightt.Semibold,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(
@@ -261,7 +262,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   child: CustomText(
                                     'Guest',
                                     type: FontStyle.Medium,
-                                     fontWeight: FontWeightt.Semibold,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                               ],
@@ -300,7 +301,9 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                         ),
                         const SizedBox(height: 5),
                         TextField(
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             fillColor: themeProvider.isDarkThemeEnabled
                                 ? darkBackgroundColor
                                 : lightBackgroundColor,
@@ -340,7 +343,9 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                         ),
                         const SizedBox(height: 5),
                         TextField(
-                          decoration: kTextFieldDecoration.copyWith(
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(
                             fillColor: themeProvider.isDarkThemeEnabled
                                 ? darkBackgroundColor
                                 : lightBackgroundColor,
@@ -396,7 +401,7 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                                   child: CustomText(
                                     'Admin',
                                     type: FontStyle.Medium,
-                                     fontWeight: FontWeightt.Semibold,
+                                    fontWeight: FontWeightt.Semibold,
                                   ),
                                 ),
                                 DropdownMenuItem(

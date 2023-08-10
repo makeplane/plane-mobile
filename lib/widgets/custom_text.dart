@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import '../utils/enums.dart';
@@ -16,19 +17,20 @@ Map<FontStyle, double> fontSIZE = {
   FontStyle.Medium: 16,
   FontStyle.Small: 14,
   FontStyle.XSmall: 12,
-
+  FontStyle.overline: 12
 };
-var lineHeight = {
-  FontStyle.H1: 44,
-  FontStyle.H2: 40,
-  FontStyle.H3: 36,
-  FontStyle.H4: 32,
-  FontStyle.H5: 28,
-  FontStyle.H6: 24,
-  FontStyle.Large: 26,
-  FontStyle.Medium: 24,
-  FontStyle.Small: 20,
-  FontStyle.XSmall: 20,
+Map<FontStyle, double> lineHeight = {
+  FontStyle.H1: 1.222,
+  FontStyle.H2: 1.25,
+  FontStyle.H3: 1.285,
+  FontStyle.H4: 1.333,
+  FontStyle.H5: 1.4,
+  FontStyle.H6: 1.333,
+  FontStyle.Large: 1.444,
+  FontStyle.Medium: 1.5,
+  FontStyle.Small: 1.42,
+  FontStyle.XSmall: 1.66,
+  FontStyle.overline: 1
 };
 var fontWEIGHT = {
   FontWeightt.Regular: FontWeight.w400,
@@ -36,6 +38,19 @@ var fontWEIGHT = {
   FontWeightt.Semibold: FontWeight.w600,
   FontWeightt.Bold: FontWeight.w700,
   FontWeightt.ExtraBold: FontWeight.w800,
+};
+Map<FontStyle, double> fontTRACKING = {
+  FontStyle.H1: -1,
+  FontStyle.H2: -1,
+  FontStyle.H3: -1,
+  FontStyle.H4: -1,
+  FontStyle.H5: -1,
+  FontStyle.H6: -1,
+  FontStyle.Large: 0,
+  FontStyle.Medium: 0,
+  FontStyle.Small: 0,
+  FontStyle.XSmall: 0,
+  FontStyle.overline: 0
 };
 
 Color APP_TEXT_GREY = const Color.fromRGBO(135, 135, 135, 1);
@@ -79,11 +94,21 @@ class CustomText extends ConsumerWidget {
   }
 
   TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider) {
-    return TextStyle(
+    return GoogleFonts.inter(
+        letterSpacing: (type != null )
+                // (type == FontStyle.H1 ||
+                //     type == FontStyle.H2 ||
+                //     type == FontStyle.H3 ||
+                //     type == FontStyle.H4 ||
+                //     type == FontStyle.H5 ||
+                //     type == FontStyle.H6
+                //     ))
+            ? -(fontSIZE[type]! * 0.02)
+            : 0,
+        height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:
             fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,
-        fontFamily: APP_FONT,
         color: color ?? themeProvider.themeManager.primaryTextColor);
   }
 }

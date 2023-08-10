@@ -264,7 +264,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                 width: MediaQuery.of(context).size.width - 201,
                                 child: TextFormField(
                                   controller: labelContrtoller,
-                                  decoration: kTextFieldDecoration,
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration,
                                 ),
                               ),
                               const Spacer(),
@@ -390,7 +391,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                               Expanded(
                                 child: TextFormField(
                                   controller: colorController,
-                                  decoration: kTextFieldDecoration.copyWith(
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
                                     border: InputBorder.none,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(

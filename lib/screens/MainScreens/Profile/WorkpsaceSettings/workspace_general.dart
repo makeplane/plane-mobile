@@ -247,7 +247,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     readOnly: workspaceProvider.role != Role.admin &&
                         workspaceProvider.role != Role.member,
                     controller: _workspaceNameController,
-                    decoration: kTextFieldDecoration.copyWith(
+                    decoration:
+                        themeProvider.themeManager.textFieldDecoration.copyWith(
                       fillColor: themeProvider.isDarkThemeEnabled
                           ? darkBackgroundColor
                           : lightBackgroundColor,
@@ -286,7 +287,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     },
                     readOnly: true,
                     //style: ,
-                    decoration: kTextFieldDecoration.copyWith(
+                    decoration:
+                        themeProvider.themeManager.textFieldDecoration.copyWith(
                       fillColor: themeProvider.isDarkThemeEnabled
                           ? darkBackgroundColor
                           : lightBackgroundColor,
@@ -333,7 +335,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                 //   elevation: 1,
                 //   //padding to dropdown
                 //   isExpanded: false,
-                //   decoration: kTextFieldDecoration.copyWith(
+                //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
                 //     ),
 
                 //   // underline: Container(color: Colors.transparent),

@@ -70,7 +70,8 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
             const SizedBox(height: 5),
             TextField(
               controller: pageTitleController,
-              decoration: kTextFieldDecoration.copyWith(
+              decoration:
+                  themeProvider.themeManager.textFieldDecoration.copyWith(
                 fillColor: themeProvider.isDarkThemeEnabled
                     ? darkBackgroundColor
                     : lightBackgroundColor,

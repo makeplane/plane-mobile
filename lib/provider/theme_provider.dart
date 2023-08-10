@@ -18,22 +18,17 @@ class ThemeProvider extends ChangeNotifier {
     isDarkThemeEnabled = false;
   }
 
-  Future<void> changeTheme() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+  Future<void> toggleTheme(THEME theme) async {
+    this.theme = theme;
+    themeManager = ThemeManager(theme);
+    notifyListeners();
+  }
 
-    if (isDarkThemeEnabled) {
-      isDarkThemeEnabled = false;
-      theme = THEME.dark;
-      themeManager = ThemeManager(theme);
-      notifyListeners();
-      await pref.setBool('isDarkThemeEnabled', isDarkThemeEnabled);
-    } else {
-      isDarkThemeEnabled = true;
-      theme = THEME.light;
-      themeManager = ThemeManager(theme);
-      notifyListeners();
-      await pref.setBool('isDarkThemeEnabled', isDarkThemeEnabled);
-    }
+  Future<void> changeTheme(THEME theme) async {
+    this.theme = theme;
+    themeManager = ThemeManager(theme);
+    await prefs.setString('selected-theme', fromTHEME(theme: theme));
+    notifyListeners();
   }
 
   Future<void> getTheme() async {
@@ -41,6 +36,11 @@ class ThemeProvider extends ChangeNotifier {
       await prefs.setString('selected-theme', 'L');
     } else {
       theme = themeParser(theme: prefs.getString('selected-theme')!);
+    }
+    if (theme == THEME.dark) {
+      isDarkThemeEnabled = true;
+    } else {
+      isDarkThemeEnabled = false;
     }
     themeManager = ThemeManager(theme);
     // print(themeManager);

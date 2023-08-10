@@ -1,16 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:plane_startup/bottom_sheets/permission_role_sheet.dart';
 import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
-
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../utils/constants.dart';
@@ -25,9 +22,18 @@ class InviteCOWorkers extends ConsumerStatefulWidget {
 
 class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
   final formKey = GlobalKey<FormState>();
-  List emails = [];
+  List invitations = [
+    {'email': TextEditingController(), 'role': Role.guest, "is_valid": true}
+  ];
+
+  bool validateEmail(String email) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+  }
+
   TextEditingController inviteEmailController = TextEditingController();
-  bool validEmail = false;
+  bool allFine = false;
   @override
   Widget build(BuildContext context) {
     var prov = ref.watch(ProviderList.workspaceProvider);
@@ -58,157 +64,236 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const CustomRichText(
-                    widgets: [
-                      TextSpan(text: 'Email'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
-                    ],
-                    type: FontStyle.Small,
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    controller: inviteEmailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: kTextFieldDecoration.copyWith(
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          if (validEmail) {
-                            setState(() {
-                              emails.add({
-                                "email": inviteEmailController.text,
-                                "role": 'Guest'
-                              });
-                              inviteEmailController.clear();
-                              validEmail = false;
-                            });
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              right: 10, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: validEmail ? primaryColor : lightGreeyColor,
-                          ),
-                          child: Icon(
-                            Icons.check,
-                            color: validEmail ? Colors.white : greyColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    onChanged: (value) => formKey.currentState!.validate(),
-                    validator: (email) {
-                      if (RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(email!)) {
-                        setState(() {
-                          validEmail = true;
-                        });
-                      }
-                      return null;
-                    },
-                  ),
-                  emails.isEmpty
-                      ? Container()
-                      : Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: emails.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: invitations.length,
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        CircleAvatar(
-                                          backgroundColor: Colors.purple,
-                                          child: CustomText(
-                                            emails[index]['email']
-                                                .toString()
-                                                .toUpperCase()[0],
-                                            color: Colors.white,
+                                        CustomText('Co-workers Email',
                                             type: FontStyle.Small,
-                                          ),
-                                        ),
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor),
                                         const SizedBox(
-                                          width: 10,
+                                          height: 5,
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              emails[index]['email'],
-                                              type: FontStyle.XSmall,
-                                              fontWeight: FontWeightt.Semibold,
-                                              color: themeProvider
-                                                  .themeManager.textonColor,
-                                            ),
-                                            Row(
-                                              children: [
-                                                CustomText(
-                                                  'Invited',
-                                                  type: FontStyle.Small,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .placeholderTextColor,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        )
+                                        TextFormField(
+                                          controller: invitations[index]
+                                              ['email'],
+                                          style: themeProvider
+                                              .themeManager.textFieldTextStyle,
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          decoration: themeProvider
+                                              .themeManager.textFieldDecoration
+                                              .copyWith(),
+                                          onChanged: (value) =>
+                                              formKey.currentState!.validate(),
+                                          validator: (email) {
+                                            if (RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                .hasMatch(email!)) {
+                                              invitations[index]["is_valid"] =
+                                                  true;
+                                              return null;
+                                            }
+                                            invitations[index]["is_valid"] =
+                                                false;
+                                            return null;
+                                          },
+                                        ),
                                       ],
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          emails.removeAt(index);
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.close,
-                                        size: 18,
-                                        color: Colors.red,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
+                                  ),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText('Role',
+                                            type: FontStyle.Small,
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await showModalBottomSheet(
+                                                context: context,
+                                                constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.5,
+                                                ),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                builder: (context) {
+                                                  return PermissionRoleSheet(
+                                                    data: invitations[index],
+                                                  );
+                                                });
+                                            if (invitations[index]['role'] ==
+                                                Role.none) {
+                                              invitations.removeAt(index);
+                                            }
+                                            setState(() {});
+                                          },
+                                          child: TextFormField(
+                                            enabled: false,
+                                            style: themeProvider
+                                                .themeManager.textFieldTextStyle
+                                                .copyWith(
+                                              fontSize:
+                                                  fontSIZE[FontStyle.Small],
+                                              height:
+                                                  lineHeight[FontStyle.Small],
+                                            ),
+                                            controller: TextEditingController(
+                                                text: (invitations[index]
+                                                            ['role'] as Role)
+                                                        .name
+                                                        .toUpperCase()[0] +
+                                                    (invitations[index]['role']
+                                                            as Role)
+                                                        .name
+                                                        .substring(1)),
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            decoration: themeProvider
+                                                .themeManager
+                                                .textFieldDecoration
+                                                .copyWith(
+                                                    suffixIcon: Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
+                                            )),
+                                            onChanged: (value) => formKey
+                                                .currentState!
+                                                .validate(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              invitations[index]['is_valid'] == false
+                                  ? CustomText('* Please enter valid email',
+                                      type: FontStyle.Small,
+                                      color: themeProvider
+                                          .themeManager.textErrorColor)
+                                  : Container(),
+                            ],
                           ),
-                        ),
+                        );
+                      }),
+                  GestureDetector(
+                    onTap: () {
+                      formKey.currentState!.validate();
+                      for (var item in invitations) {
+                        if (item["is_valid"] == false) {
+                          setState(() {});
+                          log("HERRE");
+                          return;
+                        }
+                      }
+                      invitations.add({
+                        'email': TextEditingController(),
+                        'role': Role.guest,
+                        "is_valid": true
+                      });
+                      inviteEmailController.clear();
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 10),
+                      child: const Row(
+                        children: [
+                          //add icon
+                          Icon(
+                            Icons.add,
+                            color: primaryColor,
+                            size: 20,
+                          ),
+
+                          //text
+                          CustomText(
+                            'Add another',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            color: primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
                   Hero(
                     tag: 'button2',
                     child: Button(
+                      textColor: invitations.isEmpty ||
+                              !validateEmail(invitations[0]['email'].text)
+                          ? themeProvider.themeManager.placeholderTextColor
+                          : Colors.white,
+                      color: invitations.isEmpty ||
+                              !validateEmail(invitations[0]['email'].text)
+                          ? themeProvider.themeManager.disabledButtonColor
+                          : primaryColor,
                       text: 'Continue',
-                      disable: emails.isEmpty ? true : false,
+                      disable: invitations.isEmpty ||
+                              !validateEmail(invitations[0]['email'].text)
+                          ? true
+                          : false,
                       ontap: () async {
-                        if (emails.isEmpty) return;
+                        formKey.currentState!.validate();
+                        for (var item in invitations) {
+                          if (item["is_valid"] == false) {
+                            setState(() {});
+                            log("HERRE");
+                            return;
+                          }
+                        }
 
-                        var roles = {
-                          'Admin': "15",
-                          'Member': "10",
-                          'Owner': "20",
-                          'Guest': "5",
-                        };
-
-                        var data = emails
+                        var data = invitations
                             .map((e) => {
-                                  "email": e['email'],
-                                  "role": roles[e['role']],
+                                  "email": e['email'].text,
+                                  "role": fromRole(role: e['role']),
                                 })
                             .toList();
                         log(data.toString());
+                    
                         await prov.inviteToWorkspace(
                             slug: prov.workspaces.last['slug'] ??
                                 profileProvider.userProfile
@@ -275,7 +360,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                     text: 'Skip',
                     filledButton: false,
                     removeStroke: true,
-                    textColor: greyColor,
+                    textColor: themeProvider.themeManager.placeholderTextColor,
                     ontap: () async {
                       // await prov.getWorkspaceInvitations();
                       // if (prov.workspaceInvitations.isNotEmpty) {
@@ -333,9 +418,9 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.arrow_back,
-                          color: greyColor,
+                          color: themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         ),
                         const SizedBox(

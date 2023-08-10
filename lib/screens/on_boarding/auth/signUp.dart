@@ -99,7 +99,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                         ),
                         TextFormField(
                           controller: email,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your email';
@@ -143,7 +145,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                         TextFormField(
                           obscureText: true,
                           controller: password,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your password';
@@ -176,7 +180,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                         TextFormField(
                           obscureText: true,
                           controller: confirmPassword,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your password';

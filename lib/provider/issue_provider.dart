@@ -127,8 +127,7 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
-      print(
-          '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}history/');
+    
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
@@ -171,7 +170,7 @@ class IssueProvider with ChangeNotifier {
       subscriptionState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      print('===== ERROR ');
+    //  print('===== ERROR ');
       log(e.response.toString());
       subscriptionState = StateEnum.error;
       notifyListeners();

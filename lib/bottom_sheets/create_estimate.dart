@@ -6,6 +6,7 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/custom_text.dart';
 import '../utils/enums.dart';
+
 class CreateEstimate extends ConsumerStatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final estimatedata;
@@ -90,7 +91,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type:  FontStyle.Small,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -103,7 +104,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: titleController,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -125,7 +127,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                       ),
                       TextFormField(
                         controller: descriptionController,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -140,7 +143,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                             ),
                           ),
                         ],
-                        type:FontStyle.Small,
+                        type: FontStyle.Small,
                       ),
                       Container(
                         height: 10,
@@ -153,7 +156,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_1,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -181,7 +185,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_2,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -209,7 +214,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_3,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -237,7 +243,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_4,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -265,7 +272,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_5,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                       Container(
                         height: 20,
@@ -293,7 +301,8 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           return null;
                         },
                         controller: point_6,
-                        decoration: kTextFieldDecoration,
+                        decoration:
+                            themeProvider.themeManager.textFieldDecoration,
                       ),
                     ],
                   ),

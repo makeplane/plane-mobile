@@ -230,7 +230,9 @@ class _ProjectInviteMembersSheetState
                               child: TextFormField(
                                 controller:
                                     workspaceProvider.invitingMembersRole,
-                                decoration: kTextFieldDecoration.copyWith(
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
                                   fillColor: themeProvider.isDarkThemeEnabled
                                       ? darkBackgroundColor
                                       : lightBackgroundColor,
@@ -264,7 +266,9 @@ class _ProjectInviteMembersSheetState
                               },
                               controller: messageController,
                               maxLines: 6,
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 fillColor: themeProvider.isDarkThemeEnabled
                                     ? darkBackgroundColor
                                     : lightBackgroundColor,

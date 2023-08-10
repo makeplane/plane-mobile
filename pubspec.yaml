@@ -43,6 +43,7 @@ dependencies:
   flutter_svg: ^2.0.5
   fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.4.0
+  google_fonts: ^5.1.0
   google_sign_in: ^6.1.4
   http_parser: ^4.0.2
   image_picker: ^0.8.7+5

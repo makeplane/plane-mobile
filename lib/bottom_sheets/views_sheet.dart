@@ -500,9 +500,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     });
                                   },
                                   child: Container(
-                                    height: 40,
+                                    height: 35,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 8),
+                                        horizontal: 8, vertical: 6),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       color: tag['selected'] ?? false

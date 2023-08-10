@@ -48,7 +48,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
   Widget build(BuildContext context) {
     var prov = ref.watch(ProviderList.workspaceProvider);
     var themeProv = ref.watch(ProviderList.themeProvider);
-
+    var profileProvider = ref.watch(ProviderList.profileProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -183,7 +183,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                     decoration: kTextFieldDecoration.copyWith(
                                       isDense: true,
                                       prefixIcon: Padding(
-                                        padding: const EdgeInsets.only(left: 15),
+                                        padding:
+                                            const EdgeInsets.only(left: 15),
                                         // child: Text(
                                         //   "https://takeoff.plane.so/",
                                         //   style: TextStyle(fontSize: 16),
@@ -258,7 +259,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                         color: Colors.transparent,
                                         border: Border.all(
                                           color: themeProv.isDarkThemeEnabled
-                                              ? darkThemeBorder
+                                              ? const Color(0xFFE5E5E5)
                                               : const Color(0xFFE5E5E5),
                                         ),
                                         borderRadius: BorderRadius.circular(6),
@@ -340,15 +341,15 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                           if (prov.createWorkspaceState ==
                                               StateEnum.success) {
                                             if (!widget.fromHomeScreen) {
-                                              // profileProvider
-                                              //     .updateProfile(data: {
-                                              //   'onboarding_step': {
-                                              //     "workspace_join": false,
-                                              //     "profile_complete": true,
-                                              //     "workspace_create": true,
-                                              //     "workspace_invite": false
-                                              //   }
-                                              // });
+                                              profileProvider
+                                                  .updateProfile(data: {
+                                                'onboarding_step': {
+                                                  "workspace_join": false,
+                                                  "profile_complete": true,
+                                                  "workspace_create": true,
+                                                  "workspace_invite": false
+                                                }
+                                              });
                                               Navigator.push(
                                                 Const.globalKey.currentContext!,
                                                 MaterialPageRoute(
@@ -370,6 +371,61 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                             : Container(),
 
                         const Spacer(),
+                        prov.selectedWorkspace != null && !widget.fromHomeScreen
+                            ? Button(
+                                text: 'Skip',
+                                filledButton: false,
+                                removeStroke: true,
+                                textColor: greyColor,
+                                ontap: () async {
+                                  // await prov.getWorkspaceInvitations();
+                                  // if (prov.workspaceInvitations.isNotEmpty) {
+                                  //   profileProvider.updateProfile(data: {
+                                  //     'onboarding_step': {
+                                  //       "workspace_join": false,
+                                  //       "profile_complete": true,
+                                  //       "workspace_create": true,
+                                  //       "workspace_invite": true
+                                  //     }
+                                  //   });
+                                  //   Navigator.pushAndRemoveUntil(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => const JoinWorkspaces(
+                                  //         fromOnboard: true,
+                                  //       ),
+                                  //     ),
+                                  //     (Route<dynamic> route) => false,
+                                  //   );
+                                  // } else {
+                                  await prov.ref!
+                                      .read(ProviderList.profileProvider)
+                                      .updateIsOnBoarded(val: true);
+                                  await profileProvider.updateProfile(data: {
+                                    'onboarding_step': {
+                                      "workspace_join": true,
+                                      "profile_complete": true,
+                                      "workspace_create": true,
+                                      "workspace_invite": false
+                                    }
+                                  });
+                                  await ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .getWorkspaces();
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const InviteCOWorkers(
+                                              // fromSignUp: true,
+                                              ),
+                                    ),
+                                    (Route<dynamic> route) => false,
+                                  );
+                                  // }
+                                },
+                              )
+                            : Container(),
 
                         Container(
                           padding: const EdgeInsets.only(bottom: 20),

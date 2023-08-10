@@ -227,9 +227,11 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
             ),
             subtitle: SizedBox(
               child: CustomText(
-                checkIfWorkspaceAdmin() ?
-                workspaceProvider.workspaceMembers[index]['member']['email']
-                : workspaceProvider.workspaceMembers[index]['member']['display_name'],
+                checkIfWorkspaceAdmin()
+                    ? workspaceProvider.workspaceMembers[index]['member']
+                        ['email']
+                    : workspaceProvider.workspaceMembers[index]['member']
+                        ['display_name'],
                 color: const Color.fromRGBO(133, 142, 150, 1),
                 textAlign: TextAlign.left,
                 type: FontStyle.Medium,
@@ -297,13 +299,13 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     bool isAdmin = false;
     for (var element in workspaceProvider.workspaceMembers) {
-      if(element['member']['id'] == profileProvider.userProfile.id && element['role'] == 20) {
+      if (element['member']['id'] == profileProvider.userProfile.id &&
+          element['role'] == 20) {
         isAdmin = true;
       }
     }
     return isAdmin;
   }
-
 }
 
 class ProjectMembersWidget extends ConsumerStatefulWidget {
@@ -536,7 +538,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     bool isAdmin = false;
     for (var element in projectsProvider.projectMembers) {
-      if(element['member']['id'] == profileProvider.userProfile.id && element['role'] == 20) {
+      if (element['member']['id'] == profileProvider.userProfile.id &&
+          element['role'] == 20) {
         isAdmin = true;
       }
     }

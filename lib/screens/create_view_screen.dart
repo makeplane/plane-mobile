@@ -98,20 +98,20 @@ class _CreateViewState extends ConsumerState<CreateView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             //form conatining title and description
-                             Row(
+                            Row(
                               children: [
-                                
-                               CustomText(
-                              'Title ',
-                              color: themeProvider.themeManager.tertiaryTextColor,
-                              type: FontStyle.Small,
-                            ),
-                            CustomText(
-                              '*',
-                              color: themeProvider.themeManager.textErrorColor,
-                              type: FontStyle.Small,
-                              
-                            ),
+                                CustomText(
+                                  'Title ',
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
+                                  type: FontStyle.Small,
+                                ),
+                                CustomText(
+                                  '*',
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
+                                  type: FontStyle.Small,
+                                ),
                               ],
                             ),
                             const SizedBox(height: 5),
@@ -125,11 +125,12 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                           
-                             CustomText(
+
+                            CustomText(
                               'Description',
                               type: FontStyle.Small,
-                              color: themeProvider.themeManager.tertiaryTextColor,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                             const SizedBox(height: 5),
                             TextField(
@@ -196,8 +197,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                           : lightSecondaryTextColor,
                                     ),
                                     const SizedBox(width: 10),
-                                    
-                                     CustomText(
+                                    CustomText(
                                       'Add Filter',
                                       type: FontStyle.Small,
                                       color: themeProvider
@@ -351,7 +351,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                 1),
                                                                             child: Center(
                                                                                 child: CustomText(
-                                                                              projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['email'][0].toString().toUpperCase(),
+                                                                              projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['first_name'][0].toString().toUpperCase(),
                                                                               color: Colors.white,
                                                                             )),
                                                                           ),
@@ -407,7 +407,6 @@ class _CreateViewState extends ConsumerState<CreateView> {
                           text: 'Create View',
                           ontap: () async {
                             try {
-                              
                               setState(() {
                                 loading = true;
                               });
@@ -492,7 +491,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               //   'processing...',
                               //   style: TextStylingWidget.smallText,
                               // )
-                               const CustomText(
+                              const CustomText(
                                 'Loading...',
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Medium,

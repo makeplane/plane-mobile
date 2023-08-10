@@ -23,6 +23,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreads
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/completion_percentage.dart';
+import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/empty.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -204,54 +205,40 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       },
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkPrimaryBackgroundDefaultColor
-              : lightPrimaryBackgroundDefaultColor,
-          elevation: 0,
+        appBar: CustomAppBar(
+          // backgroundColor: themeProvider.isDarkThemeEnabled
+          //     ? darkPrimaryBackgroundDefaultColor
+          //     : lightPrimaryBackgroundDefaultColor,
+          // elevation: 0,
           centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                // issueProvider.issuesList = tempIssuesList;
-                issueProvider.getIssues(
-                  slug: ref
-                      .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
-                      .workspaceSlug,
-                  projID: projectProvider.currentProject['id'],
-                );
-                modulesProvider.selectedIssues = [];
-                cyclesProvider.selectedIssues = [];
-                issueProvider.issues.projectView =
-                    issueProvider.tempProjectView;
-                issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
-                issueProvider.issues.orderBY = issueProvider.tempOrderBy;
-                issueProvider.issues.issueType = issueProvider.tempIssueType;
+          onPressed: () {
+            // issueProvider.issuesList = tempIssuesList;
+            issueProvider.getIssues(
+              slug: ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+              projID: projectProvider.currentProject['id'],
+            );
+            modulesProvider.selectedIssues = [];
+            cyclesProvider.selectedIssues = [];
+            issueProvider.issues.projectView = issueProvider.tempProjectView;
+            issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
-                issueProvider.issues.filters = issueProvider.tempFilters;
+            issueProvider.issues.orderBY = issueProvider.tempOrderBy;
+            issueProvider.issues.issueType = issueProvider.tempIssueType;
 
-                issueProvider.showEmptyStates =
-                    issueProvider.issueView["showEmptyGroups"];
-                log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.close,
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkPrimaryTextColor
-                    : lightPrimaryTextColor,
-              )),
-          title: Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-            ),
-            child: CustomText(
-              widget.fromModule ? widget.moduleName! : widget.cycleName!,
-              // color: themeProvider.primaryTextColor,
-              type: FontStyle.Small,
-            ),
-          ),
+            issueProvider.issues.filters = issueProvider.tempFilters;
+
+            issueProvider.showEmptyStates =
+                issueProvider.issueView["showEmptyGroups"];
+            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+            Navigator.pop(context);
+          },
+
+          text: widget.fromModule ? widget.moduleName! : widget.cycleName!,
+          // color: themeProvider.primaryTextColor,
         ),
         body: isLoading
             ? Center(
@@ -2110,7 +2097,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                           null)
                                   ? detailData[widget.fromModule
                                           ? 'lead_detail'
-                                          : 'owned_by']['email'][0]
+                                          : 'owned_by']['first_name'][0]
                                       .toString()
                                       .toUpperCase()
                                   : '',

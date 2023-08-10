@@ -166,7 +166,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                       child: CustomText(
                                           widget.data[index]
                                                   ['triggered_by_details']
-                                                  ['email'][0]
+                                                  ['first_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           // color: Colors.black,

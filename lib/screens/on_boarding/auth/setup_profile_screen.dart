@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
@@ -45,6 +46,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     final prov = ref.watch(ProviderList.profileProvider);
+    final workspaceProv = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     // log(dropDownValue.toString());
     return Scaffold(
       //backgroundColor: themeProvider.backgroundColor,
@@ -271,10 +274,45 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         "workspace_invite": false
                                       }
                                     });
-                                    Navigator.of(context).push(
+                                    await workspaceProv
+                                        .getWorkspaceInvitations();
+                                    if (workspaceProv
+                                        .workspaceInvitations.isNotEmpty) {
+                                      // profileProvider.updateProfile(data: {
+                                      //   'onboarding_step': {
+                                      //     "workspace_join": false,
+                                      //     "profile_complete": true,
+                                      //     "workspace_create": false,
+                                      //     "workspace_invite": false
+                                      //   }
+                                      // });
+                                      Navigator.push(
+                                        context,
                                         MaterialPageRoute(
-                                            builder: (ctx) =>
-                                                const SetupWorkspace()));
+                                          builder: (context) =>
+                                              const JoinWorkspaces(
+                                            fromOnboard: true,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      // await workspaceProv.ref!
+                                      //     .read(ProviderList.profileProvider)
+                                      //     .updateIsOnBoarded(val: true);
+                                      // await profileProvider
+                                      //     .updateProfile(data: {
+                                      //   'onboarding_step': {
+                                      //     "workspace_join": true,
+                                      //     "profile_complete": true,
+                                      //     "workspace_create": false,
+                                      //     "workspace_invite": false
+                                      //   }
+                                      // });
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (ctx) =>
+                                                  const SetupWorkspace()));
+                                    }
                                   },
                                   child: const Button(
                                     text: 'Continue',

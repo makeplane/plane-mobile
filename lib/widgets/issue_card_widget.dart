@@ -423,7 +423,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ),
                               )
                             : Container(),
-                    provider.issues.displayProperties.dueDate == true
+                    provider.issues.displayProperties.startDate == true
                         ? Container(
                             height: 30,
                             padding: const EdgeInsets.only(
@@ -437,6 +437,27 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
                                       ['start_date'] ??
+                                  'Start date',
+                              type: FontStyle.XSmall,
+                              color:
+                                  themeProvider.themeManager.secondaryTextColor,
+                            ),
+                          )
+                        : Container(),
+                    provider.issues.displayProperties.dueDate == true
+                        ? Container(
+                            height: 30,
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: themeProvider.isDarkThemeEnabled
+                                        ? darkThemeBorder
+                                        : lightGreeyColor),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: CustomText(
+                              provider.issuesResponse[widget.cardIndex]
+                                      ['target_date'] ??
                                   'Due date',
                               type: FontStyle.XSmall,
                               color:

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -514,6 +516,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                         null
                                                     ? Container()
                                                     : estimateWidget(),
+                                                const SizedBox(
+                                                    height:
+                                                        spaceBetweenSectionsAndItems),
+                                                startDateWidget(),
                                                 const SizedBox(
                                                     height:
                                                         spaceBetweenSectionsAndItems),
@@ -1980,6 +1986,152 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                 issueID: widget.issueId,
                                 data: {
                                   "target_date": null,
+                                },
+                                refs: ref);
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            size: 20,
+                            color: greyColor,
+                          ),
+                        )
+                      ],
+                    )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget startDateWidget() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    var issueProvider = ref.watch(ProviderList.issueProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    return Container(
+      height: 45,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: themeProvider.isDarkThemeEnabled
+            ? darkBackgroundColor
+            : lightBackgroundColor,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          color: getBorderColor(themeProvider),
+        ),
+      ),
+      child: InkWell(
+        onTap: () async {
+          if (projectProvider.role != Role.admin &&
+              projectProvider.role != Role.member) {
+            CustomToast().showToast(context, accessRestrictedMSG);
+            return;
+          }
+          var date = await showDatePicker(
+            builder: (context, child) => Theme(
+              data: themeProvider.isDarkThemeEnabled
+                  ? ThemeData.dark().copyWith(
+                      colorScheme: const ColorScheme.dark(
+                        primary: primaryColor,
+                      ),
+                    )
+                  : ThemeData.light().copyWith(
+                      colorScheme: const ColorScheme.light(
+                        primary: primaryColor,
+                      ),
+                    ),
+              child: child!,
+            ),
+            context: context,
+            initialDate: issueProvider.issueDetails['start_date'] != null
+                ? DateTime.parse(issueProvider.issueDetails['start_date'])
+                : issueProvider.issueDetails['target_date'] != null
+                    ? DateTime.parse(issueProvider.issueDetails['target_date'])
+                            .isBefore(DateTime.now())
+                        ? DateTime.parse(
+                            issueProvider.issueDetails['target_date'])
+                        : DateTime.now()
+                    : DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: issueProvider.issueDetails['target_date'] != null
+                ? DateTime.parse(issueProvider.issueDetails['target_date'])
+                : DateTime(2025),
+          );
+
+          if (date != null) {
+            setState(() {
+              // issuesProvider.createIssuedata[
+              //     'due_date'] = date;
+            });
+            issueProvider.upDateIssue(
+                slug: ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+                projID:
+                    ref.read(ProviderList.projectProvider).currentProject['id'],
+                issueID: widget.issueId,
+                data: {
+                  "start_date": DateFormat('yyyy-MM-dd').format(date),
+                },
+                refs: ref);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            children: [
+              //icon
+              SvgPicture.asset('assets/svg_images/calendar_icon.svg',
+                  height: 15,
+                  width: 15,
+                  colorFilter:
+                      const ColorFilter.mode(greyColor, BlendMode.srcIn)),
+              const SizedBox(width: 10),
+              const CustomText(
+                'Start Date',
+                type: FontStyle.Small,
+                color: Color.fromRGBO(143, 143, 147, 1),
+              ),
+              Expanded(child: Container()),
+              issueProvider.issueDetails['start_date'] == null
+                  ? const Row(
+                      children: [
+                        CustomText(
+                          'Select',
+                          type: FontStyle.Small,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          //antenna signal icon
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Color.fromRGBO(143, 143, 147, 1),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        CustomText(
+                          DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                              issueProvider.issueDetails['start_date'])),
+                          type: FontStyle.Small,
+                        ),
+                        const SizedBox(width: 10),
+                        InkWell(
+                          onTap: () {
+                            issueProvider.upDateIssue(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projID: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject['id'],
+                                issueID: widget.issueId,
+                                data: {
+                                  "start_date": null,
                                 },
                                 refs: ref);
                           },

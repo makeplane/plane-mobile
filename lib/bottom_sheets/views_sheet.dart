@@ -71,6 +71,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     {
       'name': 'Updated on',
       'selected': false,
+    },
+    {
+      'name': 'Start Date',
+      'selected': false,
     }
   ];
 
@@ -121,6 +125,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
         issueProvider.issues.displayProperties.createdOn;
     displayProperties[11]['selected'] =
         issueProvider.issues.displayProperties.updatedOn;
+    displayProperties[12]['selected'] =
+        issueProvider.issues.displayProperties.startDate;
     showEmptyStates = issueProvider.showEmptyStates;
     super.initState();
   }
@@ -630,6 +636,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       priority: displayProperties[4]['selected'],
                       createdOn: displayProperties[10]['selected'],
                       updatedOn: displayProperties[11]['selected'],
+                      startDate: displayProperties[12]['selected'],
                     );
 
                     if (widget.issueCategory == IssueCategory.cycleIssues) {

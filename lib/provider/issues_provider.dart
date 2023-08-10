@@ -81,6 +81,7 @@ class IssuesProvider extends ChangeNotifier {
           estimate: false,
           assignee: false,
           dueDate: false,
+          startDate: false,
           id: false,
           label: false,
           state: false,
@@ -557,6 +558,9 @@ class IssuesProvider extends ChangeNotifier {
             if (createIssuedata['due_date'] != null)
               "target_date":
                   DateFormat('yyyy-MM-dd').format(createIssuedata['due_date']),
+            if (createIssuedata['start_date'] != null)
+              "start_date": DateFormat('yyyy-MM-dd')
+                  .format(createIssuedata['start_date']),
             if (createIssueParentId.isNotEmpty) "parent": createIssueParentId
           });
       log(response.data.toString());
@@ -781,6 +785,7 @@ class IssuesProvider extends ChangeNotifier {
                 "priority": false,
                 "state": true,
                 "sub_issue_count": false,
+                "start_date": false,
               },
             });
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -812,6 +817,8 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['priority'];
           cyclesProvider.issues.displayProperties.estimate =
               cyclesProvider.issueProperty['properties']['estimate'];
+          cyclesProvider.issues.displayProperties.startDate =
+              cyclesProvider.issueProperty['properties']['start_date'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
               cyclesProvider.issues.displayProperties;
         } else if (issueCategory == IssueCategory.moduleIssues) {
@@ -835,6 +842,8 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issueProperty['properties']['priority'];
           modulesProvider.issues.displayProperties.estimate =
               modulesProvider.issueProperty['properties']['estimate'];
+          modulesProvider.issues.displayProperties.startDate =
+              modulesProvider.issueProperty['properties']['start_date'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =
               modulesProvider.issues.displayProperties;
         } else {
@@ -857,6 +866,8 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['properties']['priority'];
           issues.displayProperties.estimate =
               issueProperty['properties']['estimate'];
+          issues.displayProperties.startDate =
+              issueProperty['properties']['start_date'] ?? false;
 
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
@@ -912,6 +923,7 @@ class IssuesProvider extends ChangeNotifier {
             "sub_issue_count": properties.subIsseCount,
             'updated_on': properties.updatedOn,
             'created_on': properties.createdOn,
+            'start_date': properties.startDate,
           },
           "user": ref!.read(ProviderList.profileProvider).userProfile.id
         },

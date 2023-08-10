@@ -80,6 +80,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     super.dispose();
   }
 
+  DateTime? startDate;
+  DateTime? dueDate;
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
@@ -938,7 +941,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       )
                                     : Container(),
                                 const SizedBox(height: 8),
-                                //a container containing text view all in center
                                 expanded
                                     ? Container(
                                         height: 45,
@@ -982,13 +984,170 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 child: child!,
                                               ),
                                               context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime.now(),
+                                              initialDate: DateTime.now()
+                                                      .isAfter(dueDate ??
+                                                          DateTime.now())
+                                                  ? dueDate ?? DateTime.now()
+                                                  : DateTime.now(),
+                                              firstDate: DateTime(2020),
+                                              lastDate:
+                                                  dueDate ?? DateTime(2025),
+                                            );
+
+                                            if (date != null) {
+                                              setState(() {
+                                                startDate = date;
+                                                issuesProvider.createIssuedata[
+                                                    'start_date'] = date;
+                                              });
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            child: Row(
+                                              children: [
+                                                //icon
+                                                const Icon(
+                                                  //antenna signal icon
+                                                  Icons.calendar_month,
+                                                  color: Color.fromRGBO(
+                                                      143, 143, 147, 1),
+                                                ),
+                                                const SizedBox(width: 15),
+                                                const CustomText(
+                                                  'Start Date',
+                                                  type: FontStyle.Small,
+                                                  color: Color.fromRGBO(
+                                                      143, 143, 147, 1),
+                                                ),
+                                                Expanded(child: Container()),
+                                                issuesProvider.createIssuedata[
+                                                            'start_date'] ==
+                                                        null
+                                                    ? Row(
+                                                        children: [
+                                                          const CustomText(
+                                                            'Select',
+                                                            type:
+                                                                FontStyle.Small,
+                                                            // color: Colors.black,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Icon(
+                                                            //antenna signal icon
+                                                            Icons
+                                                                .keyboard_arrow_down,
+                                                            color: themeProvider
+                                                                    .isDarkThemeEnabled
+                                                                ? darkSecondaryTextColor
+                                                                : lightSecondaryTextColor,
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        children: [
+                                                          CustomText(
+                                                            DateFormat(
+                                                                    'yyyy-MM-dd')
+                                                                .format(issuesProvider
+                                                                        .createIssuedata[
+                                                                    'start_date']),
+                                                            type:
+                                                                FontStyle.Small,
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                startDate =
+                                                                    null;
+                                                                issuesProvider
+                                                                        .createIssuedata[
+                                                                    'start_date'] = null;
+                                                              });
+                                                            },
+                                                            child: const Icon(
+                                                              Icons.close,
+                                                              size: 20,
+                                                              color: greyColor,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+
+                                                //createIssuedata['due_date'] != null
+
+                                                //         setState(() {
+                                                //   issuesProvider.createIssuedata[
+                                                //       'due_date'] = date;
+                                                // })
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                                const SizedBox(height: 8),
+                                expanded
+                                    ? Container(
+                                        height: 45,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              themeProvider.isDarkThemeEnabled
+                                                  ? darkBackgroundColor
+                                                  : lightBackgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color:
+                                                getBorderColor(themeProvider),
+                                          ),
+                                        ),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            var date = await showDatePicker(
+                                              builder: (context, child) =>
+                                                  Theme(
+                                                data: themeProvider
+                                                        .isDarkThemeEnabled
+                                                    ? ThemeData.dark().copyWith(
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .dark(
+                                                          primary: primaryColor,
+                                                        ),
+                                                      )
+                                                    : ThemeData.light()
+                                                        .copyWith(
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .light(
+                                                          primary: primaryColor,
+                                                        ),
+                                                      ),
+                                                child: child!,
+                                              ),
+                                              context: context,
+                                              initialDate: DateTime.now()
+                                                      .isBefore(startDate ??
+                                                          DateTime.now())
+                                                  ? startDate ?? DateTime.now()
+                                                  : DateTime.now(),
+                                              firstDate:
+                                                  startDate ?? DateTime(2020),
                                               lastDate: DateTime(2025),
                                             );
 
                                             if (date != null) {
                                               setState(() {
+                                                dueDate = date;
                                                 issuesProvider.createIssuedata[
                                                     'due_date'] = date;
                                               });
@@ -1055,6 +1214,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           InkWell(
                                                             onTap: () {
                                                               setState(() {
+                                                                dueDate = null;
                                                                 issuesProvider
                                                                         .createIssuedata[
                                                                     'due_date'] = null;

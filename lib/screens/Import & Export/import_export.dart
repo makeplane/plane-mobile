@@ -8,6 +8,7 @@ import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImportEport extends ConsumerStatefulWidget {
   const ImportEport({super.key});
@@ -63,44 +64,49 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                       : lightSecondaryBackgroundColor,
                 ),
                 width: MediaQuery.of(context).size.width,
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
+                    const CustomText(
                       'Relocation Guide',
                       textAlign: TextAlign.left,
                       type: FontStyle.Small,
                       fontWeight: FontWeightt.Semibold,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    CustomText(
+                    const CustomText(
                       'You can now transfer all the issues that you\'ve created in other tracking services. This tool will guide you to relocate the issue to Plane.',
                       textAlign: TextAlign.left,
                       maxLines: 7,
                       type: FontStyle.Small,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        CustomText(
-                          'Read more',
-                          textAlign: TextAlign.left,
-                          type: FontStyle.Small,
-                          color: Color.fromRGBO(63, 118, 255, 1),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          size: 18,
-                          color: Color.fromRGBO(63, 118, 255, 1),
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        _launchUrl();
+                      },
+                      child: const Row(
+                        children: [
+                          CustomText(
+                            'Read more',
+                            textAlign: TextAlign.left,
+                            type: FontStyle.Small,
+                            color: Color.fromRGBO(63, 118, 255, 1),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 18,
+                            color: Color.fromRGBO(63, 118, 255, 1),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -359,5 +365,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    String url = 'https://docs.plane.so/importers/github';
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

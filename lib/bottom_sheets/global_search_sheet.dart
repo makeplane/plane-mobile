@@ -520,9 +520,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 20,
-        ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
         CustomText(
           'Help',
           type: FontStyle.Medium,

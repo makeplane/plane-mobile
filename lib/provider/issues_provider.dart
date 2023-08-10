@@ -776,13 +776,13 @@ class IssuesProvider extends ChangeNotifier {
             data: {
               "properties": {
                 "assignee": true,
-                "attachment_count": false,
-                "due_date": false,
-                "estimate": false,
+                "attachment_count": true,
+                "due_date": true,
+                "estimate": true,
                 "key": true,
-                "labels": false,
+                "labels": true,
                 "link": true,
-                "priority": false,
+                "priority": true,
                 "state": true,
                 "sub_issue_count": false,
                 "start_date": false,
@@ -794,6 +794,24 @@ class IssuesProvider extends ChangeNotifier {
           modulesProvider.issueProperty = response.data;
         } else {
           issueProperty = response.data;
+          issues.displayProperties.assignee =
+              issueProperty['properties']['assignee'];
+          issues.displayProperties.dueDate =
+              issueProperty['properties']['due_date'];
+          issues.displayProperties.id = issueProperty['properties']['key'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
+          issues.displayProperties.state = issueProperty['properties']['state'];
+          issues.displayProperties.subIsseCount =
+              issueProperty['properties']['sub_issue_count'];
+          issues.displayProperties.linkCount =
+              issueProperty['properties']['link'];
+          issues.displayProperties.attachmentCount =
+              issueProperty['properties']['attachment_count'];
+          issues.displayProperties.priority =
+              issueProperty['properties']['priority'];
+          issues.displayProperties.estimate =
+              issueProperty['properties']['estimate'];
         }
       } else {
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -804,7 +822,8 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['due_date'];
           cyclesProvider.issues.displayProperties.id =
               cyclesProvider.issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
               cyclesProvider.issueProperty['properties']['state'];
           cyclesProvider.issues.displayProperties.subIsseCount =
@@ -829,7 +848,8 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issueProperty['properties']['due_date'];
           modulesProvider.issues.displayProperties.id =
               modulesProvider.issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
           modulesProvider.issues.displayProperties.state =
               modulesProvider.issueProperty['properties']['state'];
           modulesProvider.issues.displayProperties.subIsseCount =
@@ -854,7 +874,8 @@ class IssuesProvider extends ChangeNotifier {
           issues.displayProperties.dueDate =
               issueProperty['properties']['due_date'];
           issues.displayProperties.id = issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
           issues.displayProperties.state = issueProperty['properties']['state'];
           issues.displayProperties.subIsseCount =
               issueProperty['properties']['sub_issue_count'];

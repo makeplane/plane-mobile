@@ -162,12 +162,12 @@ class _ProjectLeadAssigneeSheetState
                                       child: Center(
                                         child: CustomText(
                                           projectProvider.projectMembers[index]
-                                                  ['member']['email'][0]
+                                                  ['member']['first_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.black,
                                           type: FontStyle.Medium,
-                              fontWeight: FontWeightt.Semibold,
+                                          fontWeight: FontWeightt.Semibold,
                                         ),
                                       ),
                                     )
@@ -218,12 +218,12 @@ class _ProjectLeadAssigneeSheetState
                       //           child: Center(
                       //             child: CustomText(
                       //               projectProvider.projectMembers[index]['member']
-                      //                       ['email'][0]
+                      //                       ['first_name'][0]
                       //                   .toString()
                       //                   .toUpperCase(),
                       //               color: Colors.black,
                       //               type: FontStyle.Medium,
-                       ///       fontWeight: FontWeightt.Semibold,
+                      ///       fontWeight: FontWeightt.Semibold,
                       //             ),
                       //           ),
                       //         )

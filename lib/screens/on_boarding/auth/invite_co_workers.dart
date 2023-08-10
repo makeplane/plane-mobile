@@ -214,54 +214,57 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                 profileProvider.userProfile
                                     .workspace!['last_workspace_slug'],
                             email: data);
-                        await ref
-                            .watch(ProviderList.workspaceProvider)
-                            .getWorkspaceInvitations();
+                        // await ref
+                        //     .watch(ProviderList.workspaceProvider)
+                        //     .getWorkspaceInvitations();
+                        // profileProvider.updateProfile(data: {
+                        //   'onboarding_step': {
+                        //     "workspace_join": true,
+                        //     "profile_complete": true,
+                        //     "workspace_create": true,
+                        //     "workspace_invite": true
+                        //   }
+                        // });
+                        // if (prov.workspaceInvitations.isNotEmpty) {
+                        //   profileProvider.updateProfile(data: {
+                        //     'onboarding_step': {
+                        //       "workspace_join": true,
+                        //       "profile_complete": true,
+                        //       "workspace_create": true,
+                        //       "workspace_invite": true
+                        //     }
+                        //   });
+                        // Navigator.pushAndRemoveUntil(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const JoinWorkspaces(
+                        //       fromOnboard: true,
+                        //     ),
+                        //   ),
+                        //   (Route<dynamic> route) => false,
+                        // );
+                        // } else {
+                        await prov.ref!
+                            .read(ProviderList.profileProvider)
+                            .updateIsOnBoarded(val: true);
                         profileProvider.updateProfile(data: {
                           'onboarding_step': {
-                            "workspace_join": false,
+                            "workspace_join": true,
                             "profile_complete": true,
                             "workspace_create": true,
                             "workspace_invite": true
                           }
                         });
-                        if (prov.workspaceInvitations.isNotEmpty) {
-                          profileProvider.updateProfile(data: {
-                            'onboarding_step': {
-                              "workspace_join": false,
-                              "profile_complete": true,
-                              "workspace_create": true,
-                              "workspace_invite": true
-                            }
-                          });
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const JoinWorkspaces(
-                                fromOnboard: true,
-                              ),
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(
+                              fromSignUp: true,
                             ),
-                            (Route<dynamic> route) => false,
-                          );
-                        } else {
-                          profileProvider.updateProfile(data: {
-                            'onboarding_step': {
-                              "workspace_join": true,
-                              "profile_complete": true,
-                              "workspace_create": true,
-                              "workspace_invite": true
-                            }
-                          });
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(
-                                fromSignUp: true,
-                              ),
-                            ),
-                            (Route<dynamic> route) => false,
-                          );
-                        }
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                        // }
                       },
                     ),
                   ),
@@ -274,50 +277,50 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                     removeStroke: true,
                     textColor: greyColor,
                     ontap: () async {
-                      await prov.getWorkspaceInvitations();
-                      if (prov.workspaceInvitations.isNotEmpty) {
-                        profileProvider.updateProfile(data: {
-                          'onboarding_step': {
-                            "workspace_join": false,
-                            "profile_complete": true,
-                            "workspace_create": true,
-                            "workspace_invite": true
-                          }
-                        });
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const JoinWorkspaces(
-                              fromOnboard: true,
-                            ),
+                      // await prov.getWorkspaceInvitations();
+                      // if (prov.workspaceInvitations.isNotEmpty) {
+                      //   profileProvider.updateProfile(data: {
+                      //     'onboarding_step': {
+                      //       "workspace_join": false,
+                      //       "profile_complete": true,
+                      //       "workspace_create": true,
+                      //       "workspace_invite": true
+                      //     }
+                      //   });
+                      //   Navigator.pushAndRemoveUntil(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const JoinWorkspaces(
+                      //         fromOnboard: true,
+                      //       ),
+                      //     ),
+                      //     (Route<dynamic> route) => false,
+                      //   );
+                      // } else {
+                      await prov.ref!
+                          .read(ProviderList.profileProvider)
+                          .updateIsOnBoarded(val: true);
+                      await profileProvider.updateProfile(data: {
+                        'onboarding_step': {
+                          "workspace_join": true,
+                          "profile_complete": true,
+                          "workspace_create": true,
+                          "workspace_invite": true
+                        }
+                      });
+                      await ref
+                          .read(ProviderList.workspaceProvider)
+                          .getWorkspaces();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(
+                            fromSignUp: true,
                           ),
-                          (Route<dynamic> route) => false,
-                        );
-                      } else {
-                        await prov.ref!
-                            .read(ProviderList.profileProvider)
-                            .updateIsOnBoarded(val: true);
-                        await profileProvider.updateProfile(data: {
-                          'onboarding_step': {
-                            "workspace_join": true,
-                            "profile_complete": true,
-                            "workspace_create": true,
-                            "workspace_invite": true
-                          }
-                        });
-                        await ref
-                            .read(ProviderList.workspaceProvider)
-                            .getWorkspaces();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(
-                              fromSignUp: true,
-                            ),
-                          ),
-                          (Route<dynamic> route) => false,
-                        );
-                      }
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                      // }
                     },
                   ),
                   const SizedBox(

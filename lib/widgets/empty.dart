@@ -16,7 +16,7 @@ import 'package:plane_startup/utils/enums.dart';
 import 'custom_text.dart';
 
 class EmptyPlaceholder {
-  static Widget emptyCycles(BuildContext context,WidgetRef ref) {
+  static Widget emptyCycles(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -31,7 +31,7 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Cycles',
               type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
@@ -90,7 +90,7 @@ class EmptyPlaceholder {
 
   static Widget emptyIssues(BuildContext context,
       {String? cycleId, String? moduleId, WidgetRef? ref}) {
-        var themeProvider = ref!.watch(ProviderList.themeProvider);
+    var themeProvider = ref!.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -101,9 +101,9 @@ class EmptyPlaceholder {
         children: [
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Create New Issue',
-             type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -153,7 +153,7 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Issues',
-                     type: FontStyle.Small,
+                    type: FontStyle.Small,
                     fontWeight: FontWeightt.Medium,
                   )
                 ],
@@ -201,9 +201,8 @@ class EmptyPlaceholder {
                         ),
                         CustomText(
                           'Add Existing Issues',
-                            type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                
+                          type: FontStyle.Small,
+                          fontWeight: FontWeightt.Medium,
                         )
                       ],
                     ),
@@ -215,7 +214,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyModules(BuildContext context,WidgetRef ref) {
+  static Widget emptyModules(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -230,9 +229,9 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Modules',
-         type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -279,7 +278,6 @@ class EmptyPlaceholder {
                     'Add Module',
                     type: FontStyle.Small,
                     fontWeight: FontWeightt.Medium,
-                  
                   )
                 ],
               ),
@@ -305,7 +303,7 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Notifications',
               type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
@@ -328,7 +326,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyPages(BuildContext context,WidgetRef ref) {
+  static Widget emptyPages(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -425,9 +423,9 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Pages',
-          type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -470,7 +468,7 @@ class EmptyPlaceholder {
                   ),
                   CustomText(
                     'Add Page',
-                 type: FontStyle.Small,
+                    type: FontStyle.Small,
                     fontWeight: FontWeightt.Medium,
                   )
                 ],
@@ -482,7 +480,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyView(BuildContext context,WidgetRef ref) {
+  static Widget emptyView(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -547,9 +545,9 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'Views',
-        type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -618,9 +616,9 @@ class EmptyPlaceholder {
           Container(
             padding: const EdgeInsets.only(top: 35),
             width: width * 0.7,
-            child:  CustomText(
+            child: CustomText(
               'You are not a member of this project',
-        type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
               textAlign: TextAlign.center,
@@ -642,7 +640,10 @@ class EmptyPlaceholder {
             onTap: () {
               ref
                   .read(ProviderList.issuesProvider)
-                  .joinProject(projectId: projectId, slug: slug);
+                  .joinProject(projectId: projectId, slug: slug)
+                  .then((_) {
+                ref.read(ProviderList.projectProvider).getProjects(slug: slug);
+              });
             },
             child: Container(
               height: 40,
@@ -678,8 +679,8 @@ class EmptyPlaceholder {
                         ),
                         CustomText(
                           'Click to join',
-           type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
+                          type: FontStyle.Small,
+                          fontWeight: FontWeightt.Medium,
                         ),
                       ],
                     ),
@@ -690,8 +691,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyProject(BuildContext context,WidgetRef ref) {
-
+  static Widget emptyProject(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -710,9 +710,9 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'No projects yet',
-     type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -769,7 +769,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyLabels(BuildContext context,WidgetRef ref) {
+  static Widget emptyLabels(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -784,9 +784,9 @@ class EmptyPlaceholder {
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
-            child:  CustomText(
+            child: CustomText(
               'No labels yet',
-type: FontStyle.H5,
+              type: FontStyle.H5,
               fontWeight: FontWeightt.Semibold,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -850,7 +850,7 @@ type: FontStyle.H5,
                   ),
                   CustomText(
                     'Add Label',
-                  type: FontStyle.Small,
+                    type: FontStyle.Small,
                     fontWeight: FontWeightt.Medium,
                   )
                 ],

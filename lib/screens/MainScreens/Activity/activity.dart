@@ -89,12 +89,11 @@ class _ActivityState extends ConsumerState<Activity> {
                                                       activityProvider
                                                           .data[index]
                                                               ['actor_detail']
-                                                              ['email'][0]
+                                                              ['first_name'][0]
                                                           .toString()
                                                           .toUpperCase(),
                                                       // color: Colors.black,
-                                                      type:
-                                                          FontStyle.Medium,
+                                                      type: FontStyle.Medium,
                                                       color: Colors.white),
                                                 ),
                                               ),
@@ -360,8 +359,8 @@ class _ActivityState extends ConsumerState<Activity> {
                                                         CustomText(
                                                           '${activityFormat(activityProvider.data[index])} ',
                                                           fontSize: 14,
-                                                          type: FontStyle
-                                                              .Medium,
+                                                          type:
+                                                              FontStyle.Medium,
                                                           textAlign:
                                                               TextAlign.left,
                                                           maxLines: 4,

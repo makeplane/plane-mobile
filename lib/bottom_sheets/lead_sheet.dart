@@ -155,7 +155,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 alignment: Alignment.center,
                                 child: CustomText(
                                   projectProvider.projectMembers[index]
-                                          ['member']['email'][0]
+                                          ['member']['first_name'][0]
                                       .toString()
                                       .toUpperCase(),
                                   type: FontStyle.Small,

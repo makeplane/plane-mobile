@@ -214,6 +214,7 @@ InputDecoration kTextFieldDecoration = InputDecoration(
   labelStyle: const TextStyle(
     color: Color(0xFFA3A3A3),
   ),
+  contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
   alignLabelWithHint: true,
   errorBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Color.fromARGB(255, 253, 17, 0)),
@@ -343,7 +344,7 @@ THEME themeParser({required String theme}) {
   }
 }
 
-String fromTHEME({required THEME theme}){
+String fromTHEME({required THEME theme}) {
   switch (theme) {
     case THEME.light:
       return "L";
@@ -356,7 +357,6 @@ String fromTHEME({required THEME theme}){
     default:
       return "L";
   }
-
 }
 
 double height = MediaQuery.of(Const.globalKey.currentContext!).size.height;

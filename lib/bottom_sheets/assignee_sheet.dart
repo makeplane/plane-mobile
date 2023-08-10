@@ -7,7 +7,6 @@ import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
 
-
 class AssigneeSheet extends ConsumerStatefulWidget {
   final bool fromModuleDetail;
   const AssigneeSheet({super.key, this.fromModuleDetail = false});
@@ -59,7 +58,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       const CustomText(
+                      const CustomText(
                         'Select Assignees',
                         type: FontStyle.H4,
                         fontWeight: FontWeightt.Semibold,
@@ -177,7 +176,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                     alignment: Alignment.center,
                                     child: CustomText(
                                       projectProvider.projectMembers[index]
-                                              ['member']['email'][0]
+                                              ['member']['first_name'][0]
                                           .toString()
                                           .toUpperCase(),
                                       type: FontStyle.Small,

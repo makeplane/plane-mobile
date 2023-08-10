@@ -261,8 +261,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         ],
       ),
       body:
-          issueProvider.issueDetailState == StateEnum.loading 
-          ||
+          issueProvider.issueDetailState == StateEnum.loading ||
                   issueProvider.issueActivityState == StateEnum.loading
               ? Center(
                   child: SizedBox(
@@ -322,39 +321,40 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                         maxLines: null,
 
                                         controller: title,
-                                        decoration: InputDecoration(
-                                          errorStyle: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w600),
+                                        // decoration: InputDecoration(
+                                        //   errorStyle: const TextStyle(
+                                        //       fontSize: 16,
+                                        //       color: Colors.red,
+                                        //       fontWeight: FontWeight.w600),
 
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: getBorderColor(
-                                                    themeProvider),
-                                                width: 1.0),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(8)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.grey.shade200,
-                                                width: 1.0),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(8)),
-                                          ),
-                                          //set background color of text field
-                                          fillColor:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : lightBackgroundColor,
-                                          filled: true,
+                                        //   enabledBorder: OutlineInputBorder(
+                                        //     borderSide: BorderSide(
+                                        //         color: getBorderColor(
+                                        //             themeProvider),
+                                        //         width: 1.0),
+                                        //     borderRadius:
+                                        //         const BorderRadius.all(
+                                        //             Radius.circular(8)),
+                                        //   ),
+                                        //   focusedBorder: OutlineInputBorder(
+                                        //     borderSide: BorderSide(
+                                        //         color: Colors.grey.shade200,
+                                        //         width: 1.0),
+                                        //     borderRadius:
+                                        //         const BorderRadius.all(
+                                        //             Radius.circular(8)),
+                                        //   ),
+                                        //   //set background color of text field
+                                        //   fillColor:
+                                        //       themeProvider.isDarkThemeEnabled
+                                        //           ? darkBackgroundColor
+                                        //           : lightBackgroundColor,
+                                        //   filled: true,
 
-                                          //show hint text always
-                                          //  floatingLabelBehavior: FloatingLabelBehavior.always,
-                                        ),
+                                        //   //show hint text always
+                                        //   //  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                        // ),
+                                        decoration: kTextFieldDecoration,
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSections),

@@ -13,6 +13,7 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/profile_circle_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '/utils/enums.dart';
+
 class CycleActiveCard extends ConsumerStatefulWidget {
   final int index;
   const CycleActiveCard({required this.index, super.key});
@@ -390,7 +391,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                   child: Center(
                                     child: CustomText(
                                       cyclesProvider.cyclesActiveData[index]
-                                              ['owned_by']['email'][0]
+                                              ['owned_by']['first_name'][0]
                                           .toString()
                                           .toUpperCase(),
                                       color: Colors.white,

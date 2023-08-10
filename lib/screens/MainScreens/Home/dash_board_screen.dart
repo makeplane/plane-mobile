@@ -251,8 +251,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       children: [
                         const CustomText(
                           'Create a project',
-                      type: FontStyle.H5,
-                        fontWeight: FontWeightt.Semibold,
+                          type: FontStyle.H5,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         const SizedBox(height: 15),
                         const CustomText(
@@ -310,11 +310,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(10,10,10,0),
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                            
                               CustomText(
                                 gridCards[index],
                                 type: FontStyle.XSmall,
@@ -322,7 +321,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               const SizedBox(
                                 height: 5,
                               ),
-                             
                               CustomText(
                                 dashboardProvider.dashboardData[
                                             gridCardKeys[index]] !=
@@ -480,7 +478,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SetupWorkspace()));
+                          builder: (context) => const SetupWorkspace(
+                                fromHomeScreen: true,
+                              )));
                 },
                 child: CircleAvatar(
                   backgroundColor: themeProvider.isDarkThemeEnabled

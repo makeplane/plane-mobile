@@ -35,7 +35,6 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
         elevation: false,
         centerTitle: false,
         fontType: FontStyle.H4,
-        
         actions: [
           workspaceProvider.role != Role.admin &&
                   workspaceProvider.role != Role.member
@@ -174,37 +173,42 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   const SizedBox(
                                     width: 15,
                                   ),
-                                  CustomRichText(
-                                    //ype: RichFontStyle.Small,
-                                    fontSize: 14,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? Colors.grey.shade400
-                                        : darkBackgroundColor,
-                                    fontWeight: FontWeight.w500,
-                                    widgets: [
-                                      TextSpan(
-                                          text: myIssuesProvider.data[index]
-                                              ['project_detail']['identifier'],
-                                          style: TextStyle(
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : lightSecondaryTextColor,
-                                          )),
-                                      TextSpan(
-                                          text:
-                                              '-${myIssuesProvider.data[index]['sequence_id']}',
-                                          style: TextStyle(
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : lightSecondaryTextColor,
-                                          )),
-                                    ],
+                                  SizedBox(
+                                    // color: Colors.green,
+                                    width: 70,
+                                    child: CustomRichText(
+                                      //ype: RichFontStyle.Small,
+                                      fontSize: 14,
+                                      color: themeProvider.isDarkThemeEnabled
+                                          ? Colors.grey.shade400
+                                          : darkBackgroundColor,
+                                      fontWeight: FontWeight.w500,
+                                      widgets: [
+                                        TextSpan(
+                                            text: myIssuesProvider.data[index]
+                                                    ['project_detail']
+                                                ['identifier'],
+                                            style: TextStyle(
+                                              color: themeProvider
+                                                      .isDarkThemeEnabled
+                                                  ? darkSecondaryTextColor
+                                                  : lightSecondaryTextColor,
+                                            )),
+                                        TextSpan(
+                                            text:
+                                                '-${myIssuesProvider.data[index]['sequence_id']}',
+                                            style: TextStyle(
+                                              color: themeProvider
+                                                      .isDarkThemeEnabled
+                                                  ? darkSecondaryTextColor
+                                                  : lightSecondaryTextColor,
+                                            )),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
+                                  // const SizedBox(
+                                  //   width: 15,
+                                  // ),
                                   Expanded(
                                     child: CustomText(
                                       myIssuesProvider.data[index]['name'],

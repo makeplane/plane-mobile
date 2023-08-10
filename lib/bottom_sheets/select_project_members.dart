@@ -170,7 +170,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                           alignment: Alignment.center,
                                           child: CustomText(
                                             issuesProvider.members[index]
-                                                    ['member']['display_name'][0]
+                                                    ['member']['display_name']
+                                                    [0]
                                                 .toString()
                                                 .toUpperCase(),
                                             type: FontStyle.Small,

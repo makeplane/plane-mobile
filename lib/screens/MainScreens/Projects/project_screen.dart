@@ -144,8 +144,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         shrinkWrap: true,
                         separatorBuilder: (context, index) {
                           return projectProvider.projects[index]
-                                      ['is_favorite'] ==
-                                  false
+                                          ['is_favorite'] ==
+                                      false ||
+                                  projectProvider.projects[index]
+                                          ['is_member'] ==
+                                      false
                               ? Container()
                               : Container(
                                   margin: const EdgeInsets.only(
@@ -165,8 +168,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         itemCount: projectProvider.projects.length,
                         itemBuilder: (context, index) {
                           return projectProvider.projects[index]
-                                      ['is_favorite'] ==
-                                  false
+                                          ['is_favorite'] ==
+                                      false ||
+                                  projectProvider.projects[index]
+                                          ['is_member'] ==
+                                      false
                               ? Container()
                               : ListTile(
                                   onTap: () {
@@ -310,10 +316,10 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         },
                       ),
                       projectProvider.projects.isNotEmpty &&
-                              checkStarredProjects(
+                              checkUnstarredProject(
                                   projects: projectProvider.projects)
                           ? const CustomText(
-                              'All',
+                              'Projects',
                               // color: themeProvider.secondaryTextColor,
                               type: FontStyle.Small,
                             )
@@ -324,8 +330,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         shrinkWrap: true,
                         separatorBuilder: (context, index) {
                           return projectProvider.projects[index]
-                                      ['is_favorite'] ==
-                                  true
+                                          ['is_favorite'] ==
+                                      true ||
+                                  projectProvider.projects[index]
+                                          ['is_member'] ==
+                                      false
                               ? Container()
                               : Container(
                                   margin: const EdgeInsets.only(
@@ -345,8 +354,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         itemCount: projectProvider.projects.length,
                         itemBuilder: (context, index) {
                           return projectProvider.projects[index]
-                                      ['is_favorite'] ==
-                                  true
+                                          ['is_favorite'] ==
+                                      true ||
+                                  projectProvider.projects[index]
+                                          ['is_member'] ==
+                                      false
                               ? Container()
                               : ListTile(
                                   onTap: () {
@@ -523,7 +535,24 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   bool checkStarredProjects({List? projects}) {
     bool hasItems = false;
     for (var element in projects!) {
-      if (element['is_favorite'] == true) {
+      if (element['is_favorite'] == true && element['is_member']) {
+        setState(() {
+          hasItems = true;
+        });
+        break;
+      } else {
+        setState(() {
+          hasItems = false;
+        });
+      }
+    }
+    return hasItems;
+  }
+
+  bool checkUnstarredProject({List? projects}) {
+    bool hasItems = false;
+    for (var element in projects!) {
+      if (element['is_favorite'] == false && element['is_member']) {
         setState(() {
           hasItems = true;
         });

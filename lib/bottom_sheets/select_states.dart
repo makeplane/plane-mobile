@@ -65,9 +65,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -80,10 +78,11 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(
+                      CustomText(
                         'Select State',
-                        type: FontStyle.H6,
+                        type: FontStyle.H4,
                         fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                       IconButton(
                           onPressed: () {
@@ -98,9 +97,8 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                           },
                           icon: Icon(
                             Icons.close,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ))
                     ],
                   ),
@@ -189,7 +187,10 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                           issuesProvider.states[issuesProvider
                                               .states.keys
                                               .elementAt(i)]["name"],
-                                          type: FontStyle.Small,
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Regular,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
                                         ),
                                         const Spacer(),
                                         widget.createIssue
@@ -203,10 +204,10 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                     ),
                                     const SizedBox(height: 20),
                                     Container(
-                                      width: width,
-                                      height: 1,
-                                      color: strokeColor,
-                                    )
+                                        width: width,
+                                        height: 1,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor)
                                   ],
                                 ),
                               ),

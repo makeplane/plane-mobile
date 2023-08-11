@@ -65,9 +65,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -85,7 +83,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                       children: [
                         const CustomText(
                           'Select Members',
-                          type: FontStyle.H6,
+                          type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
                         ),
                         IconButton(
@@ -97,7 +95,9 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                               issuesProvider.setsState();
                               Navigator.of(context).pop();
                             },
-                            icon: const Icon(Icons.close))
+                            icon: Icon(Icons.close,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor))
                       ],
                     ),
                     Container(
@@ -174,7 +174,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                                     [0]
                                                 .toString()
                                                 .toUpperCase(),
-                                            type: FontStyle.Small,
+                                            type: FontStyle.Large,
+                                            fontWeight: FontWeightt.Bold,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -187,7 +188,10 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                               " " +
                                               issuesProvider.members[index]
                                                   ['member']['last_name'],
-                                          type: FontStyle.Small,
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Regular,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
                                         ),
                                         const Spacer(),
                                         widget.createIssue
@@ -202,10 +206,10 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                     ),
                                     const SizedBox(height: 20),
                                     Container(
-                                      width: width,
-                                      height: 1,
-                                      color: strokeColor,
-                                    ),
+                                        width: width,
+                                        height: 1,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor),
                                   ],
                                 ),
                               ),

@@ -12,12 +12,12 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class AddAttachmentsSheet extends ConsumerStatefulWidget {
-  const AddAttachmentsSheet(
-      {super.key,
-      required this.projectId,
-      required this.slug,
-      required this.issueId,
- });
+  const AddAttachmentsSheet({
+    super.key,
+    required this.projectId,
+    required this.slug,
+    required this.issueId,
+  });
 
   final String projectId;
   final String slug;
@@ -38,9 +38,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),
@@ -50,10 +48,11 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const CustomText(
+              CustomText(
                 'Insert File',
                 type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
                 // color: themeProvider.secondaryTextColor,
               ),
               IconButton(
@@ -91,12 +90,12 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   String? path = result.files.single.path;
 
                   issueProvider.addIssueAttachment(
-                      fileSize: result.files.single.size,
-                      filePath: path!,
-                      projectId: widget.projectId,
-                      slug: widget.slug,
-                      issueId: widget.issueId,
-                    );
+                    fileSize: result.files.single.size,
+                    filePath: path!,
+                    projectId: widget.projectId,
+                    slug: widget.slug,
+                    issueId: widget.issueId,
+                  );
                   Navigator.pop(context);
                 }
               })

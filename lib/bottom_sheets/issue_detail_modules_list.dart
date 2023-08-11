@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -32,6 +31,11 @@ class _IssueDetailMoudlesListState
     var workspaceProvider = ref.read(ProviderList.workspaceProvider);
     var projectProvider = ref.read(ProviderList.projectProvider);
     return Container(
+      decoration: BoxDecoration(
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Wrap(
         children: [
@@ -40,17 +44,15 @@ class _IssueDetailMoudlesListState
             children: [
               const CustomText(
                 'Select Module',
-                type: FontStyle.H6,
+                type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
               ),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
-                  Icons.close,
-                  color: Color.fromRGBO(143, 143, 147, 1),
-                ),
+                icon: Icon(Icons.close,
+                    color: themeProvider.themeManager.placeholderTextColor),
               )
             ],
           ),
@@ -110,11 +112,15 @@ class _IssueDetailMoudlesListState
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            //radio
                             CustomText(
                               issueProvider.modulesList[index]['name'],
-                              type: FontStyle.Small,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Regular,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             widget.moduleId != '' &&
                                     widget.moduleId ==
@@ -130,12 +136,10 @@ class _IssueDetailMoudlesListState
                           height: 10,
                         ),
                         Container(
-                          height: 2,
-                          margin: const EdgeInsets.only(bottom: 5, top: 10),
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : Colors.grey.shade300,
-                        )
+                            height: 1,
+                            margin: const EdgeInsets.only(bottom: 5, top: 10),
+                            color:
+                                themeProvider.themeManager.placeholderTextColor)
                       ],
                     ),
                   ),

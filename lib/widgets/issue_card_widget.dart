@@ -62,33 +62,23 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             ? const EdgeInsets.only(bottom: 1)
             : const EdgeInsets.only(bottom: 15, right: 5, left: 5, top: 5),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
-          border: Border(
-              bottom: BorderSide(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : strokeColor,
-                  width: 1)),
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+          // border: Border(
+          //     bottom: BorderSide(
+          //         color: themeProvider.themeManager.borderDisabledColor,
+          //         width: 1)),
           boxShadow:
               ref.watch(ProviderList.issuesProvider).issues.projectView ==
                       ProjectView.kanban
                   ? [
                       BoxShadow(
-                        blurRadius: 3.0,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade300,
-                        spreadRadius: 1,
+                        blurRadius: 2,
+                        color: themeProvider.themeManager.borderSubtle01Color,
+                        spreadRadius: 0,
                       )
                     ]
                   : null,
-          // borderRadius:
-          //     ref.watch(ProviderList.issuesProvider).issues.projectView ==
-          //             ProjectView.list
-          //         ? null
-          //         : BorderRadius.circular(6),
+
         ),
         child: Container(
             width: widget.issueCategory == IssueCategory.cycleIssues &&
@@ -139,8 +129,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                 margin: const EdgeInsets.only(top: 15),
                 child: CustomRichText(
                     //ype: RichFontStyle.Small,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.placeholderTextColor,
                     widgets: [
                       TextSpan(
                           text: provider.issuesResponse[widget.cardIndex]
@@ -168,7 +158,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             : Container(
                 padding: const EdgeInsets.only(bottom: 15, top: 10),
                 child: Wrap(
-                  spacing: 8,
+                 
                   runSpacing: 10,
                   children: [
                     provider.issues.displayProperties.priority
@@ -177,19 +167,17 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor)),
-                            // margin: const EdgeInsets.only(right: 5),
+                                    color: themeProvider.themeManager.placeholderTextColor,)),
+                            margin: const EdgeInsets.only(right: 10),
                             height: 30,
                             width: 30,
                             child: provider.issuesResponse[widget.cardIndex]
                                         ['priority'] ==
                                     null
-                                ? const Icon(
+                                ?  Icon(
                                     Icons.do_disturb_alt_outlined,
                                     size: 18,
-                                    color: greyColor,
+                                    color: themeProvider.themeManager.placeholderTextColor,
                                   )
                                 : provider.issuesResponse[widget.cardIndex]
                                             ['priority'] ==
@@ -212,7 +200,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                             color: Colors.orange,
                                             size: 18,
                                           ))
-                        : const SizedBox(),
+                        : const SizedBox(width: 0,),
 
                     // -------------- STATE UI WIDGET ------------- //
 
@@ -269,29 +257,30 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     .issuesResponse[widget.cardIndex]
                                         ['assignee_details']
                                     .isNotEmpty)
-                            ? SquareAvatarWidget(
-                                details:
-                                    provider.issuesResponse[widget.cardIndex]
-                                        ['assignee_details'],
-                              )
+                            ? Container(
+                               margin: const EdgeInsets.only(right: 10),
+                              child: SquareAvatarWidget(
+                                  details:
+                                      provider.issuesResponse[widget.cardIndex]
+                                          ['assignee_details'],
+                                ),
+                            )
                             : Container(
                                 height: 30,
-                                margin: const EdgeInsets.only(right: 5),
+                                margin: const EdgeInsets.only(right: 10),
                                 padding: const EdgeInsets.only(
                                     left: 8, right: 8, top: 5, bottom: 5),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider.themeManager.placeholderTextColor,),
                                     borderRadius: BorderRadius.circular(5)),
-                                child: const Icon(
+                                child:  Icon(
                                   Icons.groups_2_outlined,
                                   size: 18,
-                                  color: greyColor,
+                                  color: themeProvider.themeManager.placeholderTextColor,
                                 ),
                               )
-                        : Container(),
+                        : Container(width: 0,),
                     (provider.issues.displayProperties.label == true &&
                             provider.issuesResponse[widget.cardIndex]
                                     ['label_details'] !=
@@ -308,8 +297,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         .length >
                                     1
                                 ? Container(
-                                    // color: Colors.grey,
-                                    width: 85,
+                                  
+                                    width: 80,
+                                      margin: const EdgeInsets.only(right: 10),
                                     padding: const EdgeInsets.only(
                                       left: 8,
                                       right: 8,
@@ -317,9 +307,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkThemeBorder
-                                                    : lightGreeyColor),
+                                                themeProvider.themeManager.placeholderTextColor,),
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Row(
                                       crossAxisAlignment:
@@ -338,67 +326,84 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         const SizedBox(
                                           width: 5,
                                         ),
-                                        CustomText(
-                                          '${provider.issuesResponse[widget.cardIndex]['label_details'].length} Labels',
-                                          fontSize: 13,
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 2),
+                                          child: CustomText(
+                                            '${provider.issuesResponse[widget.cardIndex]['label_details'].length} Labels',
+                                          type: FontStyle.XSmall,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .tertiaryTextColor,
+                                                
+                                          ),
                                         ),
                                       ],
                                     ),
                                   )
-                                : ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    scrollDirection: Axis.horizontal,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: provider
-                                        .issuesResponse[widget.cardIndex]
-                                            ['label_details']
-                                        .length,
-                                    itemBuilder: (context, idx) {
-                                      return Container(
-                                        height: 20,
-                                        padding: const EdgeInsets.only(
-                                          left: 8,
-                                          right: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? darkThemeBorder
-                                                    : lightGreeyColor),
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 5,
-                                              backgroundColor: Color(int.parse(
+                                : Container(
+                                   margin: const EdgeInsets.only(right: 10),
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.horizontal,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: provider
+                                          .issuesResponse[widget.cardIndex]
+                                              ['label_details']
+                                          .length,
+                                      itemBuilder: (context, idx) {
+                                        return Container(
+                                          height: 30,
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 5,
+                                                backgroundColor: Color(int.parse(
+                                                    provider.issuesResponse[
+                                                            widget.cardIndex]
+                                                            ['label_details'][idx]
+                                                            ['color']
+                                                        .replaceAll(
+                                                            '#', '0xFF'))),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 2),
+                                                child: CustomText(
                                                   provider.issuesResponse[
-                                                          widget.cardIndex]
+                                                              widget.cardIndex]
                                                           ['label_details'][idx]
-                                                          ['color']
-                                                      .replaceAll(
-                                                          '#', '0xFF'))),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            CustomText(
-                                              provider.issuesResponse[
-                                                          widget.cardIndex]
-                                                      ['label_details'][idx]
-                                                  ['name'],
-                                              fontSize: 13,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                                      ['name'],
+                                                  type: FontStyle.XSmall,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .tertiaryTextColor,
+                                              
+                                              
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                ),
                           )
                         : (provider.issues.displayProperties.label == true &&
                                 provider
@@ -406,33 +411,34 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         ['label_details']
                                     .isEmpty)
                             ? Container(
-                                height: 20,
+                                height: 30,
+                                  margin: const EdgeInsets.only(right: 10),
                                 padding: const EdgeInsets.only(
                                   left: 8,
+                                  top: 2,
+                                  bottom: 5,
                                   right: 8,
                                 ),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider.themeManager.placeholderTextColor),
                                     borderRadius: BorderRadius.circular(5)),
-                                child: const CustomText(
+                                child:  CustomText(
                                   'No Label',
-                                  fontSize: 13,
+                                  type: FontStyle.XSmall,
+                                  color: themeProvider.themeManager.tertiaryTextColor,
                                 ),
                               )
-                            : Container(),
-                    provider.issues.displayProperties.startDate == true
+                            : Container(width: 0,),
+                    provider.issues.displayProperties.dueDate == true
                         ? Container(
                             height: 30,
+                             margin: const EdgeInsets.only(right: 10),
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8, top: 2, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.placeholderTextColor,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
@@ -461,54 +467,55 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   'Due date',
                               type: FontStyle.XSmall,
                               color:
-                                  themeProvider.themeManager.secondaryTextColor,
+                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                           )
                         : Container(),
                     provider.issues.displayProperties.subIsseCount == true
                         ? Container(
+                           margin: const EdgeInsets.only(right: 10),
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8, top: 0, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color:themeProvider.themeManager.placeholderTextColor,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                // SvgPicture.asset(
-                                //   'assets/svg_images/sub_issue.svg',
-                                //   height: 15,
-                                //   width: 15,
-                                //   color: themeProvider.isDarkThemeEnabled
-                                //       ? lightBackgroundColor
-                                //       : darkBackgroundColor,
-                                // ),
-                                SvgPicture.asset(
-                                    'assets/svg_images/issues_icon.svg',
-                                    width: 15,
-                                    height: 15,
-                                    colorFilter: const ColorFilter.mode(
-                                        greyColor, BlendMode.srcIn)),
+                                
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/issues_icon.svg',
+                                      width: 16,
+                                      height: 16,
+                                      colorFilter:  ColorFilter.mode(
+                                          themeProvider.themeManager.placeholderTextColor, BlendMode.srcIn)),
+                                ),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['sub_issues_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['sub_issues_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['sub_issues_count']
-                                          .toString()
-                                      : '0',
-                                  fontSize: 13,
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: CustomText(
+                                    provider.issuesResponse[widget.cardIndex]
+                                                    ['sub_issues_count'] !=
+                                                '' &&
+                                            provider.issuesResponse[
+                                                        widget.cardIndex]
+                                                    ['sub_issues_count'] !=
+                                                null
+                                        ? provider
+                                            .issuesResponse[widget.cardIndex]
+                                                ['sub_issues_count']
+                                            .toString()
+                                        : '0',
+                                    type: FontStyle.XSmall,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -516,50 +523,51 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(),
                     provider.issues.displayProperties.linkCount == true
                         ? Container(
+                           margin: const EdgeInsets.only(right: 10),
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8, top: 0, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.placeholderTextColor),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
-                                // SvgPicture.asset(
-                                //   'assets/svg_images/sub_issue.svg',
-                                //   height: 15,
-                                //   width: 15,
-                                //   color: themeProvider.isDarkThemeEnabled
-                                //       ? lightBackgroundColor
-                                //       : darkBackgroundColor,
-                                // ),
-                                Transform.rotate(
-                                  angle: 33.6,
-                                  child: const Icon(
-                                    Icons.link,
-                                    size: 18,
-                                    color: greyColor,
+                                
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: Transform.rotate(
+                                    angle: 33.6,
+                                    child:  Icon(
+                                      Icons.link,
+                                      size: 18,
+                                      color: themeProvider.themeManager.placeholderTextColor,
+                                    ),
                                   ),
                                 ),
 
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['link_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[widget
-                                                  .cardIndex]['link_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['link_count']
-                                          .toString()
-                                      : '0',
-                                  fontSize: 13,
+                                Padding(
+                         padding: const EdgeInsets.only(top: 2),
+                                  child: CustomText(
+                                    provider.issuesResponse[widget.cardIndex]
+                                                    ['link_count'] !=
+                                                '' &&
+                                            provider.issuesResponse[widget
+                                                    .cardIndex]['link_count'] !=
+                                                null
+                                        ? provider
+                                            .issuesResponse[widget.cardIndex]
+                                                ['link_count']
+                                            .toString()
+                                        : '0',
+                                     type: FontStyle.XSmall,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
+                                
+                                  ),
                                 ),
                               ],
                             ),
@@ -567,48 +575,50 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(),
                     provider.issues.displayProperties.attachmentCount == true
                         ? Container(
+                           margin: const EdgeInsets.only(right: 10),
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.placeholderTextColor,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
-                                // SvgPicture.asset(
-                                //   'assets/svg_images/sub_issue.svg',
-                                //   height: 15,
-                                //   width: 15,
-                                //   color: themeProvider.isDarkThemeEnabled
-                                //       ? lightBackgroundColor
-                                //       : darkBackgroundColor,
-                                // ),
-                                const Icon(
-                                  Icons.attach_file,
-                                  size: 18,
-                                  color: greyColor,
-                                ),
+                            
+                                Padding(
+                                 padding: const EdgeInsets.only(top: 5),
+                                  child:  Icon(
+                                    Icons.attach_file,
+                                    size: 18,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                  ),),
+                    
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['attachment_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['attachment_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['attachment_count']
-                                          .toString()
-                                      : '0',
-                                  fontSize: 13,
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: CustomText(
+                                    provider.issuesResponse[widget.cardIndex]
+                                                    ['attachment_count'] !=
+                                                '' &&
+                                            provider.issuesResponse[
+                                                        widget.cardIndex]
+                                                    ['attachment_count'] !=
+                                                null
+                                        ? provider
+                                            .issuesResponse[widget.cardIndex]
+                                                ['attachment_count']
+                                            .toString()
+                                        : '0',
+                                                               type: FontStyle.XSmall,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
+                                    ),
                                 ),
+                               
                               ],
                             ),
                           )
@@ -618,54 +628,53 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         ? Container(
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8,bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.placeholderTextColor,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
-                                // SvgPicture.asset(
-                                //   'assets/svg_images/sub_issue.svg',
-                                //   height: 15,
-                                //   width: 15,
-                                //   color: themeProvider.isDarkThemeEnabled
-                                //       ? lightBackgroundColor
-                                //       : darkBackgroundColor,
-                                // ),
-                                const Icon(
-                                  Icons.change_history,
-                                  size: 16,
-                                  color: greyColor,
-                                ),
+                               
+                                 Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                   child: Icon(
+                                    Icons.change_history,
+                                    size: 18,
+                                    color: themeProvider.themeManager.placeholderTextColor,
+                                                                 ),
+                                 ),
 
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['estimate_point'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['estimate_point'] !=
-                                              null
-                                      ? ref
-                                          .read(ProviderList.estimatesProvider)
-                                          .estimates
-                                          .firstWhere((element) {
-                                          return element['id'] ==
-                                              projectProvider
-                                                  .currentProject['estimate'];
-                                        })['points'].firstWhere((element) {
-                                          return element['key'] ==
-                                              provider.issuesResponse[widget
-                                                  .cardIndex]['estimate_point'];
-                                        })['value']
-                                      : 'Estimate',
-                                  type: FontStyle.XSmall,
+                                Padding(
+                       padding: const EdgeInsets.only(top: 2),
+                                  child: CustomText(
+                                    provider.issuesResponse[widget.cardIndex]
+                                                    ['estimate_point'] !=
+                                                '' &&
+                                            provider.issuesResponse[
+                                                        widget.cardIndex]
+                                                    ['estimate_point'] !=
+                                                null
+                                        ? ref
+                                            .read(ProviderList.estimatesProvider)
+                                            .estimates
+                                            .firstWhere((element) {
+                                            return element['id'] ==
+                                                projectProvider
+                                                    .currentProject['estimate'];
+                                          })['points'].firstWhere((element) {
+                                            return element['key'] ==
+                                                provider.issuesResponse[widget
+                                                    .cardIndex]['estimate_point'];
+                                          })['value']
+                                        : 'Estimate',
+                                    type: FontStyle.XSmall,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -698,9 +707,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : strokeColor),
+                          color: themeProvider.themeManager.placeholderTextColor),
                       borderRadius: BorderRadius.circular(5)),
                   margin: const EdgeInsets.only(right: 15),
                   height: 30,
@@ -708,10 +715,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   child: provider.issuesResponse[widget.cardIndex]
                               ['priority'] ==
                           null
-                      ? const Icon(
+                      ?  Icon(
                           Icons.do_disturb_alt_outlined,
                           size: 18,
-                          color: greyColor,
+                          color: themeProvider.themeManager.placeholderTextColor,
                         )
                       : provider.issuesResponse[widget.cardIndex]['priority'] ==
                               'high'
@@ -739,27 +746,21 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   margin: const EdgeInsets.only(right: 8),
                   child: CustomRichText(
                       //ype: RichFontStyle.Small,
-                      fontSize: 14,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.grey.shade400
-                          : darkBackgroundColor,
-                      fontWeight: FontWeight.w500,
+                      type: FontStyle.Small,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                     
                       widgets: [
                         TextSpan(
                             text: provider.issuesResponse[widget.cardIndex]
                                 ['project_detail']['identifier'],
                             style: TextStyle(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryTextColor
-                                  : lightSecondaryTextColor,
+                              color: themeProvider.themeManager.placeholderTextColor,
                             )),
                         TextSpan(
                             text:
                                 '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}',
                             style: TextStyle(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryTextColor
-                                  : lightSecondaryTextColor,
+                              color: themeProvider.themeManager.placeholderTextColor,
                             )),
                       ]))
               : Container(),
@@ -771,9 +772,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               //color: Colors.amber,
 
               child: CustomText(
-                provider.issuesResponse[widget.cardIndex]['name'],
+                provider.issuesResponse[widget.cardIndex]['name'].toString().trim(),
                 type: FontStyle.Small,
-                fontWeight: FontWeightt.Medium,
                 maxLines: 1,
                 textAlign: TextAlign.start,
               ),
@@ -803,14 +803,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                           left: 8, right: 8, top: 5, bottom: 5),
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : lightGreeyColor),
+                              color: themeProvider.themeManager.placeholderTextColor),
                           borderRadius: BorderRadius.circular(5)),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.groups_2_outlined,
                         size: 18,
-                        color: greyColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     )
               : const SizedBox(

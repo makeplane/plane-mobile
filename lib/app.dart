@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/models/workspace_model.dart';
 import 'package:plane_startup/provider/workspace_provider.dart';
 import 'package:plane_startup/screens/on_boarding/auth/invite_co_workers.dart';
 import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
@@ -31,6 +30,7 @@ class _AppState extends ConsumerState<App> {
         ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
+      
         body: (profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
             ? Center(
@@ -98,13 +98,8 @@ class _AppState extends ConsumerState<App> {
         // log(prov.userProfile.last_workspace_id.toString());
         dashProv.getDashboard();
         projectProv.getProjects(
-            slug: workspaceProv.workspaces.where((element) {
-          if (element['id'] == prov.userProfile.lastWorkspaceId) {
-            workspaceProv.selectedWorkspace = WorkspaceModel.fromJson(element);
-            return true;
-          }
-          return false;
-        }).first['slug']);
+          slug: workspaceProv.selectedWorkspace!.workspaceSlug,
+        );
         ref.read(ProviderList.notificationProvider).getUnreadCount();
 
         ref

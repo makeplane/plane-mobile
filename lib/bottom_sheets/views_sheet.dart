@@ -142,9 +142,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     var projectProvider = ref.watch(ProviderList.projectProvider);
     Widget customHorizontalLine() {
       return Container(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkThemeBorder
-            : Colors.grey[300],
+        color: themeProvider.themeManager.borderDisabledColor,
         height: 1,
       );
     }
@@ -677,22 +675,14 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             ],
           ),
           Container(
-            color: themeProvider.isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : Colors.white,
+            color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
             height: 50,
             child: Row(
               children: [
-                // const Text(
-                //   'Views',
-                //   style: TextStyle(
-                //     fontSize: 24,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
+   
                 const CustomText(
                   'Views',
-                  type: FontStyle.H6,
+                  type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),
                 const Spacer(),
@@ -700,10 +690,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon:  Icon(
                     Icons.close,
                     size: 27,
-                    color: Color.fromRGBO(143, 143, 147, 1),
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 ),
               ],

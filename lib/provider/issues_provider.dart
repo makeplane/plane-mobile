@@ -209,10 +209,10 @@ class IssuesProvider extends ChangeNotifier {
         ),
 
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        backgroundColor:
-            ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? darkSecondaryBackgroundDefaultColor
-                : lightSecondaryBackgroundDefaultColor,
+        backgroundColor: ref!
+            .read(ProviderList.themeProvider)
+            .themeManager
+            .secondaryBackgroundDefaultColor,
       ));
     }
 
@@ -223,30 +223,24 @@ class IssuesProvider extends ChangeNotifier {
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
                   size: 18,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.white
-                      : Colors.black)
+                  color: themeProvider.themeManager.placeholderTextColor)
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: themeProvider.themeManager.placeholderTextColor,
                       size: 18,
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
                       : Icon(
                           Icons.signal_cellular_alt_1_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
           : issues.groupBY == GroupBY.createdBY
@@ -307,9 +301,7 @@ class IssuesProvider extends ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? const Color.fromRGBO(39, 42, 45, 1)
-                      : const Color.fromRGBO(222, 226, 230, 1)),
+                  color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(
@@ -327,9 +319,9 @@ class IssuesProvider extends ChangeNotifier {
 
                 notifyListeners();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.zoom_in_map,
-                color: Color.fromRGBO(133, 142, 150, 1),
+                color: themeProvider.themeManager.tertiaryTextColor,
                 size: 20,
               ),
             ),
@@ -353,7 +345,10 @@ class IssuesProvider extends ChangeNotifier {
                           MaterialPageRoute(
                               builder: (ctx) => const CreateIssue()));
                     },
-                    child: const Icon(Icons.add, color: primaryColor))
+                    child: Icon(
+                      Icons.add,
+                      color: themeProvider.themeManager.tertiaryTextColor,
+                    ))
                 : Container(),
           ],
         ),

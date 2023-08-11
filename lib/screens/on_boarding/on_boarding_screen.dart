@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/screens/on_boarding/auth/signUp.dart';
 import 'package:plane_startup/utils/constants.dart';
 import '../../provider/provider_list.dart';
@@ -425,7 +426,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                 Container(
                     margin: const EdgeInsets.only(top: 5, bottom: 15),
                     height: 4,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(Const.globalKey.currentContext!).size.width,
                     decoration: const BoxDecoration(
                         color: Color.fromRGBO(229, 229, 229, 1)),
                     child: Row(

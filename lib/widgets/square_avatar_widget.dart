@@ -33,9 +33,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkThemeBorder
-                        : strokeColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                     width: 1),
                 color: Colors.transparent,
               ),
@@ -53,6 +51,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             .toString()
                             .toUpperCase(),
                         type: FontStyle.Small,
+                        color: themeProvider.themeManager.placeholderTextColor,
                         //  color: Colors.white,
                       ),
                     )),
@@ -65,7 +64,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         border:
-                            Border.all(color: lightBackgroundColor, width: 1),
+                            Border.all(color: themeProvider.themeManager.placeholderTextColor, width: 1),
                         color: darkSecondaryBGC,
                       ),
                       child: widget.details[1]['avatar'] != "" &&
@@ -82,7 +81,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: Colors.white,
+                                color: themeProvider.themeManager.placeholderTextColor,
                               ),
                             )),
                 )
@@ -113,7 +112,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: Colors.white,
+                                color: themeProvider.themeManager.placeholderTextColor,
                               ),
                             )),
                 )
@@ -133,7 +132,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       child: CustomText(
                         '+${widget.details.length - 3}',
                         type: FontStyle.Small,
-                        color: greyColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     ),
                   ),

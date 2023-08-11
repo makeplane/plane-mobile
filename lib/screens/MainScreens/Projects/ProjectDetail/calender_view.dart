@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
@@ -131,21 +132,17 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
         children: [
           Container(
               //horizontaol list of days of week having grey background
-              height: 40,
+              height: 50,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 //bottom border
                 border: Border(
                   bottom: BorderSide(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkThemeBorder
-                        : lightGreeyColor,
-                    width: 1.0,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                    width: 2.0,
                   ),
                 ),
-                color: themeProvider.isDarkThemeEnabled
-                    ? Colors.black.withOpacity(0.4)
-                    : lightGreeyColor,
+                color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,11 +176,10 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   lastDay: dates[index]['lastDayOfMonth'],
                   availableGestures: AvailableGestures.none,
                   headerStyle: HeaderStyle(
-                      titleTextStyle: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.black,
+                      titleTextStyle: GoogleFonts.inter(
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
+                        fontWeight: FontWeight.w500,
                       ),
                       leftChevronVisible: false, // Hide the left arrow
                       rightChevronVisible: false, // Hide the right arrow
@@ -199,15 +195,11 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   },
                   calendarStyle: CalendarStyle(
                       outsideDaysVisible: false,
-                      weekendTextStyle: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor.withOpacity(0.7)
-                            : Colors.black,
-                      ),
+                      // weekendTextStyle: TextStyle(
+                      //   color: themeProvider.themeManager.placeholderTextColor,
+                      // ),
                       defaultTextStyle: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.black,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   eventLoader: (day) {
                     return ref
@@ -298,7 +290,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: CustomAppBar(
-        icon: Icons.arrow_back_ios,
+        icon: Icons.arrow_back,
         onPressed: () {
           Navigator.pop(context);
         },
@@ -320,14 +312,14 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 CustomText(
                   //month full name
                   DateFormat("MMMM").format(widget.selectedDay),
-                  type: FontStyle.Small,
+                  type: FontStyle.Medium,
                 ),
                 Icon(
                   showFull
                       ? Icons.keyboard_arrow_up_outlined
                       : Icons.keyboard_arrow_down_outlined,
-                  size: 27,
-                  color: const Color.fromRGBO(143, 143, 147, 1),
+                  size: 25,
+                  color: themeProvider.themeManager.tertiaryTextColor,
                 ),
               ],
             ),
@@ -338,9 +330,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
         children: [
           showFull
               ? Container(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.black.withOpacity(0.4)
-                      : lightGreyBoxColor,
+                  color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: TableCalendar(
@@ -369,15 +359,13 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                       });
                     },
                     calendarStyle: CalendarStyle(
-                      weekendTextStyle: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor.withOpacity(0.7)
-                            : Colors.black,
-                      ),
+                      // weekendTextStyle: TextStyle(
+                      //   color: themeProvider.isDarkThemeEnabled
+                      //       ? lightGreeyColor.withOpacity(0.7)
+                      //       : Colors.black,
+                      // ),
                       defaultTextStyle: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.black,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                       outsideDaysVisible: false,
                     ),
@@ -435,6 +423,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               headerStyle: const HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
+
               ),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
@@ -444,19 +433,17 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               calendarStyle: CalendarStyle(
                   isTodayHighlighted: false,
                   tablePadding: const EdgeInsets.all(0),
-                  weekendTextStyle: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor.withOpacity(0.7)
-                        : Colors.black,
-                  ),
+                  // weekendTextStyle: TextStyle(
+                  //   color: themeProvider.isDarkThemeEnabled
+                  //       ? lightGreeyColor.withOpacity(0.7)
+                  //       : Colors.black,
+                  // ),
                   defaultTextStyle: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.black,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                   tableBorder: TableBorder(
                       bottom: BorderSide(
-                    color: greyColor.withOpacity(0.3),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                     width: 1.0,
                   ))),
               calendarBuilders: CalendarBuilders(
@@ -481,9 +468,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+
           Expanded(
             child: ListView.separated(
               itemCount: issuesProvider.issuesList.length,
@@ -509,14 +494,14 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 30),
+                              vertical: 5, horizontal: 20),
                           child: Column(
                             children: [
                               Row(
                                 children: [
                                   CustomText(
                                     '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
-                                    type: FontStyle.H5,
+                                    type: FontStyle.Small,
                                     
                                   ),
                                   const SizedBox(
@@ -535,7 +520,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                 ],
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 15,
                               ),
                               Row(
                                 children: [
@@ -545,20 +530,17 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                           borderRadius:
                                               BorderRadius.circular(6),
                                           border: Border.all(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : lightGreeyColor)),
+                                              color:  themeProvider.themeManager.placeholderTextColor)),
                                       // margin: const EdgeInsets.only(right: 5),
                                       height: 30,
                                       width: 30,
                                       child: issuesProvider.issuesList[index]
                                                   ['priority'] ==
                                               null
-                                          ? const Icon(
+                                          ?  Icon(
                                               Icons.do_disturb_alt_outlined,
                                               size: 18,
-                                              color: greyColor,
+                                              color: themeProvider.themeManager.placeholderTextColor,
                                             )
                                           : issuesProvider.issuesList[index]
                                                       ['priority'] ==
@@ -584,7 +566,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                                       size: 18,
                                                     )),
                                   const SizedBox(
-                                    width: 30,
+                                    width: 15,
                                   ),
                                   (issuesProvider.issuesList[index]
                                                   ['assignee_details'] !=
@@ -609,16 +591,13 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                               bottom: 5),
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                  color: themeProvider
-                                                          .isDarkThemeEnabled
-                                                      ? darkThemeBorder
-                                                      : lightGreeyColor),
+                                                  color:  themeProvider.themeManager.placeholderTextColor),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
-                                          child: const Icon(
+                                          child:  Icon(
                                             Icons.groups_2_outlined,
                                             size: 18,
-                                            color: greyColor,
+                                            color:  themeProvider.themeManager.placeholderTextColor,
                                           ),
                                         )
                                 ],
@@ -639,9 +618,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                             DateFormat("MMM d, yyyy")
                                 .format(widget.selectedDay))
                     ? Divider(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? greyColor
-                            : greyColor,
+                        color:  themeProvider.themeManager.borderSubtle01Color,
                       )
                     : Container();
               },

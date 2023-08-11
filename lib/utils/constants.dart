@@ -169,6 +169,9 @@ const darkBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
 const lightContrastBorderStrongColor = Color.fromRGBO(212, 212, 212, 1);
 const darkContrastBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
 
+const lightBorderStrong01Color = Color.fromRGBO(212, 212, 212, 1);
+const darkBorderStrong01Color = Color.fromRGBO(46, 46, 46, 1);
+
 const lightBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);
 const darkBorderDisabledColor = Color.fromRGBO(23, 23, 23, 1);
 const lightContrastBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);

@@ -12,7 +12,7 @@ class ThemeProvider extends ChangeNotifier {
   late SharedPreferences prefs;
   bool isDarkThemeEnabled = false;
   THEME theme = THEME.light;
-  late ThemeManager themeManager;
+  ThemeManager themeManager=ThemeManager(THEME.light);
   //function to change theme and stor the theme in shared preferences
   void clear() {
     isDarkThemeEnabled = false;

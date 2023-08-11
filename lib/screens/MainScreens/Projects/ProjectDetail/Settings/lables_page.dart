@@ -93,7 +93,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         CustomText(
                                           issuesProvider.labels[index]['name'],
                                           type: FontStyle.H5,
-                                          maxLines: 3,
+                                          maxLines: 1,
+                                          color: themeProvider.themeManager.primaryTextColor,
                                         ),
                                       ],
                                     ),
@@ -102,10 +103,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         PopupMenuButton(
                                           icon: Icon(
                                             Icons.more_vert,
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : Colors.black,
+                                            color: themeProvider.themeManager.placeholderTextColor,
                                           ),
                                           color:
                                               themeProvider.isDarkThemeEnabled

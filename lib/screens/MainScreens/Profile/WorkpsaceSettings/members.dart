@@ -223,7 +223,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
               '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
               type: FontStyle.H5,
               maxLines: 1,
-              fontSize: 18,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
             subtitle: SizedBox(
               child: CustomText(
@@ -232,7 +232,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         ['email']
                     : workspaceProvider.workspaceMembers[index]['member']
                         ['display_name'],
-                color: const Color.fromRGBO(133, 142, 150, 1),
+                color: themeProvider.themeManager.placeholderTextColor,
                 textAlign: TextAlign.left,
                 type: FontStyle.Medium,
               ),
@@ -258,34 +258,36 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                     : 'Guest',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Medium,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? fromRole(role: workspaceProvider.role) >=
-                                    workspaceProvider.workspaceMembers[index]
-                                        ['role']
-                                ? Colors.white
-                                : darkSecondaryTextColor
-                            : fromRole(role: workspaceProvider.role) >=
-                                    workspaceProvider.workspaceMembers[index]
-                                        ['role']
-                                ? Colors.black
-                                : greyColor,
+                        color: themeProvider.themeManager.primaryTextColor,
+                        // themeProvider.isDarkThemeEnabled
+                        //     ? fromRole(role: workspaceProvider.role) >=
+                        //             workspaceProvider.workspaceMembers[index]
+                        //                 ['role']
+                        //         ? Colors.white
+                        //         : darkSecondaryTextColor
+                        //     : fromRole(role: workspaceProvider.role) >=
+                        //             workspaceProvider.workspaceMembers[index]
+                        //                 ['role']
+                        //         ? Colors.black
+                        //         : greyColor,
                         fontSize: 15,
                       ),
                     ),
                   ),
                   Icon(
                     Icons.arrow_drop_down,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? fromRole(role: workspaceProvider.role) >=
-                                workspaceProvider.workspaceMembers[index]
-                                    ['role']
-                            ? Colors.white
-                            : darkSecondaryTextColor
-                        : fromRole(role: workspaceProvider.role) >=
-                                workspaceProvider.workspaceMembers[index]
-                                    ['role']
-                            ? Colors.black
-                            : greyColor,
+                    color: themeProvider.themeManager.primaryTextColor
+                    // themeProvider.isDarkThemeEnabled
+                    //     ? fromRole(role: workspaceProvider.role) >=
+                    //             workspaceProvider.workspaceMembers[index]
+                    //                 ['role']
+                    //         ? Colors.white
+                    //         : darkSecondaryTextColor
+                    //     : fromRole(role: workspaceProvider.role) >=
+                    //             workspaceProvider.workspaceMembers[index]
+                    //                 ['role']
+                    //         ? Colors.black
+                    //         : greyColor,
                   )
                 ],
               ),

@@ -47,16 +47,17 @@ class _ControlPageState extends ConsumerState<ControlPage> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const Row(
+            Row(
               children: [
                 CustomText(
                   'Project Lead',
                   type: FontStyle.Small,
+                  color: themeProvider.themeManager.tertiaryTextColor,
                 ),
                 CustomText(
                   '*',
                   type: FontStyle.Small,
-                  color: Colors.red,
+                  color: themeProvider.themeManager.textErrorColor,
                 )
               ],
             ),
@@ -152,16 +153,17 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             //   onChanged: (val) {},
             // ),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               children: [
                 CustomText(
                   'Default Assignee',
                   type: FontStyle.Small,
+                  color: themeProvider.themeManager.tertiaryTextColor,
                 ),
                 CustomText(
                   '*',
                   type: FontStyle.Small,
-                  color: Colors.red,
+                  color: themeProvider.themeManager.textErrorColor,
                 )
               ],
             ),

@@ -80,6 +80,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                           textAlign: TextAlign.left,
                           // color: Colors.black,
                           type: FontStyle.H5,
+                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         const SizedBox(
                           height: 10,
@@ -89,6 +90,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                           child: CustomText(
                             cardData[index]['description'],
                             textAlign: TextAlign.left,
+                            color: themeProvider.themeManager.placeholderTextColor,
                           ),
                         ),
                       ],

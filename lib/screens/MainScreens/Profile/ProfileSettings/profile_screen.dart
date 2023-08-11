@@ -13,13 +13,11 @@ import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profil
 import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
 import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/enums.dart';
 
 import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-
-import '../../../../utils/enums.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -35,11 +33,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       'items': [
         {
           'title': 'General',
-          'icon': Icon(
-            Icons.person_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.person_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -51,11 +45,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Activity',
-          'icon': Icon(
-            Icons.signal_cellular_alt,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.signal_cellular_alt,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -72,11 +62,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       'items': [
         {
           'title': 'General',
-          'icon': Icon(
-            Icons.workspaces_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.workspaces_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -88,11 +74,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Members',
-          'icon': Icon(
-            Icons.people_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.people_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -106,11 +88,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Billing & Plans',
-          'icon': Icon(
-            Icons.credit_card,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.credit_card,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -122,11 +100,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Integrations',
-          'icon': Icon(
-            Icons.route,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.route,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -138,11 +112,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Import/Export',
-          'icon': Icon(
-            Icons.swap_vert_circle_outlined,
-            size: 16,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.swap_vert_circle_outlined,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -154,11 +124,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Workspace Invites',
-          'icon': Icon(
-            Icons.upcoming_outlined,
-            size: 16,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.upcoming_outlined,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -515,23 +481,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       children: [
                         Row(
                           children: [
-                            menus[index]['items'][idx]['icon'],
+                            Icon(menus[index]['items'][idx]['icon'], size: 18, color: themeProvider.themeManager.primaryTextColor,)
+                            ,
                             const SizedBox(
                               width: 10,
                             ),
                             CustomText(
                               menus[index]['items'][idx]['title'],
                               type: FontStyle.Small,
-                              color: Const.dark
-                                  ? darkSecondaryTextColor
-                                  : Colors.black,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                           ],
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           size: 15,
-                          color: greyColor,
+                          color: themeProvider.themeManager.placeholderTextColor,
                         )
                       ],
                     ),

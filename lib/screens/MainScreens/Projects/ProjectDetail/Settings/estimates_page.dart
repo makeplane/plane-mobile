@@ -61,7 +61,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                       });
                     },
                     child: Container(
-                      height: 33,
+                      // height: 33,
                       margin: const EdgeInsets.only(right: 16, top: 16),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 7),
@@ -74,8 +74,11 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                           color: Colors.grey.shade300,
                         ),
                       ),
-                      child: const CustomText('Disable Estimate',
-                          type: FontStyle.Medium),
+                      child: CustomText(
+                        'Disable Estimate',
+                        type: FontStyle.Medium,
+                        color: themeProvider.themeManager.primaryTextColor,
+                      ),
                     ),
                   ),
                   ListView.builder(
@@ -114,7 +117,9 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                 CustomText(
                                   estimatesProvider.estimates[index]['name'],
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.Small,
+                                  type: FontStyle.H5,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Row(
                                   children: [
@@ -142,9 +147,9 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         });
                                       },
                                       child: Container(
-                                        height: 33,
+                                        // height: 33,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 7),
+                                            horizontal: 10, vertical: 5),
                                         decoration: BoxDecoration(
                                           color: projectProvider.currentProject[
                                                       'estimate'] ==
@@ -165,20 +170,20 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                                 ),
                                         ),
                                         child: CustomText(
-                                            projectProvider.currentProject[
-                                                        'estimate'] ==
-                                                    estimatesProvider
-                                                        .estimates[index]['id']
-                                                ? 'In Use'
-                                                : 'Use',
-                                            color: projectProvider
-                                                            .currentProject[
-                                                        'estimate'] ==
-                                                    estimatesProvider
-                                                        .estimates[index]['id']
-                                                ? greenHighLight
-                                                : Colors.black,
-                                            type: FontStyle.Medium),
+                                          projectProvider.currentProject[
+                                                      'estimate'] ==
+                                                  estimatesProvider
+                                                      .estimates[index]['id']
+                                              ? 'In Use'
+                                              : 'Use',
+                                          color: projectProvider.currentProject[
+                                                      'estimate'] ==
+                                                  estimatesProvider
+                                                      .estimates[index]['id']
+                                              ? greenHighLight
+                                              : Colors.black,
+                                          type: FontStyle.Medium,
+                                        ),
                                       ),
                                     ),
 
@@ -218,8 +223,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         'assets/svg_images/delete_icon.svg',
                                         height: 20,
                                         width: 20,
-                                        colorFilter: const ColorFilter.mode(
-                                            Colors.red, BlendMode.srcIn),
+                                        colorFilter: ColorFilter.mode(themeProvider.themeManager.textErrorColor, BlendMode.srcIn),
                                       ),
                                     ),
 
@@ -258,7 +262,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         );
                                       },
                                       icon: const Icon(Icons.edit_outlined),
-                                      color: greyColor,
+                                      color: themeProvider.themeManager.placeholderTextColor,
                                     ),
                                   ],
                                 ),

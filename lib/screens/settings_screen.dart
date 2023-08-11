@@ -85,11 +85,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
           backgroundColor: themeProvider.isDarkThemeEnabled
               ? darkPrimaryBackgroundDefaultColor
               : lightPrimaryBackgroundDefaultColor,
-          title: const CustomText(
+          title: CustomText(
             'Settings',
             type: FontStyle.Large,
             fontWeight: FontWeightt.Semibold,
             maxLines: 1,
+            color: themeProvider.themeManager.primaryTextColor,
           ),
           bottom: TabBar(
             controller: tabController,
@@ -198,7 +199,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     );
                   }
                 },
-                backgroundColor: primaryColor,
+                backgroundColor: themeProvider.themeManager.primaryColour,
                 child: const Icon(
                   Icons.add,
                   color: Colors.white,

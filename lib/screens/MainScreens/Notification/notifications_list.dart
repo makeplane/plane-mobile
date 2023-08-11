@@ -209,6 +209,8 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                     ),
                                                     TextSpan(
                                                       text:
+                                                      widget.data[index]['data']['issue_activity']['field'] == 'description' ? 
+                                                      ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '').toString().replaceAll('to', '') } ' :
                                                           ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '')} ',
                                                       style: TextStyle(
                                                         color: themeProvider
@@ -221,7 +223,11 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                       ),
                                                     ),
                                                     TextSpan(
-                                                      text: widget.data[index]
+                                                      text: 
+                                                      widget.data[index]
+                                                              ['data']
+                                                              ['issue_activity']['field'] == 'description' ? '' :
+                                                      widget.data[index]
                                                               ['data']
                                                               ['issue_activity']
                                                               ['new_value']
@@ -239,7 +245,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                   ],
                                                   fontWeight: FontWeight.bold,
                                                   textAlign: TextAlign.left,
-                                                  maxLines: 4,
+                                                  maxLines: 2,
                                                 ),
                                               ),
                                               // Expanded(

@@ -55,20 +55,21 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomText(
+                    CustomText(
                       'Github',
                       textAlign: TextAlign.left,
-                      type: FontStyle.Small,
+                      type: FontStyle.H5,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
                       width: MediaQuery.of(context).size.width - 120,
-                      child: const CustomText(
+                      child: CustomText(
                         'Select GitHub repository to enable sync.',
                         textAlign: TextAlign.left,
                         maxLines: 3,
                         type: FontStyle.Small,
-                        color: Color.fromRGBO(133, 142, 150, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     ),
                   ],

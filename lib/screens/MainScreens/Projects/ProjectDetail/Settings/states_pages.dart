@@ -53,7 +53,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                     states[index].toString().replaceFirst(states[index][0],
                         states[index][0].toString().toUpperCase()),
                     // values['group'].replaceFirst(values['group'][0], values['group'][0].toUpperCase()),
-                    type: FontStyle.Small,
+                    type: FontStyle.H5,
+                    fontWeight: FontWeightt.Medium,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   IconButton(
                     onPressed: () {
@@ -87,9 +89,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                         },
                       );
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add,
-                      color: primaryColor,
+                      color: themeProvider.themeManager.primaryColour,
                     ),
                   )
                 ],
@@ -143,6 +145,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               issuesProvider.statesData[states[index]][idx]
                                   ['name'],
                               type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                           ],
                         ),
@@ -186,9 +190,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                   },
                                 );
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.edit_outlined,
-                                color: greyColor,
+                                color: themeProvider.themeManager.placeholderTextColor,
                               ),
                             ),
                             IconButton(
@@ -217,8 +221,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                 'assets/svg_images/delete_icon.svg',
                                 height: 20,
                                 width: 20,
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.red, BlendMode.srcIn),
+                                colorFilter: ColorFilter.mode(
+                                    themeProvider.themeManager.textErrorColor, BlendMode.srcIn),
                               ),
                             ),
                           ],

@@ -90,16 +90,17 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       CustomText(
                         'Icon & Name',
                         type: FontStyle.Small,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                       CustomText(
                         '*',
                         type: FontStyle.Small,
-                        color: Colors.red,
+                        color: themeProvider.themeManager.textErrorColor,
                       )
                     ],
                   ),
@@ -303,48 +304,48 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           controller: name,
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
-                              .copyWith(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
-                          ),
+                          //     .copyWith(
+                          //   enabledBorder: OutlineInputBorder(
+                          //     borderSide: BorderSide(
+                          //         color: themeProvider.isDarkThemeEnabled
+                          //             ? darkThemeBorder
+                          //             : const Color(0xFFE5E5E5),
+                          //         width: 1.0),
+                          //     borderRadius:
+                          //         const BorderRadius.all(Radius.circular(8)),
+                          //   ),
+                          //   disabledBorder: OutlineInputBorder(
+                          //     borderSide: BorderSide(
+                          //         color: themeProvider.isDarkThemeEnabled
+                          //             ? darkThemeBorder
+                          //             : const Color(0xFFE5E5E5),
+                          //         width: 1.0),
+                          //     borderRadius:
+                          //         const BorderRadius.all(Radius.circular(8)),
+                          //   ),
+                          //   focusedBorder: const OutlineInputBorder(
+                          //     borderSide:
+                          //         BorderSide(color: primaryColor, width: 2.0),
+                          //     borderRadius:
+                          //         BorderRadius.all(Radius.circular(8)),
+                          //   ),
+                          // ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
                       CustomText(
                         'Description',
                         type: FontStyle.Small,
-                        // color: themeProvider.secondaryTextColor,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                       CustomText(
                         '*',
                         type: FontStyle.Small,
-                        color: Colors.red,
+                        color:themeProvider.themeManager.textErrorColor,
                       )
                     ],
                   ),
@@ -385,17 +386,17 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
                       CustomText(
                         'Cover',
                         type: FontStyle.Small,
-                        // color: themeProvider.secondaryTextColor,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                       CustomText(
                         '*',
                         type: FontStyle.Small,
-                        color: Colors.red,
+                        color: themeProvider.themeManager.textErrorColor,
                       )
                     ],
                   ),
@@ -472,7 +473,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
                       // Text(
                       //   'Identifier',
@@ -493,12 +494,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       CustomText(
                         'Identifier',
                         type: FontStyle.Small,
-                        // color: themeProvider.secondaryTextColor,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                       CustomText(
                         '*',
                         type: FontStyle.Small,
-                        color: Colors.red,
+                        color: themeProvider.themeManager.textErrorColor,
                       )
                     ],
                   ),
@@ -592,9 +593,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       height: 60,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkBackgroundColor
-                            : lightBackgroundColor,
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: themeProvider.isDarkThemeEnabled
@@ -671,19 +670,19 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
                       collapsedBackgroundColor:
                           const Color.fromRGBO(255, 12, 12, 0.1),
-                      title: const CustomText(
+                      title: CustomText(
                         'Danger Zone',
                         textAlign: TextAlign.left,
                         type: FontStyle.H5,
-                        color: Color.fromRGBO(255, 12, 12, 1),
+                        color: themeProvider.themeManager.textErrorColor,
                       ),
                       children: [
-                        const CustomText(
+                        CustomText(
                           'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.',
                           type: FontStyle.Medium,
                           maxLines: 8,
                           textAlign: TextAlign.left,
-                          color: Colors.grey,
+                          color: themeProvider.themeManager.placeholderTextColor,
                         ),
                         GestureDetector(
                           onTap: () async {

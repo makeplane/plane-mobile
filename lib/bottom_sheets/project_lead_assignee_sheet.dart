@@ -56,6 +56,7 @@ class _ProjectLeadAssigneeSheetState
                         'Select ${widget.title}',
                         type: FontStyle.H6,
                         fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                       const Spacer(),
                       IconButton(
@@ -185,7 +186,7 @@ class _ProjectLeadAssigneeSheetState
                                   '${projectProvider.projectMembers[index]['member']['first_name']} ${projectProvider.projectMembers[index]['member']['last_name'] ?? ''}',
                                   type: FontStyle.H5,
                                   maxLines: 1,
-                                  fontSize: 18,
+                                  color: themeProvider.themeManager.primaryTextColor,
                                 ),
                               ),
                               const SizedBox(

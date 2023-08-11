@@ -61,12 +61,19 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         margin: const EdgeInsets.all(6),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 0.6,
+                color: themeProvider.themeManager.borderSubtle01Color,
+                spreadRadius: 0,
+              )
+            ],
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-                color: selected || themeProvider.isDarkThemeEnabled
-                    ? Colors.transparent
-                    : Colors.grey.shade400),
-            color: color ?? Colors.white),
+            // border: Border.all(
+            //     color: selected || themeProvider.isDarkThemeEnabled
+            //         ? Colors.transparent
+            //         : Colors.grey.shade400),
+            color: color),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -78,9 +85,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   : text,
               color: selected
                   ? Colors.white
-                  : themeProvider.isDarkThemeEnabled
-                      ? Colors.grey.shade500
-                      : greyColor,
+                  : themeProvider.themeManager.secondaryTextColor,
             )
           ],
         ),
@@ -91,26 +96,20 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       return Container(
         height: 1,
         width: double.infinity,
-        color: themeProvider.isDarkThemeEnabled
-            ? darkThemeBorder
-            : Colors.grey[300],
+        color: themeProvider.themeManager.borderDisabledColor,
       );
     }
 
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      // color: themeProvider.isDarkThemeEnabled
-      //     ? darkSecondaryBackgroundColor
-      //     : lightSecondaryBackgroundColor,
       child: Stack(
         children: [
           SizedBox(
-            //   color: Colors.white,
             child: Row(
               children: [
                 const CustomText(
                   'Filter',
-                  type: FontStyle.H6,
+                  type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),
                 const Spacer(),
@@ -118,10 +117,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.close,
                     size: 27,
-                    color: Color.fromRGBO(143, 143, 147, 1),
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 ),
               ],
@@ -154,15 +153,15 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                       color:
                                           filters.priorities.contains(e['text'])
                                               ? Colors.white
-                                              : greyColor,
+                                              : themeProvider.themeManager
+                                                  .secondaryTextColor,
                                     ),
                                     text: e['text'],
-                                    color:
-                                        filters.priorities.contains(e['text'])
-                                            ? primaryColor
-                                            : themeProvider.isDarkThemeEnabled
-                                                ? darkBackgroundColor
-                                                : Colors.white,
+                                    color: filters.priorities
+                                            .contains(e['text'])
+                                        ? primaryColor
+                                        : themeProvider.themeManager
+                                            .secondaryBackgroundDefaultColor,
                                     selected: filters.priorities
                                         .contains(e['text']))))
                             .toList()),
@@ -198,10 +197,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                       colorFilter: ColorFilter.mode(
                                           filters.states.contains(e['id'])
                                               ? (Colors.white)
-                                              : (themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkPrimaryTextColor
-                                                  : greyColor),
+                                              : themeProvider.themeManager
+                                                  .secondaryTextColor,
                                           BlendMode.srcIn),
                                       height: 20,
                                       width: 20,
@@ -209,9 +206,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     text: e['name'],
                                     color: filters.states.contains(e['id'])
                                         ? primaryColor
-                                        : themeProvider.isDarkThemeEnabled
-                                            ? darkBackgroundColor
-                                            : Colors.white,
+                                        : themeProvider.themeManager
+                                            .secondaryBackgroundDefaultColor,
                                     selected: filters.states.contains(e['id']),
                                   ),
                                 ))
@@ -267,6 +263,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.white,
+                                          fontWeight: FontWeightt.Medium,
+                                          type: FontStyle.overline,
                                         )),
                                       ),
                                 text: e['member']['first_name'] != null &&
@@ -278,9 +276,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                 color: filters.assignees
                                         .contains(e['member']['id'])
                                     ? primaryColor
-                                    : themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : Colors.white,
+                                    : themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor,
                               ),
                             ),
                           )
@@ -324,6 +321,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.white,
+                                          fontWeight: FontWeightt.Medium,
+                                          type: FontStyle.overline,
                                         )),
                                       ),
                                 text: e['member']['first_name'] != null &&
@@ -335,9 +334,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                 color: filters.createdBy
                                         .contains(e['member']['id'])
                                     ? primaryColor
-                                    : themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : Colors.white,
+                                    : themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor,
                               ),
                             ),
                           )
@@ -371,9 +369,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     selected: filters.labels.contains(e['id']),
                                     color: filters.labels.contains(e['id'])
                                         ? primaryColor
-                                        : themeProvider.isDarkThemeEnabled
-                                            ? darkBackgroundColor
-                                            : Colors.white,
+                                        : themeProvider.themeManager
+                                            .secondaryBackgroundDefaultColor,
                                   ),
                                 ))
                             .toList()),

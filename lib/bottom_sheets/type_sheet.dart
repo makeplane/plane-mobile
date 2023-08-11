@@ -44,8 +44,8 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
               Row(
                 children: [
                   const CustomText(
-                    'Type',
-                    type: FontStyle.H6,
+                    'Layout',
+                    type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
@@ -53,14 +53,15 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(
+                    icon:  Icon(
                       Icons.close,
                       size: 27,
-                      color: Color.fromRGBO(143, 143, 147, 1),
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ),
                   ),
                 ],
               ),
+              Container(height: 10,),
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -126,7 +127,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           fillColor: selected == 0
                               ? null
                               : MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
+                                  themeProvider.themeManager.disabledButtonColor),
                           groupValue: selected,
                           activeColor: primaryColor,
                           value: 0,
@@ -136,9 +137,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                             // });
                           }),
                       const SizedBox(width: 10),
-                      const CustomText(
+                       CustomText(
                         'Board View',
-                        type: FontStyle.Small,
+                        type: FontStyle.H6,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     ],
                   ),
@@ -148,9 +150,50 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : Colors.grey[300],
+                  color: themeProvider.themeManager.borderDisabledColor,
+                ),
+              ),
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      selected = 1;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Radio(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          fillColor: selected == 1
+                              ? null
+                              : MaterialStateProperty.all<Color>(
+                                  themeProvider.themeManager.disabledButtonColor),
+                          groupValue: selected,
+                          activeColor: primaryColor,
+                          value: 1,
+                          onChanged: (val) {}),
+                      const SizedBox(width: 10),
+                       CustomText(
+                        'List View',
+                        type: FontStyle.H6,
+                        color: themeProvider.themeManager.tertiaryTextColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                  color: themeProvider.themeManager.borderDisabledColor,
                 ),
               ),
               SizedBox(
@@ -174,15 +217,16 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           fillColor: selected == 2
                               ? null
                               : MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
+                                  themeProvider.themeManager.disabledButtonColor),
                           groupValue: selected,
                           activeColor: primaryColor,
                           value: 2,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
-                      const CustomText(
+                       CustomText(
                         'Calendar View',
-                        type: FontStyle.Small,
+                         type: FontStyle.H6,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     ],
                   ),
@@ -192,9 +236,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : Colors.grey[300],
+                  color: themeProvider.themeManager.borderDisabledColor,
                 ),
               ),
               SizedBox(
@@ -218,15 +260,16 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           fillColor: selected == 3
                               ? null
                               : MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
+                                  themeProvider.themeManager.disabledButtonColor),
                           groupValue: selected,
                           activeColor: primaryColor,
                           value: 3,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
-                      const CustomText(
+                       CustomText(
                         'Spreadsheet View',
-                        type: FontStyle.Small,
+                         type: FontStyle.H6,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     ],
                   ),

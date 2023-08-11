@@ -76,19 +76,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
 
     return Scaffold(
-      floatingActionButton: GestureDetector(
-        onTap: () {
-
-
-          themeProvider.toggleTheme(THEME.dark);
-        },
-        child: Container(
-          color: Colors.amber,
-          height: 30,
-          width: 30,
-        ),
-      ),
-      //backgroundColor: themeProvider.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
@@ -132,7 +119,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           const SizedBox(width: 5),
                           CustomText(
                             //DateFormat('EEEE, MMM dd  hh:mm ').format(DateTime.now()),
-                            DateFormat('EEEE,  MMM dd,')
+                            DateFormat('EEEE, MMM dd')
                                 .add_jm()
                                 .format(DateTime.now()),
                             type: FontStyle.XSmall,

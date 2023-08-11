@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/models/workspace_model.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
 
 import 'package:plane_startup/services/shared_preference_service.dart';
@@ -67,14 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           // log(prov.userProfile.last_workspace_id.toString());
           dashProv.getDashboard();
           projectProv.getProjects(
-              slug: workspaceProv.workspaces.where((element) {
-            if (element['id'] == prov.userProfile.lastWorkspaceId) {
-              workspaceProv.selectedWorkspace =
-                  WorkspaceModel.fromJson(element);
-              return true;
-            }
-            return false;
-          }).first['slug']);
+              slug: workspaceProv.selectedWorkspace!.workspaceSlug);
           ref.read(ProviderList.notificationProvider).getUnreadCount();
 
           ref
@@ -125,8 +117,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
         textTheme: TextTheme(
           titleMedium: TextStyle(
-            color:
-                themeProvider.themeManager.primaryTextColor,
+            color: themeProvider.themeManager.primaryTextColor,
           ),
         ),
 
@@ -139,12 +130,11 @@ class _MyAppState extends ConsumerState<MyApp> {
 
         primaryColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
 
-        scaffoldBackgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+        scaffoldBackgroundColor:
+            themeProvider.themeManager.primaryBackgroundDefaultColor,
         //bottom sheet theme
         bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? const Color.fromRGBO(29, 30, 32, 1)
-              : Colors.white,
+          backgroundColor: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         ),
 
         //dialog theme

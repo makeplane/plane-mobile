@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/square_avatar_widget.dart';
@@ -48,12 +47,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
         // right border
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightGreeyColor,
-          border: const Border(
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+          border:  Border(
             right: BorderSide(
-              color: Colors.grey,
+              color: themeProvider.themeManager.borderSubtle01Color,
               width: 1,
             ),
           ),
@@ -63,6 +60,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           child: CustomText(
             text,
             type: FontStyle.Small,
+            color: themeProvider.themeManager.tertiaryTextColor,
+            fontWeight: FontWeightt.Medium,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -185,17 +184,15 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkThemeBorder
-                          : lightGreeyColor)),
+                      color: themeProvider.themeManager.placeholderTextColor)),
               // margin: const EdgeInsets.only(right: 5),
               height: 30,
               width: 30,
               child: issuesProvider.issuesList[index]['priority'] == null
-                  ? const Icon(
+                  ?  Icon(
                       Icons.do_disturb_alt_outlined,
                       size: 18,
-                      color: greyColor,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     )
                   : issuesProvider.issuesList[index]['priority'] == 'high'
                       ? const Icon(
@@ -237,10 +234,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: 400,
               //bottom border
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey,
+                    color: themeProvider.themeManager.borderSubtle01Color,
                     width: 1,
                   ),
                 ),
@@ -281,7 +278,6 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                         issuesProvider.issuesList[index]['name'],
                         type: FontStyle.Small,
                         maxLines: 1,
-                        fontSize: 17,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -292,7 +288,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             Container(
               // margin: const EdgeInsets.symmetric(horizontal: 10),
               width: 1,
-              color: Colors.grey,
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ],
         ),
@@ -305,10 +301,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),
@@ -336,7 +332,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+         color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -348,10 +344,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey,
+               color: themeProvider.themeManager.borderSubtle01Color,
                     width: 1,
                   ),
                 ),
@@ -376,20 +372,18 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           left: 8, right: 8, top: 5, bottom: 5),
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : lightGreeyColor),
+                              color: themeProvider.themeManager.placeholderTextColor,),
                           borderRadius: BorderRadius.circular(5)),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.groups_2_outlined,
                         size: 18,
-                        color: greyColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     )),
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -401,10 +395,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: greyColor,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),
@@ -421,17 +415,16 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                 .issuesList[index]['label_details'].length >
                             1
                         ? Container(
+                          height: 30,
                             // color: Colors.grey,
-                            width: 85,
+                            width: 90,
                             padding: const EdgeInsets.only(
                               left: 8,
                               right: 8,
                             ),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.placeholderTextColor),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -448,7 +441,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                 ),
                                 CustomText(
                                   '${issuesProvider.issuesList[index]['label_details'].length} Labels',
-                                  fontSize: 13,
+                                  type: FontStyle.Small,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  
                                 ),
                               ],
                             ),
@@ -469,9 +465,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                 ),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider.themeManager.placeholderTextColor),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -490,7 +484,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                     CustomText(
                                       issuesProvider.issuesList[index]
                                           ['label_details'][idx]['name'],
-                                      fontSize: 13,
+                                       type: FontStyle.Small,
                                     ),
                                   ],
                                 ),
@@ -503,20 +497,19 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                             .issuesList[index]['label_details'].isEmpty)
                     ? Container(
                         alignment: Alignment.center,
-                        height: 20,
+                        height: 30,
                         padding: const EdgeInsets.only(
                           left: 8,
                           right: 8,
+                          bottom: 2
                         ),
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : lightGreeyColor),
+                                color: themeProvider.themeManager.placeholderTextColor),
                             borderRadius: BorderRadius.circular(5)),
                         child: const CustomText(
                           'No Label',
-                          fontSize: 13,
+                          type: FontStyle.XSmall,
                         ),
                       )
                     : Container(),
@@ -524,7 +517,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -536,10 +529,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: themeProvider.themeManager.borderStrong01Color,
                   width: 1,
                 ),
               ),
@@ -559,7 +552,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -606,10 +599,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),
@@ -617,10 +610,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             width: 150,
             child: Wrap(
               children: [
-                const Icon(
+                 Icon(
                   Icons.change_history,
                   size: 16,
-                  color: greyColor,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
                 const SizedBox(
                   width: 5,
@@ -651,7 +644,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -663,10 +656,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),
@@ -684,7 +677,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -696,10 +689,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),
@@ -718,7 +711,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Container(
             // margin: const EdgeInsets.symmetric(horizontal: 10),
             width: 1,
-            color: Colors.grey,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )
         ],
       );
@@ -901,11 +894,11 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           height: 50,
 
           //bottom border
-          decoration: const BoxDecoration(
-            color: lightGreeyColor,
+          decoration:  BoxDecoration(
+            color: themeProvider.themeManager.borderSubtle01Color,
             border: Border(
               bottom: BorderSide(
-                color: greyColor,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 1,
               ),
             ),
@@ -1049,12 +1042,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                         height: 60,
                         //right border
                         decoration: BoxDecoration(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkBackgroundColor
-                              : Colors.white,
-                          border: const Border(
+                          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                          border:  Border(
                             right: BorderSide(
-                              color: Colors.grey,
+                              color: themeProvider.themeManager.borderSubtle01Color,
                               width: 1,
                             ),
                           ),
@@ -1063,10 +1054,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           width: 100,
                           //bottom border
-                          decoration: const BoxDecoration(
+                          decoration:  BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                color: Colors.grey,
+                                color: themeProvider.themeManager.borderSubtle01Color,
                                 width: 1,
                               ),
                             ),
@@ -1090,29 +1081,29 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           height: 50,
           // padding: const EdgeInsets.symmetric(vertical: 10),
           //right border
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration:  BoxDecoration(
+            color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
             border: Border(
               right: BorderSide(
-                color: Colors.grey,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 1,
               ),
               bottom: BorderSide(
-                color: Colors.grey,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 1,
               ),
             ),
           ),
           child: Container(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightGreeyColor,
+            color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
             // height: 50,
             width: 99,
-            child: const Center(
+            child:  Center(
               child: CustomText(
                 'Key',
                 type: FontStyle.Small,
+                fontWeight: FontWeightt.Medium,
+                color: themeProvider.themeManager.tertiaryTextColor,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

@@ -85,7 +85,7 @@ class _SignInState extends ConsumerState<SignIn> {
                                     color: themeProvider
                                         .themeManager.tertiaryTextColor)),
                             TextSpan(
-                                text: '*',
+                                text: ' *',
                                 style: TextStyle(
                                     color: themeProvider
                                         .themeManager.textErrorColor))
@@ -100,6 +100,7 @@ class _SignInState extends ConsumerState<SignIn> {
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
                               .copyWith(),
+                          style: themeProvider.themeManager.textFieldTextStyle,
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your email';
@@ -130,7 +131,7 @@ class _SignInState extends ConsumerState<SignIn> {
                                     color: themeProvider
                                         .themeManager.tertiaryTextColor)),
                             TextSpan(
-                                text: '*',
+                                text: ' *',
                                 style: TextStyle(
                                     color: themeProvider
                                         .themeManager.textErrorColor))
@@ -248,9 +249,10 @@ class _SignInState extends ConsumerState<SignIn> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                               Icon(
                                 Icons.arrow_back,
-                                color: greyColor,
+                                color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 size: 18,
                               ),
                               const SizedBox(

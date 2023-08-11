@@ -33,7 +33,8 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                   borderRadius: widget.allowBorderRadius
                       ? BorderRadius.circular(30)
                       : BorderRadius.zero,
-                  color: themeProvider.isDarkThemeEnabled
+                  color: themeProvider.theme == THEME.dark ||
+                          themeProvider.theme == THEME.darkHighContrast
                       ? Colors.black.withOpacity(0.1)
                       : Colors.white.withOpacity(0.1),
                 ),
@@ -47,7 +48,8 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                         height: 30,
                         child: LoadingIndicator(
                           indicatorType: Indicator.lineSpinFadeLoader,
-                          colors: themeProvider.isDarkThemeEnabled
+                          colors: themeProvider.theme == THEME.dark ||
+                                  themeProvider.theme == THEME.darkHighContrast
                               ? [Colors.white]
                               : [Colors.black],
                           strokeWidth: 1.0,
@@ -61,7 +63,7 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                       //   'processing...',
                       //   style: TextStylingWidget.smallText,
                       // )
-                       CustomText(
+                      CustomText(
                         'Loading...',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Medium,

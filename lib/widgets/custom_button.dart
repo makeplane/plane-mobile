@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 
 import '../utils/enums.dart';
 import 'custom_text.dart';
 
-class Button extends StatefulWidget {
+class Button extends ConsumerStatefulWidget {
   final String text;
   final bool filledButton;
   final bool disable;
@@ -27,12 +29,13 @@ class Button extends StatefulWidget {
       super.key});
 
   @override
-  State<Button> createState() => _ButtonState();
+  ConsumerState<Button> createState() => _ButtonState();
 }
 
-class _ButtonState extends State<Button> {
+class _ButtonState extends ConsumerState<Button> {
   @override
   Widget build(BuildContext context) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -47,7 +50,7 @@ class _ButtonState extends State<Button> {
                 ? const Border()
                 : widget.removeStroke
                     ? const Border()
-                    : Border.all(color: Colors.grey.shade500),
+                    : Border.all(color:themeProvider.themeManager.borderSubtle01Color ),
             borderRadius: BorderRadius.circular(8),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)

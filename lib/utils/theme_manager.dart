@@ -28,7 +28,9 @@ class ThemeManager {
   late Color primaryBackgroundDefaultColor;
   late Color secondaryBackgroundDefaultColor;
   late Color tertiaryBackgroundDefaultColor;
+  late Color borderSubtle00Color;
   late Color borderSubtle01Color;
+  late Color borderStrong01Color;
   late Color borderDisabledColor;
 
   ThemeManager(this.theme) {
@@ -46,6 +48,22 @@ class ThemeManager {
             : theme == THEME.lightHighContrast
                 ? darkBorderSubtle01Color
                 : lightBorderSubtle01Color;
+
+                    borderSubtle00Color = theme == THEME.light
+        ? lightBorderSubtle00Color
+        : theme == THEME.dark
+            ? darkBorderSubtle00Color
+            : theme == THEME.lightHighContrast
+                ? darkBorderSubtle00Color
+                : lightBorderSubtle00Color;
+
+                borderStrong01Color= theme == THEME.light
+        ? lightBorderStrong01Color
+        : theme == THEME.dark
+            ? darkBorderStrong01Color
+            : theme == THEME.lightHighContrast
+                ? darkBorderStrong01Color
+                : lightBorderStrong01Color;
     borderDisabledColor = theme == THEME.light
         ? lightBorderDisabledColor
         : theme == THEME.dark

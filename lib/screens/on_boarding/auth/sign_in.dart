@@ -142,7 +142,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                         color: themeProvider
                                             .themeManager.tertiaryTextColor)),
                                 TextSpan(
-                                    text: '*',
+                                    text: ' *',
                                     style: TextStyle(
                                         color: themeProvider
                                             .themeManager.textErrorColor))
@@ -157,6 +157,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(),
+                              style:
+                                  themeProvider.themeManager.textFieldTextStyle,
                               validator: (val) {
                                 if (val!.isEmpty) {
                                   return '*Enter your email';
@@ -188,7 +190,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                               color: themeProvider.themeManager
                                                   .tertiaryTextColor)),
                                       TextSpan(
-                                          text: '*',
+                                          text: ' *',
                                           style: TextStyle(
                                               color: themeProvider
                                                   .themeManager.textErrorColor))
@@ -206,6 +208,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     controller: code,
                                     decoration: themeProvider
                                         .themeManager.textFieldDecoration,
+                                    style: themeProvider
+                                        .themeManager.textFieldTextStyle,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Please enter the code";
@@ -394,8 +398,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                             child: LoadingIndicator(
                                               indicatorType:
                                                   Indicator.lineSpinFadeLoader,
-                                              colors: themeProvider
-                                                      .isDarkThemeEnabled
+                                              colors: themeProvider.theme ==
+                                                          THEME.dark ||
+                                                      themeProvider.theme ==
+                                                          THEME.darkHighContrast
                                                   ? [Colors.white]
                                                   : [Colors.black],
                                               strokeWidth: 1.0,
@@ -410,10 +416,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                         widget: Image.asset(
                                             'assets/images/google-icon.png'),
                                         // SvgPicture.asset('assets/svg_images/google-icon.svg',),
-                                        textColor:
-                                            themeProvider.isDarkThemeEnabled
-                                                ? Colors.white
-                                                : Colors.black,
+                                        textColor: themeProvider
+                                            .themeManager.primaryTextColor,
                                         filledButton: false,
                                         ontap: () async {
                                           // await GoogleSignInApi.logout();
@@ -507,9 +511,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.arrow_back,
-                                    color: greyColor,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                     size: 18,
                                   ),
                                   const SizedBox(

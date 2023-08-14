@@ -30,7 +30,7 @@ class _AppState extends ConsumerState<App> {
         ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
-      
+       
         body: (profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
             ? Center(

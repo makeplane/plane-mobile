@@ -4,16 +4,13 @@ import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
 import 'package:plane_startup/bottom_sheets/views_sheet.dart';
-import 'package:plane_startup/provider/cycles_provider.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/project_details_cycles.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
@@ -28,6 +25,8 @@ import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
 import '../../../create_view_screen.dart';
+import 'CyclesTab/create_cycle.dart';
+import 'ModulesTab/create_module.dart';
 
 class ProjectDetail extends ConsumerStatefulWidget {
   const ProjectDetail({super.key, required this.index});
@@ -73,9 +72,10 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var moduleProvider = ref.watch(ProviderList.modulesProvider);
     var cycleProvider = ref.watch(ProviderList.cyclesProvider);
+    var moduleProvider = ref.watch(ProviderList.modulesProvider);
+    var viewsProvider = ref.watch(ProviderList.viewsProvider);
+
     // log(issueProvider.issues.groupBY.name);
 
     return Scaffold(
@@ -108,7 +108,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               : Container(),
         ],
       ),
-      floatingActionButton: (projectProvider.role == Role.admin ||
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton:
+  
+       selected != 0 &&
+              (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
               ((selected == 1 &&
                       (cycleProvider.cyclesAllData.isNotEmpty ||
@@ -165,6 +169,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               },
             )
           : Container(),
+
+
       body: SafeArea(
         child: Container(
           // color: themeProvider.backgroundColor,

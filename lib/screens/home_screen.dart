@@ -62,17 +62,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ];
     return Scaffold(
       body: SafeArea(
-        child: 
-        profileProvider.getProfileState == StateEnum.success ?
-        screens[currentIndex]
-        : profileProvider.getProfileState == StateEnum.error ?
-        errorState(context: context) : Container(),
+        child: profileProvider.getProfileState == StateEnum.success
+            ? screens[currentIndex]
+            : profileProvider.getProfileState == StateEnum.error
+                ? errorState(context: context)
+                : Container(),
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          margin: Platform.isAndroid ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+          margin: Platform.isAndroid
+              ? const EdgeInsets.only(bottom: 10)
+              : EdgeInsets.zero,
           height: 68,
           decoration: BoxDecoration(
+            color:
+                themeProvider.theme == THEME.custom ? customNavBarColor : null,
             border: Border(
               top: BorderSide(
                   color: themeProvider.themeManager.borderSubtle01Color,
@@ -110,7 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 height: 7,
                                 width: 50,
                                 color: currentIndex == i
-                                    ? primaryColor
+                                    ? themeProvider.themeManager.primaryColour
                                     : Colors.transparent,
                               ),
                               const SizedBox(
@@ -121,18 +125,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   width: 20,
                                   colorFilter: ColorFilter.mode(
                                       currentIndex == i
-                                          ? primaryColor
-                                          : (themeProvider.themeManager.placeholderTextColor),
+                                          ? themeProvider
+                                              .themeManager.primaryColour
+                                          : themeProvider.theme == THEME.custom
+                                              ? customNavBarTextColor
+                                              : (themeProvider.themeManager
+                                                  .placeholderTextColor),
                                       BlendMode.srcIn)),
                               const SizedBox(
                                 height: 8,
                               ),
                               CustomText(
                                 e['label'],
+                                overrride: true,
                                 type: FontStyle.Small,
                                 color: currentIndex == i
-                                    ? primaryColor
-                                    : (themeProvider.themeManager.placeholderTextColor),
+                                    ? themeProvider.themeManager.primaryColour
+                                    : themeProvider.theme == THEME.custom
+                                        ? customNavBarTextColor
+                                        : (themeProvider
+                                            .themeManager.placeholderTextColor),
                                 fontWeight: FontWeightt.Medium,
                               )
                             ],

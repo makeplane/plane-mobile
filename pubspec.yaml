@@ -106,6 +106,7 @@ flutter:
     - assets/svg_images/light_mode.svg
     - assets/svg_images/light_high_contrast.svg
     - assets/svg_images/dark_high_contrast.svg
+    - assets/svg_images/custom_theme.svg
     - assets/svg_images/search.svg
     - assets/svg_images/redirect.svg
     - assets/svg_images/settings.svg

@@ -6,7 +6,6 @@ import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/utils/constants.dart';
 
 class ModuleScreen extends ConsumerStatefulWidget {
   const ModuleScreen({super.key});

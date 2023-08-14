@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane_startup/models/user_profile_model.dart';
+import 'package:plane_startup/services/shared_preference_service.dart';
 import 'package:plane_startup/utils/enums.dart';
 
 import 'package:plane_startup/config/apis.dart';
@@ -66,7 +67,9 @@ class ProfileProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       userProfile = UserProfile.fromMap(response.data);
-
+      if (userProfile.theme != null && userProfile.theme!.length > 1) {
+        saveCustomTheme(userProfile.theme!);
+      }
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
       // dropDownValue = userProfile.role!;
@@ -90,6 +93,15 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  void saveCustomTheme(data) {
+    var prefs = SharedPrefrenceServices.sharedPreferences!;
+    prefs.setString('background', data['background']);
+    prefs.setString('primary', data['primary']);
+    prefs.setString('text', data['text']);
+    prefs.setString('sidebarText', data['sidebarText']);
+    prefs.setString('sidebarBackground', data['sidebarBackground']);
+  }
+
   Future updateProfile({required Map data}) async {
     updateProfileState = StateEnum.loading;
     notifyListeners();
@@ -102,6 +114,9 @@ class ProfileProvider extends ChangeNotifier {
           data: data);
       log(response.data.toString());
       userProfile = UserProfile.fromMap(response.data);
+      if (userProfile.theme != null && userProfile.theme!.length > 1) {
+        saveCustomTheme(userProfile.theme!);
+      }
       updateProfileState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {

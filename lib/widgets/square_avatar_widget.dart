@@ -33,7 +33,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                    color: themeProvider.themeManager.placeholderTextColor,
+                    color: themeProvider.themeManager.borderSubtle01Color,
                     width: 1),
                 color: Colors.transparent,
               ),
@@ -63,8 +63,10 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       width: 30,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border:
-                            Border.all(color: themeProvider.themeManager.placeholderTextColor, width: 1),
+                        border: Border.all(
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color,
+                            width: 1),
                         color: darkSecondaryBGC,
                       ),
                       child: widget.details[1]['avatar'] != "" &&
@@ -81,7 +83,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: themeProvider.themeManager.placeholderTextColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             )),
                 )
@@ -94,8 +97,10 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       width: 30,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border:
-                            Border.all(color: lightBackgroundColor, width: 1),
+                        border: Border.all(
+                            color:
+                                themeProvider.themeManager.borderSubtle00Color,
+                            width: 1),
                         color: darkSecondaryBGC,
                       ),
                       child: widget.details[2]['avatar'] != "" &&
@@ -112,7 +117,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: themeProvider.themeManager.placeholderTextColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             )),
                 )
@@ -125,7 +131,9 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                     width: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: lightBackgroundColor, width: 1),
+                      border: Border.all(
+                          color: themeProvider.themeManager.borderSubtle01Color,
+                          width: 1),
                       color: strokeColor,
                     ),
                     child: Center(

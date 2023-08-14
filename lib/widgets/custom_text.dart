@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
+import 'package:plane_startup/utils/constants.dart';
 import '../utils/enums.dart';
 
 Map<FontStyle, double> fontSIZE = {
@@ -60,6 +62,7 @@ class CustomText extends ConsumerWidget {
   const CustomText(
     this.text, {
     this.maxLines = 4,
+    this.overrride,
     this.style,
     this.color,
     this.fontSize,
@@ -78,6 +81,7 @@ class CustomText extends ConsumerWidget {
   final Color? color;
   final FontStyle? type;
   final TextOverflow? overflow;
+  final bool? overrride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,21 +98,26 @@ class CustomText extends ConsumerWidget {
   }
 
   TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider) {
+    // log(customTextColor.toString());
     return GoogleFonts.inter(
-        letterSpacing: (type != null )
-                // (type == FontStyle.H1 ||
-                //     type == FontStyle.H2 ||
-                //     type == FontStyle.H3 ||
-                //     type == FontStyle.H4 ||
-                //     type == FontStyle.H5 ||
-                //     type == FontStyle.H6
-                //     ))
+        letterSpacing: (type != null)
+            // (type == FontStyle.H1 ||
+            //     type == FontStyle.H2 ||
+            //     type == FontStyle.H3 ||
+            //     type == FontStyle.H4 ||
+            //     type == FontStyle.H5 ||
+            //     type == FontStyle.H6
+            //     ))
             ? -(fontSIZE[type]! * 0.02)
             : 0,
         height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:
             fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,
-        color: color ?? themeProvider.themeManager.primaryTextColor);
+        color:
+        overrride==true?color:     
+         themeProvider.theme == THEME.custom
+            ? customTextColor
+            : (color ?? themeProvider.themeManager.primaryTextColor));
   }
 }

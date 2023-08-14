@@ -18,16 +18,20 @@ class CustomToast {
   }
 
   void showToast(BuildContext context, String message,
-      {int duration = 2, ToastType toastType = ToastType.defult}) {
+      {int duration = 2,
+      ToastType toastType = ToastType.defult,
+      Color? backgroundColor,
+      Color? textColor}) {
     FToast fToast = FToast();
     fToast.init(context);
     Widget toast = Container(
       decoration: BoxDecoration(
-        color: toastType == ToastType.defult
-            ? lightPrimaryBackgroundActiveColor
-            : toastType == ToastType.success
-                ? lightTextSuccessColor
-                : lightPrimaryButtonDangerColor,
+        color: backgroundColor ??
+            (toastType == ToastType.defult
+                ? lightPrimaryBackgroundActiveColor
+                : toastType == ToastType.success
+                    ? lightTextSuccessColor
+                    : lightPrimaryButtonDangerColor),
         borderRadius: BorderRadius.circular(15),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20),

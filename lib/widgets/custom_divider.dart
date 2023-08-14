@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/constants.dart';
 
 class CustomDivider extends StatelessWidget {
   const CustomDivider({super.key, required this.themeProvider});

@@ -39,7 +39,6 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
               const Spacer(),
               IconButton(
                 onPressed: () {
-
                   Navigator.pop(context);
                 },
                 icon: const Icon(
@@ -57,7 +56,9 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
             child: InkWell(
               onTap: () {
                 themeProvider.isDarkThemeEnabled = true;
-                themeProvider.changeTheme(THEME.dark);
+                themeProvider.changeTheme(
+                    data: {'theme': fromTHEME(theme: THEME.dark)},
+                    context: context);
                 Navigator.of(context).pop();
               },
               child: Row(
@@ -98,8 +99,10 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
             width: double.infinity,
             child: InkWell(
               onTap: () {
-                 themeProvider.isDarkThemeEnabled = false;
-                themeProvider.changeTheme(THEME.light);
+                themeProvider.isDarkThemeEnabled = false;
+                themeProvider.changeTheme(
+                    data: {'theme': fromTHEME(theme: THEME.light)},
+                    context: context);
                 Navigator.of(context).pop();
               },
               child: Row(

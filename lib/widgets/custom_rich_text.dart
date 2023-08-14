@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/enums.dart';
+import '../utils/constants.dart';
 import 'custom_text.dart';
 
 class CustomRichText extends ConsumerWidget {
@@ -45,7 +46,8 @@ class CustomRichText extends ConsumerWidget {
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:
             fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,
-        color: color ?? themeProvider.themeManager.primaryTextColor);
+        color:themeProvider.theme == THEME.custom
+            ? customTextColor:( color ?? themeProvider.themeManager.primaryTextColor));
 
   }
 }

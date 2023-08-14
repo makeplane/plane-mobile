@@ -196,9 +196,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   },
                   calendarStyle: CalendarStyle(
                       outsideDaysVisible: false,
-                      // weekendTextStyle: TextStyle(
-                      //   color: themeProvider.themeManager.placeholderTextColor,
-                      // ),
+                      weekendTextStyle: TextStyle(
+                        color: themeProvider.themeManager.placeholderTextColor,
+                      ),
                       defaultTextStyle: TextStyle(
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
@@ -361,11 +361,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                       });
                     },
                     calendarStyle: CalendarStyle(
-                      // weekendTextStyle: TextStyle(
-                      //   color: themeProvider.isDarkThemeEnabled
-                      //       ? lightGreeyColor.withOpacity(0.7)
-                      //       : Colors.black,
-                      // ),
+                      weekendTextStyle: TextStyle(
+                        color: themeProvider.themeManager.placeholderTextColor,
+                      ),
                       defaultTextStyle: TextStyle(
                         color: themeProvider.themeManager.placeholderTextColor,
                       ),
@@ -422,9 +420,12 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               },
               focusedDay: widget.selectedDay,
               calendarFormat: CalendarFormat.week,
-              headerStyle: const HeaderStyle(
+              headerStyle: HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
+                titleTextStyle: TextStyle(
+                  color: themeProvider.themeManager.placeholderTextColor,
+                ),
               ),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
@@ -434,11 +435,12 @@ class _DayDetailState extends ConsumerState<DayDetail> {
               calendarStyle: CalendarStyle(
                   isTodayHighlighted: false,
                   tablePadding: const EdgeInsets.all(0),
-                  // weekendTextStyle: TextStyle(
-                  //   color: themeProvider.isDarkThemeEnabled
-                  //       ? lightGreeyColor.withOpacity(0.7)
-                  //       : Colors.black,
-                  // ),
+                  disabledTextStyle: TextStyle(
+                    color: themeProvider.themeManager.placeholderTextColor,
+                  ),
+                  weekendTextStyle: TextStyle(
+                    color: themeProvider.themeManager.placeholderTextColor,
+                  ),
                   defaultTextStyle: TextStyle(
                     color: themeProvider.themeManager.placeholderTextColor,
                   ),
@@ -530,7 +532,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                               BorderRadius.circular(6),
                                           border: Border.all(
                                               color: themeProvider.themeManager
-                                                  .placeholderTextColor)),
+                                                  .borderStrong01Color)),
                                       // margin: const EdgeInsets.only(right: 5),
                                       height: 30,
                                       width: 30,
@@ -541,7 +543,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                               Icons.do_disturb_alt_outlined,
                                               size: 18,
                                               color: themeProvider.themeManager
-                                                  .placeholderTextColor,
+                                                  .tertiaryTextColor,
                                             )
                                           : issuesProvider.issuesList[index]
                                                       ['priority'] ==
@@ -596,12 +598,14 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                                       .themeManager
                                                       .placeholderTextColor),
                                               borderRadius:
-                                                  BorderRadius.circular(5)),
+                                                  BorderRadius.circular(5),
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color),
                                           child: Icon(
                                             Icons.groups_2_outlined,
                                             size: 18,
-                                            color: themeProvider.themeManager
-                                                .placeholderTextColor,
+                                            color: themeProvider
+                                                .themeManager.tertiaryTextColor,
                                           ),
                                         )
                                 ],

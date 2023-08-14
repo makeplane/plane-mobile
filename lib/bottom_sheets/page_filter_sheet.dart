@@ -73,7 +73,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('All', type: FontStyle.Small)
+              CustomText(
+                'All',
+                type: FontStyle.Small,
+                color: themeProvider.themeManager.tertiaryTextColor,
+              )
             ],
           ),
         ),
@@ -89,7 +93,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('Recent', type: FontStyle.Small)
+              CustomText(
+                'Recent',
+                type: FontStyle.Small,
+                color: themeProvider.themeManager.tertiaryTextColor,
+              )
             ],
           ),
         ),
@@ -105,7 +113,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('Favourites', type: FontStyle.Small)
+              CustomText(
+                'Favourites',
+                type: FontStyle.Small,
+                color: themeProvider.themeManager.tertiaryTextColor,
+              )
             ],
           ),
         ),
@@ -121,7 +133,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('CreatedByMe', type: FontStyle.Small)
+              CustomText(
+                'CreatedByMe',
+                type: FontStyle.Small,
+                color: themeProvider.themeManager.tertiaryTextColor,
+              )
             ],
           ),
         ),
@@ -137,7 +153,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
               ),
-              const CustomText('CreatedByOthers', type: FontStyle.Small)
+              CustomText(
+                'CreatedByOthers',
+                type: FontStyle.Small,
+                color: themeProvider.themeManager.tertiaryTextColor,
+              )
             ],
           ),
         ),

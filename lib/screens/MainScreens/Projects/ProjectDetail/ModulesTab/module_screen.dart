@@ -30,22 +30,24 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
         ),
         child: (modulesProvider.favModules.isEmpty &&
                 modulesProvider.modules.isEmpty)
-            ? EmptyPlaceholder.emptyModules(context,ref)
+            ? EmptyPlaceholder.emptyModules(context, ref)
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     modulesProvider.favModules.isNotEmpty
-                        ? const CustomText(
+                        ? CustomText(
                             'Favourite',
                             type: FontStyle.Medium,
+                            fontWeight: FontWeightt.Medium,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           )
                         : Container(),
                     modulesProvider.favModules.isNotEmpty
                         ? Container(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkBackgroundColor
-                                : Colors.white,
+                            color: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -68,15 +70,17 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                         : Container(),
                     modulesProvider.modules.isNotEmpty &&
                             modulesProvider.favModules.isNotEmpty
-                        ? const CustomText(
+                        ? CustomText(
                             'All Modules',
                             type: FontStyle.Medium,
+                            fontWeight: FontWeightt.Medium,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           )
                         : Container(),
                     Container(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkBackgroundColor
-                            : Colors.white,
+                        color: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
                         // padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
                         child: ListView.builder(
                           shrinkWrap: true,

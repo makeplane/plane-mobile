@@ -50,9 +50,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
                 color: themeProvider.isDarkThemeEnabled
                     ? darkThemeBorder
@@ -72,9 +70,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       width: 17,
                       height: 17,
                       colorFilter: ColorFilter.mode(
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.grey
-                              : lightPrimaryTextColor,
+                          themeProvider.themeManager.primaryTextColor,
                           BlendMode.srcIn)),
                   const SizedBox(width: 10),
                   Expanded(
@@ -85,13 +81,13 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                           : modulesProvider.modules[widget.index]['name']
                               .toString(),
                       overflow: TextOverflow.ellipsis,
-                      type: FontStyle.H5,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
                   Container(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryBGC
-                        : lightSecondaryBackgroundColor,
+                    //color:const Color.fromARGB(255, 240, 253, 244), // success 10
                     height: 28,
                     child: Center(
                       child: Padding(
@@ -101,6 +97,8 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                               ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %'
                               : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
                           type: FontStyle.Small,
+                          fontWeight: FontWeightt.Regular,
+                          color: const Color.fromARGB(255, 34, 197, 94),
                         ),
                       ),
                     ),
@@ -129,9 +127,9 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                 isFav: true,
                               );
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.star,
-                              color: Colors.amber,
+                              color: themeProvider.themeManager.secondaryIcon,
                             ))
                         : GestureDetector(
                             onTap: () async {
@@ -153,33 +151,32 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                 isFav: false,
                               );
                             },
-                            child: Icon(
-                              Icons.star_border,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryTextColor
-                                  : lightSecondaryTextColor,
-                            ),
+                            child: Icon(Icons.star_border,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor),
                           ),
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 8),
               Container(
                 margin: const EdgeInsets.only(left: 25),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightSecondaryBackgroundColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color:
+                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                ),
                 child: CustomText(
                     widget.isFav
                         ? modulesProvider.favModules[widget.index]['status']
                             .toString()
                         : modulesProvider.modules[widget.index]['status']
                             .toString(),
-                    type: FontStyle.Medium,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkPrimaryTextColor
-                        : lightPrimaryTextColor),
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.tertiaryTextColor),
               ),
             ],
           ),

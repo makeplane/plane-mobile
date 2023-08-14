@@ -80,17 +80,17 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                 width: 18,
                                 height: 18,
                                 colorFilter: ColorFilter.mode(
-                                    themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : darkBackgroundColor,
+                                    themeProvider.themeManager.primaryTextColor,
                                     BlendMode.srcIn),
                               )),
                           CustomText(
-                              pageProvider.blocks[widget.index]
-                                      ['project_detail']["identifier"] +
-                                  "-" +
-                                  widget.index.toString(),
-                              type: FontStyle.Small),
+                            pageProvider.blocks[widget.index]['project_detail']
+                                    ["identifier"] +
+                                "-" +
+                                widget.index.toString(),
+                            type: FontStyle.Small,
+                            color: themeProvider.themeManager.primaryTextColor,
+                          ),
                           const SizedBox(
                             width: 8,
                           ),
@@ -101,6 +101,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                   pageProvider.blocks[widget.index]['name'],
                   type: FontStyle.Medium,
                   fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
                 ),
               ],
             ),

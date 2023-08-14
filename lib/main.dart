@@ -136,7 +136,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             themeProvider.themeManager.primaryBackgroundDefaultColor,
         //bottom sheet theme
         bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+          backgroundColor:
+              themeProvider.themeManager.secondaryBackgroundDefaultColor,
         ),
 
         //dialog theme

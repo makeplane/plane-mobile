@@ -4,6 +4,7 @@ import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
 import 'package:plane_startup/bottom_sheets/views_sheet.dart';
+import 'package:plane_startup/provider/cycles_provider.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
@@ -73,6 +74,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
+    var moduleProvider = ref.watch(ProviderList.modulesProvider);
+    var cycleProvider = ref.watch(ProviderList.cyclesProvider);
     // log(issueProvider.issues.groupBY.name);
 
     return Scaffold(
@@ -105,17 +108,30 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               : Container(),
         ],
       ),
-      floatingActionButton: selected != 0 &&
-              (projectProvider.role == Role.admin ||
+      floatingActionButton: (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
-              (selected == 3 &&
-                  viewsProvider.viewsState != StateEnum.loading &&
-                  viewsProvider.views.isNotEmpty)
+              ((selected == 1 &&
+                      (cycleProvider.cyclesAllData.isNotEmpty ||
+                          cycleProvider.cycleFavoriteData.isNotEmpty) &&
+                      cycleProvider.cyclesState != StateEnum.loading) ||
+                  (selected == 2 &&
+                      moduleProvider.moduleState != StateEnum.loading &&
+                      (moduleProvider.modules.isNotEmpty ||
+                          moduleProvider.favModules.isNotEmpty)) ||
+                  (selected == 3 &&
+                      viewsProvider.viewsState != StateEnum.loading &&
+                      viewsProvider.views.isNotEmpty))
+          // selected != 0 &&
+          //         (projectProvider.role == Role.admin ||
+          //             projectProvider.role == Role.member) &&
+          //         (selected == 3 &&
+          //             viewsProvider.viewsState != StateEnum.loading &&
+          //             viewsProvider.views.isNotEmpty)
           ? FloatingActionButton(
-              backgroundColor: primaryColor,
-              child: const Icon(
+              backgroundColor: themeProvider.themeManager.primaryColour,
+              child: Icon(
                 Icons.add,
-                color: Colors.white,
+                color: themeProvider.themeManager.textonColor,
               ),
               onPressed: () {
                 if (selected == 1) {
@@ -303,7 +319,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                           ? Container(
                               height: 50,
                               width: MediaQuery.of(context).size.width,
-                              color:Colors.black,
+                              color: Colors.black,
                               child: Row(
                                 children: [
                                   projectProvider.role == Role.admin
@@ -496,15 +512,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                   ? Container(
                       height: 51,
                       width: MediaQuery.of(context).size.width,
-                      color: themeProvider
-                          .themeManager.primaryBackgroundDefaultColor,
+                      color: Colors.black,
                       child: Column(
                         children: [
                           Container(
                             height: 1,
                             width: double.infinity,
-                            color:
-                                themeProvider.themeManager.borderSubtle00Color,
+                            color: Colors.black,
                           ),
                           SizedBox(
                             height: 50,
@@ -521,20 +535,22 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                               ),
                                             );
                                           },
-                                          child: const SizedBox.expand(
+                                          child: SizedBox.expand(
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(
                                                   Icons.add,
-                                                  color: Colors.white,
+                                                  color: themeProvider
+                                                      .themeManager.textonColor,
                                                   size: 20,
                                                 ),
                                                 CustomText(
                                                   ' Page',
                                                   type: FontStyle.Medium,
-                                                  color: Colors.white,
+                                                  color: themeProvider
+                                                      .themeManager.textonColor,
                                                 )
                                               ],
                                             ),
@@ -545,8 +561,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                 Container(
                                   height: 50,
                                   width: 1,
-                                  color: themeProvider
-                                      .themeManager.borderSubtle00Color,
+                                  color: themeProvider.themeManager
+                                      .tertiaryBackgroundDefaultColor,
                                 ),
                                 Expanded(
                                     child: InkWell(
@@ -569,20 +585,22 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           return const FilterPageSheet();
                                         });
                                   },
-                                  child: const SizedBox.expand(
+                                  child: SizedBox.expand(
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.filter_alt,
-                                          color: Colors.white,
+                                          color: themeProvider
+                                              .themeManager.textonColor,
                                           size: 19,
                                         ),
                                         CustomText(
                                           ' Filters',
                                           type: FontStyle.Medium,
-                                          color: Colors.white,
+                                          color: themeProvider
+                                              .themeManager.textonColor,
                                         )
                                       ],
                                     ),
@@ -825,11 +843,11 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                                           builder: (ctx) =>
                                                                               const CreateIssue()));
                                                                 },
-                                                                icon:
-                                                                     Icon(
+                                                                icon: Icon(
                                                                   Icons.add,
-                                                                  color:
-                                                                      themeProvider.themeManager.tertiaryTextColor,
+                                                                  color: themeProvider
+                                                                      .themeManager
+                                                                      .tertiaryTextColor,
                                                                 ))
                                                             : Container(
                                                                 height: 40,
@@ -857,7 +875,9 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                                   context)
                                                               .size
                                                               .width,
-                                                          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
@@ -891,8 +911,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                 issueProvider.initializeBoard(),
                                 groupEmptyStates:
                                     !issueProvider.showEmptyStates,
-                                backgroundColor:
-                                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                                backgroundColor: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,
                                     duration: const Duration(milliseconds: 100),
@@ -901,7 +921,6 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     const Duration(milliseconds: 200),
                                 cardTransitionDuration:
                                     const Duration(milliseconds: 400),
-                                
                               )
                             : issueProvider.issues.projectView ==
                                     ProjectView.calendar

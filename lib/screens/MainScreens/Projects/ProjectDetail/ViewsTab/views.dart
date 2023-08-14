@@ -32,7 +32,7 @@ class _ViewsState extends ConsumerState<Views> {
     return LoadingWidget(
       loading: viewsProvider.viewsState == StateEnum.loading,
       widgetClass: viewsProvider.views.isEmpty
-          ? EmptyPlaceholder.emptyView(context,ref)
+          ? EmptyPlaceholder.emptyView(context, ref)
           : SingleChildScrollView(
               child: Column(children: [
                 ListView.builder(
@@ -75,13 +75,9 @@ class _ViewsState extends ConsumerState<Views> {
       child: Container(
         margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : strokeColor),
+                color: themeProvider.themeManager.borderSubtle01Color),
             //elevation
             borderRadius: BorderRadius.circular(10)),
         child: Column(
@@ -98,9 +94,7 @@ class _ViewsState extends ConsumerState<Views> {
                       height: 20,
                       width: 20,
                       colorFilter: ColorFilter.mode(
-                          themeProvider.isDarkThemeEnabled
-                              ? greyColor
-                              : Colors.black,
+                          themeProvider.themeManager.primaryTextColor,
                           BlendMode.srcIn),
                     )),
 
@@ -112,6 +106,7 @@ class _ViewsState extends ConsumerState<Views> {
                     viewsProvider.views[index]["name"],
                     type: FontStyle.H5,
                     fontWeight: FontWeightt.Medium,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ),
                 const Spacer(),
@@ -119,16 +114,13 @@ class _ViewsState extends ConsumerState<Views> {
                   margin: const EdgeInsets.only(top: 15),
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 3, bottom: 3),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : const Color.fromARGB(255, 218, 220, 223),
+                  color:
+                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                   height: 28,
                   child: Center(
                     child: CustomText('${countFilters(index)} Filters',
                         type: FontStyle.XSmall,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? greyColor
-                            : const Color.fromRGBO(73, 80, 87, 1)),
+                        color: themeProvider.themeManager.tertiaryTextColor),
                   ),
                 ),
                 GestureDetector(
@@ -148,13 +140,14 @@ class _ViewsState extends ConsumerState<Views> {
                   child: Container(
                     margin: const EdgeInsets.only(top: 12, left: 10, right: 10),
                     child: viewsProvider.views[index]["is_favorite"] == false
-                        ? const Icon(
+                        ? Icon(
                             Icons.star_border,
-                            color: Color.fromRGBO(172, 181, 189, 1),
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           )
-                        : const Icon(
+                        : Icon(
                             Icons.star,
-                            color: Colors.amber,
+                            color: themeProvider.themeManager.tertiaryTextColor,
                           ),
                   ),
                 )

@@ -148,9 +148,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                 ? Column(
                     children: [
                       Container(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightSecondaryBackgroundColor,
+                        color: themeProvider
+                            .themeManager.primaryBackgroundSelectedColour,
                         //margin: const EdgeInsets.only(top: 15),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
@@ -201,15 +200,16 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                       margin: const EdgeInsets.only(right: 10),
                                       child: Icon(
                                         Icons.add,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkPrimaryTextColor
-                                            : lightPrimaryTextColor,
+                                        color: themeProvider
+                                            .themeManager.secondaryTextColor,
                                         size: 22,
                                       ),
                                     ),
-                                    const CustomText(
+                                    CustomText(
                                       'Add Labels',
                                       type: FontStyle.Small,
+                                      color: themeProvider
+                                          .themeManager.secondaryTextColor,
                                     ),
                                   ],
                                 ),
@@ -219,9 +219,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             //four small icons
                             Container(
                               margin: const EdgeInsets.only(right: 10),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.link,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                                 size: 22,
                               ),
                             ),
@@ -281,9 +282,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     margin: const EdgeInsets.only(right: 10),
                                     height: 15,
                                     width: 15,
-                                    child: const CircularProgressIndicator(
+                                    child: CircularProgressIndicator(
                                       strokeWidth: 1.0,
-                                      color: Colors.grey,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                   )
                                 : InkWell(
@@ -326,17 +328,17 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                       .selectedFilter]![
                                                   widget.index]['access'] ==
                                               0 // 1 = locked || 0 = unlocked
-                                          ? const Icon(
+                                          ? Icon(
                                               Icons.lock_open_outlined,
                                               size: 20,
-                                              color: Color.fromRGBO(
-                                                  172, 181, 189, 1),
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                             )
-                                          : const Icon(
+                                          : Icon(
                                               Icons.lock_clock_outlined,
                                               size: 20,
-                                              color:
-                                                  Color.fromRGBO(255, 0, 0, 1),
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                             ),
                                     ),
                                   ),
@@ -369,8 +371,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                 .currentProject['id'],
                                             shouldItBeFavorite: false);
                                       },
-                                      child: const Icon(Icons.star,
-                                          size: 20, color: Colors.amber))
+                                      child: Icon(Icons.star,
+                                          size: 20,
+                                          color: themeProvider
+                                              .themeManager.secondaryIcon))
                                   : InkWell(
                                       onTap: () {
                                         setState(() {
@@ -393,10 +397,11 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                 .currentProject['id'],
                                             shouldItBeFavorite: true);
                                       },
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.star_border,
                                         size: 20,
-                                        color: Color.fromRGBO(172, 181, 189, 1),
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
                                       ),
                                     ),
                             ),
@@ -673,8 +678,10 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               alignment: Alignment.centerLeft,
               child: TextFormField(
                 decoration: const InputDecoration(border: InputBorder.none),
-                style:
-                    const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.themeManager.primaryTextColor),
                 controller: titleController,
                 maxLines: null,
               ),
@@ -714,12 +721,12 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
-                      child: const Row(
+                      child: Row(
                         children: [
                           //add icon
                           Icon(
                             Icons.add,
-                            color: primaryColor,
+                            color: themeProvider.themeManager.primaryColour,
                             size: 22,
                           ),
 
@@ -727,7 +734,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                           CustomText(
                             'Add new block',
                             type: FontStyle.Small,
-                            color: primaryColor,
+                            color: themeProvider.themeManager.primaryColour,
                           ),
                         ],
                       ),

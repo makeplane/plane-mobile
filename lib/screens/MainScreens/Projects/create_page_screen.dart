@@ -18,9 +18,7 @@ class CreatePage extends ConsumerWidget {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     TextEditingController pageTitleController = TextEditingController();
     return Scaffold(
-      backgroundColor: themeProvider.isDarkThemeEnabled
-          ? darkSecondaryBGC
-          : lightSecondaryBackgroundColor,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
       appBar: CustomAppBar(
         onPressed: () {
           Navigator.pop(context);
@@ -63,11 +61,11 @@ class CreatePage extends ConsumerWidget {
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
                               .copyWith(
-                            fillColor: themeProvider.isDarkThemeEnabled
-                                ? darkBackgroundColor
-                                : lightBackgroundColor,
-                            filled: true,
-                          ),
+                                  // fillColor: themeProvider.isDarkThemeEnabled
+                                  //     ? darkBackgroundColor
+                                  //     : lightBackgroundColor,
+                                  // filled: true,
+                                  ),
                         ),
                       ],
                     ),

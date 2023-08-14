@@ -130,20 +130,21 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                 //     fontWeight: FontWeight.w600,
                 //   ),
                 // ),
-                const CustomText(
+                CustomText(
                   'Choose Cover Image',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
                 ),
                 const Spacer(),
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.close,
                     size: 27,
-                    color: Color.fromRGBO(143, 143, 147, 1),
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 ),
               ],
@@ -173,8 +174,9 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                           child: CustomText(
                             'Unsplash',
                             color: selected == 0
-                                ? primaryColor
-                                : lightGreyTextColor,
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider
+                                    .themeManager.placeholderTextColor,
                             type: FontStyle.H5,
                             fontWeight: FontWeightt.Medium,
                           ),
@@ -249,10 +251,10 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                   .themeManager.textFieldDecoration
                                   .copyWith(
                                 labelText: 'Search for images',
-                                labelStyle: TextStyle(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor),
+                                // labelStyle: TextStyle(
+                                //     color: themeProvider.isDarkThemeEnabled
+                                //         ? darkSecondaryTextColor
+                                //         : lightSecondaryTextColor),
                               )),
                         ),
                         const SizedBox(
@@ -278,6 +280,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 isSearched ? 'Clear' : 'Search',
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
+                                color: themeProvider.themeManager.textonColor,
                               ),
                             ),
                           ),

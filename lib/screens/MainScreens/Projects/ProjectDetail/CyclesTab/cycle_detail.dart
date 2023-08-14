@@ -211,6 +211,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           //     : lightPrimaryBackgroundDefaultColor,
           // elevation: 0,
           centerTitle: true,
+          elevation: false,
 
           onPressed: () {
             // issueProvider.issuesList = tempIssuesList;
@@ -291,30 +292,51 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText(
-                                  'Board',
+                                  'Issues',
                                   // color: selected == 0
                                   //     ? primaryColor
                                   // : themeProvider.strokeColor,
-                                  type: FontStyle.Small,
-                                  color: !themeProvider.isDarkThemeEnabled &&
-                                          (widget.fromModule
+                                  type: FontStyle.Large,
+                                  fontWeight: FontWeightt.Medium,
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              1
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              1)
+                                      ? themeProvider
+                                          .themeManager.placeholderTextColor
+                                      : (widget.fromModule
                                               ? modulesProvider
                                                       .moduleDetailSelectedIndex ==
                                                   1
                                               : cyclesProviderRead
                                                       .cycleDetailSelectedIndex ==
                                                   1)
-                                      ? lightSecondaryTextColor
-                                      : themeProvider.isDarkThemeEnabled &&
-                                              (widget.fromModule
-                                                  ? modulesProvider
-                                                          .moduleDetailSelectedIndex ==
-                                                      1
-                                                  : cyclesProviderRead
-                                                          .cycleDetailSelectedIndex ==
-                                                      1)
-                                          ? darkSecondaryTextColor
-                                          : primaryColor,
+                                          ? themeProvider
+                                              .themeManager.placeholderTextColor
+                                          : themeProvider
+                                              .themeManager.primaryColour,
+                                  // !themeProvider.isDarkThemeEnabled &&
+                                  //         (widget.fromModule
+                                  //             ? modulesProvider
+                                  //                     .moduleDetailSelectedIndex ==
+                                  //                 1
+                                  //             : cyclesProviderRead
+                                  //                     .cycleDetailSelectedIndex ==
+                                  //                 1)
+                                  //     ? lightSecondaryTextColor
+                                  //     : themeProvider.isDarkThemeEnabled &&
+                                  //             (widget.fromModule
+                                  //                 ? modulesProvider
+                                  //                         .moduleDetailSelectedIndex ==
+                                  //                     1
+                                  //                 : cyclesProviderRead
+                                  //                         .cycleDetailSelectedIndex ==
+                                  //                     1)
+                                  //         ? darkSecondaryTextColor
+                                  //         : primaryColor,
                                 ),
                               ),
                               Container(
@@ -402,9 +424,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   Container(
                     height: 2,
                     width: MediaQuery.of(context).size.width,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkThemeBorder
-                        : const Color(0xFFE5E5E5),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                   ),
                   Expanded(
                     child: PageView(
@@ -455,23 +475,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               (widget.fromModule &&
                                                   modulesProvider
                                                       .isIssuesEmpty))
-                                          ? EmptyPlaceholder.emptyIssues(
-                                              context,
+                                          ? EmptyPlaceholder.emptyIssues(context,
                                               cycleId: widget.cycleId,
                                               moduleId: widget.moduleId,
-                                              ref: ref
-                                            )
-                                          : ((!widget.fromModule &&
-                                                      issueProvider.issues.projectView ==
-                                                          ProjectView.list) ||
+                                              ref: ref)
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
                                               ? Container(
                                                   color: themeProvider
-                                                          .isDarkThemeEnabled
-                                                      ? darkSecondaryBackgroundDefaultColor
-                                                      : lightSecondaryBackgroundDefaultColor,
+                                                      .themeManager
+                                                      .primaryBackgroundDefaultColor,
                                                   margin: const EdgeInsets.only(
                                                       top: 5),
                                                   child: SingleChildScrollView(
@@ -590,8 +605,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                 )
                                               : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
                                                       (widget.fromModule &&
-                                                          issueProvider.issues.projectView ==
-                                                              ProjectView.kanban))
+                                                          issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -608,10 +622,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                 .showEmptyStates
                                                             : issueProvider
                                                                 .showEmptyStates),
-                                                        backgroundColor: themeProvider
-                                                                .isDarkThemeEnabled
-                                                            ? darkSecondaryBackgroundDefaultColor
-                                                            : lightSecondaryBackgroundDefaultColor,
+                                                        backgroundColor:
+                                                            themeProvider
+                                                                .themeManager
+                                                                .primaryBackgroundDefaultColor,
                                                         listScrollConfig: ScrollConfig(
                                                             offset: 65,
                                                             duration:
@@ -1104,15 +1118,25 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('Start Date', type: FontStyle.Small)
+                    ? CustomText(
+                        'Start Date',
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor,
+                      )
                     : Row(
                         children: [
-                          const Icon(Icons.calendar_today_outlined,
-                              size: 15, color: Colors.grey),
+                          Icon(Icons.calendar_today_outlined,
+                              size: 15,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
                           const SizedBox(width: 7),
                           CustomText(
                             '${dateFormating(detailData['start_date'])} ',
-                            type: FontStyle.Small,
+                            type: FontStyle.Medium,
+                            fontWeight: FontWeightt.Regular,
+                            color:
+                                themeProvider.themeManager.secondaryTextColor,
                           ),
                         ],
                       ),
@@ -1123,9 +1147,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             Icon(
               Icons.arrow_forward,
               size: 15,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryTextColor
-                  : lightSecondaryTextColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             const SizedBox(width: 7),
             GestureDetector(
@@ -1212,15 +1234,23 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('End Date', type: FontStyle.Small)
+                    ? CustomText('End Date',
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor)
                     : Row(
                         children: [
-                          const Icon(Icons.calendar_today_outlined,
-                              size: 15, color: Colors.grey),
+                          Icon(Icons.calendar_today_outlined,
+                              size: 15,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
                           const SizedBox(width: 7),
                           CustomText(
                               '${dateFormating(detailData[widget.fromModule ? 'target_date' : 'end_date'])} ',
-                              type: FontStyle.Small),
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Regular,
+                              color: themeProvider
+                                  .themeManager.secondaryTextColor),
                         ],
                       ),
               ),
@@ -1232,11 +1262,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget detailsPart() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Details', type: FontStyle.H5)),
+            child: CustomText(
+              'Details',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         stateWidget(),
         const SizedBox(height: 10),
@@ -1255,11 +1291,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget progressPart() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Progress', type: FontStyle.H5)),
+            child: CustomText(
+              'Progress',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 20),
         SizedBox(
           height: 200,
@@ -1335,9 +1377,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Assignees', type: FontStyle.H5)),
+            child: CustomText(
+              'Assignees',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         detailData['distribution']['assignees'].length == 0 ||
                 (detailData['distribution']['assignees'].length == 1 &&
@@ -1538,9 +1585,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('States', type: FontStyle.H5)),
+            child: CustomText(
+              'States',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -1586,7 +1638,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               : greenHighLight,
                               BlendMode.srcIn)),
                     ),
-                    CustomText(states[index]),
+                    CustomText(
+                      states[index],
+                      type: FontStyle.Large,
+                      fontWeight: FontWeightt.Regular,
+                    ),
                     const Spacer(),
                     index == 0
                         ? CompletionPercentage(
@@ -1631,9 +1687,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Labels', type: FontStyle.H5)),
+            child: CustomText(
+              'Labels',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         detailData['distribution']['labels'].length == 1 &&
                 detailData['distribution']['labels'][0]['label_id'] == null
@@ -1843,16 +1904,16 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         child: Row(
           children: [
             //icon
-            const Icon(
-              //four squares icon
-              Icons.grid_view_outlined,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
+            Icon(
+                //four squares icon
+                Icons.grid_view_outlined,
+                color: themeProvider.themeManager.placeholderTextColor),
             const SizedBox(width: 15),
-            const CustomText(
+            CustomText(
               'Progress',
-              type: FontStyle.Small,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Regular,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             Expanded(child: Container()),
 
@@ -1889,10 +1950,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         child: Row(
           children: [
             //icon
-            const Icon(
+            Icon(
               //two people icon
               Icons.people_alt_rounded,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             const SizedBox(width: 15),
             // const Text(
@@ -1903,10 +1964,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             //     color: Color.fromRGBO(143, 143, 147, 1),
             //   ),
             // ),
-            const CustomText(
+            CustomText(
               'Members',
-              type: FontStyle.Small,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Regular,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             Expanded(child: Container()),
             GestureDetector(
@@ -1924,18 +1986,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         modulesProvider.currentModule['members_detail'].isEmpty)
                     ? Row(
                         children: [
-                          const CustomText(
+                          CustomText(
                             'No members',
-                            type: FontStyle.Small,
+                            type: FontStyle.Medium,
+                            fontWeight: FontWeightt.Regular,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const SizedBox(
                             width: 5,
                           ),
                           Icon(
                             Icons.keyboard_arrow_down,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         ],
                       )
@@ -2029,16 +2091,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             //icon
-            const Icon(
+            Icon(
               //two people icon
               Icons.people_outline_outlined,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             const SizedBox(width: 15),
-            const CustomText(
+            CustomText(
               'Lead',
-              type: FontStyle.Small,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Regular,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             Expanded(child: Container()),
             GestureDetector(

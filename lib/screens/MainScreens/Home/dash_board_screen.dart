@@ -190,8 +190,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: themeProvider
-                                          .themeManager.primaryTextColor,
+                                      backgroundColor:
+                                          themeProvider.theme == THEME.custom
+                                              ? themeProvider.themeManager.tertiaryBackgroundDefaultColor
+                                              : themeProvider.themeManager
+                                                  .primaryTextColor,
                                       elevation: 0),
                                   onPressed: () async {
                                     //redirect to github using url launcher.
@@ -221,7 +224,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                             themeProvider.theme ==
                                                 THEME.darkHighContrast
                                         ? Colors.black
-                                        : Colors.white,
+                                        : themeProvider.theme == THEME.custom
+                                            ? themeProvider.themeManager
+                                                .secondaryBackgroundDefaultColor
+                                            : Colors.white,
                                   ),
                                 ),
                               ],
@@ -263,7 +269,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           fontWeight: FontWeightt.Semibold,
                         ),
                         const SizedBox(height: 10),
-                         CustomText(
+                        CustomText(
                           'Manage your projects by creating issues, cycles, modules, views and pages.',
                           type: FontStyle.Small,
                           color: themeProvider.themeManager.tertiaryTextColor,
@@ -428,7 +434,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               borderRadius: BorderRadius.circular(5),
                               color: primaryColor,
                             ),
-                            
                             child: Center(
                               child: CustomText(
                                 workspaceProvider
@@ -436,7 +441,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     .toUpperCase(),
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
-                                 color: Colors.white,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -466,8 +471,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               )));
                 },
                 child: CircleAvatar(
-                  backgroundColor:
-                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                  backgroundColor: themeProvider
+                      .themeManager.primaryBackgroundSelectedColour,
                   radius: 20,
                   child: Icon(
                     size: 20,
@@ -485,8 +490,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           builder: (context) =>  const GlobalSearchSheet()));
                 },
                 child: CircleAvatar(
-                  backgroundColor:
-                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                  backgroundColor: themeProvider
+                      .themeManager.primaryBackgroundSelectedColour,
                   radius: 20,
                   child: Icon(
                     size: 20,

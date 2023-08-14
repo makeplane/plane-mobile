@@ -136,8 +136,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             themeProvider.themeManager.primaryBackgroundDefaultColor,
         //bottom sheet theme
         bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor:
-              themeProvider.themeManager.secondaryBackgroundDefaultColor,
+          backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
         ),
 
         //dialog theme
@@ -174,6 +173,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             return null;
           }),
         ),
+
         switchTheme: SwitchThemeData(
           thumbColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
@@ -213,12 +213,12 @@ class _MyAppState extends ConsumerState<MyApp> {
             900: Color(0xFFFFFFFF),
           },
         )).copyWith(
-            background: themeProvider.isDarkThemeEnabled
-                ? const Color.fromRGBO(19, 20, 22, 1)
-                : Colors.white),
+            background: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                ),
 
         //expansion tile expansion icon color when expanded not accent color
       ),
+      
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,

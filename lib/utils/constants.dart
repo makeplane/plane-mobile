@@ -148,8 +148,13 @@ const lightContrastTextDisabledColor =
     Color.fromRGBO(163, 163, 163, 1); // grey 70
 const darkContrastTextDisabledColor =
     Color.fromRGBO(34, 34, 34, 1); // grey 800 (edited)
-
-const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+late Color customTextColor;
+late Color customBackgroundColor;
+late Color customAccentColor;
+late Color customNavBarColor;
+late Color customNavBarTextColor;
+ 
+const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);// blue 500
 const darkBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const lightContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const darkContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
@@ -312,14 +317,16 @@ int fromRole({required Role role}) {
 
 THEME themeParser({required String theme}) {
   switch (theme) {
-    case "L":
+    case "light":
       return THEME.light;
-    case "D":
+    case "dark":
       return THEME.dark;
-    case "LHC":
+    case "light-contrast":
       return THEME.lightHighContrast;
-    case "DHC":
+    case "dark-contrast":
       return THEME.darkHighContrast;
+    case "custom":
+      return THEME.custom;
     default:
       return THEME.light;
   }
@@ -328,15 +335,17 @@ THEME themeParser({required String theme}) {
 String fromTHEME({required THEME theme}) {
   switch (theme) {
     case THEME.light:
-      return "L";
+      return "light";
     case THEME.dark:
-      return "D";
+      return "dark";
     case THEME.lightHighContrast:
-      return "LHC";
+      return "light-contrast";
     case THEME.darkHighContrast:
-      return "DHC";
+      return "dark-contrast";
+    case THEME.custom:
+      return "custom";
     default:
-      return "L";
+      return "light";
   }
 }
 

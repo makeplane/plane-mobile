@@ -167,7 +167,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
-                                    color: themeProvider.themeManager.placeholderTextColor,)),
+                                    color: themeProvider.themeManager.borderSubtle01Color,)),
                             margin: const EdgeInsets.only(right: 10),
                             height: 30,
                             width: 30,
@@ -177,7 +177,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ?  Icon(
                                     Icons.do_disturb_alt_outlined,
                                     size: 18,
-                                    color: themeProvider.themeManager.placeholderTextColor,
+                                    color: themeProvider.themeManager.tertiaryTextColor,
                                   )
                                 : provider.issuesResponse[widget.cardIndex]
                                             ['priority'] ==
@@ -272,12 +272,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     left: 8, right: 8, top: 5, bottom: 5),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.themeManager.placeholderTextColor,),
+                                        color: themeProvider.themeManager.borderSubtle01Color,),
                                     borderRadius: BorderRadius.circular(5)),
                                 child:  Icon(
                                   Icons.groups_2_outlined,
                                   size: 18,
-                                  color: themeProvider.themeManager.placeholderTextColor,
+                                  color: themeProvider.themeManager.tertiaryTextColor,
                                 ),
                               )
                         : Container(width: 0,),
@@ -307,7 +307,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                                themeProvider.themeManager.placeholderTextColor,),
+                                                themeProvider.themeManager.borderSubtle01Color,),
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Row(
                                       crossAxisAlignment:
@@ -363,7 +363,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                               border: Border.all(
                                                   color: themeProvider
                                                     .themeManager
-                                                    .placeholderTextColor),
+                                                    .borderSubtle01Color),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
                                           child: Row(
@@ -421,7 +421,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.themeManager.placeholderTextColor),
+                                        color: themeProvider.themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5)),
                                 child:  CustomText(
                                   'No Label',
@@ -438,7 +438,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 left: 8, right: 8, top: 2, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.themeManager.placeholderTextColor,),
+                                    color: themeProvider.themeManager.borderSubtle01Color,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
@@ -446,20 +446,19 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   'Start date',
                               type: FontStyle.XSmall,
                               color:
-                                  themeProvider.themeManager.secondaryTextColor,
+                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                           )
                         : Container(),
                     provider.issues.displayProperties.dueDate == true
                         ? Container(
                             height: 30,
+                            margin: const EdgeInsets.only(right: 10),
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
+                                left: 8, right: 8, top: 2, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : lightGreeyColor),
+                                    color: themeProvider.themeManager.borderSubtle01Color),
                                 borderRadius: BorderRadius.circular(5)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
@@ -479,7 +478,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 left: 8, right: 8, top: 0, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color:themeProvider.themeManager.placeholderTextColor,),
+                                    color:themeProvider.themeManager.borderSubtle01Color,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
@@ -492,7 +491,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                       width: 16,
                                       height: 16,
                                       colorFilter:  ColorFilter.mode(
-                                          themeProvider.themeManager.placeholderTextColor, BlendMode.srcIn)),
+                                          themeProvider.themeManager.tertiaryTextColor, BlendMode.srcIn)),
                                 ),
                                 const SizedBox(
                                   width: 5,
@@ -529,7 +528,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 left: 8, right: 8, top: 0, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.themeManager.placeholderTextColor),
+                                    color: themeProvider.themeManager.borderSubtle01Color),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
@@ -541,7 +540,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     child:  Icon(
                                       Icons.link,
                                       size: 18,
-                                      color: themeProvider.themeManager.placeholderTextColor,
+                                      color: themeProvider.themeManager.tertiaryTextColor,
                                     ),
                                   ),
                                 ),
@@ -581,7 +580,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 left: 8, right: 8, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.themeManager.placeholderTextColor,),
+                                    color: themeProvider.themeManager.borderSubtle01Color,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
@@ -592,7 +591,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     Icons.attach_file,
                                     size: 18,
                                     color: themeProvider
-                                        .themeManager.placeholderTextColor,
+                                        .themeManager.tertiaryTextColor,
                                   ),),
                     
                                 const SizedBox(
@@ -631,7 +630,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 left: 8, right: 8,bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: themeProvider.themeManager.placeholderTextColor,),
+                                    color: themeProvider.themeManager.borderSubtle01Color,),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Wrap(
                               children: [
@@ -641,7 +640,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                    child: Icon(
                                     Icons.change_history,
                                     size: 18,
-                                    color: themeProvider.themeManager.placeholderTextColor,
+                                    color: themeProvider.themeManager.tertiaryTextColor,
                                                                  ),
                                  ),
 
@@ -707,7 +706,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       border: Border.all(
-                          color: themeProvider.themeManager.placeholderTextColor),
+                          color: themeProvider.themeManager.borderSubtle01Color),
                       borderRadius: BorderRadius.circular(5)),
                   margin: const EdgeInsets.only(right: 15),
                   height: 30,
@@ -718,7 +717,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                       ?  Icon(
                           Icons.do_disturb_alt_outlined,
                           size: 18,
-                          color: themeProvider.themeManager.placeholderTextColor,
+                          color: themeProvider.themeManager.tertiaryTextColor,
                         )
                       : provider.issuesResponse[widget.cardIndex]['priority'] ==
                               'high'
@@ -803,12 +802,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                           left: 8, right: 8, top: 5, bottom: 5),
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: themeProvider.themeManager.placeholderTextColor),
+                              color: themeProvider.themeManager.borderSubtle01Color),
                           borderRadius: BorderRadius.circular(5)),
                       child:  Icon(
                         Icons.groups_2_outlined,
                         size: 18,
-                        color: themeProvider.themeManager.placeholderTextColor,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     )
               : const SizedBox(

@@ -86,7 +86,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     //color:const Color.fromARGB(255, 240, 253, 244), // success 10
                     height: 28,
                     child: Center(

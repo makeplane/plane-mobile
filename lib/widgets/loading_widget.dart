@@ -51,7 +51,12 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                           colors: themeProvider.theme == THEME.dark ||
                                   themeProvider.theme == THEME.darkHighContrast
                               ? [Colors.white]
-                              : [Colors.black],
+                              : themeProvider.theme == THEME.custom
+                                  ? [
+                                      themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor
+                                    ]
+                                  : [Colors.black],
                           strokeWidth: 1.0,
                           backgroundColor: Colors.transparent,
                         ),

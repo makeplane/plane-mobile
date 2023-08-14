@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
@@ -85,13 +84,13 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           fillColor: selected == 1
                               ? null
                               : MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
+                                   themeProvider.themeManager.borderSubtle01Color),
                           groupValue: selected,
-                          activeColor: primaryColor,
+                          activeColor:  themeProvider.themeManager.primaryColour,
                           value: 1,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
-                      CustomText(
+                       CustomText(
                         'List View',
                         type: FontStyle.H6,
                         color: themeProvider.themeManager.tertiaryTextColor,
@@ -104,7 +103,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                  color: themeProvider.themeManager.borderDisabledColor,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                 ),
               ),
               SizedBox(
@@ -127,10 +126,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                               MaterialTapTargetSize.shrinkWrap,
                           fillColor: selected == 0
                               ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.disabledButtonColor),
+                              : MaterialStateProperty.all<Color>(
+                                  themeProvider.themeManager.borderSubtle01Color),
                           groupValue: selected,
-                          activeColor: primaryColor,
+                          activeColor:  themeProvider.themeManager.primaryColour,
                           value: 0,
                           onChanged: (val) {
                             // setState(() {
@@ -151,52 +150,16 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                  color: themeProvider.themeManager.borderDisabledColor,
+                 color:  themeProvider.themeManager.borderSubtle01Color
                 ),
               ),
-              // SizedBox(
-              //   height: 50,
-              //   width: double.infinity,
-              //   child: InkWell(
-              //     onTap: () {
-              //       setState(() {
-              //         selected = 1;
-              //       });
-              //     },
-              //     child: Row(
-              //       children: [
-              //         Radio(
-              //             visualDensity: const VisualDensity(
-              //               horizontal: VisualDensity.minimumDensity,
-              //               vertical: VisualDensity.minimumDensity,
-              //             ),
-              //             materialTapTargetSize:
-              //                 MaterialTapTargetSize.shrinkWrap,
-              //             fillColor: selected == 1
-              //                 ? null
-              //                 : MaterialStateProperty.all<Color>(themeProvider
-              //                     .themeManager.disabledButtonColor),
-              //             groupValue: selected,
-              //             activeColor: primaryColor,
-              //             value: 1,
-              //             onChanged: (val) {}),
-              //         const SizedBox(width: 10),
-              //         CustomText(
-              //           'List View',
-              //           type: FontStyle.H6,
-              //           color: themeProvider.themeManager.tertiaryTextColor,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 1,
-              //   width: double.infinity,
-              //   child: Container(
-              //     color: themeProvider.themeManager.borderDisabledColor,
-              //   ),
-              // ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                color:  themeProvider.themeManager.borderSubtle01Color,
+                ),
+              ),
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -217,10 +180,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                               MaterialTapTargetSize.shrinkWrap,
                           fillColor: selected == 2
                               ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.disabledButtonColor),
+                              : MaterialStateProperty.all<Color>(
+                                   themeProvider.themeManager.borderSubtle01Color),
                           groupValue: selected,
-                          activeColor: primaryColor,
+                          activeColor:  themeProvider.themeManager.primaryColour,
                           value: 2,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
@@ -237,7 +200,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                  color: themeProvider.themeManager.borderDisabledColor,
+                color:   themeProvider.themeManager.borderSubtle01Color,
                 ),
               ),
               SizedBox(
@@ -260,10 +223,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                               MaterialTapTargetSize.shrinkWrap,
                           fillColor: selected == 3
                               ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.disabledButtonColor),
+                              : MaterialStateProperty.all<Color>(
+                                 themeProvider.themeManager.borderSubtle01Color),
                           groupValue: selected,
-                          activeColor: primaryColor,
+                          activeColor:  themeProvider.themeManager.primaryColour,
                           value: 3,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),

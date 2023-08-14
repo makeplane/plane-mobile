@@ -73,8 +73,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     return Scaffold(
-      backgroundColor:
-          themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
       appBar: CustomAppBar(
         onPressed: () {
           Navigator.pop(context);
@@ -120,11 +119,11 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
-                                filled: true,
-                              ),
+                                      // fillColor: themeProvider.isDarkThemeEnabled
+                                      //     ? darkBackgroundColor
+                                      //     : lightBackgroundColor,
+                                      // filled: true,
+                                      ),
                             ),
                             const SizedBox(height: 20),
 
@@ -141,11 +140,11 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
-                                filled: true,
-                              ),
+                                      // fillColor: themeProvider.isDarkThemeEnabled
+                                      //     ? darkBackgroundColor
+                                      //     : lightBackgroundColor,
+                                      // filled: true,
+                                      ),
                             ),
                             const SizedBox(height: 30),
 
@@ -180,9 +179,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 height: 45,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkBackgroundColor
-                                      : lightBackgroundColor,
+                                  color: themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor,
                                   borderRadius: BorderRadius.circular(6),
                                   border: Border.all(
                                     color: themeProvider.isDarkThemeEnabled
@@ -196,9 +194,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                     const SizedBox(width: 10),
                                     Icon(
                                       Icons.add,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : lightSecondaryTextColor,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
                                     ),
                                     const SizedBox(width: 10),
                                     CustomText(

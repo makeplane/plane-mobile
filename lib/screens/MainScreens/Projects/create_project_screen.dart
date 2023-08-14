@@ -70,6 +70,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
           Navigator.pop(context);
         },
         text: 'Create Project',
+        fontType: FontStyle.H6,
       ),
       body: LoadingWidget(
         loading: projectProvider.createProjectState == StateEnum.loading,
@@ -146,12 +147,15 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                         //   });
                                         // }
                                       },
-                                      child: const CircleAvatar(
-                                        backgroundColor: Color(0xFFF5F5F5),
+                                      child: CircleAvatar(
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .primaryBackgroundDefaultColor,
                                         child: Center(
                                           child: Icon(
                                             Icons.edit,
-                                            color: Colors.black,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
                                           ),
                                         ),
                                       )),
@@ -278,9 +282,10 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          const Padding(
+                                                          Padding(
                                                             padding:
-                                                                EdgeInsets.only(
+                                                                const EdgeInsets
+                                                                        .only(
                                                                     left: 25),
                                                             child: CustomText(
                                                               'Choose your project icon',
@@ -289,6 +294,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                               fontWeight:
                                                                   FontWeightt
                                                                       .Semibold,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryTextColor,
                                                             ),
                                                           ),
                                                           // const Spacer(),
@@ -353,7 +361,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                     },
                                     child: CircleAvatar(
                                       radius: 25,
-                                      backgroundColor: const Color(0xFFF5F5F5),
+                                      backgroundColor: themeProvider
+                                          .themeManager
+                                          .secondaryBackgroundDefaultColor,
                                       child: CustomText(
                                         String.fromCharCode(
                                             int.parse(selectedEmoji)),
@@ -426,16 +436,19 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           });
                                         },
                                       ),
-                                      const CustomText(
+                                      CustomText(
                                         'Public',
                                         type: FontStyle.Medium,
                                         fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       ),
                                       const SizedBox(
                                         width: 10,
                                       ),
                                       Radio(
-                                        activeColor: primaryColor,
+                                        activeColor: themeProvider
+                                            .themeManager.primaryColour,
                                         visualDensity: const VisualDensity(
                                           horizontal:
                                               VisualDensity.minimumDensity,
@@ -450,10 +463,12 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           });
                                         },
                                       ),
-                                      const CustomText(
+                                      CustomText(
                                         'Secret',
                                         type: FontStyle.Medium,
                                         fontWeight: FontWeightt.Medium,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       ),
                                     ],
                                   ),
@@ -587,7 +602,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Button(
                       text: 'Create Project',
-                      textColor: Colors.white,
+                      textColor: themeProvider.themeManager.textonColor,
                       ontap: () async {
                         if (validateSave()) {
                           if (coverImage != null) {

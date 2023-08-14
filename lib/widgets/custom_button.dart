@@ -50,11 +50,12 @@ class _ButtonState extends ConsumerState<Button> {
                 ? const Border()
                 : widget.removeStroke
                     ? const Border()
-                    : Border.all(color:themeProvider.themeManager.borderSubtle01Color ),
+                    : Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
             borderRadius: BorderRadius.circular(8),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)
-                    ? primaryColor
+                    ? themeProvider.themeManager.primaryColour
                     : widget.disable
                         ? lightGreeyColor
                         : Colors.transparent),
@@ -67,7 +68,8 @@ class _ButtonState extends ConsumerState<Button> {
                 CustomText(
                   widget.text,
                   type: FontStyle.Medium,
-                  color: widget.textColor ?? Colors.white,
+                  color: widget.textColor ??
+                      themeProvider.themeManager.textonColor,
                   fontWeight: FontWeightt.Semibold,
                 ),
               ],

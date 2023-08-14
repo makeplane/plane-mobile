@@ -85,11 +85,11 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                 onChanged: (val) {},
                 decoration:
                     themeProvider.themeManager.textFieldDecoration.copyWith(
-                  fillColor: themeProvider.isDarkThemeEnabled
-                      ? darkBackgroundColor
-                      : lightBackgroundColor,
-                  filled: true,
-                ),
+                        // fillColor: themeProvider.isDarkThemeEnabled
+                        //     ? darkBackgroundColor
+                        //     : lightBackgroundColor,
+                        // filled: true,
+                        ),
               ),
               Container(height: 20),
 

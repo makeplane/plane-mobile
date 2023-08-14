@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/assignee_sheet.dart';
 import 'package:plane_startup/bottom_sheets/lead_sheet.dart';
@@ -47,15 +48,15 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
         widgetClass: Scaffold(
           // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           appBar: CustomAppBar(
+            elevation: false,
             onPressed: () {
               modulesProvider.createModule = {};
               Navigator.pop(context);
             },
             text: 'Create Module',
           ),
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkSecondaryBGC
-              : lightSecondaryBackgroundColor,
+          backgroundColor:
+              themeProvider.themeManager.primaryBackgroundDefaultColor,
           body: LayoutBuilder(builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -68,19 +69,29 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(height: 15),
+                          Container(
+                              height: 2,
+                              width: MediaQuery.of(context).size.width,
+                              color: themeProvider.themeManager
+                                  .primaryBackgroundSelectedColour),
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
                                     'Module Title ',
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                   CustomText(
                                     '*',
                                     type: FontStyle.Small,
-                                    color: Colors.red,
+                                    color: themeProvider
+                                        .themeManager.textErrorColor,
                                   ),
                                 ],
                               )),
@@ -90,42 +101,45 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               right: 20,
                             ),
                             child: TextFormField(
-                              controller: titleController,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter module name';
-                                }
-                                return null;
-                              },
-                              decoration: themeProvider
-                                  .themeManager.textFieldDecoration
-                                  .copyWith(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
+                                controller: titleController,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter module name';
+                                  }
+                                  return null;
+                                },
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith()
+                                //     .copyWith(
+                                //   enabledBorder: OutlineInputBorder(
+                                //     borderSide: BorderSide(
+                                //         color: themeProvider.isDarkThemeEnabled
+                                //             ? darkThemeBorder
+                                //             : const Color(0xFFE5E5E5),
+                                //         width: 1.0),
+                                //     borderRadius: const BorderRadius.all(
+                                //         Radius.circular(8)),
+                                //   )
+                                //   ,
+                                //   disabledBorder: OutlineInputBorder(
+                                //     borderSide: BorderSide(
+                                //         color: themeProvider.isDarkThemeEnabled
+                                //             ? darkThemeBorder
+                                //             : const Color(0xFFE5E5E5),
+                                //         width: 1.0),
+                                //     borderRadius: const BorderRadius.all(
+                                //         Radius.circular(8)),
+                                //   ),
+                                //   focusedBorder: const OutlineInputBorder(
+                                //     borderSide: BorderSide(
+                                //         color: primaryColor, width: 2.0),
+                                //     borderRadius:
+                                //         BorderRadius.all(Radius.circular(8)),
+                                //   )
+                                //   ,
+                                // ),
                                 ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: primaryColor, width: 2.0),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              ),
-                            ),
                           ),
                           // Container(
                           //   margin: const EdgeInsets.only(
@@ -172,11 +186,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
                                     'Start Date ',
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               )),
@@ -223,18 +240,19 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                   IconButton(
                                     onPressed: null,
                                     icon: Icon(
-                                      Icons.calendar_today,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : lightSecondaryTextColor,
+                                      Icons.today_outlined,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                   ),
                                   CustomText(
                                     startDate == null
-                                        ? 'Select Date'
+                                        ? ''
                                         : DateFormat('yyyy-MM-dd')
                                             .format(startDate!),
                                     type: FontStyle.Medium,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               ),
@@ -243,12 +261,15 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
-                                    'End Date ',
+                                    'Target Date',
                                     // color: themeProvider.secondaryTextColor,
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               )),
@@ -294,18 +315,19 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                   IconButton(
                                     onPressed: null,
                                     icon: Icon(
-                                      Icons.calendar_today,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : lightSecondaryTextColor,
+                                      Icons.event_outlined,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                   ),
                                   CustomText(
                                     endDate == null
-                                        ? 'Select Date'
+                                        ? ''
                                         : DateFormat('yyyy-MM-dd')
                                             .format(endDate!),
                                     type: FontStyle.Medium,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               ),
@@ -315,16 +337,20 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
                                     'Status ',
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                   CustomText(
                                     '*',
                                     type: FontStyle.Small,
-                                    color: Colors.red,
+                                    color: themeProvider
+                                        .themeManager.textErrorColor,
                                   ),
                                 ],
                               )),
@@ -365,19 +391,26 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               height: 50,
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.window_sharp,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor,
+                                  SvgPicture.asset(
+                                    "assets/svg_images/home.svg",
+                                    width: 20,
+                                    colorFilter: ColorFilter.mode(
+                                        themeProvider
+                                            .themeManager.placeholderTextColor,
+                                        BlendMode.srcIn),
                                   ),
+                                  // Icon(
+                                  //       Icons.bento_outlined,
+                                  //   color: themeProvider
+                                  //       .themeManager.placeholderTextColor,
+                                  // ),
                                   const SizedBox(
                                     width: 12,
                                   ),
                                   CustomText(
                                     modulesProvider.createModule['status'] ==
                                             null
-                                        ? 'Select Status'
+                                        ? ''
                                         : modulesProvider.createModule['status']
                                             .toString(),
                                     type: FontStyle.Medium,
@@ -389,11 +422,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
                                     'Lead ',
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               )),
@@ -435,17 +471,16 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               child: Row(
                                 children: [
                                   Icon(
-                                    Icons.person_add_alt_1_sharp,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor,
+                                    Icons.account_circle_outlined,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                   ),
                                   const SizedBox(
                                     width: 12,
                                   ),
                                   CustomText(
                                     modulesProvider.createModule['lead'] == null
-                                        ? 'Select Lead'
+                                        ? ''
                                         : projectProvider.projectMembers
                                                     .firstWhere((element) =>
                                                         element['member']['id'] ==
@@ -467,11 +502,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   CustomText(
                                     'Assignee ',
                                     type: FontStyle.Small,
+                                    fontWeight: FontWeightt.Regular,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
                                   ),
                                 ],
                               )),
@@ -513,11 +551,13 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               height: 50,
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.group_sharp,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor,
+                                  SvgPicture.asset(
+                                    "assets/svg_images/assignee.svg",
+                                    width: 25,
+                                    colorFilter: ColorFilter.mode(
+                                        themeProvider
+                                            .themeManager.placeholderTextColor,
+                                        BlendMode.srcIn),
                                   ),
                                   const SizedBox(
                                     width: 12,
@@ -526,7 +566,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                     (modulesProvider.createModule['members'] == null ||
                                             (modulesProvider.createModule['members'] as List)
                                                 .isEmpty)
-                                        ? 'Select Assignee'
+                                        ? ''
                                         : (modulesProvider.createModule['members'] as List)
                                                     .length ==
                                                 1
@@ -621,7 +661,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
 
                           Navigator.pop(Const.globalKey.currentContext!);
                         },
-                        textColor: Colors.white,
+                        textColor: themeProvider.themeManager.textonColor,
                       ),
                     ),
                   ],

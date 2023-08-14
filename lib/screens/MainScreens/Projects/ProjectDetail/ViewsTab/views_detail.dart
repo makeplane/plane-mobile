@@ -84,9 +84,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
           widgetClass: Column(
             children: [
               Container(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : Colors.white,
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,9 +100,9 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           ),
                         ),
                         const Spacer(),
-                        const CustomText(
+                        CustomText(
                           'Update',
-                          color: primaryColor,
+                          color: themeProvider.themeManager.primaryColour,
                           fontSize: 17,
                           fontWeight: FontWeightt.Medium,
                         ),
@@ -114,9 +112,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                       margin: const EdgeInsets.only(top: 15, bottom: 15),
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : const Color.fromRGBO(250, 250, 250, 1),
+                          color: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
                               color: themeProvider.isDarkThemeEnabled
@@ -125,20 +122,33 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          CustomText(
-                            '# Filters : ${countFilters()}',
-                            color: greyColor,
-                            fontSize: 17,
-                            fontWeight: FontWeightt.Medium,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                '# Filters : ',
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                                fontSize: 17,
+                                fontWeight: FontWeightt.Medium,
+                              ),
+                              CustomText(
+                                ' ${countFilters()}',
+                                color: greyColor,
+                                fontSize: 17,
+                                fontWeight: FontWeightt.Medium,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.close,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                                size: 17,
+                              )
+                            ],
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Icon(
-                            Icons.close,
-                            color: greyColor,
-                            size: 17,
-                          )
                         ],
                       ),
                     )

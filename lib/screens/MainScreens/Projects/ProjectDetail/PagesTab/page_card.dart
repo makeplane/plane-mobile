@@ -62,9 +62,7 @@ class _PageCardState extends ConsumerState<PageCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
               color: themeProvider.isDarkThemeEnabled
                   ? darkThemeBorder
@@ -86,9 +84,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                       width: 25,
                       height: 25,
                       colorFilter: ColorFilter.mode(
-                          themeProvider.isDarkThemeEnabled
-                              ? lightBackgroundColor
-                              : darkBackgroundColor,
+                          themeProvider.themeManager.primaryTextColor,
                           BlendMode.srcIn),
                     )),
 
@@ -98,8 +94,9 @@ class _PageCardState extends ConsumerState<PageCard> {
                     pageProvider
                             .pages[pageProvider.selectedFilter]![widget.index]
                         ['name'],
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Semibold,
+                    type: FontStyle.H5,
+                    fontWeight: FontWeightt.Medium,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ),
               ],
@@ -122,9 +119,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 ['updated_at']
                             .toString())),
                     type: FontStyle.Small,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? const Color.fromRGBO(172, 181, 189, 1)
-                        : greyColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 ),
                 const Spacer(),
@@ -157,15 +152,17 @@ class _PageCardState extends ConsumerState<PageCard> {
                               pageProvider.pages[pageProvider.selectedFilter]![
                                           widget.index]['access'] ==
                                       0 // 1 = locked || 0 = unlocked
-                                  ? const Icon(
+                                  ? Icon(
                                       Icons.lock_open_outlined,
                                       size: 18,
-                                      color: Color.fromRGBO(172, 181, 189, 1),
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     )
-                                  : const Icon(
+                                  : Icon(
                                       Icons.lock_clock_outlined,
                                       size: 18,
-                                      color: Color.fromRGBO(255, 0, 0, 1),
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                         ),
                       )
@@ -209,10 +206,11 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 projectId: projectProvider.currentProject['id'],
                                 shouldItBeFavorite: true);
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.star_border,
                             size: 18,
-                            color: Color.fromRGBO(172, 181, 189, 1),
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         ),
                 ),

@@ -33,6 +33,11 @@ class ThemeManager {
   late Color borderStrong01Color;
   late Color borderDisabledColor;
 
+  //late Color borderStrong01Color;
+  late Color secondaryIcon;
+  late Color primaryBackgroundSelectedColour;
+  late Color secondaryBackgroundSelectedColor;
+
   ThemeManager(this.theme) {
     placeholderTextColor = theme == THEME.light
         ? lightPlaceholderTextColor
@@ -49,7 +54,7 @@ class ThemeManager {
                 ? darkBorderSubtle01Color
                 : lightBorderSubtle01Color;
 
-                    borderSubtle00Color = theme == THEME.light
+    borderSubtle00Color = theme == THEME.light
         ? lightBorderSubtle00Color
         : theme == THEME.dark
             ? darkBorderSubtle00Color
@@ -57,7 +62,7 @@ class ThemeManager {
                 ? darkBorderSubtle00Color
                 : lightBorderSubtle00Color;
 
-                borderStrong01Color= theme == THEME.light
+    borderStrong01Color = theme == THEME.light
         ? lightBorderStrong01Color
         : theme == THEME.dark
             ? darkBorderStrong01Color
@@ -208,5 +213,33 @@ class ThemeManager {
             : theme == THEME.lightHighContrast
                 ? lightdisabledButtonColor
                 : darkdisabledButtonColor;
+    secondaryIcon = theme == THEME.light
+        ? lightSecondaryIconColor
+        : theme == THEME.dark
+            ? darkSecondaryIconColor
+            : theme == THEME.lightHighContrast
+                ? lightSecondaryIconColor
+                : darkSecondaryIconColor;
+    primaryBackgroundSelectedColour = theme == THEME.light
+        ? lightPrimaryBackgroundSelectedColor
+        : theme == THEME.dark
+            ? darkPrimaryBackgroundSelectedColor
+            : theme == THEME.lightHighContrast
+                ? lightPrimaryBackgroundSelectedColor
+                : darkPrimaryBackgroundSelectedColor;
+    borderStrong01Color = theme == THEME.light
+        ? lightBorderStrongColor
+        : theme == THEME.dark
+            ? darkBorderStrongColor
+            : theme == THEME.lightHighContrast
+                ? lightContrastBorderStrongColor
+                : darkContrastBorderStrongColor;
+    secondaryBackgroundSelectedColor = theme == THEME.light
+        ? lightSecondaryBackgroundSelectedColor
+        : theme == THEME.dark
+            ? darkSecondaryBackgroundSelectedColor
+            : theme == THEME.lightHighContrast
+                ? lightSecondaryBackgroundSelectedColor
+                : darkSecondaryBackgroundSelectedColor;
   }
 }

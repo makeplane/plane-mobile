@@ -53,10 +53,11 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
               children: [
                 Row(
                   children: [
-                    const CustomText(
+                    CustomText(
                       'Add block',
                       type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -78,6 +79,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                     CustomText(
                       'Title',
                       type: FontStyle.Small,
+                      fontWeight: FontWeightt.Regular,
                     ),
                     CustomText(
                       ' *',
@@ -89,13 +91,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 Container(height: 5),
                 TextField(
                   controller: titleController,
-                  decoration:
-                      themeProvider.themeManager.textFieldDecoration.copyWith(
-                    fillColor: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    filled: true,
-                  ),
+                  decoration: themeProvider.themeManager.textFieldDecoration,
                 ),
                 Container(height: 20),
                 const Row(
@@ -103,6 +99,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                     CustomText(
                       'Write something',
                       type: FontStyle.Small,
+                      fontWeight: FontWeightt.Regular,
                     ),
                     // CustomText(
                     //   ' *',
@@ -113,16 +110,16 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 ),
                 Container(height: 5),
                 TextField(
-                  controller: descriptionController,
-                  maxLines: 4,
-                  decoration:
-                      themeProvider.themeManager.textFieldDecoration.copyWith(
-                    fillColor: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    filled: true,
-                  ),
-                ),
+                    controller: descriptionController,
+                    maxLines: 4,
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                    //     .copyWith(
+                    //   fillColor: themeProvider.isDarkThemeEnabled
+                    //       ? darkBackgroundColor
+                    //       : lightBackgroundColor,
+                    //   filled: true,
+                    // ),
+                    ),
                 Container(height: 20),
                 Button(
                   ontap: () async {

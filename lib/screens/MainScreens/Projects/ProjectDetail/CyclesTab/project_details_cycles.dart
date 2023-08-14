@@ -40,9 +40,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
               height: 30,
               child: LoadingIndicator(
                 indicatorType: Indicator.lineSpinFadeLoader,
-                colors: themeProvider.isDarkThemeEnabled
-                    ? [Colors.white]
-                    : [Colors.black],
+                colors: [
+                  themeProvider.themeManager.primaryBackgroundDefaultColor
+                ],
                 strokeWidth: 1.0,
                 backgroundColor: Colors.transparent,
               ),
@@ -52,6 +52,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycles() {
+    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
     return SizedBox(
       width: width,
       height: height,
@@ -59,7 +60,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         const SizedBox(
           height: 15,
         ),
-        SizedBox(height: 40, child: cycleNaveBar()),
+        cyclesProvider.cyclesAllData.isEmpty &&
+                cyclesProvider.cycleFavoriteData.isEmpty
+            ? const SizedBox.shrink()
+            : SizedBox(height: 40, child: cycleNaveBar()),
         const SizedBox(
           height: 15,
         ),
@@ -94,13 +98,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     BoxDecoration decarationOnUnSelected = BoxDecoration(
         border: Border.all(
-            width: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300),
-        color: themeProvider.isDarkThemeEnabled
-            ? Colors.grey.shade900
-            : Colors.grey.shade100,
+            width: 1, color: themeProvider.themeManager.borderDisabledColor),
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     return GestureDetector(
       onTap: () {
@@ -109,19 +108,25 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        margin: const EdgeInsets.only(
-          right: 10,
-        ),
+        // padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.only(right: 10),
         decoration: cycleNaveBarSelectedIndex == itemIndex
             ? decarationOnSelected
             : decarationOnUnSelected,
-        child: CustomText(
-          title,
-          color: cycleNaveBarSelectedIndex == itemIndex
-              ? textColorOnSelected
-              : null,
-          type: FontStyle.Small,
+        child: Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: CustomText(
+              title,
+              color: cycleNaveBarSelectedIndex == itemIndex
+                  ? textColorOnSelected
+                  : null,
+              type: FontStyle.Small,
+            ),
+          ),
         ),
       ),
     );
@@ -146,7 +151,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.allCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesAllData.isEmpty &&
               cyclesProvider.cycleFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context,ref)
+          ? EmptyPlaceholder.emptyCycles(context, ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,9 +237,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                             BorderRadius
                                                                 .circular(5),
                                                         color: themeProvider
-                                                                .isDarkThemeEnabled
-                                                            ? greenWithOpacity
-                                                            : lightGreeyColor,
+                                                            .themeManager
+                                                            .primaryBackgroundSelectedColour,
                                                       ),
                                                       child: const CustomText(
                                                           'Draft'),
@@ -659,7 +663,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       );
     } else {
       return cyclesProvider.cyclesActiveData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context,ref)
+          ? EmptyPlaceholder.emptyCycles(context, ref)
           : ListView.builder(
               itemCount: cyclesProvider.cyclesActiveData.length,
               itemBuilder: (context, index) {
@@ -679,7 +683,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.completedCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesCompletedData.isEmpty &&
               cyclesProvider.cycleCompletedFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context,ref)
+          ? EmptyPlaceholder.emptyCycles(context, ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1153,7 +1157,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.upcomingCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesUpcomingData.isEmpty &&
               cyclesProvider.cycleUpcomingFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context,ref)
+          ? EmptyPlaceholder.emptyCycles(context, ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1625,7 +1629,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       loading: cyclesProvider.draftCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesDraftData.isEmpty &&
               cyclesProvider.cycleDraftFavoriteData.isEmpty
-          ? EmptyPlaceholder.emptyCycles(context,ref)
+          ? EmptyPlaceholder.emptyCycles(context, ref)
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

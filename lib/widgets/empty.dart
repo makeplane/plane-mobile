@@ -41,9 +41,9 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Sprint more effectively with Cycles by confining your project to a fixed amount of time. Create new cycle now.',
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
               maxLines: 3,
@@ -61,24 +61,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Cycle',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Cycle',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),
@@ -111,11 +110,11 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               //create issues text
               'Issues help you track individual pieces of work. With Issues, keep track of what\'s going on, who is working on it, and what\'s done.',
 
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
               maxLines: 6,
@@ -138,24 +137,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Issues',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Issues',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),
@@ -186,24 +184,23 @@ class EmptyPlaceholder {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: const Color.fromRGBO(63, 118, 255, 1),
+                      color: themeProvider.themeManager.primaryColour,
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.add,
-                          color: Colors.white,
+                          color: themeProvider.themeManager.textonColor,
                           size: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        CustomText(
-                          'Add Existing Issues',
-                          type: FontStyle.Small,
-                          fontWeight: FontWeightt.Medium,
-                        )
+                        CustomText('Add Existing Issues',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            color: themeProvider.themeManager.textonColor)
                       ],
                     ),
                   ),
@@ -239,9 +236,9 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Modules are smaller, focused projects that help you group and organize issues within a specific time frame.',
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
               maxLines: 3,
@@ -261,24 +258,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Module',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Module',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),
@@ -335,91 +331,9 @@ class EmptyPlaceholder {
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 30),
-                height: 110,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.grey.shade300)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: const CustomText(
-                        'Client Meeting Notes',
-                        color: Color.fromRGBO(133, 142, 150, 1),
-                        type: FontStyle.XSmall,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                height: 110,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.grey.shade300)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: const CustomText(
-                        'Evening Standup Notes',
-                        color: Color.fromRGBO(133, 142, 150, 1),
-                        type: FontStyle.XSmall,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: 12,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10, left: 15),
-                      height: 10,
-                      width: 220,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(222, 226, 230, 0.6),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10, left: 15),
-                      height: 10,
-                      width: 220,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(222, 226, 230, 0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+          SvgPicture.asset(
+            "assets/svg_images/empty_pages.svg",
+            width: 130,
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
@@ -433,9 +347,9 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Create and document issues effortlessly in one place with Plane Notes, AI-powered for ease.',
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               maxLines: 3,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
@@ -453,24 +367,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Page',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Page',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),
@@ -489,59 +402,63 @@ class EmptyPlaceholder {
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 30),
-                height: 85,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.grey.shade300)),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10, top: 10),
-                  child: const CustomText(
-                    'Completed Urgent Issues',
-                    type: FontStyle.XSmall,
-                    color: Color.fromRGBO(133, 142, 150, 1),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                height: 85,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.grey.shade300)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: const CustomText(
-                        'Active High Priority Issues',
-                        type: FontStyle.XSmall,
-                        color: Color.fromRGBO(133, 142, 150, 1),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 15, right: 15),
-                      child: SvgPicture.asset(
-                        "assets/svg_images/view_empty.svg",
-                        width: 300,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+          // Stack(
+          //   children: [
+          //     Container(
+          //       margin: const EdgeInsets.only(left: 30),
+          //       height: 85,
+          //       width: 300,
+          //       decoration: BoxDecoration(
+          //           color: Colors.white,
+          //           borderRadius: BorderRadius.circular(6),
+          //           border: Border.all(color: Colors.grey.shade300)),
+          //       child: Container(
+          //         padding: const EdgeInsets.only(left: 10, top: 10),
+          //         child: const CustomText(
+          //           'Completed Urgent Issues',
+          //           type: FontStyle.XSmall,
+          //           color: Color.fromRGBO(133, 142, 150, 1),
+          //         ),
+          //       ),
+          //     ),
+          //     Container(
+          //       margin: const EdgeInsets.only(top: 30),
+          //       height: 85,
+          //       width: 300,
+          //       decoration: BoxDecoration(
+          //           color: Colors.white,
+          //           borderRadius: BorderRadius.circular(6),
+          //           border: Border.all(color: Colors.grey.shade300)),
+          //       child: Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Container(
+          //             padding: const EdgeInsets.only(left: 10, top: 10),
+          //             child: const CustomText(
+          //               'Active High Priority Issues',
+          //               type: FontStyle.XSmall,
+          //               color: Color.fromRGBO(133, 142, 150, 1),
+          //             ),
+          //           ),
+          //           const SizedBox(
+          //             height: 10,
+          //           ),
+          //           Container(
+          //             margin: const EdgeInsets.only(left: 15, right: 15),
+          //             child: SvgPicture.asset(
+          //               "assets/svg_images/view_empty.svg",
+          //               width: 300,
+          //               fit: BoxFit.cover,
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // ),
+          SvgPicture.asset(
+            "assets/svg_images/empty_views.svg",
+            width: 130,
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),
@@ -555,11 +472,11 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Views aid in saving your issues by applying various filters and grouping options.',
               textAlign: TextAlign.center,
               type: FontStyle.Small,
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               maxLines: 3,
             ),
           ),
@@ -575,24 +492,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add View',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  ),
+                  CustomText('Add View',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor),
                 ],
               ),
             ),
@@ -652,7 +568,7 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
               child: ref.watch(ProviderList.issuesProvider).joinprojectState ==
                       StateEnum.loading
@@ -666,22 +582,21 @@ class EmptyPlaceholder {
                         ),
                       ),
                     )
-                  : const Row(
+                  : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.assignment_outlined,
                           color: Colors.white,
                           size: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        CustomText(
-                          'Click to join',
-                          type: FontStyle.Small,
-                          fontWeight: FontWeightt.Medium,
-                        ),
+                        CustomText('Click to join',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            color: themeProvider.themeManager.textonColor),
                       ],
                     ),
             ),
@@ -720,9 +635,9 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Get started by creating your first project.',
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
               maxLines: 3,
@@ -742,24 +657,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Project',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Project',
+                      type: FontStyle.Large,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),
@@ -794,9 +708,9 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: const CustomText(
+            child: CustomText(
               'Create labels to help organize and filter issues in you project',
-              color: Color.fromRGBO(133, 142, 150, 1),
+              color: themeProvider.themeManager.placeholderTextColor,
               textAlign: TextAlign.center,
               type: FontStyle.Small,
               maxLines: 3,
@@ -835,24 +749,23 @@ class EmptyPlaceholder {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: const Color.fromRGBO(63, 118, 255, 1),
+                color: themeProvider.themeManager.primaryColour,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: themeProvider.themeManager.textonColor,
                     size: 24,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
-                    'Add Label',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                  )
+                  CustomText('Add Label',
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.textonColor)
                 ],
               ),
             ),

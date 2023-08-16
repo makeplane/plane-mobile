@@ -145,7 +145,11 @@ class _ActivityState extends ConsumerState<Activity> {
                                                             // ignore: use_build_context_synchronously
                                                             CustomToast().showToast(
                                                                 context,
-                                                                'Failed to launch');
+                                                                'Failed to launch',
+                                                                themeProvider,
+                                                                toastType:
+                                                                    ToastType
+                                                                        .failure);
                                                           }
                                                         }
                                                       },
@@ -350,7 +354,11 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           // ignore: use_build_context_synchronously
                                                           CustomToast().showToast(
                                                               context,
-                                                              'Failed to launch');
+                                                              'Failed to launch',
+                                                              themeProvider,
+                                                              toastType:
+                                                                  ToastType
+                                                                      .failure);
                                                         }
                                                       }
                                                     },

@@ -76,6 +76,8 @@ class ProjectsProvider extends ChangeNotifier {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
     var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
+    var intergrationProvider = ref.read(ProviderList.integrationProvider);
+    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
     var pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
@@ -146,9 +148,22 @@ class ProjectsProvider extends ChangeNotifier {
         query: 'draft');
 
     pageProv.updatepageList(
-        slug: workspaceSlug,
-        projectId: projectID,
-       );
+      slug: workspaceSlug,
+      projectId: projectID,
+    );
+
+    if (workspaceProvider.githubIntegration != null) {
+      intergrationProvider.getSlackIntegration(
+          slug: workspaceSlug,
+          projectId: projectID,
+          integrationId: workspaceProvider.githubIntegration['id']);
+    }
+    if (workspaceProvider.githubIntegration != null) {
+      intergrationProvider.getGitHubIntegration(
+          slug: workspaceSlug,
+          projectId: projectID,
+          integrationId: workspaceProvider.githubIntegration['id']);
+    }
   }
 
   void changeCoverUrl({required String url}) {
@@ -245,8 +260,11 @@ class ProjectsProvider extends ChangeNotifier {
     } on DioException catch (e) {
       log('Project Invite Error =  ${e.message}');
       log(e.error.toString());
-      CustomToast().showToast(context,
-          e.message == null ? 'something went wrong!' : e.message.toString());
+      CustomToast().showToast(
+          context,
+          e.message == null ? 'something went wrong!' : e.message.toString(),
+          ref.read(ProviderList.themeProvider),
+          toastType: ToastType.failure);
       projectInvitationState = StateEnum.error;
       notifyListeners();
     }
@@ -469,8 +487,11 @@ class ProjectsProvider extends ChangeNotifier {
       if (e is DioException) {
         log(e.message.toString());
       }
-      CustomToast()
-          .showToast(context, 'Something went wrong, Please try again.');
+      CustomToast().showToast(
+          context,
+          'Something went wrong, Please try again.',
+          ref.read(ProviderList.themeProvider),
+          toastType: ToastType.failure);
       log(e.toString());
       stateCrudState = StateEnum.error;
       notifyListeners();

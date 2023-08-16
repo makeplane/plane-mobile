@@ -54,7 +54,9 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 Row(
                   children: [
                     CustomText(
-                      'Add block',
+                      widget.operation == CRUD.create
+                          ? 'Add Block'
+                          : 'Update Block',
                       type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
                       color: themeProvider.themeManager.primaryTextColor,

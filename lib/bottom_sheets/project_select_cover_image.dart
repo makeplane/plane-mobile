@@ -432,8 +432,11 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                         .lengthInBytes;
 
                                     if (sizeOfImage > 5000000) {
-                                      CustomToast().showToast(context,
-                                          'File size should be less than 5MB');
+                                      CustomToast().showToast(
+                                          context,
+                                          'File size should be less than 5MB',
+                                          themeProvider,
+                                          toastType: ToastType.warning);
                                       return;
                                     }
 

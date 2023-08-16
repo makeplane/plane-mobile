@@ -301,36 +301,36 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       //textfield
                       Expanded(
                         child: TextField(
-                          controller: name,
-                          decoration: themeProvider
-                              .themeManager.textFieldDecoration
-                          //     .copyWith(
-                          //   enabledBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(
-                          //         color: themeProvider.isDarkThemeEnabled
-                          //             ? darkThemeBorder
-                          //             : const Color(0xFFE5E5E5),
-                          //         width: 1.0),
-                          //     borderRadius:
-                          //         const BorderRadius.all(Radius.circular(8)),
-                          //   ),
-                          //   disabledBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(
-                          //         color: themeProvider.isDarkThemeEnabled
-                          //             ? darkThemeBorder
-                          //             : const Color(0xFFE5E5E5),
-                          //         width: 1.0),
-                          //     borderRadius:
-                          //         const BorderRadius.all(Radius.circular(8)),
-                          //   ),
-                          //   focusedBorder: const OutlineInputBorder(
-                          //     borderSide:
-                          //         BorderSide(color: primaryColor, width: 2.0),
-                          //     borderRadius:
-                          //         BorderRadius.all(Radius.circular(8)),
-                          //   ),
-                          // ),
-                        ),
+                            controller: name,
+                            decoration:
+                                themeProvider.themeManager.textFieldDecoration
+                            //     .copyWith(
+                            //   enabledBorder: OutlineInputBorder(
+                            //     borderSide: BorderSide(
+                            //         color: themeProvider.isDarkThemeEnabled
+                            //             ? darkThemeBorder
+                            //             : const Color(0xFFE5E5E5),
+                            //         width: 1.0),
+                            //     borderRadius:
+                            //         const BorderRadius.all(Radius.circular(8)),
+                            //   ),
+                            //   disabledBorder: OutlineInputBorder(
+                            //     borderSide: BorderSide(
+                            //         color: themeProvider.isDarkThemeEnabled
+                            //             ? darkThemeBorder
+                            //             : const Color(0xFFE5E5E5),
+                            //         width: 1.0),
+                            //     borderRadius:
+                            //         const BorderRadius.all(Radius.circular(8)),
+                            //   ),
+                            //   focusedBorder: const OutlineInputBorder(
+                            //     borderSide:
+                            //         BorderSide(color: primaryColor, width: 2.0),
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(8)),
+                            //   ),
+                            // ),
+                            ),
                       ),
                     ],
                   ),
@@ -345,7 +345,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       CustomText(
                         '*',
                         type: FontStyle.Small,
-                        color:themeProvider.themeManager.textErrorColor,
+                        color: themeProvider.themeManager.textErrorColor,
                       )
                     ],
                   ),
@@ -353,8 +353,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //textfield
                   TextField(
                     onTap: () {
-                      CustomToast().showToast(context,
-                          'This operation cannot be performed using Plane Mobile');
+                      CustomToast().showToast(
+                          context,
+                          'This operation cannot be performed using Plane Mobile',
+                          themeProvider,
+                          toastType: ToastType.defult);
                     },
                     readOnly: true,
                     controller: description,
@@ -682,7 +685,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           type: FontStyle.Medium,
                           maxLines: 8,
                           textAlign: TextAlign.left,
-                          color: themeProvider.themeManager.placeholderTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                         GestureDetector(
                           onTap: () async {

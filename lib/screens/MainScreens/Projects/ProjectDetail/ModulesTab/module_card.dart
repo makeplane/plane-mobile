@@ -8,6 +8,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesT
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/utils/constants.dart';
 import '/utils/enums.dart';
+
 // ignore: must_be_immutable
 class ModuleCard extends ConsumerStatefulWidget {
   bool isFav;
@@ -51,9 +52,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
               color: Colors.grey.shade300,
             ),
@@ -102,16 +101,13 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       //   width: 10,
                       // ),
                       CustomText(
-                          widget.isFav
-                              ? modulesProvider.favModules[widget.index]
-                                      ['status']
-                                  .toString()
-                              : modulesProvider.modules[widget.index]['status']
-                                  .toString(),
-                          type: FontStyle.Medium,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor),
+                        widget.isFav
+                            ? modulesProvider.favModules[widget.index]['status']
+                                .toString()
+                            : modulesProvider.modules[widget.index]['status']
+                                .toString(),
+                        type: FontStyle.Medium,
+                      ),
                     ],
                   ),
                 ),
@@ -139,9 +135,9 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                               isFav: true,
                             );
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.star,
-                            color: Colors.amber,
+                            color: themeProvider.themeManager.tertiaryTextColor,
                           ))
                       : IconButton(
                           onPressed: () async {
@@ -165,9 +161,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                           },
                           icon: Icon(
                             Icons.star_border,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           )),
                 ),
                 const SizedBox(
@@ -409,9 +404,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
@@ -475,9 +469,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                   left: 8, right: 8, top: 5, bottom: 5),
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : lightGreeyColor),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
                               child: const Icon(
                                 Icons.groups_2_outlined,
@@ -497,9 +490,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
@@ -563,9 +555,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                   left: 8, right: 8, top: 5, bottom: 5),
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : lightGreeyColor),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
                               child: const Icon(
                                 Icons.groups_2_outlined,

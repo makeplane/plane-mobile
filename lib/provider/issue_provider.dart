@@ -127,7 +127,6 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
-    
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
@@ -170,7 +169,7 @@ class IssueProvider with ChangeNotifier {
       subscriptionState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-    //  print('===== ERROR ');
+      //  print('===== ERROR ');
       log(e.response.toString());
       subscriptionState = StateEnum.error;
       notifyListeners();
@@ -214,7 +213,9 @@ class IssueProvider with ChangeNotifier {
       const String messageOnError = 'Something went wrong, please try again';
       buildContext == null
           ? CustomToast().showSimpleToast(messageOnError)
-          : CustomToast().showToast(buildContext, messageOnError, duration: 2);
+          : CustomToast().showToast(buildContext, messageOnError,
+              ref.read(ProviderList.themeProvider),
+              toastType: ToastType.failure, duration: 2);
 
       log('Error : issue_provider : upDateIssue : ${e.message.toString()}');
       updateIssueState = StateEnum.error;
@@ -362,7 +363,9 @@ class IssueProvider with ChangeNotifier {
       const String messageOnError = 'Something went wrong, please try again';
       buildContext == null
           ? CustomToast().showSimpleToast(messageOnError)
-          : CustomToast().showToast(buildContext, messageOnError, duration: 2);
+          : CustomToast().showToast(buildContext, messageOnError,
+              ref.read(ProviderList.themeProvider),
+              toastType: ToastType.failure, duration: 2);
       if (e is DioException) {
         log(e.response.toString());
       }
@@ -451,7 +454,9 @@ class IssueProvider with ChangeNotifier {
       const String messageOnError = 'Something went wrong, please try again';
       buildContext == null
           ? CustomToast().showSimpleToast(messageOnError)
-          : CustomToast().showToast(buildContext, messageOnError, duration: 2);
+          : CustomToast().showToast(buildContext, messageOnError,
+              ref.read(ProviderList.themeProvider),
+              toastType: ToastType.failure, duration: 2);
 
       notifyListeners();
     }

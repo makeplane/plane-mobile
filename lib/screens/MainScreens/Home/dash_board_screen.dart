@@ -119,7 +119,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           const SizedBox(width: 5),
                           CustomText(
                             //DateFormat('EEEE, MMM dd  hh:mm ').format(DateTime.now()),
-                            DateFormat('EEEE, MMM dd')
+                            DateFormat('EEEE, MMM dd,')
                                 .add_jm()
                                 .format(DateTime.now()),
                             type: FontStyle.XSmall,

@@ -3,8 +3,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
-
-
 class CompletionPercentage extends StatefulWidget {
   const CompletionPercentage(
       {super.key, required this.value, required this.totalValue});
@@ -35,9 +33,11 @@ class _CompletionPercentageState extends State<CompletionPercentage> {
             percent:
                 completionPercentage == null ? 0 : completionPercentage / 100),
         const SizedBox(width: 8),
-        CustomText(completionPercentage == null
-            ? 'error'
-            : '${completionPercentage.toString().split('.').first}% of $totalValue'),
+        CustomText(
+          completionPercentage == null
+              ? 'error'
+              : '${completionPercentage.toString().split('.').first}% of $totalValue',
+        ),
       ],
     );
   }

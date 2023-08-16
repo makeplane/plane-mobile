@@ -50,8 +50,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
         },
         text: 'Create Cycle',
       ),
-      backgroundColor:
-          themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
       body: LoadingWidget(
         loading: cyclesProvider.cyclesState == StateEnum.loading,
         widgetClass: LayoutBuilder(builder: (context, constraints) {
@@ -77,9 +76,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             child: const Row(
                               children: [
                                 CustomText(
-                                  'Create Cycle ',
-                                  // color: themeProvider.secondaryTextColor,
+                                  'Cycle Title ',
                                   type: FontStyle.Small,
+                                  fontWeight: FontWeightt.Regular,
                                 ),
                                 CustomText(
                                   '*',
@@ -94,42 +93,15 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             right: 20,
                           ),
                           child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter cycle name';
-                              }
-                              return null;
-                            },
-                            controller: cycleNameController,
-                            decoration: themeProvider
-                                .themeManager.textFieldDecoration
-                                .copyWith(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : const Color(0xFFE5E5E5),
-                                    width: 1.0),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : const Color(0xFFE5E5E5),
-                                    width: 1.0),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: primaryColor, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                            ),
-                          ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter cycle name';
+                                }
+                                return null;
+                              },
+                              controller: cycleNameController,
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration),
                         ),
                         // Container(
                         //   margin: const EdgeInsets.only(
@@ -180,7 +152,6 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               children: [
                                 CustomText(
                                   'Start Date ',
-                                  // color: themeProvider.secondaryTextColor,
                                   type: FontStyle.Small,
                                 ),
                               ],
@@ -217,9 +188,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : const Color(0xFFE5E5E5),
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
                               ),
                             ),
                             child: Row(
@@ -227,15 +197,14 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 IconButton(
                                   onPressed: null,
                                   icon: Icon(
-                                    Icons.calendar_today,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor,
+                                    Icons.today,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                   ),
                                 ),
                                 CustomText(
                                   startDate == null
-                                      ? 'Select Date'
+                                      ? ''
                                       : DateFormat('yyyy-MM-dd')
                                           .format(startDate!),
                                   type: FontStyle.Medium,
@@ -288,9 +257,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : const Color(0xFFE5E5E5),
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
                               ),
                             ),
                             child: Row(
@@ -298,15 +266,14 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                 IconButton(
                                   onPressed: null,
                                   icon: Icon(
-                                    Icons.calendar_today,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryTextColor
-                                        : lightSecondaryTextColor,
+                                    Icons.event,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                   ),
                                 ),
                                 CustomText(
                                   endDate == null
-                                      ? 'Select Date'
+                                      ? ''
                                       : DateFormat('yyyy-MM-dd')
                                           .format(endDate!),
                                   type: FontStyle.Medium,

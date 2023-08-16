@@ -78,12 +78,15 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                     );
 
                 if (result == null) {
-                  CustomToast().showToast(context, 'File is empty');
+                  CustomToast().showToast(
+                      context, 'File is empty', themeProvider,
+                      toastType: ToastType.warning);
                   Navigator.pop(context);
                   return;
                 } else if (result.files.single.size > 5000000) {
-                  CustomToast()
-                      .showToast(context, 'File size should be less than 5MB');
+                  CustomToast().showToast(context,
+                      'File size should be less than 5MB', themeProvider,
+                      toastType: ToastType.warning);
                   Navigator.pop(context);
                   return;
                 } else {

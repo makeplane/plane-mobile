@@ -213,9 +213,10 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                         if (workspaceProvider.role != Role.admin &&
                             workspaceProvider.role != Role.member) {
                           CustomToast().showToast(
-                            context,
-                            'You don\'t have permissions to delete this workspace',
-                          );
+                              context,
+                              'You don\'t have permissions to delete this workspace',
+                              themeProvider,
+                              toastType: ToastType.failure);
                           return;
                         }
 

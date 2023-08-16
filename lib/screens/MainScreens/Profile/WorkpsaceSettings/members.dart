@@ -137,12 +137,15 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
             onTap: () {
               if (fromRole(role: workspaceProvider.role) <
                   workspaceProvider.workspaceMembers[index]['role']) {
-                CustomToast().showToast(context, accessRestrictedMSG);
+                CustomToast().showToast(
+                    context, accessRestrictedMSG, themeProvider,
+                    toastType: ToastType.failure);
               } else if (workspaceProvider.workspaceMembers[index]['member']
                       ["id"] ==
                   ref.read(ProviderList.profileProvider).userProfile.id) {
-                CustomToast()
-                    .showToast(context, "You can't change your own role");
+                CustomToast().showToast(
+                    context, "You can't change your own role", themeProvider,
+                    toastType: ToastType.warning);
               }
               // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
               //         workspaceProvider.workspaceMembers[index]['member']
@@ -274,21 +277,20 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                       ),
                     ),
                   ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: themeProvider.themeManager.primaryTextColor
-                    // themeProvider.isDarkThemeEnabled
-                    //     ? fromRole(role: workspaceProvider.role) >=
-                    //             workspaceProvider.workspaceMembers[index]
-                    //                 ['role']
-                    //         ? Colors.white
-                    //         : darkSecondaryTextColor
-                    //     : fromRole(role: workspaceProvider.role) >=
-                    //             workspaceProvider.workspaceMembers[index]
-                    //                 ['role']
-                    //         ? Colors.black
-                    //         : greyColor,
-                  )
+                  Icon(Icons.arrow_drop_down,
+                      color: themeProvider.themeManager.primaryTextColor
+                      // themeProvider.isDarkThemeEnabled
+                      //     ? fromRole(role: workspaceProvider.role) >=
+                      //             workspaceProvider.workspaceMembers[index]
+                      //                 ['role']
+                      //         ? Colors.white
+                      //         : darkSecondaryTextColor
+                      //     : fromRole(role: workspaceProvider.role) >=
+                      //             workspaceProvider.workspaceMembers[index]
+                      //                 ['role']
+                      //         ? Colors.black
+                      //         : greyColor,
+                      )
                 ],
               ),
             ),
@@ -331,11 +333,14 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
           onTap: () {
             if (fromRole(role: projectsProvider.role) <
                 projectsProvider.projectMembers[index]['role']) {
-              CustomToast().showToast(context, accessRestrictedMSG);
+              CustomToast().showToast(
+                  context, accessRestrictedMSG, themeProvider,
+                  toastType: ToastType.failure);
             } else if (projectsProvider.projectMembers[index]['member']["id"] ==
                 ref.read(ProviderList.profileProvider).userProfile.id) {
-              CustomToast()
-                  .showToast(context, "You can't change your own role");
+              CustomToast().showToast(
+                  context, "You can't change your own role", themeProvider,
+                  toastType: ToastType.warning);
             }
             // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
             //         projectsProvider.projectMembers[index]['member']['id']) &&
@@ -442,12 +447,15 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
               // } else {
               if (fromRole(role: projectsProvider.role) <
                   projectsProvider.projectMembers[index]['role']) {
-                CustomToast().showToast(context, accessRestrictedMSG);
+                CustomToast().showToast(
+                    context, accessRestrictedMSG, themeProvider,
+                    toastType: ToastType.failure);
               } else if (projectsProvider.projectMembers[index]['member']
                       ["id"] ==
                   ref.read(ProviderList.profileProvider).userProfile.id) {
-                CustomToast()
-                    .showToast(context, "You can't change your own role");
+                CustomToast().showToast(
+                    context, "You can't change your own role", themeProvider,
+                    toastType: ToastType.warning);
               } else {
                 // if (projectsProvider.role == Role.admin) {
                 showModalBottomSheet(

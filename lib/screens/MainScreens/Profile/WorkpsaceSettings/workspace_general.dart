@@ -131,8 +131,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         onTap: () async {
                           if (workspaceProvider.role != Role.admin &&
                               workspaceProvider.role != Role.member) {
-                            CustomToast().showToast(context,
-                                'You are not allowed to change the logo');
+                            CustomToast().showToast(
+                                context,
+                                'You are not allowed to change the logo',
+                                themeProvider,
+                                toastType: ToastType.warning);
                             return;
                           }
                           showModalBottomSheet(
@@ -192,8 +195,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               onTap: () {
                                 if (workspaceProvider.role != Role.admin &&
                                     workspaceProvider.role != Role.member) {
-                                  CustomToast().showToast(context,
-                                      'You are not allowed to change the logo');
+                                  CustomToast().showToast(
+                                      context,
+                                      'You are not allowed to change the logo',
+                                      themeProvider,
+                                      toastType: ToastType.warning);
                                   return;
                                 }
                                 workspaceProvider.removeLogo();
@@ -283,7 +289,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     //not editable
                     //enabled: true,
                     onTap: () {
-                      CustomToast().showToast(context, accessRestrictedMSG);
+                      CustomToast().showToast(
+                          context, accessRestrictedMSG, themeProvider,
+                          toastType: ToastType.failure);
                     },
                     readOnly: true,
                     //style: ,
@@ -366,7 +374,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   onTap: () {
                     if (workspaceProvider.role != Role.admin &&
                         workspaceProvider.role != Role.member) {
-                      CustomToast().showToast(context, accessRestrictedMSG);
+                      CustomToast().showToast(
+                          context, accessRestrictedMSG, themeProvider,
+                          toastType: ToastType.failure);
                       return;
                     }
                     showModalBottomSheet(
@@ -434,13 +444,17 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     });
                     if (workspaceProvider.updateWorkspaceState ==
                         StateEnum.success) {
-                      CustomToast()
-                          .showToast(context, 'Workspace updated successfully');
+                      CustomToast().showToast(context,
+                          'Workspace updated successfully', themeProvider,
+                          toastType: ToastType.success);
                     }
                     if (workspaceProvider.updateWorkspaceState ==
                         StateEnum.error) {
                       CustomToast().showToast(
-                          context, 'Something went wrong, please try again');
+                          context,
+                          'Something went wrong, please try again',
+                          themeProvider,
+                          toastType: ToastType.failure);
                     }
                     // refreshImage();
                   },

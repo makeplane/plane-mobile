@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/widgets/custom_text.dart';
 
-enum ToastType { defult, success, failure }
+enum ToastType { defult, success, failure, warning }
 
 class CustomToast {
   void showSimpleToast(String message) {
@@ -17,49 +20,59 @@ class CustomToast {
     );
   }
 
-  void showToast(BuildContext context, String message,
-      {int duration = 2,
-      ToastType toastType = ToastType.defult,
-      Color? backgroundColor,
-      Color? textColor}) {
+  void showToast(
+    BuildContext context,
+    String message,
+    ThemeProvider themeprovider, {
+    int duration = 2,
+    ToastType toastType = ToastType.defult,
+  }) {
     FToast fToast = FToast();
     fToast.init(context);
-    Widget toast = Container(
-      decoration: BoxDecoration(
-        color: backgroundColor ??
-            (toastType == ToastType.defult
-                ? lightPrimaryBackgroundActiveColor
+    Widget toast = Card(
+      borderOnForeground: true,
+      elevation: 20,
+      color: themeprovider.themeManager.tertiaryBackgroundDefaultColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            toastType == ToastType.defult
+                ? Container()
                 : toastType == ToastType.success
-                    ? lightTextSuccessColor
-                    : lightPrimaryButtonDangerColor),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: Text(
+                    ? Icon(
+                        Icons.check_circle_outline,
+                        color: themeprovider.themeManager.textSuccessColor,
+                      )
+                    : toastType == ToastType.failure
+                        ? Icon(
+                            Icons.error_outline,
+                            color: themeprovider.themeManager.textErrorColor,
+                          )
+                        : const Icon(
+                            Icons.warning_amber_outlined,
+                            color: Colors.amber,
+                          ),
+            const SizedBox(width: 10),
+            CustomText(
               message,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              type: FontStyle.Small,
+              fontWeight: FontWeightt.Medium,
+              maxLines: 3,
             ),
-          ),
-          //const Spacer(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              onPressed: () {
+            const Spacer(),
+            GestureDetector(
+              onTap: () {
                 fToast.removeCustomToast();
               },
-              icon: const Icon(
+              child: Icon(
                 Icons.close,
-                color: Colors.white,
+                color: themeprovider.themeManager.primaryTextColor,
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
     fToast.showToast(

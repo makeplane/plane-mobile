@@ -107,6 +107,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
         text: pageProvider.pages[pageProvider.selectedFilter]![widget.index]
                 ['name'] ??
             'Error',
+        elevation: false,
       ),
       body: WillPopScope(
         onWillPop: () async {
@@ -138,9 +139,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
           children: [
             Container(
               height: 1,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : strokeColor,
+              color: themeProvider.themeManager.borderSubtle01Color,
               width: double.infinity,
             ),
             //contaier containing a text ands four small icons
@@ -189,9 +188,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     });
                               },
                               child: Container(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
                                   children: [

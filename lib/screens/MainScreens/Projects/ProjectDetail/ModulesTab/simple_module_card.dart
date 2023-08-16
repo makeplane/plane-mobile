@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 
 class SimpleModuleCard extends ConsumerStatefulWidget {
@@ -52,9 +51,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
         decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : strokeColor,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Padding(

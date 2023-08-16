@@ -222,9 +222,10 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
       CustomToast().showToast(
-        context,
-        'Something went wrong, please try again.',
-      );
+          context,
+          'Something went wrong, please try again.',
+          ref.read(ProviderList.themeProvider),
+          toastType: ToastType.failure);
       googleAuthState = StateEnum.failed;
       notifyListeners();
     }
@@ -315,14 +316,13 @@ class AuthProvider extends ChangeNotifier {
       log(e.toString());
       signInState = StateEnum.failed;
 
-        CustomToast().showSimpleToast(
-          e.error.toString(),
-          
-        );
-        CustomToast().showSimpleToast(
-          'Something went wrong, please try again.',
-        );
-      
+      CustomToast().showSimpleToast(
+        e.error.toString(),
+      );
+      CustomToast().showSimpleToast(
+        'Something went wrong, please try again.',
+      );
+
       notifyListeners();
     }
   }

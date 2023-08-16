@@ -212,10 +212,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: CustomAppBar(
-          // backgroundColor: themeProvider.isDarkThemeEnabled
-          //     ? darkPrimaryBackgroundDefaultColor
-          //     : lightPrimaryBackgroundDefaultColor,
-          // elevation: 0,
           centerTitle: true,
           elevation: false,
 
@@ -254,9 +250,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     height: 30,
                     child: LoadingIndicator(
                       indicatorType: Indicator.lineSpinFadeLoader,
-                      colors: themeProvider.isDarkThemeEnabled
-                          ? [Colors.white]
-                          : [Colors.black],
+                      colors: [themeProvider.themeManager.primaryTextColor],
                       strokeWidth: 1.0,
                       backgroundColor: Colors.transparent,
                     )),
@@ -388,7 +382,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     // color: selected == 1
                                     //     ? primaryColor
                                     // : themeProvider.strokeColor,
-                                    type: FontStyle.Small,
+                                    type: FontStyle.Large,
                                     color: !themeProvider.isDarkThemeEnabled &&
                                             (widget.fromModule
                                                 ? modulesProvider
@@ -492,7 +486,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               ? Container(
                                                   color: themeProvider
                                                       .themeManager
-                                                      .primaryBackgroundDefaultColor,
+                                                      .secondaryBackgroundDefaultColor,
                                                   margin: const EdgeInsets.only(
                                                       top: 5),
                                                   child: SingleChildScrollView(
@@ -541,7 +535,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 child: CustomText(
                                                                                   state.title!,
                                                                                   type: FontStyle.Small,
-                                                                                  color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
                                                                                   fontWeight: FontWeightt.Medium,
                                                                                 ),
                                                                               ),
@@ -591,7 +584,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                             ? Container(
                                                                                 margin: const EdgeInsets.only(bottom: 10),
                                                                                 width: MediaQuery.of(context).size.width,
-                                                                                color: themeProvider.isDarkThemeEnabled ? darkBackgroundColor : Colors.white,
+                                                                                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                                                                                 padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
                                                                                 child: const CustomText(
                                                                                   'No issues.',
@@ -631,7 +624,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                         backgroundColor:
                                                             themeProvider
                                                                 .themeManager
-                                                                .primaryBackgroundDefaultColor,
+                                                                .secondaryBackgroundDefaultColor,
                                                         listScrollConfig: ScrollConfig(
                                                             offset: 65,
                                                             duration:
@@ -947,9 +940,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           height: 30,
           child: LoadingIndicator(
             indicatorType: Indicator.lineSpinFadeLoader,
-            colors: themeProvider.isDarkThemeEnabled
-                ? [Colors.white]
-                : [Colors.black],
+            colors: [themeProvider.themeManager.primaryTextColor],
             strokeWidth: 1.0,
             backgroundColor: Colors.transparent,
           ),
@@ -981,7 +972,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
-    return Row(
+    return Wrap(
+      runSpacing: 20,
       children: [
         (detailData['start_date'] == null || detailData['start_date'] == '') ||
                 (detailData[widget.fromModule ? 'target_date' : 'end_date'] ==
@@ -998,6 +990,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     borderRadius: BorderRadius.circular(5)),
                 child: const CustomText(
                   'Draft',
+                  type: FontStyle.Small,
                   color: greyColor,
                 ),
               )
@@ -1026,6 +1019,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     endDate: detailData[
                         widget.fromModule ? 'target_date' : 'end_date'],
                   ),
+                  type: FontStyle.Small,
                   color: checkDate(
                             startDate: detailData['start_date'],
                             endDate: detailData[
@@ -1046,6 +1040,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               ),
         const SizedBox(width: 20),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
               onTap: () async {
@@ -1126,7 +1121,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 '')
                     ? CustomText(
                         'Start Date',
-                        type: FontStyle.Medium,
+                        type: FontStyle.Small,
                         fontWeight: FontWeightt.Regular,
                         color: themeProvider.themeManager.secondaryTextColor,
                       )
@@ -1139,7 +1134,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           const SizedBox(width: 7),
                           CustomText(
                             '${dateFormating(detailData['start_date'])} ',
-                            type: FontStyle.Medium,
+                            type: FontStyle.Small,
                             fontWeight: FontWeightt.Regular,
                             color:
                                 themeProvider.themeManager.secondaryTextColor,
@@ -1149,13 +1144,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               ),
             ),
             //arrow
-            const SizedBox(width: 7),
+            const SizedBox(width: 5),
             Icon(
               Icons.arrow_forward,
               size: 15,
               color: themeProvider.themeManager.placeholderTextColor,
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 5),
             GestureDetector(
               onTap: () async {
                 var date = await showDatePicker(
@@ -1241,7 +1236,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     : 'end_date'] ==
                                 '')
                     ? CustomText('End Date',
-                        type: FontStyle.Medium,
+                        type: FontStyle.Small,
                         fontWeight: FontWeightt.Regular,
                         color: themeProvider.themeManager.secondaryTextColor)
                     : Row(
@@ -1250,10 +1245,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               size: 15,
                               color: themeProvider
                                   .themeManager.placeholderTextColor),
-                          const SizedBox(width: 7),
+                          const SizedBox(width: 5),
                           CustomText(
                               '${dateFormating(detailData[widget.fromModule ? 'target_date' : 'end_date'])} ',
-                              type: FontStyle.Medium,
+                              type: FontStyle.Small,
                               fontWeight: FontWeightt.Regular,
                               color: themeProvider
                                   .themeManager.secondaryTextColor),
@@ -1400,9 +1395,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             : Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkBackgroundColor
-                      : lightBackgroundColor,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
                     color: getBorderColor(themeProvider),
@@ -1542,14 +1536,20 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                   .toString()
                                                                   .toUpperCase()
                                                               : '',
-                                                          color: Colors.white,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .secondaryTextColor,
                                                         ),
                                                       ),
                                                     )),
-                                          CustomText(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['first_name'] ??
-                                              'Without Assignees'),
+                                          CustomText(
+                                            detailData['distribution']
+                                                        ['assignees'][idx]
+                                                    ['first_name'] ??
+                                                'Without Assignees',
+                                            color: themeProvider.themeManager
+                                                .secondaryTextColor,
+                                          ),
                                         ],
                                       ),
                                       CompletionPercentage(
@@ -1603,9 +1603,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: getBorderColor(themeProvider),
@@ -1648,6 +1646,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       states[index],
                       type: FontStyle.Large,
                       fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.secondaryTextColor,
                     ),
                     const Spacer(),
                     index == 0
@@ -1713,9 +1712,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkBackgroundColor
-                          : lightBackgroundColor,
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         color: getBorderColor(themeProvider),
@@ -1897,9 +1895,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           color: getBorderColor(themeProvider),
@@ -1912,7 +1908,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             //icon
             Icon(
                 //four squares icon
-                Icons.grid_view_outlined,
+                Icons.timelapse_rounded,
                 color: themeProvider.themeManager.placeholderTextColor),
             const SizedBox(width: 15),
             CustomText(
@@ -1943,9 +1939,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           color: getBorderColor(themeProvider),
@@ -2013,9 +2007,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : lightGreeyColor),
+                                  color: themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor),
                               borderRadius: BorderRadius.circular(5)),
                           height: 30,
                           margin: const EdgeInsets.only(right: 5),
@@ -2083,9 +2076,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           color: getBorderColor(themeProvider),
@@ -2243,7 +2234,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Color getBorderColor(ThemeProvider themeProvider) =>
-      themeProvider.isDarkThemeEnabled ? darkThemeBorder : Colors.grey.shade200;
+      themeProvider.themeManager.borderSubtle01Color;
 
   String checkTimeDifferenc(String dateTime) {
     DateTime now = DateTime.now();

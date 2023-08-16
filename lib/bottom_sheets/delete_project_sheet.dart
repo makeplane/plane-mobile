@@ -205,7 +205,9 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                         if (projectProviderRead.role != Role.admin &&
                             projectProviderRead.role != Role.member) {
                           Navigator.of(context).pop();
-                          CustomToast().showToast(context, accessRestrictedMSG);
+                          CustomToast().showToast(
+                              context, accessRestrictedMSG, themeProvider,
+                              toastType: ToastType.failure);
                           return;
                         }
                         await projectProviderRead.deleteProject(

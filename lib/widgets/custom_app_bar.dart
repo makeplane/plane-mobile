@@ -53,7 +53,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
         text,
         type: fontType,
         fontWeight: FontWeightt.Semibold,
-        color: textColor??themeProvider.themeManager.tertiaryTextColor,
+        color: textColor ?? themeProvider.themeManager.tertiaryTextColor,
         maxLines: 1,
       ),
     );

@@ -55,7 +55,6 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     'Workspace',
                     type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
-                    
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -82,6 +81,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                           (value) async {
                             ref.read(ProviderList.cyclesProvider).clearData();
                             ref.read(ProviderList.modulesProvider).clearData();
+                            ref.read(ProviderList.myIssuesProvider).clear();
                             ref.read(ProviderList.projectProvider).getProjects(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
@@ -107,6 +107,10 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                   projectID: "",
                                 );
                             ref
+                                .watch(ProviderList.myIssuesProvider)
+                                .getLabels();
+
+                            ref
                                 .read(ProviderList.notificationProvider)
                                 .getUnreadCount();
 
@@ -131,14 +135,6 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                 .read(ProviderList.notificationProvider)
                                 .getNotifications(
                                     type: 'snoozed', getSnoozed: true);
-                            ref
-                                .watch(ProviderList.myIssuesProvider)
-                                .getMyIssues(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                );
                           },
                         );
 
@@ -222,7 +218,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                   prov.workspaces[index]['name'],
                                   type: FontStyle.H5,
                                   color: themeProvider
-                                              .themeManager.tertiaryTextColor,
+                                      .themeManager.tertiaryTextColor,
                                 ),
                                 const Spacer(),
                                 ref
@@ -244,7 +240,8 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                           Container(
                             height: 2,
                             margin: const EdgeInsets.only(bottom: 15),
-                            color: themeProvider.themeManager.borderDisabledColor,
+                            color:
+                                themeProvider.themeManager.borderDisabledColor,
                           )
                         ],
                       ),
@@ -273,7 +270,6 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     CustomText(
                       'Create Workspace',
                       type: FontStyle.H5,
-                    
                       color: primaryColor,
                     ),
                   ],
@@ -304,7 +300,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                         indicatorType: Indicator.lineSpinFadeLoader,
                         colors: [
                           themeProvider.theme == THEME.dark ||
-                          themeProvider.theme == THEME.darkHighContrast
+                                  themeProvider.theme == THEME.darkHighContrast
                               ? Colors.white
                               : Colors.black
                         ],

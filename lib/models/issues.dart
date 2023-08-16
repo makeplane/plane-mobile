@@ -58,7 +58,12 @@ class Issues {
   OrderBY orderBY = OrderBY.manual;
   IssueType issueType = IssueType.all;
   Filters filters = Filters(
-      assignees: [], createdBy: [], labels: [], priorities: [], states: []);
+      assignees: [],
+      createdBy: [],
+      labels: [],
+      priorities: [],
+      states: [],
+      targetDate: []);
 
   DisplayProperties displayProperties;
   Issues(
@@ -146,6 +151,8 @@ class Issues {
         return GroupBY.labels;
       case "created_by":
         return GroupBY.createdBY;
+      case "project":
+        return GroupBY.project;
       default:
         return GroupBY.state;
     }
@@ -161,6 +168,8 @@ class Issues {
         return "labels";
       case GroupBY.createdBY:
         return "created_by";
+      case GroupBY.project:
+        return "project";
       default:
         return "state";
     }
@@ -173,12 +182,14 @@ class Filters {
   List assignees = [];
   List createdBy = [];
   List labels = [];
+  List targetDate = [];
   Filters({
     required this.priorities,
     required this.states,
     required this.assignees,
     required this.createdBy,
     required this.labels,
+    required this.targetDate,
   });
 
   static Map<String, List<dynamic>> toJson(Filters filters) {
@@ -187,16 +198,19 @@ class Filters {
       "created_by": filters.createdBy,
       "labels": filters.labels,
       "priority": filters.priorities,
-      "state": filters.states
+      "state": filters.states,
+      "target_date": filters.targetDate,
     };
   }
 
   factory Filters.fromJson(Map json) {
     return Filters(
-        priorities: json['priority'] ?? [],
-        states: json['state'] ?? [],
-        assignees: json['assignees'] ?? [],
-        createdBy: json['created_by'] ?? [],
-        labels: json['labels'] ?? []);
+      priorities: json['priority'] ?? [],
+      states: json['state'] ?? [],
+      assignees: json['assignees'] ?? [],
+      createdBy: json['created_by'] ?? [],
+      labels: json['labels'] ?? [],
+      targetDate: json['target_date'] ?? [],
+    );
   }
 }

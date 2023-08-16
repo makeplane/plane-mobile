@@ -51,7 +51,7 @@ class ProviderList {
   static var estimatesProvider =
       ChangeNotifierProvider<EstimatesProvider>((_) => EstimatesProvider());
   static var myIssuesProvider =
-      ChangeNotifierProvider<MyIssuesProvider>((_) => MyIssuesProvider());
+      ChangeNotifierProvider<MyIssuesProvider>((ref) => MyIssuesProvider(ref));
   static var activityProvider =
       ChangeNotifierProvider<ActivityProvider>((_) => ActivityProvider());
   static var dashboardProvider = ChangeNotifierProvider<DashBoardProvider>(
@@ -81,6 +81,5 @@ class ProviderList {
     GoogleSignInApi.logout();
     SharedPrefrenceServices.sharedPreferences!.clear();
     Const.appBearerToken = null;
-
   }
 }

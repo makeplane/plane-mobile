@@ -389,7 +389,14 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 builder: (ctx) {
                   return const SelectWorkspace();
                 },
-              );
+              ).then((value) {
+                ref
+                    .read(ProviderList.myIssuesProvider)
+                    .getMyIssuesView()
+                    .then((value) {
+                  ref.read(ProviderList.myIssuesProvider).filterIssues();
+                });
+              });
             },
             child: Row(
               children: [
@@ -487,7 +494,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>  const GlobalSearchSheet()));
+                          builder: (context) => const GlobalSearchSheet()));
                 },
                 child: CircleAvatar(
                   backgroundColor: themeProvider

@@ -88,7 +88,10 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyIssues(BuildContext context,
-      {String? cycleId, String? moduleId, WidgetRef? ref}) {
+      {String? cycleId,
+      String? moduleId,
+      WidgetRef? ref,
+      IssueCategory? type}) {
     var themeProvider = ref!.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
@@ -126,6 +129,11 @@ class EmptyPlaceholder {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CreateIssue(
+                            projectId: type == IssueCategory.myIssues
+                                ? ref
+                                    .read(ProviderList.projectProvider)
+                                    .projects[0]['id']
+                                : null,
                             cycleId: cycleId,
                             moduleId: moduleId,
                           )));

@@ -69,6 +69,16 @@ class _MyAppState extends ConsumerState<MyApp> {
           dashProv.getDashboard();
           projectProv.getProjects(
               slug: workspaceProv.selectedWorkspace!.workspaceSlug);
+
+          ref.read(ProviderList.myIssuesProvider).getLabels();
+
+          ref
+              .read(ProviderList.myIssuesProvider)
+              .getMyIssuesView()
+              .then((value) {
+            ref.read(ProviderList.myIssuesProvider).filterIssues();
+          });
+
           ref.read(ProviderList.notificationProvider).getUnreadCount();
 
           ref

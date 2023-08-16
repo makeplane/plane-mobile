@@ -34,6 +34,7 @@ class _ViewsState extends ConsumerState<Views> {
           ? EmptyPlaceholder.emptyView(context, ref)
           : SingleChildScrollView(
               child: Column(children: [
+                const SizedBox(height: 16),
                 ListView.builder(
                     padding: const EdgeInsets.only(bottom: 0),
                     itemCount: viewsProvider.views.length,

@@ -115,16 +115,9 @@ class _CreateViewState extends ConsumerState<CreateView> {
                             ),
                             const SizedBox(height: 5),
                             TextField(
-                              controller: title,
-                              decoration: themeProvider
-                                  .themeManager.textFieldDecoration
-                                  .copyWith(
-                                      // fillColor: themeProvider.isDarkThemeEnabled
-                                      //     ? darkBackgroundColor
-                                      //     : lightBackgroundColor,
-                                      // filled: true,
-                                      ),
-                            ),
+                                controller: title,
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration),
                             const SizedBox(height: 20),
 
                             CustomText(
@@ -135,17 +128,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                             ),
                             const SizedBox(height: 5),
                             TextField(
-                              maxLines: 6,
-                              controller: description,
-                              decoration: themeProvider
-                                  .themeManager.textFieldDecoration
-                                  .copyWith(
-                                      // fillColor: themeProvider.isDarkThemeEnabled
-                                      //     ? darkBackgroundColor
-                                      //     : lightBackgroundColor,
-                                      // filled: true,
-                                      ),
-                            ),
+                                maxLines: 6,
+                                controller: description,
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration),
                             const SizedBox(height: 30),
 
                             //container containing a plus icon and text add filter

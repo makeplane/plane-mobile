@@ -230,9 +230,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: Row(
@@ -305,9 +304,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: Row(
@@ -383,9 +381,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               height: 50,
@@ -462,9 +459,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               height: 50,
@@ -543,9 +539,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               height: 50,

@@ -66,9 +66,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -77,32 +75,25 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           firstPart(widget.index),
           Divider(
             thickness: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           secondPart(widget.index),
           Divider(
             thickness: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
-              iconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
-              collapsedIconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
+              iconColor: themeProvider.themeManager.primaryTextColor,
+              collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomText(
                     'Progress',
-                    type: FontStyle.H5,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Medium,
                   ),
                   CustomProgressBar(width: width * 0.5, itemValue: [
                     cyclesProvider.cyclesActiveData[0]['backlog_issues'] ?? 0,
@@ -120,24 +111,19 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           ),
           Divider(
             thickness: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
-              iconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
-              collapsedIconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
+              iconColor: themeProvider.themeManager.primaryTextColor,
+              collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: const Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Assignees',
-                    type: FontStyle.H5,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Medium,
                   )),
               children: [
                 fourthPart(),
@@ -146,24 +132,19 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           ),
           Divider(
             thickness: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
-              iconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
-              collapsedIconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
+              iconColor: themeProvider.themeManager.primaryTextColor,
+              collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: const Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Lables',
-                    type: FontStyle.H5,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Medium,
                   )),
               children: [
                 fifthPart(),
@@ -172,24 +153,19 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           ),
           Divider(
             thickness: 1,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300,
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
-              iconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
-              collapsedIconColor: themeProvider.isDarkThemeEnabled
-                  ? Colors.white
-                  : Colors.black,
+              iconColor: themeProvider.themeManager.primaryTextColor,
+              collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     'Pending Issues - ${cyclesProvider.cyclesActiveData[widget.index]['total_issues'] - cyclesProvider.cyclesActiveData[widget.index]['completed_issues']}',
-                    type: FontStyle.H5,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Medium,
                   )),
               children: [
                 sixthPart(),
@@ -215,18 +191,20 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                'assets/svg_images/cycles_icon.svg',
-                height: 25,
-                width: 25,
-              ),
+              SvgPicture.asset('assets/svg_images/cycles_icon.svg',
+                  height: 25,
+                  width: 25,
+                  colorFilter: ColorFilter.mode(
+                      themeProvider.themeManager.textSuccessColor,
+                      BlendMode.srcIn)),
               const SizedBox(width: 5),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
                     cyclesProvider.cyclesActiveData[index]['name'],
-                    type: FontStyle.H5,
+                    type: FontStyle.Large,
+                    fontWeight: FontWeightt.Medium,
                   ),
                   const SizedBox(
                     height: 14,
@@ -312,12 +290,12 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     );
                   },
                   child: isFavorite == true
-                      ? const Icon(Icons.star, color: Colors.amber)
+                      ? Icon(Icons.star,
+                          color: themeProvider.themeManager.tertiaryTextColor)
                       : Icon(
                           Icons.star_outline,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         )),
             ],
           ),
@@ -351,9 +329,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                         Icon(
                           Icons.calendar_month,
                           size: 20,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                         const SizedBox(
                           width: 5,
@@ -441,9 +418,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                           Icons.calendar_month,
                           // color: themeProvider.secondaryTextColor,
                           size: 20,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryTextColor
-                              : lightSecondaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                         const SizedBox(
                           width: 5,
@@ -480,9 +456,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                             ],
                           )
                         : Icon(Icons.groups_3_outlined,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor),
+                            color: themeProvider
+                                .themeManager.placeholderTextColor),
                     Row(
                       children: [
                         SvgPicture.asset('assets/svg_images/done.svg',
@@ -572,13 +547,14 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     const CustomText(
                       'View Cycle',
                       color: Colors.blueAccent,
-                      type: FontStyle.H5,
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     const SizedBox(width: 8),
                     SvgPicture.asset(
                       'assets/svg_images/arrow_forward.svg',
-                      height: 25,
-                      width: 25,
+                      height: 20,
+                      width: 20,
                     ),
                   ],
                 ),
@@ -592,6 +568,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
   Widget thirdPart() {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -627,7 +604,12 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                           : greenHighLight,
                           BlendMode.srcIn)),
                 ),
-                CustomText(states[index]),
+                CustomText(
+                  states[index],
+                  color: themeProvider.themeManager.secondaryTextColor,
+                  type: FontStyle.Large,
+                  fontWeight: FontWeightt.Regular,
+                ),
                 const Spacer(),
                 index == 0
                     ? CompletionPercentage(
@@ -669,6 +651,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
   Widget fourthPart() {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -730,10 +713,15 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                 ),
                               ),
                       ),
-                      CustomText(cyclesProvider.cyclesActiveData[widget.index]
-                                  ['distribution']['assignees'][idx]
-                              ['first_name'] ??
-                          ''),
+                      CustomText(
+                        cyclesProvider.cyclesActiveData[widget.index]
+                                    ['distribution']['assignees'][idx]
+                                ['first_name'] ??
+                            '',
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor,
+                        type: FontStyle.Large,
+                      ),
                     ],
                   ),
                   Row(

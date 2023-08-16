@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -19,28 +18,26 @@ class _PageScreenState extends ConsumerState<PageScreen> {
   Widget build(BuildContext context) {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     return LoadingWidget(
-      loading: pageProvider.pagesListState == StateEnum.loading ,
-         
+      loading: pageProvider.pagesListState == StateEnum.loading,
       widgetClass: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
         child: pageProvider.pages[pageProvider.selectedFilter]!.isNotEmpty
             ? SingleChildScrollView(
                 child: Column(
                   children: [
-                       ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: pageProvider.pages[pageProvider.selectedFilter]!.length,
-                            itemBuilder: (context, index) {
-                              return PageCard(
-                                  index: index);
-                            },
-                          ),
-                 
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: pageProvider
+                          .pages[pageProvider.selectedFilter]!.length,
+                      itemBuilder: (context, index) {
+                        return PageCard(index: index);
+                      },
+                    ),
                   ],
                 ),
               )
-            : EmptyPlaceholder.emptyPages(context,ref),
+            : EmptyPlaceholder.emptyPages(context, ref),
       ),
     );
   }

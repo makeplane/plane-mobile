@@ -44,7 +44,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   void initState() {
     var themeProvider = ref.read(ProviderList.themeProvider);
     ProviderList.clear(ref: ref);
-  cards = [
+    cards = [
       SizedBox(
         height: 150,
         child: Card(
@@ -71,7 +71,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                   type: FontStyle.Large,
                   fontWeight: FontWeightt.Medium,
                   color: themeProvider.themeManager.primaryTextColor,
-                  maxLines: 4,
+                  maxLines: 1,
                 ),
                 const Spacer(),
                 Wrap(
@@ -426,7 +426,9 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                 Container(
                     margin: const EdgeInsets.only(top: 5, bottom: 15),
                     height: 4,
-                    width: MediaQuery.of(Const.globalKey.currentContext!).size.width,
+                    width: MediaQuery.of(Const.globalKey.currentContext!)
+                        .size
+                        .width,
                     decoration: const BoxDecoration(
                         color: Color.fromRGBO(229, 229, 229, 1)),
                     child: Row(
@@ -539,7 +541,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     CustomText(
+                    CustomText(
                       '5 days left',
                       color: Color.fromRGBO(82, 82, 82, 1),
                       type: FontStyle.Small,
@@ -574,7 +576,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-  
+
     return Scaffold(
       body: SafeArea(
         top: false,
@@ -599,15 +601,12 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                   },
                   itemBuilder: (context, index) {
                     return Column(
-                     
                       children: [
                         const Spacer(),
-                       
                         cards[index],
                         const SizedBox(
                           height: 20,
                         ),
-                       
                         CustomText(
                           data[index]['title'],
                           type: FontStyle.H4,

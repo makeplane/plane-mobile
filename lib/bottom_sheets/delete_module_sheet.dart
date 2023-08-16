@@ -73,7 +73,9 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
                     if (projProv.role != Role.admin ||
                         projProv.role != Role.member) {
                       Navigator.of(context).pop();
-                      CustomToast().showToast(context, accessRestrictedMSG);
+                      CustomToast().showToast(
+                          context, accessRestrictedMSG, themeProvider,
+                          toastType: ToastType.failure);
                       return;
                     }
                     await modulesProvider.deleteModule(

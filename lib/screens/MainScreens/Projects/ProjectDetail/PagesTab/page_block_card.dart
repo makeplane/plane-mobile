@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/bottom_sheets/block_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
@@ -55,13 +54,9 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : Colors.grey.shade300),
+                color: themeProvider.themeManager.borderSubtle01Color),
             borderRadius: BorderRadius.circular(6)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,9 +137,8 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                               child: Icon(
                                 Icons.flash_on,
                                 size: 18,
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? lightBackgroundColor
-                                    : darkBackgroundColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             )
                           : Container(),
@@ -167,9 +161,8 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                         },
                         child: Icon(Icons.delete_outlined,
                             size: 18,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? lightBackgroundColor
-                                : darkBackgroundColor),
+                            color: themeProvider
+                                .themeManager.placeholderTextColor),
                       ),
                     ],
                   )

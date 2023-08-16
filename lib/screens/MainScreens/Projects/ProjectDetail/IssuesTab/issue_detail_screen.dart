@@ -372,8 +372,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                           height: spaceBetweenSectionsAndItems),
                                       TextField(
                                         onTap: () {
-                                          CustomToast().showToast(context,
-                                              'You can\'t perform this operation through Plane Mobile');
+                                          CustomToast().showToast(
+                                              context,
+                                              'You can\'t perform this operation through Plane Mobile',
+                                              themeProvider,
+                                              toastType: ToastType.warning);
                                           return;
                                         },
                                         controller: description,
@@ -424,7 +427,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 projectProvider.role !=
                                                     Role.member) {
                                               CustomToast().showToast(
-                                                  context, accessRestrictedMSG);
+                                                  context,
+                                                  accessRestrictedMSG,
+                                                  themeProvider,
+                                                  toastType: ToastType.failure);
                                               return;
                                             }
                                             showModalBottomSheet(
@@ -733,7 +739,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                         Role.member) {
                                                   CustomToast().showToast(
                                                       context,
-                                                      accessRestrictedMSG);
+                                                      accessRestrictedMSG,
+                                                      themeProvider,
+                                                      toastType:
+                                                          ToastType.failure);
                                                   return;
                                                 }
                                                 showModalBottomSheet(
@@ -1306,7 +1315,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -1389,7 +1399,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -1483,7 +1494,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -1600,7 +1612,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
               onTap: () {
                 if (projectProvider.role != Role.admin &&
                     projectProvider.role != Role.member) {
-                  CustomToast().showToast(context, accessRestrictedMSG);
+                  CustomToast().showToast(
+                      context, accessRestrictedMSG, themeProvider,
+                      toastType: ToastType.failure);
                   return;
                 }
                 showModalBottomSheet(
@@ -1687,7 +1701,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -1904,7 +1919,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () async {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           var date = await showDatePicker(
@@ -2048,7 +2064,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () async {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           var date = await showDatePicker(
@@ -2198,7 +2215,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () async {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -2445,7 +2463,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
             onTap: () async {
               if (projectProvider.role != Role.admin &&
                   projectProvider.role != Role.member) {
-                CustomToast().showToast(context, accessRestrictedMSG);
+                CustomToast().showToast(
+                    context, accessRestrictedMSG, themeProvider,
+                    toastType: ToastType.failure);
                 return;
               }
               showModalBottomSheet(
@@ -2617,7 +2637,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
             onTap: () async {
               if (projectProvider.role != Role.admin &&
                   projectProvider.role != Role.member) {
-                CustomToast().showToast(context, accessRestrictedMSG);
+                CustomToast().showToast(
+                    context, accessRestrictedMSG, themeProvider,
+                    toastType: ToastType.failure);
                 return;
               }
               showModalBottomSheet(
@@ -2786,7 +2808,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(
@@ -2873,7 +2896,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         onTap: () {
           if (projectProvider.role != Role.admin &&
               projectProvider.role != Role.member) {
-            CustomToast().showToast(context, accessRestrictedMSG);
+            CustomToast().showToast(context, accessRestrictedMSG, themeProvider,
+                toastType: ToastType.failure);
             return;
           }
           showModalBottomSheet(

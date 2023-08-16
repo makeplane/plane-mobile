@@ -117,7 +117,9 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                           coverImage!.readAsBytesSync().lengthInBytes;
 
                       if (sizeOfImage > 5000000) {
-                        CustomToast().showToast(context, 'file exceeding 5MB');
+                        CustomToast().showToast(
+                            context, 'file exceeding 5MB', themeProvider,
+                            toastType: ToastType.warning);
                         return;
                       }
                       var url = await fileProvider.uploadFile(

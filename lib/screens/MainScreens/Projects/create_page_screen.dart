@@ -56,16 +56,9 @@ class CreatePage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 5),
                         TextField(
-                          controller: pageTitleController,
-                          decoration: themeProvider
-                              .themeManager.textFieldDecoration
-                              .copyWith(
-                                  // fillColor: themeProvider.isDarkThemeEnabled
-                                  //     ? darkBackgroundColor
-                                  //     : lightBackgroundColor,
-                                  // filled: true,
-                                  ),
-                        ),
+                            controller: pageTitleController,
+                            decoration:
+                                themeProvider.themeManager.textFieldDecoration),
                       ],
                     ),
                   ),
@@ -77,7 +70,9 @@ class CreatePage extends ConsumerWidget {
                       ontap: () async {
                         if (pageTitleController.text.isEmpty ||
                             pageTitleController.text.trim() == "") {
-                          CustomToast().showToast(context, 'Title is required');
+                          CustomToast().showToast(
+                              context, 'Title is required', themeProvider,
+                              toastType: ToastType.warning);
                           return;
                         }
                         await ref.read(ProviderList.pageProvider).addPage(

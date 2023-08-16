@@ -510,31 +510,22 @@ class ModuleProvider with ChangeNotifier {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
-                  size: 18,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.white
-                      : Colors.black)
+                  size: 18, color: themeProvider.themeManager.primaryTextColor)
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: themeProvider.themeManager.primaryTextColor,
                       size: 18,
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color: themeProvider.themeManager.primaryTextColor,
                           size: 18,
                         )
                       : Icon(
                           Icons.signal_cellular_alt_1_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color: themeProvider.themeManager.primaryTextColor,
                           size: 18,
                         )
           : issues.groupBY == GroupBY.createdBY
@@ -584,7 +575,6 @@ class ModuleProvider with ChangeNotifier {
                 type: FontStyle.Large,
                 fontWeight: FontWeightt.Semibold,
                 textAlign: TextAlign.start,
-
                 maxLines: 3,
               ),
             ),
@@ -603,7 +593,6 @@ class ModuleProvider with ChangeNotifier {
               child: CustomText(
                 element.items.length.toString(),
                 type: FontStyle.Small,
-                
               ),
             ),
             const Spacer(),

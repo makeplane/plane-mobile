@@ -79,20 +79,13 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       return Container(
         margin: const EdgeInsets.all(6),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 0.6,
-                color: themeProvider.themeManager.borderSubtle01Color,
-                spreadRadius: 0,
-              )
-            ],
-            borderRadius: BorderRadius.circular(5),
-            // border: Border.all(
-            //     color: selected || themeProvider.isDarkThemeEnabled
-            //         ? Colors.transparent
-            //         : Colors.grey.shade400),
-            color: color),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            blurRadius: 0.6,
+            color: themeProvider.themeManager.borderSubtle01Color,
+            spreadRadius: 0,
+          )
+        ], borderRadius: BorderRadius.circular(5), color: color),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

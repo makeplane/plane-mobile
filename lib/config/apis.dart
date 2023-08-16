@@ -120,4 +120,10 @@ class APIs {
       "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/";
   static String notifications =
       "$baseApi/api/workspaces/\$SLUG/users/notifications/";
+  static String retrieveWorkspaceIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/workspace-integrations/';
+  static String retrieveGithubIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/github-repository-sync/';
+  static String retrieveSlackIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/project-slack-sync/';
 }

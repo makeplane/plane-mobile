@@ -15,6 +15,8 @@ class IntegrationProvider extends ChangeNotifier {
   StateEnum getInstalledIntegrationState = StateEnum.empty;
 
   var integrations = {};
+  var githubIntegration;
+  var slackIntegration;
 
   Future getAllAvailableIntegrations() async {
     getIntegrationState = StateEnum.loading;
@@ -26,11 +28,10 @@ class IntegrationProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
 
-    //  log(response.data.toString());
+      //  log(response.data.toString());
       response.data.forEach((element) {
         integrations[element['provider']] = element;
         integrations[element['provider']]["installed"] = false;
-        
       });
       await getInstalledIntegrations();
       getIntegrationState = StateEnum.success;
@@ -77,6 +78,62 @@ class IntegrationProvider extends ChangeNotifier {
       log(e.toString());
       getInstalledIntegrationState = StateEnum.error;
       notifyListeners();
+    }
+  }
+
+  Future getGitHubIntegration({
+    required String slug,
+    required String projectId,
+    required String integrationId,
+  }) async {
+    githubIntegration = null;
+    notifyListeners();
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.retrieveGithubIntegrations
+            .replaceAll('\$SLUG', slug)
+            .replaceAll('\$PROJECTID', projectId)
+            .replaceAll('\$INTEGRATIONID', integrationId),
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      print(
+          'SABI: GitHub Integration: ${response.data.isNotEmpty && response.data != null} data: ${response.data}');
+      githubIntegration = response.data;
+      notifyListeners();
+    } catch (e) {
+      if (e is DioException) {
+        log(e.response.toString());
+      }
+    }
+  }
+
+  Future getSlackIntegration({
+    required String slug,
+    required String projectId,
+    required String integrationId,
+  }) async {
+    slackIntegration = null;
+    notifyListeners();
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.retrieveSlackIntegrations
+            .replaceAll('\$SLUG', slug)
+            .replaceAll('\$PROJECTID', projectId)
+            .replaceAll('\$INTEGRATIONID', integrationId),
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      print(
+          'SABI: Slack Integration: ${response.data.isNotEmpty && response.data != null} data: ${response.data}');
+      slackIntegration = response.data;
+      notifyListeners();
+    } catch (e) {
+      if (e is DioException) {
+        log(e.response.toString());
+      }
     }
   }
 }

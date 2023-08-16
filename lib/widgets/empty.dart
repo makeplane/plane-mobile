@@ -626,10 +626,6 @@ class EmptyPlaceholder {
           SvgPicture.asset(
             "assets/svg_images/empty_project.svg",
             width: 130,
-
-            // color: themeProvider.isDarkThemeEnabled
-            //     ? darkPrimaryTextColor
-            //     : lightPrimaryTextColor,
           ),
           Container(
             padding: const EdgeInsets.only(top: 35),

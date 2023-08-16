@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -58,9 +57,7 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
                   },
                   child: Icon(
                     Icons.close,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightBackgroundColor
-                        : darkBackgroundColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 )
               ],
@@ -82,16 +79,9 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
             ),
             const SizedBox(height: 5),
             TextField(
-              controller: titleController,
-              maxLines: 1,
-              decoration:
-                  themeProvider.themeManager.textFieldDecoration.copyWith(
-                fillColor: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : lightBackgroundColor,
-                filled: true,
-              ),
-            ),
+                controller: titleController,
+                maxLines: 1,
+                decoration: themeProvider.themeManager.textFieldDecoration),
             const SizedBox(height: 25),
             const Row(
               children: [
@@ -108,24 +98,18 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
             ),
             const SizedBox(height: 5),
             TextField(
-              controller: descriptionController,
-              maxLines: 4,
-              decoration:
-                  themeProvider.themeManager.textFieldDecoration.copyWith(
-                fillColor: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : lightBackgroundColor,
-                filled: true,
-              ),
-            ),
+                controller: descriptionController,
+                maxLines: 4,
+                decoration: themeProvider.themeManager.textFieldDecoration),
             const SizedBox(height: 150),
             Button(
               text: 'Update Block',
               ontap: () async {
                 if (titleController.text.isEmpty ||
                     titleController.text.trim() == "") {
-                  CustomToast()
-                      .showToast(context, 'Title and description is required');
+                  CustomToast().showToast(context,
+                      'Title and description is required', themeProvider,
+                      toastType: ToastType.warning);
                   return;
                 }
                 // await pageProvider.updateBlock(

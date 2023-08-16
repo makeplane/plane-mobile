@@ -11,7 +11,7 @@ class CustomDivider extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       height: 1,
-      color: themeProvider.themeManager.borderDisabledColor,
+      color: themeProvider.themeManager.borderSubtle00Color,
     );
   }
 }

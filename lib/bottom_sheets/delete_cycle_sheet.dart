@@ -78,7 +78,9 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                     if (projProv.role != Role.admin ||
                         projProv.role != Role.member) {
                       Navigator.of(context).pop();
-                      CustomToast().showToast(context, accessRestrictedMSG);
+                      CustomToast().showToast(
+                          context, accessRestrictedMSG, themeProvider,
+                          toastType: ToastType.failure);
                       return;
                     }
                     await cyclesProvider.cycleDetailsCrud(

@@ -65,7 +65,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         },
                         child: CircleAvatar(
                           backgroundColor: themeProvider
-                              .themeManager.primaryBackgroundSelectedColour,
+                              .themeManager.tertiaryBackgroundDefaultColor,
                           radius: 20,
                           child: Icon(
                             size: 20,
@@ -85,7 +85,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                   },
                   child: CircleAvatar(
                     backgroundColor: themeProvider
-                        .themeManager.primaryBackgroundSelectedColour,
+                        .themeManager.tertiaryBackgroundDefaultColor,
                     radius: 20,
                     child: Icon(
                       size: 20,

@@ -30,7 +30,7 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(ProviderList.workspaceProvider).getWorkspaceInvitations();
-	  });
+    });
     super.initState();
   }
 
@@ -83,10 +83,11 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                         ? Center(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.6,
-                              child:  CustomText(
+                              child: CustomText(
                                 'Currently you have no invited workspaces to join.',
                                 type: FontStyle.Small,
-                                color: themeProvider.themeManager.primaryTextColor,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -183,8 +184,7 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                                 prov.workspaceInvitations[index]
                                                     ['workspace']['name'],
                                                 type: FontStyle.Small,
-                                                fontWeight:
-                                                    FontWeightt.Medium,
+                                                fontWeight: FontWeightt.Medium,
                                               ),
                                               const SizedBox(
                                                 height: 3,
@@ -281,8 +281,11 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                 Navigator.of(context).pop();
                               }
                             } else {
-                              CustomToast().showToast(context,
-                                  'Please select atleast one workspace');
+                              CustomToast().showToast(
+                                  context,
+                                  'Please select atleast one workspace',
+                                  themeProvider,
+                                  toastType: ToastType.defult);
                             }
                           },
                         )

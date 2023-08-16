@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_divider.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
@@ -54,9 +53,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
               },
               child: Icon(
                 Icons.close,
-                color: themeProvider.isDarkThemeEnabled
-                    ? lightBackgroundColor
-                    : darkBackgroundColor,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
             )
           ],

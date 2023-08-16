@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -53,9 +52,7 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
                   },
                   child: Icon(
                     Icons.close,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightBackgroundColor
-                        : darkBackgroundColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                 )
               ],
@@ -70,13 +67,7 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
             const SizedBox(height: 5),
             TextField(
               controller: pageTitleController,
-              decoration:
-                  themeProvider.themeManager.textFieldDecoration.copyWith(
-                fillColor: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : lightBackgroundColor,
-                filled: true,
-              ),
+              decoration: themeProvider.themeManager.textFieldDecoration,
             ),
             const Spacer(),
             Button(
@@ -84,7 +75,9 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
               ontap: () async {
                 if (pageTitleController.text.isEmpty ||
                     pageTitleController.text.trim() == "") {
-                  CustomToast().showToast(context, 'Title is required');
+                  CustomToast().showToast(
+                      context, 'Title is required', themeProvider,
+                      toastType: ToastType.warning);
                   return;
                 }
                 await ref.read(ProviderList.pageProvider).editPage(

@@ -15,20 +15,21 @@ class Integrations extends ConsumerStatefulWidget {
 }
 
 class _IntegrationsState extends ConsumerState<Integrations> {
-  @override
-  void initState() {
-    var prov = ref.read(ProviderList.integrationProvider);
-    if (prov.integrations.isEmpty) {
-      ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
-    }
+  // @override
+  // void initState() {
+  //   var prov = ref.read(ProviderList.integrationProvider);
+  //   if (prov.integrations.isEmpty) {
+  //     ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
+  //   }
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var integrationProvider = ref.watch(ProviderList.integrationProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Scaffold(
       appBar: widget.fromSettings
           ? null
@@ -39,9 +40,11 @@ class _IntegrationsState extends ConsumerState<Integrations> {
               text: 'Integrations',
             ),
       body: LoadingWidget(
-        loading: integrationProvider.getIntegrationState == StateEnum.loading ||
-            integrationProvider.getInstalledIntegrationState ==
-                StateEnum.loading,
+        loading: false,
+        // integrationProvider.getIntegrationState == StateEnum.loading ||
+        //     integrationProvider.getInstalledIntegrationState ==
+        //         StateEnum.loading,
+
         widgetClass: Column(
           children: [
             Container(
@@ -105,13 +108,16 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                         : const Color.fromRGBO(
                                             243, 245, 248, 1),
                                 child: CustomText(
-                                  integrationProvider.integrations["slack"] !=
-                                              null &&
-                                          integrationProvider
-                                                  .integrations["slack"]
-                                              ["installed"]
-                                      ? "Installed"
-                                      : 'Not Installed',
+                                  // integrationProvider.integrations["slack"] !=
+                                  //             null &&
+                                  //         integrationProvider
+                                  //                 .integrations["slack"]
+                                  //             ["installed"]
+                                  //     ? "Installed"
+                                  //     : 'Not Installed',
+                                  workspaceProvider.slackIntegration == null
+                                      ? 'Not Installed'
+                                      : 'Installed',
                                   type: FontStyle.XSmall,
                                   color: integrationProvider
                                                   .integrations["slack"] !=
@@ -193,12 +199,15 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                       ? darkBackgroundColor
                                       : const Color.fromRGBO(243, 245, 248, 1),
                               child: CustomText(
-                                integrationProvider.integrations["github"] !=
-                                            null &&
-                                        integrationProvider
-                                            .integrations["github"]["installed"]
-                                    ? "Installed"
-                                    : 'Not Installed',
+                                workspaceProvider.githubIntegration == null
+                                    ? 'Not Installed'
+                                    : 'Installed',
+                                // integrationProvider.integrations["github"] !=
+                                //             null &&
+                                //         integrationProvider
+                                //             .integrations["github"]["installed"]
+                                //     ? "Installed"
+                                //     : 'Not Installed',
                                 type: FontStyle.XSmall,
                                 color: integrationProvider
                                                 .integrations["github"] !=

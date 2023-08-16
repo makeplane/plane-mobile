@@ -347,8 +347,11 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                             }
                                           }
                                         } else {
-                                          CustomToast().showToast(context,
-                                              'Workspace url is already taken');
+                                          CustomToast().showToast(
+                                              context,
+                                              'Workspace url is already taken',
+                                              themeProvider,
+                                              toastType: ToastType.defult);
                                         }
                                       })
                                 ],

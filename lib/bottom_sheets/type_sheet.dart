@@ -67,50 +67,50 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
               Container(
                 height: 10,
               ),
-              // SizedBox(
-              //   height: 50,
-              //   width: double.infinity,
-              //   child: InkWell(
-              //     onTap: () {
-              //       setState(() {
-              //         selected = 1;
-              //       });
-              //     },
-              //     child: Row(
-              //       children: [
-              //         Radio(
-              //             visualDensity: const VisualDensity(
-              //               horizontal: VisualDensity.minimumDensity,
-              //               vertical: VisualDensity.minimumDensity,
-              //             ),
-              //             materialTapTargetSize:
-              //                 MaterialTapTargetSize.shrinkWrap,
-              //             fillColor: selected == 1
-              //                 ? null
-              //                 : MaterialStateProperty.all<Color>(
-              //                     Colors.grey.shade300),
-              //             groupValue: selected,
-              //             activeColor: primaryColor,
-              //             value: 1,
-              //             onChanged: (val) {}),
-              //         const SizedBox(width: 10),
-              //         const CustomText(
-              //           'List View',
-              //           type: FontStyle.Small,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 1,
-              //   width: double.infinity,
-              //   child: Container(
-              //     color: themeProvider.isDarkThemeEnabled
-              //         ? darkThemeBorder
-              //         : Colors.grey[300],
-              //   ),
-              // ),
+              //
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      selected = 1;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Radio(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          fillColor: selected == 1
+                              ? null
+                              : MaterialStateProperty.all<Color>(themeProvider
+                                  .themeManager.borderSubtle01Color),
+                          groupValue: selected,
+                          activeColor: primaryColor,
+                          value: 1,
+                          onChanged: (val) {}),
+                      const SizedBox(width: 10),
+                      CustomText(
+                        'List View',
+                        type: FontStyle.H6,
+                        color: themeProvider.themeManager.tertiaryTextColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1,
+                width: double.infinity,
+                child: Container(
+                  color: themeProvider.themeManager.borderDisabledColor,
+                ),
+              ),
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -151,55 +151,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 1,
-                width: double.infinity,
-                child: Container(
-                    color: themeProvider.themeManager.borderSubtle01Color),
-              ),
-              SizedBox(
-                height: 1,
-                width: double.infinity,
-                child: Container(
-                  color: themeProvider.themeManager.borderSubtle01Color,
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      selected = 1;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Radio(
-                          visualDensity: const VisualDensity(
-                            horizontal: VisualDensity.minimumDensity,
-                            vertical: VisualDensity.minimumDensity,
-                          ),
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          fillColor: selected == 1
-                              ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.borderSubtle01Color),
-                          groupValue: selected,
-                          activeColor: primaryColor,
-                          value: 1,
-                          onChanged: (val) {}),
-                      const SizedBox(width: 10),
-                      CustomText(
-                        'List View',
-                        type: FontStyle.H6,
-                        color: themeProvider.themeManager.tertiaryTextColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+
               widget.issueCategory == IssueCategory.myIssues
                   ? Container()
                   : SizedBox(

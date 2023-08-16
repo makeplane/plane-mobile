@@ -98,7 +98,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     BoxDecoration decarationOnUnSelected = BoxDecoration(
         border: Border.all(
-            width: 1, color: themeProvider.themeManager.borderDisabledColor),
+            width: 1, color: themeProvider.themeManager.borderSubtle01Color),
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     return GestureDetector(
@@ -197,6 +197,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           SvgPicture.asset(
                                             'assets/svg_images/cycles_icon.svg',
+                                            colorFilter: ColorFilter.mode(
+                                                themeProvider.themeManager
+                                                    .placeholderTextColor,
+                                                BlendMode.srcIn),
                                             height: 25,
                                             width: 25,
                                           ),
@@ -340,9 +344,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 isFavorite: true,
                                               );
                                             },
-                                            child: const Icon(
+                                            child: Icon(
                                               Icons.star,
-                                              color: Colors.amber,
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor,
                                             ),
                                           ),
                                           const SizedBox(
@@ -384,9 +389,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -443,10 +447,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -585,9 +592,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                               child: Icon(
                                                 Icons.star_border,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC,
+                                                    .themeManager
+                                                    .placeholderTextColor,
                                               )),
                                           const SizedBox(
                                             width: 10,
@@ -628,9 +634,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -738,10 +743,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -860,9 +868,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     'cycle': cycleId,
                                                   });
                                             },
-                                            child: const Icon(
+                                            child: Icon(
                                               Icons.star,
-                                              color: Colors.amber,
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor,
                                             ),
                                           ),
                                           const SizedBox(
@@ -904,9 +913,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -962,10 +970,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1086,9 +1097,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                               child: Icon(
                                                 Icons.star_border,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC,
+                                                    .themeManager
+                                                    .placeholderTextColor,
                                               )),
                                           const SizedBox(
                                             width: 10,
@@ -1129,9 +1139,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -1210,10 +1219,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1332,9 +1344,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     'cycle': cycleId,
                                                   });
                                             },
-                                            child: const Icon(
+                                            child: Icon(
                                               Icons.star,
-                                              color: Colors.amber,
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor,
                                             ),
                                           ),
                                           const SizedBox(
@@ -1376,9 +1389,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -1434,10 +1446,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1556,10 +1571,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(
                                               Icons.star_border,
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? lightSecondaryBackgroundColor
-                                                  : darkSecondaryBGC,
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                             ),
                                           ),
                                           const SizedBox(
@@ -1601,9 +1614,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -1681,10 +1693,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1829,16 +1844,17 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                               child: cyclesProvider
                                                           .cycleDraftFavoriteData[
                                                       index]['is_favorite']
-                                                  ? const Icon(
+                                                  ? Icon(
                                                       Icons.star,
-                                                      color: Colors.amber,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .tertiaryTextColor,
                                                     )
                                                   : Icon(
                                                       Icons.star_border,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? lightSecondaryBackgroundColor
-                                                          : darkSecondaryBGC,
+                                                          .themeManager
+                                                          .placeholderTextColor,
                                                     )),
                                           const SizedBox(
                                             width: 10,
@@ -1879,9 +1895,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),
@@ -1937,10 +1952,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/svg_images/cycles_icon.svg',
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                              'assets/svg_images/cycles_icon.svg',
+                                              height: 25,
+                                              width: 25,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                                  BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -2089,16 +2107,14 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   ? Icon(
                                                       Icons.star,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? lightSecondaryBackgroundColor
-                                                          : darkSecondaryBGC,
+                                                          .themeManager
+                                                          .tertiaryTextColor,
                                                     )
                                                   : Icon(
                                                       Icons.star_border,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? lightSecondaryBackgroundColor
-                                                          : darkSecondaryBGC,
+                                                          .themeManager
+                                                          .placeholderTextColor,
                                                     )),
                                           const SizedBox(
                                             width: 10,
@@ -2139,9 +2155,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             },
                                             child: Icon(Icons.more_vert,
                                                 color: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? lightSecondaryBackgroundColor
-                                                    : darkSecondaryBGC),
+                                                    .themeManager
+                                                    .placeholderTextColor),
                                           ),
                                         ],
                                       ),

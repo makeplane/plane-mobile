@@ -425,8 +425,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                             var user =
                                                 await GoogleSignInApi.logIn();
                                             if (user == null) {
-                                              CustomToast().showToast(context,
-                                                  'Something went wrong, please try again.');
+                                              CustomToast().showToast(
+                                                  context,
+                                                  'Something went wrong, please try again.',
+                                                  themeProvider,
+                                                  toastType: ToastType.failure);
                                               return;
                                             }
                                             GoogleSignInAuthentication

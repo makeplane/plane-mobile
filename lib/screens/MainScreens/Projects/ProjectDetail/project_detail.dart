@@ -364,7 +364,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 0.5,
                                     color: themeProvider
-                                        .themeManager.borderSubtle00Color,
+                                        .themeManager.borderSubtle01Color,
                                   ),
                                   Expanded(
                                       child: InkWell(
@@ -410,7 +410,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 0.5,
                                     color: themeProvider
-                                        .themeManager.borderSubtle00Color,
+                                        .themeManager.borderSubtle01Color,
                                   ),
                                   issueProvider.issues.projectView ==
                                           ProjectView.calendar
@@ -465,7 +465,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 0.5,
                                     color: themeProvider
-                                        .themeManager.borderSubtle00Color,
+                                        .themeManager.borderSubtle01Color,
                                   ),
                                   Expanded(
                                       child: InkWell(
@@ -566,9 +566,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     : Container(),
                                 Container(
                                   height: 50,
-                                  width: 1,
-                                  color: themeProvider.themeManager
-                                      .tertiaryBackgroundDefaultColor,
+                                  width: 0.5,
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
                                 ),
                                 Expanded(
                                     child: InkWell(
@@ -942,30 +942,8 @@ Widget cycles() {
   return const CycleWidget();
 }
 
-// Widget modules() {
-//   var themeProvider = ref.read(ProviderList.themeProvider);
-//   return Container(
-//     color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
-//     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: const [
-//         // SizedBox(
-//         //   child: Text(
-//         //     'Current Cycles',
-//         //     style: TextStyle(fontSize: 20, fontWeight: FontWeightt.Medium),
-//         //   ),
-//         // ),
-//         ModuleCard()
-//       ],
-//     ),
-//   );
-// }
-
 Widget view(WidgetRef ref) {
-  var themeProvider = ref.read(ProviderList.themeProvider);
   return Container(
-    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,

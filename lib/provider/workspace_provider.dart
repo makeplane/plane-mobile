@@ -20,6 +20,9 @@ class WorkspaceProvider extends ChangeNotifier {
   var workspaces = [];
   String companySize = '';
   WorkspaceModel? selectedWorkspace;
+  List<dynamic> workspaceIntegrations = [];
+  var githubIntegration;
+  var slackIntegration;
   var urlAvailable = false;
   // var currentWorkspace = {};
   var workspaceMembers = [];
@@ -37,6 +40,7 @@ class WorkspaceProvider extends ChangeNotifier {
   void clear() {
     workspaceInvitations = [];
     workspaces = [];
+    workspaceIntegrations = [];
     selectedWorkspace = null;
     urlAvailable = false;
     // currentWorkspace = {};
@@ -148,7 +152,9 @@ class WorkspaceProvider extends ChangeNotifier {
       if (e is DioException) {
         log(e.response!.data.toString());
         log(e.message.toString());
-        CustomToast().showToast(context, e.response.toString());
+        CustomToast().showToast(context, e.response.toString(),
+            ref!.read(ProviderList.themeProvider),
+            toastType: ToastType.failure);
       } else {
         log(e.toString());
       }
@@ -256,7 +262,7 @@ class WorkspaceProvider extends ChangeNotifier {
       }
 
       getWorkspaceMembers();
-
+      retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
       log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
       notifyListeners();
     } catch (e) {
@@ -312,6 +318,7 @@ class WorkspaceProvider extends ChangeNotifier {
       //     method: HttpMethod.get,
       //     projectID: "");
       log(response.data.toString());
+      retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
       notifyListeners();
       // return response.data;
     } on DioException catch (e) {
@@ -336,7 +343,8 @@ class WorkspaceProvider extends ChangeNotifier {
       // response = jsonDecode(response.data);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
       tempLogo = selectedWorkspace!.workspaceLogo;
-
+      await retrieveWorkspaceIntegration(
+          slug: selectedWorkspace!.workspaceSlug);
       log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
 
       notifyListeners();
@@ -345,6 +353,49 @@ class WorkspaceProvider extends ChangeNotifier {
       log(e.toString());
       selectWorkspaceState = StateEnum.error;
       notifyListeners();
+    }
+  }
+
+  Future retrieveWorkspaceIntegration({required String slug}) async {
+    //selectWorkspaceState = StateEnum.loading;
+    githubIntegration = null;
+    slackIntegration = null;
+    //notifyListeners();
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.retrieveWorkspaceIntegrations.replaceAll('\$SLUG', slug),
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      //selectWorkspaceState = StateEnum.success;
+      log("SABI: Integration: slug = $slug");
+      // response = jsonDecode(response.data);
+      //selectedWorkspace = WorkspaceModel.fromJson(response.data);
+      workspaceIntegrations = response.data;
+
+      if (workspaceIntegrations.isNotEmpty) {
+        for (var i = 0; i < workspaceIntegrations.length; i++) {
+          if (workspaceIntegrations[i]["integration_detail"]["provider"] ==
+              "slack") {
+            slackIntegration = workspaceIntegrations[i];
+          } else if (workspaceIntegrations[i]["integration_detail"]
+                  ["provider"] ==
+              "github") {
+            githubIntegration = workspaceIntegrations[i];
+          }
+        }
+      }
+
+      log("SABI: githubIntegration: " + (githubIntegration != null).toString());
+      log("SABI: slackIntegration: " + (slackIntegration != null).toString());
+
+      notifyListeners();
+      // log(response.data.toString());
+    } catch (e) {
+      log(e.toString());
+      //selectWorkspaceState = StateEnum.error;
+      //notifyListeners();
     }
   }
 

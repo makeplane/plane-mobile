@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/bottom_sheets/theme_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -438,21 +439,26 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.5,
-                              ),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                              builder: (context) {
-                                return const ThemeSheet();
-                              });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PrefrencesScreen()));
+                          // showModalBottomSheet(
+                          //     context: context,
+                          //     constraints: BoxConstraints(
+                          //       maxHeight:
+                          //           MediaQuery.of(context).size.height * 0.5,
+                          //     ),
+                          //     shape: const RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.only(
+                          //         topLeft: Radius.circular(20),
+                          //         topRight: Radius.circular(20),
+                          //       ),
+                          //     ),
+                          //     builder: (context) {
+                          //       return const ThemeSheet();
+                          //     });
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -556,7 +562,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
         // ignore: use_build_context_synchronously
-        CustomToast().showToast(context, 'File size should be less than 5MB');
+        CustomToast().showToast(context, 'File size should be less than 5MB',
+            ref.read(ProviderList.themeProvider),
+            toastType: ToastType.warning);
         return;
       }
       setState(() {

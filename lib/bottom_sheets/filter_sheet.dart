@@ -33,13 +33,31 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     {'icon': Icons.do_disturb_alt_outlined, 'text': 'none'}
   ];
 
+  List states = [
+    {'id': 'backlog', 'name': 'Backlog'},
+    {'id': 'unstarted', 'name': 'Unstarted'},
+    {'id': 'started', 'name': 'Started'},
+    {'id': 'completed', 'name': 'Completed'},
+    {'id': 'cancelled', 'name': 'Cancelled'}
+  ];
+
   Filters filters = Filters(
-      priorities: [], states: [], assignees: [], createdBy: [], labels: []);
+    priorities: [],
+    states: [],
+    assignees: [],
+    createdBy: [],
+    labels: [],
+    targetDate: [],
+  );
 
   @override
   void initState() {
     if (!widget.fromCreateView) {
-      filters = ref.read(ProviderList.issuesProvider).issues.filters;
+      if (widget.issueCategory == IssueCategory.myIssues) {
+        filters = ref.read(ProviderList.myIssuesProvider).issues.filters;
+      } else {
+        filters = ref.read(ProviderList.issuesProvider).issues.filters;
+      }
     } else {
       filters = Filters.fromJson(widget.filtersData["Filters"]);
     }
@@ -51,6 +69,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
 
     Widget expandedWidget(
         {required Widget icon,
@@ -172,7 +191,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   CustomExpansionTile(
                     title: 'State',
                     child: Wrap(
-                        children: issuesProvider.states.values
+                        children: (widget.issueCategory ==
+                                    IssueCategory.myIssues
+                                ? states
+                                : issuesProvider.states.values)
                             .map((e) => GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -189,9 +211,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           ? 'assets/svg_images/circle.svg'
                                           : e['name'] == 'Cancelled'
                                               ? 'assets/svg_images/cancelled.svg'
-                                              : e['name'] == 'Todo'
+                                              : e['name'] == 'Todo' ||
+                                                      e['name'] == 'Started'
                                                   ? 'assets/svg_images/in_progress.svg'
-                                                  : e['name'] == 'Done'
+                                                  : e['name'] == 'Done' ||
+                                                          e['name'] ==
+                                                              'Completed'
                                                       ? 'assets/svg_images/done.svg'
                                                       : 'assets/svg_images/circle.svg',
                                       colorFilter: ColorFilter.mode(
@@ -227,128 +252,145 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         ),
                   ),
 
-                  horizontalLine(),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : horizontalLine(),
 
-                  CustomExpansionTile(
-                    title: 'Assignees',
-                    child: Wrap(
-                      children: projectProvider.projectMembers
-                          .map(
-                            (e) => GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (filters.assignees
-                                      .contains(e['member']['id'])) {
-                                    filters.assignees.remove(e['member']['id']);
-                                  } else {
-                                    filters.assignees.add(e['member']['id']);
-                                  }
-                                });
-                              },
-                              child: expandedWidget(
-                                icon: e['member']['avatar'] != '' &&
-                                        e['member']['avatar'] != null
-                                    ? CircleAvatar(
-                                        radius: 10,
-                                        backgroundImage:
-                                            NetworkImage(e['member']['avatar']),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 10,
-                                        backgroundColor:
-                                            const Color.fromRGBO(55, 65, 81, 1),
-                                        child: Center(
-                                            child: CustomText(
-                                          e['member']['display_name'][0]
-                                              .toString()
-                                              .toUpperCase(),
-                                          color: Colors.white,
-                                          fontWeight: FontWeightt.Medium,
-                                          type: FontStyle.overline,
-                                        )),
-                                      ),
-                                text: e['member']['first_name'] != null &&
-                                        e['member']['first_name'] != ''
-                                    ? e['member']['first_name']
-                                    : '',
-                                selected: filters.assignees
-                                    .contains(e['member']['id']),
-                                color: filters.assignees
-                                        .contains(e['member']['id'])
-                                    ? primaryColor
-                                    : themeProvider.themeManager
-                                        .secondaryBackgroundDefaultColor,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : CustomExpansionTile(
+                          title: 'Assignees',
+                          child: Wrap(
+                            children: projectProvider.projectMembers
+                                .map(
+                                  (e) => GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (filters.assignees
+                                            .contains(e['member']['id'])) {
+                                          filters.assignees
+                                              .remove(e['member']['id']);
+                                        } else {
+                                          filters.assignees
+                                              .add(e['member']['id']);
+                                        }
+                                      });
+                                    },
+                                    child: expandedWidget(
+                                      icon: e['member']['avatar'] != '' &&
+                                              e['member']['avatar'] != null
+                                          ? CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage: NetworkImage(
+                                                  e['member']['avatar']),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      55, 65, 81, 1),
+                                              child: Center(
+                                                  child: CustomText(
+                                                e['member']['display_name'][0]
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                color: Colors.white,
+                                                fontWeight: FontWeightt.Medium,
+                                                type: FontStyle.overline,
+                                              )),
+                                            ),
+                                      text: e['member']['first_name'] != null &&
+                                              e['member']['first_name'] != ''
+                                          ? e['member']['first_name']
+                                          : '',
+                                      selected: filters.assignees
+                                          .contains(e['member']['id']),
+                                      color: filters.assignees
+                                              .contains(e['member']['id'])
+                                          ? primaryColor
+                                          : themeProvider.themeManager
+                                              .secondaryBackgroundDefaultColor,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
 
-                  horizontalLine(),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : horizontalLine(),
 
-                  CustomExpansionTile(
-                    title: 'Created by',
-                    child: Wrap(
-                      children: projectProvider.projectMembers
-                          .map(
-                            (e) => GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (filters.createdBy
-                                      .contains(e['member']['id'])) {
-                                    filters.createdBy.remove(e['member']['id']);
-                                  } else {
-                                    filters.createdBy.add(e['member']['id']);
-                                  }
-                                });
-                              },
-                              child: expandedWidget(
-                                icon: e['member']['avatar'] != '' &&
-                                        e['member']['avatar'] != null
-                                    ? CircleAvatar(
-                                        radius: 10,
-                                        backgroundImage:
-                                            NetworkImage(e['member']['avatar']),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 10,
-                                        backgroundColor:
-                                            const Color.fromRGBO(55, 65, 81, 1),
-                                        child: Center(
-                                            child: CustomText(
-                                          e['member']['display_name'][0]
-                                              .toString()
-                                              .toUpperCase(),
-                                          color: Colors.white,
-                                          fontWeight: FontWeightt.Medium,
-                                          type: FontStyle.overline,
-                                        )),
-                                      ),
-                                text: e['member']['first_name'] != null &&
-                                        e['member']['first_name'] != ''
-                                    ? e['member']['first_name']
-                                    : '',
-                                selected: filters.createdBy
-                                    .contains(e['member']['id']),
-                                color: filters.createdBy
-                                        .contains(e['member']['id'])
-                                    ? primaryColor
-                                    : themeProvider.themeManager
-                                        .secondaryBackgroundDefaultColor,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : CustomExpansionTile(
+                          title: 'Created by',
+                          child: Wrap(
+                            children: projectProvider.projectMembers
+                                .map(
+                                  (e) => GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (filters.createdBy
+                                            .contains(e['member']['id'])) {
+                                          filters.createdBy
+                                              .remove(e['member']['id']);
+                                        } else {
+                                          filters.createdBy
+                                              .add(e['member']['id']);
+                                        }
+                                      });
+                                    },
+                                    child: expandedWidget(
+                                      icon: e['member']['avatar'] != '' &&
+                                              e['member']['avatar'] != null
+                                          ? CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage: NetworkImage(
+                                                  e['member']['avatar']),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      55, 65, 81, 1),
+                                              child: Center(
+                                                  child: CustomText(
+                                                e['member']['display_name'][0]
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                color: Colors.white,
+                                                fontWeight: FontWeightt.Medium,
+                                                type: FontStyle.overline,
+                                              )),
+                                            ),
+                                      text: e['member']['first_name'] != null &&
+                                              e['member']['first_name'] != ''
+                                          ? e['member']['first_name']
+                                          : '',
+                                      selected: filters.createdBy
+                                          .contains(e['member']['id']),
+                                      color: filters.createdBy
+                                              .contains(e['member']['id'])
+                                          ? primaryColor
+                                          : themeProvider.themeManager
+                                              .secondaryBackgroundDefaultColor,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
 
                   horizontalLine(),
 
                   CustomExpansionTile(
                     title: 'Labels',
                     child: Wrap(
-                        children: issuesProvider.labels
+                        children: (widget.issueCategory ==
+                                    IssueCategory.myIssues
+                                ? myIssuesProvider.labels
+                                : issuesProvider.labels)
                             .map((e) => GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -376,7 +418,206 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             .toList()),
                   ),
 
-                  // horizontalLine(),
+                  horizontalLine(),
+
+                  //due date\
+                  CustomExpansionTile(
+                    title: 'Due Date',
+                    child: Wrap(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (filters.targetDate.contains(
+                                      '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
+                                  filters.targetDate.contains(
+                                      '${DateTime.now().toString().split(' ')[0]};before')) {
+                                filters.targetDate = [];
+                              } else {
+                                filters.targetDate = [
+                                  '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
+                                  '${DateTime.now().toString().split(' ')[0]};before'
+                                ];
+                              }
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: filters.targetDate.contains(
+                                          '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
+                                      filters.targetDate.contains(
+                                          '${DateTime.now().toString().split(' ')[0]};before')
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                            ),
+                            text: 'Last Week',
+                            selected: filters.targetDate.contains(
+                                        '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};before')
+                                ? true
+                                : false,
+                            color: filters.targetDate.contains(
+                                        '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};before')
+                                ? primaryColor
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (filters.targetDate.contains(
+                                      '${DateTime.now().toString().split(' ')[0]};after') &&
+                                  filters.targetDate.contains(
+                                      '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')) {
+                                filters.targetDate = [];
+                              } else {
+                                filters.targetDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: filters.targetDate.contains(
+                                          '${DateTime.now().toString().split(' ')[0]};after') &&
+                                      filters.targetDate.contains(
+                                          '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                            ),
+                            text: '2 Weeks from now',
+                            selected: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')
+                                ? true
+                                : false,
+                            color: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')
+                                ? primaryColor
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (filters.targetDate.contains(
+                                      '${DateTime.now().toString().split(' ')[0]};after') &&
+                                  filters.targetDate.contains(
+                                      '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')) {
+                                filters.targetDate = [];
+                              } else {
+                                filters.targetDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: filters.targetDate.contains(
+                                          '${DateTime.now().toString().split(' ')[0]};after') &&
+                                      filters.targetDate.contains(
+                                          '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                            ),
+                            text: '1 Month from now',
+                            selected: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')
+                                ? true
+                                : false,
+                            color: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')
+                                ? primaryColor
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (filters.targetDate.contains(
+                                      '${DateTime.now().toString().split(' ')[0]};after') &&
+                                  filters.targetDate.contains(
+                                      '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')) {
+                                filters.targetDate = [];
+                              } else {
+                                filters.targetDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: filters.targetDate.contains(
+                                          '${DateTime.now().toString().split(' ')[0]};after') &&
+                                      filters.targetDate.contains(
+                                          '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                            ),
+                            text: '2 Months from now',
+                            selected: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')
+                                ? true
+                                : false,
+                            color: filters.targetDate.contains(
+                                        '${DateTime.now().toString().split(' ')[0]};after') &&
+                                    filters.targetDate.contains(
+                                        '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')
+                                ? primaryColor
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                      ],
+                      // children: [
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'Today', selected: false),
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'Tomorrow', selected: false),
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'This Week', selected: false),
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'This Month', selected: false),
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'This Quarter', selected: false),
+                      //   expandedWidget(
+                      //       icon: Icons.calendar_today_outlined, text: 'This Year', selected: false),
+                      // ],
+                    ),
+                  ),
 
                   // Expanded(child: Container()),
 
@@ -400,7 +641,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     Navigator.pop(context);
                     return;
                   }
-                  issuesProvider.issues.filters = filters;
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? myIssuesProvider.issues.filters = filters
+                      : issuesProvider.issues.filters = filters;
                   if (widget.issueCategory == IssueCategory.cycleIssues) {
                     ref
                         .watch(ProviderList.cyclesProvider)
@@ -432,6 +675,11 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         .then((value) => ref
                             .watch(ProviderList.modulesProvider)
                             .initializeBoard());
+                  } else if (widget.issueCategory == IssueCategory.myIssues) {
+                    ref
+                        .watch(ProviderList.myIssuesProvider)
+                        .updateMyIssueView();
+                    ref.watch(ProviderList.myIssuesProvider).filterIssues();
                   } else {
                     issuesProvider.updateProjectView();
                     issuesProvider.filterIssues(

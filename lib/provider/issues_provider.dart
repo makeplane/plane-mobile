@@ -37,13 +37,20 @@ class IssuesProvider extends ChangeNotifier {
   Issues issues = Issues.initialize();
   var tempGroupBy = GroupBY.state;
   var tempFilters = Filters(
-      assignees: [], createdBy: [], labels: [], priorities: [], states: []);
+    assignees: [],
+    createdBy: [],
+    labels: [],
+    priorities: [],
+    states: [],
+    targetDate: [],
+  );
   var tempIssueType = IssueType.all;
   var tempProjectView = ProjectView.kanban;
   var tempOrderBy = OrderBY.lastCreated;
   var stateIcons = {};
   var issueProperty = {};
   var createIssuedata = {};
+  var createIssueProjectData = {};
   var issuesResponse = [];
   var issuesList = [];
   var labels = [];
@@ -301,7 +308,8 @@ class IssuesProvider extends ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
+                  color: themeProvider
+                      .themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(
@@ -1001,6 +1009,8 @@ class IssuesProvider extends ChangeNotifier {
                 "created_by": issues.filters.createdBy,
               if (issues.filters.labels.isNotEmpty)
                 "labels": issues.filters.labels,
+              if (issues.filters.targetDate.isNotEmpty)
+                "target_date": issues.filters.targetDate,
             },
             "type": null,
             "groupByProperty": Issues.fromGroupBY(issues.groupBY),
@@ -1062,6 +1072,7 @@ class IssuesProvider extends ChangeNotifier {
       issues.filters.assignees = issueView["filters"]["assignees"] ?? [];
       issues.filters.createdBy = issueView["filters"]["created_by"] ?? [];
       issues.filters.labels = issueView["filters"]["labels"] ?? [];
+      issues.filters.targetDate = issueView["filters"]["target_date"] ?? [];
       showEmptyStates = issueView["showEmptyGroups"];
 
       projectViewState = StateEnum.success;
@@ -1153,6 +1164,10 @@ class IssuesProvider extends ChangeNotifier {
         url =
             '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
         // print(url);
+      }
+      if (issues.filters.targetDate.isNotEmpty) {
+        url =
+            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }
@@ -1188,6 +1203,10 @@ class IssuesProvider extends ChangeNotifier {
       if (issues.filters.labels.isNotEmpty) {
         url =
             '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.targetDate.isNotEmpty) {
+        url =
+            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }
@@ -1260,6 +1279,7 @@ class IssuesProvider extends ChangeNotifier {
             stateOrdering.add(key);
           });
           groupByResponse = response.data;
+          shrinkStates = List.generate(stateOrdering.length, (index) => false);
         }
       }
 

@@ -43,6 +43,10 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/';
   static String userIssueView =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
+  static String myIssuesView =
+      '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
+  static String updateMyIssuesView =
+      '$baseApi/api/workspaces/\$SLUG/workspace-views/';
   static String projectIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/';
   static String moduleIssues =
@@ -76,7 +80,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
   static String orderByGroupByModuleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
-  static String myIssues = '$baseApi/api/workspaces/\$SLUG/my-issues/';
+  static String myIssues =
+      '$baseApi/api/workspaces/\$SLUG/my-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String projectIdentifier =
       "$baseApi/api/workspaces/\$SLUG/project-identifiers/?name=\$IDENTIFIER";
   static String activity = '$baseApi/api/users/activities/';

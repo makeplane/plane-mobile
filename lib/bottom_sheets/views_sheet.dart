@@ -95,6 +95,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
       issueProvider = ref.read(ProviderList.cyclesProvider);
     } else if (widget.issueCategory == IssueCategory.moduleIssues) {
       issueProvider = ref.read(ProviderList.modulesProvider);
+    } else if (widget.issueCategory == IssueCategory.myIssues) {
+      issueProvider = ref.read(ProviderList.myIssuesProvider);
     } else {
       issueProvider = ref.read(ProviderList.issuesProvider);
     }
@@ -137,6 +139,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issueProvider = ref.watch(ProviderList.issuesProvider);
+    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
@@ -233,27 +236,56 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
                                   activeColor: primaryColor),
-                              RadioListTile(
-                                  visualDensity: const VisualDensity(
-                                    horizontal: VisualDensity.minimumDensity,
-                                    vertical: VisualDensity.minimumDensity,
-                                  ),
-                                  // dense: true,
-                                  groupValue: groupBy,
-                                  title: const CustomText(
-                                    'Created by',
-                                    type: FontStyle.Small,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  value: 'created_by',
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      groupBy = 'created_by';
-                                    });
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  activeColor: primaryColor),
+                              widget.issueCategory == IssueCategory.myIssues
+                                  ? Container()
+                                  : RadioListTile(
+                                      visualDensity: const VisualDensity(
+                                        horizontal:
+                                            VisualDensity.minimumDensity,
+                                        vertical: VisualDensity.minimumDensity,
+                                      ),
+                                      // dense: true,
+                                      groupValue: groupBy,
+                                      title: const CustomText(
+                                        'Created by',
+                                        type: FontStyle.Small,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      value: 'created_by',
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          groupBy = 'created_by';
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      activeColor: primaryColor),
+
+                              //project
+                              widget.issueCategory != IssueCategory.myIssues
+                                  ? Container()
+                                  : RadioListTile(
+                                      visualDensity: const VisualDensity(
+                                        horizontal:
+                                            VisualDensity.minimumDensity,
+                                        vertical: VisualDensity.minimumDensity,
+                                      ),
+                                      // dense: true,
+                                      groupValue: groupBy,
+                                      title: const CustomText(
+                                        'Project',
+                                        type: FontStyle.Small,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      value: 'project',
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          groupBy = 'project';
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      activeColor: primaryColor),
                             ],
                           ),
                         )
@@ -569,7 +601,24 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       );
                       return;
                     }
-                    if (issueProvider.issues.groupBY !=
+                    if (widget.issueCategory == IssueCategory.myIssues) {
+                      if (myIssuesProvider.issues.groupBY !=
+                              Issues.toGroupBY(groupBy) ||
+                          myIssuesProvider.issues.orderBY !=
+                              Issues.toOrderBY(orderBy) ||
+                          myIssuesProvider.issues.issueType !=
+                              Issues.toIssueType(issueType)) {
+                        setState(() {
+                          myIssuesProvider.issues.orderBY =
+                              Issues.toOrderBY(orderBy);
+                          myIssuesProvider.issues.groupBY =
+                              Issues.toGroupBY(groupBy);
+                          myIssuesProvider.issues.issueType =
+                              Issues.toIssueType(issueType);
+                        });
+                        myIssuesProvider.filterIssues();
+                      }
+                    } else if (issueProvider.issues.groupBY !=
                             Issues.toGroupBY(groupBy) ||
                         issueProvider.issues.orderBY !=
                             Issues.toOrderBY(orderBy) ||
@@ -638,33 +687,39 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       startDate: displayProperties[12]['selected'],
                     );
 
-                    if (widget.issueCategory == IssueCategory.cycleIssues) {
-                      issueProvider.updateIssueProperties(
-                        properties: properties,
-                        issueCategory: widget.issueCategory,
-                      );
-                      cyclesProvider.issues.displayProperties = properties;
-                      cyclesProvider.showEmptyStates = showEmptyStates;
-                    } else if (widget.issueCategory ==
-                        IssueCategory.moduleIssues) {
-                      issueProvider.updateIssueProperties(
-                        properties: properties,
-                        issueCategory: widget.issueCategory,
-                      );
-                      modulesProvider.issues.displayProperties = properties;
-
-                      modulesProvider.showEmptyStates = showEmptyStates;
+                    if (widget.issueCategory == IssueCategory.myIssues) {
+                      myIssuesProvider.issues.displayProperties = properties;
+                      myIssuesProvider.showEmptyStates = showEmptyStates;
+                      myIssuesProvider.updateMyIssueView();
                     } else {
-                      issueProvider.updateIssueProperties(
-                        properties: properties,
-                        issueCategory: widget.issueCategory,
-                      );
-                      issueProvider.issues.displayProperties = properties;
-                      issueProvider.showEmptyStates = showEmptyStates;
+                      if (widget.issueCategory == IssueCategory.cycleIssues) {
+                        issueProvider.updateIssueProperties(
+                          properties: properties,
+                          issueCategory: widget.issueCategory,
+                        );
+                        cyclesProvider.issues.displayProperties = properties;
+                        cyclesProvider.showEmptyStates = showEmptyStates;
+                      } else if (widget.issueCategory ==
+                          IssueCategory.moduleIssues) {
+                        issueProvider.updateIssueProperties(
+                          properties: properties,
+                          issueCategory: widget.issueCategory,
+                        );
+                        modulesProvider.issues.displayProperties = properties;
+
+                        modulesProvider.showEmptyStates = showEmptyStates;
+                      } else {
+                        issueProvider.updateIssueProperties(
+                          properties: properties,
+                          issueCategory: widget.issueCategory,
+                        );
+                        issueProvider.issues.displayProperties = properties;
+                        issueProvider.showEmptyStates = showEmptyStates;
+                      }
+                      // if (widget.issueCategory == IssueCategory.issues) {
+                      issueProvider.updateProjectView();
+                      // }
                     }
-                    // if (widget.issueCategory == IssueCategory.issues) {
-                    issueProvider.updateProjectView();
-                    // }
 
                     log(displayProperties.toString());
 
@@ -680,7 +735,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             height: 50,
             child: Row(
               children: [
-   
                 const CustomText(
                   'Views',
                   type: FontStyle.H4,
@@ -691,7 +745,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon:  Icon(
+                  icon: Icon(
                     Icons.close,
                     size: 27,
                     color: themeProvider.themeManager.placeholderTextColor,

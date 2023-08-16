@@ -20,7 +20,7 @@ enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
 enum ProjectView { kanban, list, calendar, spreadsheet }
 
-enum GroupBY { state, priority, labels, createdBY }
+enum GroupBY { state, priority, labels, createdBY, project }
 
 enum OrderBY { manual, lastCreated, lastUpdated, priority }
 
@@ -28,7 +28,7 @@ enum IssueType { all, activeIssues, backlogIssues }
 
 enum CRUD { create, read, update, delete }
 
-enum IssueCategory { issues, cycleIssues, moduleIssues }
+enum IssueCategory { issues, cycleIssues, moduleIssues, myIssues }
 
 enum IssueDetailCategory {
   parent,

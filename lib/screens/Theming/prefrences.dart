@@ -75,8 +75,8 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                         var theme = profileProvider.userProfile.theme;
                         theme!['theme'] = fromTHEME(
                             theme: index == 0 ? THEME.light : THEME.dark);
-                        themeProvider.changeTheme(data: {'theme': theme},context: context);
-                     
+                        themeProvider.changeTheme(
+                            data: {'theme': theme}, context: context);
 
                         setState(() {
                           selectedTheme = index;
@@ -130,8 +130,9 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                             theme: index == 0
                                 ? THEME.lightHighContrast
                                 : THEME.darkHighContrast);
-                        themeProvider.changeTheme(data: {'theme': theme},context: context);
-                      
+                        themeProvider.changeTheme(
+                            data: {'theme': theme}, context: context);
+
                         setState(() {
                           selectedTheme = (index + 2);
                         });
@@ -188,8 +189,8 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                                   theme!['theme'] =
                                       fromTHEME(theme: THEME.custom);
                                   log(theme.toString());
-                                  themeProvider
-                                      .changeTheme(data: {'theme': theme},context: context);
+                                  themeProvider.changeTheme(
+                                      data: {'theme': theme}, context: context);
                                   setState(() {
                                     selectedTheme = index + 4;
                                   });

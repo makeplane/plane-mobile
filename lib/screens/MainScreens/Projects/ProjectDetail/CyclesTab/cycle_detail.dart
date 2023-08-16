@@ -67,7 +67,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     issuesProvider.issues.issueType = IssueType.all;
     issuesProvider.showEmptyStates = true;
     issuesProvider.issues.filters = Filters(
-        assignees: [], createdBy: [], labels: [], priorities: [], states: []);
+      assignees: [],
+      createdBy: [],
+      labels: [],
+      priorities: [],
+      states: [],
+      targetDate: [],
+    );
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -40,6 +38,15 @@ class CreateIssue extends ConsumerStatefulWidget {
 
 class _CreateIssueState extends ConsumerState<CreateIssue> {
   NotificationsServices notificationsServices = NotificationsServices();
+
+  var tempStatesData = {};
+  var tempStates = {};
+  List tempStateOrdering = [];
+  var tempStatesIcons = {};
+  var tempLabels = [];
+  var tempIssues = [];
+  var tempAssignees = [];
+
   @override
   void initState() {
     var prov = ref.read(ProviderList.issuesProvider);
@@ -52,15 +59,51 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     prov.createIssueProjectData['id'] = widget.projectId ??
         ref.read(ProviderList.projectProvider).currentProject['id'];
     var themeProvider = ref.read(ProviderList.themeProvider);
-    if (prov.states.isEmpty) {
-      prov.getStates(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projID: widget.projectId ??
-              ref.read(ProviderList.projectProvider).currentProject['id']);
-    }
+    tempStatesData = prov.statesData;
+    tempStates = prov.states;
+    tempStateOrdering = prov.stateOrdering;
+    tempStatesIcons = prov.stateIcons;
+    tempLabels = prov.labels;
+    tempIssues = ref.read(ProviderList.searchIssueProvider).issues;
+    tempAssignees = prov.members;
+
+    // if (prov.states.isEmpty) {
+    prov
+        .getStates(
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug,
+            projID: widget.projectId ??
+                ref.read(ProviderList.projectProvider).currentProject['id'])
+        .then((value) {
+      prov.createIssuedata['state'] =
+          (prov.states.isNotEmpty ? prov.states.keys.first : null);
+    });
+    // }
+    // prov.getLabels(
+    //     slug: ref
+    //         .read(ProviderList.workspaceProvider)
+    //         .selectedWorkspace!
+    //         .workspaceSlug,
+    //     projID: widget.projectId ??
+    //         ref.read(ProviderList.projectProvider).currentProject['id']);
+    // prov.getProjectMembers(
+    //     slug: ref
+    //         .read(ProviderList.workspaceProvider)
+    //         .selectedWorkspace!
+    //         .workspaceSlug,
+    //     projID: widget.projectId ??
+    //         ref.read(ProviderList.projectProvider).currentProject['id']);
+
+    ref.read(ProviderList.estimatesProvider).getEstimates(
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace!
+            .workspaceSlug,
+        projID: widget.projectId ??
+            ref.read(ProviderList.projectProvider).currentProject['id']);
+
     prov.createIssuedata['priority'] = {
       'name': 'None',
       'icon': Icon(
@@ -72,8 +115,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     };
     prov.createIssuedata['members'] = null;
     prov.createIssuedata['labels'] = null;
-    prov.createIssuedata['state'] = prov.createIssuedata['state'] ??
-        (prov.states.isNotEmpty ? prov.states.keys.first : null);
+    prov.createIssueParent = '';
+
+    // prov.createIssuedata['state'] = prov.createIssuedata['state'] ??
+    //     (prov.states.isNotEmpty ? prov.states.keys.first : null);
     super.initState();
   }
 
@@ -82,14 +127,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   TextEditingController title = TextEditingController();
   var expanded = false;
 
-  @override
-  void dispose() {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    issuesProvider.createIssueParent = '';
-    issuesProvider.createIssueParentId = '';
-    issuesProvider.setsState();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   var issuesProvider = ref.read(ProviderList.issuesProvider);
+  //   issuesProvider.createIssueParent = '';
+  //   issuesProvider.createIssueParentId = '';
+  //   issuesProvider.setsState();
+  //   super.dispose();
+  // }
 
   DateTime? startDate;
   DateTime? dueDate;
@@ -109,7 +154,16 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     //log(ref.read(ProviderList.projectProvider).currentProject['id'].toString());
     return WillPopScope(
       onWillPop: () async {
+        log('WillPopScope');
         issuesProvider.createIssuedata = {};
+        issuesProvider.statesData = tempStatesData;
+        issuesProvider.states = tempStates;
+        issuesProvider.stateOrdering = tempStateOrdering;
+        issuesProvider.stateIcons = tempStatesIcons;
+        issuesProvider.labels = tempLabels;
+        issuesProvider.members = tempAssignees;
+        issuesProvider.setsState();
+        ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
         return true;
       },
       child: Scaffold(
@@ -120,6 +174,15 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
         appBar: CustomAppBar(
           onPressed: () {
             issuesProvider.createIssuedata = {};
+            issuesProvider.createIssuedata = {};
+            issuesProvider.statesData = tempStatesData;
+            issuesProvider.states = tempStates;
+            issuesProvider.stateOrdering = tempStateOrdering;
+            issuesProvider.stateIcons = tempStatesIcons;
+            issuesProvider.labels = tempLabels;
+            issuesProvider.members = tempAssignees;
+            issuesProvider.setsState();
+            ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
             Navigator.pop(context);
           },
           text: 'Create Issue',
@@ -210,7 +273,45 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           backgroundColor: Colors.transparent,
                                           context: context,
                                           builder: (ctx) =>
-                                              const SelectProject());
+                                              const SelectProject()).then(
+                                          (value) {
+                                        issuesProvider
+                                            .getStates(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace!
+                                                    .workspaceSlug,
+                                                projID: issuesProvider
+                                                        .createIssueProjectData[
+                                                    'id'])
+                                            .then((value) {
+                                          issuesProvider
+                                                  .createIssuedata['state'] =
+                                              issuesProvider.states.keys.first;
+                                        });
+                                        ref
+                                            .read(
+                                                ProviderList.estimatesProvider)
+                                            .getEstimates(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace!
+                                                    .workspaceSlug,
+                                                projID: issuesProvider
+                                                        .createIssueProjectData[
+                                                    'id']);
+
+                                        issuesProvider
+                                            .createIssuedata['labels'] = null;
+                                        issuesProvider
+                                            .createIssuedata['members'] = null;
+                                        issuesProvider.createIssuedata[
+                                            'estimate_point'] = null;
+
+                                        issuesProvider.createIssueParent = '';
+                                      });
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -689,12 +790,43 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                     ),
                                   ),
                                 ),
-                                // const SizedBox(height: 8),
                                 (expanded &&
+                                        //  ( ref
+                                        //           .read(ProviderList
+                                        //               .projectProvider)
+                                        //           .currentProject['estimate'] !=
+                                        //       null ) &&
                                         ref
                                                 .read(ProviderList
                                                     .projectProvider)
-                                                .currentProject['estimate'] !=
+                                                .projects
+                                                .firstWhere((element) =>
+                                                    element['id'] ==
+                                                    ref
+                                                            .read(ProviderList
+                                                                .issuesProvider)
+                                                            .createIssueProjectData[
+                                                        'id'])['estimate'] !=
+                                            null)
+                                    ? const SizedBox(height: 8)
+                                    : Container(),
+                                (expanded &&
+                                        // ref
+                                        //         .read(ProviderList
+                                        //             .projectProvider)
+                                        //         .currentProject['estimate'] !=
+                                        //     null &&
+                                        ref
+                                                .read(ProviderList
+                                                    .projectProvider)
+                                                .projects
+                                                .firstWhere((element) =>
+                                                    element['id'] ==
+                                                    ref
+                                                            .read(ProviderList
+                                                                .issuesProvider)
+                                                            .createIssueProjectData[
+                                                        'id'])['estimate'] !=
                                             null)
                                     ? Container(
                                         height: 45,
@@ -806,8 +938,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                               return element[
                                                                       'id'] ==
                                                                   projectProvider
-                                                                          .currentProject[
-                                                                      'estimate'];
+                                                                      .projects
+                                                                      .firstWhere((element) =>
+                                                                          element[
+                                                                              'id'] ==
+                                                                          issuesProvider
+                                                                              .createIssueProjectData['id'])['estimate'];
                                                             })['points'].firstWhere(
                                                                     (element) {
                                                               return element[
@@ -1578,6 +1714,16 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                           //           .currentProject["id"],
                           //       issueCategory: IssueCategory.moduleIssues);
                           // }
+                          issuesProvider.createIssuedata = {};
+                          issuesProvider.statesData = tempStatesData;
+                          issuesProvider.states = tempStates;
+                          issuesProvider.stateOrdering = tempStateOrdering;
+                          issuesProvider.stateIcons = tempStatesIcons;
+                          issuesProvider.labels = tempLabels;
+                          issuesProvider.members = tempAssignees;
+                          issuesProvider.setsState();
+                          ref.read(ProviderList.searchIssueProvider).issues =
+                              tempIssues;
                           issuesProvider.createIssuedata = {};
                           issuesProvider.setsState();
                           Navigator.pop(Const.globalKey.currentContext!);

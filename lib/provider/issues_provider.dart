@@ -616,19 +616,17 @@ class IssuesProvider extends ChangeNotifier {
           issueCategory: IssueCategory.cycleIssues,
         );
       }
-      await ref!.read(ProviderList.myIssuesProvider).getMyIssues(
-            slug: ref!
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
-                .workspaceSlug,
-          );
+      await ref!.read(ProviderList.myIssuesProvider).filterIssues();
       if (issueCategory == IssueCategory.issues) {
-        filterIssues(
-          slug: slug,
-          projID: projID,
-        );
+        if (projID ==
+            ref!.read(ProviderList.projectProvider).currentProject["id"]) {
+          filterIssues(
+            slug: slug,
+            projID: projID,
+          );
 
-        isISsuesEmpty = issuesResponse.isEmpty;
+          isISsuesEmpty = issuesResponse.isEmpty;
+        }
       }
 
       createIssueState = StateEnum.success;

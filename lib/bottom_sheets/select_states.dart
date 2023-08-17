@@ -30,7 +30,9 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: ref.read(ProviderList.projectProvider).currentProject['id']);
+          projID: ref
+              .read(ProviderList.issuesProvider)
+              .createIssueProjectData['id']);
     }
 
     // selectedState = widget.createIssue
@@ -58,7 +60,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
         prov.createIssuedata['state'] = selectedState;
 
         prov.setsState();
-        log(prov.states.toString());
+
         //  }
         return true;
       },
@@ -91,7 +93,14 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                             prov.createIssuedata['state'] = selectedState;
                             // print('state');
                             // print(prov.createIssuedata['state'].toString());
-
+                            prov.getStates(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projID: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject['id']);
                             prov.setsState();
                             Navigator.pop(context);
                           },

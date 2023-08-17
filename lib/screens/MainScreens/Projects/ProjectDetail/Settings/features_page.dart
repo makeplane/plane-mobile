@@ -46,9 +46,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled
-          ? darkSecondaryBackgroundDefaultColor
-          : lightSecondaryBackgroundDefaultColor,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
           padding: const EdgeInsets.only(top: 20),
           itemCount: cardData.length,
@@ -58,13 +56,10 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkThemeBorder
-                        : strokeColor),
+                    color: themeProvider.themeManager.borderSubtle01Color),
                 borderRadius: BorderRadius.circular(10),
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : lightBackgroundColor,
+                color:
+                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -90,7 +85,8 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                           child: CustomText(
                             cardData[index]['description'],
                             textAlign: TextAlign.left,
-                            color: themeProvider.themeManager.placeholderTextColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         ),
                       ],

@@ -83,8 +83,11 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
-                  SizedBox(
-                    //color:const Color.fromARGB(255, 240, 253, 244), // success 10
+                  Container(
+                    decoration: BoxDecoration(
+                        color:
+                            themeProvider.themeManager.successBackgroundColor,
+                        borderRadius: BorderRadius.circular(5)), // success 10
                     height: 28,
                     child: Center(
                       child: Padding(
@@ -95,7 +98,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                               : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
                           type: FontStyle.Small,
                           fontWeight: FontWeightt.Regular,
-                          color: const Color.fromARGB(255, 34, 197, 94),
+                          color: themeProvider.themeManager.textSuccessColor,
                         ),
                       ),
                     ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/project_lead_assignee_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import '/utils/enums.dart';
 
@@ -39,9 +38,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled
-          ? darkSecondaryBackgroundDefaultColor
-          : lightSecondaryBackgroundDefaultColor,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -78,7 +75,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
                   context: context,
                   builder: (ctx) {
                     return ProjectLeadAssigneeSheet(
-                      title: 'Lead',
+                      title: 'Lead ',
                       leadId: projectProvider.projectDetailModel!.projectLead !=
                               null
                           ? projectProvider
@@ -96,35 +93,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.lead,
-                decoration:
-                    themeProvider.themeManager.textFieldDecoration.copyWith(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : const Color(0xFFE5E5E5),
-                        width: 1.0),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : const Color(0xFFE5E5E5),
-                        width: 1.0),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryColor, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                ),
+                decoration: themeProvider.themeManager.textFieldDecoration,
                 enabled: false,
-                style: TextStyle(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.white
-                      : Colors.black,
-                ),
               ),
             ),
             // DropdownButtonFormField(
@@ -156,7 +126,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             Row(
               children: [
                 CustomText(
-                  'Default Assignee',
+                  'Default Assignee ',
                   type: FontStyle.Small,
                   color: themeProvider.themeManager.tertiaryTextColor,
                 ),
@@ -228,34 +198,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.assignee,
-                decoration:
-                    themeProvider.themeManager.textFieldDecoration.copyWith(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : const Color(0xFFE5E5E5),
-                        width: 1.0),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : const Color(0xFFE5E5E5),
-                        width: 1.0),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryColor, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                ),
+                decoration: themeProvider.themeManager.textFieldDecoration,
                 enabled: false,
-                style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? Colors.white
-                        : Colors.black),
               ),
             ),
             const SizedBox(height: 20),

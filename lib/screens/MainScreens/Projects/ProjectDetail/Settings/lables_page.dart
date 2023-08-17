@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +7,6 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Setting
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -38,11 +36,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
     return LoadingWidget(
       loading: issuesProvider.labelState == StateEnum.loading,
       widgetClass: Container(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryBackgroundDefaultColor
-            : lightSecondaryBackgroundDefaultColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: issuesProvider.labels.isEmpty
-            ? EmptyPlaceholder.emptyLabels(context,ref)
+            ? EmptyPlaceholder.emptyLabels(context, ref)
             : ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -54,14 +50,12 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkBackgroundColor
-                                  : lightBackgroundColor,
+                              color: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? Colors.transparent
-                                      : strokeColor)),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color)),
                           child: Column(
                             children: [
                               Container(
@@ -94,7 +88,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                           issuesProvider.labels[index]['name'],
                                           type: FontStyle.H5,
                                           maxLines: 1,
-                                          color: themeProvider.themeManager.primaryTextColor,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
                                         ),
                                       ],
                                     ),
@@ -103,12 +98,11 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         PopupMenuButton(
                                           icon: Icon(
                                             Icons.more_vert,
-                                            color: themeProvider.themeManager.placeholderTextColor,
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : Colors.white,
+                                          color: themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor,
                                           onSelected: (val) {
                                             if (val == 'EDIT') {
                                               showModalBottomSheet(
@@ -228,19 +222,18 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                           Icons.add,
                                                           size: 19,
                                                           color: themeProvider
-                                                                  .isDarkThemeEnabled
-                                                              ? darkSecondaryTextColor
-                                                              : Colors.black,
+                                                              .themeManager
+                                                              .secondaryTextColor,
                                                         )
                                                       : SvgPicture.asset(
                                                           "assets/svg_images/label_group.svg",
-                                                          colorFilter: ColorFilter.mode(
-                                                              themeProvider
-                                                                      .isDarkThemeEnabled
-                                                                  ? darkSecondaryTextColor
-                                                                  : Colors
-                                                                      .black,
-                                                              BlendMode.srcIn),
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                                  themeProvider
+                                                                      .themeManager
+                                                                      .secondaryTextColor,
+                                                                  BlendMode
+                                                                      .srcIn),
                                                         ),
                                                   const SizedBox(
                                                     width: 10,
@@ -250,9 +243,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                         ? 'Add more labels'
                                                         : 'Convert to group',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -265,9 +257,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                     Icons.edit,
                                                     size: 19,
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -275,9 +266,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                   CustomText(
                                                     'Edit Label',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -290,9 +280,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                     Icons.delete,
                                                     size: 19,
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -300,9 +289,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                   CustomText(
                                                     'Delete Label',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -324,24 +312,22 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                       }
                                                       setState(() {});
                                                     },
-                                                    child: expanded
-                                                            .contains(index)
-                                                        ? Icon(
-                                                            Icons
-                                                                .keyboard_arrow_up,
-                                                            color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : Colors.black,
-                                                          )
-                                                        : Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : Colors.black,
-                                                          )),
+                                                    child:
+                                                        expanded.contains(index)
+                                                            ? Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_up,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .secondaryTextColor,
+                                                              )
+                                                            : Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_down_outlined,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .secondaryTextColor,
+                                                              )),
                                               ),
                                       ],
                                     )
@@ -370,18 +356,16 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                 bottom: 5),
                                                         decoration: BoxDecoration(
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkBackgroundColor
-                                                                : lightBackgroundColor,
+                                                                .themeManager
+                                                                .primaryBackgroundDefaultColor,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         5),
                                                             border: Border.all(
                                                                 color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? darkThemeBorder
-                                                                    : strokeColor)),
+                                                                    .themeManager
+                                                                    .borderSubtle01Color)),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -411,16 +395,12 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                               icon: Icon(
                                                                 Icons.more_vert,
                                                                 color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? darkSecondaryTextColor
-                                                                    : Colors
-                                                                        .black,
+                                                                    .themeManager
+                                                                    .placeholderTextColor,
                                                               ),
                                                               color: themeProvider
-                                                                      .isDarkThemeEnabled
-                                                                  ? darkBackgroundColor
-                                                                  : Colors
-                                                                      .white,
+                                                                  .themeManager
+                                                                  .tertiaryBackgroundDefaultColor,
                                                               onSelected:
                                                                   (val) {
                                                                 if (val ==
@@ -537,9 +517,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                             .close,
                                                                         size:
                                                                             19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       ),
                                                                       const SizedBox(
                                                                         width:
@@ -547,9 +527,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                       ),
                                                                       CustomText(
                                                                         'Remove from group',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       )
                                                                     ],
                                                                   ),
@@ -563,9 +543,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                             .edit,
                                                                         size:
                                                                             19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       ),
                                                                       const SizedBox(
                                                                         width:
@@ -573,9 +553,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                       ),
                                                                       CustomText(
                                                                         'Edit Label',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       )
                                                                     ],
                                                                   ),
@@ -590,9 +570,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                             .delete,
                                                                         size:
                                                                             19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       ),
                                                                       const SizedBox(
                                                                         width:
@@ -600,9 +580,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                       ),
                                                                       CustomText(
                                                                         'Delete Label',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .secondaryTextColor,
                                                                       )
                                                                     ],
                                                                   ),
@@ -671,9 +651,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
     });
     return Container(
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
       ),
@@ -705,7 +683,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                 ),
                 Container(height: 15),
                 isLabelsAvailable(iterate: true)
-                    ? EmptyPlaceholder.emptyLabels(context,ref)
+                    ? EmptyPlaceholder.emptyLabels(context, ref)
                     : ListView.builder(
                         itemCount: issuesProvider.labels.length,
                         shrinkWrap: true,
@@ -766,10 +744,8 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         Container(
                                           height: 1,
                                           // margin: const EdgeInsets.only(bottom: 5),
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : strokeColor,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                         )
                                       ],
                                     ),
@@ -783,9 +759,8 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color: themeProvider
+                      .themeManager.secondaryBackgroundDefaultColor,
                   // height: 25,
                   // width: 25,
                   child: Center(
@@ -794,11 +769,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),

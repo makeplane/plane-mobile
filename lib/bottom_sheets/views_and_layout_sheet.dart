@@ -10,16 +10,17 @@ import 'package:plane_startup/widgets/custom_expansion_tile.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
-class ViewsSheet extends ConsumerStatefulWidget {
-  final Enum issueCategory;
+class ViewsAndLayoutSheet extends ConsumerStatefulWidget {
+  const ViewsAndLayoutSheet(
+      {required this.issueCategory, this.cycleId, super.key});
+  final Enum issueCategory; //= IssueCategory.myIssues;
   final String? cycleId;
-  const ViewsSheet({required this.issueCategory, this.cycleId, super.key});
-
   @override
-  ConsumerState<ViewsSheet> createState() => _ViewsSheetState();
+  ConsumerState<ViewsAndLayoutSheet> createState() =>
+      _ViewsAndLayoutSheetState();
 }
 
-class _ViewsSheetState extends ConsumerState<ViewsSheet> {
+class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
   String groupBy = '';
   String orderBy = '';
   String issueType = '';
@@ -87,6 +88,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     return false;
   }
 
+  var selected = 0;
+
   bool showEmptyStates = true;
   @override
   void initState() {
@@ -130,6 +133,20 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     displayProperties[12]['selected'] =
         issueProvider.issues.displayProperties.startDate;
     showEmptyStates = issueProvider.showEmptyStates;
+
+    ///////////////////////////////////////////// type sheet
+
+    dynamic prov = widget.issueCategory == IssueCategory.myIssues
+        ? ref.read(ProviderList.myIssuesProvider)
+        : ref.read(ProviderList.issuesProvider);
+    selected = prov.issues.projectView == ProjectView.kanban
+        ? 0
+        : prov.issues.projectView == ProjectView.list
+            ? 1
+            : prov.issues.projectView == ProjectView.calendar
+                ? 2
+                : 3;
+
     super.initState();
   }
 
@@ -179,11 +196,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   ),
                                   // dense: true,
                                   groupValue: groupBy,
-                                  title: CustomText(
+                                  title: const CustomText(
                                     'State',
-                                    type: FontStyle.H6,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
+                                    type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'state',
@@ -515,55 +530,266 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                   spacing: 10,
                   runSpacing: 10,
                   children: displayProperties
-                      .map((tag) => (tag['name'] == 'Estimate' &&
-                              projectProvider.currentProject['estimate'] ==
-                                  null)
-                          ? const SizedBox()
-                          : (((tag['name'] == 'Created on' ||
-                                          tag['name'] == 'Updated on') &&
-                                      issueProvider.issues.projectView !=
-                                          ProjectView.spreadsheet) ||
-                                  ((tag['name'] == 'ID' ||
-                                          tag['name'] == 'Attachment Count' ||
-                                          tag['name'] == 'Link' ||
-                                          tag['name'] == 'Sub Issue Count') &&
-                                      issueProvider.issues.projectView ==
-                                          ProjectView.spreadsheet))
-                              ? const SizedBox()
-                              : GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      tag['selected'] =
-                                          !(tag['selected'] ?? false);
-                                    });
-                                  },
-                                  child: Container(
-                                    //height: 35,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: tag['selected'] ?? false
-                                          ? primaryColor
-                                          : themeProvider.themeManager
-                                              .primaryBackgroundDefaultColor,
-                                      border: Border.all(
+                      .map(
+                        (tag) => (tag['name'] == 'Estimate' &&
+                                projectProvider.currentProject['estimate'] ==
+                                    null)
+                            ? const SizedBox()
+                            : (((tag['name'] == 'Created on' ||
+                                            tag['name'] == 'Updated on') &&
+                                        issueProvider.issues.projectView !=
+                                            ProjectView.spreadsheet) ||
+                                    ((tag['name'] == 'ID' ||
+                                            tag['name'] == 'Attachment Count' ||
+                                            tag['name'] == 'Link' ||
+                                            tag['name'] == 'Sub Issue Count') &&
+                                        issueProvider.issues.projectView ==
+                                            ProjectView.spreadsheet))
+                                ? const SizedBox()
+                                : GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        tag['selected'] =
+                                            !(tag['selected'] ?? false);
+                                      });
+                                    },
+                                    child: Container(
+                                      // height: 35,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
                                         color: tag['selected'] ?? false
-                                            ? Colors.transparent
+                                            ? primaryColor
                                             : themeProvider.themeManager
-                                                .borderSubtle01Color,
+                                                .primaryBackgroundDefaultColor,
+                                        border: Border.all(
+                                          color: tag['selected'] ?? false
+                                              ? Colors.transparent
+                                              : themeProvider.themeManager
+                                                  .borderSubtle01Color,
+                                        ),
                                       ),
+
+                                      child: CustomText(tag['name'],
+                                          type: FontStyle.Medium,
+                                          color: tag['selected'] ?? false
+                                              ? themeProvider
+                                                  .themeManager.textonColor
+                                              : themeProvider.themeManager
+                                                  .primaryTextColor),
                                     ),
-                                    child: CustomText(tag['name'],
-                                        type: FontStyle.Medium,
-                                        color: tag['selected'] ?? false
-                                            ? themeProvider
-                                                .themeManager.textonColor
-                                            : themeProvider
-                                                .themeManager.primaryTextColor),
                                   ),
-                                ))
+                      )
                       .toList()),
+
+              //////////////////////////////////////////////////////////////
+              const SizedBox(height: 20),
+
+              Column(
+                children: [
+                  const Row(
+                    children: [
+                      CustomText(
+                        'Layout',
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 10,
+                  ),
+                  //
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selected = 1;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Radio(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              fillColor: selected == 1
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
+                              groupValue: selected,
+                              activeColor: primaryColor,
+                              value: 1,
+                              onChanged: (val) {}),
+                          const SizedBox(width: 10),
+                          CustomText(
+                            'List View',
+                            type: FontStyle.H6,
+                            color: themeProvider.themeManager.tertiaryTextColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1,
+                    width: double.infinity,
+                    child: Container(
+                      color: themeProvider.themeManager.borderDisabledColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selected = 0;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Radio(
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              fillColor: selected == 0
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
+                              groupValue: selected,
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour,
+                              value: 0,
+                              onChanged: (val) {
+                                // setState(() {
+                                //   selected = 0;
+                                // });
+                              }),
+                          const SizedBox(width: 10),
+                          CustomText(
+                            'Board View',
+                            type: FontStyle.H6,
+                            color: themeProvider.themeManager.tertiaryTextColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : SizedBox(
+                          height: 1,
+                          width: double.infinity,
+                          child: Container(
+                            color:
+                                themeProvider.themeManager.borderDisabledColor,
+                          ),
+                        ),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                selected = 2;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Radio(
+                                    visualDensity: const VisualDensity(
+                                      horizontal: VisualDensity.minimumDensity,
+                                      vertical: VisualDensity.minimumDensity,
+                                    ),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    fillColor: selected == 2
+                                        ? null
+                                        : MaterialStateProperty.all<Color>(
+                                            themeProvider.themeManager
+                                                .disabledButtonColor),
+                                    groupValue: selected,
+                                    activeColor: primaryColor,
+                                    value: 2,
+                                    onChanged: (val) {}),
+                                const SizedBox(width: 10),
+                                CustomText(
+                                  'Calendar View',
+                                  type: FontStyle.H6,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : SizedBox(
+                          height: 1,
+                          width: double.infinity,
+                          child: Container(
+                            color:
+                                themeProvider.themeManager.borderDisabledColor,
+                          ),
+                        ),
+                  widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                selected = 3;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Radio(
+                                    visualDensity: const VisualDensity(
+                                      horizontal: VisualDensity.minimumDensity,
+                                      vertical: VisualDensity.minimumDensity,
+                                    ),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    fillColor: selected == 3
+                                        ? null
+                                        : MaterialStateProperty.all<Color>(
+                                            themeProvider.themeManager
+                                                .disabledButtonColor),
+                                    groupValue: selected,
+                                    activeColor: primaryColor,
+                                    value: 3,
+                                    onChanged: (val) {}),
+                                const SizedBox(width: 10),
+                                CustomText(
+                                  'Spreadsheet View',
+                                  type: FontStyle.H6,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                ],
+              ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 30),
                 child: Button(
@@ -705,6 +931,14 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       // }
                     }
 
+                    if (selected == 0) {
+                      myIssuesProvider.issues.projectView = ProjectView.kanban;
+                    } else if (selected == 1) {
+                      myIssuesProvider.issues.projectView = ProjectView.list;
+                    }
+                    myIssuesProvider.setState();
+                    myIssuesProvider.updateMyIssueView();
+
                     log(displayProperties.toString());
 
                     Navigator.of(context).pop();
@@ -715,12 +949,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             ],
           ),
           Container(
-            color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             height: 50,
             child: Row(
               children: [
                 const CustomText(
-                  'Views',
+                  'Views & Layouts',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),

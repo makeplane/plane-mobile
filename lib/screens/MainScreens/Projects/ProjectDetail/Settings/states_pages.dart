@@ -36,9 +36,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled
-          ? darkSecondaryBackgroundDefaultColor
-          : lightSecondaryBackgroundDefaultColor,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: states.length,
@@ -108,14 +106,12 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                       left: 14,
                     ),
                     decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkBackgroundColor
-                            : lightBackgroundColor,
+                        color: themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : strokeColor)),
+                            color: themeProvider
+                                .themeManager.borderSubtle01Color)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -192,7 +188,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               },
                               icon: Icon(
                                 Icons.edit_outlined,
-                                color: themeProvider.themeManager.placeholderTextColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             ),
                             IconButton(
@@ -222,7 +219,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                 height: 20,
                                 width: 20,
                                 colorFilter: ColorFilter.mode(
-                                    themeProvider.themeManager.textErrorColor, BlendMode.srcIn),
+                                    themeProvider.themeManager.textErrorColor,
+                                    BlendMode.srcIn),
                               ),
                             ),
                           ],
@@ -332,9 +330,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             },
                             icon: Icon(
                               Icons.close,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? lightSecondaryBackgroundColor
-                                  : darkSecondaryBGC,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             )),
                       ],
                     ),
@@ -370,9 +367,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                 width: 300,
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkSecondaryBGC
-                                      : lightBackgroundColor,
+                                  color: themeProvider.themeManager
+                                      .secondaryBackgroundDefaultColor,
                                   boxShadow: const [
                                     BoxShadow(
                                         blurRadius: 2.0, color: greyColor),
@@ -439,9 +435,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : strokeColor,
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
                               ),
                             ),
                             child: IgnorePointer(
@@ -453,10 +448,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                   : false,
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButtonFormField(
-                                    dropdownColor:
-                                        themeProvider.isDarkThemeEnabled
-                                            ? darkSecondaryBGC
-                                            : lightBackgroundColor,
+                                    dropdownColor: themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor,
                                     decoration: const InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
@@ -537,11 +530,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),

@@ -714,6 +714,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                       ' Issue',
                                                       type: FontStyle.Medium,
                                                       color: Colors.white,
+                                                      overrride: true,
                                                     )
                                                   ],
                                                 ),
@@ -766,6 +767,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               ' Layout',
                                               type: FontStyle.Medium,
                                               color: Colors.white,
+                                              overrride: true,
                                             )
                                           ],
                                         ),
@@ -827,6 +829,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     ' Views',
                                                     type: FontStyle.Medium,
                                                     color: Colors.white,
+                                                    overrride: true,
                                                   )
                                                 ],
                                               ),
@@ -877,6 +880,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               ' Filters',
                                               type: FontStyle.Medium,
                                               color: Colors.white,
+                                              overrride: true,
                                             )
                                           ],
                                         ),

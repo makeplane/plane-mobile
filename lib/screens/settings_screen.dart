@@ -76,15 +76,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
             },
             icon: Icon(
               Icons.close,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : lightPrimaryTextColor,
+              color: themeProvider.themeManager.primaryTextColor,
             ),
           ),
           centerTitle: true,
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkPrimaryBackgroundDefaultColor
-              : lightPrimaryBackgroundDefaultColor,
+          backgroundColor:
+              themeProvider.themeManager.primaryBackgroundDefaultColor,
           title: CustomText(
             'Settings',
             type: FontStyle.Large,

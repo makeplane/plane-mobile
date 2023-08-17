@@ -116,9 +116,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               .themeManager.secondaryBackgroundDefaultColor,
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.transparent
-                                  : strokeColor)),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color)),
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
@@ -156,17 +155,15 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 ),
               ),
               Container(
-                height: 2,
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : strokeColor,
+                height: 1,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: double.infinity,
               ),
               Expanded(child: issues(context, ref)),
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
-                color: darkBackgroundColor,
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                 child: Row(
                   children: [
                     projectProvider.role == Role.admin
@@ -192,6 +189,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                       ' Issue',
                                       type: FontStyle.Medium,
                                       color: Colors.white,
+                                      overrride: true,
                                     )
                                   ],
                                 ),
@@ -237,6 +235,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               ' Layout',
                               type: FontStyle.Medium,
                               color: Colors.white,
+                              overrride: true,
                             )
                           ],
                         ),
@@ -281,6 +280,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               ' Views',
                               type: FontStyle.Medium,
                               color: Colors.white,
+                              overrride: true,
                             )
                           ],
                         ),
@@ -325,6 +325,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               ' Filters',
                               type: FontStyle.Medium,
                               color: Colors.white,
+                              overrride: true,
                             )
                           ],
                         ),

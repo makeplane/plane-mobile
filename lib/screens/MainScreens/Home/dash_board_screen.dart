@@ -190,11 +190,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          themeProvider.theme == THEME.custom
-                                              ? themeProvider.themeManager.tertiaryBackgroundDefaultColor
-                                              : themeProvider.themeManager
-                                                  .primaryTextColor,
+                                      backgroundColor: themeProvider.theme ==
+                                              THEME.custom
+                                          ? themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor
+                                          : themeProvider
+                                              .themeManager.primaryTextColor,
                                       elevation: 0),
                                   onPressed: () async {
                                     //redirect to github using url launcher.
@@ -449,6 +450,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
                                 color: Colors.white,
+                                overrride: true,
                               ),
                             ),
                           ),

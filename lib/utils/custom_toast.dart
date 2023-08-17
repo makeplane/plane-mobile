@@ -32,7 +32,7 @@ class CustomToast {
     Widget toast = Card(
       borderOnForeground: true,
       elevation: 20,
-      color: themeprovider.themeManager.tertiaryBackgroundDefaultColor,
+      color: themeprovider.themeManager.primaryToastBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(

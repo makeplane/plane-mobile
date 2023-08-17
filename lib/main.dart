@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/services/connection_service.dart';
 
 import 'package:plane_startup/services/shared_preference_service.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
 import 'utils/enums.dart';
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 late SharedPreferences prefs;
 late String selectedTheme;
@@ -33,9 +33,14 @@ void main() async {
   var pref = await SharedPreferences.getInstance();
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.appBearerToken = null;
-  ConnectionService().checkConnectivity();
+  // ConnectionService().checkConnectivity();
   prefs = pref;
   runApp(const ProviderScope(child: MyApp()));
+  FlutterError.demangleStackTrace = (StackTrace stack) {
+    if (stack is stack_trace.Trace) return stack.vmTrace;
+    if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+    return stack;
+  };
 }
 
 class MyApp extends ConsumerStatefulWidget {

@@ -55,13 +55,13 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
   Widget build(BuildContext context) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     var profileProvider = ref.read(ProviderList.profileProvider);
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-            textColor: themeProvider.themeManager.primaryTextColor,
-            text: 'Preferences',
-            onPressed: () => Navigator.pop(context)),
-        body: Container(
+    return Scaffold(
+      appBar: CustomAppBar(
+          textColor: themeProvider.themeManager.primaryTextColor,
+          text: 'Preferences',
+          onPressed: () => Navigator.pop(context)),
+      body: SafeArea(
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
@@ -77,7 +77,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                             theme: index == 0 ? THEME.light : THEME.dark);
                         themeProvider.changeTheme(
                             data: {'theme': theme}, context: context);
-
+      
                         setState(() {
                           selectedTheme = index;
                         });
@@ -132,7 +132,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                                 : THEME.darkHighContrast);
                         themeProvider.changeTheme(
                             data: {'theme': theme}, context: context);
-
+      
                         setState(() {
                           selectedTheme = (index + 2);
                         });
@@ -185,7 +185,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                             : GestureDetector(
                                 onTap: () {
                                   var theme = profileProvider.userProfile.theme;
-
+      
                                   theme!['theme'] =
                                       fromTHEME(theme: THEME.custom);
                                   log(theme.toString());

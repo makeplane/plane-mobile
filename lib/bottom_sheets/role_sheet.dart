@@ -33,10 +33,11 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
         children: [
           Row(
             children: [
-              const CustomText(
+              CustomText(
                 'Role',
                 type: FontStyle.H6,
                 fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               IconButton(
@@ -71,7 +72,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 0
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.tertiaryTextColor,
                             ),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
@@ -91,6 +92,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[0],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -100,9 +102,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
           SizedBox(
@@ -124,7 +124,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 1
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.tertiaryTextColor),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
                       value: dropDownItems[1],
@@ -136,6 +136,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[1],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -145,9 +146,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
           SizedBox(
@@ -169,7 +168,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 2
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.tertiaryTextColor,
                             ),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
@@ -182,6 +181,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[2],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -192,9 +192,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
 
@@ -218,7 +216,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 3
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.tertiaryTextColor),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
                       value: dropDownItems[3],
@@ -230,6 +228,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[3],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -240,9 +239,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
 
@@ -265,7 +262,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 4
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.tertiaryTextColor),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
                       value: dropDownItems[4],
@@ -277,6 +274,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[4],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -287,9 +285,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
 
@@ -312,7 +308,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 5
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.tertiaryTextColor),
                       groupValue: profileProvider.dropDownValue,
                       activeColor: primaryColor,
                       value: dropDownItems[5],
@@ -324,6 +320,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   CustomText(
                     dropDownItems[5],
                     type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),

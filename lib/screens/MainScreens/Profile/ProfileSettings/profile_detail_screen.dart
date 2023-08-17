@@ -85,9 +85,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       Container(
                         height: 1,
                         width: MediaQuery.of(context).size.width,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : Colors.grey[300],
+                        color: themeProvider.themeManager.borderDisabledColor,
                       ),
                       const SizedBox(
                         height: 20,
@@ -148,10 +146,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.white,
+                                              color: themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                                             ),
                                             child: Icon(
                                               Icons.person_2_outlined,
@@ -171,21 +166,15 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor),
+                                        color: themeProvider.themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryBGC
-                                        : Colors.white),
+                                    color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
                                 padding: const EdgeInsets.all(8),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.file_upload_outlined,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : Colors.black,
+                                      color: themeProvider.themeManager.primaryTextColor,
                                       size: 20,
                                     ),
                                     const SizedBox(
@@ -195,10 +184,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       'Upload',
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Bold,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? const Color.fromRGBO(
-                                              142, 148, 146, 1)
-                                          : Colors.black,
+                                      color: themeProvider.themeManager.primaryTextColor,
                                     )
                                   ],
                                 ),
@@ -219,21 +205,17 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor),
+                                        color: themeProvider.themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryBGC
-                                        : Colors.white),
+                                    color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
                                 padding: const EdgeInsets.all(8),
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     CustomText(
                                       'Remove',
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Bold,
-                                      color: Colors.red,
+                                      color: themeProvider.themeManager.textErrorColor,
                                     )
                                   ],
                                 ),
@@ -248,10 +230,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       // const Text('Full Name *', style: TextStylingWidget.description),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const CustomText(
+                        child: CustomText(
                           'Full Name *',
                           type: FontStyle.Medium,
-                          //color: const Color.fromRGBO(142, 148, 146, 1),
+                          color: themeProvider.themeManager.tertiaryTextColor,
                         ),
                       ),
                       const SizedBox(
@@ -263,37 +245,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         child: TextFormField(
                           controller: fullName,
                           style: TextStyle(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black),
+                              color: themeProvider.themeManager.primaryTextColor),
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
-                              .copyWith(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
-                          ),
                         ),
                       ),
                       const SizedBox(
@@ -302,9 +256,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       // const Text('Email *', style: TextStylingWidget.description),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const CustomText(
+                        child: CustomText(
                           'Email *',
                           type: FontStyle.Medium,
+                          color: themeProvider.themeManager.tertiaryTextColor,
                         ),
                       ),
                       const SizedBox(
@@ -317,37 +272,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           controller: email,
                           enabled: false,
                           style: TextStyle(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black),
+                              color: themeProvider.themeManager.primaryTextColor),
                           decoration: themeProvider
-                              .themeManager.textFieldDecoration
-                              .copyWith(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : const Color(0xFFE5E5E5),
-                                  width: 1.0),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
-                          ),
+                              .themeManager.textFieldDecoration,
                         ),
                       ),
                       const SizedBox(
@@ -357,9 +284,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Role *',
                             type: FontStyle.Medium,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : Colors.black),
+                            color: themeProvider.themeManager.tertiaryTextColor),
                       ),
                       const SizedBox(
                         height: 10,
@@ -389,9 +314,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300),
+                                color: themeProvider.themeManager.borderSubtle01Color),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -404,15 +327,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       ? 'Select Role'
                                       : profileProvider.dropDownValue!,
                                   type: FontStyle.Small,
+                                  color: themeProvider.themeManager.primaryTextColor,
                                 ),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 16),
                                 child: Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
+                                  color: themeProvider.themeManager.primaryTextColor,
                                 ),
                               ),
                             ],
@@ -429,9 +351,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Theme',
                             type: FontStyle.Medium,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : Colors.black),
+                            color: themeProvider.themeManager.tertiaryTextColor),
                       ),
                       const SizedBox(
                         height: 10,
@@ -466,9 +386,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300),
+                                color: themeProvider.themeManager.borderSubtle01Color),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -477,17 +395,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               Container(
                                 margin: const EdgeInsets.only(left: 16),
                                 child: CustomText(
-                                  profileProvider.theme,
+                                  themeProvider.theme == THEME.light ? 'Light'
+                                  : themeProvider.theme == THEME.dark ? 'Dark'
+                                  : themeProvider.theme == THEME.lightHighContrast ? 'Light High Contrast'
+                                  : themeProvider.theme == THEME.darkHighContrast ? 'Dark High Contrast'
+                                  : 'Custom' ,
                                   type: FontStyle.Small,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 16),
-                                child: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
                                 ),
                               ),
                             ],

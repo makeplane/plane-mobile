@@ -50,37 +50,36 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 height: 1,
                 width: MediaQuery.of(context).size.width,
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : Colors.grey[300],
+                color: themeProvider.themeManager.borderDisabledColor,
               ),
               Container(
-                height: 160,
+                // height: 160,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightSecondaryBackgroundColor,
+                  color:
+                      themeProvider.themeManager.secondaryBackgroundActiveColor,
                 ),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomText(
+                    CustomText(
                       'Relocation Guide',
                       textAlign: TextAlign.left,
                       type: FontStyle.Small,
                       fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const CustomText(
+                    CustomText(
                       'You can now transfer all the issues that you\'ve created in other tracking services. This tool will guide you to relocate the issue to Plane.',
                       textAlign: TextAlign.left,
                       maxLines: 7,
                       type: FontStyle.Small,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
                       height: 10,
@@ -89,21 +88,21 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                       onTap: () {
                         _launchUrl();
                       },
-                      child: const Row(
+                      child: Row(
                         children: [
                           CustomText(
                             'Read more',
                             textAlign: TextAlign.left,
                             type: FontStyle.Small,
-                            color: Color.fromRGBO(63, 118, 255, 1),
+                            color: themeProvider.themeManager.primaryColour,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Icon(
                             Icons.arrow_forward,
                             size: 18,
-                            color: Color.fromRGBO(63, 118, 255, 1),
+                            color: themeProvider.themeManager.primaryColour,
                           ),
                         ],
                       ),
@@ -130,14 +129,10 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkSecondaryBGC
-                          : lightSecondaryBackgroundColor,
+                      color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.transparent
-                              : Colors.grey.shade300)),
+                          color: themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -158,11 +153,13 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CustomText(
+                                CustomText(
                                   'Github',
                                   textAlign: TextAlign.left,
                                   type: FontStyle.H5,
                                   fontWeight: FontWeightt.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(5),
@@ -173,10 +170,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                   .integrations["github"]
                                               ["installed"]
                                       ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : const Color.fromRGBO(
-                                              243, 245, 248, 1),
+                                      : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                                   child: CustomText(
                                     integrationProvider
                                                     .integrations["github"] !=
@@ -194,21 +188,22 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                     .integrations["github"]
                                                 ["installed"]
                                         ? Colors.white
-                                        : const Color.fromRGBO(73, 80, 87, 1),
+                                        : themeProvider
+                                            .themeManager.tertiaryTextColor,
                                   ),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 5),
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
-                            child: const CustomText(
+                            child: CustomText(
                               'Connect with GitHub with your Plane workspace to sync project issues.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
                               type: FontStyle.Medium,
-                              color: Color.fromRGBO(133, 142, 150, 1),
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           ),
                         ],
@@ -236,14 +231,10 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkSecondaryBGC
-                          : lightSecondaryBackgroundColor,
+                      color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.transparent
-                              : Colors.grey.shade300)),
+                          color: themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -264,11 +255,13 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CustomText(
+                                CustomText(
                                   'Jira',
                                   textAlign: TextAlign.left,
                                   type: FontStyle.H5,
                                   fontWeight: FontWeightt.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(5),
@@ -278,10 +271,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                           integrationProvider
                                               .integrations["jira"]["installed"]
                                       ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : const Color.fromRGBO(
-                                              243, 245, 248, 1),
+                                      : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                                   child: CustomText(
                                     integrationProvider.integrations["jira"] !=
                                                 null &&
@@ -298,21 +288,22 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                     .integrations["jira"]
                                                 ["installed"]
                                         ? Colors.white
-                                        : const Color.fromRGBO(73, 80, 87, 1),
+                                        : themeProvider
+                                            .themeManager.tertiaryTextColor,
                                   ),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 5),
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
-                            child: const CustomText(
+                            child: CustomText(
                               'Import issues and epics from Jira projects and epics.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
                               type: FontStyle.Medium,
-                              color: Color.fromRGBO(133, 142, 150, 1),
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           ),
                         ],

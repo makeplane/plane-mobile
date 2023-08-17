@@ -47,13 +47,6 @@ class _AppState extends ConsumerState<App> {
                   ),
                 ),
               )
-            : !Const.isOnline
-                ? networkErrorWidget(
-                    context: context,
-                    ontap: () {
-                      getData();
-                    },
-                  )
                 : profileProv.getProfileState == StateEnum.error
                     ? errorState(
                         context: context,

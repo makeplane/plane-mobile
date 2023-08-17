@@ -7,6 +7,7 @@ import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,7 +38,9 @@ class _ActivityState extends ConsumerState<Activity> {
 
       body: LoadingWidget(
         loading: activityProvider.getActivityState == StateEnum.loading,
-        widgetClass: SafeArea(
+        widgetClass: 
+        activityProvider.getActivityState == StateEnum.success ?
+        SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -46,10 +49,11 @@ class _ActivityState extends ConsumerState<Activity> {
                 const SizedBox(
                   height: 10,
                 ),
-                const CustomText(
+                CustomText(
                   'Activity',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
                 ),
                 Expanded(
                   child: activityProvider.data.isEmpty
@@ -94,7 +98,8 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           .toUpperCase(),
                                                       // color: Colors.black,
                                                       type: FontStyle.Medium,
-                                                      color: Colors.white),
+                                                      color: Colors.white,
+                                                    ),
                                                 ),
                                               ),
                                               const SizedBox(
@@ -165,6 +170,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                             textAlign:
                                                                 TextAlign.left,
                                                             maxLines: 4,
+                                                            color: themeProvider.themeManager.primaryTextColor,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -200,10 +206,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           activityProvider
                                                                   .data[index]
                                                               ['created_at']),
-                                                      color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? lightSecondaryBackgroundColor
-                                                          : greyColor,
+                                                      color: themeProvider.themeManager.primaryTextColor,
                                                       type: FontStyle.Small,
                                                       textAlign: TextAlign.left,
                                                       maxLines: 4,
@@ -372,6 +375,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           textAlign:
                                                               TextAlign.left,
                                                           maxLines: 4,
+                                                          color: themeProvider.themeManager.primaryTextColor,
                                                         ),
                                                         activityProvider
                                                                     .data[index]
@@ -399,10 +403,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                   const SizedBox(height: 6),
                                                   CustomText(
                                                     ' ${checkTimeDifferenc(activityProvider.data[index]['created_at'])}',
-                                                    color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? lightSecondaryBackgroundColor
-                                                        : greyColor,
+                                                    color: themeProvider.themeManager.primaryTextColor,
                                                     type: FontStyle.Small,
                                                     textAlign: TextAlign.left,
                                                     maxLines: 4,
@@ -416,9 +417,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                 Container(
                                     height: 1,
                                     width: width,
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : strokeColor)
+                                    color: themeProvider.themeManager.borderDisabledColor)
                               ],
                             );
                           },
@@ -427,7 +426,10 @@ class _ActivityState extends ConsumerState<Activity> {
               ],
             ),
           ),
-        ),
+        )
+        : errorState(context: context, ontap: () {
+          ref.watch(ProviderList.activityProvider).getAcivity();
+        },)
       ),
     );
   }

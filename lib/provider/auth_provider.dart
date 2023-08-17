@@ -130,6 +130,7 @@ class AuthProvider extends ChangeNotifier {
       if (e is DioException) {
         var errorResponse = e.error;
         message = errorResponse;
+        log(e.error.toString());
         CustomToast().showSimpleToast(
           message.toString(),
         );

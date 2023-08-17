@@ -107,9 +107,7 @@ class _MembersListWidgetState extends ConsumerState<MembersListWidget> {
     return LoadingWidget(
       loading: projectsProvider.updateProjectMemberState == StateEnum.loading,
       widgetClass: Container(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkSecondaryBackgroundDefaultColor
-              : lightSecondaryBackgroundDefaultColor,
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           child: widget.fromWorkspace
               ? const WrokspaceMebersWidget()
               : const ProjectMembersWidget()),

@@ -86,10 +86,11 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const CustomText(
+                              CustomText(
                                 'Slack',
                                 textAlign: TextAlign.left,
                                 type: FontStyle.Small,
+                                color: themeProvider.themeManager.primaryTextColor,
                               ),
                               Container(
                                 padding: const EdgeInsets.all(5),
@@ -160,10 +161,11 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const CustomText(
+                            CustomText(
                               'Github',
                               textAlign: TextAlign.left,
                               type: FontStyle.Small,
+                              color: themeProvider.themeManager.primaryTextColor,
                             ),
                             Container(
                               padding: const EdgeInsets.all(5),

@@ -30,7 +30,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     {'icon': Icons.signal_cellular_alt, 'text': 'high'},
     {'icon': Icons.signal_cellular_alt_2_bar, 'text': 'medium'},
     {'icon': Icons.signal_cellular_alt_1_bar, 'text': 'low'},
-    {'icon': Icons.do_disturb_alt_outlined, 'text': 'none'}
+    {'icon': Icons.do_disturb_alt_outlined, 'text': 'null'}
   ];
 
   List states = [
@@ -168,7 +168,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                               : themeProvider.themeManager
                                                   .secondaryTextColor,
                                     ),
-                                    text: e['text'],
+                                    text: e['text'] == 'null'
+                                        ? 'None'
+                                        : e['text'],
                                     color: filters.priorities
                                             .contains(e['text'])
                                         ? primaryColor
@@ -396,10 +398,13 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   },
                                   child: expandedWidget(
                                     icon: CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: Color(int.parse(
-                                          "0xFF${e['color'].toString().toUpperCase().replaceAll("#", "")}")),
-                                    ),
+                                        radius: 5,
+                                        backgroundColor: (e['color'] == null ||
+                                                e['color'][0] != '#')
+                                            ? Colors.amber
+                                            : Color(int.parse(
+                                                "FF${e['color'].toString().replaceAll('#', '')}",
+                                                radix: 16))),
                                     text: e['name'],
                                     selected: filters.labels.contains(e['id']),
                                     color: filters.labels.contains(e['id'])

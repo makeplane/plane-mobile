@@ -37,9 +37,10 @@ class ThemeManager {
   late Color primaryBackgroundSelectedColour;
   late Color secondaryBackgroundSelectedColor;
 
-  Color convertHexToSpecificShade(
-      {required int shade, required Color color}) {
- 
+  late Color primaryToastBackgroundColor;
+  late Color successBackgroundColor;
+
+  Color convertHexToSpecificShade({required int shade, required Color color}) {
     if (shade <= 100) {
       var decimalValue = (100 - shade) / 100;
       var newR = (color.red + (255 - color.red) * decimalValue).floor();
@@ -75,7 +76,8 @@ class ThemeManager {
                 ? darkBorderSubtle01Color
                 : theme == THEME.darkHighContrast
                     ? lightBorderSubtle01Color
-                    : convertHexToSpecificShade(shade: 200, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 200, color: customBackgroundColor);
 
     borderSubtle00Color = theme == THEME.light
         ? lightBorderSubtle00Color
@@ -85,7 +87,8 @@ class ThemeManager {
                 ? darkBorderSubtle00Color
                 : theme == THEME.darkHighContrast
                     ? lightBorderSubtle00Color
-                    : convertHexToSpecificShade(shade: 100, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 100, color: customBackgroundColor);
 
     borderStrong01Color = theme == THEME.light
         ? lightBorderStrong01Color
@@ -95,7 +98,8 @@ class ThemeManager {
                 ? darkBorderStrong01Color
                 : theme == THEME.darkHighContrast
                     ? lightBorderStrong01Color
-                    : convertHexToSpecificShade(shade: 300, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 300, color: customBackgroundColor);
 
     borderDisabledColor = theme == THEME.light
         ? lightBorderDisabledColor
@@ -105,7 +109,8 @@ class ThemeManager {
                 ? darkBorderDisabledColor
                 : theme == THEME.darkHighContrast
                     ? lightBorderDisabledColor
-                    : convertHexToSpecificShade(shade: 150, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 150, color: customBackgroundColor);
 
     textFieldTextStyle = GoogleFonts.inter(
       fontSize: 14,
@@ -242,7 +247,8 @@ class ThemeManager {
                 ? lightPrimaryBackgroundDefaultColor
                 : theme == THEME.darkHighContrast
                     ? darkPrimaryBackgroundDefaultColor
-                    :convertHexToSpecificShade(shade: 100, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 100, color: customBackgroundColor);
 
     secondaryBackgroundDefaultColor = theme == THEME.light
         ? lightSecondaryBackgroundDefaultColor
@@ -252,7 +258,8 @@ class ThemeManager {
                 ? lightSecondaryBackgroundDefaultColor
                 : theme == THEME.darkHighContrast
                     ? darkSecondaryBackgroundDefaultColor
-                    : convertHexToSpecificShade(shade: 90, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 90, color: customBackgroundColor);
 
     tertiaryBackgroundDefaultColor = theme == THEME.light
         ? lightTertiaryBackgroundDefaultColor
@@ -262,7 +269,8 @@ class ThemeManager {
                 ? lightTertiaryBackgroundDefaultColor
                 : theme == THEME.darkHighContrast
                     ? darkTertiaryBackgroundDefaultColor
-                    : convertHexToSpecificShade(shade: 80, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 80, color: customBackgroundColor);
     disabledButtonColor = theme == THEME.light
         ? lightdisabledButtonColor
         : theme == THEME.dark
@@ -283,9 +291,10 @@ class ThemeManager {
             ? darkPrimaryBackgroundSelectedColor
             : theme == THEME.lightHighContrast
                 ? lightPrimaryBackgroundSelectedColor
-                 : theme == THEME.darkHighContrast
+                : theme == THEME.darkHighContrast
                     ? darkPrimaryBackgroundSelectedColor
-                    : convertHexToSpecificShade(shade: 90, color: customBackgroundColor);
+                    : convertHexToSpecificShade(
+                        shade: 90, color: customBackgroundColor);
     borderStrong01Color = theme == THEME.light
         ? lightBorderStrongColor
         : theme == THEME.dark
@@ -300,5 +309,21 @@ class ThemeManager {
             : theme == THEME.lightHighContrast
                 ? lightSecondaryBackgroundSelectedColor
                 : darkSecondaryBackgroundSelectedColor;
+
+    primaryToastBackgroundColor = theme == THEME.light
+        ? lightToastBackgroundColor
+        : theme == THEME.dark
+            ? darkToastBackgroundColor
+            : theme == THEME.lightHighContrast
+                ? lightToastBackgroundColor
+                : darkToastBackgroundColor;
+
+    successBackgroundColor = theme == THEME.light
+        ? lightSucessBackground
+        : theme == THEME.dark
+            ? darkSucessBackground
+            : theme == THEME.lightHighContrast
+                ? lightSucessBackground
+                : darkSucessBackground;
   }
 }

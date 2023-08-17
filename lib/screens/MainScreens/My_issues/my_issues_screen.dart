@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
-import 'package:plane_startup/bottom_sheets/type_sheet.dart';
-import 'package:plane_startup/bottom_sheets/views_sheet.dart';
+import 'package:plane_startup/bottom_sheets/views_and_layout_sheet.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
 import 'package:plane_startup/kanban/models/inputs.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -70,38 +69,96 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       }
                     },
                     child: CircleAvatar(
-                      backgroundColor: themeProvider.isDarkThemeEnabled
-                          ? darkSecondaryBGC
-                          : lightGreeyColor,
+                      backgroundColor: themeProvider
+                          .themeManager.tertiaryBackgroundDefaultColor,
                       radius: 20,
                       child: Icon(
                         size: 20,
                         Icons.add,
-                        color: !themeProvider.isDarkThemeEnabled
-                            ? Colors.black
-                            : Colors.white,
+                        color: themeProvider.themeManager.secondaryTextColor,
                       ),
                     ),
                   ),
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GlobalSearchSheet()));
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.9),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return const ViewsAndLayoutSheet(
+                        issueCategory: IssueCategory.myIssues,
+                      );
+                    });
               },
               child: CircleAvatar(
-                backgroundColor: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightGreeyColor,
+                backgroundColor:
+                    themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                radius: 20,
+                child: Icon(
+                  size: 20,
+                  Icons.event_note_rounded,
+                  color: themeProvider.themeManager.secondaryTextColor,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.85),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return FilterSheet(
+                        issueCategory: IssueCategory.myIssues,
+                      );
+                    });
+              },
+              child: CircleAvatar(
+                backgroundColor:
+                    themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                radius: 20,
+                child: Icon(
+                  size: 20,
+                  Icons.filter_list_outlined,
+                  color: themeProvider.themeManager.secondaryTextColor,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GlobalSearchSheet(),
+                  ),
+                );
+              },
+              child: CircleAvatar(
+                backgroundColor:
+                    themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                 radius: 20,
                 child: Icon(
                   size: 20,
                   Icons.search,
-                  color: !themeProvider.isDarkThemeEnabled
-                      ? Colors.black
-                      : Colors.white,
+                  color: themeProvider.themeManager.secondaryTextColor,
                 ),
               ),
             ),
@@ -115,10 +172,10 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                 children: [
                   Container(
                     //bottom border
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: lightGreeyColor,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                           width: 1,
                         ),
                       ),
@@ -251,201 +308,6 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       ],
                     ),
                   ),
-                  myIssuesProvider.myIssuesViewState == StateEnum.loading
-                      ? Container()
-                      : myIssuesProvider.myIssuesViewState == StateEnum.success
-                          ? Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black,
-                              child: Row(
-                                children: [
-                                  projectProvider.role == Role.admin
-                                      ? Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const CreateIssue(),
-                                                ),
-                                              );
-                                            },
-                                            child: const SizedBox.expand(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ),
-                                                  CustomText(
-                                                    ' Issue',
-                                                    type: FontStyle.Medium,
-                                                    color: Colors.white,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                  Container(
-                                    height: 50,
-                                    width: 0.5,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          enableDrag: true,
-                                          constraints: BoxConstraints(
-                                              maxHeight: height * 0.5),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          )),
-                                          context: context,
-                                          builder: (ctx) {
-                                            return const TypeSheet(
-                                              issueCategory:
-                                                  IssueCategory.myIssues,
-                                            );
-                                          });
-                                    },
-                                    child: const SizedBox.expand(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.menu,
-                                            color: Colors.white,
-                                            size: 19,
-                                          ),
-                                          CustomText(
-                                            ' Layout',
-                                            type: FontStyle.Medium,
-                                            color: Colors.white,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                  Container(
-                                    height: 50,
-                                    width: 0.5,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  myIssuesProvider.issues.projectView ==
-                                          ProjectView.calendar
-                                      ? Container()
-                                      : Expanded(
-                                          child: InkWell(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                enableDrag: true,
-                                                constraints: BoxConstraints(
-                                                    maxHeight:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.9),
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                  topLeft: Radius.circular(30),
-                                                  topRight: Radius.circular(30),
-                                                )),
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return const ViewsSheet(
-                                                    issueCategory:
-                                                        IssueCategory.myIssues,
-                                                  );
-                                                });
-                                          },
-                                          child: const SizedBox.expand(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.view_sidebar,
-                                                  color: Colors.white,
-                                                  size: 19,
-                                                ),
-                                                CustomText(
-                                                  ' Views',
-                                                  type: FontStyle.Medium,
-                                                  color: Colors.white,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )),
-                                  Container(
-                                    height: 50,
-                                    width: 0.5,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          enableDrag: true,
-                                          constraints: BoxConstraints(
-                                              maxHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.85),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          )),
-                                          context: context,
-                                          builder: (ctx) {
-                                            return FilterSheet(
-                                              issueCategory:
-                                                  IssueCategory.myIssues,
-                                            );
-                                          });
-                                    },
-                                    child: const SizedBox.expand(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.filter_alt,
-                                            color: Colors.white,
-                                            size: 19,
-                                          ),
-                                          CustomText(
-                                            ' Filters',
-                                            type: FontStyle.Medium,
-                                            color: Colors.white,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                ],
-                              ),
-                            )
-                          : Container(),
                 ],
               ));
   }

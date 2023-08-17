@@ -5,7 +5,6 @@ import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
@@ -204,10 +203,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             height: 54,
                                             width: 54,
                                             decoration: BoxDecoration(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFF5F5F5),
+                                              color: themeProvider.themeManager
+                                                  .tertiaryBackgroundDefaultColor,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -406,10 +403,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFF5F5F5),
+                                              color: themeProvider.themeManager
+                                                  .tertiaryBackgroundDefaultColor,
                                             ),
                                             child: Center(
                                               child: Text(

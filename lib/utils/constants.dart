@@ -153,8 +153,8 @@ late Color customBackgroundColor;
 late Color customAccentColor;
 late Color customNavBarColor;
 late Color customNavBarTextColor;
- 
-const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);// blue 500
+
+const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1); // blue 500
 const darkBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const lightContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
 const darkContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
@@ -216,6 +216,12 @@ const darkPrimaryIconColor = Color.fromRGBO(163, 163, 163, 1);
 const lightSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
 const darkSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
 
+const lightToastBackgroundColor = Color.fromRGBO(255, 255, 255, 1);
+const darkToastBackgroundColor = Color.fromRGBO(23, 23, 23, 1);
+
+const lightSucessBackground = Color.fromRGBO(240, 253, 244, 1);
+const darkSucessBackground = Color.fromRGBO(34, 197, 94, 0.15);
+
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
       fontFamily: 'SF Pro Display',
@@ -266,7 +272,6 @@ InputDecoration kTextFieldDecoration = InputDecoration(
 );
 const lightdisabledButtonColor = Color.fromRGBO(229, 229, 229, 1);
 const darkdisabledButtonColor = Color.fromRGBO(38, 38, 38, 1);
-
 
 const LinearGradient gradient = LinearGradient(
   begin: Alignment.topCenter,

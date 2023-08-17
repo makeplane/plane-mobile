@@ -294,8 +294,14 @@ class MyIssuesProvider extends ChangeNotifier {
       url = APIs.myIssues
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
-          .replaceAll('\$GROUPBY', groupBy)
-          .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+          .replaceAll('\$GROUPBY', groupBy);
+      if (issues.filters.states.isNotEmpty) {
+        url = url.replaceAll('&type=\$TYPE', '');
+        log(url);
+      } else {
+        url = url.replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+      }
+
       if (issues.filters.priorities.isNotEmpty) {
         url =
             '$url&priority=${issues.filters.priorities.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';

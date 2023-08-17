@@ -387,9 +387,6 @@ class WorkspaceProvider extends ChangeNotifier {
         }
       }
 
-      log("SABI: githubIntegration: " + (githubIntegration != null).toString());
-      log("SABI: slackIntegration: " + (slackIntegration != null).toString());
-
       notifyListeners();
       // log(response.data.toString());
     } catch (e) {

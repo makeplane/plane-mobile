@@ -37,9 +37,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
           estimatesProvider.estimateState == StateEnum.loading),
       widgetClass: Container(
         width: MediaQuery.of(context).size.width,
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryBackgroundDefaultColor
-            : lightSecondaryBackgroundDefaultColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: estimatesProvider.estimates.isEmpty
             ? const EmptyEstimatesWidget()
             : Column(
@@ -66,12 +64,11 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 7),
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkBackgroundColor
-                            : lightBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: Colors.grey.shade300,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                       ),
                       child: CustomText(
@@ -99,14 +96,12 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                         margin:
                             const EdgeInsets.only(left: 16, right: 16, top: 16),
                         decoration: BoxDecoration(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkBackgroundColor
-                              : lightBackgroundColor,
+                          color: themeProvider
+                              .themeManager.primaryBackgroundDefaultColor,
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : strokeColor),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,7 +218,10 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         'assets/svg_images/delete_icon.svg',
                                         height: 20,
                                         width: 20,
-                                        colorFilter: ColorFilter.mode(themeProvider.themeManager.textErrorColor, BlendMode.srcIn),
+                                        colorFilter: ColorFilter.mode(
+                                            themeProvider
+                                                .themeManager.textErrorColor,
+                                            BlendMode.srcIn),
                                       ),
                                     ),
 
@@ -262,7 +260,8 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         );
                                       },
                                       icon: const Icon(Icons.edit_outlined),
-                                      color: themeProvider.themeManager.placeholderTextColor,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                   ],
                                 ),
@@ -342,9 +341,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
                     border: Border.all(color: Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -374,9 +372,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
                     border: Border.all(color: Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -406,10 +403,10 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: const Center(
@@ -499,6 +496,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   'Add Estimate',
                   type: FontStyle.Medium,
                   fontWeight: FontWeightt.Bold,
+                  color: Colors.white,
+                  overrride: true,
                 ),
               ],
             ),

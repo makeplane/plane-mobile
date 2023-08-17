@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/theme_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/utils/custom_toast.dart';

@@ -75,9 +75,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       child: LoadingWidget(
         loading: projectProvider.updateProjectState == StateEnum.loading,
         widgetClass: Container(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkSecondaryBackgroundDefaultColor
-              : lightSecondaryBackgroundDefaultColor,
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           padding: const EdgeInsets.only(
             left: 15,
             top: 20,
@@ -237,9 +235,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                                   Icons.close,
                                                   size: 27,
                                                   color: themeProvider
-                                                          .isDarkThemeEnabled
-                                                      ? Colors.white
-                                                      : Colors.black,
+                                                      .themeManager
+                                                      .primaryTextColor,
                                                 ),
                                               ),
                                             ),
@@ -260,14 +257,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           height: 55,
                           width: 55,
                           decoration: BoxDecoration(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : lightGreeyColor,
+                            color: themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : strokeColor,
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color,
                             ),
                           ),
                           child: Center(
@@ -352,42 +347,18 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   TextField(
-                    onTap: () {
-                      CustomToast().showToast(
-                          context,
-                          'This operation cannot be performed using Plane Mobile',
-                          themeProvider,
-                          toastType: ToastType.defult);
-                    },
-                    readOnly: true,
-                    controller: description,
-                    maxLines: 4,
-                    decoration:
-                        themeProvider.themeManager.textFieldDecoration.copyWith(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : const Color(0xFFE5E5E5),
-                            width: 1.0),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : const Color(0xFFE5E5E5),
-                            width: 1.0),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryColor, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                    ),
-                  ),
+                      onTap: () {
+                        CustomToast().showToast(
+                            context,
+                            'This operation cannot be performed using Plane Mobile',
+                            themeProvider,
+                            toastType: ToastType.defult);
+                      },
+                      readOnly: true,
+                      controller: description,
+                      maxLines: 4,
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration),
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -417,9 +388,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           width: width,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkStrokeColor
-                                      : Colors.transparent),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
                               borderRadius: BorderRadius.circular(10)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
@@ -461,12 +431,14 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                               //   });
                               // }
                             },
-                            child: const CircleAvatar(
-                              backgroundColor: Color(0xFFF5F5F5),
+                            child: CircleAvatar(
+                              backgroundColor: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
                               child: Center(
                                 child: Icon(
                                   Icons.edit,
-                                  color: Colors.black,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                             ),
@@ -509,37 +481,13 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   TextFormField(
-                    controller: identifier,
-                    maxLength: 5,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[A-Z]')),
-                    ],
-                    decoration:
-                        themeProvider.themeManager.textFieldDecoration.copyWith(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : const Color(0xFFE5E5E5),
-                            width: 1.0),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : const Color(0xFFE5E5E5),
-                            width: 1.0),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryColor, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                    ),
-                  ),
+                      controller: identifier,
+                      maxLength: 5,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[A-Z]')),
+                      ],
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
@@ -599,9 +547,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : strokeColor,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                       ),
                       child: Row(
@@ -609,12 +555,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           CustomText(
                             !isProjectPublic ? 'Secret' : 'Public',
                             type: FontStyle.Small,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? Colors.white
-                                : Colors.black,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const Spacer(),
-                          const Icon(Icons.arrow_drop_down, color: Colors.grey)
+                          Icon(Icons.arrow_drop_down,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor)
                         ],
                       ),
                     ),
@@ -664,12 +610,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       },
                       childrenPadding: const EdgeInsets.only(
                           left: 15, right: 15, bottom: 10),
-                      iconColor: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : greyColor,
-                      collapsedIconColor: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : greyColor,
+                      iconColor: themeProvider.themeManager.primaryTextColor,
+                      collapsedIconColor:
+                          themeProvider.themeManager.primaryTextColor,
                       backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
                       collapsedBackgroundColor:
                           const Color.fromRGBO(255, 12, 12, 0.1),
@@ -816,9 +759,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             const BoxConstraints(maxWidth: 340, maxHeight: 400),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.black
-                              : Colors.white,
+                          color: themeProvider
+                              .themeManager.primaryBackgroundDefaultColor,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: Colors.grey.shade300,

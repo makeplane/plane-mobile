@@ -108,10 +108,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               : Container(),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:
-  
-       selected != 0 &&
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: selected != 0 &&
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
               ((selected == 1 &&
@@ -169,8 +167,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               },
             )
           : Container(),
-
-
       body: SafeArea(
         child: Container(
           // color: themeProvider.backgroundColor,
@@ -353,6 +349,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                     ' Issue',
                                                     type: FontStyle.Medium,
                                                     color: Colors.white,
+                                                    overrride: true,
                                                   )
                                                 ],
                                               ),
@@ -362,7 +359,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                       : Container(),
                                   Container(
                                     height: 50,
-                                    width: 0.5,
+                                    width: 1,
                                     color: themeProvider
                                         .themeManager.borderSubtle01Color,
                                   ),
@@ -401,6 +398,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             ' Layout',
                                             type: FontStyle.Medium,
                                             color: Colors.white,
+                                            overrride: true,
                                           )
                                         ],
                                       ),
@@ -456,6 +454,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   ' Views',
                                                   type: FontStyle.Medium,
                                                   color: Colors.white,
+                                                  overrride: true,
                                                 )
                                               ],
                                             ),
@@ -505,6 +504,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             ' Filters',
                                             type: FontStyle.Medium,
                                             color: Colors.white,
+                                            overrride: true,
                                           )
                                         ],
                                       ),
@@ -557,6 +557,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   type: FontStyle.Medium,
                                                   color: themeProvider
                                                       .themeManager.textonColor,
+                                                  overrride: true,
                                                 )
                                               ],
                                             ),
@@ -566,7 +567,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     : Container(),
                                 Container(
                                   height: 50,
-                                  width: 0.5,
+                                  width: 1,
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 ),
@@ -607,6 +608,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           type: FontStyle.Medium,
                                           color: themeProvider
                                               .themeManager.textonColor,
+                                          overrride: true,
                                         )
                                       ],
                                     ),

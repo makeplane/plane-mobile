@@ -98,8 +98,7 @@ class IntegrationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      print(
-          'SABI: GitHub Integration: ${response.data.isNotEmpty && response.data != null} data: ${response.data}');
+
       githubIntegration = response.data;
       notifyListeners();
     } catch (e) {
@@ -126,8 +125,7 @@ class IntegrationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      print(
-          'SABI: Slack Integration: ${response.data.isNotEmpty && response.data != null} data: ${response.data}');
+
       slackIntegration = response.data;
       notifyListeners();
     } catch (e) {

@@ -92,11 +92,14 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                         ],
                       )
                     : Container(),
-                CustomText(
-                  pageProvider.blocks[widget.index]['name'],
-                  type: FontStyle.Medium,
-                  fontWeight: FontWeightt.Semibold,
-                  color: themeProvider.themeManager.primaryTextColor,
+                Expanded(
+                  child: CustomText(
+                    pageProvider.blocks[widget.index]['name'],
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Semibold,
+                    color: themeProvider.themeManager.primaryTextColor,
+                    overflow: TextOverflow.visible,
+                  ),
                 ),
               ],
             ),

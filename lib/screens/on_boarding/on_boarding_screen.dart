@@ -590,7 +590,9 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 4),
               Expanded(
                 child: PageView.builder(
                   itemCount: 3,
@@ -601,8 +603,9 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                   },
                   itemBuilder: (context, index) {
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Spacer(),
                         cards[index],
                         const SizedBox(
                           height: 20,
@@ -626,7 +629,6 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                             maxLines: 5,
                           ),
                         ),
-                        const Spacer()
                       ],
                     );
                   },

@@ -66,11 +66,8 @@ class ThemeProvider extends ChangeNotifier {
     var profileProv = ref.read(ProviderList.profileProvider);
     profileProv.updateProfile(data: data).then((value) {
       if (profileProv.updateProfileState == StateEnum.success) {
-        CustomToast().showToast(
-          context,
-          'Theme updated!',
-          this,
-        );
+        CustomToast().showToast(context, 'Theme updated!', this,
+            toastType: ToastType.success);
       } else {}
     });
     await prefs.setString('selected-theme', fromTHEME(theme: theme));

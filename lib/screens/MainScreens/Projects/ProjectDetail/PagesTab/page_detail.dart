@@ -588,82 +588,92 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                     ),
                   )
                 : Container(),
-            Wrap(
-                runSpacing: 10,
-                spacing: 10,
-                direction: Axis.horizontal,
-                children: (pageProvider
-                            .pages[pageProvider.selectedFilter]![widget.index]
-                        ['label_details'] as List)
-                    .map((element) {
-                  return InkWell(
-                    onTap: () {
-                      if (checkAccess()) {
-                        setState(() {
-                          deletedLabel.addAll(element);
-                          pageProvider.selectedLabels.remove(element['id']);
-                          (pageProvider.pages[pageProvider.selectedFilter]![
-                                  widget.index]['label_details'] as List)
-                              .remove(element);
-                          log((pageProvider.pages[pageProvider.selectedFilter]![
-                                  widget.index]['label_details'] as List)
-                              .toString());
-                        });
-                        pageProvider.editPage(
-                            slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
-                            projectId: projectProvider.currentProject['id'],
-                            pageId: pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['id'],
-                            data: {
-                              "labels_list": pageProvider.selectedLabels,
-                            }).then((value) {
-                          if (pageProvider.blockSheetState == StateEnum.error) {
-                            setState(() {
-                              (pageProvider.pages[pageProvider.selectedFilter]![
-                                      widget.index]['label_details'] as List)
-                                  .add(deletedLabel);
-                            });
-                          }
-                        });
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : strokeColor),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          //container 1
-                          CircleAvatar(
-                            radius: 5,
-                            backgroundColor: Color(
-                              int.parse(
-                                "FF${element['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                radix: 16,
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+              ),
+              child: Wrap(
+                  runSpacing: 10,
+                  spacing: 10,
+                  direction: Axis.horizontal,
+                  children: (pageProvider
+                              .pages[pageProvider.selectedFilter]![widget.index]
+                          ['label_details'] as List)
+                      .map((element) {
+                    return InkWell(
+                      onTap: () {
+                        if (checkAccess()) {
+                          setState(() {
+                            deletedLabel.addAll(element);
+                            pageProvider.selectedLabels.remove(element['id']);
+                            (pageProvider.pages[pageProvider.selectedFilter]![
+                                    widget.index]['label_details'] as List)
+                                .remove(element);
+                            log((pageProvider.pages[pageProvider
+                                        .selectedFilter]![widget.index]
+                                    ['label_details'] as List)
+                                .toString());
+                          });
+                          pageProvider.editPage(
+                              slug: workspaceProvider
+                                  .selectedWorkspace!.workspaceSlug,
+                              projectId: projectProvider.currentProject['id'],
+                              pageId: pageProvider.pages[pageProvider
+                                  .selectedFilter]![widget.index]['id'],
+                              data: {
+                                "labels_list": pageProvider.selectedLabels,
+                              }).then((value) {
+                            if (pageProvider.blockSheetState ==
+                                StateEnum.error) {
+                              setState(() {
+                                (pageProvider.pages[pageProvider
+                                            .selectedFilter]![widget.index]
+                                        ['label_details'] as List)
+                                    .add(deletedLabel);
+                              });
+                            }
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: themeProvider.isDarkThemeEnabled
+                                  ? darkThemeBorder
+                                  : strokeColor),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            //container 1
+                            CircleAvatar(
+                              radius: 5,
+                              backgroundColor: Color(
+                                int.parse(
+                                  "FF${element['color'].toString().toUpperCase().replaceAll("#", "")}",
+                                  radix: 16,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          //container 2
-                          CustomText(
-                            element["name"],
-                            type: FontStyle.Small,
-                          ),
-                        ],
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            //container 2
+                            CustomText(
+                              element["name"],
+                              type: FontStyle.Small,
+                              color:
+                                  themeProvider.themeManager.secondaryTextColor,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }).toList()),
+                    );
+                  }).toList()),
+            ),
             (pageProvider.pages[pageProvider.selectedFilter]![widget.index]
                         ['label_details'] as List)
                     .isNotEmpty

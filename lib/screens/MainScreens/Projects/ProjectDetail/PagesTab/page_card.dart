@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_detail.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -64,9 +63,7 @@ class _PageCardState extends ConsumerState<PageCard> {
         decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey.shade300,
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
             //elevation
             borderRadius: BorderRadius.circular(10)),

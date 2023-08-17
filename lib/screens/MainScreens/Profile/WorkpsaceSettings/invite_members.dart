@@ -78,16 +78,17 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         Container(
                             margin: const EdgeInsets.only(
                                 left: 20, right: 20, top: 20, bottom: 5),
-                            child: const Row(
+                            child: Row(
                               children: [
-                                CustomText(
-                                  'Email',
-                                  type: FontStyle.Small,
-                                ),
+                                CustomText('Email',
+                                    type: FontStyle.Small,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor),
                                 CustomText(
                                   '*',
                                   type: FontStyle.Small,
-                                  color: Colors.red,
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
                                 ),
                               ],
                             )),
@@ -217,16 +218,19 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         Container(
                             margin: const EdgeInsets.only(
                                 left: 20, right: 20, top: 20, bottom: 5),
-                            child: const Row(
+                            child: Row(
                               children: [
                                 CustomText(
                                   'Role',
                                   type: FontStyle.Small,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
                                 ),
                                 CustomText(
                                   '*',
                                   type: FontStyle.Small,
-                                  color: Colors.red,
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
                                 ),
                               ],
                             )),
@@ -392,9 +396,11 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                         Container(
                             margin: const EdgeInsets.only(
                                 left: 20, right: 20, top: 20, bottom: 5),
-                            child: const CustomText(
+                            child: CustomText(
                               'Message ',
                               type: FontStyle.Small,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
                             )),
                         Container(
                           padding: const EdgeInsets.only(

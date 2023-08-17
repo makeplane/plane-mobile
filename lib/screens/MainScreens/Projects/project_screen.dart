@@ -546,7 +546,9 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                           ),
                         ),
                 )
-              : errorState(context: context, showButton: false)),
+              : errorState(context: context, ontap: (){
+                
+              })),
     );
   }
 

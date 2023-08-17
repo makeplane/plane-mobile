@@ -62,14 +62,14 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
           // errorState(context: context, showButton: false) :
           widget.type == 'assigned' &&
                   notificationProvider.getAssignedState == StateEnum.error
-              ? errorState(context: context, showButton: false)
+              ? errorState(context: context,)
               : widget.type == 'created' &&
                       notificationProvider.getCreatedState == StateEnum.error
-                  ? errorState(context: context, showButton: false)
+                  ? errorState(context: context,)
                   : widget.type == 'watching' &&
                           notificationProvider.getWatchingState ==
                               StateEnum.error
-                      ? errorState(context: context, showButton: false)
+                      ? errorState(context: context,)
                       : widget.data.isEmpty
                           ? EmptyPlaceholder.emptyNotification(ref)
                           : ListView.builder(

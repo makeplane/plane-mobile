@@ -27,9 +27,7 @@ class _GotoPlaneWebNotifierSheetState
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),

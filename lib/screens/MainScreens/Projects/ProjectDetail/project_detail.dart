@@ -21,6 +21,7 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
@@ -108,7 +109,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               : Container(),
         ],
       ),
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: selected != 0 &&
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
@@ -171,65 +171,14 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
         child: Container(
           // color: themeProvider.backgroundColor,
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-          child: Column(
+          child: 
+          projectProvider.projectDetailState == StateEnum.error ?
+              errorState(context: context, ontap: (){
+                ref.read(ProviderList.projectProvider).initializeProject();
+              }) :
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Container(
-              //     margin: const EdgeInsets.only(top: 10),
-              //     width: MediaQuery.of(context).size.width,
-              //     height: 46,
-              //     child: ListView.builder(
-              //       itemCount: projectProvider.features.length,
-              //       shrinkWrap: true,
-              //       scrollDirection: Axis.horizontal,
-              //       itemBuilder: (context, index) {
-              //         return GestureDetector(
-              //             onTap: () {
-              //               controller.jumpToPage(index);
-              //               setState(() {
-              //                 selected = index;
-              //               });
-              //             },
-              //             child: (projectProvider.features[index]['show'] &&
-              //                     projectProvider.features[index]['title'] !=
-              //                         'Views' &&
-              //                     projectProvider.features[index]['title'] !=
-              //                         'Pages')
-              //                 ? Column(
-              //                     children: [
-              //                       Container(
-              //                         margin: EdgeInsets.only(
-              //                             left: index == 0 ? 20 : 0,
-              //                             right: 25,
-              //                             top: 10),
-              //                         child: CustomText(
-              //                           projectProvider.features[index]['title']
-              //                               .toString(),
-              //                           color: index == selected
-              //                               ? primaryColor
-              //                               : lightGreyTextColor,
-              //                           type: FontStyle.Medium,
-              //                         ),
-              //                       ),
-              //                       selected == index
-              //                           ? Container(
-              //                               margin: EdgeInsets.only(
-              //                                   left: index == 0 ? 20 : 0,
-              //                                   right: 25,
-              //                                   top: 10),
-              //                               height: 7,
-              //                               width: double.parse(projectProvider
-              //                                   .features[index]['width']
-              //                                   .toString()),
-              //                               color: const Color.fromRGBO(
-              //                                   63, 118, 255, 1),
-              //                             )
-              //                           : Container()
-              //                     ],
-              //                   )
-              //                 : Container());
-              //       },
-              //     )),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: projectProvider.features.map((e) {

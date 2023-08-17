@@ -36,6 +36,7 @@ class ThemeManager {
   late Color secondaryIcon;
   late Color primaryBackgroundSelectedColour;
   late Color secondaryBackgroundSelectedColor;
+  late Color secondaryBackgroundActiveColor;
 
   late Color primaryToastBackgroundColor;
   late Color successBackgroundColor;
@@ -59,6 +60,15 @@ class ThemeManager {
   }
 
   ThemeManager(this.theme) {
+    primaryTextColor = theme == THEME.light
+        ? lightPrimaryTextColor
+        : theme == THEME.dark
+            ? darkPrimaryTextColor
+            : theme == THEME.lightHighContrast
+                ? lightContrastPrimaryTextColor
+                : theme == THEME.darkHighContrast
+                    ? darkContrastPrimaryTextColor
+                    : customTextColor;
     placeholderTextColor = theme == THEME.light
         ? lightPlaceholderTextColor
         : theme == THEME.dark
@@ -115,7 +125,8 @@ class ThemeManager {
     textFieldTextStyle = GoogleFonts.inter(
       fontSize: 14,
       height: 1.428,
-      color: placeholderTextColor,
+      color: primaryTextColor,
+       fontWeight: FontWeight.w500
     );
     textFieldDecoration = InputDecoration(
       errorStyle: GoogleFonts.lato(
@@ -155,15 +166,7 @@ class ThemeManager {
         borderRadius: BorderRadius.all(Radius.circular(6)),
       ),
     );
-    primaryTextColor = theme == THEME.light
-        ? lightPrimaryTextColor
-        : theme == THEME.dark
-            ? darkPrimaryTextColor
-            : theme == THEME.lightHighContrast
-                ? lightContrastPrimaryTextColor
-                : theme == THEME.darkHighContrast
-                    ? darkContrastPrimaryTextColor
-                    : customTextColor;
+    
     secondaryTextColor = theme == THEME.light
         ? lightSecondaryTextColor
         : theme == THEME.dark
@@ -325,5 +328,12 @@ class ThemeManager {
             : theme == THEME.lightHighContrast
                 ? lightSucessBackground
                 : darkSucessBackground;
+    secondaryBackgroundActiveColor = theme == THEME.light
+        ? lightSecondaryBackgroundActiveColor
+        : theme == THEME.dark
+            ? darkSecondaryBackgroundActiveColor
+            : theme == THEME.lightHighContrast
+                ? lightSecondaryBackgroundActiveColor
+                : darkSecondaryBackgroundActiveColor;
   }
 }

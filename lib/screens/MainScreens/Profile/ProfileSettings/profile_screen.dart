@@ -146,9 +146,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
 
     return Material(
-      color: themeProvider.isDarkThemeEnabled
-          ? darkPrimaryBackgroundDefaultColor
-          : lightPrimaryBackgroundDefaultColor,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
@@ -156,27 +154,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           children: [
             Row(
               children: [
-                const CustomText(
+                CustomText(
                   'Profile',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
                 ),
                 const Spacer(),
                 MaterialButton(
                   onPressed: _showLogoutModelBottomBar,
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.logout,
                         color: Colors.red,
                         size: 16,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       CustomText(
                         'Logout',
-                        color: Colors.red,
+                        color: themeProvider.themeManager.textErrorColor,
                         type: FontStyle.Medium,
                       )
                     ],
@@ -207,6 +206,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showLogoutModelBottomBar() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -219,13 +219,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           padding: const EdgeInsets.all(20),
           height: 300,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const CustomText(
+                  CustomText(
                     'Logout',
                     type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   const Spacer(),
                   IconButton(
@@ -239,16 +241,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(
                 height: 5,
               ),
-              const CustomText(
+              CustomText(
                 'Are you sure you want to logout from your account?',
                 type: FontStyle.Small,
                 textAlign: TextAlign.left,
                 maxLines: 4,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               Button(
                 ontap: _onLogout,
                 text: 'Logout',
+                color: themeProvider.themeManager.textErrorColor,
               ),
             ],
           ),
@@ -270,9 +274,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryBackgroundDefaultColor
-            : lightSecondaryBackgroundDefaultColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       ),
       padding: const EdgeInsets.all(15),
       child: Row(
@@ -292,9 +294,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : Colors.white,
+                        color: themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                       ),
                       child: Icon(
                         Icons.person_2_outlined,
@@ -350,7 +350,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: primaryLightColor,
+                color: themeProvider.themeManager.secondaryBackgroundActiveColor,
               ),
               child: GestureDetector(
                 onTap: menus[index]['menu'] == 'Workspace Settings'
@@ -481,8 +481,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(menus[index]['items'][idx]['icon'], size: 18, color: themeProvider.themeManager.primaryTextColor,)
-                            ,
+                            Icon(
+                              menus[index]['items'][idx]['icon'],
+                              size: 18,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -497,7 +501,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 15,
-                          color: themeProvider.themeManager.placeholderTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         )
                       ],
                     ),

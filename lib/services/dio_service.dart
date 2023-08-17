@@ -7,10 +7,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane_startup/services/connection_service.dart';
 import 'package:plane_startup/services/shared_preference_service.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:retry/retry.dart';
-
 
 class DioConfig {
   // Static Dio created to directly access Dio client
@@ -40,17 +40,19 @@ class DioConfig {
 
     dio.options = options;
     dio.interceptors.add(
-      // InterceptorsWrapper(onRequest:
-      //     (RequestOptions options, RequestInterceptorHandler handler) async {
-      //   if (hasBody) options.data = data;
-      //   return handler.next(options);
-      // }),
-      InterceptorsWrapper(
-        onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+        // InterceptorsWrapper(onRequest:
+        //     (RequestOptions options, RequestInterceptorHandler handler) async {
+        //   if (hasBody) options.data = data;
+        //   return handler.next(options);
+        // }),
+        InterceptorsWrapper(
+      onRequest:
+          (RequestOptions options, RequestInterceptorHandler handler) async {
         if (hasBody) options.data = data;
         return handler.next(options);
       },
-        onError: (DioException error, ErrorInterceptorHandler handler) async {
+      onError: (DioException error, ErrorInterceptorHandler handler) async {
+        ConnectionService().checkConnectivity();
         if (error.response?.statusCode == 401) {
           await SharedPrefrenceServices.sharedPreferences!.clear();
           Const.appBearerToken = '';
@@ -59,7 +61,7 @@ class DioConfig {
         }
         // Retrieve the error response data
         var errorResponse = error.response?.data;
-        
+
         // Create a new DioError instance with the error response data
         DioException newError = DioException(
           response: error.response,
@@ -69,10 +71,10 @@ class DioConfig {
 
         // Return the new DioError instance
         handler.reject(newError);
-        },
-      )
-      // DioFirebasePerformanceInterceptor(),
-    );
+      },
+    )
+        // DioFirebasePerformanceInterceptor(),
+        );
 
     return dio;
   }

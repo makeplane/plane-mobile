@@ -38,14 +38,19 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     super.initState();
     // ref.read(ProviderList.searchIssueProvider).setStateToLoading();
     ref.read(ProviderList.searchIssueProvider).getIssues(
-        slug: ref
-            .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
-            .workspaceSlug,
-        projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
-        type: widget.type,
-        // parent: widget.parent,
-        issueId: widget.createIssue ? '' : widget.issueId);
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          projectId: widget.createIssue
+              ? ref
+                  .read(ProviderList.issuesProvider)
+                  .createIssueProjectData['id']
+              : ref.read(ProviderList.projectProvider).currentProject['id'],
+          type: widget.type,
+          // parent: widget.parent,
+          issueId: widget.createIssue ? '' : widget.issueId,
+        );
   }
 
   @override

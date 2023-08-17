@@ -51,7 +51,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
             .read(ProviderList.workspaceProvider)
             .selectedWorkspace!
             .workspaceSlug,
-        projID: ref.read(ProviderList.projectProvider).currentProject['id']);
+        projID: widget.createIssue
+            ? ref.read(ProviderList.issuesProvider).createIssueProjectData['id']
+            : ref.read(ProviderList.projectProvider).currentProject['id']);
     colorController.text = '#BC009E';
 
     selectedLabels.addAll(
@@ -299,9 +301,15 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                 ProviderList.workspaceProvider)
                                             .selectedWorkspace!
                                             .workspaceSlug,
-                                        projID: ref
-                                            .read(ProviderList.projectProvider)
-                                            .currentProject['id'],
+                                        projID: widget.createIssue
+                                            ? ref
+                                                .read(
+                                                    ProviderList.issuesProvider)
+                                                .createIssueProjectData['id']
+                                            : ref
+                                                .read(ProviderList
+                                                    .projectProvider)
+                                                .currentProject['id'],
                                         data: {
                                           "name": labelContrtoller.text,
                                           "color": "#${colorController.text}"

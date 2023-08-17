@@ -29,7 +29,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
     var projectProvider = ref.read(ProviderList.projectProvider);
     if (widget.createIssue) {
       selectedEstimate = estimatesProvider.estimates.firstWhere((element) {
-        return element['id'] == projectProvider.currentProject['estimate'];
+        return element['id'] ==
+            projectProvider.projects.firstWhere((element) =>
+                element['id'] ==
+                issuesProvider.createIssueProjectData['id'])['estimate'];
       })['points'].indexWhere((element) {
         return element['key'] ==
             issuesProvider.createIssuedata['estimate_point'];
@@ -40,6 +43,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   @override
   Widget build(BuildContext context) {
     var issueProvider = ref.watch(ProviderList.issueProvider);
+    var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
@@ -53,7 +57,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
             prov.createIssuedata['estimate_point'] =
                 estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][selectedEstimate]['key'];
           }
         }
@@ -301,15 +307,28 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                       width: 10,
                                     ),
                                     CustomText(
-                                      estimatesProvider.estimates
-                                          .firstWhere((element) =>
-                                              element['id'] ==
-                                              ref
-                                                  .read(ProviderList
-                                                      .projectProvider)
-                                                  .currentProject['estimate'])[
-                                              'points'][index]['value']
-                                          .toString(),
+                                      widget.createIssue
+                                          ? estimatesProvider.estimates
+                                              .firstWhere((element) {
+                                              return element['id'] ==
+                                                  projectProvider.projects
+                                                      .firstWhere((element) =>
+                                                          element['id'] ==
+                                                          issuesProvider
+                                                                  .createIssueProjectData[
+                                                              'id'])['estimate'];
+                                            })['points'][index]
+                                                  ['value'].toString()
+                                          : estimatesProvider.estimates
+                                              .firstWhere((element) =>
+                                                  element['id'] ==
+                                                  ref
+                                                          .read(ProviderList
+                                                              .projectProvider)
+                                                          .currentProject[
+                                                      'estimate'])['points']
+                                                  [index]['value']
+                                              .toString(),
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Regular,
                                       color: themeProvider
@@ -360,11 +379,15 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 estimatesProvider.estimates
                                     .firstWhere((element) {
                               return element['id'] ==
-                                  projectProvider.currentProject['estimate'];
+                                  projectProvider.projects.firstWhere(
+                                      (element) =>
+                                          element['id'] ==
+                                          issuesProvider.createIssueProjectData[
+                                              'id'])['estimate'];
                             })['points'][selectedEstimate]['key'];
                           }
                         }
-
+                        log(prov.createIssuedata.toString());
                         prov.setsState();
                         Navigator.pop(context);
                       },
@@ -383,14 +406,19 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   Widget createIssueSelectedPriority(int idx) {
     var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    var issuesProvider = ref.watch(ProviderList.issuesProvider);
     if (selectedEstimate == -1) return const SizedBox();
     return estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][idx]['key'] ==
             estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][selectedEstimate]['key']
         ? const Icon(
             Icons.done,

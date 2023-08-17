@@ -26,13 +26,18 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
 
   @override
   void initState() {
-    if (ref.read(ProviderList.issuesProvider).members.isEmpty) {
+    if (ref.read(ProviderList.issuesProvider).members.isEmpty ||
+        widget.createIssue) {
       ref.read(ProviderList.issuesProvider).getProjectMembers(
           slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: ref.read(ProviderList.projectProvider).currentProject['id']);
+          projID: widget.createIssue
+              ? ref
+                  .read(ProviderList.issuesProvider)
+                  .createIssueProjectData['id']
+              : ref.read(ProviderList.projectProvider).currentProject['id']);
     }
     selectedMembers =
         ref.read(ProviderList.issuesProvider).createIssuedata['members'] ?? {};
@@ -53,8 +58,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
   @override
   Widget build(BuildContext context) {
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var issueProvider = ref.read(ProviderList.issueProvider);
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    var issueProvider = ref.watch(ProviderList.issueProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
         issuesProvider.createIssuedata['members'] =

@@ -10,6 +10,7 @@ class KanbanBoard extends StatefulWidget {
     this.list, {
     this.groupEmptyStates = false,
     this.backgroundColor = Colors.white,
+    this.cardPlaceHolderDecoration,
     this.cardPlaceHolderColor,
     this.boardScrollConfig,
     this.listScrollConfig,
@@ -20,6 +21,7 @@ class KanbanBoard extends StatefulWidget {
     this.cardTransitionDuration = const Duration(milliseconds: 150),
     this.listTransitionDuration = const Duration(milliseconds: 150),
     this.listDecoration,
+    this.isCardsDraggable=true,
     this.textStyle,
     this.onItemTap,
     this.displacementX = 0.0,
@@ -42,13 +44,17 @@ class KanbanBoard extends StatefulWidget {
   final TextStyle? textStyle;
   final Decoration? listDecoration;
   final Decoration? boardDecoration;
+  final Decoration? cardPlaceHolderDecoration;
   final bool? groupEmptyStates;
   final void Function(int? cardIndex, int? listIndex)? onItemTap;
   final void Function(int? cardIndex, int? listIndex)? onItemLongPress;
   final void Function(int? listIndex)? onListTap;
   final void Function(int? listIndex)? onListLongPress;
-  final void Function(int? oldCardIndex, int? newCardIndex, int? oldListIndex,
-      int? newListIndex)? onItemReorder;
+  final void Function(
+      {int? oldCardIndex,
+      int? newCardIndex,
+      int? oldListIndex,
+      int? newListIndex})? onItemReorder;
   final void Function(int? oldListIndex, int? newListIndex)? onListReorder;
   final void Function(String? oldName, String? newName)? onListRename;
   final void Function(String? cardIndex, String? listIndex, String? text)?
@@ -61,6 +67,7 @@ class KanbanBoard extends StatefulWidget {
   final double displacementY;
   final Duration cardTransitionDuration;
   final Duration listTransitionDuration;
+  final bool isCardsDraggable;
 
   @override
   State<KanbanBoard> createState() => _KanbanBoardState();
@@ -77,8 +84,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
           displacementX: widget.displacementX,
           displacementY: widget.displacementY,
           backgroundColor: widget.backgroundColor,
+          isCardsDraggable: widget.isCardsDraggable,
           boardDecoration: widget.boardDecoration,
           cardPlaceHolderColor: widget.cardPlaceHolderColor,
+          cardPlaceHolderDecoration: widget.cardPlaceHolderDecoration,
           listPlaceHolderColor: widget.listPlaceHolderColor,
           listDecoration: widget.listDecoration,
           boardScrollConfig: widget.boardScrollConfig,
@@ -106,8 +115,10 @@ class Board extends ConsumerStatefulWidget {
     this.groupEmptyStates = false,
     this.backgroundColor = Colors.white,
     this.cardPlaceHolderColor,
+    this.cardPlaceHolderDecoration,
     this.listPlaceHolderColor,
     this.boardDecoration,
+    this.isCardsDraggable=true,
     this.boardScrollConfig,
     this.listScrollConfig,
     this.cardTransitionBuilder,
@@ -135,6 +146,7 @@ class Board extends ConsumerStatefulWidget {
   final TextStyle? textStyle;
   final Decoration? listDecoration;
   final Decoration? boardDecoration;
+  final Decoration? cardPlaceHolderDecoration;
   final ScrollConfig? boardScrollConfig;
   final ScrollConfig? listScrollConfig;
   final bool? groupEmptyStates;
@@ -142,8 +154,11 @@ class Board extends ConsumerStatefulWidget {
   final void Function(int? cardIndex, int? listIndex)? onItemLongPress;
   final void Function(int? listIndex)? onListTap;
   final void Function(int? listIndex)? onListLongPress;
-  final void Function(int? oldCardIndex, int? newCardIndex, int? oldListIndex,
-      int? newListIndex)? onItemReorder;
+  final void Function(
+      {int? oldCardIndex,
+      int? newCardIndex,
+      int? oldListIndex,
+      int? newListIndex})? onItemReorder;
   final void Function(int? oldListIndex, int? newListIndex)? onListReorder;
   final void Function(String? oldName, String? newName)? onListRename;
   final void Function(String? cardIndex, String? listIndex, String? text)?
@@ -156,6 +171,7 @@ class Board extends ConsumerStatefulWidget {
   final double displacementY;
   final Duration cardTransitionDuration;
   final Duration listTransitionDuration;
+  final bool isCardsDraggable;
 
   @override
   ConsumerState<Board> createState() => _BoardState();
@@ -168,6 +184,7 @@ class _BoardState extends ConsumerState<Board> {
     var boardListProv = ref.read(ProviderList.boardListProvider);
     boardProv.initializeBoard(
         data: widget.list,
+        isCardsDraggable: widget.isCardsDraggable,
         groupEmptyStates: widget.groupEmptyStates!,
         boardScrollConfig: widget.boardScrollConfig,
         listScrollConfig: widget.listScrollConfig,
@@ -176,6 +193,7 @@ class _BoardState extends ConsumerState<Board> {
         backgroundColor: widget.backgroundColor,
         boardDecoration: widget.boardDecoration,
         cardPlaceHolderColor: widget.cardPlaceHolderColor,
+        cardPlaceHolderDecoration: widget.cardPlaceHolderDecoration,
         listPlaceHolderColor: widget.listPlaceHolderColor,
         listDecoration: widget.listDecoration,
         textStyle: widget.textStyle,
@@ -248,6 +266,7 @@ class _BoardState extends ConsumerState<Board> {
     boardProv.initializeBoard(
         groupEmptyStates: widget.groupEmptyStates!,
         data: widget.list,
+        isCardsDraggable: widget.isCardsDraggable,
         boardScrollConfig: widget.boardScrollConfig,
         listScrollConfig: widget.listScrollConfig,
         displacementX: widget.displacementX,
@@ -256,6 +275,7 @@ class _BoardState extends ConsumerState<Board> {
         boardDecoration: widget.boardDecoration,
         cardPlaceHolderColor: widget.cardPlaceHolderColor,
         listPlaceHolderColor: widget.listPlaceHolderColor,
+        cardPlaceHolderDecoration: widget.cardPlaceHolderDecoration,
         listDecoration: widget.listDecoration,
         textStyle: widget.textStyle,
         onItemTap: widget.onItemTap,
@@ -283,15 +303,17 @@ class _BoardState extends ConsumerState<Board> {
       if (!context.mounted) return;
       var box = context.findRenderObject() as RenderBox;
       boardProv.board.displacementX =
-          box.localToGlobal(Offset.zero).dx - 10; //- margin
+          box.localToGlobal(Offset.zero).dx; //- margin
       boardProv.board.displacementY =
-          box.localToGlobal(Offset.zero).dy + 24; // statusbar
+          box.localToGlobal(Offset.zero).dy; // statusbar
     });
     return Listener(
       onPointerUp: (event) {
         if (boardProv.board.isElementDragged || boardProv.board.isListDragged) {
           if (boardProv.board.isElementDragged) {
-            ref.read(ProviderList.cardProvider).reorderCard();
+            ref
+                .read(ProviderList.cardProvider)
+                .reorderCard(onItemReorder: widget.onItemReorder!);
           }
           boardProv.setcanDrag(value: false, listIndex: 0, itemIndex: 0);
           setState(() {});
@@ -385,11 +407,8 @@ class _BoardState extends ConsumerState<Board> {
                             left: value.dx,
                             top: value.dy,
                             child: Opacity(
-                              opacity: 0.7,
-                              child: Container(
-                                  color: Colors.amber,
-                                  child: boardProv.draggedItemState!.child),
-                            ),
+                                opacity: 0.7,
+                                child: boardProv.draggedItemState!.child),
                           )
                         : Container();
                   },

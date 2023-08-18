@@ -179,7 +179,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         ),
         CustomText(
           provider.issuesResponse[widget.cardIndex]['name'],
-          type: FontStyle.Large,
+          type: FontStyle.Small,
           fontWeight: FontWeightt.Medium,
           maxLines: 2,
           textAlign: TextAlign.start,

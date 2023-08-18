@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/kanban/Provider/provider_list.dart';
@@ -74,7 +75,7 @@ class _ItemState extends ConsumerState<Item> {
 
             if (cardProv.getYAxisCondition(
                 listIndex: widget.listIndex, itemIndex: widget.itemIndex)) {
-            //  log("Y AXIS CONDITION");
+              //log("Y AXIS CONDITION");
               cardProv.checkForYAxisMovement(
                   listIndex: widget.listIndex, itemIndex: widget.itemIndex);
             } else if (cardProv.getXAxisCondition(
@@ -99,7 +100,7 @@ class _ItemState extends ConsumerState<Item> {
                   prov.draggedItemState!.listIndex == widget.listIndex &&
                   prov.board.dragItemOfListIndex! == widget.listIndex
               ? Container(
-                  decoration: BoxDecoration(
+                  decoration:prov.board.cardPlaceHolderDecoration?? BoxDecoration(
                     border: Border.all(color: Colors.grey.shade100),
                     borderRadius: BorderRadius.circular(6),
                     color: prov.board.lists[widget.listIndex]
@@ -107,16 +108,14 @@ class _ItemState extends ConsumerState<Item> {
                         Colors.white,
                   ),
                   margin: const EdgeInsets.only(
-                      bottom: 15, left: 10, right: 10, top: 15),
-                  width: prov.board.lists[widget.listIndex]
-                      .items[widget.itemIndex].actualSize!.width,
-                  height: prov.board.lists[widget.listIndex]
-                      .items[widget.itemIndex].actualSize!.height,
+                      bottom: 15, left: 10, right: 10,top:5),
+                  width: prov.draggedItemState!.width,
+                  height: prov.draggedItemState!.height,
                 )
               : cardProv.isCurrentElementDragged(
                       listIndex: widget.listIndex, itemIndex: widget.itemIndex)
                   ? Container(
-                      decoration: BoxDecoration(
+                      decoration: prov.board.cardPlaceHolderDecoration?? BoxDecoration(
                         border: Border.all(color: Colors.grey.shade100),
                         borderRadius: BorderRadius.circular(6),
                         color: prov.board.lists[widget.listIndex]

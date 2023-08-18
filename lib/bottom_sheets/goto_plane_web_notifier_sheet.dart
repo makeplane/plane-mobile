@@ -5,7 +5,6 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../provider/provider_list.dart';
-import '../utils/constants.dart';
 
 class GotoPlaneWebNotifierSheet extends ConsumerStatefulWidget {
   const GotoPlaneWebNotifierSheet(

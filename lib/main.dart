@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
 import 'utils/enums.dart';
+// ignore: depend_on_referenced_packages
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 late SharedPreferences prefs;

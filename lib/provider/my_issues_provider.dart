@@ -343,7 +343,7 @@ class MyIssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
 
-      log('filter myIssue issue success ${response.data.toString()}');
+      // log('filter myIssue issue success ${response.data.toString()}');
 
       issuesResponse = [];
       isISsuesEmpty = true;
@@ -436,6 +436,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
         items.add(
           IssueCardWidget(
+            fromMyIssues: true,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.myIssues,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,11 +35,13 @@ class IssueDetail extends ConsumerStatefulWidget {
   String appBarTitle;
   final String? projID;
   final String? workspaceSlug;
+  final bool fromMyIssues;
   IssueDetail(
       {required this.appBarTitle,
       this.projID,
       this.workspaceSlug,
       required this.issueId,
+      this.fromMyIssues = false,
       super.key});
 
   @override
@@ -61,16 +65,43 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
   void initState() {
     super.initState();
     getIssueDetails();
-    getCycles();
+    if (widget.fromMyIssues) {
+      log('from my issues');
+      ref.read(ProviderList.projectProvider).currentProject = ref
+          .read(ProviderList.projectProvider)
+          .projects
+          .firstWhere((element) => element['id'] == widget.projID);
+      ref.read(ProviderList.issuesProvider).getProjectMembers(
+            slug: widget.workspaceSlug ??
+                ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+            projID: widget.projID!,
+          );
+      ref.read(ProviderList.issuesProvider).getStates(
+            slug: widget.workspaceSlug ??
+                ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+            projID: widget.projID!,
+          );
+
+      ref.read(ProviderList.estimatesProvider).getEstimates(
+            slug: widget.workspaceSlug ??
+                ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+            projID: widget.projID!,
+          );
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getCycles();
       getModules();
     });
-  }
-
-  @override
-  void dispose() {
-    ref.watch(ProviderList.issueProvider).cyclesList.clear();
-    super.dispose();
   }
 
   Future getIssueDetails() async {
@@ -127,8 +158,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
   }
 
   Future getCycles() async {
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var issueProvider = ref.read(ProviderList.issueProvider);
+    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    var issueProvider = ref.watch(ProviderList.issueProvider);
     var slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
@@ -155,17 +186,19 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       issueProvider.cyclesList.add(element);
     }
     issueProvider.cyclesList.add({'name': 'None'});
+    log('cycles list ${issueProvider.cyclesList.length.toString()}');
+    issueProvider.setState();
   }
 
   Future getModules() async {
-    var modulesProvider = ref.read(ProviderList.modulesProvider);
-    var issueProvider = ref.read(ProviderList.issueProvider);
+    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    var issueProvider = ref.watch(ProviderList.issueProvider);
     var slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
     issueProvider.modulesList.clear();
-    ref.read(ProviderList.modulesProvider).getModules(
+    await ref.read(ProviderList.modulesProvider).getModules(
         slug: widget.workspaceSlug ?? slug,
         projId: widget.projID ??
             ref.read(ProviderList.projectProvider).currentProject['id']);
@@ -177,6 +210,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       issueProvider.modulesList.add(element);
     }
     issueProvider.modulesList.add({'name': 'None'});
+    log('modules list ${issueProvider.modulesList.length.toString()}');
+    issueProvider.setState();
   }
 
   bool isItAnImageExtension(String data) =>
@@ -196,6 +231,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       //     : lightBackgroundColor,
       appBar: CustomAppBar(
         onPressed: () {
+          ref.watch(ProviderList.issueProvider).cyclesList.clear();
+          ref.watch(ProviderList.issueProvider).modulesList.clear();
           Navigator.pop(context);
         },
         text: widget.appBarTitle,
@@ -459,7 +496,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                     .placeholderTextColor,
                                               ),
                                               CustomText(
-                                                'Add',
+                                                'Add Sub Issue',
                                                 type: FontStyle.Medium,
                                                 fontWeight: FontWeightt.Regular,
                                                 color: themeProvider
@@ -658,10 +695,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                     .bottom),
                                                         child:
                                                             AddAttachmentsSheet(
-                                                          projectId: ref
-                                                              .read(ProviderList
-                                                                  .projectProvider)
-                                                              .currentProject['id'],
+                                                          projectId: widget
+                                                                  .projID ??
+                                                              ref
+                                                                  .read(ProviderList
+                                                                      .projectProvider)
+                                                                  .currentProject['id'],
                                                           slug: ref
                                                               .read(ProviderList
                                                                   .workspaceProvider)
@@ -2316,129 +2355,134 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
   Widget selectedSubIssues() {
     var issueProvider = ref.watch(ProviderList.issueProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          //padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            primary: false,
-            itemCount: issueProvider.subIssues.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    //padding: const EdgeInsets.all(5),
-                    child: Column(
+    return issueProvider.subIssues.isEmpty
+        ? Container()
+        : Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                //padding: const EdgeInsets.all(10),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: issueProvider.subIssues.length,
+                  itemBuilder: (context, index) {
+                    return Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          //padding: const EdgeInsets.all(5),
+                          child: Column(
                             children: [
-                              CustomText(
-                                issueProvider.subIssues[index]['project_detail']
-                                        ['identifier'] +
-                                    '-' +
-                                    issueProvider.subIssues[index]
-                                            ['sequence_id']
-                                        .toString(),
-                                type: FontStyle.Medium,
-                                fontWeight: FontWeightt.Regular,
-                                color:
-                                    themeProvider.themeManager.primaryTextColor,
-                              ),
-                              Expanded(
-                                child: CustomText(
-                                  '  ${issueProvider.subIssues[index]['name']}',
-                                  maxLines: 1,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
-                                  fontWeight: FontWeightt.Regular,
-                                  type: FontStyle.Medium,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  issueProvider
-                                      .deleteSubIssue(
-                                          slug: ref
-                                              .read(ProviderList
-                                                  .workspaceProvider)
-                                              .selectedWorkspace!
-                                              .workspaceSlug,
-                                          projectId: ref
-                                              .read(
-                                                  ProviderList.projectProvider)
-                                              .currentProject['id'],
-                                          issueId: issueProvider
-                                              .subIssues[index]['id'],
-                                          index: index,
-                                          buildContext: context)
-                                      .then(
-                                        (value) => issueProvider.getSubIssues(
-                                          slug: ref
-                                              .read(ProviderList
-                                                  .workspaceProvider)
-                                              .selectedWorkspace!
-                                              .workspaceSlug,
-                                          projectId: ref
-                                              .read(
-                                                  ProviderList.projectProvider)
-                                              .currentProject['id'],
-                                          issueId: widget.issueId,
-                                        ),
-                                      );
-                                  setState(
-                                    () {
-                                      issueProvider.subIssues.removeAt(index);
-                                    },
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  size: 20,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      issueProvider.subIssues[index]
+                                              ['project_detail']['identifier'] +
+                                          '-' +
+                                          issueProvider.subIssues[index]
+                                                  ['sequence_id']
+                                              .toString(),
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                    ),
+                                    Expanded(
+                                      child: CustomText(
+                                        '  ${issueProvider.subIssues[index]['name']}',
+                                        maxLines: 1,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                        fontWeight: FontWeightt.Regular,
+                                        type: FontStyle.Medium,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        issueProvider
+                                            .deleteSubIssue(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace!
+                                                    .workspaceSlug,
+                                                projectId: ref
+                                                    .read(ProviderList
+                                                        .projectProvider)
+                                                    .currentProject['id'],
+                                                issueId: issueProvider
+                                                    .subIssues[index]['id'],
+                                                index: index,
+                                                buildContext: context)
+                                            .then(
+                                              (value) =>
+                                                  issueProvider.getSubIssues(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace!
+                                                    .workspaceSlug,
+                                                projectId: ref
+                                                    .read(ProviderList
+                                                        .projectProvider)
+                                                    .currentProject['id'],
+                                                issueId: widget.issueId,
+                                              ),
+                                            );
+                                        setState(
+                                          () {
+                                            issueProvider.subIssues
+                                                .removeAt(index);
+                                          },
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 20,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        index == issueProvider.subIssues.length - 1
+                            ? Container()
+                            : Container(
+                                width: width,
+                                height: 1,
+                                color: getBorderColor(themeProvider),
+                              )
                       ],
-                    ),
-                  ),
-                  index == issueProvider.subIssues.length - 1
-                      ? Container()
-                      : Container(
-                          width: width,
-                          height: 1,
-                          color: getBorderColor(themeProvider),
-                        )
-                ],
-              );
-            },
-          ),
-        ),
-        issueProvider.subIssues.isNotEmpty
-            ? const SizedBox(height: 10)
-            : const SizedBox(),
-      ],
-    );
+                    );
+                  },
+                ),
+              ),
+              issueProvider.subIssues.isNotEmpty
+                  ? const SizedBox(height: 10)
+                  : const SizedBox(),
+            ],
+          );
   }
 
   Widget blockingWidget(String issueId) {
@@ -2851,25 +2895,32 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                 color: themeProvider.themeManager.placeholderTextColor,
               ),
               Expanded(child: Container()),
-              Row(
-                children: [
-                  CustomText(
-                    issueProvider.issueDetails['issue_cycle'] != null
-                        ? issueProvider.issueDetails['issue_cycle']
-                            ['cycle_detail']['name']
-                        : 'No Cycle',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_down,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
+              Container(
+                constraints: BoxConstraints(maxWidth: width * 0.4),
+                width: width * 0.4,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: width * 0.32,
+                      child: CustomText(
+                        issueProvider.issueDetails['issue_cycle'] != null
+                            ? issueProvider.issueDetails['issue_cycle']
+                                ['cycle_detail']['name']
+                            : 'No Cycle',
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.primaryTextColor,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    ),
+                  ],
+                ),
               )
             ],
           ),

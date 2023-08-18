@@ -12,7 +12,6 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/role_sheet.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
@@ -146,7 +145,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              color: themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                                              color: themeProvider.themeManager
+                                                  .tertiaryBackgroundDefaultColor,
                                             ),
                                             child: Icon(
                                               Icons.person_2_outlined,
@@ -166,15 +166,18 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.themeManager.borderSubtle01Color),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
+                                    color: themeProvider.themeManager
+                                        .tertiaryBackgroundDefaultColor),
                                 padding: const EdgeInsets.all(8),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.file_upload_outlined,
-                                      color: themeProvider.themeManager.primaryTextColor,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                       size: 20,
                                     ),
                                     const SizedBox(
@@ -184,7 +187,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       'Upload',
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Bold,
-                                      color: themeProvider.themeManager.primaryTextColor,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     )
                                   ],
                                 ),
@@ -205,9 +209,11 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.themeManager.borderSubtle01Color),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.themeManager.tertiaryBackgroundDefaultColor),
+                                    color: themeProvider.themeManager
+                                        .tertiaryBackgroundDefaultColor),
                                 padding: const EdgeInsets.all(8),
                                 child: Row(
                                   children: [
@@ -215,7 +221,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       'Remove',
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Bold,
-                                      color: themeProvider.themeManager.textErrorColor,
+                                      color: themeProvider
+                                          .themeManager.textErrorColor,
                                     )
                                   ],
                                 ),
@@ -243,12 +250,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         height: 50,
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextFormField(
-                          controller: fullName,
-                          style: TextStyle(
-                              color: themeProvider.themeManager.primaryTextColor),
-                          decoration: themeProvider
-                              .themeManager.textFieldDecoration
-                        ),
+                            controller: fullName,
+                            style: TextStyle(
+                                color: themeProvider
+                                    .themeManager.primaryTextColor),
+                            decoration:
+                                themeProvider.themeManager.textFieldDecoration),
                       ),
                       const SizedBox(
                         height: 20,
@@ -272,9 +279,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           controller: email,
                           enabled: false,
                           style: TextStyle(
-                              color: themeProvider.themeManager.primaryTextColor),
-                          decoration: themeProvider
-                              .themeManager.textFieldDecoration,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor),
+                          decoration:
+                              themeProvider.themeManager.textFieldDecoration,
                         ),
                       ),
                       const SizedBox(
@@ -284,7 +292,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Role *',
                             type: FontStyle.Medium,
-                            color: themeProvider.themeManager.tertiaryTextColor),
+                            color:
+                                themeProvider.themeManager.tertiaryTextColor),
                       ),
                       const SizedBox(
                         height: 10,
@@ -314,7 +323,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             border: Border.all(
-                                color: themeProvider.themeManager.borderSubtle01Color),
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -327,14 +337,16 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       ? 'Select Role'
                                       : profileProvider.dropDownValue!,
                                   type: FontStyle.Small,
-                                  color: themeProvider.themeManager.primaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 16),
                                 child: Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: themeProvider.themeManager.primaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                             ],
@@ -351,7 +363,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: CustomText('Theme',
                             type: FontStyle.Medium,
-                            color: themeProvider.themeManager.tertiaryTextColor),
+                            color:
+                                themeProvider.themeManager.tertiaryTextColor),
                       ),
                       const SizedBox(
                         height: 10,
@@ -386,7 +399,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             border: Border.all(
-                                color: themeProvider.themeManager.borderSubtle01Color),
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -395,11 +409,17 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               Container(
                                 margin: const EdgeInsets.only(left: 16),
                                 child: CustomText(
-                                  themeProvider.theme == THEME.light ? 'Light'
-                                  : themeProvider.theme == THEME.dark ? 'Dark'
-                                  : themeProvider.theme == THEME.lightHighContrast ? 'Light High Contrast'
-                                  : themeProvider.theme == THEME.darkHighContrast ? 'Dark High Contrast'
-                                  : 'Custom' ,
+                                  themeProvider.theme == THEME.light
+                                      ? 'Light'
+                                      : themeProvider.theme == THEME.dark
+                                          ? 'Dark'
+                                          : themeProvider.theme ==
+                                                  THEME.lightHighContrast
+                                              ? 'Light High Contrast'
+                                              : themeProvider.theme ==
+                                                      THEME.darkHighContrast
+                                                  ? 'Dark High Contrast'
+                                                  : 'Custom',
                                   type: FontStyle.Small,
                                 ),
                               ),

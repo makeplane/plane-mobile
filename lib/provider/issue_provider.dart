@@ -50,6 +50,10 @@ class IssueProvider with ChangeNotifier {
     cyclesList = [];
   }
 
+  setState() {
+    notifyListeners();
+  }
+
   //Future getIssueDetailsBlockedIssue()
 
   Future getIssueDetails(
@@ -306,11 +310,12 @@ class IssueProvider with ChangeNotifier {
       // );
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
+      attachmentState = StateEnum.success;
       ref.read(ProviderList.issuesProvider).issuesResponse[ref
           .read(ProviderList.issuesProvider)
           .issuesResponse
           .indexWhere((element) => element["id"] == issueId)] = issueDetails;
-      attachmentState = StateEnum.success;
+
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());

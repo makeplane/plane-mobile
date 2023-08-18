@@ -532,7 +532,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                               BorderRadius.circular(6),
                                           border: Border.all(
                                               color: themeProvider.themeManager
-                                                  .borderStrong01Color)),
+                                                  .borderSubtle01Color)),
                                       // margin: const EdgeInsets.only(right: 5),
                                       height: 30,
                                       width: 30,

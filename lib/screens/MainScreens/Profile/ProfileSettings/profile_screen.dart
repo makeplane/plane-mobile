@@ -6,6 +6,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
+import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/screens/billing_plans.dart';
 import 'package:plane_startup/screens/integrations.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
@@ -53,6 +54,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 builder: (context) => const Activity(),
               ),
             );
+          }
+        },
+        {
+          'title': 'Preferences',
+          'icon': Icons.tune,
+          'onTap': (context) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PrefrencesScreen()));
           }
         }
       ],
@@ -294,7 +305,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                        color: themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor,
                       ),
                       child: Icon(
                         Icons.person_2_outlined,
@@ -350,7 +362,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: themeProvider.themeManager.secondaryBackgroundActiveColor,
+                color:
+                    themeProvider.themeManager.secondaryBackgroundActiveColor,
               ),
               child: GestureDetector(
                 onTap: menus[index]['menu'] == 'Workspace Settings'
@@ -422,7 +435,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(3),
-                                          color: Colors.white,
+                                          color: themeProvider.themeManager
+                                              .primaryBackgroundDefaultColor,
                                         ),
                                         child: Center(
                                           child: CustomText(
@@ -431,8 +445,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                 .toUpperCase(),
                                             fontSize: 14,
                                             fontWeight: FontWeightt.Semibold,
-                                            color: const Color.fromRGBO(
-                                                48, 0, 240, 1),
+                                            // color: const Color.fromRGBO(
+                                            //     48, 0, 240, 1),
                                           ),
                                         ),
                                       ),

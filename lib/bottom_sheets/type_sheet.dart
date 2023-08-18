@@ -129,10 +129,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           ),
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          fillColor: selected == 0
-                              ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.borderSubtle01Color),
+                          // fillColor: selected == 0
+                          //     ? null
+                          //     : MaterialStateProperty.all<Color>(themeProvider
+                          //         .themeManager.borderSubtle01Color),
                           groupValue: selected,
                           activeColor: themeProvider.themeManager.primaryColour,
                           value: 0,
@@ -142,10 +142,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                             // });
                           }),
                       const SizedBox(width: 10),
-                      CustomText(
+                      const CustomText(
                         'Board View',
                         type: FontStyle.H6,
-                        color: themeProvider.themeManager.tertiaryTextColor,
+                        //color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     ],
                   ),
@@ -155,15 +155,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 height: 1,
                 width: double.infinity,
                 child: Container(
-                    color: themeProvider.themeManager.borderSubtle01Color),
+                    color: themeProvider.themeManager.borderDisabledColor),
               ),
-              SizedBox(
-                height: 1,
-                width: double.infinity,
-                child: Container(
-                  color: themeProvider.themeManager.borderSubtle01Color,
-                ),
-              ),
+
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -182,19 +176,19 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           ),
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          fillColor: selected == 1
-                              ? null
-                              : MaterialStateProperty.all<Color>(themeProvider
-                                  .themeManager.borderSubtle01Color),
+                          // fillColor: selected == 1
+                          //     ? null
+                          //     : MaterialStateProperty.all<Color>(themeProvider
+                          //         .themeManager.borderSubtle01Color),
                           groupValue: selected,
                           activeColor: primaryColor,
                           value: 1,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
-                      CustomText(
+                      const CustomText(
                         'List View',
                         type: FontStyle.H6,
-                        color: themeProvider.themeManager.tertiaryTextColor,
+                        //color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                     ],
                   ),
@@ -229,21 +223,20 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 ),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
-                                fillColor: selected == 2
-                                    ? null
-                                    : MaterialStateProperty.all<Color>(
-                                        themeProvider
-                                            .themeManager.disabledButtonColor),
+                                // fillColor: selected == 2
+                                //     ? null
+                                //     : MaterialStateProperty.all<Color>(
+                                //         themeProvider
+                                //             .themeManager.primaryTextColor),
                                 groupValue: selected,
                                 activeColor: primaryColor,
                                 value: 2,
                                 onChanged: (val) {}),
                             const SizedBox(width: 10),
-                            CustomText(
+                            const CustomText(
                               'Calendar View',
                               type: FontStyle.H6,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
+                              //color:themeProvider.themeManager.tertiaryTextColor,
                             ),
                           ],
                         ),
@@ -278,21 +271,20 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 ),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
-                                fillColor: selected == 3
-                                    ? null
-                                    : MaterialStateProperty.all<Color>(
-                                        themeProvider
-                                            .themeManager.disabledButtonColor),
+                                // fillColor: selected == 3
+                                //     ? null
+                                //     : MaterialStateProperty.all<Color>(
+                                //         themeProvider
+                                //             .themeManager.disabledButtonColor),
                                 groupValue: selected,
                                 activeColor: primaryColor,
                                 value: 3,
                                 onChanged: (val) {}),
                             const SizedBox(width: 10),
-                            CustomText(
+                            const CustomText(
                               'Spreadsheet View',
                               type: FontStyle.H6,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
+                              //color:themeProvider.themeManager.tertiaryTextColor,
                             ),
                           ],
                         ),

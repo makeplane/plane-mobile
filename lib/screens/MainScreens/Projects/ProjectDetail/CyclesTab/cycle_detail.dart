@@ -391,7 +391,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                 : cyclesProviderRead
                                                         .cycleDetailSelectedIndex ==
                                                     0)
-                                        ? lightSecondaryTextColor
+                                        ? themeProvider
+                                            .themeManager.placeholderTextColor
                                         : themeProvider.isDarkThemeEnabled &&
                                                 (widget.fromModule
                                                     ? modulesProvider
@@ -400,8 +401,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     : cyclesProviderRead
                                                             .cycleDetailSelectedIndex ==
                                                         0)
-                                            ? darkSecondaryTextColor
-                                            : primaryColor),
+                                            ? themeProvider.themeManager
+                                                .placeholderTextColor
+                                            : themeProvider
+                                                .themeManager.primaryColour),
                               ),
                               Container(
                                 height: 7,
@@ -462,10 +465,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               child: LoadingIndicator(
                                                 indicatorType: Indicator
                                                     .lineSpinFadeLoader,
-                                                colors: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? [Colors.white]
-                                                    : [Colors.black],
+                                                colors: [
+                                                  themeProvider.themeManager
+                                                      .primaryBackgroundDefaultColor
+                                                ],
                                                 strokeWidth: 1.0,
                                                 backgroundColor:
                                                     Colors.transparent,
@@ -543,7 +546,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 margin: const EdgeInsets.only(
                                                                                   left: 15,
                                                                                 ),
-                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: themeProvider.isDarkThemeEnabled ? const Color.fromRGBO(39, 42, 45, 1) : const Color.fromRGBO(222, 226, 230, 1)),
+                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: themeProvider.themeManager.secondaryBackgroundDefaultColor),
                                                                                 height: 25,
                                                                                 width: 30,
                                                                                 child: CustomText(
@@ -666,7 +669,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               child: Container(
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
-                                color: darkBackgroundColor,
+                                color: Colors.black,
                                 child: Row(
                                   children: [
                                     projectProvider.role == Role.admin ||
@@ -725,7 +728,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: Colors.white,
                                     ),
                                     Expanded(
                                         child: GestureDetector(
@@ -776,7 +779,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: Colors.white,
                                     ),
                                     issueProvider.issues.projectView ==
                                             ProjectView.calendar
@@ -838,7 +841,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: Colors.white,
                                     ),
                                     Expanded(
                                         child: GestureDetector(
@@ -894,16 +897,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         ),
                         widget.fromModule
                             ? Container(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryBackgroundDefaultColor
-                                    : lightSecondaryBackgroundDefaultColor,
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(25),
                                 child: activeCycleDetails(fromModule: true),
                               )
                             : Container(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryBackgroundDefaultColor
-                                    : lightSecondaryBackgroundDefaultColor,
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(25),
                                 child: activeCycleDetails(),
                               ),
@@ -988,14 +989,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             ? Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? greenWithOpacity
-                        : lightGreeyColor,
-                    borderRadius: BorderRadius.circular(5)),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: getBorderColor(themeProvider)),
+                ),
                 child: const CustomText(
                   'Draft',
                   type: FontStyle.Small,
-                  color: greyColor,
                 ),
               )
             : Container(
@@ -1007,15 +1007,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date']) ==
                             'Draft'
-                        ? lightGreeyColor
+                        ? themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor
                         : checkDate(
                                     startDate: detailData['start_date'],
                                     endDate: detailData[widget.fromModule
                                         ? 'target_date'
                                         : 'end_date']) ==
                                 'Completed'
-                            ? primaryLightColor
-                            : greenWithOpacity,
+                            ? themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor
+                            : themeProvider.themeManager.successBackgroundColor,
                     borderRadius: BorderRadius.circular(5)),
                 child: CustomText(
                   checkDate(
@@ -1477,23 +1479,26 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? (issuesProvider
-                                                .issues.filters.assignees
+                                    color:
+                                        // themeProvider.isDarkThemeEnabled
+                                        //     ?
+                                        (issuesProvider.issues.filters.assignees
                                                 .contains(
                                                     detailData['distribution']
                                                             ['assignees'][idx]
                                                         ['assignee_id'])
-                                            ? darkThemeBorder
-                                            : darkBackgroundColor)
-                                        : (issuesProvider
-                                                .issues.filters.assignees
-                                                .contains(
-                                                    detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['assignee_id'])
-                                            ? lightGreeyColor
-                                            : lightBackgroundColor),
+                                            ? themeProvider.themeManager
+                                                .primaryBackgroundDefaultColor
+                                            : themeProvider.themeManager
+                                                .secondaryBackgroundDefaultColor),
+                                    // : (issuesProvider
+                                    //         .issues.filters.assignees
+                                    //         .contains(
+                                    //             detailData['distribution']
+                                    //                     ['assignees'][idx]
+                                    //                 ['assignee_id'])
+                                    //     ? lightGreeyColor
+                                    //     : lightBackgroundColor),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Row(

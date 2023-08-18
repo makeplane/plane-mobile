@@ -573,9 +573,9 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
 
                                       child: CustomText(tag['name'],
                                           type: FontStyle.Medium,
+                                          overrride: true,
                                           color: tag['selected'] ?? false
-                                              ? themeProvider
-                                                  .themeManager.textonColor
+                                              ? Colors.white
                                               : themeProvider.themeManager
                                                   .primaryTextColor),
                                     ),

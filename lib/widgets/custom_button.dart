@@ -68,9 +68,10 @@ class _ButtonState extends ConsumerState<Button> {
                 CustomText(
                   widget.text,
                   type: FontStyle.Medium,
-                  color: (widget.filledButton && !widget.disable)
-                      ? Colors.white
-                      : themeProvider.themeManager.textonColor,
+                  color: widget.textColor ??
+                      ((widget.filledButton && !widget.disable)
+                          ? Colors.white
+                          : themeProvider.themeManager.textonColor),
                   overrride: true,
                   fontWeight: FontWeightt.Semibold,
                 ),

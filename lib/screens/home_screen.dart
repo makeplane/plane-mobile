@@ -70,10 +70,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          margin: Platform.isAndroid
-              ? const EdgeInsets.only(bottom: 10)
-              : EdgeInsets.zero,
-          height: 68,
+          height: 80,
           decoration: BoxDecoration(
             color:
                 themeProvider.theme == THEME.custom ? customNavBarColor : null,

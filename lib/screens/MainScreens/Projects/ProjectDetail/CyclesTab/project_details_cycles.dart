@@ -122,9 +122,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
             child: CustomText(
               title,
               color: cycleNaveBarSelectedIndex == itemIndex
-                  ? textColorOnSelected
-                  : null,
+                  ? Colors.white
+                  : themeProvider.themeManager.primaryTextColor,
               type: FontStyle.Small,
+              overrride: true,
             ),
           ),
         ),
@@ -242,7 +243,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                 .circular(5),
                                                         color: themeProvider
                                                             .themeManager
-                                                            .primaryBackgroundSelectedColour,
+                                                            .tertiaryBackgroundDefaultColor,
                                                       ),
                                                       child: const CustomText(
                                                           'Draft'),
@@ -261,8 +262,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           [
                                                                           'end_date']) ==
                                                                   'Completed'
-                                                              ? primaryLightColor
-                                                              : greenWithOpacity,
+                                                              ? themeProvider
+                                                                  .themeManager
+                                                                  .tertiaryBackgroundDefaultColor
+                                                              : themeProvider
+                                                                  .themeManager
+                                                                  .successBackgroundColor,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(5)),
@@ -491,9 +496,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                             BorderRadius
                                                                 .circular(5),
                                                         color: themeProvider
-                                                                .isDarkThemeEnabled
-                                                            ? greenWithOpacity
-                                                            : lightGreeyColor,
+                                                            .themeManager
+                                                            .tertiaryBackgroundDefaultColor,
                                                       ),
                                                       child: const CustomText(
                                                           'Draft'),
@@ -512,8 +516,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           [
                                                                           'end_date']) ==
                                                                   'Completed'
-                                                              ? primaryLightColor
-                                                              : greenWithOpacity,
+                                                              ? themeProvider
+                                                                  .themeManager
+                                                                  .tertiaryBackgroundDefaultColor
+                                                              : themeProvider
+                                                                  .themeManager
+                                                                  .successBackgroundColor,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(5)),
@@ -1737,9 +1745,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                             BorderRadius
                                                                 .circular(5),
                                                         color: themeProvider
-                                                                .isDarkThemeEnabled
-                                                            ? greenWithOpacity
-                                                            : lightGreeyColor,
+                                                            .themeManager
+                                                            .tertiaryBackgroundDefaultColor,
                                                       ),
                                                       child: const CustomText(
                                                           'Draft'),
@@ -1996,9 +2003,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                             BorderRadius
                                                                 .circular(5),
                                                         color: themeProvider
-                                                                .isDarkThemeEnabled
-                                                            ? greenWithOpacity
-                                                            : lightGreeyColor,
+                                                            .themeManager
+                                                            .tertiaryBackgroundDefaultColor,
                                                       ),
                                                       child: const CustomText(
                                                           'Draft'),

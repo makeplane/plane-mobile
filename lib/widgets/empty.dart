@@ -63,21 +63,24 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
-                  CustomText('Add Cycle',
-                      type: FontStyle.Small,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                  CustomText(
+                    'Add Cycle',
+                    type: FontStyle.Small,
+                    fontWeight: FontWeightt.Medium,
+                    color: Colors.white,
+                    overrride: true,
+                  )
                 ],
               ),
             ),
@@ -147,21 +150,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add Issues',
                       type: FontStyle.Small,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                      overrride: true,
+                      color: Colors.white)
                 ],
               ),
             ),
@@ -194,21 +198,22 @@ class EmptyPlaceholder {
                       borderRadius: BorderRadius.circular(6),
                       color: themeProvider.themeManager.primaryColour,
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.add,
-                          color: themeProvider.themeManager.textonColor,
+                          color: Colors.white,
                           size: 24,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         CustomText('Add Existing Issues',
                             type: FontStyle.Small,
                             fontWeight: FontWeightt.Medium,
-                            color: themeProvider.themeManager.textonColor)
+                            overrride: true,
+                            color: Colors.white)
                       ],
                     ),
                   ),
@@ -268,21 +273,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add Module',
                       type: FontStyle.Small,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                      overrride: true,
+                      color: Colors.white)
                 ],
               ),
             ),
@@ -377,21 +383,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add Page',
                       type: FontStyle.Small,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                      overrride: true,
+                      color: Colors.white)
                 ],
               ),
             ),
@@ -502,21 +509,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add View',
                       type: FontStyle.Small,
+                      overrride: true,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor),
+                      color: Colors.white),
                 ],
               ),
             ),
@@ -590,21 +598,21 @@ class EmptyPlaceholder {
                         ),
                       ),
                     )
-                  : Row(
+                  : const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.assignment_outlined,
                           color: Colors.white,
                           size: 24,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         CustomText('Click to join',
                             type: FontStyle.Small,
                             fontWeight: FontWeightt.Medium,
-                            color: themeProvider.themeManager.textonColor),
+                            color: Colors.white),
                       ],
                     ),
             ),
@@ -663,21 +671,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add Project',
                       type: FontStyle.Large,
+                      overrride: true,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                      color: Colors.white)
                 ],
               ),
             ),
@@ -755,21 +764,22 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(6),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.add,
-                    color: themeProvider.themeManager.textonColor,
+                    color: Colors.white,
                     size: 24,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 10,
                   ),
                   CustomText('Add Label',
                       type: FontStyle.Small,
+                      overrride: true,
                       fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.textonColor)
+                      color: Colors.white)
                 ],
               ),
             ),

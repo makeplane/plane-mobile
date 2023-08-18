@@ -79,9 +79,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             child: SafeArea(
               child: Padding(
                 padding:
@@ -97,9 +95,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                           },
                           icon: Icon(
                             Icons.arrow_back_ios,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? lightBackgroundColor
-                                : darkBackgroundColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         ),
                         Expanded(

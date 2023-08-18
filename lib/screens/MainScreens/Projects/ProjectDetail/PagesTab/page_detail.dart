@@ -408,9 +408,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                       ),
                       Container(
                         height: 1,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : strokeColor,
+                        color: themeProvider.themeManager.borderSubtle01Color,
                         width: double.infinity,
                       ),
                     ],
@@ -421,9 +419,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             ),
             showColor
                 ? Card(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryBGC
-                        : lightSecondaryBackgroundColor,
+                    color: themeProvider
+                        .themeManager.secondaryBackgroundDefaultColor,
                     margin:
                         const EdgeInsets.only(right: 15, left: 15, bottom: 15),
                     elevation: 10,
@@ -551,10 +548,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.grey.shade300,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                           width: 1.0),
                                       borderRadius: const BorderRadius.only(
                                         topRight: Radius.circular(6),
@@ -563,20 +558,16 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.grey.shade300,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                           width: 1.0),
                                       borderRadius: const BorderRadius.only(
                                         topRight: Radius.circular(6),
                                         bottomRight: Radius.circular(6),
                                       ),
                                     ),
-                                    fillColor: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryBGC
-                                        : const Color.fromRGBO(
-                                            250, 250, 250, 1),
+                                    fillColor: themeProvider.themeManager
+                                        .secondaryBackgroundActiveColor,
                                     filled: true,
                                   ),
                                 ),
@@ -640,9 +631,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : strokeColor),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Wrap(

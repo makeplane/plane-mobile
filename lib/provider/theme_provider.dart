@@ -30,7 +30,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<void> changeTheme(
-      {required Map data, required BuildContext context}) async {
+      {required Map data, required BuildContext? context}) async {
     var profileProvider = ref.read(ProviderList.profileProvider);
     if (data['theme']['theme'] == 'custom' &&
         ((profileProvider.userProfile.theme == null ||
@@ -59,13 +59,15 @@ class ThemeProvider extends ChangeNotifier {
             data['theme']['sidebarText'].toString().replaceFirst('#', 'FF'),
             radix: 16));
       }
+      //if (data['theme']['theme'] == 'system')
       theme = themeParser(theme: data['theme']['theme']);
     }
     log(theme.toString());
     themeManager = ThemeManager(theme);
     var profileProv = ref.read(ProviderList.profileProvider);
     profileProv.updateProfile(data: data).then((value) {
-      if (profileProv.updateProfileState == StateEnum.success) {
+      if (profileProv.updateProfileState == StateEnum.success &&
+          context != null) {
         CustomToast().showToast(context, 'Theme updated!', this,
             toastType: ToastType.success);
       } else {}

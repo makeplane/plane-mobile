@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/goto_plane_web_notifier_sheet.dart';
-
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
@@ -129,10 +127,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                      color: themeProvider
+                          .themeManager.secondaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.themeManager.borderSubtle01Color)),
+                          color:
+                              themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -170,7 +170,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                   .integrations["github"]
                                               ["installed"]
                                       ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                                      : themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor,
                                   child: CustomText(
                                     integrationProvider
                                                     .integrations["github"] !=
@@ -231,10 +232,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                      color: themeProvider
+                          .themeManager.secondaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.themeManager.borderSubtle01Color)),
+                          color:
+                              themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -271,7 +274,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                           integrationProvider
                                               .integrations["jira"]["installed"]
                                       ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                                      : themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor,
                                   child: CustomText(
                                     integrationProvider.integrations["jira"] !=
                                                 null &&

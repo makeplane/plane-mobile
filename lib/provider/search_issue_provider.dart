@@ -6,7 +6,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
 
-
 class SearchIssueProvider with ChangeNotifier {
   List<dynamic> issues = [];
   StateEnum searchIssuesState = StateEnum.loading;
@@ -21,9 +20,13 @@ class SearchIssueProvider with ChangeNotifier {
       required String issueId,
       String input = '',
       // required bool parent
-      required IssueDetailCategory type
-      }) async {
-    String query = type == IssueDetailCategory.parent ? 'parent' : type == IssueDetailCategory.subIssue ? 'sub_issue' : 'blocker_blocked_by';
+      required IssueDetailCategory type}) async {
+    searchIssuesState = StateEnum.loading;
+    String query = type == IssueDetailCategory.parent
+        ? 'parent'
+        : type == IssueDetailCategory.subIssue
+            ? 'sub_issue'
+            : 'blocker_blocked_by';
     String url = '';
     if (input != '') {
       url = issueId.isEmpty

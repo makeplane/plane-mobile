@@ -130,15 +130,38 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       );
                     });
               },
-              child: CircleAvatar(
-                backgroundColor:
-                    themeProvider.themeManager.tertiaryBackgroundDefaultColor,
-                radius: 20,
-                child: Icon(
-                  size: 20,
-                  Icons.filter_list_outlined,
-                  color: themeProvider.themeManager.secondaryTextColor,
-                ),
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: themeProvider
+                        .themeManager.tertiaryBackgroundDefaultColor,
+                    radius: 20,
+                    child: Icon(
+                      size: 20,
+                      Icons.filter_list_outlined,
+                      color: themeProvider.themeManager.secondaryTextColor,
+                    ),
+                  ),
+
+                  // blue dot
+                  (myIssuesProvider.issues.filters.priorities.isEmpty &&
+                          myIssuesProvider.issues.filters.states.isEmpty &&
+                          myIssuesProvider.issues.filters.labels.isEmpty &&
+                          myIssuesProvider.issues.filters.targetDate.isEmpty)
+                      ? Container()
+                      : Positioned(
+                          top: 2,
+                          right: 2,
+                          child: Container(
+                            height: 10,
+                            width: 10,
+                            decoration: BoxDecoration(
+                              color: themeProvider.themeManager.primaryColour,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                ],
               ),
             ),
             const SizedBox(width: 10),

@@ -15,7 +15,8 @@ class BoardProvider extends ChangeNotifier {
   BoardProvider(ChangeNotifierProviderRef<BoardProvider> this.ref);
   Ref ref;
   ValueNotifier<Offset> valueNotifier = ValueNotifier<Offset>(Offset.zero);
-  String move = "";
+  String move =
+      ""; // This value is used to find the actual position of droppped element //
   DraggedItemState? draggedItemState;
 
   late BoardState board;
@@ -28,6 +29,11 @@ class BoardProvider extends ChangeNotifier {
     board.isElementDragged = value;
     board.isListDragged = value;
     move = "";
+    if (value == false) {
+      draggedItemState = null;
+      return;
+    }
+
     var item = board.lists[listIndex].items[itemIndex];
     draggedItemState = DraggedItemState(
         child: item.child,
@@ -44,14 +50,18 @@ class BoardProvider extends ChangeNotifier {
       {required List<BoardListsData> data,
       Color backgroundColor = Colors.white,
       TextStyle? textStyle,
+      final bool isCardsDraggable=true,
       Function(int? itemIndex, int? listIndex)? onItemTap,
       Function(int? itemIndex, int? listIndex)? onItemLongPress,
       Function(int? listIndex)? onListTap,
       Function(int? listIndex)? onListLongPress,
       double? displacementX,
       double? displacementY,
-      void Function(int? oldCardIndex, int? newCardIndex, int? oldListIndex,
-              int? newListIndex)?
+      void Function(
+              {int? oldCardIndex,
+              int? newCardIndex,
+              int? oldListIndex,
+              int? newListIndex})?
           onItemReorder,
       void Function(int? oldListIndex, int? newListIndex)? onListReorder,
       void Function(String? oldName, String? newName)? onListRename,
@@ -59,6 +69,7 @@ class BoardProvider extends ChangeNotifier {
           onNewCardInsert,
       Decoration? boardDecoration,
       Decoration? listDecoration,
+      Decoration? cardPlaceHolderDecoration,
       Widget Function(Widget child, Animation<double> animation)?
           listTransitionBuilder,
       Widget Function(Widget child, Animation<double> animation)?
@@ -74,6 +85,7 @@ class BoardProvider extends ChangeNotifier {
     board = BoardState(
         textStyle: textStyle,
         lists: [],
+        isCardsDraggable: isCardsDraggable,
         displacementX: displacementX,
         displacementY: displacementY,
         onItemTap: onItemTap,
@@ -95,6 +107,7 @@ class BoardProvider extends ChangeNotifier {
         backgroundColor: backgroundColor,
         cardPlaceholderColor: cardPlaceHolderColor,
         listPlaceholderColor: listPlaceHolderColor,
+        cardPlaceHolderDecoration: cardPlaceHolderDecoration,
         listDecoration: listDecoration,
         boardDecoration: boardDecoration);
     // log("LENGTH=${data.length}");

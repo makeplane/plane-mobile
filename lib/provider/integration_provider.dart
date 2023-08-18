@@ -98,7 +98,6 @@ class IntegrationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
       githubIntegration = response.data;
       notifyListeners();
     } catch (e) {
@@ -125,7 +124,6 @@ class IntegrationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
       slackIntegration = response.data;
       notifyListeners();
     } catch (e) {

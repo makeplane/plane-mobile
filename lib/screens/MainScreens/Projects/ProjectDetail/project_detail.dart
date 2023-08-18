@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
@@ -310,7 +311,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 1,
                                     color: themeProvider
-                                        .themeManager.borderSubtle01Color,
+                                        .themeManager.borderSubtle00Color,
                                   ),
                                   Expanded(
                                       child: InkWell(
@@ -357,7 +358,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 0.5,
                                     color: themeProvider
-                                        .themeManager.borderSubtle01Color,
+                                        .themeManager.borderSubtle00Color,
                                   ),
                                   issueProvider.issues.projectView ==
                                           ProjectView.calendar
@@ -413,7 +414,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                     height: 50,
                                     width: 0.5,
                                     color: themeProvider
-                                        .themeManager.borderSubtle01Color,
+                                        .themeManager.borderSubtle00Color,
                                   ),
                                   Expanded(
                                       child: InkWell(
@@ -866,10 +867,37 @@ Widget issues(BuildContext context, WidgetRef ref) {
                         : issueProvider.issues.projectView == ProjectView.kanban
                             ? KanbanBoard(
                                 issueProvider.initializeBoard(),
+                                isCardsDraggable: issueProvider.checkIsCardsDaraggable(),
+                                onItemReorder: (
+                                    {newCardIndex,
+                                    newListIndex,
+                                    oldCardIndex,
+                                    oldListIndex}) {
+                                  //  print('newCardIndex: $newCardIndex, newListIndex: $newListIndex, oldCardIndex: $oldCardIndex, oldListIndex: $oldListIndex');
+                                  issueProvider.reorderIssue(
+                                    newCardIndex: newCardIndex!,
+                                    newListIndex: newListIndex!,
+                                    oldCardIndex: oldCardIndex!,
+                                    oldListIndex: oldListIndex!,
+                                  );
+                                },
                                 groupEmptyStates:
                                     !issueProvider.showEmptyStates,
                                 backgroundColor: themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
+                                cardPlaceHolderColor: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
+                                cardPlaceHolderDecoration: BoxDecoration(
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 2,
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        spreadRadius: 0,
+                                      )
+                                    ]),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,
                                     duration: const Duration(milliseconds: 100),
@@ -893,8 +921,30 @@ Widget cycles() {
   return const CycleWidget();
 }
 
+// Widget modules() {
+//   var themeProvider = ref.read(ProviderList.themeProvider);
+//   return Container(
+//     color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+//     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: const [
+//         // SizedBox(
+//         //   child: Text(
+//         //     'Current Cycles',
+//         //     style: TextStyle(fontSize: 20, fontWeight: FontWeightt.Medium),
+//         //   ),
+//         // ),
+//         ModuleCard()
+//       ],
+//     ),
+//   );
+// }
+
 Widget view(WidgetRef ref) {
+  var themeProvider = ref.read(ProviderList.themeProvider);
   return Container(
+    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,

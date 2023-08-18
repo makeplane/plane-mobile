@@ -28,6 +28,7 @@ class IssuesProvider extends ChangeNotifier {
   StateEnum projectViewState = StateEnum.empty;
   StateEnum issuePropertyState = StateEnum.empty;
   StateEnum joinprojectState = StateEnum.empty;
+  StateEnum updateIssueState = StateEnum.empty;
   var createIssueState = StateEnum.empty;
   String createIssueParent = '';
   String createIssueParentId = '';
@@ -134,6 +135,7 @@ class IssuesProvider extends ChangeNotifier {
     var themeProvider = ref!.read(ProviderList.themeProvider);
     int count = 0;
     //   log(issues.groupBY.name);
+    issuesResponse = [];
     issues.issues = [];
     for (int j = 0; j < stateOrdering.length; j++) {
       List<Widget> items = [];
@@ -364,6 +366,66 @@ class IssuesProvider extends ChangeNotifier {
     }
 
     return issues.issues;
+  }
+
+  bool checkIsCardsDaraggable() {
+    var projProv = ref!.read(ProviderList.projectProvider);
+    
+    return (issues.groupBY == GroupBY.state ||
+            issues.groupBY == GroupBY.priority) &&
+        (projProv.role == Role.admin || projProv.role == Role.member) &&
+        (issues.filters.assignees.isEmpty &&
+            issues.filters.labels.isEmpty &&
+            issues.filters.states.isEmpty &&
+            issues.filters.priorities.isEmpty &&
+            issues.filters.createdBy.isEmpty &&
+            issues.filters.targetDate.isEmpty);
+  }
+
+  Future reorderIssue({
+    required int newCardIndex,
+    required int oldCardIndex,
+    required int newListIndex,
+    required int oldListIndex,
+  }) async {
+    try {
+      (groupByResponse[stateOrdering[newListIndex]] as List).insert(
+          newCardIndex,
+          groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+      updateIssueState = StateEnum.loading;
+      notifyListeners();
+      var issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
+      await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.issueDetails
+              .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
+              .replaceAll('\$PROJECTID', issue['project_detail']['id'])
+              .replaceAll('\$ISSUEID', issue['id']),
+          hasBody: true,
+          httpMethod: HttpMethod.patch,
+          data: issues.groupBY == GroupBY.state
+              ? {
+                  'state': stateOrdering[newListIndex],
+                  'priority': issue['priority']
+                }
+              : {
+                  'state': issue['state'],
+                  'priority': stateOrdering[newListIndex],
+                });
+
+      updateIssueState = StateEnum.success;
+      // log(response.data.toString());
+      if (issues.groupBY == GroupBY.priority) {
+        log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
+        groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
+            stateOrdering[newListIndex];
+      }
+      notifyListeners();
+    } on DioException catch (e) {
+      log('Error : issues_provider : upDateIssue : ${e.message.toString()}');
+      updateIssueState = StateEnum.error;
+      notifyListeners();
+    }
   }
 
   bool isTagsEnabled() {

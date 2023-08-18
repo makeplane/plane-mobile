@@ -121,9 +121,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : lightSecondaryBackgroundColor,
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,10 +155,10 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightSecondaryBackgroundColor,
-                border: Border.all(color: Colors.grey.shade300)),
+                color:
+                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color)),
             child: Column(
               children: [
                 const CustomText(
@@ -206,11 +204,11 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             padding: const EdgeInsets.only(top: 40, bottom: 40),
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightSecondaryBackgroundColor,
+                color:
+                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.grey.shade300)),
+                border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color)),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

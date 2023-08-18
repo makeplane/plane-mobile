@@ -262,37 +262,58 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                   .currentProject['id'],
                               issueID: widget.issueId,
                             );
+                    issueProvider.issueDetails['subscribed']
+                        ? CustomToast().showToast(context, 'Unsubscribed',
+                            ref.read(ProviderList.themeProvider))
+                        : CustomToast().showToast(context, 'Subscribed',
+                            ref.read(ProviderList.themeProvider));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     margin: const EdgeInsets.all(5),
-                    //container with blue border and white background with a row as chld with blue bell icon and text
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        color: primaryColor,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.notifications,
-                          color: primaryColor,
-                        ),
-                        CustomText(
-                          (issueProvider.subscriptionState ==
-                                      StateEnum.loading ||
-                                  issueProvider.issueDetails['subscribed'] ==
-                                      null)
-                              ? 'Loading...'
-                              : issueProvider.issueDetails['subscribed']
-                                  ? 'Unsubscribe'
-                                  : 'Subscribe',
-                          type: FontStyle.Small,
-                          color: primaryColor,
-                        )
-                      ],
-                    ),
+                    child: (issueProvider.subscriptionState ==
+                                StateEnum.loading ||
+                            issueProvider.issueDetails['subscribed'] == null)
+                        ?
+                        // Container(
+                        //     margin: EdgeInsets.all(15),
+                        //     child: Center(
+                        //         child: CircularProgressIndicator(
+                        //       color: themeProvider
+                        //           .themeManager.placeholderTextColor,
+                        //     )),
+                        //   )
+                        Icon(Icons.notifications_off,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor)
+                        : issueProvider.issueDetails['subscribed']
+                            ? Icon(
+                                Icons.notifications_active,
+                                color: themeProvider.themeManager.primaryColour,
+                              )
+                            : Icon(Icons.notifications_off,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor),
+                    // Row(
+                    //   children: [
+                    //     const Icon(
+                    //       Icons.notifications,
+                    //       color: primaryColor,
+                    //     ),
+                    //     CustomText(
+                    //       (issueProvider.subscriptionState ==
+                    //                   StateEnum.loading ||
+                    //               issueProvider.issueDetails['subscribed'] ==
+                    //                   null)
+                    //           ? 'Loading...'
+                    //           : issueProvider.issueDetails['subscribed']
+                    //               ? 'Unsubscribe'
+                    //               : 'Subscribe',
+                    //       type: FontStyle.Small,
+                    //       color: primaryColor,
+                    //     )
+                    //   ],
+                    // ),
                   ),
                 )
         ],
@@ -320,9 +341,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                         children: [
                           Container(
                             height: 1,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : strokeColor,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color,
                           ),
                           Expanded(
                             child: SingleChildScrollView(
@@ -1001,7 +1021,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           decoration: BoxDecoration(
                                                                               borderRadius: BorderRadius.circular(6),
                                                                               border: Border.all(color: greyColor),
-                                                                              color: themeProvider.isDarkThemeEnabled ? darkBackgroundColor : lightBackgroundColor),
+                                                                              color: themeProvider.themeManager.primaryBackgroundDefaultColor),
                                                                           child:
                                                                               Row(
                                                                             mainAxisAlignment:
@@ -1144,18 +1164,22 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                             .start,
                                                                     children: [
                                                                       CircleAvatar(
-                                                                        backgroundColor:
-                                                                            darkSecondaryBGC,
+                                                                        backgroundColor: themeProvider
+                                                                            .themeManager
+                                                                            .tertiaryBackgroundDefaultColor,
                                                                         radius:
                                                                             15,
                                                                         child:
                                                                             Center(
-                                                                          child: CustomText(
-                                                                              issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
-                                                                              // color: Colors.black,
-                                                                              type: FontStyle.Medium,
-                                                                              fontWeight: FontWeightt.Bold,
-                                                                              color: Colors.white),
+                                                                          child:
+                                                                              CustomText(
+                                                                            issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
+                                                                            // color: Colors.black,
+                                                                            type:
+                                                                                FontStyle.Medium,
+                                                                            fontWeight:
+                                                                                FontWeightt.Bold,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                       const SizedBox(
@@ -1294,7 +1318,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
   }
 
   Color getBorderColor(ThemeProvider themeProvider) =>
-      themeProvider.isDarkThemeEnabled ? darkThemeBorder : Colors.grey.shade200;
+      themeProvider.themeManager.borderSubtle01Color;
 
   String checkTimeDifferenc(String dateTime) {
     DateTime now = DateTime.now();

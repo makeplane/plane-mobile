@@ -63,4 +63,11 @@ enum FontWeightt {
   ExtraBold,
 }
 
-enum THEME { light, dark, lightHighContrast, darkHighContrast, custom }
+enum THEME {
+  light,
+  dark,
+  lightHighContrast,
+  darkHighContrast,
+  custom,
+  systemPreferences
+}

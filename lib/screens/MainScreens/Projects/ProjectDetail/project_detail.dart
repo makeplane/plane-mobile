@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
@@ -172,209 +171,163 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
         child: Container(
           // color: themeProvider.backgroundColor,
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-          child: 
-          projectProvider.projectDetailState == StateEnum.error ?
-              errorState(context: context, ontap: (){
-                ref.read(ProviderList.projectProvider).initializeProject();
-              }) :
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: projectProvider.features.map((e) {
-                  return e['show']
-                      ? Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              controller.jumpToPage(
-                                  projectProvider.features.indexOf(e));
-                              setState(() {
-                                selected = projectProvider.features.indexOf(e);
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 15),
-                                  child: CustomText(
-                                    e['title'].toString(),
-                                    color:
-                                        projectProvider.features.indexOf(e) ==
-                                                selected
-                                            ? themeProvider
-                                                .themeManager.primaryColour
-                                            : themeProvider.themeManager
-                                                .placeholderTextColor,
-                                    type: FontStyle.Medium,
-                                    fontWeight:
-                                        projectProvider.features.indexOf(e) ==
-                                                selected
-                                            ? FontWeightt.Medium
-                                            : null,
+          child: projectProvider.projectDetailState == StateEnum.error
+              ? errorState(
+                  context: context,
+                  ontap: () {
+                    ref.read(ProviderList.projectProvider).initializeProject();
+                  })
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: projectProvider.features.map((e) {
+                        return e['show']
+                            ? Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.jumpToPage(
+                                        projectProvider.features.indexOf(e));
+                                    setState(() {
+                                      selected =
+                                          projectProvider.features.indexOf(e);
+                                    });
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        child: CustomText(
+                                          e['title'].toString(),
+                                          color: projectProvider.features
+                                                      .indexOf(e) ==
+                                                  selected
+                                              ? themeProvider
+                                                  .themeManager.primaryColour
+                                              : themeProvider.themeManager
+                                                  .placeholderTextColor,
+                                          type: FontStyle.Medium,
+                                          fontWeight: projectProvider.features
+                                                      .indexOf(e) ==
+                                                  selected
+                                              ? FontWeightt.Medium
+                                              : null,
+                                        ),
+                                      ),
+                                      selected ==
+                                                  projectProvider.features
+                                                      .indexOf(e) &&
+                                              (projectProvider.features
+                                                          .elementAt(
+                                                              1)['show'] ==
+                                                      true ||
+                                                  projectProvider.features
+                                                          .elementAt(
+                                                              2)['show'] ==
+                                                      true)
+                                          ? Container(
+                                              height: 6,
+                                              decoration: BoxDecoration(
+                                                  color: primaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                            )
+                                          : Container(
+                                              height: 6,
+                                            )
+                                    ],
                                   ),
                                 ),
-                                selected ==
-                                            projectProvider.features
-                                                .indexOf(e) &&
-                                        (projectProvider.features
-                                                    .elementAt(1)['show'] ==
-                                                true ||
-                                            projectProvider.features
-                                                    .elementAt(2)['show'] ==
-                                                true)
-                                    ? Container(
-                                        height: 6,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                      )
-                                    : Container(
-                                        height: 6,
-                                      )
-                              ],
-                            ),
-                          ),
-                        )
-                      : Container();
-                }).toList(),
-              ),
-              Container(
-                height: 2,
-                width: MediaQuery.of(context).size.width,
-                color: themeProvider.themeManager.borderSubtle01Color,
-              ),
-              Expanded(
-                  child: PageView.builder(
-                controller: controller,
-                onPageChanged: (page) {
-                  setState(() {
-                    selected = page;
-                  });
-                },
-                itemBuilder: (ctx, index) {
-                  return Container(
-                      child: index == 0 ? issues(ctx, ref) : pages[index]);
-                },
-                itemCount: pages.length,
-              )),
-              issueProvider.statesState == StateEnum.loading ||
-                      issueProvider.issueState == StateEnum.loading
-                  ? Container()
-                  : selected == 0 &&
-                          issueProvider.statesState == StateEnum.restricted
-                      ? Container()
-                      : selected == 0 &&
-                              issueProvider.statesState == StateEnum.success
-                          ? Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black,
-                              child: Row(
-                                children: [
-                                  projectProvider.role == Role.admin
-                                      ? Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const CreateIssue(),
-                                                ),
-                                              );
-                                            },
-                                            child: const SizedBox.expand(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                    size: 20,
+                              )
+                            : Container();
+                      }).toList(),
+                    ),
+                    Container(
+                      height: 2,
+                      width: MediaQuery.of(context).size.width,
+                      color: themeProvider.themeManager.borderSubtle01Color,
+                    ),
+                    Expanded(
+                        child: PageView.builder(
+                      controller: controller,
+                      onPageChanged: (page) {
+                        setState(() {
+                          selected = page;
+                        });
+                      },
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                            child:
+                                index == 0 ? issues(ctx, ref) : pages[index]);
+                      },
+                      itemCount: pages.length,
+                    )),
+                    issueProvider.statesState == StateEnum.loading ||
+                            issueProvider.issueState == StateEnum.loading
+                        ? Container()
+                        : selected == 0 &&
+                                issueProvider.statesState ==
+                                    StateEnum.restricted
+                            ? Container()
+                            : selected == 0 &&
+                                    issueProvider.statesState ==
+                                        StateEnum.success
+                                ? Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    color: Colors.black,
+                                    child: Row(
+                                      children: [
+                                        projectProvider.role == Role.admin
+                                            ? Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const CreateIssue(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const SizedBox.expand(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.add,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        CustomText(
+                                                          ' Issue',
+                                                          type:
+                                                              FontStyle.Medium,
+                                                          color: Colors.white,
+                                                          overrride: true,
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                  CustomText(
-                                                    ' Issue',
-                                                    type: FontStyle.Medium,
-                                                    color: Colors.white,
-                                                    overrride: true,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                  Container(
-                                    height: 50,
-                                    width: 1,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          enableDrag: true,
-                                          constraints: BoxConstraints(
-                                              maxHeight: height * 0.5),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          )),
-                                          context: context,
-                                          builder: (ctx) {
-                                            return const TypeSheet(
-                                              issueCategory:
-                                                  IssueCategory.issues,
-                                            );
-                                          });
-                                    },
-                                    child: const SizedBox.expand(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.menu,
-                                            color: Colors.white,
-                                            size: 19,
-                                          ),
-                                          CustomText(
-                                            ' Layout',
-                                            type: FontStyle.Medium,
-                                            color: Colors.white,
-                                            overrride: true,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                  Container(
-                                    height: 50,
-                                    width: 0.5,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  issueProvider.issues.projectView ==
-                                          ProjectView.calendar
-                                      ? Container()
-                                      : Expanded(
-                                          child: InkWell(
+                                                ),
+                                              )
+                                            : Container(),
+                                        Container(
+                                          height: 50,
+                                          width: 0.5,
+                                          color: Colors.white,
+                                        ),
+                                        Expanded(
+                                            child: InkWell(
                                           onTap: () {
                                             showModalBottomSheet(
                                                 isScrollControlled: true,
                                                 enableDrag: true,
                                                 constraints: BoxConstraints(
-                                                    maxHeight:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.9),
+                                                    maxHeight: height * 0.5),
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -384,7 +337,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 )),
                                                 context: context,
                                                 builder: (ctx) {
-                                                  return const ViewsSheet(
+                                                  return const TypeSheet(
                                                     issueCategory:
                                                         IssueCategory.issues,
                                                   );
@@ -396,12 +349,12 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(
-                                                  Icons.view_sidebar,
+                                                  Icons.menu,
                                                   color: Colors.white,
                                                   size: 19,
                                                 ),
                                                 CustomText(
-                                                  ' Views',
+                                                  ' Layout',
                                                   type: FontStyle.Medium,
                                                   color: Colors.white,
                                                   overrride: true,
@@ -410,249 +363,318 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             ),
                                           ),
                                         )),
-                                  Container(
-                                    height: 50,
-                                    width: 0.5,
-                                    color: themeProvider
-                                        .themeManager.borderSubtle00Color,
-                                  ),
-                                  Expanded(
-                                      child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          enableDrag: true,
-                                          constraints: BoxConstraints(
-                                              maxHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.85),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          )),
-                                          context: context,
-                                          builder: (ctx) {
-                                            return FilterSheet(
-                                              issueCategory:
-                                                  IssueCategory.issues,
-                                            );
-                                          });
-                                    },
-                                    child: const SizedBox.expand(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.filter_alt,
-                                            color: Colors.white,
-                                            size: 19,
-                                          ),
-                                          CustomText(
-                                            ' Filters',
-                                            type: FontStyle.Medium,
-                                            color: Colors.white,
-                                            overrride: true,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                ],
-                              ),
-                            )
-                          : Container(),
-              selected == 4
-                  ? Container(
-                      height: 51,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.black,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 1,
-                            width: double.infinity,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                projectProvider.role == Role.admin
-                                    ? Expanded(
-                                        child: InkWell(
+                                        Container(
+                                          height: 50,
+                                          width: 0.5,
+                                          color: Colors.white,
+                                        ),
+                                        issueProvider.issues.projectView ==
+                                                ProjectView.calendar
+                                            ? Container()
+                                            : Expanded(
+                                                child: InkWell(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      enableDrag: true,
+                                                      constraints: BoxConstraints(
+                                                          maxHeight:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.9),
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .only(
+                                                        topLeft:
+                                                            Radius.circular(30),
+                                                        topRight:
+                                                            Radius.circular(30),
+                                                      )),
+                                                      context: context,
+                                                      builder: (ctx) {
+                                                        return const ViewsSheet(
+                                                          issueCategory:
+                                                              IssueCategory
+                                                                  .issues,
+                                                        );
+                                                      });
+                                                },
+                                                child: const SizedBox.expand(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.view_sidebar,
+                                                        color: Colors.white,
+                                                        size: 19,
+                                                      ),
+                                                      CustomText(
+                                                        ' Views',
+                                                        type: FontStyle.Medium,
+                                                        color: Colors.white,
+                                                        overrride: true,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )),
+                                        Container(
+                                          height: 50,
+                                          width: 0.5,
+                                          color: Colors.white,
+                                        ),
+                                        Expanded(
+                                            child: InkWell(
                                           onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const CreatePage(),
-                                              ),
-                                            );
+                                            showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                enableDrag: true,
+                                                constraints: BoxConstraints(
+                                                    maxHeight:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.85),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight: Radius.circular(30),
+                                                )),
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return FilterSheet(
+                                                    issueCategory:
+                                                        IssueCategory.issues,
+                                                  );
+                                                });
                                           },
-                                          child: SizedBox.expand(
+                                          child: const SizedBox.expand(
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(
-                                                  Icons.add,
-                                                  color: themeProvider
-                                                      .themeManager.textonColor,
-                                                  size: 20,
+                                                  Icons.filter_alt,
+                                                  color: Colors.white,
+                                                  size: 19,
                                                 ),
                                                 CustomText(
-                                                  ' Page',
+                                                  ' Filters',
                                                   type: FontStyle.Medium,
-                                                  color: themeProvider
-                                                      .themeManager.textonColor,
+                                                  color: Colors.white,
                                                   overrride: true,
                                                 )
                                               ],
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    : Container(),
-                                Container(
-                                  height: 50,
-                                  width: 1,
-                                  color: themeProvider
-                                      .themeManager.borderSubtle01Color,
-                                ),
-                                Expanded(
-                                    child: InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        enableDrag: true,
-                                        constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(30),
-                                          topRight: Radius.circular(30),
                                         )),
-                                        context: context,
-                                        builder: (ctx) {
-                                          return const FilterPageSheet();
-                                        });
-                                  },
-                                  child: SizedBox.expand(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.filter_alt,
-                                          color: themeProvider
-                                              .themeManager.textonColor,
-                                          size: 19,
-                                        ),
-                                        CustomText(
-                                          ' Filters',
-                                          type: FontStyle.Medium,
-                                          color: themeProvider
-                                              .themeManager.textonColor,
-                                          overrride: true,
-                                        )
                                       ],
                                     ),
+                                  )
+                                : Container(),
+                    selected == 4
+                        ? Container(
+                            height: 51,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 1,
+                                  width: double.infinity,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  child: Row(
+                                    children: [
+                                      projectProvider.role == Role.admin
+                                          ? Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const CreatePage(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: SizedBox.expand(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.add,
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .textonColor,
+                                                        size: 20,
+                                                      ),
+                                                      CustomText(
+                                                        ' Page',
+                                                        type: FontStyle.Medium,
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .textonColor,
+                                                        overrride: true,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
+                                      Container(
+                                        height: 50,
+                                        width: 1,
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
+                                      Expanded(
+                                          child: InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              enableDrag: true,
+                                              constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.8),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              )),
+                                              context: context,
+                                              builder: (ctx) {
+                                                return const FilterPageSheet();
+                                              });
+                                        },
+                                        child: SizedBox.expand(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.filter_alt,
+                                                color: themeProvider
+                                                    .themeManager.textonColor,
+                                                size: 19,
+                                              ),
+                                              CustomText(
+                                                ' Filters',
+                                                type: FontStyle.Medium,
+                                                color: themeProvider
+                                                    .themeManager.textonColor,
+                                                overrride: true,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                    ],
                                   ),
-                                )),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(),
+                          )
+                        : Container(),
 
-              // GestureDetector(
-              //     onTap: () {
-              //       selected == 1
-              //           ? Navigator.of(context).push(
-              //               MaterialPageRoute(
-              //                   builder: (ctx) =>
-              //                       const CreateCycle()))
-              //           : selected == 2
-              //               ? Navigator.of(context).push(
-              //                   MaterialPageRoute(
-              //                       builder: (ctx) =>
-              //                           const CreateModule()))
-              //               : selected == 3
-              //                   ? Navigator.of(context).push(
-              //                       MaterialPageRoute(
-              //                           builder: (ctx) =>
-              //                               const CreateView()))
-              //                   : Navigator.of(context).push(
-              //                       MaterialPageRoute(
-              //                           builder: (ctx) =>
-              //                               const CreatePage()));
-              //     },
-              //     child: Container(
-              //       height: 50,
-              //       width: MediaQuery.of(context).size.width,
-              //       color: Colors.black,
-              //       child: Row(
-              //         children: [
-              //           Expanded(
-              //               child: SizedBox(
-              //             child: Row(
-              //               mainAxisAlignment:
-              //                   MainAxisAlignment.center,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.add,
-              //                   color: Colors.white,
-              //                 ),
-              //                 CustomText(
-              //                   selected == 1
-              //                       ? ' Add Cycle'
-              //                       : selected == 2
-              //                           ? 'Add Module'
-              //                           : selected == 3
-              //                               ? 'Add View'
-              //                               : 'Add Page',
-              //                   type: FontStyle.Medium,
-              //                   color: Colors.white,
-              //                 )
-              //               ],
-              //             ),
-              //           )),
-              //           Container(
-              //             height: 50,
-              //             width: 0.5,
-              //             color: greyColor,
-              //           ),
-              //           Expanded(
-              //               child: SizedBox(
-              //             child: Row(
-              //               mainAxisAlignment:
-              //                   MainAxisAlignment.center,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.filter_alt,
-              //                   color: Colors.white,
-              //                 ),
-              //                 CustomText(
-              //                   ' Filters',
-              //                   type: FontStyle.Medium,
-              //                   color: Colors.white,
-              //                 )
-              //               ],
-              //             ),
-              //           )),
-              //         ],
-              //       ),
-              //     ),
-              //   )
-            ],
-          ),
+                    // GestureDetector(
+                    //     onTap: () {
+                    //       selected == 1
+                    //           ? Navigator.of(context).push(
+                    //               MaterialPageRoute(
+                    //                   builder: (ctx) =>
+                    //                       const CreateCycle()))
+                    //           : selected == 2
+                    //               ? Navigator.of(context).push(
+                    //                   MaterialPageRoute(
+                    //                       builder: (ctx) =>
+                    //                           const CreateModule()))
+                    //               : selected == 3
+                    //                   ? Navigator.of(context).push(
+                    //                       MaterialPageRoute(
+                    //                           builder: (ctx) =>
+                    //                               const CreateView()))
+                    //                   : Navigator.of(context).push(
+                    //                       MaterialPageRoute(
+                    //                           builder: (ctx) =>
+                    //                               const CreatePage()));
+                    //     },
+                    //     child: Container(
+                    //       height: 50,
+                    //       width: MediaQuery.of(context).size.width,
+                    //       color: Colors.black,
+                    //       child: Row(
+                    //         children: [
+                    //           Expanded(
+                    //               child: SizedBox(
+                    //             child: Row(
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment.center,
+                    //               children: [
+                    //                 const Icon(
+                    //                   Icons.add,
+                    //                   color: Colors.white,
+                    //                 ),
+                    //                 CustomText(
+                    //                   selected == 1
+                    //                       ? ' Add Cycle'
+                    //                       : selected == 2
+                    //                           ? 'Add Module'
+                    //                           : selected == 3
+                    //                               ? 'Add View'
+                    //                               : 'Add Page',
+                    //                   type: FontStyle.Medium,
+                    //                   color: Colors.white,
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           )),
+                    //           Container(
+                    //             height: 50,
+                    //             width: 0.5,
+                    //             color: greyColor,
+                    //           ),
+                    //           Expanded(
+                    //               child: SizedBox(
+                    //             child: Row(
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment.center,
+                    //               children: [
+                    //                 const Icon(
+                    //                   Icons.filter_alt,
+                    //                   color: Colors.white,
+                    //                 ),
+                    //                 CustomText(
+                    //                   ' Filters',
+                    //                   type: FontStyle.Medium,
+                    //                   color: Colors.white,
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           )),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   )
+                  ],
+                ),
         ),
       ),
     );
@@ -867,7 +889,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                         : issueProvider.issues.projectView == ProjectView.kanban
                             ? KanbanBoard(
                                 issueProvider.initializeBoard(),
-                                isCardsDraggable: issueProvider.checkIsCardsDaraggable(),
+                                isCardsDraggable:
+                                    issueProvider.checkIsCardsDaraggable(),
                                 onItemReorder: (
                                     {newCardIndex,
                                     newListIndex,
@@ -968,4 +991,3 @@ Widget view(WidgetRef ref) {
   //   }
   //   return false;
   // }
-

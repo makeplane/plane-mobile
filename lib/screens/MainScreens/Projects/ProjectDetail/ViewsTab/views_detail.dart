@@ -163,7 +163,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
-                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                color: Colors.black,
                 child: Row(
                   children: [
                     projectProvider.role == Role.admin
@@ -200,7 +200,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: greyColor,
+                      color: Colors.white,
                     ),
                     Expanded(
                         child: InkWell(
@@ -244,7 +244,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: greyColor,
+                      color: Colors.white,
                     ),
                     Expanded(
                         child: InkWell(
@@ -289,7 +289,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: greyColor,
+                      color: Colors.white,
                     ),
                     Expanded(
                         child: InkWell(

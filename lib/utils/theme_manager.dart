@@ -89,16 +89,16 @@ class ThemeManager {
                     : convertHexToSpecificShade(
                         shade: 200, color: customBackgroundColor);
 
-    borderSubtle00Color = theme == THEME.light
-        ? lightBorderSubtle00Color
-        : theme == THEME.dark
-            ? darkBorderSubtle00Color
-            : theme == THEME.lightHighContrast
-                ? darkBorderSubtle00Color
-                : theme == THEME.darkHighContrast
-                    ? lightBorderSubtle00Color
-                    : convertHexToSpecificShade(
-                        shade: 100, color: customBackgroundColor);
+    // borderSubtle00Color = theme == THEME.light
+    //     ? lightBorderSubtle00Color
+    //     : theme == THEME.dark
+    //         ? darkBorderSubtle00Color
+    //         : theme == THEME.lightHighContrast
+    //             ? darkBorderSubtle00Color
+    //             : theme == THEME.darkHighContrast
+    //                 ? lightBorderSubtle00Color
+    //                 : convertHexToSpecificShade(
+    //                     shade: 100, color: customBackgroundColor);
 
     borderStrong01Color = theme == THEME.light
         ? lightBorderStrong01Color
@@ -123,11 +123,10 @@ class ThemeManager {
                         shade: 150, color: customBackgroundColor);
 
     textFieldTextStyle = GoogleFonts.inter(
-      fontSize: 14,
-      height: 1.428,
-      color: primaryTextColor,
-       fontWeight: FontWeight.w500
-    );
+        fontSize: 14,
+        height: 1.428,
+        color: primaryTextColor,
+        fontWeight: FontWeight.w500);
     textFieldDecoration = InputDecoration(
       errorStyle: GoogleFonts.lato(
           fontSize: 14, color: Colors.red, fontWeight: FontWeight.w400),
@@ -166,7 +165,7 @@ class ThemeManager {
         borderRadius: BorderRadius.all(Radius.circular(6)),
       ),
     );
-    
+
     secondaryTextColor = theme == THEME.light
         ? lightSecondaryTextColor
         : theme == THEME.dark
@@ -319,7 +318,9 @@ class ThemeManager {
             ? darkToastBackgroundColor
             : theme == THEME.lightHighContrast
                 ? lightToastBackgroundColor
-                : darkToastBackgroundColor;
+                : theme == THEME.darkHighContrast
+                    ? darkToastBackgroundColor
+                    : customBackgroundColor;
 
     successBackgroundColor = theme == THEME.light
         ? lightSucessBackground
@@ -334,6 +335,11 @@ class ThemeManager {
             ? darkSecondaryBackgroundActiveColor
             : theme == THEME.lightHighContrast
                 ? lightSecondaryBackgroundActiveColor
-                : darkSecondaryBackgroundActiveColor;
+                : theme == THEME.darkHighContrast
+                    ? darkSecondaryBackgroundActiveColor
+                    : convertHexToSpecificShade(
+                        shade: 10,
+                        color: convertHexToSpecificShade(
+                            shade: 100, color: primaryColour));
   }
 }

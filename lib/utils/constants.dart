@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -332,6 +333,11 @@ THEME themeParser({required String theme}) {
       return THEME.darkHighContrast;
     case "custom":
       return THEME.custom;
+    case "system":
+      return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark
+          ? THEME.dark
+          : THEME.light;
     default:
       return THEME.light;
   }
@@ -349,6 +355,8 @@ String fromTHEME({required THEME theme}) {
       return "dark-contrast";
     case THEME.custom:
       return "custom";
+    case THEME.systemPreferences:
+      return "system";
     default:
       return "light";
   }

@@ -31,6 +31,8 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
         return 3;
       case THEME.custom:
         return 4;
+      case THEME.systemPreferences:
+        return 5;
       default:
         return 0;
     }
@@ -45,8 +47,10 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
         profileProvider.userProfile.theme!.isEmpty) {
       selectedTheme = 0;
     } else {
-      selectedTheme = getSelectedTheme(
-          themeParser(theme: profileProvider.userProfile.theme!['theme']));
+      selectedTheme = profileProvider.userProfile.theme!['theme'] == 'system'
+          ? 5
+          : getSelectedTheme(
+              themeParser(theme: profileProvider.userProfile.theme!['theme']));
     }
     super.initState();
   }
@@ -77,7 +81,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                             theme: index == 0 ? THEME.light : THEME.dark);
                         themeProvider.changeTheme(
                             data: {'theme': theme}, context: context);
-      
+
                         setState(() {
                           selectedTheme = index;
                         });
@@ -132,7 +136,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                                 : THEME.darkHighContrast);
                         themeProvider.changeTheme(
                             data: {'theme': theme}, context: context);
-      
+
                         setState(() {
                           selectedTheme = (index + 2);
                         });
@@ -181,11 +185,48 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                     2,
                     (index) => Expanded(
                         child: index == 1
-                            ? Container()
+                            ? GestureDetector(
+                                onTap: () {
+                                  var theme = profileProvider.userProfile.theme;
+
+                                  theme!['theme'] =
+                                      fromTHEME(theme: THEME.systemPreferences);
+                                  log(theme.toString());
+                                  themeProvider.changeTheme(
+                                      data: {'theme': theme}, context: context);
+                                  setState(() {
+                                    selectedTheme = index + 4;
+                                  });
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: index == 0 ? 10 : 0),
+                                    height: 185,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: bottomBar(
+                                        text: 'System Preference',
+                                        circleBorder: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        borderColor: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        selected: (index + 4) == selectedTheme,
+                                        rightHalf: Colors.black,
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .secondaryBackgroundDefaultColor,
+                                        svg: "assets/svg_images/light_mode.svg",
+                                        leftHalf: Colors.white)),
+                              )
                             : GestureDetector(
                                 onTap: () {
                                   var theme = profileProvider.userProfile.theme;
-      
+
                                   theme!['theme'] =
                                       fromTHEME(theme: THEME.custom);
                                   log(theme.toString());

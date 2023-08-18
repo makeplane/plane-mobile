@@ -64,7 +64,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                         },
                         child: CircleAvatar(
                           backgroundColor: themeProvider
-                              .themeManager.tertiaryBackgroundDefaultColor,
+                              .themeManager.primaryBackgroundSelectedColour,
                           radius: 20,
                           child: Icon(
                             size: 20,
@@ -84,7 +84,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                   },
                   child: CircleAvatar(
                     backgroundColor: themeProvider
-                        .themeManager.tertiaryBackgroundDefaultColor,
+                        .themeManager.primaryBackgroundSelectedColour,
                     radius: 20,
                     child: Icon(
                       size: 20,
@@ -268,7 +268,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 radius: 3,
                                                 backgroundColor: themeProvider
                                                     .themeManager
-                                                    .borderStrong01Color,
+                                                    .borderSubtle01Color,
                                               ),
                                               const SizedBox(width: 10),
                                               CustomText(
@@ -477,7 +477,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                 radius: 3,
                                                 backgroundColor: themeProvider
                                                     .themeManager
-                                                    .borderStrong01Color,
+                                                    .borderSubtle01Color,
                                               ),
                                               const SizedBox(width: 10),
                                               // Text(
@@ -546,9 +546,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                           ),
                         ),
                 )
-              : errorState(context: context, ontap: (){
-                
-              })),
+              : errorState(context: context, ontap: () {})),
     );
   }
 

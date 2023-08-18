@@ -167,6 +167,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                           fontWeight: FontWeightt.Semibold,
                                           // fontWeight: FontWeight.w400,
                                           color: Colors.white,
+                                          overrride: true,
                                         ))
                                     : ClipRRect(
                                         borderRadius: BorderRadius.circular(5),

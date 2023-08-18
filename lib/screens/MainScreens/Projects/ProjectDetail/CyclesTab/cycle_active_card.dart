@@ -218,7 +218,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                     endDate: cyclesProvider
                                         .cyclesActiveData[index]['end_date']) ==
                                 'Draft'
-                            ? lightGreeyColor
+                            ? themeProvider.themeManager.successBackgroundColor
                             : checkDate(
                                         startDate: cyclesProvider
                                                 .cyclesActiveData[index]
@@ -227,8 +227,10 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                                 .cyclesActiveData[index]
                                             ['end_date']) ==
                                     'Completed'
-                                ? primaryLightColor
-                                : greenWithOpacity,
+                                ? themeProvider
+                                    .themeManager.successBackgroundColor
+                                : themeProvider
+                                    .themeManager.successBackgroundColor,
                         borderRadius: BorderRadius.circular(5)),
                     child: CustomText(
                       checkDate(
@@ -244,7 +246,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                     ['end_date'],
                               ) ==
                               'Draft'
-                          ? greyColor
+                          ? themeProvider.themeManager.tertiaryTextColor
                           : checkDate(
                                     startDate: cyclesProvider
                                         .cyclesActiveData[index]['start_date'],
@@ -252,8 +254,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                         .cyclesActiveData[index]['end_date'],
                                   ) ==
                                   'Completed'
-                              ? primaryColor
-                              : greenHighLight,
+                              ? themeProvider.themeManager.placeholderTextColor
+                              : themeProvider.themeManager.textSuccessColor,
                     ),
                   ),
                 ],

@@ -497,10 +497,10 @@ class ModuleProvider with ChangeNotifier {
         ),
 
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        backgroundColor:
-            ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? darkSecondaryBackgroundDefaultColor
-                : lightSecondaryBackgroundDefaultColor,
+        backgroundColor: ref!
+            .read(ProviderList.themeProvider)
+            .themeManager
+            .secondaryBackgroundDefaultColor,
       ));
     }
 
@@ -585,9 +585,8 @@ class ModuleProvider with ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? const Color.fromRGBO(39, 42, 45, 1)
-                      : const Color.fromRGBO(222, 226, 230, 1)),
+                  color: themeProvider
+                      .themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(

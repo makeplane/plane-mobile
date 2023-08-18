@@ -99,7 +99,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
                             color:
-                                themeProvider.themeManager.borderSubtle00Color,
+                                themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
                         color: darkSecondaryBGC,
                       ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,15 +52,18 @@ class MyApp extends ConsumerStatefulWidget {
   ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
     var themeProv = ref.read(ProviderList.themeProvider);
     if (Const.appBearerToken != null) {
       log(Const.appBearerToken.toString());
       var prov = ref.read(ProviderList.profileProvider);
       var workspaceProv = ref.read(ProviderList.workspaceProvider);
       var projectProv = ref.read(ProviderList.projectProvider);
+
       var dashProv = ref.read(ProviderList.dashboardProvider);
 
       prov.getProfile().then((value) {
@@ -112,6 +116,22 @@ class _MyAppState extends ConsumerState<MyApp> {
     themeProv.prefs = prefs;
     themeProv.getTheme();
     super.initState();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    var themeProvider = ref.read(ProviderList.themeProvider);
+    var profileProvider = ref.read(ProviderList.profileProvider);
+
+    if (profileProvider.userProfile.theme != null &&
+        profileProvider.userProfile.theme!['theme'] == 'system') {
+      var theme = profileProvider.userProfile.theme;
+
+      theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
+      log(theme.toString());
+      themeProvider.changeTheme(data: {'theme': theme}, context: null);
+    }
+    super.didChangePlatformBrightness();
   }
 
   // This widget is the root of your application.

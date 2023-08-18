@@ -53,8 +53,8 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                               ? [Colors.white]
                               : themeProvider.theme == THEME.custom
                                   ? [
-                                      themeProvider.themeManager
-                                          .secondaryBackgroundDefaultColor
+                                      themeProvider
+                                          .themeManager.primaryTextColor
                                     ]
                                   : [Colors.black],
                           strokeWidth: 1.0,

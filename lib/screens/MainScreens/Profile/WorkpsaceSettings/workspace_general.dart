@@ -85,9 +85,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   height: 1,
                   width: MediaQuery.of(context).size.width,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkThemeBorder
-                      : Colors.grey[300],
+                  color: themeProvider.themeManager.borderSubtle01Color,
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -116,6 +114,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                     fontWeight: FontWeightt.Semibold,
                                     // fontWeight: FontWeight.w400,
                                     color: Colors.white,
+                                    overrride: true,
                                   ),
                                 )
                               : ClipRRect(
@@ -164,13 +163,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             height: 45,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryBGC
-                                  : lightBackgroundColor,
+                              color: themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor,
                               border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : strokeColor),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
@@ -178,9 +175,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               children: [
                                 Icon(
                                   Icons.file_upload_outlined,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 ),
                                 const SizedBox(width: 5),
                                 const CustomText(
@@ -212,9 +208,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: CustomText(
@@ -250,17 +245,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     right: 20,
                   ),
                   child: TextFormField(
-                    readOnly: workspaceProvider.role != Role.admin &&
-                        workspaceProvider.role != Role.member,
-                    controller: _workspaceNameController,
-                    decoration:
-                        themeProvider.themeManager.textFieldDecoration.copyWith(
-                      fillColor: themeProvider.isDarkThemeEnabled
-                          ? darkBackgroundColor
-                          : lightBackgroundColor,
-                      filled: true,
-                    ),
-                  ),
+                      readOnly: workspaceProvider.role != Role.admin &&
+                          workspaceProvider.role != Role.member,
+                      controller: _workspaceNameController,
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration),
                 ),
                 Container(
                     margin: const EdgeInsets.only(
@@ -285,24 +274,18 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     right: 20,
                   ),
                   child: TextFormField(
-                    controller: _workspaceUrlController,
-                    //not editable
-                    //enabled: true,
-                    onTap: () {
-                      CustomToast().showToast(
-                          context, accessRestrictedMSG, themeProvider,
-                          toastType: ToastType.failure);
-                    },
-                    readOnly: true,
-                    //style: ,
-                    decoration:
-                        themeProvider.themeManager.textFieldDecoration.copyWith(
-                      fillColor: themeProvider.isDarkThemeEnabled
-                          ? darkBackgroundColor
-                          : lightBackgroundColor,
-                      filled: true,
-                    ),
-                  ),
+                      controller: _workspaceUrlController,
+                      //not editable
+                      //enabled: true,
+                      onTap: () {
+                        CustomToast().showToast(
+                            context, accessRestrictedMSG, themeProvider,
+                            toastType: ToastType.failure);
+                      },
+                      readOnly: true,
+                      //style: ,
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration),
                 ),
                 Container(
                     margin: const EdgeInsets.only(
@@ -403,9 +386,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : Colors.grey.shade300),
+                          color:
+                              themeProvider.themeManager.borderSubtle01Color),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Row(
@@ -424,9 +406,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           margin: const EdgeInsets.only(right: 16),
                           child: Icon(
                             Icons.keyboard_arrow_down,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkPrimaryTextColor
-                                : lightPrimaryTextColor,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                         ),
                       ],
@@ -473,6 +453,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         color: Colors.white,
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Bold,
+                        overrride: true,
                       ))),
                 ),
                 Container(
@@ -485,12 +466,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   child: ExpansionTile(
                     childrenPadding:
                         const EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                    iconColor: themeProvider.isDarkThemeEnabled
-                        ? Colors.white
-                        : greyColor,
-                    collapsedIconColor: themeProvider.isDarkThemeEnabled
-                        ? Colors.white
-                        : greyColor,
+                    iconColor: themeProvider.themeManager.primaryTextColor,
+                    collapsedIconColor:
+                        themeProvider.themeManager.primaryTextColor,
                     backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
                     collapsedBackgroundColor:
                         const Color.fromRGBO(255, 12, 12, 0.1),

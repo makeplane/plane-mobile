@@ -30,7 +30,6 @@ class _AppState extends ConsumerState<App> {
         ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
-       
         body: (profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
             ? Center(
@@ -39,38 +38,38 @@ class _AppState extends ConsumerState<App> {
                   height: 30,
                   child: LoadingIndicator(
                     indicatorType: Indicator.lineSpinFadeLoader,
-                    colors: themeProvider.isDarkThemeEnabled
-                        ? [Colors.white]
-                        : [Colors.black],
+                    colors: [
+                      themeProvider.themeManager.primaryBackgroundDefaultColor
+                    ],
                     strokeWidth: 1.0,
                     backgroundColor: Colors.transparent,
                   ),
                 ),
               )
-                : profileProv.getProfileState == StateEnum.error
-                    ? errorState(
-                        context: context,
-                        showButton: false,
-                      )
-                    : !profileProv.userProfile.isOnboarded!
-                        ? (!profileProv
-                                .userProfile.onboardingStep!['profile_complete']
-                            ? const SetupProfileScreen()
+            : profileProv.getProfileState == StateEnum.error
+                ? errorState(
+                    context: context,
+                    showButton: false,
+                  )
+                : !profileProv.userProfile.isOnboarded!
+                    ? (!profileProv
+                            .userProfile.onboardingStep!['profile_complete']
+                        ? const SetupProfileScreen()
+                        : !profileProv
+                                .userProfile.onboardingStep!['workspace_create']
+                            ? const SetupWorkspace()
                             : !profileProv.userProfile
-                                    .onboardingStep!['workspace_create']
-                                ? const SetupWorkspace()
+                                    .onboardingStep!['workspace_invite']
+                                ? const InviteCOWorkers()
                                 : !profileProv.userProfile
-                                        .onboardingStep!['workspace_invite']
-                                    ? const InviteCOWorkers()
-                                    : !profileProv.userProfile
-                                            .onboardingStep!['workspace_join']
-                                        ? const JoinWorkspaces(
-                                            fromOnboard: true,
-                                          )
-                                        : const SignInScreen())
-                        : const HomeScreen(
-                            fromSignUp: false,
-                          ));
+                                        .onboardingStep!['workspace_join']
+                                    ? const JoinWorkspaces(
+                                        fromOnboard: true,
+                                      )
+                                    : const SignInScreen())
+                    : const HomeScreen(
+                        fromSignUp: false,
+                      ));
   }
 
   Future getData() async {

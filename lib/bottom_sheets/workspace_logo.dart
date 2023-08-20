@@ -64,14 +64,18 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.file_upload_outlined),
-                          SizedBox(
+                          Icon(
+                            Icons.file_upload_outlined,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                          ),
+                          const SizedBox(
                             width: 10,
                           ),
-                          CustomText(
+                          const CustomText(
                             'Upload',
                             type: FontStyle.Small,
                             color: Colors.black,

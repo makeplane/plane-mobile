@@ -190,6 +190,11 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                           child: Wrap(
                             children: [
                               RadioListTile(
+                                  fillColor: groupBy == 'state'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
                                   visualDensity: const VisualDensity(
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
@@ -209,8 +214,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                   },
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  activeColor: primaryColor),
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour),
                               RadioListTile(
+                                  fillColor: groupBy == 'priority'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
                                   visualDensity: const VisualDensity(
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
@@ -230,8 +241,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                   },
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  activeColor: primaryColor),
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour),
                               RadioListTile(
+                                  fillColor: groupBy == 'labels'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
                                   visualDensity: const VisualDensity(
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
@@ -251,10 +268,16 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                   },
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  activeColor: primaryColor),
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour),
                               widget.issueCategory == IssueCategory.myIssues
                                   ? Container()
                                   : RadioListTile(
+                                      fillColor: groupBy == 'created_by'
+                                          ? null
+                                          : MaterialStateProperty.all<Color>(
+                                              themeProvider.themeManager
+                                                  .borderSubtle01Color),
                                       visualDensity: const VisualDensity(
                                         horizontal:
                                             VisualDensity.minimumDensity,
@@ -275,12 +298,18 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                       },
                                       controlAffinity:
                                           ListTileControlAffinity.leading,
-                                      activeColor: primaryColor),
+                                      activeColor: themeProvider
+                                          .themeManager.primaryColour),
 
                               //project
                               widget.issueCategory != IssueCategory.myIssues
                                   ? Container()
                                   : RadioListTile(
+                                      fillColor: groupBy == 'project'
+                                          ? null
+                                          : MaterialStateProperty.all<Color>(
+                                              themeProvider.themeManager
+                                                  .borderSubtle01Color),
                                       visualDensity: const VisualDensity(
                                         horizontal:
                                             VisualDensity.minimumDensity,
@@ -301,7 +330,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                       },
                                       controlAffinity:
                                           ListTileControlAffinity.leading,
-                                      activeColor: primaryColor),
+                                      activeColor: themeProvider
+                                          .themeManager.primaryColour),
                             ],
                           ),
                         )
@@ -320,6 +350,11 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                       child: Wrap(
                         children: [
                           RadioListTile(
+                              fillColor: orderBy == 'sort_order'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -337,8 +372,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                           RadioListTile(
+                              fillColor: orderBy == '-created_at'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -356,8 +397,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                           RadioListTile(
+                              fillColor: orderBy == 'updated_at'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -375,7 +422,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                         ],
                       ),
                     )
@@ -392,6 +440,11 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                       child: Wrap(
                         children: [
                           RadioListTile(
+                              fillColor: issueType == 'all'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -409,8 +462,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                           RadioListTile(
+                              fillColor: issueType == 'active'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -428,8 +487,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                           RadioListTile(
+                              fillColor: issueType == 'backlog'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
                               visualDensity: const VisualDensity(
                                 horizontal: VisualDensity.minimumDensity,
                                 vertical: VisualDensity.minimumDensity,
@@ -447,7 +512,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: primaryColor),
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                         ],
                       ),
                     )
@@ -560,7 +626,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: tag['selected'] ?? false
-                                            ? primaryColor
+                                            ? themeProvider
+                                                .themeManager.primaryColour
                                             : themeProvider.themeManager
                                                 .primaryBackgroundDefaultColor,
                                         border: Border.all(
@@ -625,7 +692,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                       themeProvider
                                           .themeManager.borderSubtle01Color),
                               groupValue: selected,
-                              activeColor: primaryColor,
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour,
                               value: 1,
                               onChanged: (val) {}),
                           const SizedBox(width: 10),
@@ -724,7 +792,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                             themeProvider.themeManager
                                                 .disabledButtonColor),
                                     groupValue: selected,
-                                    activeColor: primaryColor,
+                                    activeColor: themeProvider
+                                        .themeManager.primaryColour,
                                     value: 2,
                                     onChanged: (val) {}),
                                 const SizedBox(width: 10),
@@ -774,7 +843,8 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                             themeProvider.themeManager
                                                 .disabledButtonColor),
                                     groupValue: selected,
-                                    activeColor: primaryColor,
+                                    activeColor: themeProvider
+                                        .themeManager.primaryColour,
                                     value: 3,
                                     onChanged: (val) {}),
                                 const SizedBox(width: 10),

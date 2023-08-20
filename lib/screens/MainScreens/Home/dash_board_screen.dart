@@ -177,7 +177,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   child: Icon(
                                     Icons.close,
                                     color: themeProvider
-                                        .themeManager.secondaryTextColor,
+                                        .themeManager.placeholderTextColor,
                                   ),
                                 ),
                               ],
@@ -417,7 +417,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               height: 35,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                               ),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
@@ -440,7 +440,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             height: 35,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: primaryColor,
+                              color: themeProvider.themeManager.primaryColour,
                             ),
                             child: Center(
                               child: CustomText(

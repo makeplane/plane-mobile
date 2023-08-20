@@ -208,6 +208,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   .themeManager.primaryColour
                                               : themeProvider.themeManager
                                                   .placeholderTextColor,
+                                          overrride: true,
                                           type: FontStyle.Medium,
                                           fontWeight: projectProvider.features
                                                       .indexOf(e) ==
@@ -230,7 +231,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           ? Container(
                                               height: 6,
                                               decoration: BoxDecoration(
-                                                  color: primaryColor,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
                                                   borderRadius:
                                                       BorderRadius.circular(6)),
                                             )
@@ -513,11 +516,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.add,
-                                                        color: themeProvider
-                                                            .themeManager
-                                                            .textonColor,
+                                                        color: Colors.white,
                                                         size: 20,
                                                       ),
                                                       CustomText(
@@ -536,9 +537,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                           : Container(),
                                       Container(
                                         height: 50,
-                                        width: 1,
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color,
+                                        width: 0.5,
+                                        color: Colors.white,
                                       ),
                                       Expanded(
                                           child: InkWell(
@@ -569,10 +569,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.filter_alt,
-                                                color: themeProvider
-                                                    .themeManager.textonColor,
+                                                color: Colors.white,
                                                 size: 19,
                                               ),
                                               CustomText(

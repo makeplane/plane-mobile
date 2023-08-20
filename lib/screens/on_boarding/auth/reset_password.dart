@@ -5,7 +5,6 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
-import '../../../utils/constants.dart';
 import '../../../utils/enums.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../widgets/custom_text.dart';
@@ -46,11 +45,11 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                           type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
                           color: themeProvider.themeManager.primaryTextColor),
-                      const CustomText(
+                      CustomText(
                         '',
                         type: FontStyle.H4,
                         fontWeight: FontWeightt.Semibold,
-                        color: primaryColor,
+                        color: themeProvider.themeManager.primaryColour,
                       ),
                     ],
                   ),

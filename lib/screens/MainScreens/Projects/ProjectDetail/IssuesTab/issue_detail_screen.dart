@@ -627,7 +627,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                     : 'View all',
                                                 type: FontStyle.Medium,
                                                 fontWeight: FontWeightt.Regular,
-                                                color: primaryColor,
+                                                color: themeProvider
+                                                    .themeManager.primaryColour,
                                               ),
 
                                               const SizedBox(width: 10),
@@ -676,10 +677,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             height: 45,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primaryColor.withOpacity(0.2),
+                                              color: themeProvider
+                                                  .themeManager.primaryColour
+                                                  .withOpacity(0.2),
                                               border: Border.all(
-                                                color: primaryColor,
+                                                color: themeProvider
+                                                    .themeManager.primaryColour,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(5),
@@ -966,8 +969,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           padding:
                                                                               const EdgeInsets.all(2),
                                                                           child:
-                                                                              const Icon(
+                                                                              Icon(
                                                                             Icons.comment_outlined,
+                                                                            color:
+                                                                                themeProvider.themeManager.placeholderTextColor,
                                                                             size:
                                                                                 12,
                                                                           ),
@@ -1065,10 +1070,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                           15,
                                                                       child: Center(
                                                                           child: issueProvider.issueActivity[index]['field'] == 'state'
-                                                                              ? const Icon(
+                                                                              ? Icon(
                                                                                   Icons.grid_view_outlined,
                                                                                   size: 15,
-                                                                                  color: greyColor,
+                                                                                  color: themeProvider.themeManager.placeholderTextColor,
                                                                                 )
                                                                               : issueProvider.issueActivity[index]['field'] == 'priority'
                                                                                   ? SvgPicture.asset(
@@ -1077,16 +1082,16 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                                       width: 15,
                                                                                     )
                                                                                   : issueProvider.issueActivity[index]['field'] == 'assignees' || issueProvider.issueActivity[index]['field'] == 'assignee'
-                                                                                      ? const Icon(
+                                                                                      ? Icon(
                                                                                           Icons.people_outline,
                                                                                           size: 18,
-                                                                                          color: greyColor,
+                                                                                          color: themeProvider.themeManager.placeholderTextColor,
                                                                                         )
                                                                                       : issueProvider.issueActivity[index]['field'] == 'labels'
-                                                                                          ? const Icon(
+                                                                                          ? Icon(
                                                                                               Icons.local_offer_outlined,
                                                                                               size: 15,
-                                                                                              color: greyColor,
+                                                                                              color: themeProvider.themeManager.placeholderTextColor,
                                                                                             )
                                                                                           : issueProvider.issueActivity[index]['field'] == 'blocks'
                                                                                               ? SvgPicture.asset(
@@ -1101,7 +1106,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                                                       width: 15,
                                                                                                     )
                                                                                                   : issueProvider.issueActivity[index]['field'] == 'description'
-                                                                                                      ? const Icon(Icons.comment_outlined, color: greyColor, size: 15)
+                                                                                                      ? Icon(Icons.comment_outlined, color: themeProvider.themeManager.placeholderTextColor, size: 15)
                                                                                                       : issueProvider.issueActivity[index]['field'] == 'link'
                                                                                                           ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
                                                                                                           : issueProvider.issueActivity[index]['field'] == 'modules'
@@ -1990,13 +1995,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
             builder: (context, child) => Theme(
               data: themeProvider.isDarkThemeEnabled
                   ? ThemeData.dark().copyWith(
-                      colorScheme: const ColorScheme.dark(
-                        primary: primaryColor,
+                      colorScheme: ColorScheme.dark(
+                        primary: themeProvider.themeManager.primaryColour,
                       ),
                     )
                   : ThemeData.light().copyWith(
-                      colorScheme: const ColorScheme.light(
-                        primary: primaryColor,
+                      colorScheme: ColorScheme.light(
+                        primary: themeProvider.themeManager.primaryColour,
                       ),
                     ),
               child: child!,
@@ -2135,13 +2140,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
             builder: (context, child) => Theme(
               data: themeProvider.isDarkThemeEnabled
                   ? ThemeData.dark().copyWith(
-                      colorScheme: const ColorScheme.dark(
-                        primary: primaryColor,
+                      colorScheme: ColorScheme.dark(
+                        primary: themeProvider.themeManager.primaryColour,
                       ),
                     )
                   : ThemeData.light().copyWith(
-                      colorScheme: const ColorScheme.light(
-                        primary: primaryColor,
+                      colorScheme: ColorScheme.light(
+                        primary: themeProvider.themeManager.primaryColour,
                       ),
                     ),
               child: child!,
@@ -2665,10 +2670,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                       buildContext: context,
                                     );
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.close,
                                     size: 20,
-                                    color: greyColor,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                   ),
                                 ),
                               ),
@@ -2839,10 +2845,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                       buildContext: context,
                                     );
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.close,
                                     size: 20,
-                                    color: greyColor,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
                                   ),
                                 ),
                               ),
@@ -2931,6 +2938,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             ? issueProvider.issueDetails['issue_cycle']
                                 ['cycle_detail']['name']
                             : 'No Cycle',
+                        textAlign: TextAlign.right,
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Regular,
                         color: themeProvider.themeManager.primaryTextColor,

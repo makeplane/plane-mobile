@@ -66,64 +66,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                           : '',
                     )));
       },
-      child: Container(
-        margin: (widget.issueCategory == IssueCategory.myIssues
-                ? ref.watch(ProviderList.myIssuesProvider).issues.projectView ==
-                    ProjectView.list
-                : ref.watch(ProviderList.issuesProvider).issues.projectView ==
-                    ProjectView.list)
-            ? const EdgeInsets.only(bottom: 1)
-            : const EdgeInsets.only(bottom: 15, right: 5, left: 5, top: 5),
-        decoration: BoxDecoration(
-          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-          // border: Border(
-          //     bottom: BorderSide(
-          //         color: themeProvider.themeManager.borderDisabledColor,
-          //         width: 1)),
-          boxShadow: (widget.issueCategory == IssueCategory.myIssues
-                  ? ref
-                          .watch(ProviderList.myIssuesProvider)
-                          .issues
-                          .projectView ==
-                      ProjectView.kanban
-                  : ref.watch(ProviderList.issuesProvider).issues.projectView ==
-                      ProjectView.kanban)
-              ? [
-                  BoxShadow(
-                    blurRadius: 2,
-                    color: themeProvider.themeManager.borderSubtle01Color,
-                    spreadRadius: 0,
-                  )
-                ]
-              : null,
-        ),
-        child: Container(
-            width: widget.issueCategory == IssueCategory.cycleIssues &&
-                    ref.watch(ProviderList.issuesProvider).issues.projectView ==
-                        ProjectView.list
-                ? width
-                : widget.issueCategory == IssueCategory.moduleIssues
-                    ? width
-                    : widget.issueCategory == IssueCategory.cycleIssues
-                        ? width
-                        : widget.issueCategory == IssueCategory.myIssues
-                            ? ref
-                                .watch(ProviderList.myIssuesProvider)
-                                .issues
-                                .issues[widget.listIndex]
-                                .width
-                            : ref
-                                .watch(ProviderList.issuesProvider)
-                                .issues
-                                .issues[widget.listIndex]
-                                .width,
-            padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 10,
-              // top: provider.isTagsEnabled() ? 0 : 0,
-              // bottom: provider.isTagsEnabled() ? 0 : 0
-            ),
-            child: (widget.issueCategory == IssueCategory.myIssues
+      child: Column(
+        children: [
+          Container(
+            margin: (widget.issueCategory == IssueCategory.myIssues
                     ? ref
                             .watch(ProviderList.myIssuesProvider)
                             .issues
@@ -134,8 +80,92 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             .issues
                             .projectView ==
                         ProjectView.list)
-                ? listCard()
-                : kanbanCard()),
+                ? const EdgeInsets.only(bottom: 1)
+                : const EdgeInsets.only(bottom: 15, right: 5, left: 5, top: 5),
+            decoration: BoxDecoration(
+              color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+              // border: Border(
+              //     bottom: BorderSide(
+              //         color: themeProvider.themeManager.borderDisabledColor,
+              //         width: 1)),
+              boxShadow: (widget.issueCategory == IssueCategory.myIssues
+                      ? ref
+                              .watch(ProviderList.myIssuesProvider)
+                              .issues
+                              .projectView ==
+                          ProjectView.kanban
+                      : ref
+                              .watch(ProviderList.issuesProvider)
+                              .issues
+                              .projectView ==
+                          ProjectView.kanban)
+                  ? [
+                      BoxShadow(
+                        blurRadius: 2,
+                        color: themeProvider.themeManager.borderSubtle01Color,
+                        spreadRadius: 0,
+                      )
+                    ]
+                  : null,
+            ),
+            child: Container(
+                width: widget.issueCategory == IssueCategory.cycleIssues &&
+                        ref
+                                .watch(ProviderList.issuesProvider)
+                                .issues
+                                .projectView ==
+                            ProjectView.list
+                    ? width
+                    : widget.issueCategory == IssueCategory.moduleIssues
+                        ? width
+                        : widget.issueCategory == IssueCategory.cycleIssues
+                            ? width
+                            : widget.issueCategory == IssueCategory.myIssues
+                                ? ref
+                                    .watch(ProviderList.myIssuesProvider)
+                                    .issues
+                                    .issues[widget.listIndex]
+                                    .width
+                                : ref
+                                    .watch(ProviderList.issuesProvider)
+                                    .issues
+                                    .issues[widget.listIndex]
+                                    .width,
+                padding: const EdgeInsets.only(
+                  left: 15.0,
+                  right: 10,
+                  // top: provider.isTagsEnabled() ? 0 : 0,
+                  // bottom: provider.isTagsEnabled() ? 0 : 0
+                ),
+                child: (widget.issueCategory == IssueCategory.myIssues
+                        ? ref
+                                .watch(ProviderList.myIssuesProvider)
+                                .issues
+                                .projectView ==
+                            ProjectView.list
+                        : ref
+                                .watch(ProviderList.issuesProvider)
+                                .issues
+                                .projectView ==
+                            ProjectView.list)
+                    ? listCard()
+                    : kanbanCard()),
+          ),
+          (widget.issueCategory == IssueCategory.myIssues
+                  ? ref
+                          .watch(ProviderList.myIssuesProvider)
+                          .issues
+                          .projectView ==
+                      ProjectView.list
+                  : ref.watch(ProviderList.issuesProvider).issues.projectView ==
+                      ProjectView.list)
+              ? Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: themeProvider.themeManager.borderSubtle01Color,
+                )
+              : Container(),
+        ],
       ),
     );
   }

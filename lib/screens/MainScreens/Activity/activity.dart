@@ -262,16 +262,16 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                         )
                                                                       : activityProvider.data[index]['field'] == 'assignees' ||
                                                                               activityProvider.data[index]['field'] == 'assignee'
-                                                                          ? const Icon(
+                                                                          ? Icon(
                                                                               Icons.people_outline,
                                                                               size: 18,
-                                                                              color: greyColor,
+                                                                              color: themeProvider.themeManager.placeholderTextColor,
                                                                             )
                                                                           : activityProvider.data[index]['field'] == 'labels'
-                                                                              ? const Icon(
+                                                                              ? Icon(
                                                                                   Icons.local_offer_outlined,
                                                                                   size: 15,
-                                                                                  color: greyColor,
+                                                                                  color: themeProvider.themeManager.placeholderTextColor,
                                                                                 )
                                                                               : activityProvider.data[index]['field'] == 'blocks'
                                                                                   ? SvgPicture.asset(
@@ -286,9 +286,9 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                           width: 15,
                                                                                         )
                                                                                       : activityProvider.data[index]['field'] == 'description'
-                                                                                          ? const Icon(
+                                                                                          ? Icon(
                                                                                               Icons.comment_outlined,
-                                                                                              color: greyColor,
+                                                                                              color: themeProvider.themeManager.placeholderTextColor,
                                                                                               size: 15,
                                                                                             )
                                                                                           : activityProvider.data[index]['field'] == 'link'
@@ -300,10 +300,10 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                                       : activityProvider.data[index]['field'] == 'attachment'
                                                                                                           ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
                                                                                                           : activityProvider.data[index]['field'] == 'parent'
-                                                                                                              ? const Icon(
+                                                                                                              ? Icon(
                                                                                                                   Icons.person_outline,
                                                                                                                   size: 16,
-                                                                                                                  color: greyColor,
+                                                                                                                  color: themeProvider.themeManager.placeholderTextColor,
                                                                                                                 )
                                                                                                               : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))),
                                                         ),

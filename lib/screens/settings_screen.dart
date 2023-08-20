@@ -91,16 +91,16 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
           ),
           bottom: TabBar(
             controller: tabController,
-            indicator: const BoxDecoration(
+            indicator: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: primaryColor,
+                  color: themeProvider.themeManager.primaryColour,
                   width: 7,
                 ),
               ),
             ),
             // indicatorColor: primaryColor,
-            labelColor: primaryColor,
+            labelColor: themeProvider.themeManager.primaryColour,
             indicatorWeight: 9,
             onTap: (index) {
               setState(() {
@@ -114,8 +114,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     tabs[tabs.indexOf(e)],
                     type: FontStyle.Medium,
                     color: tabs.indexOf(e) == selectedIndex
-                        ? primaryColor
+                        ? themeProvider.themeManager.primaryColour
                         : themeProvider.themeManager.secondaryTextColor,
+                    overrride: true,
                   ),
                 )
                 .toList(),
@@ -197,9 +198,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                   }
                 },
                 backgroundColor: themeProvider.themeManager.primaryColour,
-                child: const Icon(
+                child: Icon(
                   Icons.add,
-                  color: Colors.white,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               )
             : Container(),

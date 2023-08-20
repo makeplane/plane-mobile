@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import '../utils/constants.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/custom_text.dart';
@@ -421,9 +420,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
           ),
         ),
         Container(
-          color: themeProvider.isDarkThemeEnabled
-              ? const Color.fromRGBO(29, 30, 32, 1)
-              : Colors.white,
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           margin: const EdgeInsets.only(top: 16),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -441,9 +438,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                 },
                 icon: Icon(
                   Icons.close,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? lightSecondaryBackgroundColor
-                      : darkSecondaryBGC,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               )
             ],

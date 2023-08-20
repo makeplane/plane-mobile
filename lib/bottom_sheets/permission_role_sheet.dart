@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -42,10 +41,10 @@ class _PermissionRoleSheetState extends ConsumerState<PermissionRoleSheet> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
@@ -78,9 +77,10 @@ class _PermissionRoleSheetState extends ConsumerState<PermissionRoleSheet> {
                                   ? null
                                   : MaterialStateProperty.all<Color>(
                                       themeProvider
-                                          .themeManager.primaryTextColor),
+                                          .themeManager.borderSubtle01Color),
                               groupValue: widget.data['role'],
-                              activeColor: primaryColor,
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour,
                               value: roles[index],
                               onChanged: (val) {
                                 // profileProvider.changeIndex(0);
@@ -114,8 +114,8 @@ class _PermissionRoleSheetState extends ConsumerState<PermissionRoleSheet> {
             width: double.infinity,
           ),
           GestureDetector(
-            onTap: (){
-             widget.data['role'] = Role.none;
+            onTap: () {
+              widget.data['role'] = Role.none;
               Navigator.pop(context);
             },
             child: Container(

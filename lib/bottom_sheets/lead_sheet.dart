@@ -61,10 +61,10 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         size: 27,
-                        color: Color.fromRGBO(143, 143, 147, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     ),
                   ],

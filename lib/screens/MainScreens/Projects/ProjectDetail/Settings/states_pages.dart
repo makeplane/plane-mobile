@@ -89,7 +89,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                     },
                     icon: Icon(
                       Icons.add,
-                      color: themeProvider.themeManager.primaryColour,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ),
                   )
                 ],

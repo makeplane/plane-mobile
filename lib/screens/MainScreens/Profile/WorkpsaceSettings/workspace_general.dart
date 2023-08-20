@@ -98,7 +98,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: workspaceProvider.tempLogo == ''
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : null,
                             borderRadius: BorderRadius.circular(6),
                           ),
@@ -444,7 +444,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       margin:
                           const EdgeInsets.only(top: 20, left: 20, right: 20),
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(63, 118, 255, 1),
+                        color: themeProvider.themeManager.primaryColour,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Center(

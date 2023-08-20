@@ -203,14 +203,16 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                       selectedWorkspaces.contains(
                                               prov.workspaceInvitations[index]
                                                   ['id'])
-                                          ? const Icon(
+                                          ? Icon(
                                               Icons.check_circle,
                                               size: 24,
-                                              color: primaryColor,
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
                                             )
-                                          : const Icon(
+                                          : Icon(
                                               Icons.check_circle_outline,
-                                              color: greyColor,
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                             )
                                     ],
                                   ),
@@ -353,11 +355,12 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                           ontap: () {
                             Navigator.of(context).pop();
                           },
-                          widget: const Padding(
-                            padding: EdgeInsets.only(right: 10),
+                          widget: Padding(
+                            padding: const EdgeInsets.only(right: 10),
                             child: Icon(
                               Icons.arrow_back,
-                              color: greyColor,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                               size: 20,
                             ),
                           ),

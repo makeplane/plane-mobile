@@ -51,9 +51,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                           },
                           icon: Icon(
                             Icons.close,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         )
                       ],

@@ -198,9 +198,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       },
                       icon: Icon(
                         Icons.more_vert,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkPrimaryTextColor
-                            : lightPrimaryTextColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       )),
                 ),
               ],
@@ -214,9 +212,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                 children: [
                   Icon(
                     Icons.calendar_month,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkPrimaryTextColor
-                        : lightPrimaryTextColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                     size: 18,
                   ),
                   const SizedBox(
@@ -244,9 +240,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   Icon(
                     Icons.my_location_sharp,
                     size: 18,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkPrimaryTextColor
-                        : lightPrimaryTextColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                   const SizedBox(
                     width: 5,
@@ -472,10 +466,11 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                       color: themeProvider
                                           .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.groups_2_outlined,
                                 size: 18,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             )
                       : (modulesProvider.modules[widget.index]
@@ -558,10 +553,11 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                       color: themeProvider
                                           .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.groups_2_outlined,
                                 size: 18,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             ),
 

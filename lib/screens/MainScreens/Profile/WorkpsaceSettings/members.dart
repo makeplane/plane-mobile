@@ -128,8 +128,23 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
   Widget build(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    return ListView.builder(
+    return ListView.separated(
         itemCount: workspaceProvider.workspaceMembers.length,
+        separatorBuilder: (context, index) => Container(
+              padding:
+                  const EdgeInsets.only(left: 20, right: 20, top: 3, bottom: 3),
+              child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  indent: 0,
+                  endIndent: 0,
+                  color: themeProvider.themeManager.borderSubtle01Color
+                  // themeProvider.isDarkThemeEnabled
+                  //     ? darkThemeBorder
+                  //     : const Color.fromRGBO(
+                  //         238, 238, 238, 1),
+                  ),
+            ),
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () {
@@ -324,8 +339,22 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: projectsProvider.projectMembers.length,
+      separatorBuilder: (context, index) => Container(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 3, bottom: 3),
+        child: Divider(
+            height: 1,
+            thickness: 1,
+            indent: 0,
+            endIndent: 0,
+            color: themeProvider.themeManager.borderSubtle01Color
+            // themeProvider.isDarkThemeEnabled
+            //     ? darkThemeBorder
+            //     : const Color.fromRGBO(
+            //         238, 238, 238, 1),
+            ),
+      ),
       itemBuilder: (context, index) {
         return ListTile(
           onTap: () {

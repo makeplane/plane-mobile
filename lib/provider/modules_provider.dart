@@ -510,22 +510,25 @@ class ModuleProvider with ChangeNotifier {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
-                  size: 18, color: themeProvider.themeManager.primaryTextColor)
+                  size: 18,
+                  color: themeProvider.themeManager.placeholderTextColor)
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.themeManager.primaryTextColor,
+                      color: themeProvider.themeManager.placeholderTextColor,
                       size: 18,
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color: themeProvider.themeManager.primaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
                       : Icon(
                           Icons.signal_cellular_alt_1_bar,
-                          color: themeProvider.themeManager.primaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
           : issues.groupBY == GroupBY.createdBY
@@ -600,9 +603,9 @@ class ModuleProvider with ChangeNotifier {
                 shrinkStates[element.index] = !shrinkStates[element.index];
                 notifyListeners();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.zoom_in_map,
-                color: Color.fromRGBO(133, 142, 150, 1),
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 20,
               ),
             ),
@@ -619,9 +622,9 @@ class ModuleProvider with ChangeNotifier {
                               moduleId: currentModule['id'],
                             )));
               },
-              child: const Icon(
+              child: Icon(
                 Icons.add,
-                color: primaryColor,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
             ),
           ],

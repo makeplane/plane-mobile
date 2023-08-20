@@ -7,7 +7,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/home_screen.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
@@ -163,10 +162,10 @@ class _SignInState extends ConsumerState<SignIn> {
                           children: [
                             InkWell(
                               onTap: () {},
-                              child: const CustomText(
+                              child: CustomText(
                                 'Forgot Password?',
                                 type: FontStyle.Small,
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                               ),
                             ),
                           ],
@@ -249,10 +248,10 @@ class _SignInState extends ConsumerState<SignIn> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                               Icon(
+                              Icon(
                                 Icons.arrow_back,
                                 color: themeProvider
-                                      .themeManager.placeholderTextColor,
+                                    .themeManager.placeholderTextColor,
                                 size: 18,
                               ),
                               const SizedBox(

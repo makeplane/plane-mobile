@@ -133,7 +133,11 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                             widget.cycleId != '' &&
                                     widget.cycleId ==
                                         issueProvider.cyclesList[index]['id']
-                                ? const Icon(Icons.check)
+                                ? Icon(
+                                    Icons.check,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                  )
                                 : Container()
                           ],
                         ),
@@ -144,7 +148,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                             height: 1,
                             margin: const EdgeInsets.only(top: 10, bottom: 5),
                             color:
-                                themeProvider.themeManager.placeholderTextColor)
+                                themeProvider.themeManager.borderSubtle01Color)
                       ],
                     ),
                   ),

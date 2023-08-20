@@ -314,11 +314,8 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                                 Icons.close,
                                                                 size: 27,
                                                                 color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
+                                                                    .themeManager
+                                                                    .placeholderTextColor,
                                                               ),
                                                             ),
                                                           ),
@@ -421,7 +418,8 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                   Row(
                                     children: [
                                       Radio(
-                                        activeColor: primaryColor,
+                                        activeColor: themeProvider
+                                            .themeManager.primaryColour,
                                         visualDensity: const VisualDensity(
                                           horizontal:
                                               VisualDensity.minimumDensity,

@@ -67,9 +67,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.close,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightSecondaryBackgroundColor
-                            : darkSecondaryBGC,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ))
                 ],
               ),
@@ -115,7 +113,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                 horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: selectedLabels.contains(label["id"])
-                                  ? primaryColor
+                                  ? themeProvider.themeManager.primaryColour
                                   : (themeProvider.isDarkThemeEnabled
                                       ? darkBackgroundColor
                                       : lightBackgroundColor),

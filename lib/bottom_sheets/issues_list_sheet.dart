@@ -139,9 +139,10 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                     TextField(
                       decoration: themeProvider.themeManager.textFieldDecoration
                           .copyWith(
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.search,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                       ),
                       onChanged: (value) => searchIssueProviderRead.getIssues(
@@ -503,9 +504,9 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     if (type == IssueDetailCategory.blocking) {
       return issuesProvider.blockingIssuesIds
               .contains(searchIssueProvider.issues[index]['id'])
-          ? const Icon(
+          ? Icon(
               Icons.check_box,
-              color: primaryColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             )
           : Icon(Icons.check_box_outline_blank,
               color: themeProvider.themeManager.placeholderTextColor);
@@ -513,9 +514,9 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     if (type == IssueDetailCategory.addModuleIssue) {
       return modulesProvider.selectedIssues
               .contains(searchIssueProvider.issues[index]['id'])
-          ? const Icon(
+          ? Icon(
               Icons.check_box,
-              color: primaryColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             )
           : Icon(Icons.check_box_outline_blank,
               color: themeProvider.themeManager.placeholderTextColor);
@@ -523,9 +524,9 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     if (type == IssueDetailCategory.addCycleIssue) {
       return cyclesProvider.selectedIssues
               .contains(searchIssueProvider.issues[index]['id'])
-          ? const Icon(
+          ? Icon(
               Icons.check_box,
-              color: primaryColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             )
           : Icon(Icons.check_box_outline_blank,
               color: themeProvider.themeManager.placeholderTextColor);
@@ -533,18 +534,18 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     if (type == IssueDetailCategory.subIssue) {
       return issuesProvider.subIssuesIds
               .contains(searchIssueProvider.issues[index]['id'])
-          ? const Icon(
+          ? Icon(
               Icons.check_box,
-              color: primaryColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             )
           : Icon(Icons.check_box_outline_blank,
               color: themeProvider.themeManager.placeholderTextColor);
     } else {
       return issuesProvider.blockedByIssuesIds
               .contains(searchIssueProvider.issues[index]['id'])
-          ? const Icon(
+          ? Icon(
               Icons.check_box,
-              color: primaryColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             )
           : Icon(Icons.check_box_outline_blank,
               color: themeProvider.themeManager.placeholderTextColor);

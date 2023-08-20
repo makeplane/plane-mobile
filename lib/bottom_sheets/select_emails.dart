@@ -109,7 +109,6 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                   color: themeProv.isDarkThemeEnabled
                                       ? darkSecondaryTextColor
                                       : Colors.black,
-                  
                                 ),
                               ),
                             ],

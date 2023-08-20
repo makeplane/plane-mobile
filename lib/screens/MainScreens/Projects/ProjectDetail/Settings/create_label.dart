@@ -86,9 +86,8 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             },
                             icon: Icon(
                               Icons.close,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? lightSecondaryBackgroundColor
-                                  : darkSecondaryBGC,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           )
                         ],

@@ -66,6 +66,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           child: Row(
             children: [
               Radio(
+                activeColor: themeProvider.themeManager.primaryColour,
+                fillColor: pageProvider.selectedFilter.name == 'all'
+                    ? null
+                    : MaterialStateProperty.all<Color>(
+                        themeProvider.themeManager.borderSubtle01Color),
                 value: 'all',
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
@@ -86,6 +91,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           child: Row(
             children: [
               Radio(
+                fillColor: pageProvider.selectedFilter.name == 'recent'
+                    ? null
+                    : MaterialStateProperty.all<Color>(
+                        themeProvider.themeManager.borderSubtle01Color),
+                activeColor: themeProvider.themeManager.primaryColour,
                 value: 'recent',
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
@@ -106,6 +116,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           child: Row(
             children: [
               Radio(
+                fillColor: pageProvider.selectedFilter.name == 'favourites'
+                    ? null
+                    : MaterialStateProperty.all<Color>(
+                        themeProvider.themeManager.borderSubtle01Color),
+                activeColor: themeProvider.themeManager.primaryColour,
                 value: 'favourites',
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
@@ -126,6 +141,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           child: Row(
             children: [
               Radio(
+                fillColor: pageProvider.selectedFilter.name == 'createdByMe'
+                    ? null
+                    : MaterialStateProperty.all<Color>(
+                        themeProvider.themeManager.borderSubtle01Color),
+                activeColor: themeProvider.themeManager.primaryColour,
                 value: 'createdByMe',
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},
@@ -146,6 +166,11 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
           child: Row(
             children: [
               Radio(
+                fillColor: pageProvider.selectedFilter.name == 'createdByOthers'
+                    ? null
+                    : MaterialStateProperty.all<Color>(
+                        themeProvider.themeManager.borderSubtle01Color),
+                activeColor: themeProvider.themeManager.primaryColour,
                 value: 'createdByOthers',
                 groupValue: pageProvider.selectedFilter.name,
                 onChanged: (value) {},

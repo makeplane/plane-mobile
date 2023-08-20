@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -58,9 +57,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
-                      color: Colors.grey,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ),
                   ),
                 ],
@@ -259,19 +258,19 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                             fromHomeScreen: true,
                           )));
                 },
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.add,
-                      color: primaryColor,
+                      color: themeProvider.themeManager.primaryColour,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     CustomText(
                       'Create Workspace',
                       type: FontStyle.H5,
-                      color: primaryColor,
+                      color: themeProvider.themeManager.primaryColour,
                     ),
                   ],
                 ),

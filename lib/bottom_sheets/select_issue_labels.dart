@@ -219,7 +219,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       height: 1,
                                       // margin: const EdgeInsets.only(bottom: 5),
                                       color: themeProvider
-                                          .themeManager.placeholderTextColor)
+                                          .themeManager.borderSubtle01Color)
                                 ],
                               ),
                             ),
@@ -252,9 +252,13 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     const SizedBox(
                                       width: 5,
                                     ),
-                                    Icon(showColorPallette
-                                        ? Icons.keyboard_arrow_up_outlined
-                                        : Icons.keyboard_arrow_down)
+                                    Icon(
+                                      showColorPallette
+                                          ? Icons.keyboard_arrow_up_outlined
+                                          : Icons.keyboard_arrow_down,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    )
                                   ],
                                 ),
                               ),
@@ -286,9 +290,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                           const Color.fromRGBO(255, 12, 12, 1),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.close,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     )),
                               ),
                               const Spacer(),
@@ -332,9 +337,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                           const Color.fromRGBO(9, 169, 83, 1),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.done,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     )),
                               ),
                               const Spacer(),
@@ -454,10 +460,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                         // ),
                                         child: Icon(
                                           Icons.add,
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkSecondaryTextColor
-                                                  : lightSecondaryTextColor,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
                                         )),
                                     Container(width: 10),
                                     const CustomText(

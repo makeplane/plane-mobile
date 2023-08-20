@@ -11,7 +11,6 @@ import 'package:plane_startup/widgets/loading_widget.dart';
 
 // import '../Provider/provider_list.dart';
 import '../../../widgets/custom_button.dart';
-import '../../../utils/constants.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../bottom_sheets/role_sheet.dart';
 import '../../../widgets/custom_text.dart';
@@ -114,7 +113,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                     return null;
                                   },
                                   controller: prov.firstName,
-                                  style: themeProvider.themeManager.textFieldTextStyle,
+                                  style: themeProvider
+                                      .themeManager.textFieldTextStyle,
                                   decoration: themeProvider
                                       .themeManager.textFieldDecoration,
                                 ),
@@ -146,7 +146,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       }
                                       return null;
                                     },
-                                    style: themeProvider.themeManager.textFieldTextStyle,
+                                    style: themeProvider
+                                        .themeManager.textFieldTextStyle,
                                     controller: prov.lastName,
                                     decoration: themeProvider
                                         .themeManager.textFieldDecoration),
@@ -198,8 +199,9 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       border: Border.all(
-                                          color:
-                                              themeProvider.themeManager.borderSubtle01Color,),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Row(
@@ -214,7 +216,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                                 ? 'Select Role'
                                                 : prov.dropDownValue!,
                                             type: FontStyle.Small,
-                                            color: themeProvider.themeManager.placeholderTextColor,
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
                                         ),
                                         Container(
@@ -222,8 +225,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                               const EdgeInsets.only(right: 16),
                                           child: Icon(
                                             Icons.keyboard_arrow_down,
-                                            color:
-                                                themeProvider.themeManager.primaryTextColor,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
                                           ),
                                         ),
                                       ],
@@ -342,9 +345,10 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.arrow_back,
-                                      color: greyColor,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                       size: 18,
                                     ),
                                     const SizedBox(

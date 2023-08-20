@@ -277,7 +277,6 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   child: CustomText(
                     'Admin',
                     type: FontStyle.H5,
-          
                   ),
                 ),
                 DropdownMenuItem(
@@ -285,7 +284,6 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   child: CustomText(
                     'Member',
                     type: FontStyle.H5,
-              
                   ),
                 ),
                 DropdownMenuItem(
@@ -293,7 +291,6 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   child: CustomText(
                     'Viewer',
                     type: FontStyle.H5,
-                   
                   ),
                 ),
                 DropdownMenuItem(
@@ -301,7 +298,6 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   child: CustomText(
                     'Guest',
                     type: FontStyle.H5,
-                    
                   ),
                 ),
               ],
@@ -347,28 +343,27 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   child: CustomText(
                     'Admin',
                     type: FontStyle.H5,
-                
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Member',
                   child: CustomText(
                     'Member',
-                      type: FontStyle.H5,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Viewer',
                   child: CustomText(
                     'Viewer',
-                     type: FontStyle.H5,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Guest',
                   child: CustomText(
                     'Guest',
-                     type: FontStyle.H5,
+                    type: FontStyle.H5,
                   ),
                 ),
               ],
@@ -454,7 +449,8 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               ),
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               decoration: BoxDecoration(
-                  color: primaryColor, borderRadius: BorderRadius.circular(4)),
+                  color: themeProvider.themeManager.primaryColour,
+                  borderRadius: BorderRadius.circular(4)),
               alignment: Alignment.center,
               child: const CustomText(
                 'Next',

@@ -109,10 +109,11 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
                           size: 27,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                       ),
                     ],
@@ -133,7 +134,15 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                       Row(
                                         children: [
                                           Radio(
-                                            activeColor: primaryColor,
+                                            activeColor: selectedRole ==
+                                                    options[index]['value']
+                                                ? null
+                                                : themeProvider
+                                                    .themeManager.primaryColour,
+                                            fillColor: MaterialStateProperty
+                                                .all<Color>(themeProvider
+                                                    .themeManager
+                                                    .borderSubtle01Color),
                                             value: options[index]['value'],
                                             groupValue: selectedRole,
                                             onChanged: (value) {
@@ -160,16 +169,14 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                 themeProvider.isDarkThemeEnabled
                                                     ? darkSecondaryTextColor
                                                     : Colors.black,
-                                            
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        height: 2,
+                                        height: 1,
                                         width: double.infinity,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor,
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
                                       ),
                                     ],
                                   );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -129,10 +128,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           ),
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          // fillColor: selected == 0
-                          //     ? null
-                          //     : MaterialStateProperty.all<Color>(themeProvider
-                          //         .themeManager.borderSubtle01Color),
+                          fillColor: selected == 0
+                              ? null
+                              : MaterialStateProperty.all<Color>(themeProvider
+                                  .themeManager.borderSubtle01Color),
                           groupValue: selected,
                           activeColor: themeProvider.themeManager.primaryColour,
                           value: 0,
@@ -176,12 +175,12 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           ),
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          // fillColor: selected == 1
-                          //     ? null
-                          //     : MaterialStateProperty.all<Color>(themeProvider
-                          //         .themeManager.borderSubtle01Color),
+                          fillColor: selected == 1
+                              ? null
+                              : MaterialStateProperty.all<Color>(themeProvider
+                                  .themeManager.borderSubtle01Color),
                           groupValue: selected,
-                          activeColor: primaryColor,
+                          activeColor: themeProvider.themeManager.primaryColour,
                           value: 1,
                           onChanged: (val) {}),
                       const SizedBox(width: 10),
@@ -223,13 +222,14 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 ),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
-                                // fillColor: selected == 2
-                                //     ? null
-                                //     : MaterialStateProperty.all<Color>(
-                                //         themeProvider
-                                //             .themeManager.primaryTextColor),
+                                fillColor: selected == 2
+                                    ? null
+                                    : MaterialStateProperty.all<Color>(
+                                        themeProvider
+                                            .themeManager.borderSubtle01Color),
                                 groupValue: selected,
-                                activeColor: primaryColor,
+                                activeColor:
+                                    themeProvider.themeManager.primaryColour,
                                 value: 2,
                                 onChanged: (val) {}),
                             const SizedBox(width: 10),
@@ -271,13 +271,14 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 ),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
-                                // fillColor: selected == 3
-                                //     ? null
-                                //     : MaterialStateProperty.all<Color>(
-                                //         themeProvider
-                                //             .themeManager.disabledButtonColor),
+                                fillColor: selected == 3
+                                    ? null
+                                    : MaterialStateProperty.all<Color>(
+                                        themeProvider
+                                            .themeManager.borderSubtle01Color),
                                 groupValue: selected,
-                                activeColor: primaryColor,
+                                activeColor:
+                                    themeProvider.themeManager.primaryColour,
                                 value: 3,
                                 onChanged: (val) {}),
                             const SizedBox(width: 10),

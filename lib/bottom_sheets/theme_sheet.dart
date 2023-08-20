@@ -41,10 +41,10 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
@@ -64,17 +64,17 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
               child: Row(
                 children: [
                   themeProvider.isDarkThemeEnabled
-                      ? const Icon(
+                      ? Icon(
                           Icons.radio_button_checked,
                           size: 22,
-                          color: primaryColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         )
                       : Icon(
                           Icons.radio_button_off,
                           size: 22,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? lightSecondaryTextColor
-                              : darkSecondaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                   const SizedBox(width: 10),
                   const CustomText(
@@ -108,17 +108,16 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
               child: Row(
                 children: [
                   !themeProvider.isDarkThemeEnabled
-                      ? const Icon(
+                      ? Icon(
                           Icons.radio_button_checked,
                           size: 22,
-                          color: primaryColor,
+                          color: themeProvider.themeManager.primaryColour,
                         )
                       : Icon(
                           Icons.radio_button_off,
                           size: 22,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? lightSecondaryTextColor
-                              : darkSecondaryTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                   const SizedBox(width: 10),
                   const CustomText(

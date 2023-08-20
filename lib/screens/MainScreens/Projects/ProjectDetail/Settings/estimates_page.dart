@@ -343,20 +343,22 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   decoration: BoxDecoration(
                     color: themeProvider
                         .themeManager.primaryBackgroundDefaultColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '3',
                           type: FontStyle.H5,
                         )
@@ -374,20 +376,22 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   decoration: BoxDecoration(
                     color: themeProvider
                         .themeManager.primaryBackgroundDefaultColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '2',
                           type: FontStyle.H5,
                         )
@@ -409,17 +413,18 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                         color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '1',
                           type: FontStyle.H5,
                         )
@@ -478,9 +483,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
             margin: const EdgeInsets.only(top: 30),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: const Color.fromRGBO(63, 118, 255, 1),
-            ),
+                borderRadius: BorderRadius.circular(6),
+                color: themeProvider.themeManager.primaryColour),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

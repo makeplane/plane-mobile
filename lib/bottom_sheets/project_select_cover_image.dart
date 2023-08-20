@@ -184,7 +184,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                         selected == 0
                             ? Container(
                                 height: 2,
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
                                 height: 2,
@@ -206,7 +206,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                           child: CustomText(
                             'Upload',
                             color: selected == 1
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : lightGreyTextColor,
                             type: FontStyle.H5,
                             fontWeight: FontWeightt.Medium,
@@ -215,7 +215,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                         selected == 1
                             ? Container(
                                 height: 2,
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
                                 height: 2,
@@ -273,7 +273,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               height: 50,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: CustomText(
@@ -310,9 +310,10 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 itemBuilder: (context, index) {
                                   if (index == images.length) {
                                     return isLoading
-                                        ? const Center(
+                                        ? Center(
                                             child: CircularProgressIndicator(
-                                              color: primaryColor,
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
                                             ),
                                           )
                                         : Container();
@@ -371,14 +372,16 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.file_upload_outlined),
-                                      SizedBox(
+                                      Icon(Icons.file_upload_outlined,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor),
+                                      const SizedBox(
                                         width: 10,
                                       ),
-                                      CustomText(
+                                      const CustomText(
                                         'Upload',
                                         type: FontStyle.Small,
                                         color: Colors.black,

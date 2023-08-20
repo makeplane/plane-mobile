@@ -79,9 +79,8 @@ class _ProjectInviteMembersSheetState
                             },
                             child: Icon(
                               Icons.close,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? lightSecondaryBackgroundColor
-                                  : darkSecondaryBGC,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           )
                         ],
@@ -161,9 +160,8 @@ class _ProjectInviteMembersSheetState
                                     const Spacer(),
                                     Icon(
                                       Icons.arrow_drop_down,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : strokeColor,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
                                     const SizedBox(
                                       width: 5,

@@ -168,7 +168,9 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                     ),
                                     child: Container(
                                       color: isUnread
-                                          ? primaryColor.withOpacity(0.1)
+                                          ? themeProvider
+                                              .themeManager.primaryColour
+                                              .withOpacity(0.1)
                                           : Colors.transparent,
                                       child: Column(
                                         crossAxisAlignment:
@@ -394,7 +396,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                               height: 1,
                                               width: width,
                                               color: themeProvider.themeManager
-                                                  .borderDisabledColor)
+                                                  .borderSubtle01Color)
                                         ],
                                       ),
                                     ),

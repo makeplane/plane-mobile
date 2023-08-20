@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -44,15 +43,14 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -72,10 +70,10 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 0
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[0],
                       onChanged: (val) {
                         // profileProvider.changeIndex(0);
@@ -124,14 +122,13 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 1
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[1],
                       onChanged: (val) {
                         // profileProvider.changeIndex(1);
                       }),
-                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[1],
@@ -168,15 +165,14 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 2
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[2],
                       onChanged: (val) {
                         //profileProvider.changeIndex(2);
                       }),
-                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[2],
@@ -187,7 +183,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
@@ -195,7 +190,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -216,14 +210,13 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 3
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[3],
                       onChanged: (val) {
                         // profileProvider.changeIndex(3);
                       }),
-               
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[3],
@@ -234,7 +227,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
@@ -242,7 +234,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -262,14 +253,13 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 4
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[4],
                       onChanged: (val) {
                         //profileProvider.changeIndex(4);
                       }),
-                  
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[4],
@@ -280,7 +270,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
@@ -288,7 +277,6 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -308,14 +296,13 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 5
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.tertiaryTextColor),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[5],
                       onChanged: (val) {
                         // profileProvider.changeIndex(5);
                       }),
-                
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[5],
@@ -326,12 +313,10 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
               ),
             ),
           ),
-
           const SizedBox(
             height: 10,
             width: double.infinity,
           ),
-
         ],
       ),
     );

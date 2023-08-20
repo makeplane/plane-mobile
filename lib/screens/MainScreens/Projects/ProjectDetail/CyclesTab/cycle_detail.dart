@@ -292,6 +292,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText(
+                                  overrride: true,
                                   'Issues',
                                   // color: selected == 0
                                   //     ? primaryColor
@@ -348,7 +349,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         : cyclesProviderRead
                                                 .cycleDetailSelectedIndex ==
                                             0)
-                                    ? primaryColor
+                                    ? themeProvider.themeManager.primaryColour
                                     : Colors.transparent,
                               ),
                             ],
@@ -379,6 +380,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText('Details',
+                                    overrride: true,
                                     // color: selected == 1
                                     //     ? primaryColor
                                     // : themeProvider.strokeColor,
@@ -415,7 +417,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         : cyclesProviderRead
                                                 .cycleDetailSelectedIndex ==
                                             1)
-                                    ? primaryColor
+                                    ? themeProvider.themeManager.primaryColour
                                     : Colors.transparent,
                               )
                             ],
@@ -569,9 +571,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                               cycleId: widget.cycleId,
                                                                                             )));
                                                                                   },
-                                                                                  icon: const Icon(
+                                                                                  icon: Icon(
                                                                                     Icons.add,
-                                                                                    color: primaryColor,
+                                                                                    color: themeProvider.themeManager.primaryColour,
                                                                                   )),
                                                                               const SizedBox(
                                                                                 width: 10,
@@ -1040,7 +1042,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     : 'end_date'],
                               ) ==
                               'Completed'
-                          ? primaryColor
+                          ? themeProvider.themeManager.primaryColour
                           : greenHighLight,
                 ),
               ),
@@ -1054,13 +1056,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   builder: (context, child) => Theme(
                     data: themeProvider.isDarkThemeEnabled
                         ? ThemeData.dark().copyWith(
-                            colorScheme: const ColorScheme.dark(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.dark(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           )
                         : ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.light(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           ),
                     child: child!,
@@ -1163,13 +1165,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   builder: (context, child) => Theme(
                     data: themeProvider.isDarkThemeEnabled
                         ? ThemeData.dark().copyWith(
-                            colorScheme: const ColorScheme.dark(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.dark(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           )
                         : ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.light(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           ),
                     child: child!,
@@ -1342,8 +1344,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     colors: [
                       Colors.white.withOpacity(0.5),
                       Colors.white.withOpacity(0.2),
-                      primaryColor.withOpacity(0.2),
-                      primaryColor.withOpacity(0.3),
+                      themeProvider.themeManager.primaryColour.withOpacity(0.2),
+                      themeProvider.themeManager.primaryColour.withOpacity(0.3),
                     ]),
                 dataSource: chartData,
                 xValueMapper: (ChartData data, _) => data.x,
@@ -1827,7 +1829,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                   [index]
                                                               ['color'] ==
                                                           null
-                                                  ? greyColor
+                                                  ? themeProvider.themeManager
+                                                      .placeholderTextColor
                                                   : Color(
                                                       int.parse(
                                                         "FF${detailData['distribution']['labels'][index]['color'].toString().toUpperCase().replaceAll("#", "")}",

@@ -227,7 +227,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       return Center(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: primaryColor,
+                            color: themeProvider.themeManager.primaryColour,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           height: 30,
@@ -249,7 +249,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           child: Container(
                             decoration: BoxDecoration(
                               // color: greyColor,
-                              color: primaryColor,
+                              color: themeProvider.themeManager.primaryColour,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             width: 8,
@@ -374,7 +374,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         return Center(
                           child: Container(
                             decoration: BoxDecoration(
-                              color: primaryColor,
+                              color: themeProvider.themeManager.primaryColour,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             height: 30,
@@ -395,7 +395,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                             bottom: 2,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               width: 8,
@@ -453,18 +453,19 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 selectedBuilder: (context, day, focusedDay) {
                   return Container(
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       //only bottom border
                       border: Border(
                         bottom: BorderSide(
-                          color: primaryColor,
+                          color: themeProvider.themeManager.primaryColour,
                           width: 7.0,
                         ),
                       ),
                     ),
                     child: Text(
                       day.day.toString(),
-                      style: const TextStyle(color: primaryColor),
+                      style: TextStyle(
+                          color: themeProvider.themeManager.primaryColour),
                     ),
                   );
                 },

@@ -99,48 +99,19 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                   right: 20,
                                 ),
                                 child: TextFormField(
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter email';
-                                    } else if (!RegExp(
-                                            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                                        .hasMatch(value)) {
-                                      return 'Please enter valid email';
-                                    }
-                                    return null;
-                                  },
-                                  controller: emailController,
-                                  decoration: themeProvider
-                                      .themeManager.textFieldDecoration
-                                      .copyWith(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8)),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8)),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: primaryColor, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                  ),
-                                ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter email';
+                                      } else if (!RegExp(
+                                              r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                                          .hasMatch(value)) {
+                                        return 'Please enter valid email';
+                                      }
+                                      return null;
+                                    },
+                                    controller: emailController,
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration),
                               )
                             :
                             // Dropdown to choose email form email list
@@ -192,10 +163,12 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(8)),
                                       ),
-                                      focusedBorder: const OutlineInputBorder(
+                                      focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: primaryColor, width: 2.0),
-                                        borderRadius: BorderRadius.all(
+                                            color: themeProvider
+                                                .themeManager.primaryColour,
+                                            width: 2.0),
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(8)),
                                       ),
                                     ),
@@ -286,33 +259,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               },
                               controller: workspaceProvider.invitingMembersRole,
                               decoration: themeProvider
-                                  .themeManager.textFieldDecoration
-                                  .copyWith(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: primaryColor, width: 2.0),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              ),
+                                  .themeManager.textFieldDecoration,
                               enabled: false,
                             ),
                           ),
@@ -415,9 +362,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 .copyWith(
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : const Color(0xFFE5E5E5),
+                                    color: themeProvider
+                                        .themeManager.borderSubtle01Color,
                                     width: 1.0),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
@@ -431,11 +377,13 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
                               ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: primaryColor, width: 2.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                    width: 2.0),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
+                                    const BorderRadius.all(Radius.circular(8)),
                               ),
                             ),
                           ),

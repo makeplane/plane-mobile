@@ -665,6 +665,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 'Delete Project',
                                 color: Colors.white,
                                 type: FontStyle.Medium,
+                                overrride: true,
                                 fontWeight: FontWeightt.Bold,
                               ))),
                         ),

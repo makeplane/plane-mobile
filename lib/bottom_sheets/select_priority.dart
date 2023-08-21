@@ -232,7 +232,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                   height: 1,
                                   width: width,
                                   color: themeProvider
-                                      .themeManager.placeholderTextColor),
+                                      .themeManager.borderSubtle01Color),
                             ],
                           ),
                         ),

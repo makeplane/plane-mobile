@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/integrations.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -61,20 +60,20 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
           Navigator.of(context).pop();
         },
         text: 'Billings & Plans',
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 15,
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.add,
-                  color: Color.fromRGBO(63, 118, 255, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
                 CustomText('Add',
                     type: FontStyle.Small,
-                    color: Color.fromRGBO(63, 118, 255, 1)),
+                    color: themeProvider.themeManager.placeholderTextColor),
               ],
             ),
           )
@@ -177,7 +176,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                       margin:
                           const EdgeInsets.only(top: 20, left: 20, right: 20),
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(63, 118, 255, 1),
+                        color: themeProvider.themeManager.primaryColour,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Center(

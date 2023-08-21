@@ -7,7 +7,7 @@ import 'package:plane_startup/kanban/custom/board.dart';
 import 'package:plane_startup/kanban/models/inputs.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/utils/constants.dart';
+
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -221,8 +221,11 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                       child: CustomText(
                                         'Assigned',
                                         color: selected == 0
-                                            ? primaryColor
-                                            : lightGreyTextColor,
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
+                                        overrride: true,
                                         type: FontStyle.Medium,
                                       ),
                                     ),
@@ -231,7 +234,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                 selected == 0
                                     ? Container(
                                         height: 4,
-                                        color: primaryColor,
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
                                       )
                                     : Container(
                                         height: 4,
@@ -255,9 +259,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                           vertical: 10),
                                       child: CustomText(
                                         'Created',
+                                        overrride: true,
                                         color: selected == 1
-                                            ? primaryColor
-                                            : lightGreyTextColor,
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
                                         type: FontStyle.Medium,
                                       ),
                                     ),
@@ -266,7 +273,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                 selected == 1
                                     ? Container(
                                         height: 4,
-                                        color: primaryColor,
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
                                       )
                                     : Container(
                                         height: 4,
@@ -291,8 +299,11 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                       child: CustomText(
                                         'Subscribed',
                                         color: selected == 2
-                                            ? primaryColor
-                                            : lightGreyTextColor,
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
+                                        overrride: true,
                                         type: FontStyle.Medium,
                                       ),
                                     ),
@@ -301,7 +312,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                 selected == 2
                                     ? Container(
                                         height: 4,
-                                        color: primaryColor,
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
                                       )
                                     : Container(
                                         height: 4,

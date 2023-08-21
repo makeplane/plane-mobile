@@ -34,10 +34,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
@@ -61,9 +61,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == 'Just myself'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: 'Just myself',
                       onChanged: (val) {
                         //workspaceProvider.changeCompanySize(size: 'Just myself');
@@ -105,9 +105,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == '2-10'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: '2-10',
                       onChanged: (val) {
                         // workspaceProvider.changeCompanySize(size: '2-10');
@@ -149,9 +149,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == '11-50'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: '11-50',
                       onChanged: (val) {
                         // workspaceProvider.changeCompanySize(size: '11-50');
@@ -193,9 +193,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == '51-200'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: '51-200',
                       onChanged: (val) {
                         // workspaceProvider.changeCompanySize(size: '51-200');
@@ -237,9 +237,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == '201-500'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: '201-500',
                       onChanged: (val) {
                         // workspaceProvider.changeCompanySize(size: '201-500');
@@ -281,9 +281,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       fillColor: workspaceProvider.companySize == '500+'
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: '500+',
                       onChanged: (val) {
                         // workspaceProvider.changeCompanySize(size: '500+');

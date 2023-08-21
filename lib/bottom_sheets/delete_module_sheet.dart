@@ -47,9 +47,8 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
                             Navigator.of(context).pop();
                           },
                           icon: Icon(Icons.close,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? lightSecondaryBackgroundColor
-                                  : darkSecondaryBGC),
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
                         )
                       ],
                     ),

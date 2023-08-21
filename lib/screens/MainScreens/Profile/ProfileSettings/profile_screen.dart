@@ -245,7 +245,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
                   ),
                 ],
               ),
@@ -310,9 +313,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       child: Icon(
                         Icons.person_2_outlined,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.grey.shade500
-                            : Colors.grey,
+                        color: themeProvider.themeManager.placeholderTextColor,
                         size: 35,
                       ))),
           const SizedBox(
@@ -396,7 +397,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: CustomText(
                         menus[index]['menu'],
                         type: FontStyle.Medium,
-                        color: primaryColor,
+                        color: themeProvider.themeManager.primaryColour,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -463,9 +464,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: primaryColor,
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
                                   ),
                                 )
                               ],
@@ -498,8 +500,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             Icon(
                               menus[index]['items'][idx]['icon'],
                               size: 18,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                             const SizedBox(
                               width: 10,

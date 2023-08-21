@@ -216,7 +216,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                         width: width,
                                         height: 1,
                                         color: themeProvider
-                                            .themeManager.placeholderTextColor)
+                                            .themeManager.borderSubtle01Color)
                                   ],
                                 ),
                               ),
@@ -232,14 +232,18 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                             margin: const EdgeInsets.only(bottom: 5, top: 15),
                             child: Row(
                               children: [
-                                const SizedBox(
+                                SizedBox(
                                     height: 25,
                                     width: 25,
                                     // decoration: BoxDecoration(
                                     //   color: Colors.grey,
                                     //   borderRadius: BorderRadius.circular(5),
                                     // ),
-                                    child: Icon(Icons.add)),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    )),
                                 Container(
                                   width: 10,
                                 ),

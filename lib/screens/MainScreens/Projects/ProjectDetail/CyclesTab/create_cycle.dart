@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -68,7 +67,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                         Container(
                           height: 1,
                           width: MediaQuery.of(context).size.width,
-                          color: Colors.grey.shade300,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                         Container(
                             margin: const EdgeInsets.only(
@@ -162,8 +161,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             var date = await showDatePicker(
                               builder: (context, child) => Theme(
                                 data: ThemeData.light().copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: primaryColor,
+                                  colorScheme: ColorScheme.light(
+                                    primary: themeProvider
+                                        .themeManager.primaryColour,
                                   ),
                                 ),
                                 child: child!,
@@ -231,8 +231,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             var date = await showDatePicker(
                               builder: (context, child) => Theme(
                                 data: ThemeData.light().copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: primaryColor,
+                                  colorScheme: ColorScheme.light(
+                                    primary: themeProvider
+                                        .themeManager.primaryColour,
                                   ),
                                 ),
                                 child: child!,

@@ -100,7 +100,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                           Icon(
                             Icons.arrow_forward,
                             size: 18,
-                            color: themeProvider.themeManager.primaryColour,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ),
                         ],
                       ),

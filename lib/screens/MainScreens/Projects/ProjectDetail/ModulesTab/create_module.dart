@@ -15,7 +15,6 @@ import 'package:plane_startup/widgets/loading_widget.dart';
 
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 
@@ -204,8 +203,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               var date = await showDatePicker(
                                 builder: (context, child) => Theme(
                                   data: ThemeData.light().copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: primaryColor,
+                                    colorScheme: ColorScheme.light(
+                                      primary: themeProvider
+                                          .themeManager.primaryColour,
                                     ),
                                   ),
                                   child: child!,
@@ -278,8 +278,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               var date = await showDatePicker(
                                 builder: (context, child) => Theme(
                                   data: ThemeData.light().copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: primaryColor,
+                                    colorScheme: ColorScheme.light(
+                                      primary: themeProvider
+                                          .themeManager.primaryColour,
                                     ),
                                   ),
                                   child: child!,

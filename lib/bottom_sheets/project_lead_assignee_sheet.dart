@@ -63,10 +63,11 @@ class _ProjectLeadAssigneeSheetState
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
                           size: 27,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                       ),
                     ],
@@ -186,7 +187,8 @@ class _ProjectLeadAssigneeSheetState
                                   '${projectProvider.projectMembers[index]['member']['first_name']} ${projectProvider.projectMembers[index]['member']['last_name'] ?? ''}',
                                   type: FontStyle.H5,
                                   maxLines: 1,
-                                  color: themeProvider.themeManager.primaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                               const SizedBox(
@@ -197,9 +199,10 @@ class _ProjectLeadAssigneeSheetState
                                           : widget.assigneId) ==
                                       projectProvider.projectMembers[index]
                                           ['member']['id']
-                                  ? const Icon(
+                                  ? Icon(
                                       Icons.check,
-                                      color: greyColor,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     )
                                   : Container()
                             ],

@@ -150,10 +150,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                             ),
                                             child: Icon(
                                               Icons.person_2_outlined,
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? Colors.grey.shade500
-                                                  : Colors.grey,
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                               size: 35,
                                             ))),
                             const SizedBox(

@@ -724,7 +724,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                           //add icon
                           Icon(
                             Icons.add,
-                            color: themeProvider.themeManager.primaryColour,
+                            color: themeProvider.themeManager.primaryTextColor,
                             size: 22,
                           ),
 

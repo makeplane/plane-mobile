@@ -331,7 +331,7 @@ class IssuesProvider extends ChangeNotifier {
               },
               child: Icon(
                 Icons.zoom_in_map,
-                color: themeProvider.themeManager.tertiaryTextColor,
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 20,
               ),
             ),
@@ -357,7 +357,7 @@ class IssuesProvider extends ChangeNotifier {
                     },
                     child: Icon(
                       Icons.add,
-                      color: themeProvider.themeManager.tertiaryTextColor,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ))
                 : Container(),
           ],
@@ -370,7 +370,7 @@ class IssuesProvider extends ChangeNotifier {
 
   bool checkIsCardsDaraggable() {
     var projProv = ref!.read(ProviderList.projectProvider);
-    
+
     return (issues.groupBY == GroupBY.state ||
             issues.groupBY == GroupBY.priority) &&
         (projProv.role == Role.admin || projProv.role == Role.member) &&

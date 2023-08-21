@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Notification/extra_notification.dart';
 import 'package:plane_startup/screens/MainScreens/Notification/notifications_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import '/utils/enums.dart';
@@ -46,16 +45,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               notificationProvider.getNotifications(
                   type: 'unread', getUnread: true);
             },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              //circle
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: themeProvider.themeManager.primaryBackgroundSelectedColour,
-              ),
-
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundSelectedColour,
               child: Icon(
                 Icons.refresh,
                 size: 20,
@@ -63,6 +56,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               ),
             ),
           ),
+          const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -75,16 +69,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                 ),
               );
             },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              //circle
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: themeProvider.themeManager.primaryBackgroundSelectedColour,
-              ),
-
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundSelectedColour,
               child: Stack(
                 children: [
                   Center(
@@ -92,7 +80,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                       Icons.notifications_outlined,
                       // color: greyColor,
                       size: 20,
-                      color:themeProvider.themeManager.secondaryTextColor,
+                      color: themeProvider.themeManager.secondaryTextColor,
                     ),
                   ),
 
@@ -104,7 +92,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                           child: Container(
                             height: 10,
                             width: 10,
-                            decoration:  BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: themeProvider.themeManager.primaryColour,
                             ),
@@ -115,6 +103,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               ),
             ),
           ),
+          const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -127,16 +116,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                 ),
               );
             },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              //circle
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:themeProvider.themeManager.primaryBackgroundSelectedColour,
-              ),
-
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundSelectedColour,
               child: Icon(
                 Icons.access_time_outlined,
                 size: 20,
@@ -144,6 +127,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               ),
             ),
           ),
+          const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -156,16 +140,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                 ),
               );
             },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              //circle
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: themeProvider.themeManager.primaryBackgroundSelectedColour,
-              ),
-
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundSelectedColour,
               child: Icon(
                 Icons.archive_outlined,
                 size: 20,
@@ -173,13 +151,14 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
               ),
             ),
           ),
+          const SizedBox(width: 10),
         ],
       ),
       body: Column(
         children: [
           Container(
             //bottom border
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: themeProvider.themeManager.borderDisabledColor,
@@ -205,8 +184,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                 'My Issues',
                                 color: selected == 0
                                     ? themeProvider.themeManager.primaryColour
-                                    : themeProvider.themeManager.placeholderTextColor,
+                                    : themeProvider
+                                        .themeManager.placeholderTextColor,
                                 type: FontStyle.Medium,
+                                overrride: true,
                               ),
                             ),
                             notificationProvider.getAssignedCount == 0
@@ -216,7 +197,8 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: themeProvider.themeManager.primaryColour,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: CustomText(
@@ -253,10 +235,12 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                             Container(
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               child: CustomText(
+                                overrride: true,
                                 'Created',
                                 color: selected == 1
                                     ? themeProvider.themeManager.primaryColour
-                                    : themeProvider.themeManager.placeholderTextColor,
+                                    : themeProvider
+                                        .themeManager.placeholderTextColor,
                                 type: FontStyle.Medium,
                               ),
                             ),
@@ -267,7 +251,8 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: themeProvider.themeManager.primaryColour,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: CustomText(
@@ -282,7 +267,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                         selected == 1
                             ? Container(
                                 height: 4,
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
                                 height: 4,
@@ -304,10 +289,12 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                             Container(
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               child: CustomText(
+                                overrride: true,
                                 'Subscribed',
                                 color: selected == 2
                                     ? themeProvider.themeManager.primaryColour
-                                    : themeProvider.themeManager.placeholderTextColor,
+                                    : themeProvider
+                                        .themeManager.placeholderTextColor,
                                 type: FontStyle.Medium,
                               ),
                             ),
@@ -318,7 +305,8 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: themeProvider.themeManager.primaryColour,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: CustomText(

@@ -237,12 +237,12 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 10),
-                      child: const Row(
+                      child: Row(
                         children: [
                           //add icon
                           Icon(
                             Icons.add,
-                            color: primaryColor,
+                            color: themeProvider.themeManager.primaryColour,
                             size: 20,
                           ),
 
@@ -251,7 +251,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                             'Add another',
                             type: FontStyle.Small,
                             fontWeight: FontWeightt.Medium,
-                            color: primaryColor,
+                            color: themeProvider.themeManager.primaryColour,
                           ),
                         ],
                       ),
@@ -270,7 +270,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                       color: invitations.isEmpty ||
                               !validateEmail(invitations[0]['email'].text)
                           ? themeProvider.themeManager.disabledButtonColor
-                          : primaryColor,
+                          : themeProvider.themeManager.primaryColour,
                       text: 'Continue',
                       disable: invitations.isEmpty ||
                               !validateEmail(invitations[0]['email'].text)
@@ -293,7 +293,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                 })
                             .toList();
                         log(data.toString());
-                    
+
                         await prov.inviteToWorkspace(
                             slug: prov.workspaces.last['slug'] ??
                                 profileProvider.userProfile
@@ -418,9 +418,10 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                         Icon(
+                        Icon(
                           Icons.arrow_back,
-                          color: themeProvider.themeManager.placeholderTextColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         ),
                         const SizedBox(

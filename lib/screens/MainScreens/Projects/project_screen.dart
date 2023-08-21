@@ -155,7 +155,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                               indent: 0,
                                               endIndent: 0,
                                               color: themeProvider.themeManager
-                                                  .borderDisabledColor
+                                                  .borderSubtle01Color
                                               // themeProvider.isDarkThemeEnabled
                                               //     ? darkThemeBorder
                                               //     : const Color.fromRGBO(
@@ -320,7 +320,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             icon: Icon(Icons.star,
                                                 color: themeProvider
                                                     .themeManager
-                                                    .secondaryIcon),
+                                                    .tertiaryTextColor),
                                           ),
                                         );
                                 },
@@ -357,7 +357,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                               indent: 0,
                                               endIndent: 0,
                                               color: themeProvider.themeManager
-                                                  .borderDisabledColor),
+                                                  .borderSubtle01Color),
                                         );
                                 },
                                 itemCount: projectProvider.projects.length,

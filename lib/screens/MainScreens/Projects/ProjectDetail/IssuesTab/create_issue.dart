@@ -108,9 +108,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
       'name': 'None',
       'icon': Icon(
         Icons.remove_circle_outline_rounded,
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryTextColor
-            : lightSecondaryTextColor,
+        color: themeProvider.themeManager.placeholderTextColor,
       ),
     };
     prov.createIssuedata['members'] = null;
@@ -671,9 +669,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                     Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? darkSecondaryTextColor
-                                                          : lightSecondaryTextColor,
+                                                          .themeManager
+                                                          .placeholderTextColor,
                                                     ),
                                                   ],
                                                 )
@@ -1163,17 +1160,19 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         .isDarkThemeEnabled
                                                     ? ThemeData.dark().copyWith(
                                                         colorScheme:
-                                                            const ColorScheme
-                                                                .dark(
-                                                          primary: primaryColor,
+                                                            ColorScheme.dark(
+                                                          primary: themeProvider
+                                                              .themeManager
+                                                              .primaryColour,
                                                         ),
                                                       )
                                                     : ThemeData.light()
                                                         .copyWith(
                                                         colorScheme:
-                                                            const ColorScheme
-                                                                .light(
-                                                          primary: primaryColor,
+                                                            ColorScheme.light(
+                                                          primary: themeProvider
+                                                              .themeManager
+                                                              .primaryColour,
                                                         ),
                                                       ),
                                                 child: child!,
@@ -1320,17 +1319,19 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                         .isDarkThemeEnabled
                                                     ? ThemeData.dark().copyWith(
                                                         colorScheme:
-                                                            const ColorScheme
-                                                                .dark(
-                                                          primary: primaryColor,
+                                                            ColorScheme.dark(
+                                                          primary: themeProvider
+                                                              .themeManager
+                                                              .primaryColour,
                                                         ),
                                                       )
                                                     : ThemeData.light()
                                                         .copyWith(
                                                         colorScheme:
-                                                            const ColorScheme
-                                                                .light(
-                                                          primary: primaryColor,
+                                                            ColorScheme.light(
+                                                          primary: themeProvider
+                                                              .themeManager
+                                                              .primaryColour,
                                                         ),
                                                       ),
                                                 child: child!,
@@ -1602,7 +1603,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                         CustomText(
                                           expanded ? "View less" : 'View all',
                                           type: FontStyle.Small,
-                                          color: primaryColor,
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
                                         ),
 
                                         const SizedBox(width: 10),

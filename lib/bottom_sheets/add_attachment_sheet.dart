@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -61,9 +60,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   },
                   icon: Icon(
                     Icons.close,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightBackgroundColor
-                        : darkBackgroundColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ))
             ],
           ),

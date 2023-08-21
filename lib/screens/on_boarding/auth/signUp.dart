@@ -7,7 +7,6 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/home_screen.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
@@ -274,10 +273,10 @@ class _SignUpState extends ConsumerState<SignUp> {
                                   ),
                                 );
                               },
-                              child: const CustomText(
+                              child: CustomText(
                                 'Sign In',
                                 type: FontStyle.Small,
-                                color: primaryColor,
+                                color: themeProvider.themeManager.primaryColour,
                                 fontWeight: FontWeightt.Semibold,
                               ),
                             ),
@@ -292,9 +291,10 @@ class _SignUpState extends ConsumerState<SignUp> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.arrow_back,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                                 size: 18,
                               ),
                               const SizedBox(

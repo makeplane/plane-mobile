@@ -674,9 +674,9 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
-                        color: Color.fromRGBO(143, 143, 147, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     )
                   ],

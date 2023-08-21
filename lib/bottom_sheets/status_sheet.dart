@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
@@ -34,10 +33,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
@@ -61,10 +60,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 0
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[0]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),
@@ -76,14 +75,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           InkWell(
             onTap: () {
@@ -104,10 +99,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 1
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[1]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),
@@ -119,14 +114,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           InkWell(
             onTap: () {
@@ -147,10 +138,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 2
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[2]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),
@@ -162,14 +153,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           InkWell(
             onTap: () {
@@ -190,10 +177,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 3
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[3]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),
@@ -205,14 +192,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           InkWell(
             onTap: () {
@@ -233,10 +216,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 4
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[4]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),
@@ -248,14 +231,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
           InkWell(
             onTap: () {
@@ -276,10 +255,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       fillColor: modulesProvider.statusIndex == 5
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: modulesProvider.moduleSatatus[5]['value'],
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
                       onChanged: (val) {}),
                   const SizedBox(width: 10),

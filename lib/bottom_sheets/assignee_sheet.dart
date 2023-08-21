@@ -86,9 +86,8 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                           },
                           icon: Icon(
                             Icons.close,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? lightSecondaryBackgroundColor
-                                : darkSecondaryBGC,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           ))
                     ],
                   ),

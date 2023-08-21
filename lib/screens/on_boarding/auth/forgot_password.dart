@@ -5,7 +5,6 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
-import '../../../utils/constants.dart';
 import '../../../utils/enums.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../widgets/custom_text.dart';
@@ -46,9 +45,9 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Row(
+                    Row(
                       children: [
-                        CustomText(
+                        const CustomText(
                           'Forgot Password',
                           type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
@@ -57,7 +56,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                           '',
                           type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
-                          color: primaryColor,
+                          color: themeProvider.themeManager.primaryColour,
                         ),
                       ],
                     ),

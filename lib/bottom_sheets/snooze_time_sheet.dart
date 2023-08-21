@@ -38,10 +38,10 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
 
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
@@ -187,13 +187,13 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
                   builder: (context, child) => Theme(
                     data: themeProvider.isDarkThemeEnabled
                         ? ThemeData.dark().copyWith(
-                            colorScheme: const ColorScheme.dark(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.dark(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           )
                         : ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: primaryColor,
+                            colorScheme: ColorScheme.light(
+                              primary: themeProvider.themeManager.primaryColour,
                             ),
                           ),
                     child: child!,

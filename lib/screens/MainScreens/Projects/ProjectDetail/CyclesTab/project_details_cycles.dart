@@ -89,12 +89,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleNaveBarItem(String title, int itemIndex) {
-    const Color textColorOnSelected = Colors.white;
     var themeProvider = ref.watch(ProviderList.themeProvider);
 
     BoxDecoration decarationOnSelected = BoxDecoration(
         border: Border.all(width: 1, color: Colors.blueAccent),
-        color: Colors.blueAccent,
+        color: themeProvider.themeManager.primaryColour,
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     BoxDecoration decarationOnUnSelected = BoxDecoration(
         border: Border.all(
@@ -305,7 +304,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           'end_date'],
                                                                     ) ==
                                                                     'Completed'
-                                                                ? primaryColor
+                                                                ? themeProvider
+                                                                    .themeManager
+                                                                    .primaryColour
                                                                 : greenHighLight,
                                                       ),
                                                     ),
@@ -559,7 +560,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           'end_date'],
                                                                     ) ==
                                                                     'Completed'
-                                                                ? primaryColor
+                                                                ? themeProvider
+                                                                    .themeManager
+                                                                    .primaryColour
                                                                 : greenHighLight,
                                                       ),
                                                     ),
@@ -833,7 +836,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                     'end_date'],
                                                               ) ==
                                                               'Completed'
-                                                          ? primaryColor
+                                                          ? themeProvider
+                                                              .themeManager
+                                                              .primaryColour
                                                           : greenHighLight,
                                                 ),
                                               ),
@@ -1060,7 +1065,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                     'end_date'],
                                                               ) ==
                                                               'Completed'
-                                                          ? primaryColor
+                                                          ? themeProvider
+                                                              .themeManager
+                                                              .primaryColour
                                                           : greenHighLight,
                                                 ),
                                               ),
@@ -1309,7 +1316,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                     'end_date'],
                                                               ) ==
                                                               'Completed'
-                                                          ? primaryColor
+                                                          ? themeProvider
+                                                              .themeManager
+                                                              .primaryColour
                                                           : greenHighLight,
                                                 ),
                                               ),
@@ -1536,7 +1545,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                     'end_date'],
                                                               ) ==
                                                               'Completed'
-                                                          ? primaryColor
+                                                          ? themeProvider
+                                                              .themeManager
+                                                              .primaryColour
                                                           : greenHighLight,
                                                 ),
                                               ),
@@ -1804,7 +1815,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           'end_date'],
                                                                     ) ==
                                                                     'Completed'
-                                                                ? primaryColor
+                                                                ? themeProvider
+                                                                    .themeManager
+                                                                    .primaryColour
                                                                 : greenHighLight,
                                                       ),
                                                     ),
@@ -2062,7 +2075,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                           'end_date'],
                                                                     ) ==
                                                                     'Completed'
-                                                                ? primaryColor
+                                                                ? themeProvider
+                                                                    .themeManager
+                                                                    .primaryColour
                                                                 : greenHighLight,
                                                       ),
                                                     ),

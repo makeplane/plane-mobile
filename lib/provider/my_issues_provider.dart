@@ -626,7 +626,7 @@ class MyIssuesProvider extends ChangeNotifier {
               },
               child: Icon(
                 Icons.zoom_in_map,
-                color: themeProvider.themeManager.tertiaryTextColor,
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 20,
               ),
             ),
@@ -648,7 +648,7 @@ class MyIssuesProvider extends ChangeNotifier {
                 },
                 child: Icon(
                   Icons.add,
-                  color: themeProvider.themeManager.tertiaryTextColor,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 )),
           ],
         ),

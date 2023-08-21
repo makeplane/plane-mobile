@@ -68,9 +68,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                       },
                       child: Icon(
                         Icons.close,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightBackgroundColor
-                            : darkBackgroundColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     )
                   ],

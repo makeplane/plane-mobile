@@ -101,11 +101,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            controller: input,
                             style: TextStyle(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? lightBackgroundColor
-                                    : darkBackgroundColor),
+                                color: themeProvider
+                                    .themeManager.primaryTextColor),
+                            controller: input,
+                            // style: TextStyle(
+                            //     color: themeProvider.isDarkThemeEnabled
+                            //         ? lightBackgroundColor
+                            //         : darkBackgroundColor),
                             decoration: themeProvider
                                 .themeManager.textFieldDecoration
                                 .copyWith(
@@ -117,10 +120,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                         globalSearchProviderRead.setState();
                                       },
                                       icon: Icon(Icons.cancel,
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? greyColor
-                                                  : greyColor))
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor))
                                   : IconButton(
                                       onPressed: () {},
                                       icon: const Icon(
@@ -128,15 +129,15 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                         color: Colors.transparent,
                                       )),
 
-                              filled: true,
+                              //filled: true,
 
                               hintText: 'Search for anything...',
                               hintStyle: TextStyle(
                                 color: themeProvider
                                     .themeManager.placeholderTextColor,
                               ),
-                              fillColor: themeProvider
-                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              // fillColor: themeProvider
+                              //     .themeManager.tertiaryBackgroundDefaultColor,
                               // prefixIcon:  Icon(
                               //   Icons.search,
                               //   color:  themeProvider
@@ -290,7 +291,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         CustomText(
           'Create',
           type: FontStyle.Medium,
-          color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+          color: themeProvider.themeManager.placeholderTextColor,
         ),
         const SizedBox(
           height: 20,
@@ -346,9 +347,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
                       width: 10,
@@ -405,7 +404,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         CustomText(
           'Workspace Settings',
           type: FontStyle.Medium,
-          color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+          color: themeProvider.themeManager.placeholderTextColor,
         ),
         const SizedBox(
           height: 20,
@@ -461,9 +460,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
                       width: 10,
@@ -521,7 +518,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         CustomText(
           'Help',
           type: FontStyle.Medium,
-          color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+          color: themeProvider.themeManager.placeholderTextColor,
         ),
         const SizedBox(
           height: 20,
@@ -550,9 +547,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       items[index]['icon'],
                       height: 20,
                       width: 20,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
                       width: 10,
@@ -629,9 +624,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               'assets/images/global_search_icons/issue.png',
                               width: 20,
                               height: 20,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             const SizedBox(
                               width: 10,
@@ -668,11 +662,11 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             'Projects',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+            //color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,
@@ -712,9 +706,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               'assets/images/global_search_icons/project.png',
                               width: 20,
                               height: 20,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             const SizedBox(
                               width: 10,
@@ -917,7 +910,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 height: 20,
                                 width: 20,
                                 colorFilter: ColorFilter.mode(
-                                    themeProvider.themeManager.primaryTextColor,
+                                    themeProvider
+                                        .themeManager.placeholderTextColor,
                                     BlendMode.srcIn)),
                             // Icon(
                             //   Icons.work_outline,
@@ -1011,9 +1005,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               'assets/images/global_search_icons/module.png',
                               width: 20,
                               height: 20,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? Colors.white
-                                  : Colors.black,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             const SizedBox(
                               width: 10,
@@ -1074,9 +1067,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             'assets/images/global_search_icons/view.png',
                             width: 20,
                             height: 20,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? Colors.white
-                                : Colors.black,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const SizedBox(
                             width: 10,
@@ -1135,9 +1126,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             'assets/images/global_search_icons/page.png',
                             width: 20,
                             height: 20,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? Colors.white
-                                : Colors.black,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const SizedBox(
                             width: 10,

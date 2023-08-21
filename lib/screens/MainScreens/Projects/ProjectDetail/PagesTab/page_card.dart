@@ -185,8 +185,10 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 projectId: projectProvider.currentProject['id'],
                                 shouldItBeFavorite: false);
                           },
-                          child: const Icon(Icons.star,
-                              size: 18, color: Colors.amber))
+                          child: Icon(Icons.star,
+                              size: 18,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor))
                       : InkWell(
                           onTap: () {
                             setState(() {

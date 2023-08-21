@@ -5,7 +5,6 @@ import 'package:plane_startup/models/issues.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_expansion_tile.dart';
 
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -173,7 +172,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         : e['text'],
                                     color: filters.priorities
                                             .contains(e['text'])
-                                        ? primaryColor
+                                        ? themeProvider
+                                            .themeManager.primaryColour
                                         : themeProvider.themeManager
                                             .secondaryBackgroundDefaultColor,
                                     selected: filters.priorities
@@ -225,7 +225,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     ),
                                     text: e['name'],
                                     color: filters.states.contains(e['id'])
-                                        ? primaryColor
+                                        ? themeProvider
+                                            .themeManager.primaryColour
                                         : themeProvider.themeManager
                                             .secondaryBackgroundDefaultColor,
                                     selected: filters.states.contains(e['id']),
@@ -302,7 +303,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           .contains(e['member']['id']),
                                       color: filters.assignees
                                               .contains(e['member']['id'])
-                                          ? primaryColor
+                                          ? themeProvider
+                                              .themeManager.primaryColour
                                           : themeProvider.themeManager
                                               .secondaryBackgroundDefaultColor,
                                     ),
@@ -367,7 +369,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           .contains(e['member']['id']),
                                       color: filters.createdBy
                                               .contains(e['member']['id'])
-                                          ? primaryColor
+                                          ? themeProvider
+                                              .themeManager.primaryColour
                                           : themeProvider.themeManager
                                               .secondaryBackgroundDefaultColor,
                                     ),
@@ -408,7 +411,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     text: e['name'],
                                     selected: filters.labels.contains(e['id']),
                                     color: filters.labels.contains(e['id'])
-                                        ? primaryColor
+                                        ? themeProvider
+                                            .themeManager.primaryColour
                                         : themeProvider.themeManager
                                             .secondaryBackgroundDefaultColor,
                                   ),
@@ -449,7 +453,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           '${DateTime.now().toString().split(' ')[0]};before')
                                   ? Colors.white
                                   : themeProvider
-                                      .themeManager.secondaryTextColor,
+                                      .themeManager.placeholderTextColor,
                             ),
                             text: 'Last Week',
                             selected: filters.targetDate.contains(
@@ -462,7 +466,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
                                     filters.targetDate.contains(
                                         '${DateTime.now().toString().split(' ')[0]};before')
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
                           ),
@@ -493,7 +497,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')
                                   ? Colors.white
                                   : themeProvider
-                                      .themeManager.secondaryTextColor,
+                                      .themeManager.placeholderTextColor,
                             ),
                             text: '2 Weeks from now',
                             selected: filters.targetDate.contains(
@@ -506,7 +510,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         '${DateTime.now().toString().split(' ')[0]};after') &&
                                     filters.targetDate.contains(
                                         '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before')
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
                           ),
@@ -537,7 +541,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')
                                   ? Colors.white
                                   : themeProvider
-                                      .themeManager.secondaryTextColor,
+                                      .themeManager.placeholderTextColor,
                             ),
                             text: '1 Month from now',
                             selected: filters.targetDate.contains(
@@ -550,7 +554,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         '${DateTime.now().toString().split(' ')[0]};after') &&
                                     filters.targetDate.contains(
                                         '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before')
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
                           ),
@@ -581,7 +585,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')
                                   ? Colors.white
                                   : themeProvider
-                                      .themeManager.secondaryTextColor,
+                                      .themeManager.placeholderTextColor,
                             ),
                             text: '2 Months from now',
                             selected: filters.targetDate.contains(
@@ -594,7 +598,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                         '${DateTime.now().toString().split(' ')[0]};after') &&
                                     filters.targetDate.contains(
                                         '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before')
-                                ? primaryColor
+                                ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
                           ),

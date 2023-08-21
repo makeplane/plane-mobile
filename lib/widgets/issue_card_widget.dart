@@ -220,20 +220,24 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                 width: 0,
               )
             : Container(
+                width: 300,
+                height: 55,
                 padding: const EdgeInsets.only(bottom: 15, top: 10),
-                child: Wrap(
-                  runSpacing: 10,
+                child: ListView(
+                  // runSpacing: 10,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   children: [
                     provider.issues.displayProperties.priority
                         ? Container(
                             // alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
+                                borderRadius: BorderRadius.circular(4),
                                 border: Border.all(
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 )),
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             width: 30,
                             child: provider.issuesResponse[widget.cardIndex]
@@ -326,7 +330,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         ['assignee_details']
                                     .isNotEmpty)
                             ? Container(
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(right: 5),
                                 child: SquareAvatarWidget(
                                   details:
                                       provider.issuesResponse[widget.cardIndex]
@@ -335,7 +339,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                               )
                             : Container(
                                 height: 30,
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(right: 5),
                                 padding: const EdgeInsets.only(
                                     left: 8, right: 8, top: 5, bottom: 5),
                                 decoration: BoxDecoration(
@@ -343,7 +347,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                       color: themeProvider
                                           .themeManager.borderSubtle01Color,
                                     ),
-                                    borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(4)),
                                 child: Icon(
                                   Icons.groups_2_outlined,
                                   size: 18,
@@ -371,7 +375,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     1
                                 ? Container(
                                     width: 80,
-                                    margin: const EdgeInsets.only(right: 10),
+                                    margin: const EdgeInsets.only(right: 5),
                                     padding: const EdgeInsets.only(
                                       left: 8,
                                       right: 8,
@@ -381,7 +385,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                           color: themeProvider
                                               .themeManager.borderSubtle01Color,
                                         ),
-                                        borderRadius: BorderRadius.circular(5)),
+                                        borderRadius: BorderRadius.circular(4)),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -413,7 +417,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     ),
                                   )
                                 : Container(
-                                    margin: const EdgeInsets.only(right: 10),
+                                    margin: const EdgeInsets.only(right: 5),
                                     child: ListView.builder(
                                       padding: EdgeInsets.zero,
                                       scrollDirection: Axis.horizontal,
@@ -437,7 +441,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                                       .themeManager
                                                       .borderSubtle01Color),
                                               borderRadius:
-                                                  BorderRadius.circular(5)),
+                                                  BorderRadius.circular(4)),
                                           child: Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
@@ -484,7 +488,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     .isEmpty)
                             ? Container(
                                 height: 30,
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(right: 5),
                                 padding: const EdgeInsets.only(
                                   left: 8,
                                   top: 2,
@@ -495,7 +499,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     border: Border.all(
                                         color: themeProvider
                                             .themeManager.borderSubtle01Color),
-                                    borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(4)),
                                 child: CustomText(
                                   'No Label',
                                   type: FontStyle.XSmall,
@@ -509,7 +513,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                     provider.issues.displayProperties.dueDate == true
                         ? Container(
                             height: 30,
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, top: 2, bottom: 5),
                             decoration: BoxDecoration(
@@ -517,7 +521,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 ),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
                                       ['start_date'] ??
@@ -531,14 +535,14 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                     provider.issues.displayProperties.dueDate == true
                         ? Container(
                             height: 30,
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, top: 2, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: themeProvider
                                         .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
                                       ['target_date'] ??
@@ -551,7 +555,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : Container(),
                     provider.issues.displayProperties.subIsseCount == true
                         ? Container(
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, top: 0, bottom: 5),
@@ -560,7 +564,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 ),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
@@ -604,7 +608,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(),
                     provider.issues.displayProperties.linkCount == true
                         ? Container(
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, top: 0, bottom: 5),
@@ -612,7 +616,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 border: Border.all(
                                     color: themeProvider
                                         .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
                               children: [
                                 Padding(
@@ -655,7 +659,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(),
                     provider.issues.displayProperties.attachmentCount == true
                         ? Container(
-                            margin: const EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, bottom: 5),
@@ -664,7 +668,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 ),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
                               children: [
                                 Padding(
@@ -714,7 +718,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   color: themeProvider
                                       .themeManager.borderSubtle01Color,
                                 ),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
                               children: [
                                 Padding(

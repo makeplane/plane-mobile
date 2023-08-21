@@ -132,14 +132,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
               },
               child: Stack(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: themeProvider
-                        .themeManager.primaryBackgroundSelectedColour,
-                    radius: 20,
-                    child: Icon(
-                      size: 20,
-                      Icons.filter_list_outlined,
-                      color: themeProvider.themeManager.secondaryTextColor,
+                  Center(
+                    child: CircleAvatar(
+                      backgroundColor: themeProvider
+                          .themeManager.tertiaryBackgroundDefaultColor,
+                      radius: 20,
+                      child: Icon(
+                        size: 20,
+                        Icons.filter_list_outlined,
+                        color: themeProvider.themeManager.secondaryTextColor,
+                      ),
                     ),
                   ),
 
@@ -150,8 +152,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                           myIssuesProvider.issues.filters.targetDate.isEmpty)
                       ? Container()
                       : Positioned(
-                          top: 2,
-                          right: 2,
+                          top: 4,
+                          right: 4,
                           child: Container(
                             height: 10,
                             width: 10,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/kanban/models/board.dart';
@@ -243,7 +242,6 @@ class BoardProvider extends ChangeNotifier {
       scrolling = true;
       scrollingRight = true;
       if (board.boardScrollConfig == null) {
-        log("HEREEEE");
         await board.controller.animateTo(board.controller.offset + 100,
             duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else {

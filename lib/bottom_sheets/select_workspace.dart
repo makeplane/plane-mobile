@@ -155,7 +155,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                         width: 35,
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                            color: colors[Random().nextInt(3)],
+                                            color: const Color.fromRGBO(55, 65, 81, 1),
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         child: CustomText(

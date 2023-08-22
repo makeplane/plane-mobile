@@ -14,6 +14,7 @@ import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/config/notification_serivce.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -1110,7 +1111,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                                 height: 25,
                                                                                 alignment: Alignment.center,
                                                                                 width: 25,
-                                                                                decoration: BoxDecoration(shape: BoxShape.circle, color: Color(int.parse("FF${e['color'].toString().toUpperCase().replaceAll("#", "")}", radix: 16)))),
+                                                                                decoration: BoxDecoration(
+                                                                                  shape: BoxShape.circle,
+                                                                                  color: ColorManager.getColorFromHexaDecimal(e['color'].toString()),
+                                                                                )),
                                                                           ))
                                                                       .toList(),
                                                                 ),

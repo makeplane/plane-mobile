@@ -133,7 +133,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               ),
                               CustomText(
                                 ' ${countFilters()}',
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                                 fontSize: 17,
                                 fontWeight: FontWeightt.Medium,
                               ),

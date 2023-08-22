@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -155,7 +156,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                         width: 35,
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(55, 65, 81, 1),
+                                            color:
+                                                ColorManager.getColorWithIndex(
+                                                    index),
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         child: CustomText(

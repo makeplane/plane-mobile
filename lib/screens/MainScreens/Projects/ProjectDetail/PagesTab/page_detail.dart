@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/block_sheet.dart';
 import 'package:plane_startup/bottom_sheets/label_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_block_card.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -451,9 +452,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                       margin: const EdgeInsets.only(bottom: 20),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: Color(int.parse(
-                                            "FF${e.toString().toUpperCase().replaceAll("#", "")}",
-                                            radix: 16)),
+                                        color: ColorManager
+                                            .getColorFromHexaDecimal(
+                                                e.toString()),
                                         borderRadius: BorderRadius.circular(5),
                                         boxShadow: const [
                                           BoxShadow(
@@ -641,12 +642,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             //container 1
                             CircleAvatar(
                               radius: 5,
-                              backgroundColor: Color(
-                                int.parse(
-                                  "FF${element['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                  radix: 16,
-                                ),
-                              ),
+                              backgroundColor:
+                                  ColorManager.getColorFromHexaDecimal(
+                                      element['color'].toString()),
                             ),
                             const SizedBox(
                               width: 10,

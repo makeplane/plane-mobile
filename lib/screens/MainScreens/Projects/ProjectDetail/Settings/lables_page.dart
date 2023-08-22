@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/bottom_sheets/delete_labels_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
@@ -71,14 +72,22 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         !isChildAvail
                                             ? CircleAvatar(
                                                 radius: 6,
-                                                backgroundColor: Color(int.parse(
-                                                    '0xFF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll('#', '')}')),
+                                                backgroundColor: ColorManager
+                                                    .getColorFromHexaDecimal(
+                                                        issuesProvider
+                                                                .labels[index]
+                                                            ['color']),
+                                                //
                                               )
                                             : SvgPicture.asset(
                                                 "assets/svg_images/label_group.svg",
                                                 colorFilter: ColorFilter.mode(
-                                                    Color(int.parse(
-                                                        '0xFF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll('#', '')}')),
+                                                    ColorManager
+                                                        .getColorFromHexaDecimal(
+                                                            issuesProvider
+                                                                .labels[index]
+                                                                    ['color']
+                                                                .toString()),
                                                     BlendMode.srcIn),
                                               ),
                                         const SizedBox(
@@ -97,7 +106,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                       children: [
                                         PopupMenuButton(
                                           icon: Icon(
-                                            Icons.more_vert,
+                                            Icons.edit_outlined,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
                                           ),
@@ -722,12 +731,12 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                           children: [
                                             CircleAvatar(
                                               radius: 8,
-                                              backgroundColor: Color(
-                                                int.parse(
-                                                  "FF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                                  radix: 16,
-                                                ),
-                                              ),
+                                              backgroundColor: ColorManager
+                                                  .getColorFromHexaDecimal(
+                                                      issuesProvider
+                                                          .labels[index]
+                                                              ['color']
+                                                          .toString()),
                                             ),
                                             Container(width: 10),
                                             CustomText(

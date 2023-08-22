@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -256,9 +257,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                   margin: const EdgeInsets.only(bottom: 20),
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Color(int.parse(
-                                        "FF${e.toString().toUpperCase().replaceAll("#", "")}",
-                                        radix: 16)),
+                                    color: ColorManager.getColorFromHexaDecimal(
+                                        e.toString()),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: const [
                                       BoxShadow(
@@ -282,9 +282,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             height: 55,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: Color(int.parse(
-                                    "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
-                                    radix: 16)),
+                                color: ColorManager.getColorFromHexaDecimal(
+                                    colorController.text.toString()),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     bottomLeft: Radius.circular(8))),

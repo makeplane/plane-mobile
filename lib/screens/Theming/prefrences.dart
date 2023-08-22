@@ -29,9 +29,9 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
         return 2;
       case THEME.darkHighContrast:
         return 3;
-      case THEME.custom:
-        return 4;
       case THEME.systemPreferences:
+        return 4;
+      case THEME.custom:
         return 5;
       default:
         return 0;
@@ -48,7 +48,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
       selectedTheme = 0;
     } else {
       selectedTheme = profileProvider.userProfile.theme!['theme'] == 'system'
-          ? 5
+          ? 4
           : getSelectedTheme(
               themeParser(theme: profileProvider.userProfile.theme!['theme']));
     }
@@ -69,6 +69,100 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
+              Row(
+                children: [
+                  ...List.generate(
+                    2,
+                    (index) => Expanded(
+                        child: index == 0
+                            ? GestureDetector(
+                                onTap: () {
+                                  var theme = profileProvider.userProfile.theme;
+
+                                  theme!['theme'] =
+                                      fromTHEME(theme: THEME.systemPreferences);
+                                  log(theme.toString());
+                                  themeProvider.changeTheme(
+                                      data: {'theme': theme}, context: context);
+                                  setState(() {
+                                    selectedTheme = index + 4;
+                                  });
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: index == 0 ? 10 : 0),
+                                    height: 185,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: bottomBar(
+                                        text: 'System Preference',
+                                        circleBorder: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        borderColor: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        selected: (index + 4) == selectedTheme,
+                                        rightHalf: Colors.black,
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .secondaryBackgroundDefaultColor,
+                                        svg: "assets/svg_images/light_mode.svg",
+                                        leftHalf: Colors.white)),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  var theme = profileProvider.userProfile.theme;
+
+                                  theme!['theme'] =
+                                      fromTHEME(theme: THEME.custom);
+                                  log(theme.toString());
+                                  themeProvider.changeTheme(
+                                      data: {'theme': theme}, context: context);
+                                  setState(() {
+                                    selectedTheme = index + 4;
+                                  });
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const CustomTheme()));
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: index == 0 ? 10 : 0),
+                                    height: 185,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: bottomBar(
+                                        text: 'Custom Theme',
+                                        circleBorder: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        borderColor: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        selected: (index + 4) == selectedTheme,
+                                        rightHalf: const Color.fromRGBO(
+                                            130, 35, 254, 1),
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .secondaryBackgroundDefaultColor,
+                                        svg:
+                                            "assets/svg_images/custom_theme.svg",
+                                        leftHalf: Colors.white)),
+                              )),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   ...List.generate(
@@ -176,102 +270,215 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  ...List.generate(
-                    2,
-                    (index) => Expanded(
-                        child: index == 1
-                            ? GestureDetector(
-                                onTap: () {
-                                  var theme = profileProvider.userProfile.theme;
-
-                                  theme!['theme'] =
-                                      fromTHEME(theme: THEME.systemPreferences);
-                                  log(theme.toString());
-                                  themeProvider.changeTheme(
-                                      data: {'theme': theme}, context: context);
-                                  setState(() {
-                                    selectedTheme = index + 4;
-                                  });
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: index == 0 ? 10 : 0),
-                                    height: 185,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                      ),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: bottomBar(
-                                        text: 'System Preference',
-                                        circleBorder: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                        borderColor: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                        selected: (index + 4) == selectedTheme,
-                                        rightHalf: Colors.black,
-                                        backgroundColor: themeProvider
-                                            .themeManager
-                                            .secondaryBackgroundDefaultColor,
-                                        svg: "assets/svg_images/light_mode.svg",
-                                        leftHalf: Colors.white)),
-                              )
-                            : GestureDetector(
-                                onTap: () {
-                                  var theme = profileProvider.userProfile.theme;
-
-                                  theme!['theme'] =
-                                      fromTHEME(theme: THEME.custom);
-                                  log(theme.toString());
-                                  themeProvider.changeTheme(
-                                      data: {'theme': theme}, context: context);
-                                  setState(() {
-                                    selectedTheme = index + 4;
-                                  });
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const CustomTheme()));
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: index == 0 ? 10 : 0),
-                                    height: 185,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                      ),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: bottomBar(
-                                        text: 'Custom Theme',
-                                        circleBorder: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                        borderColor: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                        selected: (index + 4) == selectedTheme,
-                                        rightHalf: const Color.fromRGBO(
-                                            130, 35, 254, 1),
-                                        backgroundColor: themeProvider
-                                            .themeManager
-                                            .secondaryBackgroundDefaultColor,
-                                        svg:
-                                            "assets/svg_images/custom_theme.svg",
-                                        leftHalf: Colors.white)),
-                              )),
-                  )
-                ],
-              )
             ],
           ),
+
+          /////////////////////////////////////
+          // Column(
+          //   children: [
+          //     Row(
+          //       children: [
+          //         ...List.generate(
+          //           2,
+          //           (index) => Expanded(
+          //               child: GestureDetector(
+          //             onTap: () {
+          //               var theme = profileProvider.userProfile.theme;
+          //               theme!['theme'] = fromTHEME(
+          //                   theme: index == 0 ? THEME.light : THEME.dark);
+          //               themeProvider.changeTheme(
+          //                   data: {'theme': theme}, context: context);
+
+          //               setState(() {
+          //                 selectedTheme = index;
+          //               });
+          //             },
+          //             child: Container(
+          //                 margin: EdgeInsets.only(right: index == 0 ? 10 : 0),
+          //                 height: 185,
+          //                 decoration: BoxDecoration(
+          //                   border: Border.all(
+          //                     color: themeProvider
+          //                         .themeManager.borderSubtle01Color,
+          //                   ),
+          //                   borderRadius: BorderRadius.circular(4),
+          //                 ),
+          //                 child: bottomBar(
+          //                     text: index == 0 ? 'Light Mode' : 'Dark Mode',
+          //                     circleBorder: index == 0
+          //                         ? themeProvider
+          //                             .themeManager.borderStrong01Color
+          //                         : themeProvider
+          //                             .themeManager.tertiaryTextColor,
+          //                     borderColor: themeProvider
+          //                         .themeManager.borderSubtle01Color,
+          //                     selected: index == selectedTheme,
+          //                     rightHalf: primaryColor,
+          //                     backgroundColor: index == 0
+          //                         ? themeProvider.themeManager
+          //                             .secondaryBackgroundDefaultColor
+          //                         : const Color.fromRGBO(46, 46, 46, 1),
+          //                     svg: index == 0
+          //                         ? "assets/svg_images/light_mode.svg"
+          //                         : "assets/svg_images/dark_mode.svg",
+          //                     leftHalf: Colors.white)),
+          //           )),
+          //         )
+          //       ],
+          //     ),
+          //     const SizedBox(
+          //       height: 10,
+          //     ),
+          //     Row(
+          //       children: [
+          //         ...List.generate(
+          //           2,
+          //           (index) => Expanded(
+          //               child: GestureDetector(
+          //             onTap: () {
+          //               var theme = profileProvider.userProfile.theme;
+          //               theme!['theme'] = fromTHEME(
+          //                   theme: index == 0
+          //                       ? THEME.lightHighContrast
+          //                       : THEME.darkHighContrast);
+          //               themeProvider.changeTheme(
+          //                   data: {'theme': theme}, context: context);
+
+          //               setState(() {
+          //                 selectedTheme = (index + 2);
+          //               });
+          //             },
+          //             child: Container(
+          //                 margin: EdgeInsets.only(right: index == 0 ? 10 : 0),
+          //                 height: 185,
+          //                 decoration: BoxDecoration(
+          //                   border: Border.all(
+          //                     color: themeProvider
+          //                         .themeManager.borderSubtle01Color,
+          //                   ),
+          //                   borderRadius: BorderRadius.circular(4),
+          //                 ),
+          //                 child: bottomBar(
+          //                     text: index == 0
+          //                         ? 'Light High Contast'
+          //                         : 'Dark High Contast',
+          //                     circleBorder: index == 0
+          //                         ? Colors.black
+          //                         : themeProvider
+          //                             .themeManager.borderSubtle01Color,
+          //                     borderColor: themeProvider
+          //                         .themeManager.borderSubtle01Color,
+          //                     selected: (index + 2) == selectedTheme,
+          //                     rightHalf: primaryColor,
+          //                     backgroundColor: index == 0
+          //                         ? themeProvider.themeManager
+          //                             .secondaryBackgroundDefaultColor
+          //                         : const Color.fromRGBO(46, 46, 46, 1),
+          //                     svg: index == 0
+          //                         ? "assets/svg_images/light_high_contrast.svg"
+          //                         : "assets/svg_images/dark_high_contrast.svg",
+          //                     leftHalf:
+          //                         index == 0 ? Colors.white : Colors.black)),
+          //           )),
+          //         )
+          //       ],
+          //     ),
+          //     const SizedBox(
+          //       height: 10,
+          //     ),
+          //     Row(
+          //       children: [
+          //         ...List.generate(
+          //           2,
+          //           (index) => Expanded(
+          //               child: index == 1
+          //                   ? GestureDetector(
+          //                       onTap: () {
+          //                         var theme = profileProvider.userProfile.theme;
+
+          //                         theme!['theme'] =
+          //                             fromTHEME(theme: THEME.systemPreferences);
+          //                         log(theme.toString());
+          //                         themeProvider.changeTheme(
+          //                             data: {'theme': theme}, context: context);
+          //                         setState(() {
+          //                           selectedTheme = index + 4;
+          //                         });
+          //                       },
+          //                       child: Container(
+          //                           margin: EdgeInsets.only(
+          //                               right: index == 0 ? 10 : 0),
+          //                           height: 185,
+          //                           decoration: BoxDecoration(
+          //                             border: Border.all(
+          //                               color: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                             ),
+          //                             borderRadius: BorderRadius.circular(4),
+          //                           ),
+          //                           child: bottomBar(
+          //                               text: 'System Preference',
+          //                               circleBorder: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                               borderColor: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                               selected: (index + 4) == selectedTheme,
+          //                               rightHalf: Colors.black,
+          //                               backgroundColor: themeProvider
+          //                                   .themeManager
+          //                                   .secondaryBackgroundDefaultColor,
+          //                               svg: "assets/svg_images/light_mode.svg",
+          //                               leftHalf: Colors.white)),
+          //                     )
+          //                   : GestureDetector(
+          //                       onTap: () {
+          //                         var theme = profileProvider.userProfile.theme;
+
+          //                         theme!['theme'] =
+          //                             fromTHEME(theme: THEME.custom);
+          //                         log(theme.toString());
+          //                         themeProvider.changeTheme(
+          //                             data: {'theme': theme}, context: context);
+          //                         setState(() {
+          //                           selectedTheme = index + 4;
+          //                         });
+          //                         Navigator.push(
+          //                             context,
+          //                             MaterialPageRoute(
+          //                                 builder: (_) => const CustomTheme()));
+          //                       },
+          //                       child: Container(
+          //                           margin: EdgeInsets.only(
+          //                               right: index == 0 ? 10 : 0),
+          //                           height: 185,
+          //                           decoration: BoxDecoration(
+          //                             border: Border.all(
+          //                               color: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                             ),
+          //                             borderRadius: BorderRadius.circular(4),
+          //                           ),
+          //                           child: bottomBar(
+          //                               text: 'Custom Theme',
+          //                               circleBorder: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                               borderColor: themeProvider
+          //                                   .themeManager.borderSubtle01Color,
+          //                               selected: (index + 4) == selectedTheme,
+          //                               rightHalf: const Color.fromRGBO(
+          //                                   130, 35, 254, 1),
+          //                               backgroundColor: themeProvider
+          //                                   .themeManager
+          //                                   .secondaryBackgroundDefaultColor,
+          //                               svg:
+          //                                   "assets/svg_images/custom_theme.svg",
+          //                               leftHalf: Colors.white)),
+          //                     )),
+          //         )
+          //       ],
+          //     )
+          //   ],
+          // ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/delete_project_sheet.dart';
+import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
 import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';
 
 import 'package:plane_startup/utils/constants.dart';
@@ -30,6 +31,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   bool isProjectPublic = true;
 
   List<String> emojisWidgets = [];
+  bool isEmoji = false;
+  String selectedColor = '#3A3A3A';
 
   generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
@@ -42,9 +45,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   @override
   void initState() {
     super.initState();
+
     generateEmojis();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var projectProvider = ref.watch(ProviderList.projectProvider);
+      isEmoji = projectProvider.currentProject['emoji'] != null;
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
       identifier.text = projectProvider.projectDetailModel!.identifier!;
@@ -124,131 +130,52 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             ),
                             context: context,
                             builder: (ctx) {
-                              return Stack(
-                                children: [
-                                  ListView(
-                                    shrinkWrap: true,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 10),
-                                    // physics: NeverScrollableScrollPhysics(),
-                                    children: [
-                                      const SizedBox(
-                                        height: 60,
-                                      ),
-                                      //selected == 0
-                                      //?
-                                      Wrap(
-                                        alignment: WrapAlignment.center,
-                                        spacing: 6,
-                                        runSpacing: 6,
-                                        children: emojisWidgets
-                                            .map(
-                                              (e) => InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    selectedEmoji = e;
-                                                    projectProvider.updateProject(
-                                                        slug: ref
-                                                            .read(ProviderList
-                                                                .workspaceProvider)
-                                                            .selectedWorkspace!
-                                                            .workspaceSlug,
-                                                        projId: projectProvider
-                                                            .projectDetailModel!
-                                                            .id!,
-                                                        data: {
-                                                          'name': name.text,
-                                                          'description':
-                                                              description.text,
-                                                          'identifier':
-                                                              identifier.text,
-                                                          'network':
-                                                              isProjectPublic
-                                                                  ? 2
-                                                                  : 0,
-                                                          'emoji': selectedEmoji
-                                                        });
-                                                    //showEMOJI = false;
-                                                  });
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: SizedBox(
-                                                  width: 40,
-                                                  height: 40,
-                                                  child: Center(
-                                                    child: CustomText(
-                                                      String.fromCharCode(
-                                                          int.parse(e)),
-                                                      type: FontStyle.H5,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
-                                      )
-                                      //: Container(),
-                                    ],
-                                  ),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
-                                      color: Colors.white,
-                                    ),
-
-                                    // height: 80,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 25),
-                                              child: CustomText(
-                                                'Choose your project icon',
-                                                type: FontStyle.H6,
-                                                fontWeight:
-                                                    FontWeightt.Semibold,
-                                              ),
-                                            ),
-                                            // const Spacer(),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 15),
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                icon: Icon(
-                                                  Icons.close,
-                                                  size: 27,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .primaryTextColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
+                              return const EmojiSheet();
                             },
-                          );
+                          ).then((value) {
+                            setState(() {
+                              selectedEmoji = value['name'];
+                              isEmoji = value['is_emoji'];
+                              selectedColor = value['color'] ?? '#3A3A3A';
+                            });
+
+                            if (isEmoji) {
+                              projectProvider.updateProject(
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId:
+                                      projectProvider.projectDetailModel!.id!,
+                                  data: {
+                                    'name': name.text,
+                                    'description': description.text,
+                                    'identifier': identifier.text,
+                                    'network': isProjectPublic ? 2 : 0,
+                                    'emoji': selectedEmoji,
+                                    'icon_prop': null
+                                  });
+                            } else {
+                              projectProvider.updateProject(
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId:
+                                      projectProvider.projectDetailModel!.id!,
+                                  data: {
+                                    'name': name.text,
+                                    'description': description.text,
+                                    'identifier': identifier.text,
+                                    'network': isProjectPublic ? 2 : 0,
+                                    'emoji': null,
+                                    'icon_prop': {
+                                      'name': selectedEmoji,
+                                      'color': selectedColor,
+                                    }
+                                  });
+                            }
+                          });
                           // setState(() {
                           //   showEmojis = !showEmojis;
                           // });
@@ -267,27 +194,56 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           ),
                           child: Center(
                             child: selectedEmoji != null
-                                ? CustomText(
-                                    String.fromCharCode(
-                                        int.parse(selectedEmoji!)),
-                                    type: FontStyle.H6,
-                                    fontWeight: FontWeightt.Semibold,
-                                  )
-                                : CustomText(
-                                    projectProvider.projectDetailModel !=
-                                                null &&
-                                            projectProvider.projectDetailModel!
-                                                    .emoji !=
-                                                null &&
-                                            int.tryParse(projectProvider
-                                                    .projectDetailModel!
-                                                    .emoji!) !=
-                                                null
-                                        ? String.fromCharCode(int.parse(
+                                ? !isEmoji
+                                    ? Icon(
+                                        iconList[selectedEmoji],
+                                        color: Color(
+                                          int.parse(
+                                            selectedColor
+                                                .toString()
+                                                .replaceAll('#', '0xFF'),
+                                          ),
+                                        ),
+                                      )
+                                    : CustomText(
+                                        String.fromCharCode(
+                                            int.parse(selectedEmoji!)),
+                                        type: FontStyle.H6,
+                                        fontWeight: FontWeightt.Semibold,
+                                      )
+                                : projectProvider.currentProject['icon_prop'] !=
+                                        null
+                                    ? Icon(
+                                        iconList[projectProvider
+                                                .currentProject['icon_prop']
+                                            ['name']],
+                                        color: Color(
+                                          int.parse(
                                             projectProvider
-                                                .projectDetailModel!.emoji!))
-                                        : '🚀',
-                                  ),
+                                                .currentProject['icon_prop']
+                                                    ["color"]
+                                                .toString()
+                                                .replaceAll('#', '0xFF'),
+                                          ),
+                                        ),
+                                      )
+                                    : CustomText(
+                                        projectProvider.projectDetailModel !=
+                                                    null &&
+                                                projectProvider
+                                                        .projectDetailModel!
+                                                        .emoji !=
+                                                    null &&
+                                                int.tryParse(projectProvider
+                                                        .projectDetailModel!
+                                                        .emoji!) !=
+                                                    null
+                                            ? String.fromCharCode(int.parse(
+                                                projectProvider
+                                                    .projectDetailModel!
+                                                    .emoji!))
+                                            : '🚀',
+                                      ),
                           ),
                         ),
                       ),

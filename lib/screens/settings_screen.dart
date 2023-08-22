@@ -198,9 +198,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                   }
                 },
                 backgroundColor: themeProvider.themeManager.primaryColour,
-                child: Icon(
+                child: const Icon(
                   Icons.add,
-                  color: themeProvider.themeManager.placeholderTextColor,
+                  color: Colors.white,
                 ),
               )
             : Container(),

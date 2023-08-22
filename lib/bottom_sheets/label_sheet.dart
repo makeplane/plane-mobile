@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -128,15 +129,10 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 CircleAvatar(
-                                  radius: 6,
-                                  backgroundColor: Color(
-                                    int.parse(
-                                      label["color"]
-                                          .toString()
-                                          .replaceAll('#', '0xFF'),
-                                    ),
-                                  ),
-                                ),
+                                    radius: 6,
+                                    backgroundColor:
+                                        ColorManager.getColorFromHexaDecimal(
+                                            label["color"])),
                                 const SizedBox(
                                   width: 10,
                                 ),

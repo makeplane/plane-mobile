@@ -19,6 +19,7 @@ import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -1820,8 +1821,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               Icons.circle,
                                               size: 10,
                                               color: detailData['distribution']
-                                                                      ['labels']
-                                                                  [index]
+                                                                  ['labels'][index]
                                                               ['color'] ==
                                                           '' ||
                                                       detailData['distribution']
@@ -1831,12 +1831,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                           null
                                                   ? themeProvider.themeManager
                                                       .placeholderTextColor
-                                                  : Color(
-                                                      int.parse(
-                                                        "FF${detailData['distribution']['labels'][index]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                                        radix: 16,
-                                                      ),
-                                                    ),
+                                                  : ColorManager.getColorFromHexaDecimal(
+                                                      detailData['distribution']
+                                                                  ['labels']
+                                                              [index]['color']
+                                                          .toString()),
                                             ),
                                             const SizedBox(
                                               width: 10,

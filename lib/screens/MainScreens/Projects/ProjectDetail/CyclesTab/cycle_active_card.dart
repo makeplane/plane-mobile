@@ -6,6 +6,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:plane_startup/models/chart_model.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/completion_percentage.dart';
 import 'package:plane_startup/widgets/custom_progress_bar.dart';
@@ -809,12 +810,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                                     ['labels'][idx]['color'] ==
                                                 null
                                         ? greyColor
-                                        : Color(
-                                            int.parse(
-                                              "FF${cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                              radix: 16,
-                                            ),
-                                          ),
+                                        : ColorManager.getColorFromHexaDecimal(cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['color'].toString()),
+                                        
                                   ),
                                   const SizedBox(
                                     width: 10,

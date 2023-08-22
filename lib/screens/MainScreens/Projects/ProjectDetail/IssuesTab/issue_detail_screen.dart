@@ -16,6 +16,7 @@ import 'package:plane_startup/bottom_sheets/select_priority.dart';
 import 'package:plane_startup/bottom_sheets/select_project_members.dart';
 import 'package:plane_startup/bottom_sheets/select_states.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -1896,11 +1897,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               CircleAvatar(
-                                                backgroundColor: Color(
-                                                  int.parse(
-                                                      "FF${e['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                                      radix: 16),
-                                                ),
+                                                backgroundColor: ColorManager
+                                                    .getColorFromHexaDecimal(
+                                                        e['color'].toString()),
                                                 radius: 8,
                                               ),
                                               const SizedBox(width: 6),

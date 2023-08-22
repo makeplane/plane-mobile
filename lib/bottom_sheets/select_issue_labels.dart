@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -189,12 +190,11 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     children: [
                                       CircleAvatar(
                                         radius: 8,
-                                        backgroundColor: Color(
-                                          int.parse(
-                                            "FF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                            radix: 16,
-                                          ),
-                                        ),
+                                        backgroundColor: ColorManager
+                                            .getColorFromHexaDecimal(
+                                                issuesProvider.labels[index]
+                                                        ['color']
+                                                    .toString()),
                                       ),
                                       Container(width: 10),
                                       CustomText(
@@ -243,9 +243,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       height: 25,
                                       width: 25,
                                       decoration: BoxDecoration(
-                                        color: Color(int.parse(
-                                            "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
-                                            radix: 16)),
+                                        color: ColorManager
+                                            .getColorFromHexaDecimal(
+                                                colorController.text
+                                                    .toString()),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                     ),
@@ -368,9 +369,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     margin: const EdgeInsets.only(bottom: 20),
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Color(int.parse(
-                                          "FF${e.toString().toUpperCase().replaceAll("#", "")}",
-                                          radix: 16)),
+                                      color:
+                                          ColorManager.getColorFromHexaDecimal(
+                                              e.toString()),
                                       borderRadius: BorderRadius.circular(5),
                                       boxShadow: const [
                                         BoxShadow(

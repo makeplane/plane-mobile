@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../utils/constants.dart';
-import '../../../utils/random_colors.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
@@ -132,8 +132,8 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                                               ['workspace']
                                                           ['logo'] ==
                                                       null
-                                                  ? RandomColors()
-                                                      .getRandomColor()
+                                                  ? ColorManager
+                                                      .getColorWithIndex(index)
                                                   : Colors.white,
                                             ),
                                             margin: const EdgeInsets.only(

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
+import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/empty.dart';
 import 'package:plane_startup/widgets/error_state.dart';
@@ -185,6 +186,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                             }
                                             projectProvider.currentProject =
                                                 projectProvider.projects[index];
+
                                             projectProvider
                                                     .currentProject["index"] =
                                                 index;
@@ -209,22 +211,46 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                   BorderRadius.circular(10),
                                             ),
                                             child: Center(
-                                              child: Text(
-                                                int.tryParse(projectProvider
-                                                            .projects[index]
-                                                                ['emoji']
-                                                            .toString()) !=
-                                                        null
-                                                    ? String.fromCharCode(int
-                                                        .parse(projectProvider
-                                                                .projects[index]
-                                                            ['emoji']))
-                                                    : '🚀',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 22,
-                                                ),
-                                              ),
+                                              child: projectProvider
+                                                              .projects[index]
+                                                          ['icon_prop'] !=
+                                                      null
+                                                  ? Icon(
+                                                      iconList[projectProvider
+                                                              .projects[index][
+                                                          'icon_prop']['name']],
+                                                      color: Color(
+                                                        int.parse(
+                                                          projectProvider
+                                                              .projects[index]
+                                                                  ['icon_prop']
+                                                                  ["color"]
+                                                              .toString()
+                                                              .replaceAll(
+                                                                  '#', '0xFF'),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      int.tryParse(projectProvider
+                                                                  .projects[
+                                                                      index]
+                                                                      ['emoji']
+                                                                  .toString()) !=
+                                                              null
+                                                          ? String.fromCharCode(
+                                                              int.parse(
+                                                                  projectProvider
+                                                                              .projects[
+                                                                          index]
+                                                                      [
+                                                                      'emoji']))
+                                                          : '🚀',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22,
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                           title: Padding(
@@ -407,22 +433,46 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                                   .tertiaryBackgroundDefaultColor,
                                             ),
                                             child: Center(
-                                              child: Text(
-                                                int.tryParse(projectProvider
-                                                            .projects[index]
-                                                                ['emoji']
-                                                            .toString()) !=
-                                                        null
-                                                    ? String.fromCharCode(int
-                                                        .parse(projectProvider
-                                                                .projects[index]
-                                                            ['emoji']))
-                                                    : '🚀',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 22,
-                                                ),
-                                              ),
+                                              child: projectProvider
+                                                              .projects[index]
+                                                          ['icon_prop'] !=
+                                                      null
+                                                  ? Icon(
+                                                      iconList[projectProvider
+                                                              .projects[index][
+                                                          'icon_prop']['name']],
+                                                      color: Color(
+                                                        int.parse(
+                                                          projectProvider
+                                                              .projects[index]
+                                                                  ['icon_prop']
+                                                                  ["color"]
+                                                              .toString()
+                                                              .replaceAll(
+                                                                  '#', '0xFF'),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      int.tryParse(projectProvider
+                                                                  .projects[
+                                                                      index]
+                                                                      ['emoji']
+                                                                  .toString()) !=
+                                                              null
+                                                          ? String.fromCharCode(
+                                                              int.parse(
+                                                                  projectProvider
+                                                                              .projects[
+                                                                          index]
+                                                                      [
+                                                                      'emoji']))
+                                                          : '🚀',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22,
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                           title: Padding(

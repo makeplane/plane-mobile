@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -7,8 +8,7 @@ import 'package:plane_startup/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class EmojiSheet extends ConsumerStatefulWidget {
-  final List<String> emojisWidgets;
-  const EmojiSheet({super.key, required this.emojisWidgets});
+  const EmojiSheet({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _EmojiSheetState();
@@ -17,41 +17,483 @@ class EmojiSheet extends ConsumerStatefulWidget {
 class _EmojiSheetState extends ConsumerState<EmojiSheet> {
   int selected = 0;
   String selectedEmoji = '';
+  String selectedIcon = '';
   bool showEMOJI = false;
+  bool showColor = false;
+  List<String> emojisWidgets = [];
+  generateEmojis() {
+    for (int i = 0; i < emojis.length; i++) {
+      setState(() {
+        emojisWidgets.add(emojis[i]);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    generateEmojis();
+    colorController.text = colorHex[0].toString().replaceAll('#', '');
+  }
+
+  final TextEditingController colorController = TextEditingController();
+  String selectedColor = '#3A3A3A';
+
+  List<String> colorHex = [
+    //12 random colors,
+    '#FF6B00',
+    '#FF9E9E',
+    '#F7AE59',
+    '#D687FF',
+    '#3F76FF',
+    '#F565F5',
+    '#F47F21',
+    '#FF00500',
+    '#00FF00',
+    '#0000FF',
+    '#FFFF00',
+    '#00FFFF',
+  ];
+
   @override
   Widget build(BuildContext context) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Stack(
       children: [
         ListView(
           shrinkWrap: true,
 
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           // physics: NeverScrollableScrollPhysics(),
           children: [
             const SizedBox(
-              height: 110,
+              height: 105,
             ),
             selected == 0
                 ? Wrap(
-                    spacing: 10,
-                    runSpacing: 1,
-                    children: widget.emojisWidgets
+                    alignment: WrapAlignment.center,
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: emojisWidgets
                         .map(
                           (e) => InkWell(
                             onTap: () {
                               setState(() {
                                 selectedEmoji = e;
-                                showEMOJI = false;
                               });
+                              Navigator.pop(context,
+                                  {'name': selectedEmoji, 'is_emoji': true});
                             },
-                            child: CustomText(
-                              e,
-                              type: FontStyle.H6,
-                              fontWeight: FontWeightt.Semibold,
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: Center(
+                                child: CustomText(
+                                  String.fromCharCode(int.parse(e)),
+                                  type: FontStyle.H4,
+                                ),
+                              ),
                             ),
                           ),
                         )
                         .toList(),
+                  )
+                : Container(),
+            selected == 1
+                ? Container(
+                    margin: const EdgeInsets.only(bottom: 10, top: 10),
+                    height: 25,
+                    //row containing 8 circles containing different colors
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#FF6B00';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFFFF6B00')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#FF9E9E';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFFFF9E9E')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#F7AE59';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFFF7AE59')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#D687FF';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFFD687FF')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#3F76FF';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFF3F76FF')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#F5F5F5';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFFF5F5F5')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = '#000000';
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFF000000')),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showColor = !showColor;
+                            });
+                          },
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              //gradient kind of a pie chart
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.yellow,
+                                  Colors.red,
+                                  Colors.blue,
+                                  Colors.green,
+                                  Colors.pink,
+                                  Colors.purple,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
+            selected == 1
+                ? Center(
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 6,
+                            runSpacing: 6,
+                            children: iconList.keys
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIcon = e;
+                                      });
+                                      Navigator.pop(context, {
+                                        'name': selectedIcon,
+                                        'is_emoji': false,
+                                        'color': selectedColor
+                                      });
+                                    },
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: Center(
+                                        child: Icon(
+                                          iconList[e],
+                                          color: Color(int.parse(
+                                              "FF${selectedColor.toString().toUpperCase().replaceAll("#", "")}",
+                                              radix: 16)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                        showColor
+                            ? Card(
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                margin: const EdgeInsets.only(
+                                    right: 15, left: 15, bottom: 15),
+                                elevation: 10,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 15),
+                                      child: Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
+                                        alignment: WrapAlignment.start,
+                                        runAlignment: WrapAlignment.start,
+                                        spacing: 5,
+                                        children: colorHex
+                                            .map(
+                                              (e) => GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    colorController.text = e
+                                                        .toString()
+                                                        .toUpperCase()
+                                                        .replaceAll("#", "");
+                                                    selectedColor = e;
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  margin: const EdgeInsets.only(
+                                                      bottom: 20),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Color(int.parse(
+                                                        "FF${e.toString().toUpperCase().replaceAll("#", "")}",
+                                                        radix: 16)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        blurRadius: 1.0,
+                                                        color: greyColor,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 15, right: 15, bottom: 15),
+                                      // height: 50,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 55,
+                                            height: 60,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                color: int.tryParse("FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}", radix: 16) == null ||
+                                                        colorController.text
+                                                            .trim()
+                                                            .isEmpty
+                                                    ? Color(int.parse(
+                                                        colorHex[0]
+                                                            .toUpperCase()
+                                                            .replaceAll(
+                                                                "#", "FF"),
+                                                        radix: 16))
+                                                    : Color(int.parse(
+                                                        "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
+                                                        radix: 16)),
+                                                borderRadius: const BorderRadius.only(
+                                                    topLeft: Radius.circular(8),
+                                                    bottomLeft: Radius.circular(8))),
+                                            child: const CustomText(
+                                              '#',
+                                              color: Colors.white,
+                                              fontWeight: FontWeightt.Semibold,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: TextFormField(
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return '*required';
+                                                }
+                                                return null;
+                                              },
+                                              controller: colorController,
+                                              maxLength: 6,
+                                              onChanged: (val) {
+                                                colorController.text =
+                                                    val.toUpperCase();
+                                                colorController.selection =
+                                                    TextSelection.fromPosition(
+                                                        TextPosition(
+                                                            offset:
+                                                                colorController
+                                                                    .text
+                                                                    .length));
+
+                                                if (val.length == 6) {
+                                                  if (int.tryParse(
+                                                              "FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
+                                                              radix: 16) ==
+                                                          null ||
+                                                      colorController.text
+                                                          .trim()
+                                                          .isEmpty) {
+                                                  } else {
+                                                    selectedColor =
+                                                        '#${colorController.text.toString()}';
+                                                  }
+                                                }
+
+                                                setState(() {});
+                                              },
+                                              decoration: themeProvider
+                                                  .themeManager
+                                                  .textFieldDecoration
+                                                  .copyWith(
+                                                counterText: '',
+                                                errorStyle: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          Colors.red.shade600,
+                                                      width: 1.0),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomRight:
+                                                        Radius.circular(6),
+                                                  ),
+                                                ),
+                                                focusedErrorBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          Colors.red.shade600,
+                                                      width: 2.0),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomRight:
+                                                        Radius.circular(6),
+                                                  ),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .borderSubtle01Color,
+                                                      width: 1.0),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomRight:
+                                                        Radius.circular(6),
+                                                  ),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .borderSubtle01Color,
+                                                      width: 1.0),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomRight:
+                                                        Radius.circular(6),
+                                                  ),
+                                                ),
+                                                fillColor: themeProvider
+                                                    .themeManager
+                                                    .secondaryBackgroundActiveColor,
+                                                filled: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
                   )
                 : Container(),
           ],
@@ -76,12 +518,13 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 25),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
                     child: CustomText(
                       'Choose your project icon',
-                      type: FontStyle.H6,
+                      type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
                   // const Spacer(),
@@ -91,82 +534,114 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         size: 27,
-                        color: Color.fromRGBO(143, 143, 147, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 0,
               ),
-
-              //row containing two tabs one for emoji and other for icon with an underline
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  //emoji tab
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          // emojiTab = true;
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: selected == 0 ? primaryColor : greyColor,
-                              width: 2,
+              Container(
+                //bottom border
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: themeProvider.themeManager.borderDisabledColor,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            selected = 0;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: CustomText(
+                                    'Emojis',
+                                    color: selected == 0
+                                        ? themeProvider
+                                            .themeManager.primaryColour
+                                        : themeProvider
+                                            .themeManager.placeholderTextColor,
+                                    type: FontStyle.H5,
+                                    overrride: true,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        child: CustomText(
-                          'Emoji',
-                          type: FontStyle.H4,
-                          
-                          color: selected == 0 ? primaryColor : greyColor,
+                            selected == 0
+                                ? Container(
+                                    height: 4,
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                  )
+                                : Container(
+                                    height: 4,
+                                  )
+                          ],
                         ),
                       ),
                     ),
-                  ),
-
-                  //icon tab
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          // emojiTab = false;
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: selected == 1 ? primaryColor : greyColor,
-                              width: 2,
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            selected = 1;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: CustomText(
+                                    overrride: true,
+                                    'Icons',
+                                    color: selected == 1
+                                        ? themeProvider
+                                            .themeManager.primaryColour
+                                        : themeProvider
+                                            .themeManager.placeholderTextColor,
+                                    type: FontStyle.H5,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        child: CustomText(
-                          'Icon',
-                          type: FontStyle.H4,
-                          fontWeight: FontWeightt.Semibold,
-                          
-                          color: selected == 1 ? primaryColor : greyColor,
+                            selected == 1
+                                ? Container(
+                                    height: 4,
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                  )
+                                : Container(
+                                    height: 4,
+                                  )
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

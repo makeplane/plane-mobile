@@ -3,6 +3,7 @@ class ProjectDetailModel {
   Workspace? workspace;
   Map<String, dynamic>? defaultAssignee;
   Map<String, dynamic>? projectLead;
+  Map<String, dynamic>? iconProp;
   bool? isFavorite;
   String? createdAt;
   String? updatedAt;
@@ -13,7 +14,6 @@ class ProjectDetailModel {
   int? network;
   String? identifier;
   String? emoji;
-  dynamic iconProp;
   bool? moduleView;
   bool? cycleView;
   bool? issueViewsView;
@@ -112,20 +112,23 @@ class ProjectDetailModel {
 
   factory ProjectDetailModel.fromMap(Map<String, dynamic> map) {
     return ProjectDetailModel(
-        id: map['id'],
-        cycleView: map['cycle_view'],
-        moduleView: map['module_view'],
-        emoji: map['emoji'],
-        name: map['name'],
-        description: map['description'],
-        coverImage: map['cover_image'],
-        identifier: map['identifier'],
-        defaultAssignee: map['default_assignee'] is Map<String, dynamic>
-            ? map['default_assignee']
-            : null,
-        projectLead:map['project_lead'] is Map<String, dynamic>
-            ? map['project_lead']
-            : null);
+      id: map['id'],
+      cycleView: map['cycle_view'],
+      moduleView: map['module_view'],
+      emoji: map['emoji'],
+      name: map['name'],
+      description: map['description'],
+      coverImage: map['cover_image'],
+      identifier: map['identifier'],
+      defaultAssignee: map['default_assignee'] is Map<String, dynamic>
+          ? map['default_assignee']
+          : null,
+      projectLead: map['project_lead'] is Map<String, dynamic>
+          ? map['project_lead']
+          : null,
+      iconProp:
+          map['icon_prop'] is Map<String, dynamic> ? map['icon_prop'] : null,
+    );
   }
 }
 

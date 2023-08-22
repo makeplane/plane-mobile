@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -26,9 +26,12 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   final TextEditingController emojiController = TextEditingController();
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
 
-  var showEMOJI = false;
+  // var showEMOJI = false;
+  bool isEmoji = true;
+  String selectedColor = "#3A3A3A";
   List<String> emojisWidgets = [];
   String selectedEmoji = (emojis[855]);
+  IconData? selectedIcon;
   var emoji = emojis[855];
   var selectedVal = 2;
   File? coverImage;
@@ -193,228 +196,39 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           ),
                                           context: context,
                                           builder: (ctx) {
-                                            return Stack(
-                                              children: [
-                                                ListView(
-                                                  shrinkWrap: true,
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 15,
-                                                      vertical: 10),
-                                                  // physics: NeverScrollableScrollPhysics(),
-                                                  children: [
-                                                    const SizedBox(
-                                                      height: 60,
-                                                    ),
-                                                    selected == 0
-                                                        ? Wrap(
-                                                            alignment:
-                                                                WrapAlignment
-                                                                    .center,
-                                                            spacing: 6,
-                                                            runSpacing: 6,
-                                                            children:
-                                                                emojisWidgets
-                                                                    .map(
-                                                                      (e) =>
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedEmoji =
-                                                                                e;
-                                                                            showEMOJI =
-                                                                                false;
-                                                                          });
-
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              40,
-                                                                          height:
-                                                                              40,
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                CustomText(
-                                                                              String.fromCharCode(int.parse(e)),
-                                                                              type: FontStyle.H4,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                    .toList(),
-                                                          )
-                                                        : Container(),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(20),
-                                                      topRight:
-                                                          Radius.circular(20),
-                                                    ),
-                                                    color: Colors.white,
-                                                  ),
-
-                                                  // height: 80,
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 25),
-                                                            child: CustomText(
-                                                              'Choose your project icon',
-                                                              type:
-                                                                  FontStyle.H4,
-                                                              fontWeight:
-                                                                  FontWeightt
-                                                                      .Semibold,
-                                                              color: themeProvider
-                                                                  .themeManager
-                                                                  .primaryTextColor,
-                                                            ),
-                                                          ),
-                                                          // const Spacer(),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 15),
-                                                            child: IconButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                size: 27,
-                                                                color: themeProvider
-                                                                    .themeManager
-                                                                    .placeholderTextColor,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                            // return ListView(
-                                            //   padding:
-                                            //       const EdgeInsets.symmetric(
-                                            //           horizontal: 5),
-                                            //   children: [
-                                            //     Wrap(
-                                            //       spacing: 10,
-                                            //       runSpacing: 1,
-                                            //       children: emojisWidgets
-                                            //           .map(
-                                            //             (e) => InkWell(
-                                            //               onTap: () {
-                                            //                 setState(() {
-                                            //                   selectedEmoji = e;
-                                            //                   showEMOJI = false;
-                                            //                 });
-                                            //               },
-                                            //               child: CustomText(
-                                            //                 e,
-                                            //                 type: FontStyle
-                                            //                     .heading,
-                                            //               ),
-                                            //             ),
-                                            //           )
-                                            //           .toList(),
-                                            //     ),
-                                            //   ],
-                                            // );
-                                          });
+                                            return const EmojiSheet();
+                                          }).then((value) {
+                                        setState(() {
+                                          selectedEmoji = value['name'];
+                                          isEmoji = value['is_emoji'];
+                                          selectedColor =
+                                              value['color'] ?? "#3A3A3A";
+                                        });
+                                      });
                                     },
                                     child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: themeProvider
-                                          .themeManager
-                                          .secondaryBackgroundDefaultColor,
-                                      child: CustomText(
-                                        String.fromCharCode(
-                                            int.parse(selectedEmoji)),
-                                        type: FontStyle.H5,
-                                      ),
-                                    ),
+                                        radius: 25,
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .secondaryBackgroundDefaultColor,
+                                        child: isEmoji
+                                            ? CustomText(
+                                                String.fromCharCode(
+                                                    int.parse(selectedEmoji)),
+                                                type: FontStyle.H5,
+                                              )
+                                            : Icon(
+                                                iconList[selectedEmoji],
+                                                color: Color(
+                                                  int.parse(
+                                                    selectedColor
+                                                        .toString()
+                                                        .replaceAll(
+                                                            '#', '0xFF'),
+                                                  ),
+                                                ),
+                                              )),
                                   ),
-
-                                  //text with a dropdown button infront of it
-                                  // SizedBox(
-                                  //   height: 50,
-                                  //   width: 81,
-                                  //   child: DropdownButtonFormField(
-                                  //       dropdownColor:
-                                  //           themeProvider.isDarkThemeEnabled
-                                  //               ? darkSecondaryBackgroundColor
-                                  //               : Colors.white,
-                                  //       icon: Icon(
-                                  //         Icons.arrow_drop_down,
-                                  //         color:
-                                  //             themeProvider.isDarkThemeEnabled
-                                  //                 ? darkPrimaryTextColor
-                                  //                 : lightPrimaryTextColor,
-                                  //       ),
-                                  //       decoration: const InputDecoration(
-                                  //         border: InputBorder.none,
-                                  //       ),
-                                  //       value: 2,
-                                  //       items: [
-                                  //         DropdownMenuItem(
-                                  //           value: 2,
-                                  //           child: CustomText(
-                                  //             'Public',
-                                  //             type: FontStyle.Small,
-                                  //             fontWeight: FontWeight.bold,
-                                  //           ),
-                                  //         ),
-                                  //         DropdownMenuItem(
-                                  //           value: 0,
-                                  //           child: CustomText(
-                                  //             'Private',
-                                  //             type: FontStyle.Small,
-                                  //             fontWeight: FontWeight.bold,
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //       onChanged: (val) {
-                                  //         setState(() {
-                                  //           selectedVal = val!;
-                                  //         });
-                                  //       }),
-                                  // ),
-
-                                  //conver the abpve dropdown into a row of two radio buttons
                                   Row(
                                     children: [
                                       Radio(
@@ -619,9 +433,15 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                 "cover_image": projectProvider.coverUrl,
                                 "name": name.text,
                                 "identifier": identifier.text,
-                                "emoji": selectedEmoji,
+                                "emoji": isEmoji ? selectedEmoji : null,
                                 "description": description.text,
-                                "network": selectedVal
+                                "network": selectedVal,
+                                "icon_prop": !isEmoji
+                                    ? {
+                                        "name": selectedEmoji,
+                                        "color": selectedColor,
+                                      }
+                                    : null
                               });
                           if (projectProvider.createProjectState ==
                               StateEnum.success) {

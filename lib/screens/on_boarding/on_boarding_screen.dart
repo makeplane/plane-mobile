@@ -645,7 +645,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 0
-                                ? Colors.black
+                                ? themeProvider.themeManager.primaryColour
                                 : const Color.fromRGBO(206, 212, 218, 1),
                             radius: 3,
                           ),
@@ -654,7 +654,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 1
-                                ? Colors.black
+                                ? themeProvider.themeManager.primaryColour
                                 : const Color.fromRGBO(206, 212, 218, 1),
                             radius: 3,
                           ),
@@ -663,7 +663,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 2
-                                ? Colors.black
+                                ? themeProvider.themeManager.primaryColour
                                 : const Color.fromRGBO(206, 212, 218, 1),
                             radius: 3,
                           ),

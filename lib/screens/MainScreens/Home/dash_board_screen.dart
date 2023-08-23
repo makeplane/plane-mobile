@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -97,20 +96,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const OnBoardingScreen()));
-                        },
-                        child: CustomText(
-                          '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
-                          type: FontStyle.H5,
-                          fontWeight: FontWeightt.Semibold,
-                          maxLines: 2,
-                        ),
+                      CustomText(
+                        '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
+                        type: FontStyle.H5,
+                        fontWeight: FontWeightt.Semibold,
+                        maxLines: 2,
                       ),
                       const SizedBox(height: 4),
                       Row(

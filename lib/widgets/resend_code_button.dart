@@ -32,14 +32,16 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
     timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (start == 0) {
-          setState(() {
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            start--;
-          });
+        if (mounted) {
+          if (start == 0) {
+            setState(() {
+              timer.cancel();
+            });
+          } else {
+            setState(() {
+              start--;
+            });
+          }
         }
       },
     );
@@ -56,10 +58,12 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
               await ref
                   .read(ProviderList.authProvider)
                   .sendMagicCode(widget.email);
-              setState(() {
-                start = 30;
-                startTimer();
-              });
+              if (mounted) {
+                setState(() {
+                  start = 30;
+                  startTimer();
+                });
+              }
             },
             child: const CustomText(
               'Resend code',

@@ -313,17 +313,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                               //           method: HttpMethod.get,
                                               //           projectID: "");
                                               // });
-                                              Navigator.push(
+                                              Navigator.pushAndRemoveUntil(
                                                 context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen(
-                                                    fromSignUp: false,
-                                                  ),
-                                                ),
+                                                MaterialPageRoute(builder: (context) => const HomeScreen(fromSignUp: false)),
+                                                (route) => false,
                                               );
                                             } else {
-                                              Navigator.push(
+                                              Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => ref
@@ -343,6 +339,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                                               fromSignUp: false,
                                                             ),
                                                 ),
+                                                ((route) => false),
                                               );
                                             }
                                           }

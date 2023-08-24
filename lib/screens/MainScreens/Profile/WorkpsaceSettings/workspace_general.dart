@@ -421,6 +421,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     ),
                     // ),
                   ),
+                  checkUser() ?
                   GestureDetector(
                     onTap: () async {
                       await workspaceProvider.updateWorkspace(data: {
@@ -462,7 +463,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           fontWeight: FontWeightt.Bold,
                           overrride: true,
                         ))),
-                  ),
+                  )
+                  : Container(),
+                  checkUser() ?
                   Container(
                     decoration: BoxDecoration(
                         //light red
@@ -538,7 +541,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         ),
                       ],
                     ),
-                  ),
+                  )
+                  : Container(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -549,5 +553,19 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
         ),
       ),
     );
+  }
+
+  bool checkUser() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    List members = workspaceProvider.workspaceMembers;
+    bool hasAccess = false;
+    for (var element in members) {
+      if ((element['member']['id'] == profileProvider.userProfile.id) &&
+          (element['role'] == 20)) {
+        hasAccess = true;
+      }
+    }
+    return hasAccess;
   }
 }

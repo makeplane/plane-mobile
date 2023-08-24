@@ -276,6 +276,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _onLogout() {
+    ref.read(ProviderList.themeProvider).toggleTheme(THEME.light);
     ProviderList.clear(ref: ref);
     Navigator.pushAndRemoveUntil(
         context,

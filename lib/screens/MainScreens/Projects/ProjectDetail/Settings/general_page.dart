@@ -438,7 +438,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //textfield
                   TextFormField(
                       controller: identifier,
-                      maxLength: 5,
+                      maxLength: 12,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[A-Z]')),
                       ],

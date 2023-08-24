@@ -20,11 +20,10 @@ import 'package:plane_startup/widgets/issue_card_widget.dart';
 class MyIssuesProvider extends ChangeNotifier {
   MyIssuesProvider(ChangeNotifierProviderRef<MyIssuesProvider> this.ref);
   Ref? ref;
-  StateEnum getMyIssuesState = StateEnum.loading;
-  StateEnum myIssuesViewState = StateEnum.loading;
-  StateEnum myIssuesFilterState = StateEnum.loading;
-  StateEnum labelState = StateEnum.loading;
-  StateEnum orderByState = StateEnum.empty;
+  StateEnum getMyIssuesState = StateEnum.empty;
+  StateEnum myIssuesViewState = StateEnum.empty;
+  StateEnum myIssuesFilterState = StateEnum.empty;
+  StateEnum labelState = StateEnum.empty;
   var groupByResponse = {};
   List<dynamic> data = [];
   var labels = [];
@@ -119,6 +118,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
   Future getMyIssuesView() async {
     myIssuesViewState = StateEnum.loading;
+    log('Get My Issues View');
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -334,7 +334,7 @@ class MyIssuesProvider extends ChangeNotifier {
       }
     }
     // dynamic temp;
-    log('URL: $url');
+    log('URL======>: $url');
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -467,8 +467,22 @@ class MyIssuesProvider extends ChangeNotifier {
                 : stateOrdering[j];
 
         if (issues.groupBY == GroupBY.project) {
-          projectIcons[title] = projectProvider.projects
-              .firstWhere((element) => element['name'] == title)['emoji'];
+          int index = projectProvider.projects
+              .indexWhere((element) => element['name'] == title);
+          if (projectProvider.projects[index]['emoji'] != null) {
+            //convert title to lowercase
+
+            projectIcons[title.toLowerCase()] = {
+              'name': projectProvider.projects[index]['emoji'],
+              'is_emoji': true,
+            };
+          } else {
+            projectIcons[title.toLowerCase()] = {
+              'name': projectProvider.projects[index]['icon_prop']['name'],
+              'is_emoji': false,
+              'color': projectProvider.projects[index]['icon_prop']['color'],
+            };
+          }
         }
         issues.issues.add(BoardListsData(
           id: stateOrdering[j],
@@ -506,6 +520,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
     for (var element in issues.issues) {
       //  log(issues.groupBY.toString());
+      log(element.title.toString());
 
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
@@ -560,18 +575,31 @@ class MyIssuesProvider extends ChangeNotifier {
                           ),
                     )
                   : issues.groupBY == GroupBY.project
-                      ? Text(
-                          int.tryParse(
-                                      projectIcons[element.title].toString()) !=
-                                  null
-                              ? String.fromCharCode(
-                                  int.parse(projectIcons[element.title]))
-                              : '🚀',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                          ),
-                        )
+                      ? projectIcons[element.title!.toLowerCase()]['is_emoji']
+                          ? Text(
+                              int.tryParse(projectIcons[element.title!
+                                              .toLowerCase()]['name']
+                                          .toString()) !=
+                                      null
+                                  ? String.fromCharCode(int.parse(
+                                      projectIcons[element.title!.toLowerCase()]
+                                          ['name']))
+                                  : '🚀',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            )
+                          : Icon(
+                              iconList[
+                                  projectIcons[element.title!.toLowerCase()]
+                                      ['name']],
+                              color: Color(int.parse(
+                                  projectIcons[element.title!.toLowerCase()]
+                                          ['color']
+                                      .replaceAll('#', '0xff'))),
+                              size: 22,
+                            )
                       : SizedBox(
                           height: 22,
                           width: 22,
@@ -643,8 +671,15 @@ class MyIssuesProvider extends ChangeNotifier {
                     // createIssuedata['s'] = element.id;
                   }
 
-                  Navigator.push(Const.globalKey.currentContext!,
-                      MaterialPageRoute(builder: (ctx) => const CreateIssue()));
+                  Navigator.push(
+                      Const.globalKey.currentContext!,
+                      MaterialPageRoute(
+                          builder: (ctx) => CreateIssue(
+                                fromMyIssues: true,
+                                projectId: ref!
+                                    .read(ProviderList.projectProvider)
+                                    .projects[0]['id'],
+                              )));
                 },
                 child: Icon(
                   Icons.add,

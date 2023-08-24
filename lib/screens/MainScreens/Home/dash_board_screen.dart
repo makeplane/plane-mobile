@@ -211,8 +211,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     'Star us on GitHub',
                                     type: FontStyle.Small,
                                     fontWeight: FontWeightt.Medium,
-                                    color: themeProvider.theme == THEME.dark ||
-                                            themeProvider.theme ==
+                                    color: themeProvider.themeManager.theme ==
+                                                THEME.dark ||
+                                            themeProvider.themeManager.theme ==
                                                 THEME.darkHighContrast
                                         ? Colors.black
                                         : themeProvider.theme == THEME.custom
@@ -230,8 +231,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         bottom: 20,
                         right: 35,
                         child: Image.asset(
-                          themeProvider.theme == THEME.dark ||
-                                  themeProvider.theme == THEME.darkHighContrast
+                          themeProvider.themeManager.theme == THEME.dark ||
+                                  themeProvider.themeManager.theme ==
+                                      THEME.darkHighContrast
                               ? 'assets/images/github.png'
                               : 'assets/images/github_black.png',
                           width: 70,
@@ -386,14 +388,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 builder: (ctx) {
                   return const SelectWorkspace();
                 },
-              ).then((value) {
-                ref
-                    .read(ProviderList.myIssuesProvider)
-                    .getMyIssuesView()
-                    .then((value) {
-                  ref.read(ProviderList.myIssuesProvider).filterIssues();
-                });
-              });
+              ).then((value) {});
             },
             child: Row(
               children: [

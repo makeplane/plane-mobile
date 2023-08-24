@@ -23,10 +23,12 @@ class ThemeProvider extends ChangeNotifier {
   //function to change theme and stor the theme in shared preferences
   void clear() {
     isDarkThemeEnabled = false;
+    themeManager = ThemeManager(THEME.light);
+    notifyListeners();
   }
 
   Future<void> toggleTheme(THEME theme) async {
-    this.theme = theme;
+    theme = theme;
     themeManager = ThemeManager(theme);
     notifyListeners();
   }

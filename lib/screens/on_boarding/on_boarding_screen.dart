@@ -582,11 +582,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         top: false,
         child: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: themeProvider.theme == THEME.dark ||
-                    themeProvider.theme == THEME.darkHighContrast
-                ? null
-                : gradient,
+          decoration: const BoxDecoration(
+            gradient: gradient,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(

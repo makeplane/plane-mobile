@@ -77,7 +77,6 @@ class ProfileProvider extends ChangeNotifier {
       getProfileState = StateEnum.success;
       slug = response.data["slug"];
       //log('----- SUCCESS ------ $slug');
-      // log("DONE" + response.data.toString());
       notifyListeners();
 
       // return response.data;
@@ -112,7 +111,7 @@ class ProfileProvider extends ChangeNotifier {
           hasBody: true,
           httpMethod: HttpMethod.patch,
           data: data);
-      log(response.data.toString());
+      // log(response.data.toString());
       userProfile = UserProfile.fromMap(response.data);
       if (userProfile.theme != null && userProfile.theme!.length > 1) {
         saveCustomTheme(userProfile.theme!);

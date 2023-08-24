@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/services/dio_service.dart';
+import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/services/shared_preference_service.dart';
@@ -66,6 +67,8 @@ class AuthProvider extends ChangeNotifier {
           .read(ProviderList.profileProvider)
           .getProfile()
           .then((value) async {
+        var prov = ref.read(ProviderList.profileProvider);
+        var themeProv = ref.read(ProviderList.themeProvider);
         if (ref.read(ProviderList.profileProvider).getProfileState ==
             StateEnum.success) {
           await ref
@@ -80,6 +83,39 @@ class AuthProvider extends ChangeNotifier {
                     null) {
               return;
             }
+            var theme = prov.userProfile.theme;
+
+            if (prov.userProfile.theme != null) {
+              if (prov.userProfile.theme!['theme'] == 'dark') {
+                theme!['theme'] = fromTHEME(theme: THEME.dark);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light') {
+                theme!['theme'] = fromTHEME(theme: THEME.light);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'system') {
+                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else {
+                themeProv.changeTheme(data: {
+                  'theme': {
+                    'primary': prov.userProfile.theme!['primary'],
+                    'background': prov.userProfile.theme!['background'],
+                    'text': prov.userProfile.theme!['text'],
+                    'sidebarText': prov.userProfile.theme!['sidebarText'],
+                    'sidebarBackground':
+                        prov.userProfile.theme!['sidebarBackground'],
+                    'theme': 'custom',
+                  }
+                }, context: null);
+              }
+            }
+
             ref.read(ProviderList.dashboardProvider).getDashboard();
             log(ref
                 .read(ProviderList.profileProvider)
@@ -98,20 +134,49 @@ class AuthProvider extends ChangeNotifier {
                             .userProfile
                             .lastWorkspaceId)
                     .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
+            // ref.read(ProviderList.projectProvider).favouriteProjects(
+            //     index: 0,
+            //     slug: ref
+            //         .read(ProviderList.workspaceProvider)
+            //         .workspaces
+            //         .where((element) =>
+            //             element['id'] ==
+            //             ref
+            //                 .read(ProviderList.profileProvider)
+            //                 .userProfile
+            //                 .lastWorkspaceId)
+            //         .first['slug'],
+            //     method: HttpMethod.get,
+            //     projectID: "");
+            ref
+                .read(ProviderList.myIssuesProvider)
+                .getMyIssuesView()
+                .then((value) {
+              ref
+                  .read(ProviderList.myIssuesProvider)
+                  .filterIssues(assigned: true);
+
+              ref.read(ProviderList.notificationProvider).getUnreadCount();
+
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'assigned');
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'created');
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'watching');
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'unread', getUnread: true);
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'archived', getArchived: true);
+              ref
+                  .read(ProviderList.notificationProvider)
+                  .getNotifications(type: 'snoozed', getSnoozed: true);
+            });
           });
         } else {
           Const.appBearerToken = null;

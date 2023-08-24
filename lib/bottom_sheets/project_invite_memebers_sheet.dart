@@ -50,6 +50,8 @@ class _ProjectInviteMembersSheetState
       loading: projectProvider.projectInvitationState == StateEnum.loading,
       widgetClass: GestureDetector(
         onTap: () {
+          FocusScope.of(context).unfocus();
+
           setState(() {
             keypadVisible = false;
           });

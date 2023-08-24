@@ -19,11 +19,6 @@ class IssueProvider with ChangeNotifier {
   StateEnum issueActivityState = StateEnum.empty;
   StateEnum subscriptionState = StateEnum.empty;
 
-  // set setUpdateIssueState(StateEnum value) {
-  //   updateIssueState = value;
-  //   print('SABI : setUpdateIssueState to $value');
-  // }
-
   StateEnum updateIssueState = StateEnum.empty;
   StateEnum attachmentState = StateEnum.empty;
   StateEnum addLinkState = StateEnum.empty;

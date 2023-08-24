@@ -172,9 +172,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                   child: Wrap(
                                                                     children: [
                                                                       CustomText(
-                                                                        activityProvider.data[index]
-                                                                            [
-                                                                            'comment'],
+                                                                        "${activityProvider.data[index]['actor_detail']['display_name']} ${activityProvider.data[index]['comment']}",
                                                                         fontSize:
                                                                             14,
                                                                         type: FontStyle
@@ -465,16 +463,11 @@ class _ActivityState extends ConsumerState<Activity> {
     if (activity['actor_detail']['first_name'] != null &&
         activity['actor_detail']['last_name'] != null) {
       if (activity['field'] == 'description') {
-        formattedActivity = activity['actor_detail']['first_name'] +
-            " " +
-            activity['actor_detail']['last_name'] +
-            ' Updated the description';
+        formattedActivity = activity['actor_detail']['display_name'] +
+            ' updated the description';
       } else {
-        formattedActivity = activity['comment'].toString().replaceFirst(
-            activity['comment'].split(' ').first,
-            activity['actor_detail']['first_name'] +
-                " " +
-                activity['actor_detail']['last_name']);
+        formattedActivity =
+            "${activity['actor_detail']['display_name']} ${activity['comment']}";
       }
       return formattedActivity;
     } else {

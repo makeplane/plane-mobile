@@ -58,430 +58,442 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
     log('${profileProvider.userProfile.avatar} photo');
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        text: 'General',
-      ),
-      body: LoadingWidget(
-        loading: profileProvider.updateProfileState == StateEnum.loading,
-        widgetClass:
-            LayoutBuilder(builder: (context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 1,
-                        width: MediaQuery.of(context).size.width,
-                        color: themeProvider.themeManager.borderDisabledColor,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          children: [
-                            Hero(
-                                tag: 'photo',
-                                child: pickedImage != null
-                                    ? Stack(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 50,
-                                            backgroundImage:
-                                                FileImage(pickedImage!),
-                                          ),
-                                          fileUploadProvider.fileUploadState ==
-                                                  StateEnum.loading
-                                              ? CircleAvatar(
-                                                  radius: 50,
-                                                  backgroundColor: Colors.white
-                                                      .withOpacity(0.7),
-                                                  child: const Center(
-                                                    child: SizedBox(
-                                                      width: 30,
-                                                      height: 30,
-                                                      child: LoadingIndicator(
-                                                        indicatorType: Indicator
-                                                            .lineSpinFadeLoader,
-                                                        colors: [Colors.black],
-                                                        strokeWidth: 1.0,
-                                                        backgroundColor:
-                                                            Colors.transparent,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'General',
+        ),
+        body: LoadingWidget(
+          loading: profileProvider.updateProfileState == StateEnum.loading,
+          widgetClass:
+              LayoutBuilder(builder: (context, BoxConstraints constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 1,
+                          width: MediaQuery.of(context).size.width,
+                          color: themeProvider.themeManager.borderDisabledColor,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            children: [
+                              Hero(
+                                  tag: 'photo',
+                                  child: pickedImage != null
+                                      ? Stack(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage:
+                                                  FileImage(pickedImage!),
+                                            ),
+                                            fileUploadProvider
+                                                        .fileUploadState ==
+                                                    StateEnum.loading
+                                                ? CircleAvatar(
+                                                    radius: 50,
+                                                    backgroundColor: Colors
+                                                        .white
+                                                        .withOpacity(0.7),
+                                                    child: const Center(
+                                                      child: SizedBox(
+                                                        width: 30,
+                                                        height: 30,
+                                                        child: LoadingIndicator(
+                                                          indicatorType: Indicator
+                                                              .lineSpinFadeLoader,
+                                                          colors: [
+                                                            Colors.black
+                                                          ],
+                                                          strokeWidth: 1.0,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                )
-                                              : Container()
-                                        ],
+                                                  )
+                                                : Container()
+                                          ],
+                                        )
+                                      : profileProvider.userProfile.avatar !=
+                                                  null &&
+                                              profileProvider
+                                                      .userProfile.avatar !=
+                                                  ""
+                                          ? CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  profileProvider
+                                                      .userProfile.avatar!),
+                                            )
+                                          : Container(
+                                              height: 75,
+                                              width: 75,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .tertiaryBackgroundDefaultColor,
+                                              ),
+                                              child: Icon(
+                                                Icons.person_2_outlined,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
+                                                size: 35,
+                                              ))),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  pickImage();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor),
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.file_upload_outlined,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      CustomText(
+                                        'Upload',
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Bold,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       )
-                                    : profileProvider.userProfile.avatar !=
-                                                null &&
-                                            profileProvider
-                                                    .userProfile.avatar !=
-                                                ""
-                                        ? CircleAvatar(
-                                            radius: 50,
-                                            backgroundImage: NetworkImage(
-                                                profileProvider
-                                                    .userProfile.avatar!),
-                                          )
-                                        : Container(
-                                            height: 75,
-                                            width: 75,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              color: themeProvider.themeManager
-                                                  .tertiaryBackgroundDefaultColor,
-                                            ),
-                                            child: Icon(
-                                              Icons.person_2_outlined,
-                                              color: themeProvider.themeManager
-                                                  .placeholderTextColor,
-                                              size: 35,
-                                            ))),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                pickImage();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.themeManager
-                                        .tertiaryBackgroundDefaultColor),
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.file_upload_outlined,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    CustomText(
-                                      'Upload',
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Bold,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                    )
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log(profileProvider.userProfile.avatar!
-                                    .toString());
-                                if (profileProvider
-                                    .userProfile.avatar!.isNotEmpty) {
-                                  profileProvider.deleteAvatar();
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: themeProvider.themeManager
-                                        .tertiaryBackgroundDefaultColor),
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    CustomText(
-                                      'Remove',
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Bold,
-                                      color: themeProvider
-                                          .themeManager.textErrorColor,
-                                    )
-                                  ],
-                                ),
+                              const SizedBox(
+                                width: 10,
                               ),
-                            )
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  log(profileProvider.userProfile.avatar!
+                                      .toString());
+                                  if (profileProvider
+                                      .userProfile.avatar!.isNotEmpty) {
+                                    profileProvider.deleteAvatar();
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor),
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(
+                                    children: [
+                                      CustomText(
+                                        'Remove',
+                                        type: FontStyle.Medium,
+                                        fontWeight: FontWeightt.Bold,
+                                        color: themeProvider
+                                            .themeManager.textErrorColor,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      // const Text('Full Name *', style: TextStylingWidget.description),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomText(
-                          'Full Name *',
-                          type: FontStyle.Medium,
-                          color: themeProvider.themeManager.tertiaryTextColor,
+                        const SizedBox(
+                          height: 40,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: TextFormField(
-                            controller: fullName,
+                        // const Text('Full Name *', style: TextStylingWidget.description),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomText(
+                            'Full Name *',
+                            type: FontStyle.Medium,
+                            color: themeProvider.themeManager.tertiaryTextColor,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 50,
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                              controller: fullName,
+                              style: TextStyle(
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor),
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        // const Text('Email *', style: TextStylingWidget.description),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomText(
+                            'Email *',
+                            type: FontStyle.Medium,
+                            color: themeProvider.themeManager.tertiaryTextColor,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 50,
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                            controller: email,
+                            enabled: false,
                             style: TextStyle(
                                 color: themeProvider
                                     .themeManager.primaryTextColor),
                             decoration:
-                                themeProvider.themeManager.textFieldDecoration),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // const Text('Email *', style: TextStylingWidget.description),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomText(
-                          'Email *',
-                          type: FontStyle.Medium,
-                          color: themeProvider.themeManager.tertiaryTextColor,
+                                themeProvider.themeManager.textFieldDecoration,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: TextFormField(
-                          controller: email,
-                          enabled: false,
-                          style: TextStyle(
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomText('Role *',
+                              type: FontStyle.Medium,
                               color:
-                                  themeProvider.themeManager.primaryTextColor),
-                          decoration:
-                              themeProvider.themeManager.textFieldDecoration,
+                                  themeProvider.themeManager.tertiaryTextColor),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomText('Role *',
-                            type: FontStyle.Medium,
-                            color:
-                                themeProvider.themeManager.tertiaryTextColor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.5,
-                              ),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                              builder: (context) {
-                                return const RoleSheet();
-                              });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 16),
-                                child: CustomText(
-                                  profileProvider.dropDownValue == null
-                                      ? 'Select Role'
-                                      : profileProvider.dropDownValue!,
-                                  type: FontStyle.Small,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 16),
-                                child: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
-                        // ),
-                      ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.5,
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) {
+                                  return const RoleSheet();
+                                });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 16),
+                                  child: CustomText(
+                                    profileProvider.dropDownValue == null
+                                        ? 'Select Role'
+                                        : profileProvider.dropDownValue!,
+                                    type: FontStyle.Small,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 16),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // ),
+                        ),
 
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      // const Text('Theme', style: TextStylingWidget.description),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomText('Theme',
-                            type: FontStyle.Medium,
-                            color:
-                                themeProvider.themeManager.tertiaryTextColor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PrefrencesScreen()));
-                          // showModalBottomSheet(
-                          //     context: context,
-                          //     constraints: BoxConstraints(
-                          //       maxHeight:
-                          //           MediaQuery.of(context).size.height * 0.5,
-                          //     ),
-                          //     shape: const RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.only(
-                          //         topLeft: Radius.circular(20),
-                          //         topRight: Radius.circular(20),
-                          //       ),
-                          //     ),
-                          //     builder: (context) {
-                          //       return const ThemeSheet();
-                          //     });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 16),
-                                child: CustomText(
-                                  themeProvider.theme == THEME.light
-                                      ? 'Light'
-                                      : themeProvider.theme == THEME.dark
-                                          ? 'Dark'
-                                          : themeProvider.theme ==
-                                                  THEME.lightHighContrast
-                                              ? 'Light High Contrast'
-                                              : themeProvider.theme ==
-                                                      THEME.darkHighContrast
-                                                  ? 'Dark High Contrast'
-                                                  : 'Custom',
-                                  type: FontStyle.Small,
-                                ),
-                              ),
-                            ],
-                          ),
+                        const SizedBox(
+                          height: 30,
                         ),
+                        // const Text('Theme', style: TextStylingWidget.description),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomText('Theme',
+                              type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PrefrencesScreen()));
+                            // showModalBottomSheet(
+                            //     context: context,
+                            //     constraints: BoxConstraints(
+                            //       maxHeight:
+                            //           MediaQuery.of(context).size.height * 0.5,
+                            //     ),
+                            //     shape: const RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.only(
+                            //         topLeft: Radius.circular(20),
+                            //         topRight: Radius.circular(20),
+                            //       ),
+                            //     ),
+                            //     builder: (context) {
+                            //       return const ThemeSheet();
+                            //     });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 16),
+                                  child: CustomText(
+                                    themeProvider.theme == THEME.light
+                                        ? 'Light'
+                                        : themeProvider.theme == THEME.dark
+                                            ? 'Dark'
+                                            : themeProvider.theme ==
+                                                    THEME.lightHighContrast
+                                                ? 'Light High Contrast'
+                                                : themeProvider.theme ==
+                                                        THEME.darkHighContrast
+                                                    ? 'Dark High Contrast'
+                                                    : 'Custom',
+                                    type: FontStyle.Small,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        // Expanded(child: Container()),
+                        // Button(
+                        //   ontap: () => profileProvier.updateProfile(data: {
+                        //     "first_name": fullName.text,
+                        //     "role": dropDownValue,
+                        //     if (fileUploadProvider.downloadUrl != null)
+                        //       "avatar": fileUploadProvider.downloadUrl
+                        //   }),
+                        //   text: 'Update',
                         // ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      // Expanded(child: Container()),
-                      // Button(
-                      //   ontap: () => profileProvier.updateProfile(data: {
-                      //     "first_name": fullName.text,
-                      //     "role": dropDownValue,
-                      //     if (fileUploadProvider.downloadUrl != null)
-                      //       "avatar": fileUploadProvider.downloadUrl
-                      //   }),
-                      //   text: 'Update',
-                      // ),
-                      // const SizedBox(
-                      //   height: 20,
-                      // )
-                    ],
-                  ),
-                  Container(
-                    height: 50,
-                    alignment: Alignment.bottomCenter,
-                    margin:
-                        const EdgeInsets.only(bottom: 15, left: 16, right: 16),
-                    child: Button(
-                      ontap: () => profileProvider.updateProfile(data: {
-                        "first_name": fullName.text,
-                        "role": profileProvider.dropDownValue,
-                        if (fileUploadProvider.downloadUrl != null)
-                          "avatar": fileUploadProvider.downloadUrl
-                      }),
-                      text: 'Update',
+                        // const SizedBox(
+                        //   height: 20,
+                        // )
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      height: 50,
+                      alignment: Alignment.bottomCenter,
+                      margin: const EdgeInsets.only(
+                          bottom: 15, left: 16, right: 16),
+                      child: Button(
+                        ontap: () => profileProvider.updateProfile(data: {
+                          "first_name": fullName.text,
+                          "role": profileProvider.dropDownValue,
+                          if (fileUploadProvider.downloadUrl != null)
+                            "avatar": fileUploadProvider.downloadUrl
+                        }),
+                        text: 'Update',
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
+
+        // bottomNavigationBar: Container(
+        //   height: 50,
+        //   alignment: Alignment.bottomCenter,
+        //   margin: const EdgeInsets.only(bottom: 15, left: 16, right: 16),
+        //   child: Button(
+        //     ontap: () => profileProvier.updateProfile(data: {
+        //       "first_name": fullName.text,
+        //       "role": dropDownValue,
+        //       if (fileUploadProvider.downloadUrl != null)
+        //         "avatar": fileUploadProvider.downloadUrl
+        //     }),
+        //     text: 'Update',
+        //   ),
+        // ),
+
+        //custom floating action buttom at bottom center
       ),
-
-      // bottomNavigationBar: Container(
-      //   height: 50,
-      //   alignment: Alignment.bottomCenter,
-      //   margin: const EdgeInsets.only(bottom: 15, left: 16, right: 16),
-      //   child: Button(
-      //     ontap: () => profileProvier.updateProfile(data: {
-      //       "first_name": fullName.text,
-      //       "role": dropDownValue,
-      //       if (fileUploadProvider.downloadUrl != null)
-      //         "avatar": fileUploadProvider.downloadUrl
-      //     }),
-      //     text: 'Update',
-      //   ),
-      // ),
-
-      //custom floating action buttom at bottom center
     );
   }
 

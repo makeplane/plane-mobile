@@ -91,21 +91,27 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                                         profileProvider
                                             .userProfile.lastWorkspaceId)
                                     .first['slug']);
+                            // ref
+                            //     .read(ProviderList.projectProvider)
+                            //     .favouriteProjects(
+                            //       index: 0,
+                            //       slug: ref
+                            //           .read(ProviderList.workspaceProvider)
+                            //           .workspaces
+                            //           .where((element) =>
+                            //               element['id'] ==
+                            //               profileProvider
+                            //                   .userProfile.lastWorkspaceId)
+                            //           .first['slug'],
+                            //       method: HttpMethod.get,
+                            //       projectID: "",
+                            //     );
+                            await ref
+                                .read(ProviderList.myIssuesProvider)
+                                .getMyIssuesView();
                             ref
-                                .read(ProviderList.projectProvider)
-                                .favouriteProjects(
-                                  index: 0,
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .workspaces
-                                      .where((element) =>
-                                          element['id'] ==
-                                          profileProvider
-                                              .userProfile.lastWorkspaceId)
-                                      .first['slug'],
-                                  method: HttpMethod.get,
-                                  projectID: "",
-                                );
+                                .read(ProviderList.myIssuesProvider)
+                                .filterIssues(assigned: true);
                             ref
                                 .watch(ProviderList.myIssuesProvider)
                                 .getLabels();
@@ -283,7 +289,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
               ),
             ],
           ),
-          prov.selectWorkspaceState == StateEnum.loading
+          prov.selectWorkspaceState == StateEnum.loading ||
+                  ref.watch(ProviderList.myIssuesProvider).myIssuesViewState ==
+                      StateEnum.loading
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,

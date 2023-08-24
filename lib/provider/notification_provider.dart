@@ -12,12 +12,12 @@ class NotificationProvider extends ChangeNotifier {
   NotificationProvider(
       ChangeNotifierProviderRef<NotificationProvider> this.ref);
   Ref? ref;
-  StateEnum getCreatedState = StateEnum.loading;
-  StateEnum getAssignedState = StateEnum.loading;
-  StateEnum getWatchingState = StateEnum.loading;
-  StateEnum getUnreadState = StateEnum.loading;
-  StateEnum getArchivedState = StateEnum.loading;
-  StateEnum getSnoozedState = StateEnum.loading;
+  StateEnum getCreatedState = StateEnum.idle;
+  StateEnum getAssignedState = StateEnum.idle;
+  StateEnum getWatchingState = StateEnum.idle;
+  StateEnum getUnreadState = StateEnum.idle;
+  StateEnum getArchivedState = StateEnum.idle;
+  StateEnum getSnoozedState = StateEnum.idle;
 
   int getCreatedCount = 0;
   int getAssignedCount = 0;
@@ -123,6 +123,7 @@ class NotificationProvider extends ChangeNotifier {
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
+
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -136,6 +137,8 @@ class NotificationProvider extends ChangeNotifier {
       getWatchingCount = response.data['watching_issues'];
 
       totalUnread = getCreatedCount + getAssignedCount + getWatchingCount;
+
+      log('getUnreadCount: Done');
 
       notifyListeners();
     } catch (e) {
@@ -151,6 +154,7 @@ class NotificationProvider extends ChangeNotifier {
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
+
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read');
     try {
       var response = await DioConfig().dioServe(
@@ -179,6 +183,7 @@ class NotificationProvider extends ChangeNotifier {
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
+
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {
       var response = await DioConfig().dioServe(

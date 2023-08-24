@@ -85,7 +85,17 @@ class PageProvider with ChangeNotifier {
               ? null
               : {
                   'name': name,
-                  "description": description,
+                  "description": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {"text": description, "type": "text"}
+                        ]
+                      }
+                    ]
+                  },
                 });
       log(res.statusCode.toString());
       if (httpMethod == HttpMethod.delete) {

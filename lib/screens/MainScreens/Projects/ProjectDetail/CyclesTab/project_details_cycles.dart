@@ -61,7 +61,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
           height: 15,
         ),
         cyclesProvider.cyclesAllData.isEmpty &&
-                cyclesProvider.cycleFavoriteData.isEmpty
+                cyclesProvider.cycleFavoriteData.isEmpty &&
+                cyclesProvider.allCyclesState != StateEnum.loading
             ? const SizedBox.shrink()
             : SizedBox(height: 40, child: cycleNaveBar()),
         const SizedBox(
@@ -198,8 +199,34 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                           SvgPicture.asset(
                                             'assets/svg_images/cycles_icon.svg',
                                             colorFilter: ColorFilter.mode(
-                                                themeProvider.themeManager
-                                                    .placeholderTextColor,
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
                                                 BlendMode.srcIn),
                                             height: 25,
                                             width: 25,
@@ -233,9 +260,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                               ['end_date'] ==
                                                           null
                                                   ? Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              6),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -248,9 +276,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           'Draft'),
                                                     )
                                                   : Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              6),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
                                                       decoration: BoxDecoration(
                                                           color: checkDate(
                                                                       startDate:
@@ -263,7 +292,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                   'Completed'
                                                               ? themeProvider
                                                                   .themeManager
-                                                                  .tertiaryBackgroundDefaultColor
+                                                                  .secondaryBackgroundActiveColor
                                                               : themeProvider
                                                                   .themeManager
                                                                   .successBackgroundColor,
@@ -292,7 +321,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                       'end_date'],
                                                                 ) ==
                                                                 'Draft'
-                                                            ? greyColor
+                                                            ? themeProvider
+                                                                .themeManager
+                                                                .tertiaryTextColor
                                                             : checkDate(
                                                                       startDate:
                                                                           cyclesProvider.cycleFavoriteData[index]
@@ -307,7 +338,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                 ? themeProvider
                                                                     .themeManager
                                                                     .primaryColour
-                                                                : greenHighLight,
+                                                                : themeProvider
+                                                                    .themeManager
+                                                                    .textSuccessColor,
                                                       ),
                                                     ),
                                             ],
@@ -457,8 +490,36 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                               height: 25,
                                               width: 25,
                                               colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
+                                                  checkDate(
+                                                            startDate: cyclesProvider
+                                                                        .cyclesAllData[
+                                                                    index]
+                                                                ['start_date'],
+                                                            endDate: cyclesProvider
+                                                                    .cyclesAllData[
+                                                                index]['end_date'],
+                                                          ) ==
+                                                          'Draft'
+                                                      ? themeProvider
+                                                          .themeManager
+                                                          .placeholderTextColor
+                                                      : checkDate(
+                                                                startDate: cyclesProvider
+                                                                            .cyclesAllData[
+                                                                        index][
+                                                                    'start_date'],
+                                                                endDate: cyclesProvider
+                                                                            .cyclesAllData[
+                                                                        index][
+                                                                    'end_date'],
+                                                              ) ==
+                                                              'Completed'
+                                                          ? themeProvider
+                                                              .themeManager
+                                                              .primaryColour
+                                                          : themeProvider
+                                                              .themeManager
+                                                              .textSuccessColor,
                                                   BlendMode.srcIn)),
                                           const SizedBox(
                                             width: 10,
@@ -489,9 +550,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                               ['end_date'] ==
                                                           null
                                                   ? Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              6),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -504,9 +566,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           'Draft'),
                                                     )
                                                   : Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              6),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
                                                       decoration: BoxDecoration(
                                                           color: checkDate(
                                                                       startDate:
@@ -519,7 +582,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                   'Completed'
                                                               ? themeProvider
                                                                   .themeManager
-                                                                  .tertiaryBackgroundDefaultColor
+                                                                  .secondaryBackgroundActiveColor
                                                               : themeProvider
                                                                   .themeManager
                                                                   .successBackgroundColor,
@@ -548,7 +611,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                       'end_date'],
                                                                 ) ==
                                                                 'Draft'
-                                                            ? greyColor
+                                                            ? themeProvider
+                                                                .themeManager
+                                                                .tertiaryTextColor
                                                             : checkDate(
                                                                       startDate:
                                                                           cyclesProvider.cyclesAllData[index]
@@ -563,7 +628,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                                 ? themeProvider
                                                                     .themeManager
                                                                     .primaryColour
-                                                                : greenHighLight,
+                                                                : themeProvider
+                                                                    .themeManager
+                                                                    .textSuccessColor,
                                                       ),
                                                     ),
                                             ],
@@ -754,13 +821,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -983,13 +1077,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1234,13 +1355,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1463,13 +1611,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1712,13 +1887,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -1972,13 +2174,40 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                              'assets/svg_images/cycles_icon.svg',
-                                              height: 25,
-                                              width: 25,
-                                              colorFilter: ColorFilter.mode(
-                                                  themeProvider.themeManager
-                                                      .placeholderTextColor,
-                                                  BlendMode.srcIn)),
+                                            'assets/svg_images/cycles_icon.svg',
+                                            height: 25,
+                                            width: 25,
+                                            colorFilter: ColorFilter.mode(
+                                                checkDate(
+                                                          startDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['start_date'],
+                                                          endDate: cyclesProvider
+                                                                  .cycleFavoriteData[
+                                                              index]['end_date'],
+                                                        ) ==
+                                                        'Draft'
+                                                    ? themeProvider.themeManager
+                                                        .placeholderTextColor
+                                                    : checkDate(
+                                                              startDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index][
+                                                                  'start_date'],
+                                                              endDate: cyclesProvider
+                                                                          .cycleFavoriteData[
+                                                                      index]
+                                                                  ['end_date'],
+                                                            ) ==
+                                                            'Completed'
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .primaryColour
+                                                        : themeProvider
+                                                            .themeManager
+                                                            .textSuccessColor,
+                                                BlendMode.srcIn),
+                                          ),
                                           const SizedBox(
                                             width: 10,
                                           ),

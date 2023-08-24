@@ -135,7 +135,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                   Center(
                     child: CircleAvatar(
                       backgroundColor: themeProvider
-                          .themeManager.tertiaryBackgroundDefaultColor,
+                          .themeManager.primaryBackgroundSelectedColour,
                       radius: 20,
                       child: Icon(
                         size: 20,

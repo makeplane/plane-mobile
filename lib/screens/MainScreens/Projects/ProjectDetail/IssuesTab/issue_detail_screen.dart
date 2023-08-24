@@ -443,7 +443,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                 Role.admin &&
                                             projectProvider.role != Role.member,
                                         decoration: themeProvider
-                                            .themeManager.textFieldDecoration,
+                                            .themeManager.textFieldDecoration
+                                            .copyWith(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 15),
+                                        ),
                                       ),
                                       const SizedBox(
                                           height: spaceBetweenSections),

@@ -277,10 +277,21 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                             : selected == 0 &&
                                     issueProvider.statesState ==
                                         StateEnum.success
-                                ? Container(
+                                ?
+                                //////////////////////////////////////////////////
+                                Container(
+                                    decoration: BoxDecoration(
+                                        color: themeProvider.themeManager
+                                            .primaryBackgroundDefaultColor,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: themeProvider
+                                                  .themeManager.shadowColor,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, -5))
+                                        ]),
                                     height: 50,
                                     width: MediaQuery.of(context).size.width,
-                                    color: Colors.black,
                                     child: Row(
                                       children: [
                                         projectProvider.role == Role.admin
@@ -294,7 +305,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                       ),
                                                     );
                                                   },
-                                                  child: const SizedBox.expand(
+                                                  child: SizedBox.expand(
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -302,15 +313,15 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                       children: [
                                                         Icon(
                                                           Icons.add,
-                                                          color: Colors.white,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .primaryTextColor,
                                                           size: 20,
                                                         ),
-                                                        CustomText(
+                                                        const CustomText(
                                                           ' Issue',
                                                           type:
                                                               FontStyle.Medium,
-                                                          color: Colors.white,
-                                                          overrride: true,
                                                         )
                                                       ],
                                                     ),
@@ -321,7 +332,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                         Container(
                                           height: 50,
                                           width: 0.5,
-                                          color: Colors.white,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                         ),
                                         Expanded(
                                             child: InkWell(
@@ -346,21 +358,21 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   );
                                                 });
                                           },
-                                          child: const SizedBox.expand(
+                                          child: SizedBox.expand(
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(
-                                                  Icons.menu,
-                                                  color: Colors.white,
+                                                  Icons.list_outlined,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryTextColor,
                                                   size: 19,
                                                 ),
-                                                CustomText(
+                                                const CustomText(
                                                   ' Layout',
                                                   type: FontStyle.Medium,
-                                                  color: Colors.white,
-                                                  overrride: true,
                                                 )
                                               ],
                                             ),
@@ -369,7 +381,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                         Container(
                                           height: 50,
                                           width: 0.5,
-                                          color: Colors.white,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                         ),
                                         issueProvider.issues.projectView ==
                                                 ProjectView.calendar
@@ -406,22 +419,22 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                         );
                                                       });
                                                 },
-                                                child: const SizedBox.expand(
+                                                child: SizedBox.expand(
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
                                                       Icon(
-                                                        Icons.view_sidebar,
-                                                        color: Colors.white,
+                                                        Icons.wysiwyg_outlined,
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .primaryTextColor,
                                                         size: 19,
                                                       ),
-                                                      CustomText(
+                                                      const CustomText(
                                                         ' Views',
                                                         type: FontStyle.Medium,
-                                                        color: Colors.white,
-                                                        overrride: true,
                                                       )
                                                     ],
                                                   ),
@@ -430,7 +443,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                         Container(
                                           height: 50,
                                           width: 0.5,
-                                          color: Colors.white,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                         ),
                                         Expanded(
                                             child: InkWell(
@@ -439,6 +453,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 isScrollControlled: true,
                                                 enableDrag: true,
                                                 constraints: BoxConstraints(
+                                                    minHeight:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.75,
                                                     maxHeight:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -459,21 +478,21 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   );
                                                 });
                                           },
-                                          child: const SizedBox.expand(
+                                          child: SizedBox.expand(
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(
-                                                  Icons.filter_alt,
-                                                  color: Colors.white,
+                                                  Icons.filter_list_outlined,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryTextColor,
                                                   size: 19,
                                                 ),
-                                                CustomText(
+                                                const CustomText(
                                                   ' Filters',
                                                   type: FontStyle.Medium,
-                                                  color: Colors.white,
-                                                  overrride: true,
                                                 )
                                               ],
                                             ),
@@ -487,14 +506,18 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                         ? Container(
                             height: 51,
                             width: MediaQuery.of(context).size.width,
-                            color: Colors.black,
+                            decoration: BoxDecoration(
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: themeProvider
+                                          .themeManager.shadowColor,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, -5))
+                                ]),
                             child: Column(
                               children: [
-                                Container(
-                                  height: 1,
-                                  width: double.infinity,
-                                  color: Colors.black,
-                                ),
                                 SizedBox(
                                   height: 50,
                                   child: Row(
@@ -516,18 +539,16 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      const Icon(
+                                                      Icon(
                                                         Icons.add,
-                                                        color: Colors.white,
-                                                        size: 20,
-                                                      ),
-                                                      CustomText(
-                                                        ' Page',
-                                                        type: FontStyle.Medium,
                                                         color: themeProvider
                                                             .themeManager
-                                                            .textonColor,
-                                                        overrride: true,
+                                                            .primaryTextColor,
+                                                        size: 20,
+                                                      ),
+                                                      const CustomText(
+                                                        ' Page',
+                                                        type: FontStyle.Medium,
                                                       )
                                                     ],
                                                   ),
@@ -538,7 +559,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                       Container(
                                         height: 50,
                                         width: 0.5,
-                                        color: Colors.white,
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
                                       ),
                                       Expanded(
                                           child: InkWell(
@@ -569,17 +591,16 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              const Icon(
-                                                Icons.filter_alt,
-                                                color: Colors.white,
+                                              Icon(
+                                                Icons.filter_list_outlined,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
                                                 size: 19,
                                               ),
-                                              CustomText(
+                                              const CustomText(
                                                 ' Filters',
                                                 type: FontStyle.Medium,
-                                                color: themeProvider
-                                                    .themeManager.textonColor,
-                                                overrride: true,
                                               )
                                             ],
                                           ),

@@ -100,7 +100,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                             Row(
                               children: [
                                 CustomText(
-                                  'Title ',
+                                  'View Title ',
                                   color: themeProvider
                                       .themeManager.tertiaryTextColor,
                                   type: FontStyle.Small,
@@ -131,7 +131,11 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 maxLines: 6,
                                 controller: description,
                                 decoration: themeProvider
-                                    .themeManager.textFieldDecoration),
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                )),
                             const SizedBox(height: 30),
 
                             //container containing a plus icon and text add filter
@@ -181,14 +185,12 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                     Icon(
                                       Icons.add,
                                       color: themeProvider
-                                          .themeManager.tertiaryTextColor,
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const SizedBox(width: 10),
-                                    CustomText(
+                                    const CustomText(
                                       'Add Filter',
                                       type: FontStyle.Small,
-                                      color: themeProvider
-                                          .themeManager.tertiaryTextColor,
                                     ),
                                   ],
                                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -85,8 +86,33 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color:
-                            themeProvider.themeManager.successBackgroundColor,
+                        color: widget.isFav
+                            ? (((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0)
+                                                .toDouble() /
+                                            (modulesProvider.favModules[widget.index]
+                                                        ['total_issues'] ==
+                                                    0
+                                                ? 1
+                                                : modulesProvider.favModules[widget.index]
+                                                    ['total_issues'])) *
+                                        100) >=
+                                    75
+                                ? themeProvider
+                                    .themeManager.successBackgroundColor
+                                : themeProvider
+                                    .themeManager.tertiaryBackgroundDefaultColor
+                            : (((modulesProvider.modules[widget.index]['completed_issues'] ?? 0)
+                                                .toDouble() /
+                                            (modulesProvider.modules[widget.index]
+                                                        ['total_issues'] ==
+                                                    0
+                                                ? 1
+                                                : modulesProvider.modules[widget.index]
+                                                    ['total_issues'])) *
+                                        100) >=
+                                    75
+                                ? themeProvider.themeManager.successBackgroundColor
+                                : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(5)), // success 10
                     height: 28,
                     child: Center(
@@ -98,7 +124,34 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                               : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
                           type: FontStyle.Small,
                           fontWeight: FontWeightt.Regular,
-                          color: themeProvider.themeManager.textSuccessColor,
+                          color: widget.isFav
+                              ? (((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0)
+                                                  .toDouble() /
+                                              (modulesProvider.favModules[widget.index]
+                                                          ['total_issues'] ==
+                                                      0
+                                                  ? 1
+                                                  : modulesProvider.favModules[widget.index]
+                                                      ['total_issues'])) *
+                                          100) >=
+                                      75
+                                  ? themeProvider.themeManager.textSuccessColor
+                                  : themeProvider
+                                      .themeManager.placeholderTextColor
+                              : (((modulesProvider.modules[widget.index]['completed_issues'] ?? 0)
+                                                  .toDouble() /
+                                              (modulesProvider.modules[widget.index]
+                                                          ['total_issues'] ==
+                                                      0
+                                                  ? 1
+                                                  : modulesProvider
+                                                          .modules[widget.index]
+                                                      ['total_issues'])) *
+                                          100) >=
+                                      75
+                                  ? themeProvider.themeManager.textSuccessColor
+                                  : themeProvider.themeManager.placeholderTextColor,
+                          //themeProvider.themeManager.textSuccessColor,
                         ),
                       ),
                     ),
@@ -170,10 +223,12 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                 ),
                 child: CustomText(
                     widget.isFav
-                        ? modulesProvider.favModules[widget.index]['status']
-                            .toString()
-                        : modulesProvider.modules[widget.index]['status']
-                            .toString(),
+                        ? StringManager.capitalizeFirstLetter(modulesProvider
+                            .favModules[widget.index]['status']
+                            .toString())
+                        : StringManager.capitalizeFirstLetter(modulesProvider
+                            .modules[widget.index]['status']
+                            .toString()),
                     type: FontStyle.Small,
                     fontWeight: FontWeightt.Regular,
                     color: themeProvider.themeManager.tertiaryTextColor),

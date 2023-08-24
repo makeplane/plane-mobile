@@ -10,7 +10,7 @@ import 'package:plane_startup/kanban/models/inputs.dart';
 import 'package:plane_startup/models/issues.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
+//import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -87,7 +87,7 @@ class MyIssuesProvider extends ChangeNotifier {
     createIssuedata = {};
     issuesResponse = [];
     labels = [];
-    states = [];
+    //states = [];
     groupByResponse = {};
 
     shrinkStates = [];

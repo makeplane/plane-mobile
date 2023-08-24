@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
@@ -59,7 +61,6 @@ class ThemeProvider extends ChangeNotifier {
             data['theme']['sidebarText'].toString().replaceFirst('#', 'FF'),
             radix: 16));
       }
-      //if (data['theme']['theme'] == 'system')
       theme = themeParser(theme: data['theme']['theme']);
     }
     log(theme.toString());
@@ -72,8 +73,71 @@ class ThemeProvider extends ChangeNotifier {
             toastType: ToastType.success);
       } else {}
     });
+    setUiOverlayStyle(data['theme']['theme']);
     await prefs.setString('selected-theme', fromTHEME(theme: theme));
     notifyListeners();
+  }
+
+  void setUiOverlayStyle(String theme) {
+    switch (theme) {
+      case 'light':
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarDividerColor: Colors.white,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ));
+        break;
+      case 'dark':
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
+          systemNavigationBarDividerColor: Colors.black,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        ));
+        break;
+      case 'light-contrast':
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarDividerColor: Colors.white,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ));
+        break;
+      case 'dark-contrast':
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
+          systemNavigationBarDividerColor: Colors.black,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        ));
+        break;
+      case 'custom':
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          systemNavigationBarColor: themeManager.primaryBackgroundDefaultColor,
+          systemNavigationBarDividerColor:
+              themeManager.primaryBackgroundDefaultColor,
+        ));
+        break;
+      case 'system':
+        if (SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark) {
+          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.black,
+            systemNavigationBarDividerColor: Colors.black,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+          ));
+        } else {
+          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.white,
+            systemNavigationBarDividerColor: Colors.white,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+          ));
+        }
+        break;
+    }
   }
 
   Future<void> getTheme() async {

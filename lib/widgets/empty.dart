@@ -683,7 +683,7 @@ class EmptyPlaceholder {
                     width: 10,
                   ),
                   CustomText('Add Project',
-                      type: FontStyle.Large,
+                      type: FontStyle.Small,
                       overrride: true,
                       fontWeight: FontWeightt.Medium,
                       color: Colors.white)

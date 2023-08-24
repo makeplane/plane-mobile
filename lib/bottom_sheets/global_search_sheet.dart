@@ -105,13 +105,17 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 color: themeProvider
                                     .themeManager.primaryTextColor),
                             controller: input,
-                            // style: TextStyle(
-                            //     color: themeProvider.isDarkThemeEnabled
-                            //         ? lightBackgroundColor
-                            //         : darkBackgroundColor),
                             decoration: themeProvider
                                 .themeManager.textFieldDecoration
                                 .copyWith(
+                              fillColor: themeProvider
+                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              focusColor: themeProvider
+                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              filled: true,
+
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 0),
                               suffixIcon: input.text != ''
                                   ? IconButton(
                                       onPressed: () {

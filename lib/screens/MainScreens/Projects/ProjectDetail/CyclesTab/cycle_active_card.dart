@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -63,7 +64,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
       //height: 1300,
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
       decoration: BoxDecoration(
-          // color: Colors.white,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 1,
@@ -74,18 +75,22 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           firstPart(widget.index),
-          Divider(
-            thickness: 1,
+          Container(
+            height: 1,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           secondPart(widget.index),
-          Divider(
-            thickness: 1,
+          Container(
+            height: 1,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
+              collapsedBackgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
               iconColor: themeProvider.themeManager.primaryTextColor,
               collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: Row(
@@ -110,13 +115,17 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
               ],
             ),
           ),
-          Divider(
-            thickness: 1,
+          Container(
+            height: 1,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
+              collapsedBackgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
               iconColor: themeProvider.themeManager.primaryTextColor,
               collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: const Align(
@@ -131,13 +140,17 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
               ],
             ),
           ),
-          Divider(
-            thickness: 1,
+          Container(
+            height: 1,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
+              collapsedBackgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
               iconColor: themeProvider.themeManager.primaryTextColor,
               collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: const Align(
@@ -152,13 +165,17 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
               ],
             ),
           ),
-          Divider(
-            thickness: 1,
+          Container(
+            height: 1,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
+              collapsedBackgroundColor:
+                  themeProvider.themeManager.primaryBackgroundDefaultColor,
               iconColor: themeProvider.themeManager.primaryTextColor,
               collapsedIconColor: themeProvider.themeManager.primaryTextColor,
               title: Align(
@@ -185,6 +202,9 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+
+      // decoration: BoxDecoration(
+      //     color: themeProvider.themeManager.secondaryBackgroundSelectedColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,69 +219,16 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                       themeProvider.themeManager.textSuccessColor,
                       BlendMode.srcIn)),
               const SizedBox(width: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    cyclesProvider.cyclesActiveData[index]['name'],
-                    type: FontStyle.Large,
-                    fontWeight: FontWeightt.Medium,
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                        color: checkDate(
-                                    startDate: cyclesProvider
-                                        .cyclesActiveData[index]['start_date'],
-                                    endDate: cyclesProvider
-                                        .cyclesActiveData[index]['end_date']) ==
-                                'Draft'
-                            ? themeProvider.themeManager.successBackgroundColor
-                            : checkDate(
-                                        startDate: cyclesProvider
-                                                .cyclesActiveData[index]
-                                            ['start_date'],
-                                        endDate: cyclesProvider
-                                                .cyclesActiveData[index]
-                                            ['end_date']) ==
-                                    'Completed'
-                                ? themeProvider
-                                    .themeManager.successBackgroundColor
-                                : themeProvider
-                                    .themeManager.successBackgroundColor,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: CustomText(
-                      checkDate(
-                        startDate: cyclesProvider.cyclesActiveData[index]
-                            ['start_date'],
-                        endDate: cyclesProvider.cyclesActiveData[index]
-                            ['end_date'],
-                      ),
-                      color: checkDate(
-                                startDate: cyclesProvider
-                                    .cyclesActiveData[index]['start_date'],
-                                endDate: cyclesProvider.cyclesActiveData[index]
-                                    ['end_date'],
-                              ) ==
-                              'Draft'
-                          ? themeProvider.themeManager.tertiaryTextColor
-                          : checkDate(
-                                    startDate: cyclesProvider
-                                        .cyclesActiveData[index]['start_date'],
-                                    endDate: cyclesProvider
-                                        .cyclesActiveData[index]['end_date'],
-                                  ) ==
-                                  'Completed'
-                              ? themeProvider.themeManager.placeholderTextColor
-                              : themeProvider.themeManager.textSuccessColor,
-                    ),
-                  ),
-                ],
+              Expanded(
+                child: CustomText(
+                  cyclesProvider.cyclesActiveData[index]['name'],
+                  // '111111111111111111111111111111111111111111111111',
+                  maxLines: 1,
+                  type: FontStyle.Large,
+                  fontWeight: FontWeightt.Medium,
+                ),
               ),
-              const Spacer(),
+              //const Spacer(),
               InkWell(
                   onTap: () {
                     if (isFavorite) {
@@ -302,6 +269,52 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                         )),
             ],
           ),
+          const SizedBox(height: 15),
+          Container(
+            margin: const EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+                color: checkDate(
+                            startDate: cyclesProvider.cyclesActiveData[index]
+                                ['start_date'],
+                            endDate: cyclesProvider.cyclesActiveData[index]
+                                ['end_date']) ==
+                        'Draft'
+                    ? themeProvider.themeManager.successBackgroundColor
+                    : checkDate(
+                                startDate: cyclesProvider
+                                    .cyclesActiveData[index]['start_date'],
+                                endDate: cyclesProvider.cyclesActiveData[index]
+                                    ['end_date']) ==
+                            'Completed'
+                        ? themeProvider
+                            .themeManager.secondaryBackgroundActiveColor
+                        : themeProvider.themeManager.successBackgroundColor,
+                borderRadius: BorderRadius.circular(5)),
+            child: CustomText(
+              checkDate(
+                startDate: cyclesProvider.cyclesActiveData[index]['start_date'],
+                endDate: cyclesProvider.cyclesActiveData[index]['end_date'],
+              ),
+              color: checkDate(
+                        startDate: cyclesProvider.cyclesActiveData[index]
+                            ['start_date'],
+                        endDate: cyclesProvider.cyclesActiveData[index]
+                            ['end_date'],
+                      ) ==
+                      'Draft'
+                  ? themeProvider.themeManager.tertiaryTextColor
+                  : checkDate(
+                            startDate: cyclesProvider.cyclesActiveData[index]
+                                ['start_date'],
+                            endDate: cyclesProvider.cyclesActiveData[index]
+                                ['end_date'],
+                          ) ==
+                          'Completed'
+                      ? themeProvider.themeManager.primaryColour
+                      : themeProvider.themeManager.textSuccessColor,
+            ),
+          ),
         ],
       ),
     );
@@ -313,15 +326,16 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Container(
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
       //height: 330,
       child: Column(
         children: [
           SizedBox(
             // this right padding is added to reduce the space btw the children of the row below
-            height: 200,
+            height: 150,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,6 +359,13 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                           )),
                           type: FontStyle.Medium,
                         ),
+                        const SizedBox(width: 8),
+                        Icon(
+                          CupertinoIcons.arrow_right,
+                          size: 20,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
+                        )
                       ],
                     ),
                     Container(
@@ -378,7 +399,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                     ),
                                   ),
                                 ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           SizedBox(
                             width: width * 0.3,
                             child: CustomText(
@@ -419,14 +440,11 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                       children: [
                         Icon(
                           Icons.calendar_month,
-                          // color: themeProvider.secondaryTextColor,
                           size: 20,
                           color:
                               themeProvider.themeManager.placeholderTextColor,
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        const SizedBox(width: 5),
                         CustomText(
                           DateFormat("MMM d, yyyy").format(DateTime.parse(
                             cyclesProvider.cyclesActiveData[index]['end_date'],
@@ -481,52 +499,10 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     )
                   ],
                 ),
+                const Flexible(child: SizedBox(width: 8)),
               ],
             ),
           ),
-          // Align(
-          //   alignment: Alignment.centerLeft,
-          //   child: CustomText('Estimates Scope'),
-          // ),
-          // const SizedBox(height: 10),
-          // Row(
-          //   children: [
-          //     ...List.generate(
-          //       3,
-          //       (index) => Container(
-          //         margin: const EdgeInsets.only(
-          //           right: 10,
-          //         ),
-          //         width: 70,
-          //         height: 24,
-          //         decoration: BoxDecoration(
-          //             borderRadius: BorderRadius.circular(20),
-          //             border: Border.all(width: 1, color: Colors.amber),
-          //             color: Colors.amber.shade50),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //           children: [
-          //             const Icon(
-          //               Icons.circle_outlined,
-          //               size: 20,
-          //               color: Colors.amber,
-          //             ),
-          //             const Icon(
-          //               Icons.add_box_outlined,
-          //               size: 20,
-          //               color: Colors.amber,
-          //             ),
-          //             CustomText(
-          //               '24',
-          //               color: Colors.amber,
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-
           Align(
             alignment: Alignment.topLeft,
             child: InkWell(
@@ -544,21 +520,27 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                 .cyclesActiveData[widget.index]['id'])));
               },
               child: Container(
-                padding: const EdgeInsets.all(7),
+                padding: const EdgeInsets.only(
+                    left: 0, right: 7, top: 0, bottom: 14),
                 child: Row(
                   children: [
-                    const CustomText(
+                    CustomText(
                       'View Cycle',
-                      color: Colors.blueAccent,
+                      color: themeProvider.themeManager.primaryColour,
                       type: FontStyle.Medium,
                       fontWeight: FontWeightt.Semibold,
                     ),
                     const SizedBox(width: 8),
-                    SvgPicture.asset(
-                      'assets/svg_images/arrow_forward.svg',
-                      height: 20,
-                      width: 20,
-                    ),
+                    Icon(
+                      CupertinoIcons.arrow_right,
+                      color: themeProvider.themeManager.primaryColour,
+                      //size: 20,
+                    )
+                    // SvgPicture.asset(
+                    //   'assets/svg_images/arrow_forward.svg',
+                    //   height: 20,
+                    //   width: 20,
+                    // ),
                   ],
                 ),
               ),
@@ -573,6 +555,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
@@ -656,6 +639,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
@@ -750,7 +734,9 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
   Widget fifthPart() {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
@@ -799,19 +785,18 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                   Icon(
                                     Icons.circle,
                                     size: 10,
-                                    color: cyclesProvider.cyclesActiveData[
-                                                            widget.index]
-                                                        ['distribution']
+                                    color: cyclesProvider.cyclesActiveData[widget.index]['distribution']
                                                     ['labels'][idx]['color'] ==
                                                 '' ||
-                                            cyclesProvider.cyclesActiveData[
-                                                            widget.index]
+                                            cyclesProvider.cyclesActiveData[widget.index]
                                                         ['distribution']
                                                     ['labels'][idx]['color'] ==
                                                 null
                                         ? greyColor
-                                        : ColorManager.getColorFromHexaDecimal(cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['color'].toString()),
-                                        
+                                        : ColorManager.getColorFromHexaDecimal(cyclesProvider
+                                            .cyclesActiveData[widget.index]
+                                                ['distribution']['labels'][idx]['color']
+                                            .toString()),
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -858,7 +843,9 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget sixthPart() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       alignment: Alignment.center,
       child: Column(children: [

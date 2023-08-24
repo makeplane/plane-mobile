@@ -41,6 +41,8 @@ class ThemeManager {
   late Color primaryToastBackgroundColor;
   late Color successBackgroundColor;
 
+  late Color shadowColor;
+
   Color convertHexToSpecificShade({required int shade, required Color color}) {
     if (shade <= 100) {
       var decimalValue = (100 - shade) / 100;
@@ -128,6 +130,7 @@ class ThemeManager {
         color: primaryTextColor,
         fontWeight: FontWeight.w500);
     textFieldDecoration = InputDecoration(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       errorStyle: GoogleFonts.lato(
           fontSize: 14, color: Colors.red, fontWeight: FontWeight.w400),
       //contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -341,5 +344,14 @@ class ThemeManager {
                         shade: 10,
                         color: convertHexToSpecificShade(
                             shade: 100, color: primaryColour));
+    shadowColor = theme == THEME.light
+        ? const Color.fromARGB(40, 150, 150, 150)
+        : theme == THEME.dark
+            ? Colors.transparent
+            : theme == THEME.lightHighContrast
+                ? const Color.fromARGB(40, 150, 150, 150)
+                : theme == THEME.darkHighContrast
+                    ? Colors.transparent
+                    : Colors.transparent;
   }
 }

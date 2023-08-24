@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -30,7 +32,16 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
     var pageProvider = ref.read(ProviderList.pageProvider);
     if (widget.operation == CRUD.update) {
       titleController.text = pageProvider.blocks[widget.blockIndex!]['name'];
+
+      try {
+        descriptionController.text = pageProvider.blocks[widget.blockIndex!]
+                ['description']["content"][0]["content"][0]['text']
+            .toString();
+      } catch (e) {
+        log(e.toString());
+      }
     }
+
     super.initState();
   }
 
@@ -110,16 +121,14 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                 ),
                 Container(height: 5),
                 TextField(
-                    controller: descriptionController,
-                    maxLines: 4,
-                    decoration: themeProvider.themeManager.textFieldDecoration
-                    //     .copyWith(
-                    //   fillColor: themeProvider.isDarkThemeEnabled
-                    //       ? darkBackgroundColor
-                    //       : lightBackgroundColor,
-                    //   filled: true,
-                    // ),
-                    ),
+                  controller: descriptionController,
+                  maxLines: 4,
+                  decoration:
+                      themeProvider.themeManager.textFieldDecoration.copyWith(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                  ),
+                ),
                 Container(height: 20),
                 Button(
                   ontap: () async {

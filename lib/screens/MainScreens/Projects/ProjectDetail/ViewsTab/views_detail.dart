@@ -164,7 +164,15 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.black,
+                decoration: BoxDecoration(
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
+                    boxShadow: [
+                      BoxShadow(
+                          color: themeProvider.themeManager.shadowColor,
+                          blurRadius: 5,
+                          offset: const Offset(0, -5))
+                    ]),
                 child: Row(
                   children: [
                     projectProvider.role == Role.admin
@@ -177,20 +185,19 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                   ),
                                 );
                               },
-                              child: const SizedBox.expand(
+                              child: SizedBox.expand(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.add,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                       size: 20,
                                     ),
-                                    CustomText(
+                                    const CustomText(
                                       ' Issue',
                                       type: FontStyle.Medium,
-                                      color: Colors.white,
-                                      overrride: true,
                                     )
                                   ],
                                 ),
@@ -201,7 +208,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: Colors.white,
+                      color: themeProvider.themeManager.borderSubtle01Color,
                     ),
                     Expanded(
                         child: InkWell(
@@ -223,20 +230,19 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               );
                             });
                       },
-                      child: const SizedBox.expand(
+                      child: SizedBox.expand(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.menu,
-                              color: Colors.white,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                               size: 19,
                             ),
-                            CustomText(
+                            const CustomText(
                               ' Layout',
                               type: FontStyle.Medium,
-                              color: Colors.white,
-                              overrride: true,
                             )
                           ],
                         ),
@@ -245,7 +251,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: Colors.white,
+                      color: themeProvider.themeManager.borderSubtle01Color,
                     ),
                     Expanded(
                         child: InkWell(
@@ -268,20 +274,19 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               );
                             });
                       },
-                      child: const SizedBox.expand(
+                      child: SizedBox.expand(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.view_sidebar,
-                              color: Colors.white,
+                              Icons.wysiwyg_outlined,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                               size: 19,
                             ),
-                            CustomText(
+                            const CustomText(
                               ' Views',
                               type: FontStyle.Medium,
-                              color: Colors.white,
-                              overrride: true,
                             )
                           ],
                         ),
@@ -290,7 +295,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Container(
                       height: 50,
                       width: 0.5,
-                      color: Colors.white,
+                      color: themeProvider.themeManager.borderSubtle01Color,
                     ),
                     Expanded(
                         child: InkWell(
@@ -313,20 +318,19 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               );
                             });
                       },
-                      child: const SizedBox.expand(
+                      child: SizedBox.expand(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.filter_alt,
-                              color: Colors.white,
+                              Icons.filter_list_outlined,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                               size: 19,
                             ),
-                            CustomText(
+                            const CustomText(
                               ' Filters',
                               type: FontStyle.Medium,
-                              color: Colors.white,
-                              overrride: true,
                             )
                           ],
                         ),

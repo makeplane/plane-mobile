@@ -68,7 +68,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          height: 80,
+          height: 75,
           decoration: BoxDecoration(
             color:
                 themeProvider.theme == THEME.custom ? customNavBarColor : null,
@@ -116,8 +116,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 height: 10,
                               ),
                               SvgPicture.asset(e['icon'],
-                                  height: 20,
-                                  width: 20,
+                                  // height: 20,
+                                  // width: 20,
                                   colorFilter: ColorFilter.mode(
                                       currentIndex == i
                                           ? themeProvider

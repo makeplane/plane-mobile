@@ -34,14 +34,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.watch(ProviderList.myIssuesProvider).getMyIssues(
-            slug: ref
-                .watch(ProviderList.workspaceProvider)
-                .selectedWorkspace!
-                .workspaceSlug,
-          );
-    });
   }
 
   @override

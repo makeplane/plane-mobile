@@ -285,34 +285,34 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 30,
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.arrow_back,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
-                                size: 18,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: CustomText(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_back,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
+                                  size: 18,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                CustomText(
                                   'Go back',
                                   type: FontStyle.Small,
                                   fontWeight: FontWeightt.Semibold,
                                   color: themeProvider
                                       .themeManager.placeholderTextColor,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       ],

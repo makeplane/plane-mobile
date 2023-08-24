@@ -254,9 +254,9 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
               ),
             ),
             trailing: Container(
-              constraints: const BoxConstraints(maxWidth: 80),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
+              constraints: const BoxConstraints(maxWidth: 87),
+              child: Row(
+                // crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   SizedBox(
                     child: SizedBox(

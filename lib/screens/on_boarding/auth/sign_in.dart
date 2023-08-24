@@ -50,7 +50,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         body: CustomScrollView(
           slivers: [
             SliverFillRemaining(
@@ -243,6 +242,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 text: !sentCode ? 'Send code' : 'Log In',
                                 ontap: () async {
                                   log(email.text);
+                                  log(themeProvider.themeManager.theme
+                                      .toString());
                                   if (validateSave()) {
                                     if (!sentCode) {
                                       await ref
@@ -505,41 +506,41 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               height: 20,
                             ),
 
-                            Container(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.arrow_back,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      if (!sentCode) {
-                                        Navigator.pop(context);
-                                        return;
-                                      }
-                                      setState(() {
-                                        code.clear();
-                                        sentCode = false;
-                                      });
-                                    },
-                                    child: CustomText(
+                            GestureDetector(
+                              onTap: () {
+                                if (!sentCode) {
+                                  Navigator.pop(context);
+                                  return;
+                                }
+                                setState(() {
+                                  code.clear();
+                                  sentCode = false;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    CustomText(
                                       'Go back',
                                       type: FontStyle.Small,
                                       color: themeProvider
                                           .themeManager.placeholderTextColor,
                                       fontWeight: FontWeightt.Semibold,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],

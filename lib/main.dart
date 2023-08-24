@@ -37,11 +37,12 @@ void main() async {
   // Const.appBearerToken = null;
   // ConnectionService().checkConnectivity();
   prefs = pref;
-  SentryFlutter.init((options) {
-    options.dsn = dotenv.env['SENTRY_DSN'];
-  },
-  appRunner: () => runApp(const ProviderScope(child: MyApp())),
-  );
+  // SentryFlutter.init((options) {
+  //   options.dsn = dotenv.env['SENTRY_DSN'];
+  // },
+  // appRunner: () => runApp(const ProviderScope(child: MyApp())),
+  // );
+  runApp(const ProviderScope(child: MyApp()));
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
@@ -72,11 +73,35 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
       prov.getProfile().then((value) {
         // log(prov.userProfile.workspace.toString());
+
         if (prov.userProfile.isOnboarded == false) return;
 
-        workspaceProv.getWorkspaces().then((value) {
+        workspaceProv.getWorkspaces().then((value) async {
           if (workspaceProv.workspaces.isEmpty) {
             return;
+          }
+          var theme = prov.userProfile.theme;
+
+          if (prov.userProfile.theme != null) {
+            if (prov.userProfile.theme!['theme'] == 'dark') {
+              theme!['theme'] = fromTHEME(theme: THEME.dark);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else if (prov.userProfile.theme!['theme'] == 'light') {
+              theme!['theme'] = fromTHEME(theme: THEME.light);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else if (prov.userProfile.theme!['theme'] == 'system') {
+              theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
+              theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
+              theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else {
+              theme!['theme'] = fromTHEME(theme: THEME.light);
+              themeProv.changeTheme(data: {'theme': theme}, context: null);
+            }
           }
           workspaceProv.getWorkspaceMembers();
           // log(prov.userProfile.last_workspace_id.toString());
@@ -86,11 +111,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
           ref.read(ProviderList.myIssuesProvider).getLabels();
 
-          ref
+          await ref
               .read(ProviderList.myIssuesProvider)
               .getMyIssuesView()
               .then((value) {
-            ref.read(ProviderList.myIssuesProvider).filterIssues();
+            ref
+                .read(ProviderList.myIssuesProvider)
+                .filterIssues(assigned: true);
           });
 
           ref.read(ProviderList.notificationProvider).getUnreadCount();
@@ -156,7 +183,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     // themeProvider.getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Plane',
       theme: ThemeData(
         // theme the entire app with list of colors
 

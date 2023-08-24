@@ -236,7 +236,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                                   widgets: [
                                                                     TextSpan(
                                                                       text:
-                                                                          '${widget.data[index]['triggered_by_details']['first_name']} ${widget.data[index]['triggered_by_details']['last_name']}',
+                                                                          '${widget.data[index]['triggered_by_details']['display_name']}',
                                                                       style:
                                                                           TextStyle(
                                                                         color: themeProvider
@@ -268,9 +268,11 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                                       text: widget.data[index]['data']['issue_activity']['field'] ==
                                                                               'description'
                                                                           ? ''
-                                                                          : widget
-                                                                              .data[index]['data']['issue_activity']['new_value']
-                                                                              .toString(),
+                                                                          : widget.data[index]['data']['issue_activity']['field'] == 'None'
+                                                                              ? 'and assigned it to you'
+                                                                              : widget.data[index]['data']['issue_activity']['field'] == 'attachment'
+                                                                                  ? 'to the issue'
+                                                                                  : widget.data[index]['data']['issue_activity']['new_value'].toString(),
                                                                       style:
                                                                           TextStyle(
                                                                         color: themeProvider

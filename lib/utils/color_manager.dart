@@ -32,7 +32,6 @@ class ColorManager {
   static Color getColorFromHexaDecimal(String? value) {
     Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
     String? colorData = value;
-
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
         : Color(int.parse("FF${colorData.replaceAll('#', '')}", radix: 16));

@@ -57,7 +57,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
             child: Form(
               key: formKey,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height * 0.9,
                 child: Stack(
                   children: [
                     Padding(
@@ -335,6 +335,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   // pageController.previousPage(
                                   //     duration: const Duration(milliseconds: 250),
                                   //     curve: Curves.easeInOut);

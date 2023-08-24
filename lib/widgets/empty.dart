@@ -139,6 +139,7 @@ class EmptyPlaceholder {
                                 : null,
                             cycleId: cycleId,
                             moduleId: moduleId,
+                            fromMyIssues: type == IssueCategory.myIssues,
                           )));
             },
             child: Container(

@@ -64,16 +64,35 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      int.tryParse(projectProvider
-                                                  .projects[index]['emoji']) !=
-                                              null
-                                          ? String.fromCharCode(int.parse(
-                                              projectProvider.projects[index]
-                                                  ['emoji']))
-                                          : '🚀',
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
+                                    projectProvider.projects[index]
+                                                ['icon_prop'] !=
+                                            null
+                                        ? Icon(
+                                            iconList[
+                                                projectProvider.projects[index]
+                                                    ['icon_prop']['name']],
+                                            color: Color(
+                                              int.parse(
+                                                projectProvider.projects[index]
+                                                        ['icon_prop']["color"]
+                                                    .toString()
+                                                    .replaceAll('#', '0xFF'),
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            int.tryParse(projectProvider
+                                                            .projects[index]
+                                                        ['emoji']) !=
+                                                    null
+                                                ? String.fromCharCode(int.parse(
+                                                    projectProvider
+                                                            .projects[index]
+                                                        ['emoji']))
+                                                : '🚀',
+                                            style:
+                                                const TextStyle(fontSize: 20),
+                                          ),
                                     Container(
                                       width: 10,
                                     ),

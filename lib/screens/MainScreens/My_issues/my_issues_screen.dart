@@ -359,19 +359,14 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     }
 
     return LoadingWidget(
-      loading: issueProvider.labelState == StateEnum.loading ||
-          issueProvider.myIssuesViewState == StateEnum.loading ||
-          issueProvider.myIssuesFilterState == StateEnum.loading ||
-          issueProvider.orderByState == StateEnum.loading,
+      loading: issueProvider.myIssuesViewState == StateEnum.loading ||
+          issueProvider.myIssuesFilterState == StateEnum.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         padding: issueProvider.issues.projectView == ProjectView.kanban
             ? const EdgeInsets.only(top: 15, left: 0)
             : null,
-        child: issueProvider.orderByState == StateEnum.loading ||
-                issueProvider.orderByState == StateEnum.loading ||
-                issueProvider.myIssuesViewState == StateEnum.loading ||
-                issueProvider.orderByState == StateEnum.loading
+        child: issueProvider.myIssuesViewState == StateEnum.loading
             ? Container()
             : issueProvider.isISsuesEmpty
                 ? Column(
@@ -467,6 +462,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                       CreateIssue(
                                                                         projectId:
                                                                             projectProvider.projects[0]['id'],
+                                                                        fromMyIssues:
+                                                                            true,
                                                                       )));
                                                         },
                                                         icon: Icon(

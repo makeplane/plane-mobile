@@ -139,10 +139,13 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                 ? null
                                                 : themeProvider
                                                     .themeManager.primaryColour,
-                                            fillColor: MaterialStateProperty
-                                                .all<Color>(themeProvider
-                                                    .themeManager
-                                                    .borderSubtle01Color),
+                                            fillColor: selectedRole !=
+                                                    options[index]['value']
+                                                ? MaterialStateProperty
+                                                    .all<Color>(themeProvider
+                                                        .themeManager
+                                                        .borderSubtle01Color)
+                                                : null,
                                             value: options[index]['value'],
                                             groupValue: selectedRole,
                                             onChanged: (value) {

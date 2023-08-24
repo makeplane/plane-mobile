@@ -236,7 +236,7 @@ class WorkspaceProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      workspaceInvitationState = StateEnum.success;
+
       workspaces = response.data;
 
       var isWorkspacePresent = workspaces.where((element) {
@@ -264,6 +264,7 @@ class WorkspaceProvider extends ChangeNotifier {
       getWorkspaceMembers();
       retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
       log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
+      workspaceInvitationState = StateEnum.success;
       notifyListeners();
     } catch (e) {
       log(e.toString());
@@ -369,7 +370,7 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       //selectWorkspaceState = StateEnum.success;
-      log("SABI: Integration: slug = $slug");
+      log("Integration: slug = $slug");
       // response = jsonDecode(response.data);
       //selectedWorkspace = WorkspaceModel.fromJson(response.data);
       workspaceIntegrations = response.data;

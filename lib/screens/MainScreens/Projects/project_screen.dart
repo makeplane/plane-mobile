@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +28,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+
+    log(projectProvider.projectState.toString());
     //   log(projectProvider.starredProjects.toString());
     return Scaffold(
       appBar: AppBar(
@@ -585,18 +589,19 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                         );
                                 },
                               ),
-                              // ElevatedButton(
-                              //     onPressed: () {
-                              //       print('SABI : starredProjects.length : ' +
-                              //           projectProvider.starredProjects.length
-                              //               .toString());
-                              //     },
-                              //     child: Text('Stared Projects'))
                             ],
                           ),
                         ),
                 )
-              : errorState(context: context, ontap: () {})),
+              : errorState(
+                  context: context,
+                  ontap: () {
+                    projectProvider.getProjects(
+                        slug: ref
+                            .read(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug);
+                  })),
     );
   }
 

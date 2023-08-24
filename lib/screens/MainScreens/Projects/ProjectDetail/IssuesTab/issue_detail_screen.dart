@@ -225,393 +225,256 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issueProvider = ref.watch(ProviderList.issueProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-    return Scaffold(
-      //#f5f5f5f5 color
-      // backgroundColor: themeProvider.isDarkThemeEnabled
-      //     ? darkBackgroundColor
-      //     : lightBackgroundColor,
-      appBar: CustomAppBar(
-        onPressed: () {
-          ref.watch(ProviderList.issueProvider).cyclesList.clear();
-          ref.watch(ProviderList.issueProvider).modulesList.clear();
-          Navigator.pop(context);
-        },
-        text: widget.appBarTitle,
-        actions: [
-          (ref.read(ProviderList.profileProvider).userProfile.id ==
-                      issueProvider.issueDetails['created_by'] ||
-                  issueProvider.issueDetailState == StateEnum.loading)
-              ? Container()
-              : InkWell(
-                  onTap: () {
-                    (issueProvider.subscriptionState == StateEnum.loading ||
-                            issueProvider.issueDetails['subscribed'] == null)
-                        ? null
-                        : ref
-                            .read(ProviderList.issueProvider)
-                            .getSubscriptionStatus(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
-                                  .workspaceSlug,
-                              httpMethod:
-                                  issueProvider.issueDetails['subscribed']
-                                      ? HttpMethod.delete
-                                      : HttpMethod.post,
-                              projID: ref
-                                  .read(ProviderList.projectProvider)
-                                  .currentProject['id'],
-                              issueID: widget.issueId,
-                            );
-                    issueProvider.issueDetails['subscribed']
-                        ? CustomToast().showToast(context, 'Unsubscribed',
-                            ref.read(ProviderList.themeProvider))
-                        : CustomToast().showToast(context, 'Subscribed',
-                            ref.read(ProviderList.themeProvider));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    margin: const EdgeInsets.all(5),
-                    child: (issueProvider.subscriptionState ==
-                                StateEnum.loading ||
-                            issueProvider.issueDetails['subscribed'] == null)
-                        ?
-                        // Container(
-                        //     margin: EdgeInsets.all(15),
-                        //     child: Center(
-                        //         child: CircularProgressIndicator(
-                        //       color: themeProvider
-                        //           .themeManager.placeholderTextColor,
-                        //     )),
-                        //   )
-                        Icon(Icons.notifications_off,
-                            color:
-                                themeProvider.themeManager.placeholderTextColor)
-                        : issueProvider.issueDetails['subscribed']
-                            ? Icon(
-                                Icons.notifications_active,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Icon(Icons.notifications_off,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor),
-                    // Row(
-                    //   children: [
-                    //     const Icon(
-                    //       Icons.notifications,
-                    //       color: primaryColor,
-                    //     ),
-                    //     CustomText(
-                    //       (issueProvider.subscriptionState ==
-                    //                   StateEnum.loading ||
-                    //               issueProvider.issueDetails['subscribed'] ==
-                    //                   null)
-                    //           ? 'Loading...'
-                    //           : issueProvider.issueDetails['subscribed']
-                    //               ? 'Unsubscribe'
-                    //               : 'Subscribe',
-                    //       type: FontStyle.Small,
-                    //       color: primaryColor,
-                    //     )
-                    //   ],
-                    // ),
-                  ),
-                )
-        ],
-      ),
-      body:
-          issueProvider.issueDetailState == StateEnum.loading ||
-                  issueProvider.issueActivityState == StateEnum.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.lineSpinFadeLoader,
-                      colors: [themeProvider.themeManager.primaryTextColor],
-                      strokeWidth: 1.0,
-                      backgroundColor: Colors.transparent,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        //#f5f5f5f5 color
+        // backgroundColor: themeProvider.isDarkThemeEnabled
+        //     ? darkBackgroundColor
+        //     : lightBackgroundColor,
+        appBar: CustomAppBar(
+          onPressed: () {
+            ref.watch(ProviderList.issueProvider).cyclesList.clear();
+            ref.watch(ProviderList.issueProvider).modulesList.clear();
+            Navigator.pop(context);
+          },
+          text: widget.appBarTitle,
+          actions: [
+            (ref.read(ProviderList.profileProvider).userProfile.id ==
+                        issueProvider.issueDetails['created_by'] ||
+                    issueProvider.issueDetailState == StateEnum.loading)
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      (issueProvider.subscriptionState == StateEnum.loading ||
+                              issueProvider.issueDetails['subscribed'] == null)
+                          ? null
+                          : ref
+                              .read(ProviderList.issueProvider)
+                              .getSubscriptionStatus(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                httpMethod:
+                                    issueProvider.issueDetails['subscribed']
+                                        ? HttpMethod.delete
+                                        : HttpMethod.post,
+                                projID: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject['id'],
+                                issueID: widget.issueId,
+                              );
+                      issueProvider.issueDetails['subscribed']
+                          ? CustomToast().showToast(context, 'Unsubscribed',
+                              ref.read(ProviderList.themeProvider))
+                          : CustomToast().showToast(context, 'Subscribed',
+                              ref.read(ProviderList.themeProvider));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      margin: const EdgeInsets.all(5),
+                      child: (issueProvider.subscriptionState ==
+                                  StateEnum.loading ||
+                              issueProvider.issueDetails['subscribed'] == null)
+                          ?
+                          // Container(
+                          //     margin: EdgeInsets.all(15),
+                          //     child: Center(
+                          //         child: CircularProgressIndicator(
+                          //       color: themeProvider
+                          //           .themeManager.placeholderTextColor,
+                          //     )),
+                          //   )
+                          Icon(Icons.notifications_off,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor)
+                          : issueProvider.issueDetails['subscribed']
+                              ? Icon(
+                                  Icons.notifications_active,
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                )
+                              : Icon(Icons.notifications_off,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor),
+                      // Row(
+                      //   children: [
+                      //     const Icon(
+                      //       Icons.notifications,
+                      //       color: primaryColor,
+                      //     ),
+                      //     CustomText(
+                      //       (issueProvider.subscriptionState ==
+                      //                   StateEnum.loading ||
+                      //               issueProvider.issueDetails['subscribed'] ==
+                      //                   null)
+                      //           ? 'Loading...'
+                      //           : issueProvider.issueDetails['subscribed']
+                      //               ? 'Unsubscribe'
+                      //               : 'Subscribe',
+                      //       type: FontStyle.Small,
+                      //       color: primaryColor,
+                      //     )
+                      //   ],
+                      // ),
                     ),
-                  ),
-                )
-              : issueProvider.issueDetailState == StateEnum.success &&
-                      issueProvider.issueActivityState == StateEnum.success
-                  ? SizedBox(
-                      height: height,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 1,
-                            color:
-                                themeProvider.themeManager.borderSubtle01Color,
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 23, left: 15, right: 15),
-                                child: Form(
-                                  key: formKey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        'Title',
-                                        type: FontStyle.Medium,
-                                        fontWeight: FontWeightt.Medium,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                        // color: themeProvider.secondaryTextColor,
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      TextFormField(
-                                        validator: (val) {
-                                          if (val!.isEmpty) {
-                                            return '*required';
-                                          }
-                                          return null;
-                                        },
-                                        readOnly: projectProvider.role !=
-                                                Role.admin &&
-                                            projectProvider.role != Role.member,
-                                        //make lines of textfield to be dynamic
-                                        maxLines: null,
-
-                                        controller: title,
-                                        // decoration: InputDecoration(
-                                        //   errorStyle: const TextStyle(
-                                        //       fontSize: 16,
-                                        //       color: Colors.red,
-                                        //       fontWeight: FontWeight.w600),
-
-                                        //   enabledBorder: OutlineInputBorder(
-                                        //     borderSide: BorderSide(
-                                        //         color: getBorderColor(
-                                        //             themeProvider),
-                                        //         width: 1.0),
-                                        //     borderRadius:
-                                        //         const BorderRadius.all(
-                                        //             Radius.circular(8)),
-                                        //   ),
-                                        //   focusedBorder: OutlineInputBorder(
-                                        //     borderSide: BorderSide(
-                                        //         color: Colors.grey.shade200,
-                                        //         width: 1.0),
-                                        //     borderRadius:
-                                        //         const BorderRadius.all(
-                                        //             Radius.circular(8)),
-                                        //   ),
-                                        //   //set background color of text field
-                                        //   fillColor:
-                                        //       themeProvider.isDarkThemeEnabled
-                                        //           ? darkBackgroundColor
-                                        //           : lightBackgroundColor,
-                                        //   filled: true,
-
-                                        //   //show hint text always
-                                        //   //  floatingLabelBehavior: FloatingLabelBehavior.always,
-                                        // ),
-                                        decoration: themeProvider
-                                            .themeManager.textFieldDecoration,
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSections),
-                                      CustomText(
-                                        'Description',
-                                        type: FontStyle.Medium,
-                                        fontWeight: FontWeightt.Medium,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                        // color: themeProvider.secondaryTextColor,
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      TextField(
-                                        onTap: () {
-                                          CustomToast().showToast(
-                                              context,
-                                              'You can\'t perform this operation through Plane Mobile',
-                                              themeProvider,
-                                              toastType: ToastType.warning);
-                                          return;
-                                        },
-                                        controller: description,
-                                        maxLines: 4,
-                                        readOnly: projectProvider.role !=
-                                                Role.admin &&
-                                            projectProvider.role != Role.member,
-                                        decoration: themeProvider
-                                            .themeManager.textFieldDecoration
-                                            .copyWith(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 15, vertical: 15),
+                  )
+          ],
+        ),
+        body:
+            issueProvider.issueDetailState == StateEnum.loading ||
+                    issueProvider.issueActivityState == StateEnum.loading
+                ? Center(
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.lineSpinFadeLoader,
+                        colors: [themeProvider.themeManager.primaryTextColor],
+                        strokeWidth: 1.0,
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  )
+                : issueProvider.issueDetailState == StateEnum.success &&
+                        issueProvider.issueActivityState == StateEnum.success
+                    ? SizedBox(
+                        height: height,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 1,
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 23, left: 15, right: 15),
+                                  child: Form(
+                                    key: formKey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          'Title',
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                          // color: themeProvider.secondaryTextColor,
                                         ),
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSections),
-                                      Row(
-                                        children: [
-                                          CustomText(
-                                            'Sub Issue',
-                                            type: FontStyle.Medium,
-                                            fontWeight: FontWeightt.Medium,
-                                            color: themeProvider
-                                                .themeManager.primaryTextColor,
-                                          ),
-                                          const Spacer(),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      selectedSubIssues(),
-                                      // const SizedBox(
-                                      //     height: spaceBetweenSectionsAndItems),
-                                      Container(
-                                        height: 45,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          border: Border.all(
-                                            color: themeProvider.themeManager
-                                                .borderSubtle01Color,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        margin:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            if (projectProvider.role !=
-                                                    Role.admin &&
-                                                projectProvider.role !=
-                                                    Role.member) {
-                                              CustomToast().showToast(
-                                                  context,
-                                                  accessRestrictedMSG,
-                                                  themeProvider,
-                                                  toastType: ToastType.failure);
-                                              return;
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        TextFormField(
+                                          validator: (val) {
+                                            if (val!.isEmpty) {
+                                              return '*required';
                                             }
-                                            showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (ctx) => IssuesListSheet(
-                                                // parent: false,
-                                                type: IssueDetailCategory
-                                                    .subIssue,
-                                                issueId: widget.issueId,
-                                                createIssue: false,
-                                                // blocking: true,
-                                              ),
-                                            );
+                                            return null;
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.add,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor,
-                                              ),
-                                              CustomText(
-                                                'Add Sub Issue',
-                                                type: FontStyle.Medium,
-                                                fontWeight: FontWeightt.Regular,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                          readOnly: projectProvider.role !=
+                                                  Role.admin &&
+                                              projectProvider.role !=
+                                                  Role.member,
+                                          //make lines of textfield to be dynamic
+                                          maxLines: null,
 
-                                      const SizedBox(
-                                          height: spaceBetweenSections),
-                                      CustomText(
-                                        'Details',
-                                        type: FontStyle.Medium,
-                                        fontWeight: FontWeightt.Medium,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                        // color: themeProvider.secondaryTextColor,
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      //three dropdown each occupying full width of the screen , each consits of a row with hint text and dropdown button at end
-                                      stateWidget(),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      assigneesWidget(),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      priorityWidget(),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      expanded
-                                          ? Column(
-                                              children: [
-                                                ref
-                                                                .read(ProviderList
-                                                                    .projectProvider)
-                                                                .currentProject[
-                                                            'estimate'] ==
-                                                        null
-                                                    ? Container()
-                                                    : estimateWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                startDateWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                dueDateWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                labelWidget(widget.issueId),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                parentWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                blockingWidget(widget.issueId),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                blockedByWidget(widget.issueId),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                cyclesWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                                moduleWidget(),
-                                                const SizedBox(
-                                                    height:
-                                                        spaceBetweenSectionsAndItems),
-                                              ],
-                                            )
-                                          : Container(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            expanded = !expanded;
-                                          });
-                                        },
-                                        child: Container(
+                                          controller: title,
+                                          // decoration: InputDecoration(
+                                          //   errorStyle: const TextStyle(
+                                          //       fontSize: 16,
+                                          //       color: Colors.red,
+                                          //       fontWeight: FontWeight.w600),
+
+                                          //   enabledBorder: OutlineInputBorder(
+                                          //     borderSide: BorderSide(
+                                          //         color: getBorderColor(
+                                          //             themeProvider),
+                                          //         width: 1.0),
+                                          //     borderRadius:
+                                          //         const BorderRadius.all(
+                                          //             Radius.circular(8)),
+                                          //   ),
+                                          //   focusedBorder: OutlineInputBorder(
+                                          //     borderSide: BorderSide(
+                                          //         color: Colors.grey.shade200,
+                                          //         width: 1.0),
+                                          //     borderRadius:
+                                          //         const BorderRadius.all(
+                                          //             Radius.circular(8)),
+                                          //   ),
+                                          //   //set background color of text field
+                                          //   fillColor:
+                                          //       themeProvider.isDarkThemeEnabled
+                                          //           ? darkBackgroundColor
+                                          //           : lightBackgroundColor,
+                                          //   filled: true,
+
+                                          //   //show hint text always
+                                          //   //  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          // ),
+                                          decoration: themeProvider
+                                              .themeManager.textFieldDecoration,
+                                        ),
+                                        const SizedBox(
+                                            height: spaceBetweenSections),
+                                        CustomText(
+                                          'Description',
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                          // color: themeProvider.secondaryTextColor,
+                                        ),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        TextField(
+                                          onTap: () {
+                                            CustomToast().showToast(
+                                                context,
+                                                'You can\'t perform this operation through Plane Mobile',
+                                                themeProvider,
+                                                toastType: ToastType.warning);
+                                            return;
+                                          },
+                                          controller: description,
+                                          maxLines: 4,
+                                          readOnly: projectProvider.role !=
+                                                  Role.admin &&
+                                              projectProvider.role !=
+                                                  Role.member,
+                                          decoration: themeProvider
+                                              .themeManager.textFieldDecoration,
+                                        ),
+                                        const SizedBox(
+                                            height: spaceBetweenSections),
+                                        Row(
+                                          children: [
+                                            CustomText(
+                                              'Sub Issue',
+                                              type: FontStyle.Medium,
+                                              fontWeight: FontWeightt.Medium,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
+                                            ),
+                                            const Spacer(),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        selectedSubIssues(),
+                                        // const SizedBox(
+                                        //     height: spaceBetweenSectionsAndItems),
+                                        Container(
                                           height: 45,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -623,172 +486,150 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              CustomText(
-                                                expanded
-                                                    ? "View less"
-                                                    : 'View all',
-                                                type: FontStyle.Medium,
-                                                fontWeight: FontWeightt.Regular,
-                                                color: themeProvider
-                                                    .themeManager.primaryColour,
-                                              ),
-
-                                              const SizedBox(width: 10),
-                                              //icon
-                                              Icon(
-                                                //arrow down icon
-
-                                                expanded
-                                                    ? Icons
-                                                        .keyboard_arrow_up_rounded
-                                                    : Icons.keyboard_arrow_down,
-                                                color: const Color.fromRGBO(
-                                                    63, 118, 255, 1),
-                                              ),
-                                            ],
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              if (projectProvider.role !=
+                                                      Role.admin &&
+                                                  projectProvider.role !=
+                                                      Role.member) {
+                                                CustomToast().showToast(
+                                                    context,
+                                                    accessRestrictedMSG,
+                                                    themeProvider,
+                                                    toastType:
+                                                        ToastType.failure);
+                                                return;
+                                              }
+                                              showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (ctx) =>
+                                                    IssuesListSheet(
+                                                  // parent: false,
+                                                  type: IssueDetailCategory
+                                                      .subIssue,
+                                                  issueId: widget.issueId,
+                                                  createIssue: false,
+                                                  // blocking: true,
+                                                ),
+                                              );
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.add,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
+                                                ),
+                                                CustomText(
+                                                  'Add Sub Issue',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight:
+                                                      FontWeightt.Regular,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
 
-                                      // issueProvider.issueDetails[
-                                      //                 'issue_attachment'] !=
-                                      //             null &&
-                                      //         issueProvider
-                                      //             .issueDetails[
-                                      //                 'issue_attachment']
-                                      //             .isNotEmpty
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                              height: spaceBetweenSections),
-                                          CustomText(
-                                            'Attachments',
-                                            type: FontStyle.Medium,
-                                            fontWeight: FontWeightt.Medium,
-                                            color: themeProvider
-                                                .themeManager.primaryTextColor,
-                                            // color: themeProvider.secondaryTextColor,
-                                          ),
-                                          const SizedBox(
-                                              height:
-                                                  spaceBetweenSectionsAndItems),
-                                          attachmentsWidget(),
-                                          Container(
-                                            height: 45,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: themeProvider
-                                                  .themeManager.primaryColour
-                                                  .withOpacity(0.2),
-                                              border: Border.all(
-                                                color: themeProvider
-                                                    .themeManager.primaryColour,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: InkWell(
-                                              onTap: () {
-                                                if (issueProvider
-                                                        .attachmentState !=
-                                                    StateEnum.loading) {
-                                                  showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    enableDrag: true,
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(30),
-                                                        topRight:
-                                                            Radius.circular(30),
-                                                      ),
-                                                    ),
-                                                    context: context,
-                                                    builder: (ctx) {
-                                                      return Padding(
-                                                        padding: EdgeInsets.only(
-                                                            bottom:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .viewInsets
-                                                                    .bottom),
-                                                        child:
-                                                            AddAttachmentsSheet(
-                                                          projectId: widget
-                                                                  .projID ??
-                                                              ref
+                                        const SizedBox(
+                                            height: spaceBetweenSections),
+                                        CustomText(
+                                          'Details',
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                          // color: themeProvider.secondaryTextColor,
+                                        ),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        //three dropdown each occupying full width of the screen , each consits of a row with hint text and dropdown button at end
+                                        stateWidget(),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        assigneesWidget(),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        priorityWidget(),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        expanded
+                                            ? Column(
+                                                children: [
+                                                  ref
                                                                   .read(ProviderList
                                                                       .projectProvider)
-                                                                  .currentProject['id'],
-                                                          slug: ref
-                                                              .read(ProviderList
-                                                                  .workspaceProvider)
-                                                              .selectedWorkspace!
-                                                              .workspaceSlug,
-                                                          issueId:
-                                                              widget.issueId,
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                              child: Center(
-                                                child: CustomText(
-                                                  issueProvider
-                                                              .attachmentState ==
-                                                          StateEnum.loading
-                                                      ? 'Uploading...'
-                                                      : 'Click to upload file here',
-                                                  color: Colors.blueAccent,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(
-                                          height: spaceBetweenSections),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              CustomText(
-                                                'Links',
-                                                type: FontStyle.Medium,
-                                                fontWeight: FontWeightt.Medium,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryTextColor,
-                                                // color: themeProvider.secondaryTextColor,
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                              height:
-                                                  spaceBetweenSectionsAndItems),
-                                          linksWidget(),
-                                          Container(
+                                                                  .currentProject[
+                                                              'estimate'] ==
+                                                          null
+                                                      ? Container()
+                                                      : estimateWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  startDateWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  dueDateWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  labelWidget(widget.issueId),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  parentWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  blockingWidget(
+                                                      widget.issueId),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  blockedByWidget(
+                                                      widget.issueId),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  cyclesWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                  moduleWidget(),
+                                                  const SizedBox(
+                                                      height:
+                                                          spaceBetweenSectionsAndItems),
+                                                ],
+                                              )
+                                            : Container(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              expanded = !expanded;
+                                            });
+                                          },
+                                          child: Container(
                                             height: 45,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: themeProvider.themeManager
-                                                  .secondaryBackgroundDefaultColor,
+                                              color: Colors.transparent,
                                               border: Border.all(
                                                 color: themeProvider
                                                     .themeManager
@@ -797,401 +638,501 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: InkWell(
-                                              onTap: () {
-                                                if (projectProvider.role !=
-                                                        Role.admin &&
-                                                    projectProvider.role !=
-                                                        Role.member) {
-                                                  CustomToast().showToast(
-                                                      context,
-                                                      accessRestrictedMSG,
-                                                      themeProvider,
-                                                      toastType:
-                                                          ToastType.failure);
-                                                  return;
-                                                }
-                                                showModalBottomSheet(
-                                                  isScrollControlled: true,
-                                                  enableDrag: true,
-                                                  // constraints: BoxConstraints(
-                                                  //     maxHeight:
-                                                  //         MediaQuery.of(context)
-                                                  //                 .size
-                                                  //                 .height *
-                                                  //             0.7),
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(30),
-                                                    topRight:
-                                                        Radius.circular(30),
-                                                  )),
-                                                  context: context,
-                                                  builder: (ctx) {
-                                                    return SingleChildScrollView(
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(
-                                                            bottom:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .viewInsets
-                                                                    .bottom),
-                                                        child: AddLinkSheet(
-                                                          issueId:
-                                                              widget.issueId,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                CustomText(
+                                                  expanded
+                                                      ? "View less"
+                                                      : 'View all',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight:
+                                                      FontWeightt.Regular,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
+                                                ),
+
+                                                const SizedBox(width: 10),
+                                                //icon
+                                                Icon(
+                                                  //arrow down icon
+
+                                                  expanded
+                                                      ? Icons
+                                                          .keyboard_arrow_up_rounded
+                                                      : Icons
+                                                          .keyboard_arrow_down,
+                                                  color: const Color.fromRGBO(
+                                                      63, 118, 255, 1),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
+                                        // issueProvider.issueDetails[
+                                        //                 'issue_attachment'] !=
+                                        //             null &&
+                                        //         issueProvider
+                                        //             .issueDetails[
+                                        //                 'issue_attachment']
+                                        //             .isNotEmpty
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                                height: spaceBetweenSections),
+                                            CustomText(
+                                              'Attachments',
+                                              type: FontStyle.Medium,
+                                              fontWeight: FontWeightt.Medium,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
+                                              // color: themeProvider.secondaryTextColor,
+                                            ),
+                                            const SizedBox(
+                                                height:
+                                                    spaceBetweenSectionsAndItems),
+                                            attachmentsWidget(),
+                                            Container(
+                                              height: 45,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: themeProvider
+                                                    .themeManager.primaryColour
+                                                    .withOpacity(0.2),
+                                                border: Border.all(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (issueProvider
+                                                          .attachmentState !=
+                                                      StateEnum.loading) {
+                                                    showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      enableDrag: true,
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30),
                                                         ),
                                                       ),
+                                                      context: context,
+                                                      builder: (ctx) {
+                                                        return Padding(
+                                                          padding: EdgeInsets.only(
+                                                              bottom: MediaQuery
+                                                                      .of(context)
+                                                                  .viewInsets
+                                                                  .bottom),
+                                                          child:
+                                                              AddAttachmentsSheet(
+                                                            projectId: widget
+                                                                    .projID ??
+                                                                ref
+                                                                    .read(ProviderList
+                                                                        .projectProvider)
+                                                                    .currentProject['id'],
+                                                            slug: ref
+                                                                .read(ProviderList
+                                                                    .workspaceProvider)
+                                                                .selectedWorkspace!
+                                                                .workspaceSlug,
+                                                            issueId:
+                                                                widget.issueId,
+                                                          ),
+                                                        );
+                                                      },
                                                     );
-                                                  },
-                                                );
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.add,
-                                                    color: themeProvider
-                                                        .themeManager
-                                                        .placeholderTextColor,
+                                                  }
+                                                },
+                                                child: Center(
+                                                  child: CustomText(
+                                                    issueProvider
+                                                                .attachmentState ==
+                                                            StateEnum.loading
+                                                        ? 'Uploading...'
+                                                        : 'Click to upload file here',
+                                                    color: Colors.blueAccent,
                                                   ),
-                                                  CustomText(
-                                                    'Add',
-                                                    type: FontStyle.Medium,
-                                                    fontWeight:
-                                                        FontWeightt.Regular,
-                                                    color: themeProvider
-                                                        .themeManager
-                                                        .placeholderTextColor,
-                                                  ),
-                                                ],
+                                                ),
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSections),
-                                      CustomText(
-                                        'Activity',
-                                        type: FontStyle.Medium,
-                                        fontWeight: FontWeightt.Medium,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                        // color: themeProvider.secondaryTextColor,
-                                      ),
-                                      const SizedBox(
-                                          height: spaceBetweenSectionsAndItems),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: themeProvider.themeManager
-                                              .secondaryBackgroundDefaultColor,
-                                          border: Border.all(
-                                            color: themeProvider.themeManager
-                                                .borderSubtle01Color,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                          ],
                                         ),
-                                        padding: const EdgeInsets.all(15),
-                                        child: Column(
+
+                                        const SizedBox(
+                                            height: spaceBetweenSections),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            ListView.builder(
-                                              primary: false,
-                                              shrinkWrap: true,
-                                              itemCount: issueProvider
-                                                  .issueActivity.length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 15),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      issueProvider.issueActivity[
-                                                                          index]
-                                                                      [
-                                                                      'comment_stripped'] !=
-                                                                  null &&
-                                                              issueProvider.issueActivity[
-                                                                          index]
-                                                                      [
-                                                                      'field'] ==
-                                                                  null
-                                                          ? SizedBox(
-                                                              width:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                              child: Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Stack(
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(right: 10),
-                                                                        child:
-                                                                            CircleAvatar(
-                                                                          backgroundColor: themeProvider.isDarkThemeEnabled
-                                                                              ? lightBackgroundColor
-                                                                              : Colors.black54,
-                                                                          radius:
-                                                                              15,
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                CustomText(
-                                                                              issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
-                                                                              // color: Colors.black,
-                                                                              type: FontStyle.Medium,
-                                                                              fontWeight: FontWeightt.Bold,
-                                                                              color: themeProvider.isDarkThemeEnabled ? Colors.black : Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Positioned(
-                                                                        right:
-                                                                            0,
-                                                                        bottom:
-                                                                            -2,
-                                                                        child:
-                                                                            Container(
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(3),
-                                                                              color: Colors.grey[200]),
-                                                                          padding:
-                                                                              const EdgeInsets.all(2),
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.comment_outlined,
-                                                                            color:
-                                                                                themeProvider.themeManager.placeholderTextColor,
-                                                                            size:
-                                                                                12,
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  // const SizedBox(
-                                                                  //   width: 10,
-                                                                  // ),
-                                                                  Expanded(
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        CustomText(
-                                                                          issueProvider.issueActivity[index]['actor_detail']['first_name'] + ' ${issueProvider.issueActivity[index]['actor_detail']['last_name']}' ??
-                                                                              '',
-                                                                          type:
-                                                                              FontStyle.Medium,
-                                                                          fontWeight:
-                                                                              FontWeightt.Regular,
-                                                                          color: themeProvider
-                                                                              .themeManager
-                                                                              .primaryTextColor,
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              10,
-                                                                        ),
-                                                                        CustomText(
-                                                                          'Commented ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
-                                                                          type:
-                                                                              FontStyle.Small,
-                                                                          fontWeight:
-                                                                              FontWeightt.Regular,
-                                                                          color: themeProvider
-                                                                              .themeManager
-                                                                              .placeholderTextColor,
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              10,
-                                                                        ),
-                                                                        Container(
-                                                                          padding: const EdgeInsets.symmetric(
-                                                                              vertical: 15,
-                                                                              horizontal: 10),
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(6),
-                                                                              border: Border.all(color: greyColor),
-                                                                              color: themeProvider.themeManager.primaryBackgroundDefaultColor),
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              CustomText(
-                                                                                issueProvider.issueActivity[index]['comment_stripped'],
-                                                                                type: FontStyle.Medium,
-                                                                                fontWeight: FontWeightt.Regular,
-                                                                                color: themeProvider.themeManager.primaryTextColor,
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            )
-                                                          : issueProvider.issueActivity[
-                                                                              index]
-                                                                          [
-                                                                          'comment_stripped'] ==
-                                                                      null &&
-                                                                  issueProvider.issueActivity[
-                                                                              index]
-                                                                          [
-                                                                          'field'] !=
-                                                                      null
-                                                              ? Row(
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                CustomText(
+                                                  'Links',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryTextColor,
+                                                  // color: themeProvider.secondaryTextColor,
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                                height:
+                                                    spaceBetweenSectionsAndItems),
+                                            linksWidget(),
+                                            Container(
+                                              height: 45,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .secondaryBackgroundDefaultColor,
+                                                border: Border.all(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .borderSubtle01Color,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (projectProvider.role !=
+                                                          Role.admin &&
+                                                      projectProvider.role !=
+                                                          Role.member) {
+                                                    CustomToast().showToast(
+                                                        context,
+                                                        accessRestrictedMSG,
+                                                        themeProvider,
+                                                        toastType:
+                                                            ToastType.failure);
+                                                    return;
+                                                  }
+                                                  showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    enableDrag: true,
+                                                    // constraints: BoxConstraints(
+                                                    //     maxHeight:
+                                                    //         MediaQuery.of(context)
+                                                    //                 .size
+                                                    //                 .height *
+                                                    //             0.7),
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                      topLeft:
+                                                          Radius.circular(30),
+                                                      topRight:
+                                                          Radius.circular(30),
+                                                    )),
+                                                    context: context,
+                                                    builder: (ctx) {
+                                                      return SingleChildScrollView(
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(
+                                                              bottom: MediaQuery
+                                                                      .of(context)
+                                                                  .viewInsets
+                                                                  .bottom),
+                                                          child: AddLinkSheet(
+                                                            issueId:
+                                                                widget.issueId,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.add,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .placeholderTextColor,
+                                                    ),
+                                                    CustomText(
+                                                      'Add',
+                                                      type: FontStyle.Medium,
+                                                      fontWeight:
+                                                          FontWeightt.Regular,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .placeholderTextColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                            height: spaceBetweenSections),
+                                        CustomText(
+                                          'Activity',
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                          // color: themeProvider.secondaryTextColor,
+                                        ),
+                                        const SizedBox(
+                                            height:
+                                                spaceBetweenSectionsAndItems),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: themeProvider.themeManager
+                                                .secondaryBackgroundDefaultColor,
+                                            border: Border.all(
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            children: [
+                                              ListView.builder(
+                                                primary: false,
+                                                shrinkWrap: true,
+                                                itemCount: issueProvider
+                                                    .issueActivity.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 15),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        issueProvider.issueActivity[
+                                                                            index]
+                                                                        [
+                                                                        'comment_stripped'] !=
+                                                                    null &&
+                                                                issueProvider.issueActivity[
+                                                                            index]
+                                                                        [
+                                                                        'field'] ==
+                                                                    null
+                                                            ? SizedBox(
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                                child: Row(
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
                                                                           .start,
                                                                   children: [
-                                                                    CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .grey[100],
-                                                                      radius:
-                                                                          15,
-                                                                      child: Center(
-                                                                          child: issueProvider.issueActivity[index]['field'] == 'state'
-                                                                              ? Icon(
-                                                                                  Icons.grid_view_outlined,
-                                                                                  size: 15,
-                                                                                  color: themeProvider.themeManager.placeholderTextColor,
-                                                                                )
-                                                                              : issueProvider.issueActivity[index]['field'] == 'priority'
-                                                                                  ? SvgPicture.asset(
-                                                                                      'assets/svg_images/priority.svg',
-                                                                                      height: 15,
-                                                                                      width: 15,
-                                                                                    )
-                                                                                  : issueProvider.issueActivity[index]['field'] == 'assignees' || issueProvider.issueActivity[index]['field'] == 'assignee'
-                                                                                      ? Icon(
-                                                                                          Icons.people_outline,
-                                                                                          size: 18,
-                                                                                          color: themeProvider.themeManager.placeholderTextColor,
-                                                                                        )
-                                                                                      : issueProvider.issueActivity[index]['field'] == 'labels'
-                                                                                          ? Icon(
-                                                                                              Icons.local_offer_outlined,
-                                                                                              size: 15,
-                                                                                              color: themeProvider.themeManager.placeholderTextColor,
-                                                                                            )
-                                                                                          : issueProvider.issueActivity[index]['field'] == 'blocks'
-                                                                                              ? SvgPicture.asset(
-                                                                                                  'assets/svg_images/blocked_icon.svg',
-                                                                                                  height: 15,
-                                                                                                  width: 15,
-                                                                                                )
-                                                                                              : issueProvider.issueActivity[index]['field'] == 'blocking'
-                                                                                                  ? SvgPicture.asset(
-                                                                                                      'assets/svg_images/blocking_icon.svg',
-                                                                                                      height: 15,
-                                                                                                      width: 15,
-                                                                                                    )
-                                                                                                  : issueProvider.issueActivity[index]['field'] == 'description'
-                                                                                                      ? Icon(Icons.comment_outlined, color: themeProvider.themeManager.placeholderTextColor, size: 15)
-                                                                                                      : issueProvider.issueActivity[index]['field'] == 'link'
-                                                                                                          ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                          : issueProvider.issueActivity[index]['field'] == 'modules'
-                                                                                                              ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                              : issueProvider.issueActivity[index]['field'] == 'cycles'
-                                                                                                                  ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                                  : issueProvider.issueActivity[index]['field'] == 'attachment'
-                                                                                                                      ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                                      : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))),
+                                                                    Stack(
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(right: 10),
+                                                                          child:
+                                                                              CircleAvatar(
+                                                                            backgroundColor: themeProvider.isDarkThemeEnabled
+                                                                                ? lightBackgroundColor
+                                                                                : Colors.black54,
+                                                                            radius:
+                                                                                15,
+                                                                            child:
+                                                                                Center(
+                                                                              child: CustomText(
+                                                                                issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
+                                                                                // color: Colors.black,
+                                                                                type: FontStyle.Medium,
+                                                                                fontWeight: FontWeightt.Bold,
+                                                                                color: themeProvider.isDarkThemeEnabled ? Colors.black : Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Positioned(
+                                                                          right:
+                                                                              0,
+                                                                          bottom:
+                                                                              -2,
+                                                                          child:
+                                                                              Container(
+                                                                            decoration:
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(3), color: Colors.grey[200]),
+                                                                            padding:
+                                                                                const EdgeInsets.all(2),
+                                                                            child:
+                                                                                Icon(
+                                                                              Icons.comment_outlined,
+                                                                              color: themeProvider.themeManager.placeholderTextColor,
+                                                                              size: 12,
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
                                                                     ),
-                                                                    const SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width:
-                                                                          width *
-                                                                              0.7,
+                                                                    // const SizedBox(
+                                                                    //   width: 10,
+                                                                    // ),
+                                                                    Expanded(
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:
                                                                             CrossAxisAlignment.start,
                                                                         children: [
                                                                           CustomText(
-                                                                            '${activityFormat(issueProvider.issueActivity[index])} ',
+                                                                            issueProvider.issueActivity[index]['actor_detail']['first_name'] + ' ${issueProvider.issueActivity[index]['actor_detail']['last_name']}' ??
+                                                                                '',
                                                                             type:
                                                                                 FontStyle.Medium,
-                                                                            textAlign:
-                                                                                TextAlign.left,
-                                                                            maxLines:
-                                                                                4,
                                                                             fontWeight:
                                                                                 FontWeightt.Regular,
+                                                                            color:
+                                                                                themeProvider.themeManager.primaryTextColor,
                                                                           ),
                                                                           const SizedBox(
-                                                                              height: 6),
+                                                                            height:
+                                                                                10,
+                                                                          ),
                                                                           CustomText(
-                                                                            ' ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
-                                                                            color:
-                                                                                themeProvider.themeManager.placeholderTextColor,
+                                                                            'Commented ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
                                                                             type:
                                                                                 FontStyle.Small,
-                                                                            textAlign:
-                                                                                TextAlign.left,
-                                                                            maxLines:
-                                                                                4,
+                                                                            fontWeight:
+                                                                                FontWeightt.Regular,
+                                                                            color:
+                                                                                themeProvider.themeManager.placeholderTextColor,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                          Container(
+                                                                            padding:
+                                                                                const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                                                            decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(6),
+                                                                                border: Border.all(color: greyColor),
+                                                                                color: themeProvider.themeManager.primaryBackgroundDefaultColor),
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                CustomText(
+                                                                                  issueProvider.issueActivity[index]['comment_stripped'],
+                                                                                  type: FontStyle.Medium,
+                                                                                  fontWeight: FontWeightt.Regular,
+                                                                                  color: themeProvider.themeManager.primaryTextColor,
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
                                                                     ),
                                                                   ],
-                                                                )
-                                                              : SizedBox(
-                                                                  width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                                  child: Row(
+                                                                ),
+                                                              )
+                                                            : issueProvider.issueActivity[index]
+                                                                            [
+                                                                            'comment_stripped'] ==
+                                                                        null &&
+                                                                    issueProvider.issueActivity[index]
+                                                                            [
+                                                                            'field'] !=
+                                                                        null
+                                                                ? Row(
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
                                                                             .start,
                                                                     children: [
                                                                       CircleAvatar(
-                                                                        backgroundColor: themeProvider
-                                                                            .themeManager
-                                                                            .tertiaryBackgroundDefaultColor,
+                                                                        backgroundColor:
+                                                                            Colors.grey[100],
                                                                         radius:
                                                                             15,
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              CustomText(
-                                                                            issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
-                                                                            // color: Colors.black,
-                                                                            type:
-                                                                                FontStyle.Medium,
-                                                                            fontWeight:
-                                                                                FontWeightt.Bold,
-                                                                          ),
-                                                                        ),
+                                                                        child: Center(
+                                                                            child: issueProvider.issueActivity[index]['field'] == 'state'
+                                                                                ? Icon(
+                                                                                    Icons.grid_view_outlined,
+                                                                                    size: 15,
+                                                                                    color: themeProvider.themeManager.placeholderTextColor,
+                                                                                  )
+                                                                                : issueProvider.issueActivity[index]['field'] == 'priority'
+                                                                                    ? SvgPicture.asset(
+                                                                                        'assets/svg_images/priority.svg',
+                                                                                        height: 15,
+                                                                                        width: 15,
+                                                                                      )
+                                                                                    : issueProvider.issueActivity[index]['field'] == 'assignees' || issueProvider.issueActivity[index]['field'] == 'assignee'
+                                                                                        ? Icon(
+                                                                                            Icons.people_outline,
+                                                                                            size: 18,
+                                                                                            color: themeProvider.themeManager.placeholderTextColor,
+                                                                                          )
+                                                                                        : issueProvider.issueActivity[index]['field'] == 'labels'
+                                                                                            ? Icon(
+                                                                                                Icons.local_offer_outlined,
+                                                                                                size: 15,
+                                                                                                color: themeProvider.themeManager.placeholderTextColor,
+                                                                                              )
+                                                                                            : issueProvider.issueActivity[index]['field'] == 'blocks'
+                                                                                                ? SvgPicture.asset(
+                                                                                                    'assets/svg_images/blocked_icon.svg',
+                                                                                                    height: 15,
+                                                                                                    width: 15,
+                                                                                                  )
+                                                                                                : issueProvider.issueActivity[index]['field'] == 'blocking'
+                                                                                                    ? SvgPicture.asset(
+                                                                                                        'assets/svg_images/blocking_icon.svg',
+                                                                                                        height: 15,
+                                                                                                        width: 15,
+                                                                                                      )
+                                                                                                    : issueProvider.issueActivity[index]['field'] == 'description'
+                                                                                                        ? Icon(Icons.comment_outlined, color: themeProvider.themeManager.placeholderTextColor, size: 15)
+                                                                                                        : issueProvider.issueActivity[index]['field'] == 'link'
+                                                                                                            ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                            : issueProvider.issueActivity[index]['field'] == 'modules'
+                                                                                                                ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                                : issueProvider.issueActivity[index]['field'] == 'cycles'
+                                                                                                                    ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                                    : issueProvider.issueActivity[index]['field'] == 'attachment'
+                                                                                                                        ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                                        : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))),
                                                                       ),
                                                                       const SizedBox(
                                                                         width:
@@ -1206,17 +1147,17 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                               CrossAxisAlignment.start,
                                                                           children: [
                                                                             CustomText(
-                                                                              issueProvider.issueActivity[index]['comment'],
+                                                                              '${activityFormat(issueProvider.issueActivity[index])} ',
                                                                               type: FontStyle.Medium,
                                                                               textAlign: TextAlign.left,
                                                                               maxLines: 4,
+                                                                              fontWeight: FontWeightt.Regular,
                                                                             ),
                                                                             const SizedBox(height: 6),
                                                                             CustomText(
-                                                                              checkTimeDifferenc(issueProvider.issueActivity[index]['created_at']),
+                                                                              ' ${checkTimeDifferenc(issueProvider.issueActivity[index]['created_at'])}',
                                                                               color: themeProvider.themeManager.placeholderTextColor,
                                                                               type: FontStyle.Small,
-                                                                              fontWeight: FontWeightt.Regular,
                                                                               textAlign: TextAlign.left,
                                                                               maxLines: 4,
                                                                             ),
@@ -1224,107 +1165,167 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                         ),
                                                                       ),
                                                                     ],
+                                                                  )
+                                                                : SizedBox(
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width,
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        CircleAvatar(
+                                                                          backgroundColor: themeProvider
+                                                                              .themeManager
+                                                                              .tertiaryBackgroundDefaultColor,
+                                                                          radius:
+                                                                              15,
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                CustomText(
+                                                                              issueProvider.issueActivity[index]['actor_detail']['display_name'][0].toString().toUpperCase(),
+                                                                              // color: Colors.black,
+                                                                              type: FontStyle.Medium,
+                                                                              fontWeight: FontWeightt.Bold,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              width * 0.7,
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              CustomText(
+                                                                                "${issueProvider.issueActivity[index]['actor_detail']['display_name']} ${issueProvider.issueActivity[index]['comment']}",
+                                                                                type: FontStyle.Medium,
+                                                                                textAlign: TextAlign.left,
+                                                                                maxLines: 4,
+                                                                              ),
+                                                                              const SizedBox(height: 6),
+                                                                              CustomText(
+                                                                                checkTimeDifferenc(issueProvider.issueActivity[index]['created_at']),
+                                                                                color: themeProvider.themeManager.placeholderTextColor,
+                                                                                type: FontStyle.Small,
+                                                                                fontWeight: FontWeightt.Regular,
+                                                                                textAlign: TextAlign.left,
+                                                                                maxLines: 4,
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                            //COMMENTS POST
-                                            // Row(
-                                            //   children: [
-                                            //     Expanded(
-                                            //       child: TextFormField(
-                                            //         decoration: themeProvider.themeManager.textFieldDecoration
-                                            //             .copyWith(
-                                            //                 enabledBorder:
-                                            //                     OutlineInputBorder(
-                                            //                   borderSide: BorderSide(
-                                            //                       color: themeProvider
-                                            //                               .isDarkThemeEnabled
-                                            //                           ? darkThemeBorder
-                                            //                           : const Color(
-                                            //                               0xFFE5E5E5),
-                                            //                       width: 1.0),
-                                            //                   borderRadius:
-                                            //                       const BorderRadius
-                                            //                               .all(
-                                            //                           Radius.circular(
-                                            //                               8)),
-                                            //                 ),
-                                            //                 disabledBorder:
-                                            //                     OutlineInputBorder(
-                                            //                   borderSide: BorderSide(
-                                            //                       color: themeProvider
-                                            //                               .isDarkThemeEnabled
-                                            //                           ? darkThemeBorder
-                                            //                           : const Color(
-                                            //                               0xFFE5E5E5),
-                                            //                       width: 1.0),
-                                            //                   borderRadius:
-                                            //                       const BorderRadius
-                                            //                               .all(
-                                            //                           Radius.circular(
-                                            //                               8)),
-                                            //                 ),
-                                            //                 focusedBorder:
-                                            //                     const OutlineInputBorder(
-                                            //                   borderSide:
-                                            //                       BorderSide(
-                                            //                           color:
-                                            //                               primaryColor,
-                                            //                           width:
-                                            //                               2.0),
-                                            //                   borderRadius:
-                                            //                       BorderRadius
-                                            //                           .all(Radius
-                                            //                               .circular(
-                                            //                                   8)),
-                                            //                 ),
-                                            //                 labelText:
-                                            //                     'Enter your comment here...'),
-                                            //       ),
-                                            //     ),
-                                            //     const SizedBox(
-                                            //       width: 10,
-                                            //     ),
-                                            //     Container(
-                                            //       padding:
-                                            //           const EdgeInsets.all(18),
-                                            //       decoration: BoxDecoration(
-                                            //         borderRadius:
-                                            //             BorderRadius.circular(
-                                            //                 5),
-                                            //         color: primaryColor,
-                                            //       ),
-                                            //       child: SvgPicture.asset(
-                                            //         'assets/svg_images/send_icon.svg',
-                                            //         height: 20,
-                                            //         width: 20,
-                                            //       ),
-                                            //     )
-                                            //   ],
-                                            // )
-                                          ],
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              //COMMENTS POST
+                                              // Row(
+                                              //   children: [
+                                              //     Expanded(
+                                              //       child: TextFormField(
+                                              //         decoration: themeProvider.themeManager.textFieldDecoration
+                                              //             .copyWith(
+                                              //                 enabledBorder:
+                                              //                     OutlineInputBorder(
+                                              //                   borderSide: BorderSide(
+                                              //                       color: themeProvider
+                                              //                               .isDarkThemeEnabled
+                                              //                           ? darkThemeBorder
+                                              //                           : const Color(
+                                              //                               0xFFE5E5E5),
+                                              //                       width: 1.0),
+                                              //                   borderRadius:
+                                              //                       const BorderRadius
+                                              //                               .all(
+                                              //                           Radius.circular(
+                                              //                               8)),
+                                              //                 ),
+                                              //                 disabledBorder:
+                                              //                     OutlineInputBorder(
+                                              //                   borderSide: BorderSide(
+                                              //                       color: themeProvider
+                                              //                               .isDarkThemeEnabled
+                                              //                           ? darkThemeBorder
+                                              //                           : const Color(
+                                              //                               0xFFE5E5E5),
+                                              //                       width: 1.0),
+                                              //                   borderRadius:
+                                              //                       const BorderRadius
+                                              //                               .all(
+                                              //                           Radius.circular(
+                                              //                               8)),
+                                              //                 ),
+                                              //                 focusedBorder:
+                                              //                     const OutlineInputBorder(
+                                              //                   borderSide:
+                                              //                       BorderSide(
+                                              //                           color:
+                                              //                               primaryColor,
+                                              //                           width:
+                                              //                               2.0),
+                                              //                   borderRadius:
+                                              //                       BorderRadius
+                                              //                           .all(Radius
+                                              //                               .circular(
+                                              //                                   8)),
+                                              //                 ),
+                                              //                 labelText:
+                                              //                     'Enter your comment here...'),
+                                              //       ),
+                                              //     ),
+                                              //     const SizedBox(
+                                              //       width: 10,
+                                              //     ),
+                                              //     Container(
+                                              //       padding:
+                                              //           const EdgeInsets.all(18),
+                                              //       decoration: BoxDecoration(
+                                              //         borderRadius:
+                                              //             BorderRadius.circular(
+                                              //                 5),
+                                              //         color: primaryColor,
+                                              //       ),
+                                              //       child: SvgPicture.asset(
+                                              //         'assets/svg_images/send_icon.svg',
+                                              //         height: 20,
+                                              //         width: 20,
+                                              //       ),
+                                              //     )
+                                              //   ],
+                                              // )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 50),
-                                      const SizedBox(
-                                        height: 20,
-                                      )
-                                    ],
+                                        const SizedBox(height: 50),
+                                        const SizedBox(
+                                          height: 20,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      )
+                    : const Center(
+                        child: Text('Something went wrong'),
                       ),
-                    )
-                  : const Center(
-                      child: Text('Something went wrong'),
-                    ),
+      ),
     );
   }
 
@@ -1354,16 +1355,11 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     if (activity['actor_detail']['first_name'] != null &&
         activity['actor_detail']['last_name'] != null) {
       if (activity['field'] == 'description') {
-        formattedActivity = activity['actor_detail']['first_name'] +
-            " " +
-            activity['actor_detail']['last_name'] +
-            ' Updated the description';
+        formattedActivity = activity['actor_detail']['display_name'] +
+            ' updated the description';
       } else {
-        formattedActivity = activity['comment'].toString().replaceFirst(
-            activity['comment'].split(' ').first,
-            activity['actor_detail']['first_name'] +
-                " " +
-                activity['actor_detail']['last_name']);
+        formattedActivity =
+            "${activity['actor_detail']['display_name']} ${activity['comment']}";
       }
       return formattedActivity;
     } else {
@@ -1997,7 +1993,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           }
           var date = await showDatePicker(
             builder: (context, child) => Theme(
-              data: themeProvider.isDarkThemeEnabled
+              data: themeProvider.themeManager.theme == THEME.dark ||
+                      themeProvider.themeManager.theme == THEME.darkHighContrast
                   ? ThemeData.dark().copyWith(
                       colorScheme: ColorScheme.dark(
                         primary: themeProvider.themeManager.primaryColour,
@@ -2142,7 +2139,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           }
           var date = await showDatePicker(
             builder: (context, child) => Theme(
-              data: themeProvider.isDarkThemeEnabled
+              data: themeProvider.themeManager.theme == THEME.dark ||
+                      themeProvider.themeManager.theme == THEME.darkHighContrast
                   ? ThemeData.dark().copyWith(
                       colorScheme: ColorScheme.dark(
                         primary: themeProvider.themeManager.primaryColour,

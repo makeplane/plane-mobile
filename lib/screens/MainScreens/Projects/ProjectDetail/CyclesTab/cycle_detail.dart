@@ -213,37 +213,36 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: CustomAppBar(
-          centerTitle: true,
-          elevation: false,
+            centerTitle: true,
+            //elevation: false,
 
-          onPressed: () {
-            // issueProvider.issuesList = tempIssuesList;
-            issueProvider.getIssues(
-              slug: ref
-                  .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
-                  .workspaceSlug,
-              projID: projectProvider.currentProject['id'],
-            );
-            modulesProvider.selectedIssues = [];
-            cyclesProvider.selectedIssues = [];
-            issueProvider.issues.projectView = issueProvider.tempProjectView;
-            issueProvider.issues.groupBY = issueProvider.tempGroupBy;
+            onPressed: () {
+              // issueProvider.issuesList = tempIssuesList;
+              issueProvider.getIssues(
+                slug: ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+                projID: projectProvider.currentProject['id'],
+              );
+              modulesProvider.selectedIssues = [];
+              cyclesProvider.selectedIssues = [];
+              issueProvider.issues.projectView = issueProvider.tempProjectView;
+              issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
-            issueProvider.issues.orderBY = issueProvider.tempOrderBy;
-            issueProvider.issues.issueType = issueProvider.tempIssueType;
+              issueProvider.issues.orderBY = issueProvider.tempOrderBy;
+              issueProvider.issues.issueType = issueProvider.tempIssueType;
 
-            issueProvider.issues.filters = issueProvider.tempFilters;
+              issueProvider.issues.filters = issueProvider.tempFilters;
 
-            issueProvider.showEmptyStates =
-                issueProvider.issueView["showEmptyGroups"];
-            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-            Navigator.pop(context);
-          },
-
-          text: widget.fromModule ? widget.moduleName! : widget.cycleName!,
-          // color: themeProvider.primaryTextColor,
-        ),
+              issueProvider.showEmptyStates =
+                  issueProvider.issueView["showEmptyGroups"];
+              log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+              Navigator.pop(context);
+            },
+            text: projectProvider.currentProject['name']
+            // color: themeProvider.primaryTextColor,
+            ),
         body: isLoading
             ? Center(
                 child: SizedBox(
@@ -259,6 +258,21 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Container(
+                  //   height: 1,
+                  //   //width: MediaQuery.of(context).size.width,
+                  //   color: themeProvider.themeManager.borderSubtle01Color,
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, top: 20),
+                    child: CustomText(
+                      widget.fromModule
+                          ? widget.moduleName!
+                          : widget.cycleName!,
+                      type: FontStyle.H5,
+                      fontWeight: FontWeightt.Semibold,
+                    ),
+                  ),
                   // Container(
                   //   height: 1,
                   //   width: width,
@@ -672,7 +686,16 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               child: Container(
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
-                                color: Colors.black,
+                                decoration: BoxDecoration(
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: themeProvider
+                                              .themeManager.shadowColor,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, -5))
+                                    ]),
                                 child: Row(
                                   children: [
                                     projectProvider.role == Role.admin ||
@@ -706,21 +729,21 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                   ),
                                                 );
                                               },
-                                              child: const SizedBox(
+                                              child: SizedBox(
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Icon(
                                                       Icons.add,
-                                                      color: Colors.white,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                       size: 20,
                                                     ),
-                                                    CustomText(
+                                                    const CustomText(
                                                       ' Issue',
                                                       type: FontStyle.Medium,
-                                                      color: Colors.white,
-                                                      overrride: true,
                                                     )
                                                   ],
                                                 ),
@@ -731,7 +754,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
                                     Expanded(
                                         child: GestureDetector(
@@ -759,21 +783,20 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               );
                                             });
                                       },
-                                      child: const SizedBox(
+                                      child: SizedBox(
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Icon(
                                               Icons.menu,
-                                              color: Colors.white,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
                                               size: 19,
                                             ),
-                                            CustomText(
+                                            const CustomText(
                                               ' Layout',
                                               type: FontStyle.Medium,
-                                              color: Colors.white,
-                                              overrride: true,
                                             )
                                           ],
                                         ),
@@ -782,7 +805,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
                                     issueProvider.issues.projectView ==
                                             ProjectView.calendar
@@ -821,21 +845,21 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     );
                                                   });
                                             },
-                                            child: const SizedBox(
+                                            child: SizedBox(
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons.view_sidebar,
-                                                    color: Colors.white,
+                                                    Icons.wysiwyg_outlined,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .primaryTextColor,
                                                     size: 19,
                                                   ),
-                                                  CustomText(
+                                                  const CustomText(
                                                     ' Views',
                                                     type: FontStyle.Medium,
-                                                    color: Colors.white,
-                                                    overrride: true,
                                                   )
                                                 ],
                                               ),
@@ -844,54 +868,61 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: Colors.white,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
                                     Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.85),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
-                                            )),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return FilterSheet(
-                                                issueCategory: widget.fromModule
-                                                    ? IssueCategory.moduleIssues
-                                                    : IssueCategory.cycleIssues,
-                                              );
-                                            });
-                                      },
-                                      child: const SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.filter_alt,
-                                              color: Colors.white,
-                                              size: 19,
-                                            ),
-                                            CustomText(
-                                              ' Filters',
-                                              type: FontStyle.Medium,
-                                              color: Colors.white,
-                                              overrride: true,
-                                            )
-                                          ],
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              enableDrag: true,
+                                              constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.85),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              )),
+                                              context: context,
+                                              builder: (ctx) {
+                                                return FilterSheet(
+                                                  issueCategory:
+                                                      widget.fromModule
+                                                          ? IssueCategory
+                                                              .moduleIssues
+                                                          : IssueCategory
+                                                              .cycleIssues,
+                                                );
+                                              });
+                                        },
+                                        child: SizedBox(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.filter_list_outlined,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                                size: 19,
+                                              ),
+                                              const CustomText(
+                                                ' Filters',
+                                                type: FontStyle.Medium,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1019,7 +1050,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         : 'end_date']) ==
                                 'Completed'
                             ? themeProvider
-                                .themeManager.tertiaryBackgroundDefaultColor
+                                .themeManager.secondaryBackgroundActiveColor
                             : themeProvider.themeManager.successBackgroundColor,
                     borderRadius: BorderRadius.circular(5)),
                 child: CustomText(

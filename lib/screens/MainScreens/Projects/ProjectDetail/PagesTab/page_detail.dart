@@ -189,8 +189,13 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     });
                               },
                               child: Container(
-                                color: themeProvider
-                                    .themeManager.primaryBackgroundDefaultColor,
+                                decoration: BoxDecoration(
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color)),
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
                                   children: [

@@ -115,14 +115,12 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                             decoration: BoxDecoration(
                               color: selectedLabels.contains(label["id"])
                                   ? themeProvider.themeManager.primaryColour
-                                  : (themeProvider.isDarkThemeEnabled
-                                      ? darkBackgroundColor
-                                      : lightBackgroundColor),
+                                  : (themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor),
                               borderRadius: BorderRadius.circular(4),
                               border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : const Color.fromARGB(255, 193, 192, 192),
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
                               ),
                             ),
                             child: Row(

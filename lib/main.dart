@@ -150,6 +150,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           ? Brightness.light
           : Brightness.dark,
     ));
+
+    themeProvider.setUiOverlayStyle(fromTHEME(theme: themeProvider.theme));
+
     // themeProvider.getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,

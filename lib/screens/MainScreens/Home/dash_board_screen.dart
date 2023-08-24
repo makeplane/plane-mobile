@@ -275,13 +275,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                         const CreateProject()));
                           },
                           child: Container(
-                            height: 45,
-                            width: 120,
-                            //margin: const EdgeInsets.only(top: 30),
+                            height: 40,
+                            width: 150,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color: const Color.fromRGBO(63, 118, 255, 1),
+                              color: themeProvider.themeManager.primaryColour,
                             ),
                             child: const CustomText(
                               'Create Project',
@@ -304,38 +303,45 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 20,
                         childAspectRatio: MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height * 0.25)),
+                            (MediaQuery.of(context).size.height * 0.20)),
                     itemBuilder: (context, index) {
                       return Container(
-                        padding: const EdgeInsets.all(5),
+                        //padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: themeProvider
                                   .themeManager.borderSubtle01Color),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                gridCards[index],
-                                type: FontStyle.XSmall,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              CustomText(
-                                dashboardProvider.dashboardData[
-                                            gridCardKeys[index]] !=
-                                        null
-                                    ? '${dashboardProvider.dashboardData[gridCardKeys[index]]}'
-                                    : '0',
-                                type: FontStyle.H4,
-                                fontWeight: FontWeightt.Bold,
-                              ),
-                            ],
+                        child: FittedBox(
+                          alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomText(
+                                  gridCards[index],
+                                  type: FontStyle.XSmall,
+                                  maxLines: 1,
+                                ),
+                                const SizedBox(
+                                  height: 3,
+                                ),
+                                CustomText(
+                                  dashboardProvider.dashboardData[
+                                              gridCardKeys[index]] !=
+                                          null
+                                      ? '${dashboardProvider.dashboardData[gridCardKeys[index]]}'
+                                      : '0',
+                                  type: FontStyle.H4,
+                                  fontWeight: FontWeightt.Bold,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

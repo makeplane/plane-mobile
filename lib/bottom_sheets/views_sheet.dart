@@ -571,20 +571,28 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
               Container(height: 15),
 
               const CustomText('Display Properties',
-                  type: FontStyle.Small,
+                  type: FontStyle.Large,
                   fontWeight: FontWeightt.Semibold,
                   textAlign: TextAlign.start),
 
               Container(height: 20),
+
               //rectangular grid of multiple tags to filter
               Wrap(
-                  spacing: 10,
+                  //spacing: 10,
                   runSpacing: 10,
                   children: displayProperties
                       .map((tag) => (tag['name'] == 'Estimate' &&
                               projectProvider.currentProject['estimate'] ==
                                   null)
-                          ? const SizedBox()
+                          ?
+                          //////////////
+                          // Container(
+                          //     color: Colors.amber,
+                          //     height: 0,
+                          //     width: 0,
+                          //   )
+                          const SizedBox()
                           : (((tag['name'] == 'Created on' ||
                                           tag['name'] == 'Updated on') &&
                                       issueProvider.issues.projectView !=
@@ -595,7 +603,14 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                           tag['name'] == 'Sub Issue Count') &&
                                       issueProvider.issues.projectView ==
                                           ProjectView.spreadsheet))
-                              ? const SizedBox()
+                              ?
+                              ///////////////////
+                              // Container(
+                              //     color: Colors.amber,
+                              //     height: 0,
+                              //     width: 0,
+                              //   )
+                              const SizedBox()
                               : GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -604,9 +619,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     });
                                   },
                                   child: Container(
-                                    //height: 35,
+                                    margin: const EdgeInsets.only(right: 8),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 6),
+                                        horizontal: 14, vertical: 6),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       color: tag['selected'] ?? false
@@ -622,8 +637,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                       ),
                                     ),
                                     child: CustomText(tag['name'],
+                                        textAlign: TextAlign.center,
                                         type: FontStyle.Medium,
                                         overrride: true,
+                                        fontWeight: FontWeightt.Regular,
                                         color: tag['selected'] ?? false
                                             ? Colors.white
                                             : themeProvider
@@ -631,6 +648,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   ),
                                 ))
                       .toList()),
+
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 30),
                 child: Button(
@@ -782,7 +800,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             ],
           ),
           Container(
-            color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             height: 50,
             child: Row(
               children: [

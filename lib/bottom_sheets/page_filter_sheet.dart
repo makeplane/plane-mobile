@@ -37,13 +37,13 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     log(pageProvider.selectedFilter.name);
     return Container(
-      padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
+      padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
       child: Wrap(children: [
         Row(
           children: [
             const CustomText(
               'Filters',
-              type: FontStyle.H6,
+              type: FontStyle.H4,
               fontWeight: FontWeightt.Semibold,
             ),
             const Spacer(),
@@ -77,13 +77,16 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
               ),
               CustomText(
                 'All',
-                type: FontStyle.Small,
+                type: FontStyle.H6,
                 color: themeProvider.themeManager.tertiaryTextColor,
               )
             ],
           ),
         ),
-        CustomDivider(themeProvider: themeProvider),
+        CustomDivider(
+          themeProvider: themeProvider,
+          margin: const EdgeInsets.symmetric(vertical: 3),
+        ),
         InkWell(
           onTap: () async {
             selectFilter(PageFilters.recent);
@@ -102,13 +105,16 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
               ),
               CustomText(
                 'Recent',
-                type: FontStyle.Small,
+                type: FontStyle.H6,
                 color: themeProvider.themeManager.tertiaryTextColor,
               )
             ],
           ),
         ),
-        CustomDivider(themeProvider: themeProvider),
+        CustomDivider(
+          themeProvider: themeProvider,
+          margin: const EdgeInsets.symmetric(vertical: 3),
+        ),
         InkWell(
           onTap: () async {
             selectFilter(PageFilters.favourites);
@@ -127,13 +133,16 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
               ),
               CustomText(
                 'Favourites',
-                type: FontStyle.Small,
+                type: FontStyle.H6,
                 color: themeProvider.themeManager.tertiaryTextColor,
               )
             ],
           ),
         ),
-        CustomDivider(themeProvider: themeProvider),
+        CustomDivider(
+          themeProvider: themeProvider,
+          margin: const EdgeInsets.symmetric(vertical: 3),
+        ),
         InkWell(
           onTap: () async {
             selectFilter(PageFilters.createdByMe);
@@ -151,14 +160,17 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 onChanged: (value) {},
               ),
               CustomText(
-                'CreatedByMe',
-                type: FontStyle.Small,
+                'Created By Me',
+                type: FontStyle.H6,
                 color: themeProvider.themeManager.tertiaryTextColor,
               )
             ],
           ),
         ),
-        CustomDivider(themeProvider: themeProvider),
+        CustomDivider(
+          themeProvider: themeProvider,
+          margin: const EdgeInsets.symmetric(vertical: 3),
+        ),
         InkWell(
           onTap: () async {
             selectFilter(PageFilters.createdByOthers);
@@ -176,14 +188,14 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
                 onChanged: (value) {},
               ),
               CustomText(
-                'CreatedByOthers',
-                type: FontStyle.Small,
+                'Created By Others',
+                type: FontStyle.H6,
                 color: themeProvider.themeManager.tertiaryTextColor,
               )
             ],
           ),
         ),
-        Container(height: 15),
+        Container(height: 50),
       ]),
     );
   }

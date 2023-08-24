@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 
@@ -209,7 +210,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         ),
         CustomText(
           provider.issuesResponse[widget.cardIndex]['name'],
-          type: FontStyle.Small,
+          type: FontStyle.Medium,
           fontWeight: FontWeightt.Medium,
           maxLines: 2,
           textAlign: TextAlign.start,
@@ -392,13 +393,19 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                       children: [
                                         CircleAvatar(
                                           radius: 5,
-                                          backgroundColor: Color(int.parse(
-                                              provider
-                                                  .issuesResponse[widget
-                                                          .cardIndex]
-                                                      ['label_details'][0]
-                                                      ['color']
-                                                  .replaceAll('#', '0xFF'))),
+                                          backgroundColor: ColorManager
+                                              .getColorFromHexaDecimal(
+                                                  provider.issuesResponse[
+                                                              widget.cardIndex]
+                                                          ['label_details'][0]
+                                                      ['color']),
+                                          // Color(int.parse(
+                                          //     provider
+                                          //         .issuesResponse[widget
+                                          //                 .cardIndex]
+                                          //             ['label_details'][0]
+                                          //             ['color']
+                                          //         .replaceAll('#', '0xFF'))),
                                         ),
                                         const SizedBox(
                                           width: 5,

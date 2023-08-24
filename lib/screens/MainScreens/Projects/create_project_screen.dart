@@ -353,7 +353,11 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                 maxLines: 5,
                                 decoration: themeProvider
                                     .themeManager.textFieldDecoration
-                                    .copyWith(labelText: 'Enter description'),
+                                    .copyWith(
+                                  labelText: 'Enter description',
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                ),
                               ),
                             ),
                             // const SizedBox(

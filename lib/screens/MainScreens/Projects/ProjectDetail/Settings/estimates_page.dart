@@ -498,8 +498,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                 ),
                 CustomText(
                   'Add Estimate',
-                  type: FontStyle.Medium,
-                  fontWeight: FontWeightt.Bold,
+                  type: FontStyle.Small,
+                  fontWeight: FontWeightt.Medium,
                   color: Colors.white,
                   overrride: true,
                 ),

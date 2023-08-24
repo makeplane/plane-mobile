@@ -50,6 +50,7 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
   @override
   Widget build(BuildContext context) {
     // var resendprov = ref.read(ProviderList.resendOtpCounterProvider);
+    var themeProvider = ref.read(ProviderList.themeProvider);
     if (start == 0) {
       return Align(
         alignment: Alignment.centerRight,
@@ -76,6 +77,7 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
         child: CustomText(
           'Didn’t receive code? Get new code in ${start < 10 ? "0$start" : start} secs.',
           type: FontStyle.Small,
+          color: themeProvider.themeManager.placeholderTextColor,
         ),
       );
     }

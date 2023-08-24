@@ -29,7 +29,7 @@ class ColorManager {
     return colorToReturn;
   }
 
-  static Color getColorFromHexaDecimal(String value) {
+  static Color getColorFromHexaDecimal(String? value) {
     Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
     String? colorData = value;
 

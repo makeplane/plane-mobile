@@ -139,7 +139,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                 border: Border(
                   bottom: BorderSide(
                     color: themeProvider.themeManager.borderSubtle01Color,
-                    width: 2.0,
+                    width: 1,
                   ),
                 ),
                 color:
@@ -154,6 +154,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                         child: CustomText(
                           e,
                           type: FontStyle.Small,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
+                          overrride: true,
                         ),
                       ),
                     );
@@ -196,6 +199,12 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   },
                   calendarStyle: CalendarStyle(
                       outsideDaysVisible: false,
+                      //tablePadding: const EdgeInsets.only(top: 10, bottom: 10),
+                      rowDecoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: themeProvider
+                                      .themeManager.borderDisabledColor))),
                       weekendTextStyle: TextStyle(
                         color: themeProvider.themeManager.placeholderTextColor,
                       ),

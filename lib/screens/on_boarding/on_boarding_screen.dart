@@ -646,7 +646,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 0
                                 ? themeProvider.themeManager.primaryColour
-                                : const Color.fromRGBO(206, 212, 218, 1),
+                                : themeProvider
+                                    .themeManager.placeholderTextColor,
                             radius: 3,
                           ),
                         ),
@@ -655,7 +656,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 1
                                 ? themeProvider.themeManager.primaryColour
-                                : const Color.fromRGBO(206, 212, 218, 1),
+                                : themeProvider
+                                    .themeManager.placeholderTextColor,
                             radius: 3,
                           ),
                         ),
@@ -664,7 +666,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                           child: CircleAvatar(
                             backgroundColor: currentIndex == 2
                                 ? themeProvider.themeManager.primaryColour
-                                : const Color.fromRGBO(206, 212, 218, 1),
+                                : themeProvider
+                                    .themeManager.placeholderTextColor,
                             radius: 3,
                           ),
                         ),

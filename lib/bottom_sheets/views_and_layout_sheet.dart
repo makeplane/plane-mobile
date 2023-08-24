@@ -586,71 +586,69 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
               Container(height: 15),
 
               const CustomText('Display Properties',
-                  type: FontStyle.Small,
+                  type: FontStyle.Large,
                   fontWeight: FontWeightt.Semibold,
                   textAlign: TextAlign.start),
 
               Container(height: 20),
               //rectangular grid of multiple tags to filter
               Wrap(
-                  spacing: 10,
+                  //spacing: 10,
                   runSpacing: 10,
                   children: displayProperties
-                      .map(
-                        (tag) => (tag['name'] == 'Estimate' &&
-                                projectProvider.currentProject['estimate'] ==
-                                    null)
-                            ? const SizedBox()
-                            : (((tag['name'] == 'Created on' ||
-                                            tag['name'] == 'Updated on') &&
-                                        issueProvider.issues.projectView !=
-                                            ProjectView.spreadsheet) ||
-                                    ((tag['name'] == 'ID' ||
-                                            tag['name'] == 'Attachment Count' ||
-                                            tag['name'] == 'Link' ||
-                                            tag['name'] == 'Sub Issue Count') &&
-                                        issueProvider.issues.projectView ==
-                                            ProjectView.spreadsheet))
-                                ? const SizedBox()
-                                : GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        tag['selected'] =
-                                            !(tag['selected'] ?? false);
-                                      });
-                                    },
-                                    child: Container(
-                                      // height: 35,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 6),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
+                      .map((tag) => (tag['name'] == 'Estimate' &&
+                              projectProvider.currentProject['estimate'] ==
+                                  null)
+                          ? const SizedBox()
+                          : (((tag['name'] == 'Created on' ||
+                                          tag['name'] == 'Updated on') &&
+                                      issueProvider.issues.projectView !=
+                                          ProjectView.spreadsheet) ||
+                                  ((tag['name'] == 'ID' ||
+                                          tag['name'] == 'Attachment Count' ||
+                                          tag['name'] == 'Link' ||
+                                          tag['name'] == 'Sub Issue Count') &&
+                                      issueProvider.issues.projectView ==
+                                          ProjectView.spreadsheet))
+                              ? const SizedBox()
+                              : GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      tag['selected'] =
+                                          !(tag['selected'] ?? false);
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(right: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: tag['selected'] ?? false
+                                          ? themeProvider
+                                              .themeManager.primaryColour
+                                          : themeProvider.themeManager
+                                              .primaryBackgroundDefaultColor,
+                                      border: Border.all(
                                         color: tag['selected'] ?? false
-                                            ? themeProvider
-                                                .themeManager.primaryColour
+                                            ? Colors.transparent
                                             : themeProvider.themeManager
-                                                .primaryBackgroundDefaultColor,
-                                        border: Border.all(
-                                          color: tag['selected'] ?? false
-                                              ? Colors.transparent
-                                              : themeProvider.themeManager
-                                                  .borderSubtle01Color,
-                                        ),
+                                                .borderSubtle01Color,
                                       ),
-
-                                      child: CustomText(tag['name'],
-                                          type: FontStyle.Medium,
-                                          overrride: true,
-                                          color: tag['selected'] ?? false
-                                              ? Colors.white
-                                              : themeProvider.themeManager
-                                                  .primaryTextColor),
                                     ),
+                                    child: CustomText(tag['name'],
+                                        textAlign: TextAlign.center,
+                                        type: FontStyle.Medium,
+                                        overrride: true,
+                                        fontWeight: FontWeightt.Regular,
+                                        color: tag['selected'] ?? false
+                                            ? Colors.white
+                                            : themeProvider
+                                                .themeManager.primaryTextColor),
                                   ),
-                      )
+                                ))
                       .toList()),
 
-              //////////////////////////////////////////////////////////////
               const SizedBox(height: 20),
 
               Column(

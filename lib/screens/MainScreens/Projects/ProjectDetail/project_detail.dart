@@ -87,26 +87,22 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
         },
         text: ref.read(ProviderList.projectProvider).currentProject['name'],
         actions: [
-          projectProvider.role == Role.admin ||
-                  projectProvider.role == Role.member
-              ? IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingScreen(),
-                      ),
-                    );
-                  },
-                  icon: issueProvider.statesState == StateEnum.restricted
-                      ? Container()
-                      : Icon(
-                          Icons.settings_outlined,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                        ),
-                )
-              : Container(),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingScreen(),
+                ),
+              );
+            },
+            icon: issueProvider.statesState == StateEnum.restricted
+                ? Container()
+                : Icon(
+                    Icons.settings_outlined,
+                    color: themeProvider.themeManager.placeholderTextColor,
+                  ),
+          ),
         ],
       ),
       floatingActionButton: selected != 0 &&

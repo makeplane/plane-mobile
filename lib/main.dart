@@ -37,12 +37,12 @@ void main() async {
   // Const.appBearerToken = null;
   // ConnectionService().checkConnectivity();
   prefs = pref;
-  // SentryFlutter.init((options) {
-  //   options.dsn = dotenv.env['SENTRY_DSN'];
-  // },
-  // appRunner: () => runApp(const ProviderScope(child: MyApp())),
-  // );
-  runApp(const ProviderScope(child: MyApp()));
+  SentryFlutter.init((options) {
+    options.dsn = dotenv.env['SENTRY_DSN'];
+  },
+  appRunner: () => runApp(const ProviderScope(child: MyApp())),
+  );
+  // runApp(const ProviderScope(child: MyApp()));
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;

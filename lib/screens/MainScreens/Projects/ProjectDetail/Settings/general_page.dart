@@ -54,6 +54,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
       identifier.text = projectProvider.projectDetailModel!.identifier!;
+      checkUser();
     });
   }
 
@@ -115,70 +116,69 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       //icon container
                       InkWell(
                         onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
+                          if (checkUser()) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                ),
                               ),
-                            ),
-                            constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.75,
-                            ),
-                            context: context,
-                            builder: (ctx) {
-                              return const EmojiSheet();
-                            },
-                          ).then((value) {
-                            setState(() {
-                              selectedEmoji = value['name'];
-                              isEmoji = value['is_emoji'];
-                              selectedColor = value['color'] ?? '#3A3A3A';
-                            });
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.75,
+                              ),
+                              context: context,
+                              builder: (ctx) {
+                                return const EmojiSheet();
+                              },
+                            ).then((value) {
+                              setState(() {
+                                selectedEmoji = value['name'];
+                                isEmoji = value['is_emoji'];
+                                selectedColor = value['color'] ?? '#3A3A3A';
+                              });
 
-                            if (isEmoji) {
-                              projectProvider.updateProject(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  projId:
-                                      projectProvider.projectDetailModel!.id!,
-                                  data: {
-                                    'name': name.text,
-                                    'description': description.text,
-                                    'identifier': identifier.text,
-                                    'network': isProjectPublic ? 2 : 0,
-                                    'emoji': selectedEmoji,
-                                    'icon_prop': null
-                                  });
-                            } else {
-                              projectProvider.updateProject(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  projId:
-                                      projectProvider.projectDetailModel!.id!,
-                                  data: {
-                                    'name': name.text,
-                                    'description': description.text,
-                                    'identifier': identifier.text,
-                                    'network': isProjectPublic ? 2 : 0,
-                                    'emoji': null,
-                                    'icon_prop': {
-                                      'name': selectedEmoji,
-                                      'color': selectedColor,
-                                    }
-                                  });
-                            }
-                          });
-                          // setState(() {
-                          //   showEmojis = !showEmojis;
-                          // });
+                              if (isEmoji) {
+                                projectProvider.updateProject(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    projId:
+                                        projectProvider.projectDetailModel!.id!,
+                                    data: {
+                                      'name': name.text,
+                                      'description': description.text,
+                                      'identifier': identifier.text,
+                                      'network': isProjectPublic ? 2 : 0,
+                                      'emoji': selectedEmoji,
+                                      'icon_prop': null
+                                    });
+                              } else {
+                                projectProvider.updateProject(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    projId:
+                                        projectProvider.projectDetailModel!.id!,
+                                    data: {
+                                      'name': name.text,
+                                      'description': description.text,
+                                      'identifier': identifier.text,
+                                      'network': isProjectPublic ? 2 : 0,
+                                      'emoji': null,
+                                      'icon_prop': {
+                                        'name': selectedEmoji,
+                                        'color': selectedColor,
+                                      }
+                                    });
+                              }
+                            });
+                          }
                         },
                         child: Container(
                           height: 55,
@@ -252,6 +252,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       //textfield
                       Expanded(
                         child: TextField(
+                          enabled: checkUser() ? true : false,
                             controller: name,
                             decoration:
                                 themeProvider.themeManager.textFieldDecoration
@@ -303,6 +304,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   TextField(
+                    enabled: checkUser() ? true : false,
                       onTap: () {
                         CustomToast().showToast(
                             context,
@@ -355,51 +357,54 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 15,
-                          right: 15,
-                          child: GestureDetector(
-                            onTap: () async {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  enableDrag: true,
-                                  constraints: BoxConstraints(
-                                      maxHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.75),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
+                        checkUser()
+                            ? Positioned(
+                                top: 15,
+                                right: 15,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        enableDrag: true,
+                                        constraints: BoxConstraints(
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.75),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(30),
+                                            topRight: Radius.circular(30),
+                                          ),
+                                        ),
+                                        context: context,
+                                        builder: (ctx) {
+                                          return const SelectCoverImage(
+                                            creatProject: false,
+                                          );
+                                        });
+                                    // var file = await ImagePicker.platform
+                                    //     .pickImage(source: ImageSource.gallery);
+                                    // if (file != null) {
+                                    //   setState(() {
+                                    //     coverImage = File(file.path);
+                                    //   });
+                                    // }
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      ),
                                     ),
                                   ),
-                                  context: context,
-                                  builder: (ctx) {
-                                    return const SelectCoverImage(
-                                      creatProject: false,
-                                    );
-                                  });
-                              // var file = await ImagePicker.platform
-                              //     .pickImage(source: ImageSource.gallery);
-                              // if (file != null) {
-                              //   setState(() {
-                              //     coverImage = File(file.path);
-                              //   });
-                              // }
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: themeProvider
-                                  .themeManager.primaryBackgroundDefaultColor,
-                              child: Center(
-                                child: Icon(
-                                  Icons.edit,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -437,6 +442,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   TextFormField(
+                      enabled: checkUser() ? true : false,
                       controller: identifier,
                       maxLength: 12,
                       inputFormatters: [
@@ -447,54 +453,56 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        enableDrag: true,
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.85),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        )),
-                        context: context,
-                        builder: (ctx) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 50),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                //const SizedBox(height: 50),
-                                selectionCard(
-                                    title: 'Secret',
-                                    isSelected: !isProjectPublic,
-                                    onTap: () {
-                                      setState(() {
-                                        isProjectPublic = false;
-                                      });
-                                      Navigator.of(context).pop();
-                                    }),
-                                //const SizedBox(height: 5),
-                                const Divider(),
-                                //const SizedBox(height: 5),
-                                selectionCard(
-                                    title: 'Public',
-                                    isSelected: isProjectPublic,
-                                    onTap: () {
-                                      setState(() {
-                                        isProjectPublic = true;
-                                      });
-                                      Navigator.of(context).pop();
-                                    }),
-                                //const SizedBox(height: 50),
-                              ],
-                            ),
-                          );
-                        },
-                      );
+                      if (checkUser()) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.85),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          )),
+                          context: context,
+                          builder: (ctx) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 50),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  //const SizedBox(height: 50),
+                                  selectionCard(
+                                      title: 'Secret',
+                                      isSelected: !isProjectPublic,
+                                      onTap: () {
+                                        setState(() {
+                                          isProjectPublic = false;
+                                        });
+                                        Navigator.of(context).pop();
+                                      }),
+                                  //const SizedBox(height: 5),
+                                  const Divider(),
+                                  //const SizedBox(height: 5),
+                                  selectionCard(
+                                      title: 'Public',
+                                      isSelected: isProjectPublic,
+                                      onTap: () {
+                                        setState(() {
+                                          isProjectPublic = true;
+                                        });
+                                        Navigator.of(context).pop();
+                                      }),
+                                  //const SizedBox(height: 50),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
                     },
                     child: Container(
                       height: 60,
@@ -514,9 +522,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const Spacer(),
+                          checkUser() ?
                           Icon(Icons.arrow_drop_down,
                               color:
                                   themeProvider.themeManager.primaryTextColor)
+                          : Container()
                         ],
                       ),
                     ),
@@ -552,160 +562,188 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //   ],
                   //   onChanged: (val) {},
                   // ),
-                  const SizedBox(height: 20),
-                  Container(
-                    decoration: BoxDecoration(
-                        //light redzz
-                        // color: Colors.red[00],
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: const Color.fromRGBO(255, 12, 12, 1))),
-                    child: ExpansionTile(
-                      onExpansionChanged: (value) async {
-                        scrollDown();
-                      },
-                      childrenPadding: const EdgeInsets.only(
-                          left: 15, right: 15, bottom: 10),
-                      iconColor: themeProvider.themeManager.primaryTextColor,
-                      collapsedIconColor:
-                          themeProvider.themeManager.primaryTextColor,
-                      backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
-                      collapsedBackgroundColor:
-                          const Color.fromRGBO(255, 12, 12, 0.1),
-                      title: CustomText(
-                        'Danger Zone',
-                        textAlign: TextAlign.left,
-                        type: FontStyle.H5,
-                        color: themeProvider.themeManager.textErrorColor,
-                      ),
-                      children: [
-                        CustomText(
-                          'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.',
-                          type: FontStyle.Medium,
-                          maxLines: 8,
-                          textAlign: TextAlign.left,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height *
-                                          0.85),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
+                  checkUser()
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            Container(
+                              decoration: BoxDecoration(
+                                //light redzz
+                                // color: Colors.red[00],
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: const Color.fromRGBO(255, 12, 12, 1),
                                 ),
                               ),
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  const DeleteProjectSheet(),
-                            );
-                          },
-                          child: Container(
-                              height: 45,
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.only(top: 20, bottom: 15),
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(255, 12, 12, 1),
-                                borderRadius: BorderRadius.circular(6),
+                              child: ExpansionTile(
+                                onExpansionChanged: (value) async {
+                                  scrollDown();
+                                },
+                                childrenPadding: const EdgeInsets.only(
+                                    left: 15, right: 15, bottom: 10),
+                                iconColor:
+                                    themeProvider.themeManager.primaryTextColor,
+                                collapsedIconColor:
+                                    themeProvider.themeManager.primaryTextColor,
+                                backgroundColor:
+                                    const Color.fromRGBO(255, 12, 12, 0.1),
+                                collapsedBackgroundColor:
+                                    const Color.fromRGBO(255, 12, 12, 0.1),
+                                title: CustomText(
+                                  'Danger Zone',
+                                  textAlign: TextAlign.left,
+                                  type: FontStyle.H5,
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
+                                ),
+                                children: [
+                                  CustomText(
+                                    'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.',
+                                    type: FontStyle.Medium,
+                                    maxLines: 8,
+                                    textAlign: TextAlign.left,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        enableDrag: true,
+                                        constraints: BoxConstraints(
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.85),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(30),
+                                            topRight: Radius.circular(30),
+                                          ),
+                                        ),
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            const DeleteProjectSheet(),
+                                      );
+                                    },
+                                    child: Container(
+                                        height: 45,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        margin: const EdgeInsets.only(
+                                            top: 20, bottom: 15),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              255, 12, 12, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: const Center(
+                                            child: CustomText(
+                                          'Delete Project',
+                                          color: Colors.white,
+                                          type: FontStyle.Medium,
+                                          overrride: true,
+                                          fontWeight: FontWeightt.Bold,
+                                        ))),
+                                  ),
+                                ],
                               ),
-                              child: const Center(
-                                  child: CustomText(
-                                'Delete Project',
-                                color: Colors.white,
-                                type: FontStyle.Medium,
-                                overrride: true,
-                                fontWeight: FontWeightt.Bold,
-                              ))),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Button(
-                    text: 'Update Project',
-                    ontap: () async {
-                      // log(identifier.text +
-                      //     " " +
-                      //     projectProvider.projectDetailModel!.identifier!);
-
-                      if (identifier.text !=
-                          projectProvider.projectDetailModel!.identifier) {
-                        var available =
-                            await projectProvider.checkIdentifierAvailability(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                identifier: identifier.text);
-                        if (available) {
-                          projectProvider.updateProject(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
-                                  .workspaceSlug,
-                              projId: projectProvider.projectDetailModel!.id!,
-                              data: {
-                                'name': name.text,
-                                'description': description.text,
-                                'identifier': identifier.text,
-                                'network': isProjectPublic ? 2 : 0,
-                                'emoji': selectedEmoji,
-                                'cover_image': projectProvider
-                                    .projectDetailModel!.coverImage
-                              });
-                        } else {
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: CustomText(
-                                'Identifier already taken',
-                                color: Colors.white,
-                              ),
-                              backgroundColor: Colors.red,
                             ),
-                          );
-                          return;
-                        }
-                      } else {
-                        projectProvider.updateProject(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projId: projectProvider.projectDetailModel!.id!,
-                            data: {
-                              'name': name.text,
-                              'description': description.text,
-                              'identifier': identifier.text,
-                              'network': isProjectPublic ? 2 : 0,
-                              'emoji': selectedEmoji,
-                              'cover_image':
-                                  projectProvider.projectDetailModel!.coverImage
-                            });
-                      }
-                      // await projectProvider.updateProject(
-                      //     projId: projectProvider.projectDetailModel!.id!,
-                      //     slug: ref
-                      //         .read(ProviderList.workspaceProvider)
-                      //         .selectedWorkspace!
-                      //         .workspaceSlug,
-                      //     data: {
-                      //       'name': name.text,
-                      //       'description': description.text,
-                      //       'identifier': identifier.text,
-                      //       'network': isProjectPublic ? 0 : 1,
-                      //     });
-                    },
-                  ),
-                  const SizedBox(height: 15),
+                          ],
+                        )
+                      : Container(),
+                  checkUser()
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 30),
+                            Button(
+                              text: 'Update Project',
+                              ontap: () async {
+                                // log(identifier.text +
+                                //     " " +
+                                //     projectProvider.projectDetailModel!.identifier!);
+
+                                if (identifier.text !=
+                                    projectProvider
+                                        .projectDetailModel!.identifier) {
+                                  var available = await projectProvider
+                                      .checkIdentifierAvailability(
+                                          slug: ref
+                                              .read(ProviderList
+                                                  .workspaceProvider)
+                                              .selectedWorkspace!
+                                              .workspaceSlug,
+                                          identifier: identifier.text);
+                                  if (available) {
+                                    projectProvider.updateProject(
+                                        slug: ref
+                                            .read(
+                                                ProviderList.workspaceProvider)
+                                            .selectedWorkspace!
+                                            .workspaceSlug,
+                                        projId: projectProvider
+                                            .projectDetailModel!.id!,
+                                        data: {
+                                          'name': name.text,
+                                          'description': description.text,
+                                          'identifier': identifier.text,
+                                          'network': isProjectPublic ? 2 : 0,
+                                          'emoji': selectedEmoji,
+                                          'cover_image': projectProvider
+                                              .projectDetailModel!.coverImage
+                                        });
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: CustomText(
+                                          'Identifier already taken',
+                                          color: Colors.white,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                } else {
+                                  projectProvider.updateProject(
+                                      slug: ref
+                                          .read(ProviderList.workspaceProvider)
+                                          .selectedWorkspace!
+                                          .workspaceSlug,
+                                      projId: projectProvider
+                                          .projectDetailModel!.id!,
+                                      data: {
+                                        'name': name.text,
+                                        'description': description.text,
+                                        'identifier': identifier.text,
+                                        'network': isProjectPublic ? 2 : 0,
+                                        'emoji': selectedEmoji,
+                                        'cover_image': projectProvider
+                                            .projectDetailModel!.coverImage
+                                      });
+                                }
+                                // await projectProvider.updateProject(
+                                //     projId: projectProvider.projectDetailModel!.id!,
+                                //     slug: ref
+                                //         .read(ProviderList.workspaceProvider)
+                                //         .selectedWorkspace!
+                                //         .workspaceSlug,
+                                //     data: {
+                                //       'name': name.text,
+                                //       'description': description.text,
+                                //       'identifier': identifier.text,
+                                //       'network': isProjectPublic ? 0 : 1,
+                                //     });
+                              },
+                            ),
+                            const SizedBox(height: 15),
+                          ],
+                        )
+                      : Container()
                 ],
               ),
               showEmojis
@@ -756,6 +794,20 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
         ),
       ),
     );
+  }
+
+  bool checkUser() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    List members = projectProvider.projectMembers;
+    bool hasAccess = false;
+    for (var element in members) {
+      if ((element['member']['id'] == profileProvider.userProfile.id) &&
+          (element['role'] == 20)) {
+        hasAccess = true;
+      }
+    }
+    return hasAccess;
   }
 
   Widget selectionCard(

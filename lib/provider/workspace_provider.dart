@@ -474,6 +474,7 @@ class WorkspaceProvider extends ChangeNotifier {
       );
       getMembersState = StateEnum.success;
       // log(response.data.toString());
+      workspaceMembers.clear();
       workspaceMembers = response.data;
       for (var element in workspaceMembers) {
         if (element["member"]['id'] ==

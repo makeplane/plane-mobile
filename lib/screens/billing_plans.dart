@@ -167,8 +167,8 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Integrations()));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => const Integrations()));
                   },
                   child: Container(
                       height: 45,

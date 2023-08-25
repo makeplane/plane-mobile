@@ -487,49 +487,70 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               itemCount: (menus[index]['items']).length,
               padding: const EdgeInsets.only(bottom: 15),
               itemBuilder: (context, idx) {
-                return InkWell(
-                  onTap: () {
-                    menus[index]['items'][idx]['onTap'](context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              menus[index]['items'][idx]['icon'],
-                              size: 18,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomText(
-                              menus[index]['items'][idx]['title'],
-                              type: FontStyle.Small,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                            ),
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 15,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                        )
-                      ],
+                if ((index == 0) || (idx == 5 || idx == 0 || checkUserAccess())) {
+                  return InkWell(
+                    onTap: () {
+                      menus[index]['items'][idx]['onTap'](context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                menus[index]['items'][idx]['icon'],
+                                size: 18,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              CustomText(
+                                menus[index]['items'][idx]['title'],
+                                type: FontStyle.Small,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 15,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return Container();
+                }
               },
             )
           ],
         );
       },
     );
+  }
+
+  bool checkUserAccess() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    bool hasAccess = false;
+    if (workspaceProvider.getMembersState == StateEnum.error) {
+      return hasAccess;
+    } else {
+      for (var element in workspaceProvider.workspaceMembers) {
+        if ((element['member']['id'] == profileProvider.userProfile.id) &&
+            (element['role'] == 20 || element['role'] == 15)) {
+          hasAccess = true;
+        }
+      }
+    }
+    return hasAccess;
   }
 }

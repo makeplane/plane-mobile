@@ -51,6 +51,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
         .workspaceUrl;
   }
 
+  Role? role;
+
   String? dropDownValue;
   List<String> dropDownItems = ['5', '10', '25', '50'];
   @override
@@ -125,73 +127,78 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.network(
+                                      height: 45,
+                                      width: 45,
                                       workspaceProvider.tempLogo,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (workspaceProvider.role != Role.admin &&
-                                workspaceProvider.role != Role.member) {
-                              CustomToast().showToast(
-                                  context,
-                                  'You are not allowed to change the logo',
-                                  themeProvider,
-                                  toastType: ToastType.warning);
-                              return;
-                            }
-                            showModalBottomSheet(
-                                isScrollControlled: true,
-                                enableDrag: true,
-                                constraints:
-                                    const BoxConstraints(maxHeight: 370),
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                )),
-                                context: context,
-                                builder: (ctx) {
-                                  return const WorkspaceLogo();
-                                });
-                            // var file = await ImagePicker.platform
-                            //     .pickImage(source: ImageSource.gallery);
-                            // if (file != null) {
-                            //   setState(() {
-                            //     coverImage = File(file.path);
-                            //   });
-                            // }
-                          },
-                          child: Container(
-                              margin: const EdgeInsets.only(left: 16),
-                              height: 45,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: themeProvider.themeManager
-                                    .secondaryBackgroundDefaultColor,
-                                border: Border.all(
-                                    color: themeProvider
-                                        .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.file_upload_outlined,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  const CustomText(
-                                    'Upload',
-                                    type: FontStyle.Small,
-                                  ),
-                                ],
-                              )),
-                        ),
+                        checkUserAccess()
+                            ? GestureDetector(
+                                onTap: () async {
+                                  if (workspaceProvider.role != Role.admin &&
+                                      workspaceProvider.role != Role.member) {
+                                    CustomToast().showToast(
+                                        context,
+                                        'You are not allowed to change the logo',
+                                        themeProvider,
+                                        toastType: ToastType.warning);
+                                    return;
+                                  }
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      enableDrag: true,
+                                      constraints:
+                                          const BoxConstraints(maxHeight: 370),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30),
+                                      )),
+                                      context: context,
+                                      builder: (ctx) {
+                                        return const WorkspaceLogo();
+                                      });
+                                  // var file = await ImagePicker.platform
+                                  //     .pickImage(source: ImageSource.gallery);
+                                  // if (file != null) {
+                                  //   setState(() {
+                                  //     coverImage = File(file.path);
+                                  //   });
+                                  // }
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.only(left: 16),
+                                    height: 45,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor,
+                                      border: Border.all(
+                                          color: themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.file_upload_outlined,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        const CustomText(
+                                          'Upload',
+                                          type: FontStyle.Small,
+                                        ),
+                                      ],
+                                    )),
+                              )
+                            : Container(),
                         workspaceProvider.tempLogo != ''
                             ? GestureDetector(
                                 onTap: () {
@@ -251,6 +258,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       right: 20,
                     ),
                     child: TextFormField(
+                        enabled: checkUserAccess() ? true : false,
                         readOnly: workspaceProvider.role != Role.admin &&
                             workspaceProvider.role != Role.member,
                         controller: _workspaceNameController,
@@ -361,28 +369,31 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   // child:
                   GestureDetector(
                     onTap: () {
-                      if (workspaceProvider.role != Role.admin &&
-                          workspaceProvider.role != Role.member) {
-                        CustomToast().showToast(
-                            context, accessRestrictedMSG, themeProvider,
-                            toastType: ToastType.failure);
-                        return;
-                      }
-                      showModalBottomSheet(
-                          context: context,
-                          constraints: BoxConstraints(
-                            minHeight: height * 0.5,
-                            maxHeight: MediaQuery.of(context).size.height * 0.5,
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                      if (checkUserAccess()) {
+                        if (workspaceProvider.role != Role.admin &&
+                            workspaceProvider.role != Role.member) {
+                          CustomToast().showToast(
+                              context, accessRestrictedMSG, themeProvider,
+                              toastType: ToastType.failure);
+                          return;
+                        }
+                        showModalBottomSheet(
+                            context: context,
+                            constraints: BoxConstraints(
+                              minHeight: height * 0.5,
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.5,
                             ),
-                          ),
-                          builder: (context) {
-                            return const CompanySize();
-                          });
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (context) {
+                              return const CompanySize();
+                            });
+                      }
                     },
                     child: Container(
                       margin: const EdgeInsets.only(
@@ -408,137 +419,156 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               type: FontStyle.Small,
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(right: 16),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                            ),
-                          ),
+                          checkUserAccess()
+                              ? Container(
+                                  margin: const EdgeInsets.only(right: 16),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
+                                )
+                              : Container()
                         ],
                       ),
                     ),
                     // ),
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      await workspaceProvider.updateWorkspace(data: {
-                        'name': _workspaceNameController.text,
-                        //convert to int
-                        'organization_size': workspaceProvider.companySize,
-                        'logo': workspaceProvider.tempLogo,
-                      });
-                      if (workspaceProvider.updateWorkspaceState ==
-                          StateEnum.success) {
-                        CustomToast().showToast(context,
-                            'Workspace updated successfully', themeProvider,
-                            toastType: ToastType.success);
-                      }
-                      if (workspaceProvider.updateWorkspaceState ==
-                          StateEnum.error) {
-                        CustomToast().showToast(
-                            context,
-                            'Something went wrong, please try again',
-                            themeProvider,
-                            toastType: ToastType.failure);
-                      }
-                      // refreshImage();
-                    },
-                    child: Container(
-                        height: 45,
-                        width: MediaQuery.of(context).size.width,
-                        margin:
-                            const EdgeInsets.only(top: 20, left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          color: themeProvider.themeManager.primaryColour,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Center(
-                            child: CustomText(
-                          'Update',
-                          color: Colors.white,
-                          type: FontStyle.Medium,
-                          fontWeight: FontWeightt.Bold,
-                          overrride: true,
-                        ))),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        //light red
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                            color: const Color.fromRGBO(255, 12, 12, 1))),
-                    margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: ExpansionTile(
-                      childrenPadding: const EdgeInsets.only(
-                          left: 15, right: 15, bottom: 10),
-                      iconColor: themeProvider.themeManager.primaryTextColor,
-                      collapsedIconColor:
-                          themeProvider.themeManager.primaryTextColor,
-                      backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
-                      collapsedBackgroundColor:
-                          const Color.fromRGBO(255, 12, 12, 0.1),
-                      title: const CustomText(
-                        'Danger Zone',
-                        textAlign: TextAlign.left,
-                        type: FontStyle.H5,
-                        color: Color.fromRGBO(255, 12, 12, 1),
-                      ),
-                      children: [
-                        const CustomText(
-                          'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.',
-                          type: FontStyle.Medium,
-                          maxLines: 8,
-                          textAlign: TextAlign.left,
-                          color: Colors.grey,
-                        ),
-                        GestureDetector(
+                  checkUserAccess()
+                      ? GestureDetector(
                           onTap: () async {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height * 0.8),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
-                              ),
-                              context: context,
-                              builder: (BuildContext context) => Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.viewInsetsOf(context)
-                                        .bottom),
-                                child: DeleteWorkspace(
-                                  workspaceName: workspaceProvider
-                                      .selectedWorkspace!.workspaceName,
-                                ),
-                              ),
-                            );
+                            await workspaceProvider.updateWorkspace(data: {
+                              'name': _workspaceNameController.text,
+                              //convert to int
+                              'organization_size':
+                                  workspaceProvider.companySize,
+                              'logo': workspaceProvider.tempLogo,
+                            });
+                            if (workspaceProvider.updateWorkspaceState ==
+                                StateEnum.success) {
+                              CustomToast().showToast(
+                                  context,
+                                  'Workspace updated successfully',
+                                  themeProvider,
+                                  toastType: ToastType.success);
+                            }
+                            if (workspaceProvider.updateWorkspaceState ==
+                                StateEnum.error) {
+                              CustomToast().showToast(
+                                  context,
+                                  'Something went wrong, please try again',
+                                  themeProvider,
+                                  toastType: ToastType.failure);
+                            }
+                            // refreshImage();
                           },
                           child: Container(
                               height: 45,
                               width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.only(top: 20, bottom: 15),
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 20, right: 20),
                               decoration: BoxDecoration(
-                                color: const Color.fromRGBO(255, 12, 12, 1),
+                                color: themeProvider.themeManager.primaryColour,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Center(
                                   child: CustomText(
-                                'Delete Workspace',
+                                'Update',
                                 color: Colors.white,
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
+                                overrride: true,
                               ))),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : Container(),
+                  checkUserAccess()
+                      ? Container(
+                          decoration: BoxDecoration(
+                              //light red
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                  color: const Color.fromRGBO(255, 12, 12, 1))),
+                          margin: const EdgeInsets.only(
+                              left: 20, right: 20, top: 20),
+                          child: ExpansionTile(
+                            childrenPadding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 10),
+                            iconColor:
+                                themeProvider.themeManager.primaryTextColor,
+                            collapsedIconColor:
+                                themeProvider.themeManager.primaryTextColor,
+                            backgroundColor:
+                                const Color.fromRGBO(255, 12, 12, 0.1),
+                            collapsedBackgroundColor:
+                                const Color.fromRGBO(255, 12, 12, 0.1),
+                            title: const CustomText(
+                              'Danger Zone',
+                              textAlign: TextAlign.left,
+                              type: FontStyle.H5,
+                              color: Color.fromRGBO(255, 12, 12, 1),
+                            ),
+                            children: [
+                              CustomText(
+                                getRole() == Role.admin
+                                    ? 'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.'
+                                    : 'Once you leave the workspace, you will not be able to access any data associated with this workspace. All of your projects and issues associated with you will become inaccessible. You will only be able to rejoin this workspace when someone invites you back.',
+                                type: FontStyle.Medium,
+                                maxLines: 8,
+                                textAlign: TextAlign.left,
+                                color: Colors.grey,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    enableDrag: true,
+                                    constraints: BoxConstraints(
+                                        maxHeight:
+                                            MediaQuery.of(context).size.height *
+                                                0.8),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30),
+                                      ),
+                                    ),
+                                    context: context,
+                                    builder: (BuildContext context) => Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              MediaQuery.viewInsetsOf(context)
+                                                  .bottom),
+                                      child: DeleteWorkspace(
+                                        workspaceName: workspaceProvider
+                                            .selectedWorkspace!.workspaceName,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                    height: 45,
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: const EdgeInsets.only(
+                                        top: 20, bottom: 15),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          const Color.fromRGBO(255, 12, 12, 1),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Center(
+                                        child: CustomText(
+                                      getRole() == Role.admin
+                                          ? 'Delete Workspace'
+                                          : 'Leave Workspace',
+                                      color: Colors.white,
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Bold,
+                                    ))),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -549,5 +579,43 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
         ),
       ),
     );
+  }
+
+  bool checkUserAccess() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    List members = workspaceProvider.workspaceMembers;
+    bool hasAccess = false;
+    for (var element in members) {
+      if ((element['member']['id'] == profileProvider.userProfile.id) &&
+          (element['role'] == 20)) {
+        hasAccess = true;
+      }
+    }
+    return hasAccess;
+  }
+
+  Role getRole() {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    int? userRole;
+    List members = workspaceProvider.workspaceMembers;
+    for (var element in members) {
+      if (element['member']['id'] == profileProvider.userProfile.id) {
+        userRole = element['role'];
+      }
+    }
+    switch (userRole) {
+      case 20:
+        return role = Role.admin;
+      case 15:
+        return role = Role.member;
+      case 10:
+        return role = Role.viewer;
+      case 5:
+        return role = Role.guest;
+      default:
+        return role = Role.guest;
+    }
   }
 }

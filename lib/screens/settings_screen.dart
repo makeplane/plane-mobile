@@ -89,7 +89,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
             maxLines: 1,
             color: themeProvider.themeManager.primaryTextColor,
           ),
-          bottom: TabBar(
+          bottom: 
+          hasAccess() ?
+          TabBar(
             controller: tabController,
             indicator: BoxDecoration(
               border: Border(
@@ -108,8 +110,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
               });
             },
             isScrollable: true,
-            tabs: tabs
-                .map(
+            tabs: 
+            tabs.map(
                   (e) => CustomText(
                     tabs[tabs.indexOf(e)],
                     type: FontStyle.Medium,
@@ -119,8 +121,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     overrride: true,
                   ),
                 )
-                .toList(),
-          ),
+                .toList()
+          )
+         : null
         ),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
@@ -279,7 +282,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 Expanded(
                   child: TabBarView(
                     controller: tabController,
-                    children: const [
+                    children: 
+                    hasAccess() ?
+                    const [
                       GeneralPage(),
                       ControlPage(),
                       MembersListWidget(
@@ -290,7 +295,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                       LablesPage(),
                       IntegrationsWidget(),
                       EstimatsPage()
-                    ],
+                    ]
+                    : [
+                      const GeneralPage(),
+                    ]
                   ),
                 ),
               ],
@@ -300,4 +308,19 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
       ),
     );
   }
+
+  bool hasAccess() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    List members = projectProvider.projectMembers;
+    bool hasAccess = false;
+    for (var element in members) {
+      if ((element['member']['id'] == profileProvider.userProfile.id) &&
+          (element['role'] == 20 || element['role'] == 15)) {
+        hasAccess = true;
+      }
+    }
+    return hasAccess;
+  }
+
 }

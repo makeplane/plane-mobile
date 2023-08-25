@@ -398,7 +398,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         ? CachedNetworkImage(
                             height: 35,
                             width: 35,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             imageUrl: workspaceProvider
                                 .selectedWorkspace!.workspaceLogo,
                             placeholder: (context, url) =>

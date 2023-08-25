@@ -487,7 +487,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               itemCount: (menus[index]['items']).length,
               padding: const EdgeInsets.only(bottom: 15),
               itemBuilder: (context, idx) {
-                if ((index == 0) || (idx == 5 || checkUser())) {
+                if ((index == 0) || (idx == 5 || idx == 0 || checkUserAccess())) {
                   return InkWell(
                     onTap: () {
                       menus[index]['items'][idx]['onTap'](context);
@@ -537,7 +537,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  bool checkUser() {
+  bool checkUserAccess() {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
     bool hasAccess = false;

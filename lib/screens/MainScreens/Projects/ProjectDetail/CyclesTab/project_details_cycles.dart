@@ -246,6 +246,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                       index]['name'],
                                                   maxLines: 2,
                                                   type: FontStyle.H5,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(

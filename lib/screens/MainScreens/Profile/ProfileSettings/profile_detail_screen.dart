@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
@@ -54,6 +55,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BuildContext screenContext = context;
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
@@ -461,12 +463,27 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       margin: const EdgeInsets.only(
                           bottom: 15, left: 16, right: 16),
                       child: Button(
-                        ontap: () => profileProvider.updateProfile(data: {
-                          "first_name": fullName.text,
-                          "role": profileProvider.dropDownValue,
-                          if (fileUploadProvider.downloadUrl != null)
-                            "avatar": fileUploadProvider.downloadUrl
-                        }),
+                        ontap: () async {
+                          await profileProvider.updateProfile(
+                            data: {
+                              "first_name": fullName.text,
+                              "role": profileProvider.dropDownValue,
+                              if (fileUploadProvider.downloadUrl != null)
+                                "avatar": fileUploadProvider.downloadUrl
+                            },
+                          );
+                          if (profileProvider.updateProfileState ==
+                              StateEnum.success) {
+                            Navigator.pop(Const.globalKey.currentContext!);
+                            CustomToast().showToast(screenContext,
+                                'Profile updated successfully', themeProvider,
+                                toastType: ToastType.success);
+                          } else {
+                            CustomToast().showToast(screenContext,
+                                'Something went wrong', themeProvider,
+                                toastType: ToastType.failure);
+                          }
+                        },
                         text: 'Update',
                       ),
                     ),

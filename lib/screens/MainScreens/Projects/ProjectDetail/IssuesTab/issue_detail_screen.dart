@@ -452,7 +452,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                               projectProvider.role !=
                                                   Role.member,
                                           decoration: themeProvider
-                                              .themeManager.textFieldDecoration,
+                                              .themeManager.textFieldDecoration
+                                              .copyWith(
+                                                  contentPadding:
+                                                      const EdgeInsets.all(15)),
                                         ),
                                         const SizedBox(
                                             height: spaceBetweenSections),

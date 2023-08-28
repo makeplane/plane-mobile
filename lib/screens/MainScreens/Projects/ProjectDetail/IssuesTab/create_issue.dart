@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:plane_startup/bottom_sheets/select_priority.dart';
 import 'package:plane_startup/bottom_sheets/select_project_members.dart';
 import 'package:plane_startup/bottom_sheets/select_states.dart';
 import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/config/notification_serivce.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/color_manager.dart';
@@ -41,7 +42,7 @@ class CreateIssue extends ConsumerStatefulWidget {
 }
 
 class _CreateIssueState extends ConsumerState<CreateIssue> {
-  NotificationsServices notificationsServices = NotificationsServices();
+  // NotificationsServices notificationsServices = NotificationsServices();
 
   var tempStatesData = {};
   var tempStates = {};
@@ -55,7 +56,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   void initState() {
     var prov = ref.read(ProviderList.issuesProvider);
     var projectProvider = ref.read(ProviderList.projectProvider);
-    notificationsServices.initialiseNotifications();
+    // notificationsServices.initialiseNotifications();
     prov.createIssueProjectData['name'] = widget.projectId != null
         ? projectProvider.projects
             .firstWhere((element) => element['id'] == widget.projectId)['name']
@@ -162,6 +163,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          // backgroundColor:
+          //     themeProvider.themeManager.primaryBackgroundDefaultColor,
           //#f5f5f5f5 color
           // backgroundColor: themeProvider.isDarkThemeEnabled
           //     ? darkSecondaryBackgroundColor
@@ -1752,8 +1755,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                               issueCategory = IssueCategory.cycleIssues;
                             }
 
-                            await issuesProvider
-                                .createIssue(
+                            await issuesProvider.createIssue(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
                                   .selectedWorkspace!
@@ -1761,36 +1763,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                               projID:
                                   issuesProvider.createIssueProjectData['id'],
                               issueCategory: issueCategory,
-                            )
-                                .then((_) {
-                              notificationsServices.sendNotification(
-                                  'Plane', 'Issue Created Successfully');
-                            });
+                            );
 
-                            // if (widget.moduleId != null) {
-                            //   await ref
-                            //       .read(ProviderList.modulesProvider)
-                            //       .createModuleIssues(
-                            //         slug: ref
-                            //             .read(ProviderList.workspaceProvider)
-                            //             .selectedWorkspace!
-                            //             .workspaceSlug,
-                            //         projID: ref
-                            //             .read(ProviderList.projectProvider)
-                            //             .currentProject["id"],
-                            //         moduleId: widget.moduleId!,
-                            //       );
-
-                            //   issueProvider.filterIssues(
-                            //       slug: ref
-                            //           .read(ProviderList.workspaceProvider)
-                            //           .selectedWorkspace!
-                            //           .workspaceSlug,
-                            //       projID: ref
-                            //           .read(ProviderList.projectProvider)
-                            //           .currentProject["id"],
-                            //       issueCategory: IssueCategory.moduleIssues);
-                            // }
                             issuesProvider.createIssuedata = {};
                             issuesProvider.statesData = tempStatesData;
                             issuesProvider.states = tempStates;

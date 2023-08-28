@@ -424,6 +424,33 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
+
+                          //start date
+                          RadioListTile(
+                              fillColor: orderBy == 'start_date'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: orderBy,
+                              title: const CustomText(
+                                'Start Date',
+                                type: FontStyle.Small,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'start_date',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  orderBy = 'start_date';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                         ],
                       ),
                     )
@@ -861,7 +888,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 30),
                 child: Button(
-                  text: 'Apply Filter',
+                  text: 'Apply',
                   ontap: () async {
                     if (orderBy == '' &&
                         groupBy == '' &&

@@ -84,7 +84,7 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/my-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String projectIdentifier =
       "$baseApi/api/workspaces/\$SLUG/project-identifiers/?name=\$IDENTIFIER";
-  static String activity = '$baseApi/api/users/activities/';
+  static String activity = '$baseApi/api/users/workspaces/\$SLUG/activities/';
   static String isOnboarded = '$baseApi/api/users/me/onboard/';
   static String dashboard =
       "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
@@ -126,4 +126,7 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/github-repository-sync/';
   static String retrieveSlackIntegrations =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/project-slack-sync/';
+  
+  static String memberProfile = '$baseApi/api/workspaces/\$SLUG/user-profile/\$USERID/';
+
 }

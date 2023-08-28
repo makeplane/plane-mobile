@@ -149,7 +149,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                   (myIssuesProvider.issues.filters.priorities.isEmpty &&
                           myIssuesProvider.issues.filters.states.isEmpty &&
                           myIssuesProvider.issues.filters.labels.isEmpty &&
-                          myIssuesProvider.issues.filters.targetDate.isEmpty)
+                          myIssuesProvider.issues.filters.targetDate.isEmpty &&
+                          myIssuesProvider.issues.filters.startDate.isEmpty)
                       ? Container()
                       : Positioned(
                           top: 4,

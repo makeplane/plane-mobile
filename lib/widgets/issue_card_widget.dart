@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
@@ -531,8 +532,15 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
-                                      ['start_date'] ??
-                                  'Start date',
+                                          ['start_date'] !=
+                                      null
+                                  ?
+                                  //convert yyyy-mm-dd to Aug 12, 2021
+                                  DateFormat('MMM dd, yyyy').format(
+                                      DateTime.parse(provider
+                                              .issuesResponse[widget.cardIndex]
+                                          ['start_date']))
+                                  : 'Start date',
                               type: FontStyle.XSmall,
                               color:
                                   themeProvider.themeManager.tertiaryTextColor,
@@ -552,8 +560,15 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
                               provider.issuesResponse[widget.cardIndex]
-                                      ['target_date'] ??
-                                  'Due date',
+                                          ['target_date'] !=
+                                      null
+                                  ?
+                                  //convert yyyy-mm-dd to Aug 12, 2021
+                                  DateFormat('MMM dd, yyyy').format(
+                                      DateTime.parse(provider
+                                              .issuesResponse[widget.cardIndex]
+                                          ['target_date']))
+                                  : 'Due date',
                               type: FontStyle.XSmall,
                               color:
                                   themeProvider.themeManager.tertiaryTextColor,

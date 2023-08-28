@@ -16,10 +16,11 @@ import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
+// ignore: must_be_immutable
 class SelectCoverImage extends ConsumerStatefulWidget {
-  final bool creatProject;
-  const SelectCoverImage({required this.creatProject, super.key});
-
+  
+  SelectCoverImage({required this.uploadedUrl, super.key});
+  Map<String, dynamic> uploadedUrl;
   @override
   ConsumerState<SelectCoverImage> createState() => _SelectCoverImageState();
 }
@@ -112,7 +113,6 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
 
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
     var fileProvider = ref.watch(ProviderList.fileUploadProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return NotificationListener<ScrollNotification>(
@@ -320,14 +320,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                   }
                                   return GestureDetector(
                                     onTap: () {
-                                      if (!widget.creatProject) {
-                                        projectProvider.projectDetailModel!
-                                            .coverImage = images[index];
-                                        projectProvider.setState();
-                                      } else {
-                                        projectProvider.changeCoverUrl(
-                                            url: images[index]);
-                                      }
+                                      widget.uploadedUrl['url']= images[index];
                                       Navigator.of(context).pop();
                                     },
                                     child: Container(
@@ -448,7 +441,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                       coverImage!.path.split('.').last,
                                     );
                                     if (url != null) {
-                                      projectProvider.changeCoverUrl(url: url);
+                                        widget.uploadedUrl['url']= url;
                                     }
                                     Navigator.of(context).pop();
                                   },

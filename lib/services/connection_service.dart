@@ -17,7 +17,8 @@ class ConnectionService {
         Const.isOnline = false;
       }
     } catch (e) {
-      log(e.toString());
+
+      log("DIO SERVICE ERROR");
     }
   }
 }

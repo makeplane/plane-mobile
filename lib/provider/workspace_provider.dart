@@ -21,8 +21,8 @@ class WorkspaceProvider extends ChangeNotifier {
   String companySize = '';
   WorkspaceModel? selectedWorkspace;
   List<dynamic> workspaceIntegrations = [];
-  var githubIntegration;
-  var slackIntegration;
+  dynamic githubIntegration;
+  dynamic slackIntegration;
   var urlAvailable = false;
   // var currentWorkspace = {};
   var workspaceMembers = [];

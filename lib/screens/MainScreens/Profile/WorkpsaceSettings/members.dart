@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/invite_members.dart';
@@ -37,11 +38,10 @@ class _MembersState extends ConsumerState<Members> {
   @override
   Widget build(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     log(workspaceProvider.role.name);
     return Scaffold(
-      // backgroundColor: themeProvider.isDarkThemeEnabled
-      //     ? darkSecondaryBackgroundColor
-      //     : lightSecondaryBackgroundColor,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
       appBar: CustomAppBar(
         onPressed: () {
           Navigator.of(context).pop();
@@ -148,66 +148,17 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () {
-              if (fromRole(role: workspaceProvider.role) <
-                  workspaceProvider.workspaceMembers[index]['role']) {
-                CustomToast().showToast(
-                    context, accessRestrictedMSG, themeProvider,
-                    toastType: ToastType.failure);
-              } else if (workspaceProvider.workspaceMembers[index]['member']
-                      ["id"] ==
-                  ref.read(ProviderList.profileProvider).userProfile.id) {
-                CustomToast().showToast(
-                    context, "You can't change your own role", themeProvider,
-                    toastType: ToastType.warning);
+              if (roleParser(
+                      role: workspaceProvider.workspaceMembers[index]
+                          ['role']) ==
+                  Role.guest) {
+                return;
               }
-              // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
-              //         workspaceProvider.workspaceMembers[index]['member']
-              //             ['id']) &&
-              //     workspaceProvider.workspaceMembers[index]['member']['role'] !=
-              //         '20') {
-              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-              //       .showSnackBar(
-              //     const SnackBar(
-              //       duration: Duration(seconds: 2),
-              //       content: Text('Sorry, you can\'t make changes to anyone'),
-              //     ),
-              //   );
-              // } else if (workspaceProvider.workspaceMembers[index]['role'] ==
-              //     20) {
-              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-              //       .showSnackBar(
-              //     const SnackBar(
-              //       duration: Duration(seconds: 2),
-              //       content: Text('Sorry, you can\'t make changes to an admin'),
-              //     ),
-              //   );
-              // }
-              else {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return MemberStatus(
-                        fromWorkspace: true,
-                        firstName: workspaceProvider.workspaceMembers[index]
-                            ['member']['first_name'],
-                        lastName: workspaceProvider.workspaceMembers[index]
-                            ['member']['last_name'],
-                        role: {
-                          "role": workspaceProvider.workspaceMembers[index]
-                              ['role']
-                        },
-                        userId: workspaceProvider.workspaceMembers[index]['id'],
-                        isInviteMembers: false,
-                      );
-                    });
-              }
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => MemberProfile(
+                      userID: workspaceProvider.workspaceMembers[index]
+                          ['member']["id"])));
             },
             leading: workspaceProvider.workspaceMembers[index]['member']
                             ['avatar'] ==
@@ -237,7 +188,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                   ),
             title: CustomText(
               '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
-              type: FontStyle.H5,
+              type: FontStyle.H6,
+              fontWeight: FontWeightt.Medium,
               maxLines: 1,
               color: themeProvider.themeManager.primaryTextColor,
             ),
@@ -250,48 +202,117 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         ['display_name'],
                 color: themeProvider.themeManager.placeholderTextColor,
                 textAlign: TextAlign.left,
-                type: FontStyle.Medium,
+                type: FontStyle.Small,
               ),
             ),
-            trailing: Container(
-              constraints: const BoxConstraints(maxWidth: 87),
-              child: Row(
-                // crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  SizedBox(
-                    child: SizedBox(
-                      child: CustomText(
-                        workspaceProvider.workspaceMembers[index]['role'] == 20
-                            ? 'Admin'
-                            : workspaceProvider.workspaceMembers[index]
-                                        ['role'] ==
-                                    15
-                                ? 'Member'
-                                : workspaceProvider.workspaceMembers[index]
-                                            ['role'] ==
-                                        10
-                                    ? 'Viewer'
-                                    : 'Guest',
-                        type: FontStyle.Medium,
-                        fontWeight: FontWeightt.Medium,
-                        color: themeProvider.themeManager.primaryTextColor,
-                        // themeProvider.isDarkThemeEnabled
-                        //     ? fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.white
-                        //         : darkSecondaryTextColor
-                        //     : fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.black
-                        //         : greyColor,
-                        fontSize: 15,
+            trailing: GestureDetector(
+              onTap: () {
+                if (fromRole(role: workspaceProvider.role) <
+                    workspaceProvider.workspaceMembers[index]['role']) {
+                  CustomToast().showToast(
+                      context, accessRestrictedMSG, themeProvider,
+                      toastType: ToastType.failure);
+                } else if (workspaceProvider.workspaceMembers[index]['member']
+                        ["id"] ==
+                    ref.read(ProviderList.profileProvider).userProfile.id) {
+                  CustomToast().showToast(
+                      context, "You can't change your own role", themeProvider,
+                      toastType: ToastType.warning);
+                } else {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return MemberStatus(
+                          fromWorkspace: true,
+                          firstName: workspaceProvider.workspaceMembers[index]
+                              ['member']['first_name'],
+                          lastName: workspaceProvider.workspaceMembers[index]
+                              ['member']['last_name'],
+                          role: {
+                            "role": workspaceProvider.workspaceMembers[index]
+                                ['role']
+                          },
+                          userId: workspaceProvider.workspaceMembers[index]
+                              ['id'],
+                          isInviteMembers: false,
+                        );
+                      });
+                }
+              },
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 87),
+                child: Row(
+                  // crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const Spacer(),
+                    SizedBox(
+                      child: SizedBox(
+                        child: CustomText(
+                          workspaceProvider.workspaceMembers[index]['role'] ==
+                                  20
+                              ? 'Admin'
+                              : workspaceProvider.workspaceMembers[index]
+                                          ['role'] ==
+                                      15
+                                  ? 'Member'
+                                  : workspaceProvider.workspaceMembers[index]
+                                              ['role'] ==
+                                          10
+                                      ? 'Viewer'
+                                      : 'Guest',
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Medium,
+                          color: themeProvider.themeManager.theme ==
+                                      THEME.dark ||
+                                  themeProvider.themeManager.theme ==
+                                      THEME.darkHighContrast
+                              ? fromRole(role: workspaceProvider.role) >=
+                                      workspaceProvider.workspaceMembers[index]
+                                          ['role']
+                                  ? Colors.white
+                                  : darkSecondaryTextColor
+                              : fromRole(role: workspaceProvider.role) >=
+                                      workspaceProvider.workspaceMembers[index]
+                                          ['role']
+                                  ? Colors.black
+                                  : greyColor,
+                          // themeProvider.isDarkThemeEnabled
+                          //     ? fromRole(role: workspaceProvider.role) >=
+                          //             workspaceProvider.workspaceMembers[index]
+                          //                 ['role']
+                          //         ? Colors.white
+                          //         : darkSecondaryTextColor
+                          //     : fromRole(role: workspaceProvider.role) >=
+                          //             workspaceProvider.workspaceMembers[index]
+                          //                 ['role']
+                          //         ? Colors.black
+                          //         : greyColor,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(Icons.arrow_drop_down,
-                      color: themeProvider.themeManager.primaryTextColor
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: themeProvider.themeManager.theme == THEME.dark ||
+                              themeProvider.themeManager.theme ==
+                                  THEME.darkHighContrast
+                          ? fromRole(role: workspaceProvider.role) >=
+                                  workspaceProvider.workspaceMembers[index]
+                                      ['role']
+                              ? Colors.white
+                              : darkSecondaryTextColor
+                          : fromRole(role: workspaceProvider.role) >=
+                                  workspaceProvider.workspaceMembers[index]
+                                      ['role']
+                              ? Colors.black
+                              : greyColor,
                       // themeProvider.isDarkThemeEnabled
                       //     ? fromRole(role: workspaceProvider.role) >=
                       //             workspaceProvider.workspaceMembers[index]
@@ -303,8 +324,9 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                       //                 ['role']
                       //         ? Colors.black
                       //         : greyColor,
-                      )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           );
@@ -358,63 +380,16 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
       itemBuilder: (context, index) {
         return ListTile(
           onTap: () {
-            if (fromRole(role: projectsProvider.role) <
-                projectsProvider.projectMembers[index]['role']) {
-              CustomToast().showToast(
-                  context, accessRestrictedMSG, themeProvider,
-                  toastType: ToastType.failure);
-            } else if (projectsProvider.projectMembers[index]['member']["id"] ==
-                ref.read(ProviderList.profileProvider).userProfile.id) {
-              CustomToast().showToast(
-                  context, "You can't change your own role", themeProvider,
-                  toastType: ToastType.warning);
+            if (roleParser(
+                    role: projectsProvider.projectMembers[index]['role']) ==
+                Role.guest) {
+              return;
             }
-            // if ((ref.watch(ProviderList.profileProvider).userProfile.id ==
-            //         projectsProvider.projectMembers[index]['member']['id']) &&
-            //     projectsProvider.projectMembers[index]['member']['role'] !=
-            //         '20') {
-            //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-            //       .showSnackBar(
-            //     const SnackBar(
-            //       duration: Duration(seconds: 2),
-            //       content: Text('Sorry, you can\'t make changes to anyone'),
-            //     ),
-            //   );
-            // } else if (projectsProvider.projectMembers[index]['role'] == 20) {
-            //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-            //       .showSnackBar(
-            //     const SnackBar(
-            //       duration: Duration(seconds: 2),
-            //       content: Text('Sorry, you can\'t make changes to an admin'),
-            //     ),
-            //   );
-            // }
 
-            else {
-              showModalBottomSheet(
-                  isScrollControlled: true,
-                  enableDrag: true,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  )),
-                  context: context,
-                  builder: (ctx) {
-                    return MemberStatus(
-                      fromWorkspace: false,
-                      firstName: projectsProvider.projectMembers[index]
-                          ['member']['first_name'],
-                      lastName: projectsProvider.projectMembers[index]['member']
-                          ['last_name'],
-                      role: {
-                        "role": projectsProvider.projectMembers[index]['role']
-                      },
-                      userId: projectsProvider.projectMembers[index]['id'],
-                      isInviteMembers: false,
-                    );
-                  });
-            }
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => MemberProfile(
+                    userID: projectsProvider.projectMembers[index]['member']
+                        ["id"])));
           },
           leading: projectsProvider.projectMembers[index]['member']['avatar'] ==
                       null ||
@@ -442,7 +417,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                 ),
           title: CustomText(
             '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
-            type: FontStyle.H5,
+            type: FontStyle.H6,
             maxLines: 1,
             fontSize: 18,
           ),
@@ -454,24 +429,11 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       ['display_name'],
               color: const Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.left,
-              type: FontStyle.Medium,
+              type: FontStyle.Small,
             ),
           ),
           trailing: GestureDetector(
             onTap: () {
-              // var profileProv = ref.read(ProviderList.profileProvider);
-              // if (profileProv.userProfile.id ==
-              //     projectsProvider.projectMembers[index]['member']['id']) {
-              //   ScaffoldMessenger.of(Const.globalKey.currentContext!)
-              //       .showSnackBar(
-              //     const SnackBar(
-              //       backgroundColor: Colors.red,
-              //       duration: Duration(seconds: 1),
-              //       content:
-              //           Text('Sorry, you can\'t make changes to yourself'),
-              //     ),
-              //   );
-              // } else {
               if (fromRole(role: projectsProvider.role) <
                   projectsProvider.projectMembers[index]['role']) {
                 CustomToast().showToast(
@@ -509,15 +471,14 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       );
                     });
               }
-              // }
-
-              //}
             },
             child: Container(
               constraints: const BoxConstraints(maxWidth: 84),
               child: Row(
                 // crossAxisAlignment: WrapCrossAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  const Spacer(),
                   SizedBox(
                     child: SizedBox(
                       child: CustomText(
@@ -533,7 +494,9 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                     : 'Guest',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Medium,
-                        color: themeProvider.isDarkThemeEnabled
+                        color: themeProvider.themeManager.theme == THEME.dark ||
+                                themeProvider.themeManager.theme ==
+                                    THEME.darkHighContrast
                             ? fromRole(role: projectsProvider.role) >=
                                     projectsProvider.projectMembers[index]
                                         ['role']
@@ -549,8 +512,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                     ),
                   ),
                   Icon(
-                    Icons.arrow_drop_down,
-                    color: themeProvider.isDarkThemeEnabled
+                    Icons.keyboard_arrow_down,
+                    color: themeProvider.themeManager.theme == THEME.dark ||
+                            themeProvider.themeManager.theme ==
+                                THEME.darkHighContrast
                         ? fromRole(role: projectsProvider.role) >=
                                 projectsProvider.projectMembers[index]['role']
                             ? Colors.white

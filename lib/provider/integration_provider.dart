@@ -15,8 +15,8 @@ class IntegrationProvider extends ChangeNotifier {
   StateEnum getInstalledIntegrationState = StateEnum.empty;
 
   var integrations = {};
-  var githubIntegration;
-  var slackIntegration;
+  dynamic githubIntegration;
+  dynamic slackIntegration;
 
   Future getAllAvailableIntegrations() async {
     getIntegrationState = StateEnum.loading;

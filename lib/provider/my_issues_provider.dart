@@ -148,6 +148,7 @@ class MyIssuesProvider extends ChangeNotifier {
       issues.filters.assignees = myIssueView["filters"]["assignees"] ?? [];
       issues.filters.createdBy = myIssueView["filters"]["created_by"] ?? [];
       issues.filters.labels = myIssueView["filters"]["labels"] ?? [];
+      issues.filters.startDate = myIssueView["filters"]["start_date"] ?? [];
       // issues.displayProperties = myIssueView["displayProperties"];
       issues.filters.targetDate = myIssueView["filters"]["target_date"] ?? [];
       showEmptyStates = myIssueView["showEmptyGroups"];
@@ -171,7 +172,7 @@ class MyIssuesProvider extends ChangeNotifier {
       myIssuesViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log(e.response.toString());
+      log("MY ISSUES:${e.response}");
       issues.projectView = ProjectView.kanban;
       myIssuesViewState = StateEnum.error;
       notifyListeners();
@@ -284,6 +285,11 @@ class MyIssuesProvider extends ChangeNotifier {
         url =
             '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       }
+      //start_date
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
       if (pageIndex == 2) {
         url =
             '$url&subscriber=${ref!.read(ProviderList.profileProvider).userProfile.id}';
@@ -325,6 +331,11 @@ class MyIssuesProvider extends ChangeNotifier {
       if (issues.filters.targetDate.isNotEmpty) {
         url =
             '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       }
       if (pageIndex == 2) {
         url =
@@ -729,6 +740,8 @@ class MyIssuesProvider extends ChangeNotifier {
                 "labels": issues.filters.labels,
               if (issues.filters.targetDate.isNotEmpty)
                 "target_date": issues.filters.targetDate,
+              if (issues.filters.startDate.isNotEmpty)
+                "start_date": issues.filters.startDate,
             },
             "type": null,
             "groupByProperty": issues.groupBY == GroupBY.state
@@ -741,7 +754,7 @@ class MyIssuesProvider extends ChangeNotifier {
                     : issues.projectView == ProjectView.calendar
                         ? 'calendar'
                         : 'spreadsheet',
-            "orderBy": Issues.fromGroupBY(issues.groupBY),
+            "orderBy": Issues.fromOrderBY(issues.orderBY),
             "showEmptyGroups": showEmptyStates,
             "properties": {
               "assignee": issues.displayProperties.assignee,

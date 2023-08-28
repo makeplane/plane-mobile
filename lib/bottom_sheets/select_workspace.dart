@@ -82,6 +82,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                             ref.read(ProviderList.cyclesProvider).clearData();
                             ref.read(ProviderList.modulesProvider).clearData();
                             ref.read(ProviderList.myIssuesProvider).clear();
+                            ref.read(ProviderList.activityProvider).clear();
                             ref.read(ProviderList.projectProvider).getProjects(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)

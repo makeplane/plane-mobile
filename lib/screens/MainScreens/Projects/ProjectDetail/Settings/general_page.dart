@@ -253,37 +253,16 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       //textfield
                       Expanded(
                         child: TextField(
-                          enabled: checkUser() ? true : false,
+                            enabled: checkUser() ? true : false,
+                            style: !checkUser()
+                                ? TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
+                                  )
+                                : null,
                             controller: name,
                             decoration:
-                                themeProvider.themeManager.textFieldDecoration
-                            //     .copyWith(
-                            //   enabledBorder: OutlineInputBorder(
-                            //     borderSide: BorderSide(
-                            //         color: themeProvider.isDarkThemeEnabled
-                            //             ? darkThemeBorder
-                            //             : const Color(0xFFE5E5E5),
-                            //         width: 1.0),
-                            //     borderRadius:
-                            //         const BorderRadius.all(Radius.circular(8)),
-                            //   ),
-                            //   disabledBorder: OutlineInputBorder(
-                            //     borderSide: BorderSide(
-                            //         color: themeProvider.isDarkThemeEnabled
-                            //             ? darkThemeBorder
-                            //             : const Color(0xFFE5E5E5),
-                            //         width: 1.0),
-                            //     borderRadius:
-                            //         const BorderRadius.all(Radius.circular(8)),
-                            //   ),
-                            //   focusedBorder: const OutlineInputBorder(
-                            //     borderSide:
-                            //         BorderSide(color: primaryColor, width: 2.0),
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(8)),
-                            //   ),
-                            // ),
-                            ),
+                                themeProvider.themeManager.textFieldDecoration),
                       ),
                     ],
                   ),
@@ -305,7 +284,13 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 5),
                   //textfield
                   TextField(
-                    enabled: checkUser() ? true : false,
+                      enabled: checkUser() ? true : false,
+                      style: !checkUser()
+                          ? TextStyle(
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                            )
+                          : null,
                       onTap: () {
                         CustomToast().showToast(
                             context,
@@ -442,6 +427,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //textfield
                   TextFormField(
                       enabled: checkUser() ? true : false,
+                      style: !checkUser()
+                          ? TextStyle(
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                            )
+                          : null,
                       controller: identifier,
                       maxLength: 12,
                       inputFormatters: [
@@ -521,11 +512,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const Spacer(),
-                          checkUser() ?
-                          Icon(Icons.arrow_drop_down,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor)
-                          : Container()
+                          checkUser()
+                              ? Icon(Icons.arrow_drop_down,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor)
+                              : Container()
                         ],
                       ),
                     ),

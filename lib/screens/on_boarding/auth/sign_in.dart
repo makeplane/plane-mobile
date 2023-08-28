@@ -316,25 +316,30 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                               // });
                                               Navigator.pushAndRemoveUntil(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => const HomeScreen(fromSignUp: false)),
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomeScreen(
+                                                            fromSignUp: false)),
                                                 (route) => false,
                                               );
                                             } else {
+                                              String firstName = ref
+                                                  .read(ProviderList
+                                                      .profileProvider)
+                                                  .userProfile
+                                                  .firstName!;
+
+                                              List workspaces = ref
+                                                  .read(ProviderList
+                                                      .workspaceProvider)
+                                                  .workspaces;
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => ref
-                                                          .read(ProviderList
-                                                              .profileProvider)
-                                                          .userProfile
-                                                          .firstName!
+                                                  builder: (context) => firstName
                                                           .isEmpty
                                                       ? const SetupProfileScreen()
-                                                      : ref
-                                                              .read(ProviderList
-                                                                  .workspaceProvider)
-                                                              .workspaces
-                                                              .isEmpty
+                                                      : workspaces.isEmpty
                                                           ? const SetupWorkspace()
                                                           : const HomeScreen(
                                                               fromSignUp: false,

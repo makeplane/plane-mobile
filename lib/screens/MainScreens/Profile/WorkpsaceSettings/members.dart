@@ -38,11 +38,10 @@ class _MembersState extends ConsumerState<Members> {
   @override
   Widget build(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     log(workspaceProvider.role.name);
     return Scaffold(
-      // backgroundColor: themeProvider.isDarkThemeEnabled
-      //     ? darkSecondaryBackgroundColor
-      //     : lightSecondaryBackgroundColor,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
       appBar: CustomAppBar(
         onPressed: () {
           Navigator.of(context).pop();
@@ -270,7 +269,20 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                       : 'Guest',
                           type: FontStyle.Medium,
                           fontWeight: FontWeightt.Medium,
-                          color: themeProvider.themeManager.primaryTextColor,
+                          color: themeProvider.themeManager.theme ==
+                                      THEME.dark ||
+                                  themeProvider.themeManager.theme ==
+                                      THEME.darkHighContrast
+                              ? fromRole(role: workspaceProvider.role) >=
+                                      workspaceProvider.workspaceMembers[index]
+                                          ['role']
+                                  ? Colors.white
+                                  : darkSecondaryTextColor
+                              : fromRole(role: workspaceProvider.role) >=
+                                      workspaceProvider.workspaceMembers[index]
+                                          ['role']
+                                  ? Colors.black
+                                  : greyColor,
                           // themeProvider.isDarkThemeEnabled
                           //     ? fromRole(role: workspaceProvider.role) >=
                           //             workspaceProvider.workspaceMembers[index]
@@ -286,20 +298,33 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         ),
                       ),
                     ),
-                    Icon(Icons.arrow_drop_down,
-                        color: themeProvider.themeManager.primaryTextColor
-                        // themeProvider.isDarkThemeEnabled
-                        //     ? fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.white
-                        //         : darkSecondaryTextColor
-                        //     : fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.black
-                        //         : greyColor,
-                        )
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: themeProvider.themeManager.theme == THEME.dark ||
+                              themeProvider.themeManager.theme ==
+                                  THEME.darkHighContrast
+                          ? fromRole(role: workspaceProvider.role) >=
+                                  workspaceProvider.workspaceMembers[index]
+                                      ['role']
+                              ? Colors.white
+                              : darkSecondaryTextColor
+                          : fromRole(role: workspaceProvider.role) >=
+                                  workspaceProvider.workspaceMembers[index]
+                                      ['role']
+                              ? Colors.black
+                              : greyColor,
+                      // themeProvider.isDarkThemeEnabled
+                      //     ? fromRole(role: workspaceProvider.role) >=
+                      //             workspaceProvider.workspaceMembers[index]
+                      //                 ['role']
+                      //         ? Colors.white
+                      //         : darkSecondaryTextColor
+                      //     : fromRole(role: workspaceProvider.role) >=
+                      //             workspaceProvider.workspaceMembers[index]
+                      //                 ['role']
+                      //         ? Colors.black
+                      //         : greyColor,
+                    )
                   ],
                 ),
               ),
@@ -392,7 +417,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                 ),
           title: CustomText(
             '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
-            type: FontStyle.H5,
+            type: FontStyle.H6,
             maxLines: 1,
             fontSize: 18,
           ),
@@ -404,7 +429,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       ['display_name'],
               color: const Color.fromRGBO(133, 142, 150, 1),
               textAlign: TextAlign.left,
-              type: FontStyle.Medium,
+              type: FontStyle.Small,
             ),
           ),
           trailing: GestureDetector(
@@ -448,10 +473,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
               }
             },
             child: Container(
-     
               constraints: const BoxConstraints(maxWidth: 84),
               child: Row(
                 // crossAxisAlignment: WrapCrossAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Spacer(),
                   SizedBox(
@@ -469,7 +494,9 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                     : 'Guest',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Medium,
-                        color: themeProvider.isDarkThemeEnabled
+                        color: themeProvider.themeManager.theme == THEME.dark ||
+                                themeProvider.themeManager.theme ==
+                                    THEME.darkHighContrast
                             ? fromRole(role: projectsProvider.role) >=
                                     projectsProvider.projectMembers[index]
                                         ['role']
@@ -485,8 +512,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                     ),
                   ),
                   Icon(
-                    Icons.arrow_drop_down,
-                    color: themeProvider.isDarkThemeEnabled
+                    Icons.keyboard_arrow_down,
+                    color: themeProvider.themeManager.theme == THEME.dark ||
+                            themeProvider.themeManager.theme ==
+                                THEME.darkHighContrast
                         ? fromRole(role: projectsProvider.role) >=
                                 projectsProvider.projectMembers[index]['role']
                             ? Colors.white

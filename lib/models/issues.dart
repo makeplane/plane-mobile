@@ -58,12 +58,14 @@ class Issues {
   OrderBY orderBY = OrderBY.manual;
   IssueType issueType = IssueType.all;
   Filters filters = Filters(
-      assignees: [],
-      createdBy: [],
-      labels: [],
-      priorities: [],
-      states: [],
-      targetDate: []);
+    assignees: [],
+    createdBy: [],
+    labels: [],
+    priorities: [],
+    states: [],
+    targetDate: [],
+    startDate: [],
+  );
 
   DisplayProperties displayProperties;
   Issues(
@@ -95,6 +97,8 @@ class Issues {
         return OrderBY.lastUpdated;
       case "priority":
         return OrderBY.priority;
+      case "start_date":
+        return OrderBY.startDate;
       default:
         return OrderBY.manual;
     }
@@ -110,6 +114,8 @@ class Issues {
         return "updated_at";
       case OrderBY.priority:
         return "priority";
+      case OrderBY.startDate:
+        return "start_date";
       default:
         return "manual";
     }
@@ -183,6 +189,7 @@ class Filters {
   List createdBy = [];
   List labels = [];
   List targetDate = [];
+  List startDate = [];
   Filters({
     required this.priorities,
     required this.states,
@@ -190,6 +197,7 @@ class Filters {
     required this.createdBy,
     required this.labels,
     required this.targetDate,
+    required this.startDate,
   });
 
   static Map<String, List<dynamic>> toJson(Filters filters) {
@@ -200,6 +208,7 @@ class Filters {
       "priority": filters.priorities,
       "state": filters.states,
       "target_date": filters.targetDate,
+      "start_date": filters.startDate,
     };
   }
 
@@ -211,6 +220,7 @@ class Filters {
       createdBy: json['created_by'] ?? [],
       labels: json['labels'] ?? [],
       targetDate: json['target_date'] ?? [],
+      startDate: json['start_date'] ?? [],
     );
   }
 }

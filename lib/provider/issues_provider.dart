@@ -44,6 +44,7 @@ class IssuesProvider extends ChangeNotifier {
     priorities: [],
     states: [],
     targetDate: [],
+    startDate: [],
   );
   var tempIssueType = IssueType.all;
   var tempProjectView = ProjectView.kanban;
@@ -784,6 +785,7 @@ class IssuesProvider extends ChangeNotifier {
       membersState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
+      log('Error in getProjectMembers ');
       log(e.response.toString());
       membersState = StateEnum.error;
       notifyListeners();
@@ -1071,6 +1073,8 @@ class IssuesProvider extends ChangeNotifier {
                 "labels": issues.filters.labels,
               if (issues.filters.targetDate.isNotEmpty)
                 "target_date": issues.filters.targetDate,
+              if (issues.filters.startDate.isNotEmpty)
+                "start_date": issues.filters.startDate,
             },
             "type": null,
             "groupByProperty": Issues.fromGroupBY(issues.groupBY),
@@ -1081,7 +1085,7 @@ class IssuesProvider extends ChangeNotifier {
                     : issues.projectView == ProjectView.calendar
                         ? 'calendar'
                         : 'spreadsheet',
-            "orderBy": Issues.fromGroupBY(issues.groupBY),
+            "orderBy": Issues.fromOrderBY(issues.orderBY),
             "showEmptyGroups": showEmptyStates
           }
         },
@@ -1133,6 +1137,7 @@ class IssuesProvider extends ChangeNotifier {
       issues.filters.createdBy = issueView["filters"]["created_by"] ?? [];
       issues.filters.labels = issueView["filters"]["labels"] ?? [];
       issues.filters.targetDate = issueView["filters"]["target_date"] ?? [];
+      issues.filters.startDate = issueView["filters"]["start_date"] ?? [];
       showEmptyStates = issueView["showEmptyGroups"];
 
       projectViewState = StateEnum.success;
@@ -1228,6 +1233,10 @@ class IssuesProvider extends ChangeNotifier {
       if (issues.filters.targetDate.isNotEmpty) {
         url =
             '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }
@@ -1267,6 +1276,10 @@ class IssuesProvider extends ChangeNotifier {
       if (issues.filters.targetDate.isNotEmpty) {
         url =
             '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }

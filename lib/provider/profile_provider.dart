@@ -67,9 +67,9 @@ class ProfileProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       userProfile = UserProfile.fromMap(response.data);
-      if (userProfile.theme != null && userProfile.theme!.length > 1) {
-        saveCustomTheme(userProfile.theme!);
-      }
+      // if (userProfile.theme != null && userProfile.theme!.length > 1) {
+      //   saveCustomTheme(userProfile.theme!);
+      // }
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
       // dropDownValue = userProfile.role!;
@@ -113,9 +113,9 @@ class ProfileProvider extends ChangeNotifier {
           data: data);
       // log(response.data.toString());
       userProfile = UserProfile.fromMap(response.data);
-      if (userProfile.theme != null && userProfile.theme!.length > 1) {
-        saveCustomTheme(userProfile.theme!);
-      }
+      // if (userProfile.theme != null && userProfile.theme!.length > 1) {
+      //   saveCustomTheme(userProfile.theme!);
+      // }
       updateProfileState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {

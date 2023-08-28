@@ -74,6 +74,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       priorities: [],
       states: [],
       targetDate: [],
+      startDate: [],
     );
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();

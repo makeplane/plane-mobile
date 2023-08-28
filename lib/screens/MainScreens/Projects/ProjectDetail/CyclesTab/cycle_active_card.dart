@@ -371,7 +371,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     Container(
                       padding: const EdgeInsets.only(right: 15),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           cyclesProvider.cyclesActiveData[index]['owned_by']
                                           ['avatar'] !=
@@ -389,14 +389,13 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                               : CircleAvatar(
                                   radius: 10,
                                   backgroundColor: Colors.amber,
-                                  child: Center(
-                                    child: CustomText(
-                                      cyclesProvider.cyclesActiveData[index]
-                                              ['owned_by']['first_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
-                                      color: Colors.white,
-                                    ),
+                                  child: CustomText(
+                                    cyclesProvider.cyclesActiveData[index]
+                                            ['owned_by']['first_name'][0]
+                                        .toString()
+                                        .toUpperCase(),
+                                    fontSize: 12,
+                                    color: Colors.white,
                                   ),
                                 ),
                           const SizedBox(width: 5),
@@ -696,6 +695,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                             .toString()
                                             .toUpperCase(),
                                     color: Colors.white,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),

@@ -535,8 +535,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: showEmptyStates
-                                          ? greenHighLight
-                                          : Colors.grey[300]),
+                                          ? themeProvider
+                                              .themeManager.primaryColour
+                                          : themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor),
                                   child: Align(
                                     alignment: showEmptyStates
                                         ? Alignment.centerRight

@@ -818,25 +818,33 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                           color: themeProvider.themeManager.tertiaryTextColor,
                         )
                       : provider.issuesResponse[widget.cardIndex]['priority'] ==
-                              'high'
+                              'urgent'
                           ? const Icon(
-                              Icons.signal_cellular_alt,
+                              Icons.error_outline_rounded,
                               color: Colors.orange,
                               size: 18,
                             )
                           : provider.issuesResponse[widget.cardIndex]
                                       ['priority'] ==
-                                  'medium'
+                                  'high'
                               ? const Icon(
-                                  Icons.signal_cellular_alt_2_bar,
+                                  Icons.signal_cellular_alt,
                                   color: Colors.orange,
                                   size: 18,
                                 )
-                              : const Icon(
-                                  Icons.signal_cellular_alt_1_bar,
-                                  color: Colors.orange,
-                                  size: 18,
-                                ))
+                              : provider.issuesResponse[widget.cardIndex]
+                                          ['priority'] ==
+                                      'medium'
+                                  ? const Icon(
+                                      Icons.signal_cellular_alt_2_bar,
+                                      color: Colors.orange,
+                                      size: 18,
+                                    )
+                                  : const Icon(
+                                      Icons.signal_cellular_alt_1_bar,
+                                      color: Colors.orange,
+                                      size: 18,
+                                    ))
               : const SizedBox(),
           provider.issues.displayProperties.id
               ? Container(

@@ -83,8 +83,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
             text: 'Workspace General',
           ),
           body: LoadingWidget(
-            loading:
-                workspaceProvider.updateWorkspaceState == StateEnum.loading,
+            loading: workspaceProvider.updateWorkspaceState ==
+                    StateEnum.loading ||
+                workspaceProvider.workspaceInvitationState == StateEnum.loading,
             widgetClass: SingleChildScrollView(
               child: Column(
                 children: [
@@ -444,6 +445,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   workspaceProvider.companySize,
                               'logo': workspaceProvider.tempLogo,
                             });
+                            await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.success) {
                               CustomToast().showToast(
@@ -451,6 +453,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   'Workspace updated successfully',
                                   themeProvider,
                                   toastType: ToastType.success);
+                              Navigator.pop(context);
                             }
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.error) {

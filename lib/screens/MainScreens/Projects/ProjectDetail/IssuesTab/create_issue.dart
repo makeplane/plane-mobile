@@ -16,6 +16,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -114,6 +115,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
 
   TextEditingController title = TextEditingController();
   var expanded = false;
+  bool createMoreIssues = false;
 
   // @override
   // void dispose() {
@@ -134,6 +136,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     //var issueProvider = ref.watch(ProviderList.issueProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    BuildContext baseContext = context;
     if (issuesProvider.createIssuedata['state'] == null &&
         issuesProvider.states.isNotEmpty) {
       issuesProvider.createIssuedata['state'] =
@@ -1674,6 +1677,46 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   //       );
                                   //       Navigator.pop(context);
                                   //     }),
+                                  const SizedBox(height: 20),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        createMoreIssues = !createMoreIssues;
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const CustomText(
+                                          'Create more issues',
+                                          type: FontStyle.Medium,
+                                        ),
+                                        Container(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: 30,
+                                          padding: const EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: createMoreIssues
+                                                  ? themeProvider.themeManager
+                                                      .primaryColour
+                                                  : themeProvider.themeManager
+                                                      .tertiaryBackgroundDefaultColor),
+                                          child: Align(
+                                            alignment: createMoreIssues
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
+                                            child:
+                                                const CircleAvatar(radius: 6),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -1760,7 +1803,98 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 tempIssues;
                             issuesProvider.createIssuedata = {};
                             issuesProvider.setsState();
-                            Navigator.pop(Const.globalKey.currentContext!);
+
+                            if (issuesProvider.createIssueState ==
+                                StateEnum.success) {
+                              CustomToast().showToast(baseContext,
+                                  'Issue created successfully ', themeProvider,
+                                  toastType: ToastType.success);
+                              if (createMoreIssues) {
+                                title.text = '';
+                                issuesProvider.createIssueProjectData['name'] =
+                                    widget.projectId != null
+                                        ? projectProvider.projects.firstWhere(
+                                            (element) =>
+                                                element['id'] ==
+                                                widget.projectId)['name']
+                                        : ref
+                                            .read(ProviderList.projectProvider)
+                                            .currentProject['name'];
+                                issuesProvider.createIssueProjectData['id'] =
+                                    widget.projectId ??
+                                        ref
+                                            .read(ProviderList.projectProvider)
+                                            .currentProject['id'];
+                                var themeProvider =
+                                    ref.read(ProviderList.themeProvider);
+                                tempStatesData = issuesProvider.statesData;
+                                tempStates = issuesProvider.states;
+                                tempStateOrdering =
+                                    issuesProvider.stateOrdering;
+                                tempStatesIcons = issuesProvider.stateIcons;
+                                tempLabels = issuesProvider.labels;
+                                tempIssues = ref
+                                    .read(ProviderList.searchIssueProvider)
+                                    .issues;
+                                tempAssignees = issuesProvider.members;
+
+                                // if (prov.states.isEmpty) {
+                                if (widget.fromMyIssues) {
+                                  issuesProvider
+                                      .getStates(
+                                          slug: ref
+                                              .read(ProviderList
+                                                  .workspaceProvider)
+                                              .selectedWorkspace!
+                                              .workspaceSlug,
+                                          projID: widget.projectId ??
+                                              ref
+                                                  .read(ProviderList
+                                                      .projectProvider)
+                                                  .currentProject['id'])
+                                      .then((value) {
+                                    issuesProvider.createIssuedata['state'] =
+                                        (issuesProvider.states.isNotEmpty
+                                            ? issuesProvider.states.keys.first
+                                            : null);
+                                  });
+
+                                  ref
+                                      .read(ProviderList.estimatesProvider)
+                                      .getEstimates(
+                                          slug: ref
+                                              .read(ProviderList
+                                                  .workspaceProvider)
+                                              .selectedWorkspace!
+                                              .workspaceSlug,
+                                          projID: widget.projectId ??
+                                              ref
+                                                  .read(ProviderList
+                                                      .projectProvider)
+                                                  .currentProject['id']);
+                                }
+
+                                issuesProvider.createIssuedata['priority'] = {
+                                  'name': 'None',
+                                  'icon': Icon(
+                                    Icons.remove_circle_outline_rounded,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                  ),
+                                };
+                                issuesProvider.createIssuedata['members'] =
+                                    null;
+                                issuesProvider.createIssuedata['labels'] = null;
+                                issuesProvider.createIssueParent = '';
+                                //issuesProvider.setsState();
+                              } else {
+                                Navigator.pop(Const.globalKey.currentContext!);
+                              }
+                            } else {
+                              CustomToast().showToast(baseContext,
+                                  'Soething went wrong ', themeProvider,
+                                  toastType: ToastType.failure);
+                            }
                           },
                         ),
                       ),

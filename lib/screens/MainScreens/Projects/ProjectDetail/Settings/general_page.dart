@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +56,6 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
       identifier.text = projectProvider.projectDetailModel!.identifier!;
-      checkUser();
     });
   }
 
@@ -357,53 +358,51 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             ),
                           ),
                         ),
-                        checkUser()
+                       checkUser()
                             ? Positioned(
-                                top: 15,
-                                right: 15,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        enableDrag: true,
-                                        constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.75),
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(30),
-                                            topRight: Radius.circular(30),
-                                          ),
-                                        ),
-                                        context: context,
-                                        builder: (ctx) {
-                                          return const SelectCoverImage(
-                                            creatProject: false,
-                                          );
-                                        });
-                                    // var file = await ImagePicker.platform
-                                    //     .pickImage(source: ImageSource.gallery);
-                                    // if (file != null) {
-                                    //   setState(() {
-                                    //     coverImage = File(file.path);
-                                    //   });
-                                    // }
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: themeProvider.themeManager
-                                        .primaryBackgroundDefaultColor,
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                      ),
+                          top: 15,
+                          right: 15,
+                          child: GestureDetector(
+                            onTap: () async {
+                              Map<String, dynamic> url = {};
+
+                              await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  enableDrag: true,
+                                  constraints: BoxConstraints(
+                                      maxHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.75),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
                                     ),
                                   ),
+                                  context: context,
+                                  builder: (ctx) {
+                                    return SelectCoverImage(
+                                      uploadedUrl: url,
+                                    );
+                                  });
+                              log(url.toString());
+                              setState(() {
+                                projectProvider.projectDetailModel!.coverImage =
+                                    url['url'] ??
+                                        projectProvider
+                                            .projectDetailModel!.coverImage;
+                              });
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                              child: Center(
+                                child: Icon(
+                                  Icons.edit,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
-                              )
+                              ))))
                             : Container(),
                       ],
                     ),

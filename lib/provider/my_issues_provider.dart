@@ -171,7 +171,7 @@ class MyIssuesProvider extends ChangeNotifier {
       myIssuesViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log(e.response.toString());
+      log("MY ISSUES:${e.response}");
       issues.projectView = ProjectView.kanban;
       myIssuesViewState = StateEnum.error;
       notifyListeners();

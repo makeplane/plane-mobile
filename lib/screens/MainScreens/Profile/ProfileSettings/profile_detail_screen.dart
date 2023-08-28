@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:developer';
 
@@ -464,6 +466,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           bottom: 15, left: 16, right: 16),
                       child: Button(
                         ontap: () async {
+                          
                           await profileProvider.updateProfile(
                             data: {
                               "first_name": fullName.text,
@@ -475,6 +478,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           if (profileProvider.updateProfileState ==
                               StateEnum.success) {
                             Navigator.pop(Const.globalKey.currentContext!);
+                            
                             CustomToast().showToast(screenContext,
                                 'Profile updated successfully', themeProvider,
                                 toastType: ToastType.success);
@@ -520,7 +524,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       if (image == null) return;
       int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
-        // ignore: use_build_context_synchronously
         CustomToast().showToast(context, 'File size should be less than 5MB',
             ref.read(ProviderList.themeProvider),
             toastType: ToastType.warning);

@@ -10,7 +10,6 @@ import 'package:plane_startup/services/shared_preference_service.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
 import 'package:plane_startup/utils/constants.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
@@ -37,12 +36,12 @@ void main() async {
   // Const.appBearerToken = null;
   // ConnectionService().checkConnectivity();
   prefs = pref;
-  SentryFlutter.init((options) {
-    options.dsn = dotenv.env['SENTRY_DSN'];
-  },
-  appRunner: () => runApp(const ProviderScope(child: MyApp())),
-  );
-  // runApp(const ProviderScope(child: MyApp()));
+  // SentryFlutter.init((options) {
+  //   options.dsn = dotenv.env['SENTRY_DSN'];
+  // },
+  // appRunner: () => runApp(const ProviderScope(child: MyApp())),
+  // );
+  runApp(const ProviderScope(child: MyApp()));
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;

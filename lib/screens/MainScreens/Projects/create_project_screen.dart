@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -125,7 +126,8 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                     right: 15,
                                     child: GestureDetector(
                                         onTap: () async {
-                                          showModalBottomSheet(
+                                          Map<String, dynamic> url = {};
+                                          await showModalBottomSheet(
                                               isScrollControlled: true,
                                               enableDrag: true,
                                               constraints: BoxConstraints(
@@ -143,17 +145,12 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                               ),
                                               context: context,
                                               builder: (ctx) {
-                                                return const SelectCoverImage(
-                                                  creatProject: true,
+                                                return SelectCoverImage(
+                                                  uploadedUrl: url,
                                                 );
                                               });
-                                          // var file = await ImagePicker.platform
-                                          //     .pickImage(source: ImageSource.gallery);
-                                          // if (file != null) {
-                                          //   setState(() {
-                                          //     coverImage = File(file.path);
-                                          //   });
-                                          // }
+                                          log(url.toString());
+                                          projectProvider.coverUrl = url['url'];
                                         },
                                         child: CircleAvatar(
                                           backgroundColor: themeProvider

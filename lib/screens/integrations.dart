@@ -90,13 +90,15 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                 'Slack',
                                 textAlign: TextAlign.left,
                                 type: FontStyle.Small,
-                                color: themeProvider.themeManager.primaryTextColor,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               Container(
                                 padding: const EdgeInsets.all(5),
                                 color:
                                     workspaceProvider.slackIntegration == null
-                                        ? const Color.fromRGBO(243, 245, 248, 1)
+                                        ? themeProvider.themeManager
+                                            .tertiaryBackgroundDefaultColor
                                         : darkSucessBackground,
                                 child: CustomText(
                                   workspaceProvider.slackIntegration == null
@@ -165,12 +167,14 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                               'Github',
                               textAlign: TextAlign.left,
                               type: FontStyle.Small,
-                              color: themeProvider.themeManager.primaryTextColor,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             Container(
                               padding: const EdgeInsets.all(5),
                               color: workspaceProvider.githubIntegration == null
-                                  ? const Color.fromRGBO(243, 245, 248, 1)
+                                  ? themeProvider.themeManager
+                                      .tertiaryBackgroundDefaultColor
                                   : darkSucessBackground,
                               child: CustomText(
                                   workspaceProvider.githubIntegration == null

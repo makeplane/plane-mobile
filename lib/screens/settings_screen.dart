@@ -68,63 +68,60 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: AppBar(
-          elevation: 1,
-          shadowColor: strokeColor,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.close,
-              color: themeProvider.themeManager.primaryTextColor,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor:
-              themeProvider.themeManager.primaryBackgroundDefaultColor,
-          title: CustomText(
-            'Settings',
-            type: FontStyle.Large,
-            fontWeight: FontWeightt.Semibold,
-            maxLines: 1,
-            color: themeProvider.themeManager.primaryTextColor,
-          ),
-          bottom: 
-          hasAccess() ?
-          TabBar(
-            controller: tabController,
-            indicator: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: themeProvider.themeManager.primaryColour,
-                  width: 7,
-                ),
+            elevation: 1,
+            shadowColor: strokeColor,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.close,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
             ),
-            // indicatorColor: primaryColor,
-            labelColor: themeProvider.themeManager.primaryColour,
-            indicatorWeight: 9,
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            isScrollable: true,
-            tabs: 
-            tabs.map(
-                  (e) => CustomText(
-                    tabs[tabs.indexOf(e)],
-                    type: FontStyle.Medium,
-                    color: tabs.indexOf(e) == selectedIndex
-                        ? themeProvider.themeManager.primaryColour
-                        : themeProvider.themeManager.secondaryTextColor,
-                    overrride: true,
-                  ),
-                )
-                .toList()
-          )
-         : null
-        ),
+            centerTitle: true,
+            backgroundColor:
+                themeProvider.themeManager.primaryBackgroundDefaultColor,
+            title: CustomText(
+              'Settings',
+              type: FontStyle.Large,
+              fontWeight: FontWeightt.Semibold,
+              maxLines: 1,
+              color: themeProvider.themeManager.primaryTextColor,
+            ),
+            bottom: hasAccess()
+                ? TabBar(
+                    controller: tabController,
+                    indicator: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: themeProvider.themeManager.primaryColour,
+                          width: 7,
+                        ),
+                      ),
+                    ),
+                    // indicatorColor: primaryColor,
+                    labelColor: themeProvider.themeManager.primaryColour,
+                    indicatorWeight: 9,
+                    onTap: (index) {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
+                    isScrollable: true,
+                    tabs: tabs
+                        .map(
+                          (e) => CustomText(
+                            tabs[tabs.indexOf(e)],
+                            type: FontStyle.Medium,
+                            color: tabs.indexOf(e) == selectedIndex
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager.secondaryTextColor,
+                            overrride: true,
+                          ),
+                        )
+                        .toList())
+                : null),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
                 selectedIndex == 7
@@ -281,25 +278,22 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 ),
                 Expanded(
                   child: TabBarView(
-                    controller: tabController,
-                    children: 
-                    hasAccess() ?
-                    const [
-                      GeneralPage(),
-                      ControlPage(),
-                      MembersListWidget(
-                        fromWorkspace: false,
-                      ),
-                      FeaturesPage(),
-                      StatesPage(),
-                      LablesPage(),
-                      IntegrationsWidget(),
-                      EstimatsPage()
-                    ]
-                    : [
-                      const GeneralPage(),
-                    ]
-                  ),
+                      controller: tabController,
+                      physics: hasAccess()
+                          ? const BouncingScrollPhysics()
+                          : const NeverScrollableScrollPhysics(),
+                      children: const [
+                        GeneralPage(),
+                        ControlPage(),
+                        MembersListWidget(
+                          fromWorkspace: false,
+                        ),
+                        FeaturesPage(),
+                        StatesPage(),
+                        LablesPage(),
+                        IntegrationsWidget(),
+                        EstimatsPage()
+                      ]),
                 ),
               ],
             ),
@@ -322,5 +316,4 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     }
     return hasAccess;
   }
-
 }

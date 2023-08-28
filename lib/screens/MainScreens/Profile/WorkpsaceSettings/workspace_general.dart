@@ -74,6 +74,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          backgroundColor:
+              themeProvider.themeManager.primaryBackgroundDefaultColor,
           appBar: CustomAppBar(
             onPressed: () {
               workspaceProvider.changeLogo(
@@ -263,6 +265,12 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         readOnly: workspaceProvider.role != Role.admin &&
                             workspaceProvider.role != Role.member,
                         controller: _workspaceNameController,
+                        style: !checkUserAccess()
+                            ? TextStyle(
+                                color: themeProvider
+                                    .themeManager.tertiaryTextColor,
+                              )
+                            : null,
                         decoration:
                             themeProvider.themeManager.textFieldDecoration),
                   ),
@@ -370,31 +378,27 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   // child:
                   GestureDetector(
                     onTap: () {
-                      if (checkUserAccess()) {
-                        if (workspaceProvider.role != Role.admin &&
-                            workspaceProvider.role != Role.member) {
-                          CustomToast().showToast(
-                              context, accessRestrictedMSG, themeProvider,
-                              toastType: ToastType.failure);
-                          return;
-                        }
-                        showModalBottomSheet(
-                            context: context,
-                            constraints: BoxConstraints(
-                              minHeight: height * 0.5,
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.5,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            builder: (context) {
-                              return const CompanySize();
-                            });
+                      if (workspaceProvider.role != Role.admin) {
+                        CustomToast().showToast(
+                            context, accessRestrictedMSG, themeProvider,
+                            toastType: ToastType.failure);
+                        return;
                       }
+                      showModalBottomSheet(
+                          context: context,
+                          constraints: BoxConstraints(
+                            minHeight: height * 0.5,
+                            maxHeight: MediaQuery.of(context).size.height * 0.5,
+                          ),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (context) {
+                            return const CompanySize();
+                          });
                     },
                     child: Container(
                       margin: const EdgeInsets.only(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,46 +51,91 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     createdBy: [],
     labels: [],
     targetDate: [],
+    startDate: [],
   );
 
-  List<DateTime?> _rangeDatePickerValueWithDefaultValue = [];
-  bool lastWeek = false;
-  bool twoWeeks = false;
-  bool oneMonth = false;
-  bool twoMonths = false;
-  bool customDate = false;
+  List<DateTime?> _targetRangeDatePickerValueWithDefaultValue = [];
+  List<DateTime?> _startRangeDatePickerValueWithDefaultValue = [];
+  bool targetLastWeek = false;
+  bool targetTwoWeeks = false;
+  bool targetOneMonth = false;
+  bool targetTwoMonths = false;
+  bool targetCustomDate = false;
 
-  datesEnabled() {
-    lastWeek = filters.targetDate.contains(
+  bool startLastWeek = false;
+  bool startTwoWeeks = false;
+  bool startOneMonth = false;
+  bool startTwoMonths = false;
+  bool startCustomDate = false;
+
+  targetDatesEnabled() {
+    targetLastWeek = filters.targetDate.contains(
             '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
         filters.targetDate
             .contains('${DateTime.now().toString().split(' ')[0]};before');
 
-    twoWeeks = filters.targetDate
+    targetTwoWeeks = filters.targetDate
             .contains('${DateTime.now().toString().split(' ')[0]};after') &&
         filters.targetDate.contains(
             '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before');
 
-    oneMonth = filters.targetDate
+    targetOneMonth = filters.targetDate
             .contains('${DateTime.now().toString().split(' ')[0]};after') &&
         filters.targetDate.contains(
             '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before');
 
-    twoMonths = filters.targetDate
+    targetTwoMonths = filters.targetDate
             .contains('${DateTime.now().toString().split(' ')[0]};after') &&
         filters.targetDate.contains(
             '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before');
 
-    customDate = (lastWeek || twoWeeks || oneMonth || twoMonths)
-        ? false
-        : filters.targetDate.isEmpty
+    targetCustomDate =
+        (targetLastWeek || targetTwoWeeks || targetOneMonth || targetTwoMonths)
             ? false
-            : true;
+            : filters.targetDate.isEmpty
+                ? false
+                : true;
 
-    if (customDate) {
-      _rangeDatePickerValueWithDefaultValue = [
+    if (targetCustomDate) {
+      _targetRangeDatePickerValueWithDefaultValue = [
         DateTime.parse(filters.targetDate[0].split(';')[0]),
         DateTime.parse(filters.targetDate[1].split(';')[0])
+      ];
+    }
+  }
+
+  startDatesEnabled() {
+    startLastWeek = filters.startDate.contains(
+            '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
+        filters.startDate
+            .contains('${DateTime.now().toString().split(' ')[0]};before');
+
+    startTwoWeeks = filters.startDate
+            .contains('${DateTime.now().toString().split(' ')[0]};after') &&
+        filters.startDate.contains(
+            '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before');
+
+    startOneMonth = filters.startDate
+            .contains('${DateTime.now().toString().split(' ')[0]};after') &&
+        filters.startDate.contains(
+            '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before');
+
+    startTwoMonths = filters.startDate
+            .contains('${DateTime.now().toString().split(' ')[0]};after') &&
+        filters.startDate.contains(
+            '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before');
+
+    startCustomDate =
+        (startLastWeek || startTwoWeeks || startOneMonth || startTwoMonths)
+            ? false
+            : filters.startDate.isEmpty
+                ? false
+                : true;
+
+    if (startCustomDate) {
+      _startRangeDatePickerValueWithDefaultValue = [
+        DateTime.parse(filters.startDate[0].split(';')[0]),
+        DateTime.parse(filters.startDate[1].split(';')[0])
       ];
     }
   }
@@ -101,11 +148,15 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       } else {
         filters = ref.read(ProviderList.issuesProvider).issues.filters;
       }
-
-      datesEnabled();
     } else {
       filters = Filters.fromJson(widget.filtersData["Filters"]);
-      datesEnabled();
+    }
+    if (filters.startDate.isNotEmpty) {
+      log(filters.startDate.toString());
+      startDatesEnabled();
+    }
+    if (filters.targetDate.isNotEmpty) {
+      targetDatesEnabled();
     }
     super.initState();
   }
@@ -477,7 +528,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (lastWeek) {
+                              if (targetLastWeek) {
                                 filters.targetDate = [];
                               } else {
                                 filters.targetDate = [
@@ -485,21 +536,21 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   '${DateTime.now().toString().split(' ')[0]};before'
                                 ];
                               }
-                              datesEnabled();
+                              targetDatesEnabled();
                             });
                           },
                           child: expandedWidget(
                             icon: Icon(
                               Icons.calendar_today_outlined,
                               size: 15,
-                              color: lastWeek
+                              color: targetLastWeek
                                   ? Colors.white
                                   : themeProvider
                                       .themeManager.placeholderTextColor,
                             ),
                             text: 'Last Week',
-                            selected: lastWeek,
-                            color: lastWeek
+                            selected: targetLastWeek,
+                            color: targetLastWeek
                                 ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
@@ -508,7 +559,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (twoWeeks) {
+                              if (targetTwoWeeks) {
                                 filters.targetDate = [];
                               } else {
                                 filters.targetDate = [
@@ -516,21 +567,21 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
                                 ];
                               }
-                              datesEnabled();
+                              targetDatesEnabled();
                             });
                           },
                           child: expandedWidget(
                             icon: Icon(
                               Icons.calendar_today_outlined,
                               size: 15,
-                              color: twoWeeks
+                              color: targetTwoWeeks
                                   ? Colors.white
                                   : themeProvider
                                       .themeManager.placeholderTextColor,
                             ),
                             text: '2 Weeks from now',
-                            selected: twoWeeks,
-                            color: twoWeeks
+                            selected: targetTwoWeeks,
+                            color: targetTwoWeeks
                                 ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
@@ -539,7 +590,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (oneMonth) {
+                              if (targetOneMonth) {
                                 filters.targetDate = [];
                               } else {
                                 filters.targetDate = [
@@ -548,21 +599,21 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                 ];
                               }
 
-                              datesEnabled();
+                              targetDatesEnabled();
                             });
                           },
                           child: expandedWidget(
                             icon: Icon(
                               Icons.calendar_today_outlined,
                               size: 15,
-                              color: oneMonth
+                              color: targetOneMonth
                                   ? Colors.white
                                   : themeProvider
                                       .themeManager.placeholderTextColor,
                             ),
                             text: '1 Month from now',
-                            selected: oneMonth,
-                            color: oneMonth
+                            selected: targetOneMonth,
+                            color: targetOneMonth
                                 ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
@@ -571,7 +622,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (twoMonths) {
+                              if (targetTwoMonths) {
                                 filters.targetDate = [];
                               } else {
                                 filters.targetDate = [
@@ -579,21 +630,21 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
                                 ];
                               }
-                              datesEnabled();
+                              targetDatesEnabled();
                             });
                           },
                           child: expandedWidget(
                             icon: Icon(
                               Icons.calendar_today_outlined,
                               size: 15,
-                              color: twoMonths
+                              color: targetTwoMonths
                                   ? Colors.white
                                   : themeProvider
                                       .themeManager.placeholderTextColor,
                             ),
                             text: '2 Months from now',
-                            selected: twoMonths,
-                            color: twoMonths
+                            selected: targetTwoMonths,
+                            color: targetTwoMonths
                                 ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
@@ -667,9 +718,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                           ),
                                         ),
                                         value:
-                                            _rangeDatePickerValueWithDefaultValue,
+                                            _targetRangeDatePickerValueWithDefaultValue,
                                         onValueChanged: (dates) => setState(() =>
-                                            _rangeDatePickerValueWithDefaultValue =
+                                            _targetRangeDatePickerValueWithDefaultValue =
                                                 dates),
                                       ),
 
@@ -703,7 +754,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                               child: Button(
                                                 text: 'Apply',
                                                 ontap: () {
-                                                  if (_rangeDatePickerValueWithDefaultValue
+                                                  if (_targetRangeDatePickerValueWithDefaultValue
                                                           .length !=
                                                       2) {
                                                     CustomToast().showToast(
@@ -716,10 +767,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                                   }
                                                   setState(() {
                                                     filters.targetDate = [
-                                                      '${_rangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
-                                                      '${_rangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
+                                                      '${_targetRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
+                                                      '${_targetRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
                                                     ];
-                                                    datesEnabled();
+                                                    targetDatesEnabled();
                                                   });
                                                   Navigator.pop(context);
                                                 },
@@ -737,40 +788,308 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             icon: Icon(
                               Icons.calendar_today_outlined,
                               size: 15,
-                              color: customDate
+                              color: targetCustomDate
                                   ? Colors.white
                                   : themeProvider
                                       .themeManager.secondaryTextColor,
                             ),
                             text: 'Custom Date',
-                            selected: customDate,
-                            color: customDate
+                            selected: targetCustomDate,
+                            color: targetCustomDate
                                 ? themeProvider.themeManager.primaryColour
                                 : themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
                           ),
                         ),
                       ],
-                      // children: [
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'Today', selected: false),
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'Tomorrow', selected: false),
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'This Week', selected: false),
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'This Month', selected: false),
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'This Quarter', selected: false),
-                      //   expandedWidget(
-                      //       icon: Icons.calendar_today_outlined, text: 'This Year', selected: false),
-                      // ],
                     ),
                   ),
 
-                  // Expanded(child: Container()),
+                  horizontalLine(),
 
-                  //long blue button to apply filter
+                  //start date
+                  CustomExpansionTile(
+                    title: 'Start Date',
+                    child: Wrap(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (startLastWeek) {
+                                filters.startDate = [];
+                              } else {
+                                filters.startDate = [
+                                  '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
+                                  '${DateTime.now().toString().split(' ')[0]};before'
+                                ];
+                              }
+                              startDatesEnabled();
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: startLastWeek
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.placeholderTextColor,
+                            ),
+                            text: 'Last Week',
+                            selected: startLastWeek,
+                            color: startLastWeek
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (startTwoWeeks) {
+                                filters.startDate = [];
+                              } else {
+                                filters.startDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                              startDatesEnabled();
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: startTwoWeeks
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.placeholderTextColor,
+                            ),
+                            text: '2 Weeks from now',
+                            selected: startTwoWeeks,
+                            color: startTwoWeeks
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (startOneMonth) {
+                                filters.startDate = [];
+                              } else {
+                                filters.startDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                              startDatesEnabled();
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: startOneMonth
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.placeholderTextColor,
+                            ),
+                            text: '1 Month from now',
+                            selected: startOneMonth,
+                            color: startOneMonth
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (startTwoMonths) {
+                                filters.startDate = [];
+                              } else {
+                                filters.startDate = [
+                                  '${DateTime.now().toString().split(' ')[0]};after',
+                                  '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
+                                ];
+                              }
+                              startDatesEnabled();
+                            });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: startTwoMonths
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.placeholderTextColor,
+                            ),
+                            text: '2 Months from now',
+                            selected: startTwoMonths,
+                            color: startTwoMonths
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            showModalBottomSheet(
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.85),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                )),
+                                context: context,
+                                builder: (ctx) {
+                                  return Wrap(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 15, left: 15, right: 15),
+                                        child: Row(
+                                          children: [
+                                            const CustomText(
+                                              'Custom Date',
+                                              type: FontStyle.H4,
+                                              fontWeight: FontWeightt.Semibold,
+                                            ),
+                                            const Spacer(),
+                                            IconButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              icon: Icon(
+                                                Icons.close,
+                                                size: 27,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      CalendarDatePicker2(
+                                        config: CalendarDatePicker2Config(
+                                          calendarType:
+                                              CalendarDatePicker2Type.range,
+                                          selectedDayHighlightColor:
+                                              themeProvider
+                                                  .themeManager.primaryColour,
+                                          weekdayLabelTextStyle: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          controlsTextStyle: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          dayTextStyle: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .secondaryTextColor,
+                                          ),
+                                        ),
+                                        value:
+                                            _startRangeDatePickerValueWithDefaultValue,
+                                        onValueChanged: (dates) => setState(() =>
+                                            _startRangeDatePickerValueWithDefaultValue =
+                                                dates),
+                                      ),
+
+                                      // two buttons taking up the whole width of the bottom sheet one to cancel and one to apply
+
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, right: 20, bottom: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              child: Button(
+                                                text: 'Clear',
+                                                filledButton: false,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundDefaultColor,
+                                                ontap: () {
+                                                  filters.targetDate = [];
+                                                  Navigator.pop(context);
+                                                },
+                                                textColor: themeProvider
+                                                    .themeManager
+                                                    .secondaryTextColor,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: Button(
+                                                text: 'Apply',
+                                                ontap: () {
+                                                  if (_startRangeDatePickerValueWithDefaultValue
+                                                          .length !=
+                                                      2) {
+                                                    CustomToast().showToast(
+                                                        context,
+                                                        'Please select a date range',
+                                                        themeProvider,
+                                                        toastType:
+                                                            ToastType.warning);
+                                                    return;
+                                                  }
+                                                  setState(() {
+                                                    filters.startDate = [
+                                                      '${_startRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
+                                                      '${_startRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
+                                                    ];
+                                                    targetDatesEnabled();
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                textColor: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          child: expandedWidget(
+                            icon: Icon(
+                              Icons.calendar_today_outlined,
+                              size: 15,
+                              color: startCustomDate
+                                  ? Colors.white
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                            ),
+                            text: 'Custom Date',
+                            selected: startCustomDate,
+                            color: startCustomDate
+                                ? themeProvider.themeManager.primaryColour
+                                : themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -784,6 +1103,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               child: Button(
                 text: widget.fromCreateView ? 'Add Filter' : 'Apply Filter',
                 ontap: () {
+                  log(filters.startDate.toString());
                   if (widget.fromCreateView) {
                     widget.filtersData["Filters"] = Filters.toJson(filters);
 

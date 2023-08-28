@@ -43,81 +43,89 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            issuesProvider.createIssueProjectData['name'] =
-                                projectProvider.projects[index]['name'];
-                            issuesProvider.createIssueProjectData['id'] =
-                                projectProvider.projects[index]['id'];
+                        return projectProvider.projects[index]['is_member']
+                            ? InkWell(
+                                onTap: () {
+                                  issuesProvider
+                                          .createIssueProjectData['name'] =
+                                      projectProvider.projects[index]['name'];
+                                  issuesProvider.createIssueProjectData['id'] =
+                                      projectProvider.projects[index]['id'];
 
-                            issuesProvider.setsState();
+                                  issuesProvider.setsState();
 
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            //height: 40,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  //height: 40,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
 
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    projectProvider.projects[index]
-                                                ['icon_prop'] !=
-                                            null
-                                        ? Icon(
-                                            iconList[
-                                                projectProvider.projects[index]
-                                                    ['icon_prop']['name']],
-                                            color: Color(
-                                              int.parse(
-                                                projectProvider.projects[index]
-                                                        ['icon_prop']["color"]
-                                                    .toString()
-                                                    .replaceAll('#', '0xFF'),
-                                              ),
-                                            ),
-                                          )
-                                        : Text(
-                                            int.tryParse(projectProvider
-                                                            .projects[index]
-                                                        ['emoji']) !=
-                                                    null
-                                                ? String.fromCharCode(int.parse(
-                                                    projectProvider
-                                                            .projects[index]
-                                                        ['emoji']))
-                                                : '🚀',
-                                            style:
-                                                const TextStyle(fontSize: 20),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          projectProvider.projects[index]
+                                                      ['icon_prop'] !=
+                                                  null
+                                              ? Icon(
+                                                  iconList[projectProvider
+                                                          .projects[index]
+                                                      ['icon_prop']['name']],
+                                                  color: Color(
+                                                    int.parse(
+                                                      projectProvider
+                                                          .projects[index]
+                                                              ['icon_prop']
+                                                              ["color"]
+                                                          .toString()
+                                                          .replaceAll(
+                                                              '#', '0xFF'),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Text(
+                                                  int.tryParse(projectProvider
+                                                                      .projects[
+                                                                  index]
+                                                              ['emoji']) !=
+                                                          null
+                                                      ? String.fromCharCode(int
+                                                          .parse(projectProvider
+                                                                  .projects[
+                                                              index]['emoji']))
+                                                      : '🚀',
+                                                  style: const TextStyle(
+                                                      fontSize: 20),
+                                                ),
+                                          Container(
+                                            width: 10,
                                           ),
-                                    Container(
-                                      width: 10,
-                                    ),
-                                    CustomText(
-                                      projectProvider.projects[index]['name'],
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Regular,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    )
-                                  ],
+                                          CustomText(
+                                            projectProvider.projects[index]
+                                                ['name'],
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Regular,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Container(
+                                          width: width,
+                                          height: 1,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 20),
-                                Container(
-                                    width: width,
-                                    height: 1,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor),
-                              ],
-                            ),
-                          ),
-                        );
+                              )
+                            : Container();
                       }),
                 ),
                 Container(height: 30),

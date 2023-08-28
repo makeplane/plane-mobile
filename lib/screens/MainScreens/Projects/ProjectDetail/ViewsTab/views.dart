@@ -88,7 +88,7 @@ class _ViewsState extends ConsumerState<Views> {
               children: [
                 //icon of cards stacked on each other
                 Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 20),
+                    padding: const EdgeInsets.only(left: 15, top: 10),
                     child: SvgPicture.asset(
                       "assets/svg_images/view_card.svg",
                       height: 20,
@@ -101,7 +101,7 @@ class _ViewsState extends ConsumerState<Views> {
                 Container(
                   margin: const EdgeInsets.only(left: 5),
                   width: MediaQuery.sizeOf(context).width - 200,
-                  padding: const EdgeInsets.only(left: 5, right: 15, top: 20),
+                  padding: const EdgeInsets.only(left: 5, right: 15, top: 10),
                   child: CustomText(
                     viewsProvider.views[index]["name"],
                     type: FontStyle.H5,
@@ -160,9 +160,7 @@ class _ViewsState extends ConsumerState<Views> {
 
             viewsProvider.views[index]["description"] == null ||
                     viewsProvider.views[index]["description"].isEmpty
-                ? Container(
-                    height: 8,
-                  )
+                ? Container()
                 : Container(
                     margin: const EdgeInsets.only(left: 25),
                     padding:

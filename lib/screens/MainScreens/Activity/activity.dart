@@ -23,7 +23,12 @@ class _ActivityState extends ConsumerState<Activity> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.watch(ProviderList.activityProvider).getAcivity();
+      ref.watch(ProviderList.activityProvider).getAcivity(
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug,
+          );
     });
   }
 
@@ -434,7 +439,12 @@ class _ActivityState extends ConsumerState<Activity> {
               : errorState(
                   context: context,
                   ontap: () {
-                    ref.watch(ProviderList.activityProvider).getAcivity();
+                    ref.watch(ProviderList.activityProvider).getAcivity(
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace!
+                              .workspaceSlug,
+                        );
                   },
                 )),
     );

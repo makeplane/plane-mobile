@@ -408,6 +408,33 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
+
+                          //start date
+                          RadioListTile(
+                              fillColor: orderBy == 'start_date'
+                                  ? null
+                                  : MaterialStateProperty.all<Color>(
+                                      themeProvider
+                                          .themeManager.borderSubtle01Color),
+                              visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              groupValue: orderBy,
+                              title: const CustomText(
+                                'Start date',
+                                type: FontStyle.Small,
+                                textAlign: TextAlign.start,
+                              ),
+                              value: 'start_date',
+                              onChanged: (newValue) {
+                                setState(() {
+                                  orderBy = 'start_date';
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor:
+                                  themeProvider.themeManager.primaryColour),
                         ],
                       ),
                     )
@@ -653,7 +680,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 30),
                 child: Button(
-                  text: 'Apply Filter',
+                  text: 'Apply View',
                   ontap: () async {
                     if (orderBy == '' &&
                         groupBy == '' &&

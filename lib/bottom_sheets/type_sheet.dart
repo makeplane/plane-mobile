@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class TypeSheet extends ConsumerStatefulWidget {
@@ -115,9 +114,20 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    setState(() {
-                      selected = 0;
-                    });
+                    if (widget.issueCategory == IssueCategory.myIssues) {
+                      myIssuesProv.issues.projectView = ProjectView.kanban;
+                      myIssuesProv.setState();
+                      myIssuesProv.updateMyIssueView();
+                    } else {
+                      prov.issues.projectView = ProjectView.kanban;
+                      prov.tempProjectView = ProjectView.kanban;
+                      prov.setsState();
+                      if (widget.issueCategory == IssueCategory.issues) {
+                        prov.updateProjectView();
+                      }
+                    }
+
+                    Navigator.pop(context);
                   },
                   child: Row(
                     children: [
@@ -162,9 +172,20 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    setState(() {
-                      selected = 1;
-                    });
+                    if (widget.issueCategory == IssueCategory.myIssues) {
+                      myIssuesProv.issues.projectView = ProjectView.list;
+                      myIssuesProv.setState();
+                      myIssuesProv.updateMyIssueView();
+                    } else {
+                      prov.issues.projectView = ProjectView.list;
+                      prov.tempProjectView = ProjectView.list;
+                      prov.setsState();
+                      if (widget.issueCategory == IssueCategory.issues) {
+                        prov.updateProjectView();
+                      }
+                    }
+
+                    Navigator.pop(context);
                   },
                   child: Row(
                     children: [
@@ -209,9 +230,15 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () {
-                          setState(() {
-                            selected = 2;
-                          });
+                          prov.issues.projectView = ProjectView.calendar;
+                          prov.tempProjectView = ProjectView.calendar;
+
+                          prov.setsState();
+                          if (widget.issueCategory == IssueCategory.issues) {
+                            prov.updateProjectView();
+                          }
+
+                          Navigator.pop(context);
                         },
                         child: Row(
                           children: [
@@ -258,9 +285,15 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () {
-                          setState(() {
-                            selected = 3;
-                          });
+                          prov.issues.projectView = ProjectView.spreadsheet;
+                          prov.tempProjectView = ProjectView.spreadsheet;
+
+                          prov.setsState();
+                          if (widget.issueCategory == IssueCategory.issues) {
+                            prov.updateProjectView();
+                          }
+
+                          Navigator.pop(context);
                         },
                         child: Row(
                           children: [
@@ -294,44 +327,44 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
             ],
           ),
           //long blue button to apply filter
-          Container(
-            margin: const EdgeInsets.only(bottom: 18, top: 20),
-            child: Button(
-              text: 'Apply Filter',
-              ontap: () {
-                if (widget.issueCategory == IssueCategory.myIssues) {
-                  if (selected == 0) {
-                    myIssuesProv.issues.projectView = ProjectView.kanban;
-                  } else if (selected == 1) {
-                    myIssuesProv.issues.projectView = ProjectView.list;
-                  }
-                  myIssuesProv.setState();
-                  myIssuesProv.updateMyIssueView();
-                } else {
-                  if (selected == 0) {
-                    prov.issues.projectView = ProjectView.kanban;
-                    prov.tempProjectView = ProjectView.kanban;
-                  } else if (selected == 1) {
-                    prov.issues.projectView = ProjectView.list;
-                    prov.tempProjectView = ProjectView.list;
-                  } else if (selected == 2) {
-                    prov.issues.projectView = ProjectView.calendar;
-                    prov.tempProjectView = ProjectView.calendar;
-                  } else if (selected == 3) {
-                    prov.issues.projectView = ProjectView.spreadsheet;
-                    prov.tempProjectView = ProjectView.spreadsheet;
-                  }
-                  prov.setsState();
-                  if (widget.issueCategory == IssueCategory.issues) {
-                    prov.updateProjectView();
-                  }
-                }
+          // Container(
+          //   margin: const EdgeInsets.only(bottom: 18, top: 20),
+          //   child: Button(
+          //     text: 'Apply Filter',
+          //     ontap: () {
+          //       if (widget.issueCategory == IssueCategory.myIssues) {
+          //         if (selected == 0) {
+          //           myIssuesProv.issues.projectView = ProjectView.kanban;
+          //         } else if (selected == 1) {
+          //           myIssuesProv.issues.projectView = ProjectView.list;
+          //         }
+          //         myIssuesProv.setState();
+          //         myIssuesProv.updateMyIssueView();
+          //       } else {
+          //         if (selected == 0) {
+          //           prov.issues.projectView = ProjectView.kanban;
+          //           prov.tempProjectView = ProjectView.kanban;
+          //         } else if (selected == 1) {
+          //           prov.issues.projectView = ProjectView.list;
+          //           prov.tempProjectView = ProjectView.list;
+          //         } else if (selected == 2) {
+          //           prov.issues.projectView = ProjectView.calendar;
+          //           prov.tempProjectView = ProjectView.calendar;
+          //         } else if (selected == 3) {
+          //           prov.issues.projectView = ProjectView.spreadsheet;
+          //           prov.tempProjectView = ProjectView.spreadsheet;
+          //         }
+          //         prov.setsState();
+          //         if (widget.issueCategory == IssueCategory.issues) {
+          //           prov.updateProjectView();
+          //         }
+          //       }
 
-                Navigator.pop(context);
-              },
-              textColor: Colors.white,
-            ),
-          ),
+          //       Navigator.pop(context);
+          //     },
+          //     textColor: Colors.white,
+          //   ),
+          // ),
         ],
       ),
     );

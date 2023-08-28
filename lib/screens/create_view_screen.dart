@@ -39,7 +39,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
     'Labels:',
     'Priority:',
     'State:',
-    'Target Date:'
+    'Target Date:',
+    'Start Date:'
   ];
   Map priorities = {
     'urgent': {
@@ -262,11 +263,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                         height: 10,
                                                       ),
                                                       Wrap(
-                                                        children: ((filtersData['Filters']
-                                                                        as Map)
-                                                                    .values
-                                                                    .elementAt(index)
-                                                                as List)
+                                                        children: ((filtersData['Filters'] as Map).values.elementAt(index) as List)
                                                             .map((e) => filterKeys[index] == 'Priority:'
                                                                 ? GestureDetector(
                                                                     onTap: () {
@@ -386,7 +383,23 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                       text: e,
                                                                                     ),
                                                                                   )
-                                                                                : Container())
+                                                                                : filterKeys[index] == 'Start Date:'
+                                                                                    ? GestureDetector(
+                                                                                        onTap: () {
+                                                                                          ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
+                                                                                          setState(() {});
+                                                                                        },
+                                                                                        child: filterWidget(
+                                                                                          color: Colors.black,
+                                                                                          icon: const Icon(
+                                                                                            Icons.calendar_today_outlined,
+                                                                                            size: 15,
+                                                                                            color: Colors.black,
+                                                                                          ),
+                                                                                          text: e,
+                                                                                        ),
+                                                                                      )
+                                                                                    : Container())
                                                             .toList(),
                                                       ),
                                                     ],
@@ -420,7 +433,9 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                         filtersData["Filters"]!["priority"],
                                     "state": filtersData["Filters"]!["state"],
                                     "target_date":
-                                        filtersData["Filters"]!["target_date"]
+                                        filtersData["Filters"]!["target_date"],
+                                    "start_date":
+                                        filtersData["Filters"]!["start_date"],
                                   },
                                   "query_data": {
                                     "assignees":
@@ -433,6 +448,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                     "state": filtersData["Filters"]!["state"],
                                     "target_date":
                                         filtersData["Filters"]!["target_date"],
+                                    "start_date":
+                                        filtersData["Filters"]!["start_date"],
                                   }
                                 });
                                 setState(() {

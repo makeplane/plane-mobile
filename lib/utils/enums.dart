@@ -22,7 +22,7 @@ enum ProjectView { kanban, list, calendar, spreadsheet }
 
 enum GroupBY { state, priority, labels, createdBY, project }
 
-enum OrderBY { manual, lastCreated, lastUpdated, priority }
+enum OrderBY { manual, lastCreated, lastUpdated, priority, startDate }
 
 enum IssueType { all, activeIssues, backlogIssues }
 

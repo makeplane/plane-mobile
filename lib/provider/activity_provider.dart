@@ -10,12 +10,20 @@ class ActivityProvider extends ChangeNotifier {
   StateEnum getActivityState = StateEnum.loading;
   List<dynamic> data = [];
 
-  getAcivity() async {
+  clear() {
+    data = [];
+    getActivityState = StateEnum.loading;
+    notifyListeners();
+  }
+
+  getAcivity({
+    required String slug,
+  }) async {
     getActivityState = StateEnum.loading;
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
-        url: APIs.activity,
+        url: APIs.activity.replaceAll('\$SLUG', slug),
         hasBody: false,
         httpMethod: HttpMethod.get,
       );

@@ -256,35 +256,52 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     List items = [
       {
         'title': 'New Issue',
-        'screen': const CreateIssue(
-          cycleId: '',
-          moduleId: '',
-        ),
+        'screen': () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const CreateIssue(
+                    fromMyIssues: true,
+                  )));
+        },
         'icon': 'assets/images/global_search_icons/issue.png'
       },
       {
         'title': 'New Project',
-        'screen': const CreateProject(),
+        'screen': () => {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreateProject()))
+            },
         'icon': 'assets/images/global_search_icons/project.png'
       },
       {
         'title': 'New Cycle',
-        'screen': const CreateCycle(),
+        'screen': () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreateCycle()));
+        },
         'icon': 'assets/images/global_search_icons/cycle.png'
       },
       {
         'title': 'New Module',
-        'screen': const CreateModule(),
+        'screen': () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreateModule()));
+        },
         'icon': 'assets/images/global_search_icons/module.png'
       },
       {
         'title': 'New View',
-        'screen': const CreateView(),
+        'screen': () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreateView()));
+        },
         'icon': 'assets/images/global_search_icons/view.png'
       },
       {
         'title': 'New Page',
-        'screen': const CreatePage(),
+        'screen': () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreatePage()));
+        },
         'icon': 'assets/images/global_search_icons/page.png'
       },
     ];
@@ -322,12 +339,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     await ref
                         .read(ProviderList.projectProvider)
                         .initializeProject();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => items[index]['screen'],
-                      ),
-                    );
+                    items[index]['screen']();
                   }
                 } else {
                   if (index == 2) {
@@ -335,12 +347,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         ref.watch(ProviderList.projectProvider).projects[0];
                     ref.watch(ProviderList.projectProvider).setState();
                   }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => items[index]['screen'],
-                    ),
-                  );
+                  items[index]['screen']();
                 }
               },
               child: Padding(
@@ -375,29 +382,44 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     List items = [
       {
         'title': 'General',
-        'screen': const WorkspaceGeneral(),
+        'screen': () => {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const WorkspaceGeneral()))
+            },
         'icon': 'assets/images/global_search_icons/general.png'
       },
       {
         'title': 'Members',
-        'screen': const Members(
-          fromWorkspace: true,
-        ),
+        'screen': () => {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const Members(
+                        fromWorkspace: true,
+                      )))
+            },
         'icon': 'assets/images/global_search_icons/members.png'
       },
       {
         'title': 'Billing & Plans',
-        'screen': const BillingPlans(),
+        'screen': () => {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const BillingPlans()))
+            },
         'icon': 'assets/images/global_search_icons/billing&plans.png'
       },
       {
         'title': 'Integrations',
-        'screen': const Integrations(),
+        'screen': () => {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const Integrations()))
+            },
         'icon': 'assets/images/global_search_icons/integrations.png'
       },
       {
         'title': 'Imports & Exports',
-        'screen': const ImportEport(),
+        'screen': () => {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ImportEport()))
+            },
         'icon': 'assets/images/global_search_icons/imports&exports.png'
       },
     ];
@@ -435,12 +457,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     await ref
                         .read(ProviderList.projectProvider)
                         .initializeProject();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => items[index]['screen'],
-                      ),
-                    );
+                    items[index]['screen']();
                   }
                 } else {
                   if (index == 2) {
@@ -448,12 +465,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         ref.watch(ProviderList.projectProvider).projects[0];
                     ref.watch(ProviderList.projectProvider).setState();
                   }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => items[index]['screen'],
-                    ),
-                  );
+                  items[index]['screen']();
                 }
               },
               child: Padding(

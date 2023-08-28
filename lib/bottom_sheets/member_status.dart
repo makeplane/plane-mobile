@@ -58,10 +58,15 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
       ];
     }
     selectedRole = widget.role['role'];
+
     if (widget.lastName == '') {
       name = "${widget.firstName}'s Role";
     } else {
       name = "${widget.firstName} ${widget.lastName}'s Role";
+    }
+
+    if (widget.isInviteMembers) {
+      name = widget.firstName;
     }
   }
 
@@ -69,6 +74,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
   Widget build(BuildContext context) {
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Stack(
       children: [
         Wrap(
@@ -126,8 +132,18 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                           shrinkWrap: true,
                           primary: false,
                           itemBuilder: (context, index) {
-                            return index == 0 &&
-                                    projectProvider.role != Role.admin
+                            return (widget.fromWorkspace
+                                    ? (index == 0 &&
+                                            workspaceProvider.role !=
+                                                Role.admin) ||
+                                        (index == 4 &&
+                                            workspaceProvider.role !=
+                                                Role.admin)
+                                    : (index == 0 &&
+                                            projectProvider.role !=
+                                                Role.admin) ||
+                                        (index == 4 &&
+                                            projectProvider.role != Role.admin))
                                 ? Container()
                                 : Column(
                                     children: [
@@ -152,8 +168,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                               setState(() {
                                                 selectedRole = value as int;
                                                 if (widget.isInviteMembers) {
-                                                  widget.role['role'] =
-                                                      selectedRole;
+                                                  // widget.role['role'] =
+                                                  //     selectedRole;
                                                   ref
                                                           .read(ProviderList
                                                               .workspaceProvider)
@@ -165,14 +181,10 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                               });
                                             },
                                           ),
-                                          CustomText(
-                                            options[index]['role'],
-                                            type: FontStyle.Small,
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : Colors.black,
-                                          ),
+                                          CustomText(options[index]['role'],
+                                              type: FontStyle.Small,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor),
                                         ],
                                       ),
                                       Container(

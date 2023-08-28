@@ -20,6 +20,7 @@ import 'package:plane_startup/services/shared_preference_service.dart';
 import 'estimates_provider.dart';
 import 'integration_provider.dart';
 import 'issues_provider.dart';
+import 'member_profile_provider.dart';
 import 'modules_provider.dart';
 import 'theme_provider.dart';
 import 'views_provider.dart';
@@ -69,6 +70,7 @@ class ProviderList {
   static var notificationProvider =
       ChangeNotifierProvider<NotificationProvider>(
           (ref) => NotificationProvider(ref));
+  static var memberProfileProvider = StateNotifierProvider<MemberProfileProvider,MemberProfileStateModel>((ref) => MemberProfileProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

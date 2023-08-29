@@ -1,11 +1,16 @@
+import 'dart:developer';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
@@ -69,53 +74,303 @@ class _ActivityState extends ConsumerState<Activity> {
                                   shrinkWrap: true,
                                   itemCount: activityProvider.data.length,
                                   itemBuilder: (context, index) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 15, top: 15),
-                                          child:
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        log('TApped');
+                                        if (activityProvider.data[index]
+                                                ["comment"]
+                                            .toString()
+                                            .contains("created the issue")) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (_) => IssueDetail(
+                                                        fromMyIssues: true,
+                                                        projID: activityProvider
+                                                                .data[index]
+                                                            ["project"],
+                                                        workspaceSlug: ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .workspaces
+                                                            .firstWhere((element) =>
+                                                                element['id'] ==
+                                                                activityProvider
+                                                                            .data[
+                                                                        index][
+                                                                    "workspace"])["slug"],
+                                                        appBarTitle: '',
+                                                        issueId:
+                                                            activityProvider
+                                                                    .data[index]
+                                                                ["issue"],
+                                                      )));
+                                        } else if (activityProvider.data[index]
+                                                ["comment"]
+                                            .toString()
+                                            .contains("created a link")) {
+                                          if (!await launchUrl(Uri.parse(
                                               activityProvider.data[index]
-                                                              ['comment'] !=
-                                                          null &&
-                                                      activityProvider
-                                                                  .data[index]
-                                                              ['field'] ==
-                                                          null
-                                                  ? SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      child: Row(
+                                                      ["new_value"]
+                                                  .toString()))) {
+                                            // ignore: use_build_context_synchronously
+                                            CustomToast().showToast(
+                                                context,
+                                                'Failed to launch',
+                                                themeProvider,
+                                                toastType: ToastType.failure);
+                                          }
+                                        }
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 15, top: 15),
+                                            child:
+                                                activityProvider.data[index]
+                                                                ['comment'] !=
+                                                            null &&
+                                                        activityProvider
+                                                                    .data[index]
+                                                                ['field'] ==
+                                                            null
+                                                    ? SizedBox(
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        child: Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CircleAvatar(
+                                                              backgroundColor:
+                                                                  darkSecondaryBGC,
+                                                              radius: 15,
+                                                              child: Center(
+                                                                child:
+                                                                    CustomText(
+                                                                  activityProvider
+                                                                      .data[
+                                                                          index]
+                                                                          [
+                                                                          'actor_detail']
+                                                                          [
+                                                                          'first_name']
+                                                                          [0]
+                                                                      .toString()
+                                                                      .toUpperCase(),
+                                                                  // color: Colors.black,
+                                                                  type: FontStyle
+                                                                      .Medium,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            SizedBox(
+                                                              width: MediaQuery
+                                                                          .sizeOf(
+                                                                              context)
+                                                                      .width -
+                                                                  80,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    child: Wrap(
+                                                                      children: [
+                                                                        // CustomText(
+                                                                        //   "${activityProvider.data[index]['actor_detail']['display_name']} ${activityProvider.data[index]['comment']}",
+                                                                        //   fontSize:
+                                                                        //       14,
+                                                                        //   type: FontStyle
+                                                                        //       .Medium,
+                                                                        //   textAlign:
+                                                                        //       TextAlign.left,
+                                                                        //   maxLines:
+                                                                        //       4,
+                                                                        //   color: themeProvider
+                                                                        //       .themeManager
+                                                                        //       .primaryTextColor,
+                                                                        // ),
+
+                                                                        CustomRichText(
+                                                                          type:
+                                                                              FontStyle.Small,
+                                                                          widgets: [
+                                                                            TextSpan(
+                                                                              text: '${activityProvider.data[index]['actor_detail']['display_name']} ',
+                                                                              recognizer: TapGestureRecognizer()
+                                                                                ..onTap = () {
+                                                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                                                      builder: (_) => MemberProfile(
+                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                          )));
+                                                                                },
+                                                                              style: TextStyle(
+                                                                                color: themeProvider.themeManager.primaryTextColor,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                            TextSpan(
+                                                                              text: '${activityProvider.data[index]['comment']}',
+                                                                              style: TextStyle(
+                                                                                color: themeProvider.themeManager.primaryTextColor,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w400,
+                                                                              ),
+                                                                            ),
+                                                                            TextSpan(
+                                                                              recognizer: TapGestureRecognizer()
+                                                                                ..onTap = () {
+                                                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                                                      builder: (_) => IssueDetail(
+                                                                                            fromMyIssues: true,
+                                                                                            projID: activityProvider.data[index]["project"],
+                                                                                            workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
+                                                                                            appBarTitle: '',
+                                                                                            issueId: activityProvider.data[index]["issue"],
+                                                                                          )));
+                                                                                },
+                                                                              text: ' ${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}',
+                                                                              style: TextStyle(
+                                                                                color: themeProvider.themeManager.primaryTextColor,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        // const SizedBox(
+                                                                        //   width:
+                                                                        //       5,
+                                                                        // ),
+                                                                        // activityProvider.data[index]["comment"].toString().contains("created the issue") ||
+                                                                        //         activityProvider.data[index]["comment"].toString().contains("created a link")
+                                                                        //     ? SvgPicture.asset(
+                                                                        //         "assets/svg_images/redirect.svg",
+                                                                        //         height: 15,
+                                                                        //         width: 15,
+                                                                        //         // ignore: deprecated_member_use
+                                                                        //         color: themeProvider.themeManager.primaryTextColor,
+                                                                        //       )
+                                                                        //     : Container()
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          6),
+                                                                  CustomText(
+                                                                    checkTimeDifferenc(
+                                                                        activityProvider.data[index]
+                                                                            [
+                                                                            'created_at']),
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .primaryTextColor,
+                                                                    type: FontStyle
+                                                                        .Small,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .left,
+                                                                    maxLines: 4,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Row(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
                                                           CircleAvatar(
                                                             backgroundColor:
-                                                                darkSecondaryBGC,
+                                                                Colors
+                                                                    .grey[100],
                                                             radius: 15,
                                                             child: Center(
-                                                              child: CustomText(
-                                                                activityProvider
-                                                                    .data[index]
-                                                                        [
-                                                                        'actor_detail']
-                                                                        [
-                                                                        'first_name']
-                                                                        [0]
-                                                                    .toString()
-                                                                    .toUpperCase(),
-                                                                // color: Colors.black,
-                                                                type: FontStyle
-                                                                    .Medium,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
+                                                                child: activityProvider.data[index]
+                                                                            [
+                                                                            'field'] ==
+                                                                        'state'
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .grid_view_outlined,
+                                                                        size:
+                                                                            15,
+                                                                        color:
+                                                                            greyColor,
+                                                                      )
+                                                                    : activityProvider.data[index]['field'] ==
+                                                                            'priority'
+                                                                        ? SvgPicture
+                                                                            .asset(
+                                                                            'assets/svg_images/priority.svg',
+                                                                            height:
+                                                                                15,
+                                                                            width:
+                                                                                15,
+                                                                          )
+                                                                        : activityProvider.data[index]['field'] == 'assignees' ||
+                                                                                activityProvider.data[index]['field'] == 'assignee'
+                                                                            ? Icon(
+                                                                                Icons.people_outline,
+                                                                                size: 18,
+                                                                                color: themeProvider.themeManager.placeholderTextColor,
+                                                                              )
+                                                                            : activityProvider.data[index]['field'] == 'labels'
+                                                                                ? Icon(
+                                                                                    Icons.local_offer_outlined,
+                                                                                    size: 15,
+                                                                                    color: themeProvider.themeManager.placeholderTextColor,
+                                                                                  )
+                                                                                : activityProvider.data[index]['field'] == 'blocks'
+                                                                                    ? SvgPicture.asset(
+                                                                                        'assets/svg_images/blocked_icon.svg',
+                                                                                        height: 15,
+                                                                                        width: 15,
+                                                                                      )
+                                                                                    : activityProvider.data[index]['field'] == 'blocking'
+                                                                                        ? SvgPicture.asset(
+                                                                                            'assets/svg_images/blocking_icon.svg',
+                                                                                            height: 15,
+                                                                                            width: 15,
+                                                                                          )
+                                                                                        : activityProvider.data[index]['field'] == 'description'
+                                                                                            ? Icon(
+                                                                                                Icons.comment_outlined,
+                                                                                                color: themeProvider.themeManager.placeholderTextColor,
+                                                                                                size: 15,
+                                                                                              )
+                                                                                            : activityProvider.data[index]['field'] == 'link'
+                                                                                                ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                : activityProvider.data[index]['field'] == 'modules'
+                                                                                                    ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                    : activityProvider.data[index]['field'] == 'cycles'
+                                                                                                        ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                        : activityProvider.data[index]['field'] == 'attachment'
+                                                                                                            ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
+                                                                                                            : activityProvider.data[index]['field'] == 'parent'
+                                                                                                                ? Icon(
+                                                                                                                    Icons.person_outline,
+                                                                                                                    size: 16,
+                                                                                                                    color: themeProvider.themeManager.placeholderTextColor,
+                                                                                                                  )
+                                                                                                                : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))),
                                                           ),
                                                           const SizedBox(
                                                             width: 10,
@@ -132,67 +387,76 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                       .start,
                                                               children: [
                                                                 GestureDetector(
-                                                                  onTap:
-                                                                      () async {
-                                                                    if (activityProvider
-                                                                        .data[
-                                                                            index]
-                                                                            [
-                                                                            "comment"]
-                                                                        .toString()
-                                                                        .contains(
-                                                                            "created the issue")) {
-                                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                                          builder: (_) => IssueDetail(
-                                                                                fromMyIssues: true,
-                                                                                projID: activityProvider.data[index]["project"],
-                                                                                workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                appBarTitle: '',
-                                                                                issueId: activityProvider.data[index]["issue"],
-                                                                              )));
-                                                                    } else if (activityProvider
-                                                                        .data[
-                                                                            index]
-                                                                            [
-                                                                            "comment"]
-                                                                        .toString()
-                                                                        .contains(
-                                                                            "created a link")) {
-                                                                      if (!await launchUrl(Uri.parse(activityProvider
-                                                                          .data[
-                                                                              index]
-                                                                              [
-                                                                              "new_value"]
-                                                                          .toString()))) {
-                                                                        // ignore: use_build_context_synchronously
-                                                                        CustomToast().showToast(
-                                                                            context,
-                                                                            'Failed to launch',
-                                                                            themeProvider,
-                                                                            toastType:
-                                                                                ToastType.failure);
-                                                                      }
-                                                                    }
-                                                                  },
                                                                   child: Wrap(
                                                                     children: [
-                                                                      CustomText(
-                                                                        "${activityProvider.data[index]['actor_detail']['display_name']} ${activityProvider.data[index]['comment']}",
-                                                                        fontSize:
-                                                                            14,
+                                                                      // CustomText(
+                                                                      //   '${activityFormat(activityProvider.data[index])} ',
+                                                                      //   fontSize:
+                                                                      //       14,
+                                                                      //   type: FontStyle
+                                                                      //       .Medium,
+                                                                      //   textAlign:
+                                                                      //       TextAlign
+                                                                      //           .left,
+                                                                      //   maxLines:
+                                                                      //       4,
+                                                                      //   color: themeProvider
+                                                                      //       .themeManager
+                                                                      //       .primaryTextColor,
+                                                                      // ),
+                                                                      CustomRichText(
                                                                         type: FontStyle
-                                                                            .Medium,
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        maxLines:
-                                                                            4,
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .primaryTextColor,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            5,
+                                                                            .Small,
+                                                                        widgets: [
+                                                                          TextSpan(
+                                                                            text:
+                                                                                '${activityProvider.data[index]['actor_detail']['display_name']} ',
+                                                                            recognizer: TapGestureRecognizer()
+                                                                              ..onTap = () {
+                                                                                Navigator.of(context).push(MaterialPageRoute(
+                                                                                    builder: (_) => MemberProfile(
+                                                                                          userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                        )));
+                                                                              },
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                '${activityFormat(activityProvider.data[index])} ',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            recognizer: TapGestureRecognizer()
+                                                                              ..onTap = () {
+                                                                                Navigator.of(context).push(MaterialPageRoute(
+                                                                                    builder: (_) => IssueDetail(
+                                                                                          fromMyIssues: true,
+                                                                                          projID: activityProvider.data[index]["project"],
+                                                                                          workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
+                                                                                          appBarTitle: '',
+                                                                                          issueId: activityProvider.data[index]["issue"],
+                                                                                        )));
+                                                                              },
+                                                                            text:
+                                                                                '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                       activityProvider.data[index]["comment"].toString().contains("created the issue") ||
                                                                               activityProvider.data[index]["comment"].toString().contains("created a link")
@@ -208,11 +472,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                 const SizedBox(
                                                                     height: 6),
                                                                 CustomText(
-                                                                  checkTimeDifferenc(
-                                                                      activityProvider
-                                                                              .data[index]
-                                                                          [
-                                                                          'created_at']),
+                                                                  ' ${checkTimeDifferenc(activityProvider.data[index]['created_at'])}',
                                                                   color: themeProvider
                                                                       .themeManager
                                                                       .primaryTextColor,
@@ -228,206 +488,14 @@ class _ActivityState extends ConsumerState<Activity> {
                                                           ),
                                                         ],
                                                       ),
-                                                    )
-                                                  : Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.grey[100],
-                                                          radius: 15,
-                                                          child: Center(
-                                                              child: activityProvider
-                                                                              .data[index]
-                                                                          [
-                                                                          'field'] ==
-                                                                      'state'
-                                                                  ? const Icon(
-                                                                      Icons
-                                                                          .grid_view_outlined,
-                                                                      size: 15,
-                                                                      color:
-                                                                          greyColor,
-                                                                    )
-                                                                  : activityProvider.data[index]
-                                                                              [
-                                                                              'field'] ==
-                                                                          'priority'
-                                                                      ? SvgPicture
-                                                                          .asset(
-                                                                          'assets/svg_images/priority.svg',
-                                                                          height:
-                                                                              15,
-                                                                          width:
-                                                                              15,
-                                                                        )
-                                                                      : activityProvider.data[index]['field'] == 'assignees' ||
-                                                                              activityProvider.data[index]['field'] == 'assignee'
-                                                                          ? Icon(
-                                                                              Icons.people_outline,
-                                                                              size: 18,
-                                                                              color: themeProvider.themeManager.placeholderTextColor,
-                                                                            )
-                                                                          : activityProvider.data[index]['field'] == 'labels'
-                                                                              ? Icon(
-                                                                                  Icons.local_offer_outlined,
-                                                                                  size: 15,
-                                                                                  color: themeProvider.themeManager.placeholderTextColor,
-                                                                                )
-                                                                              : activityProvider.data[index]['field'] == 'blocks'
-                                                                                  ? SvgPicture.asset(
-                                                                                      'assets/svg_images/blocked_icon.svg',
-                                                                                      height: 15,
-                                                                                      width: 15,
-                                                                                    )
-                                                                                  : activityProvider.data[index]['field'] == 'blocking'
-                                                                                      ? SvgPicture.asset(
-                                                                                          'assets/svg_images/blocking_icon.svg',
-                                                                                          height: 15,
-                                                                                          width: 15,
-                                                                                        )
-                                                                                      : activityProvider.data[index]['field'] == 'description'
-                                                                                          ? Icon(
-                                                                                              Icons.comment_outlined,
-                                                                                              color: themeProvider.themeManager.placeholderTextColor,
-                                                                                              size: 15,
-                                                                                            )
-                                                                                          : activityProvider.data[index]['field'] == 'link'
-                                                                                              ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                              : activityProvider.data[index]['field'] == 'modules'
-                                                                                                  ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                  : activityProvider.data[index]['field'] == 'cycles'
-                                                                                                      ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                      : activityProvider.data[index]['field'] == 'attachment'
-                                                                                                          ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))
-                                                                                                          : activityProvider.data[index]['field'] == 'parent'
-                                                                                                              ? Icon(
-                                                                                                                  Icons.person_outline,
-                                                                                                                  size: 16,
-                                                                                                                  color: themeProvider.themeManager.placeholderTextColor,
-                                                                                                                )
-                                                                                                              : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: const ColorFilter.mode(greyColor, BlendMode.srcIn))),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        SizedBox(
-                                                          width:
-                                                              MediaQuery.sizeOf(
-                                                                          context)
-                                                                      .width -
-                                                                  80,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  if (activityProvider
-                                                                      .data[
-                                                                          index]
-                                                                          [
-                                                                          "comment"]
-                                                                      .toString()
-                                                                      .contains(
-                                                                          "created the issue")) {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(MaterialPageRoute(
-                                                                            builder: (_) => IssueDetail(
-                                                                                  projID: activityProvider.data[index]["project"],
-                                                                                  workspaceSlug: activityProvider.data[index]["workspace_detail"]["slug"],
-                                                                                  appBarTitle: '',
-                                                                                  issueId: activityProvider.data[index]["issue"],
-                                                                                )));
-                                                                  } else if (activityProvider
-                                                                      .data[
-                                                                          index]
-                                                                          [
-                                                                          "comment"]
-                                                                      .toString()
-                                                                      .contains(
-                                                                          "created a link")) {
-                                                                    if (!await launchUrl(
-                                                                      Uri.parse(activityProvider
-                                                                          .data[
-                                                                              index]
-                                                                              [
-                                                                              "new_value"]
-                                                                          .toString()),
-                                                                    )) {
-                                                                      // ignore: use_build_context_synchronously
-                                                                      CustomToast().showToast(
-                                                                          context,
-                                                                          'Failed to launch',
-                                                                          themeProvider,
-                                                                          toastType:
-                                                                              ToastType.failure);
-                                                                    }
-                                                                  }
-                                                                },
-                                                                child: Wrap(
-                                                                  children: [
-                                                                    CustomText(
-                                                                      '${activityFormat(activityProvider.data[index])} ',
-                                                                      fontSize:
-                                                                          14,
-                                                                      type: FontStyle
-                                                                          .Medium,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      maxLines:
-                                                                          4,
-                                                                      color: themeProvider
-                                                                          .themeManager
-                                                                          .primaryTextColor,
-                                                                    ),
-                                                                    activityProvider.data[index]["comment"].toString().contains("created the issue") ||
-                                                                            activityProvider.data[index]["comment"].toString().contains(
-                                                                                "created a link")
-                                                                        ? SvgPicture
-                                                                            .asset(
-                                                                            "assets/svg_images/redirect.svg",
-                                                                            height:
-                                                                                15,
-                                                                            width:
-                                                                                15,
-                                                                          )
-                                                                        : Container()
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 6),
-                                                              CustomText(
-                                                                ' ${checkTimeDifferenc(activityProvider.data[index]['created_at'])}',
-                                                                color: themeProvider
-                                                                    .themeManager
-                                                                    .primaryTextColor,
-                                                                type: FontStyle
-                                                                    .Small,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                maxLines: 4,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                        ),
-                                        Container(
-                                            height: 1,
-                                            width: width,
-                                            color: themeProvider.themeManager
-                                                .borderDisabledColor)
-                                      ],
+                                          ),
+                                          Container(
+                                              height: 1,
+                                              width: width,
+                                              color: themeProvider.themeManager
+                                                  .borderDisabledColor)
+                                        ],
+                                      ),
                                     );
                                   },
                                 ),
@@ -474,10 +542,9 @@ class _ActivityState extends ConsumerState<Activity> {
         activity['actor_detail']['last_name'] != null) {
       if (activity['field'] == 'description') {
         formattedActivity = activity['actor_detail']['display_name'] +
-            ' updated the description';
+            ' updated the description to ';
       } else {
-        formattedActivity =
-            "${activity['actor_detail']['display_name']} ${activity['comment']}";
+        formattedActivity = "${activity['comment']} to ";
       }
       return formattedActivity;
     } else {

@@ -94,6 +94,7 @@ class EmptyPlaceholder {
   static Widget emptyIssues(BuildContext context,
       {String? cycleId,
       String? moduleId,
+      Map<String, dynamic>? assignee,
       WidgetRef? ref,
       IssueCategory? type}) {
     var themeProvider = ref!.watch(ProviderList.themeProvider);
@@ -140,6 +141,7 @@ class EmptyPlaceholder {
                                 : null,
                             cycleId: cycleId,
                             moduleId: moduleId,
+                            assignee: assignee,
                             fromMyIssues: type == IssueCategory.myIssues,
                           )));
             },
@@ -221,6 +223,45 @@ class EmptyPlaceholder {
                   ),
                 )
               : Container(),
+        ],
+      ),
+    );
+  }
+
+  static Widget emptySubscribedIssue(
+    WidgetRef ref,
+  ) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return Container(
+      alignment: Alignment.center,
+      //  margin: const EdgeInsets.only(top: 150),
+      child: Column(
+        // direction: Axis.vertical,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 35),
+            child: CustomText(
+              'No Subscribed Issues',
+              type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
+            ),
+          ),
+          Container(
+            width: 300,
+            padding: const EdgeInsets.only(top: 10),
+            child: CustomText(
+              //create issues text
+              'You have not subscribed to any issues yet. Subscribe to issues to get notified about any changes in the issue.',
+
+              color: themeProvider.themeManager.placeholderTextColor,
+              textAlign: TextAlign.center,
+              type: FontStyle.Small,
+              maxLines: 6,
+            ),
+          ),
         ],
       ),
     );

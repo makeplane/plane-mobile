@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,6 +57,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var viewsProv = ref.watch(ProviderList.viewsProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+
+    log(issuesProvider.issues.filters.priorities.toString());
     return Scaffold(
       appBar: CustomAppBar(
           onPressed: () {
@@ -100,11 +103,63 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           ),
                         ),
                         const Spacer(),
-                        CustomText(
-                          'Update',
-                          color: themeProvider.themeManager.primaryColour,
-                          fontSize: 17,
-                          fontWeight: FontWeightt.Medium,
+                        GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(ProviderList.viewsProvider.notifier)
+                                .updateViews(
+                                  id: viewsProv.views[widget.index]['id'],
+                                  data: {
+                                    "query_data": {
+                                      "state": issuesProvider
+                                              .issues.filters.states.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.states,
+                                      "priority": issuesProvider
+                                              .issues.filters.priorities.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.priorities,
+                                      "assignees": issuesProvider
+                                              .issues.filters.assignees.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.assignees,
+                                      "created_by": issuesProvider
+                                              .issues.filters.createdBy.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.createdBy,
+                                      "labels": issuesProvider
+                                              .issues.filters.labels.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.labels,
+                                      "target_date": issuesProvider
+                                              .issues.filters.targetDate.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.targetDate,
+                                      "start_date": issuesProvider
+                                              .issues.filters.startDate.isEmpty
+                                          ? null
+                                          : issuesProvider
+                                              .issues.filters.startDate,
+                                    }
+                                  },
+                                  index: widget.index,
+                                )
+                                .then((value) {
+                              countFilters();
+                            });
+                          },
+                          child: CustomText(
+                            'Update',
+                            color: themeProvider.themeManager.primaryColour,
+                            fontSize: 17,
+                            fontWeight: FontWeightt.Medium,
+                          ),
                         ),
                       ],
                     ),

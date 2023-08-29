@@ -231,9 +231,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       },
       child: Scaffold(
         //#f5f5f5f5 color
-        // backgroundColor: themeProvider.isDarkThemeEnabled
-        //     ? darkBackgroundColor
-        //     : lightBackgroundColor,
+        backgroundColor:
+            themeProvider.themeManager.primaryBackgroundDefaultColor,
         appBar: CustomAppBar(
           onPressed: () {
             ref.watch(ProviderList.issueProvider).cyclesList.clear();

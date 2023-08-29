@@ -1170,32 +1170,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 builder: (context, child) =>
                                                     Theme(
                                                   data: themeProvider
-                                                                  .themeManager
-                                                                  .theme ==
-                                                              THEME.dark ||
-                                                          themeProvider
-                                                                  .themeManager
-                                                                  .theme ==
-                                                              THEME
-                                                                  .darkHighContrast
-                                                      ? ThemeData.dark()
-                                                          .copyWith(
-                                                          colorScheme:
-                                                              ColorScheme.dark(
-                                                            primary: themeProvider
-                                                                .themeManager
-                                                                .primaryColour,
-                                                          ),
-                                                        )
-                                                      : ThemeData.light()
-                                                          .copyWith(
-                                                          colorScheme:
-                                                              ColorScheme.light(
-                                                            primary: themeProvider
-                                                                .themeManager
-                                                                .primaryColour,
-                                                          ),
-                                                        ),
+                                                      .themeManager
+                                                      .datePickerThemeData,
                                                   child: child!,
                                                 ),
                                                 context: context,
@@ -1338,32 +1314,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 builder: (context, child) =>
                                                     Theme(
                                                   data: themeProvider
-                                                                  .themeManager
-                                                                  .theme ==
-                                                              THEME.dark ||
-                                                          themeProvider
-                                                                  .themeManager
-                                                                  .theme ==
-                                                              THEME
-                                                                  .darkHighContrast
-                                                      ? ThemeData.dark()
-                                                          .copyWith(
-                                                          colorScheme:
-                                                              ColorScheme.dark(
-                                                            primary: themeProvider
-                                                                .themeManager
-                                                                .primaryColour,
-                                                          ),
-                                                        )
-                                                      : ThemeData.light()
-                                                          .copyWith(
-                                                          colorScheme:
-                                                              ColorScheme.light(
-                                                            primary: themeProvider
-                                                                .themeManager
-                                                                .primaryColour,
-                                                          ),
-                                                        ),
+                                                      .themeManager
+                                                      .datePickerThemeData,
                                                   child: child!,
                                                 ),
                                                 context: context,

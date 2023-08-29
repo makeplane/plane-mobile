@@ -221,15 +221,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             ),
                             const Spacer(),
                             //four small icons
-                            Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              child: Icon(
-                                Icons.link,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
-                                size: 22,
-                              ),
-                            ),
+
                             //icon 2
                             Container(
                               margin: const EdgeInsets.only(right: 10),

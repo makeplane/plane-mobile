@@ -637,6 +637,10 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   Widget fourthPart() {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    print("ASSIGNEE: " +
+        cyclesProvider
+            .cyclesActiveData[widget.index]['distribution']['assignees'].length
+            .toString());
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -704,7 +708,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                         cyclesProvider.cyclesActiveData[widget.index]
                                     ['distribution']['assignees'][idx]
                                 ['first_name'] ??
-                            '',
+                            'No Assignees',
                         fontWeight: FontWeightt.Regular,
                         color: themeProvider.themeManager.secondaryTextColor,
                         type: FontStyle.Large,
@@ -748,95 +752,74 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           //   ),
           // ),
           // const SizedBox(height: 15),
-          cyclesProvider
-                          .cyclesActiveData[widget.index]['distribution']
-                              ['labels']
-                          .length ==
-                      1 &&
-                  cyclesProvider.cyclesActiveData[widget.index]['distribution']
-                          ['labels'][0]['label_id'] ==
-                      null
+          cyclesProvider.cyclesActiveData[widget.index]['distribution']
+                      ['labels'] ==
+                  null
               ? const CustomText(
                   'No labels found',
                   type: FontStyle.Medium,
                 )
-              : cyclesProvider.cyclesActiveData[widget.index]['distribution']
-                          ['labels'] ==
-                      null
-                  ? const CustomText(
-                      'No labels found',
-                      type: FontStyle.Medium,
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: cyclesProvider
-                          .cyclesActiveData[widget.index]['distribution']
-                              ['labels']
-                          .length,
-                      itemBuilder: (context, idx) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              : ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: cyclesProvider
+                      .cyclesActiveData[widget.index]['distribution']['labels']
+                      .length,
+                  itemBuilder: (context, idx) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 10,
-                                    color: cyclesProvider.cyclesActiveData[widget.index]['distribution']
-                                                    ['labels'][idx]['color'] ==
-                                                '' ||
-                                            cyclesProvider.cyclesActiveData[widget.index]
-                                                        ['distribution']
-                                                    ['labels'][idx]['color'] ==
-                                                null
-                                        ? greyColor
-                                        : ColorManager.getColorFromHexaDecimal(cyclesProvider
-                                            .cyclesActiveData[widget.index]
-                                                ['distribution']['labels'][idx]['color']
-                                            .toString()),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    child: CustomText(
-                                      cyclesProvider.cyclesActiveData[
-                                                  widget.index]['distribution']
-                                              ['labels'][idx]['label_name'] ??
-                                          '',
-                                      maxLines: 2,
-                                    ),
-                                  ),
-                                ],
+                              Icon(
+                                Icons.circle,
+                                size: 10,
+                                color: cyclesProvider.cyclesActiveData[widget.index]['distribution']
+                                                ['labels'][idx]['color'] ==
+                                            '' ||
+                                        cyclesProvider.cyclesActiveData[widget.index]['distribution']
+                                                ['labels'][idx]['color'] ==
+                                            null
+                                    ? themeProvider
+                                        .themeManager.placeholderTextColor
+                                    : ColorManager.getColorFromHexaDecimal(cyclesProvider
+                                        .cyclesActiveData[widget.index]
+                                            ['distribution']['labels'][idx]['color']
+                                        .toString()),
                               ),
-                              Row(
-                                children: [
-                                  CircularPercentIndicator(
-                                      radius: 10,
-                                      lineWidth: 2,
-                                      progressColor: primaryColor,
-                                      percent: convertToRatio((cyclesProvider
-                                                              .cyclesActiveData[
-                                                          widget.index]
-                                                      ['distribution']['labels']
-                                                  [idx]['completed_issues'] *
-                                              100) /
-                                          cyclesProvider
-                                                      .cyclesActiveData[widget.index]
-                                                  ['distribution']['labels']
-                                              [idx]['total_issues'])),
-                                  const SizedBox(width: 5),
-                                  CustomText(
-                                      '${((cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['completed_issues'] * 100) / cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['total_issues']).toString().split('.').first}% of ${cyclesProvider.cyclesActiveData[widget.index]['distribution']['labels'][idx]['total_issues']}')
-                                ],
-                              )
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              SizedBox(
+                                child: CustomText(
+                                  cyclesProvider.cyclesActiveData[widget.index]
+                                              ['distribution']['labels'][idx]
+                                          ['label_name'] ??
+                                      'No Labels',
+                                  maxLines: 2,
+                                ),
+                              ),
                             ],
                           ),
-                        );
-                      })
+                          Row(
+                            children: [
+                              CompletionPercentage(
+                                  value: cyclesProvider
+                                              .cyclesActiveData[widget.index]
+                                          ['distribution']['labels'][idx]
+                                      ['completed_issues'],
+                                  totalValue: cyclesProvider
+                                              .cyclesActiveData[widget.index]
+                                          ['distribution']['labels'][idx]
+                                      ['total_issues'])
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  })
         ],
       ),
     );

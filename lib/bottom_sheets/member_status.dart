@@ -249,9 +249,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
             ? Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   //color: Colors.white,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -269,9 +268,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
                         colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor
+                          themeProvider
+                              .themeManager.primaryBackgroundDefaultColor
                         ],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,

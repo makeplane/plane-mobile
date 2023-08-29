@@ -142,22 +142,19 @@ class _ProjectInviteMembersSheetState
                                   left: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : lightBackgroundColor,
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(6)),
                                 child: Row(
                                   children: [
                                     CustomText(
                                       selectedEmail['email'] ?? '',
                                       fontSize: 16,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -233,15 +230,13 @@ class _ProjectInviteMembersSheetState
                                 decoration: themeProvider
                                     .themeManager.textFieldDecoration
                                     .copyWith(
-                                  fillColor: themeProvider.isDarkThemeEnabled
-                                      ? darkBackgroundColor
-                                      : lightBackgroundColor,
+                                  fillColor: themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor,
                                   filled: true,
                                 ),
                                 style: TextStyle(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? Colors.white
-                                        : Colors.black),
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
                                 enabled: false,
                               ),
                             ),
@@ -269,9 +264,8 @@ class _ProjectInviteMembersSheetState
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
+                                fillColor: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 filled: true,
                               ),
                             ),

@@ -519,9 +519,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   // height: 25,
                   // width: 25,
                   child: Center(

@@ -136,22 +136,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 var date = await showDatePicker(
                                   builder: (context, child) => Theme(
-                                    data: themeProvider.themeManager.theme ==
-                                                THEME.dark ||
-                                            themeProvider.themeManager.theme ==
-                                                THEME.darkHighContrast
-                                        ? ThemeData.dark().copyWith(
-                                            colorScheme: ColorScheme.dark(
-                                              primary: themeProvider
-                                                  .themeManager.primaryColour,
-                                            ),
-                                          )
-                                        : ThemeData.light().copyWith(
-                                            colorScheme: ColorScheme.light(
-                                              primary: themeProvider
-                                                  .themeManager.primaryColour,
-                                            ),
-                                          ),
+                                    data: themeProvider
+                                        .themeManager.datePickerThemeData,
                                     child: child!,
                                   ),
                                   context: context,
@@ -224,22 +210,8 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 var date = await showDatePicker(
                                   builder: (context, child) => Theme(
-                                    data: themeProvider.themeManager.theme ==
-                                                THEME.dark ||
-                                            themeProvider.themeManager.theme ==
-                                                THEME.darkHighContrast
-                                        ? ThemeData.dark().copyWith(
-                                            colorScheme: ColorScheme.dark(
-                                              primary: themeProvider
-                                                  .themeManager.primaryColour,
-                                            ),
-                                          )
-                                        : ThemeData.light().copyWith(
-                                            colorScheme: ColorScheme.light(
-                                              primary: themeProvider
-                                                  .themeManager.primaryColour,
-                                            ),
-                                          ),
+                                    data: themeProvider
+                                        .themeManager.datePickerThemeData,
                                     child: child!,
                                   ),
                                   context: context,

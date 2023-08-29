@@ -966,8 +966,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                     Stack(
                                                                       children: [
                                                                         Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(right: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              right: 10),
                                                                           child:
                                                                               CircleAvatar(
                                                                             backgroundColor: themeProvider.isDarkThemeEnabled
@@ -1996,18 +1997,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           }
           var date = await showDatePicker(
             builder: (context, child) => Theme(
-              data: themeProvider.themeManager.theme == THEME.dark ||
-                      themeProvider.themeManager.theme == THEME.darkHighContrast
-                  ? ThemeData.dark().copyWith(
-                      colorScheme: ColorScheme.dark(
-                        primary: themeProvider.themeManager.primaryColour,
-                      ),
-                    )
-                  : ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.light(
-                        primary: themeProvider.themeManager.primaryColour,
-                      ),
-                    ),
+              data: themeProvider.themeManager.datePickerThemeData,
               child: child!,
             ),
             context: context,
@@ -2142,18 +2132,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
           }
           var date = await showDatePicker(
             builder: (context, child) => Theme(
-              data: themeProvider.themeManager.theme == THEME.dark ||
-                      themeProvider.themeManager.theme == THEME.darkHighContrast
-                  ? ThemeData.dark().copyWith(
-                      colorScheme: ColorScheme.dark(
-                        primary: themeProvider.themeManager.primaryColour,
-                      ),
-                    )
-                  : ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.light(
-                        primary: themeProvider.themeManager.primaryColour,
-                      ),
-                    ),
+              data: themeProvider.themeManager.datePickerThemeData,
               child: child!,
             ),
             context: context,

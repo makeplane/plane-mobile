@@ -66,9 +66,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                 text: TextSpan(
                   text: 'Enter the workspace name ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -76,18 +74,14 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                     TextSpan(
                       text: widget.workspaceName,
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                       ),
                     ),
                     TextSpan(
                       text: ' to continue.',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -124,9 +118,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                 text: TextSpan(
                   text: 'To confirm, type ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -134,9 +126,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                     TextSpan(
                       text: 'delete my workspace ',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -144,9 +134,7 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                     TextSpan(
                       text: 'below:',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -182,23 +170,18 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightSecondaryBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkStrokeColor
-                              : lightStrokeColor,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                       ),
                       child: CustomText(
                         'Cancel',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Semibold,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                     ),
                   ),
@@ -248,10 +231,11 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                         } else {
                           //show snackbar
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: CustomText(
                                 'Workspace could not be deleted',
-                                color: Colors.white,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               backgroundColor: Colors.red,
                             ),
@@ -269,12 +253,13 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                       ),
                       child: workspaceProvider.selectWorkspaceState ==
                               StateEnum.loading
-                          ? const Center(
+                          ? Center(
                               child: SizedBox(
                                 height: 20,
                                 width: 20,
                                 child: CircularProgressIndicator(
-                                  color: Colors.white,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                               ),
                             )

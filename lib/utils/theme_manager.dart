@@ -43,6 +43,8 @@ class ThemeManager {
 
   late Color shadowColor;
 
+  late ThemeData datePickerThemeData;
+
   Color convertHexToSpecificShade({required int shade, required Color color}) {
     if (shade <= 100) {
       var decimalValue = (100 - shade) / 100;
@@ -353,5 +355,64 @@ class ThemeManager {
                 : theme == THEME.darkHighContrast
                     ? Colors.transparent
                     : Colors.transparent;
+
+    datePickerThemeData = theme == THEME.light
+        ? ThemeData.light().copyWith(
+            dialogBackgroundColor: lightPrimaryBackgroundDefaultColor,
+            colorScheme: const ColorScheme.light(
+                brightness: Brightness.light,
+                primary: primaryColor, // primary
+                surface: primaryColor,
+                onPrimary:
+                    lightPrimaryBackgroundDefaultColor, // primary text color
+                onSurface: lightPrimaryTextColor))
+        : theme == THEME.dark
+            ? ThemeData.light().copyWith(
+                dialogBackgroundColor: darkPrimaryBackgroundDefaultColor,
+                colorScheme: const ColorScheme.light(
+                    brightness: Brightness.dark,
+                    primary: primaryColor, // primary
+                    onPrimary:
+                        darkPrimaryBackgroundDefaultColor, // primary text color
+                    surface: primaryColor,
+                    onSurface: darkPrimaryTextColor))
+            : theme == THEME.lightHighContrast
+                ? ThemeData.light().copyWith(
+                    dialogBackgroundColor: lightPrimaryBackgroundDefaultColor,
+                    colorScheme: const ColorScheme.light(
+                        brightness: Brightness.light,
+                        primary: primaryColor, // primary
+                        onPrimary:
+                            lightPrimaryBackgroundDefaultColor, // primary text color
+                        surface: primaryColor,
+                        onSurface: lightContrastPrimaryTextColor))
+                : theme == THEME.darkHighContrast
+                    ? ThemeData.light().copyWith(
+                        dialogBackgroundColor:
+                            darkPrimaryBackgroundDefaultColor,
+                        colorScheme: const ColorScheme.light(
+                            brightness: Brightness.dark,
+                            primary: primaryColor, // primary
+                            onPrimary:
+                                darkPrimaryBackgroundDefaultColor, // primary text color
+                            surface: primaryColor,
+                            onSurface: darkContrastPrimaryTextColor))
+                    : theme == THEME.custom
+                        ? ThemeData.light().copyWith(
+                            dialogBackgroundColor: customBackgroundColor,
+                            colorScheme: ColorScheme.light(
+                                primary: customAccentColor, // primary
+                                onPrimary:
+                                    customBackgroundColor, // primary text color
+                                surface: customAccentColor,
+                                onSurface: customTextColor))
+                        : ThemeData.light().copyWith(
+                            dialogBackgroundColor: customBackgroundColor,
+                            colorScheme: ColorScheme.light(
+                                primary: customAccentColor, // primary
+                                onPrimary:
+                                    customBackgroundColor, // primary text color
+                                surface: customAccentColor,
+                                onSurface: customTextColor));
   }
 }

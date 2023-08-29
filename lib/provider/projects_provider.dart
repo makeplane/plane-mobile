@@ -18,6 +18,7 @@ class ProjectsProvider extends ChangeNotifier {
   final Ref ref;
   var projects = [];
   var starredProjects = [];
+  var joinprojectState = StateEnum.empty;
   var projectState = StateEnum.empty;
   var unsplashImageState = StateEnum.empty;
   var createProjectState = StateEnum.empty;
@@ -169,6 +170,32 @@ class ProjectsProvider extends ChangeNotifier {
   void changeCoverUrl({required String url}) {
     coverUrl = url;
     notifyListeners();
+  }
+
+  Future joinProject({String? projectId, String? slug}) async {
+    try {
+      joinprojectState = StateEnum.loading;
+      notifyListeners();
+      await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.joinProject.replaceAll("\$SLUG", slug!),
+          hasBody: true,
+          httpMethod: HttpMethod.post,
+          data: {
+            "project_ids": [projectId]
+          });
+      joinprojectState = StateEnum.success;
+      // updating local projects List
+      // ref!.read(ProviderList.projectProvider).projects[ref!
+      //     .read(ProviderList.projectProvider)
+      //     .currentProject["index"]]["is_member"] = true;
+      //ref!.read(ProviderList.projectProvider).initializeProject();
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.message.toString());
+      joinprojectState = StateEnum.error;
+      notifyListeners();
+    }
   }
 
   Future getProjects({required String slug}) async {

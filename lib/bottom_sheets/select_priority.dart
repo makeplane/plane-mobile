@@ -57,9 +57,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
       //change color of all icon according to theme
       priorities[i]['icon'] = Icon(
         priorities[i]['icon'].icon,
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryTextColor
-            : lightSecondaryTextColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       );
     }
   }

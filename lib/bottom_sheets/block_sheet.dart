@@ -169,9 +169,8 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color: themeProvider
+                      .themeManager.secondaryBackgroundDefaultColor,
                   // height: 25,
                   // width: 25,
                   child: Center(
@@ -180,11 +179,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),

@@ -145,9 +145,8 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
             ? Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.black.withOpacity(0.7)
-                      : Colors.white.withOpacity(0.7),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   //color: Colors.white,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -164,11 +163,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),

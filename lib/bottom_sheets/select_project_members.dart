@@ -298,7 +298,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
             issuesProvider.membersState == StateEnum.loading
                 ? Container(
                     alignment: Alignment.center,
-                    color: Colors.white.withOpacity(0.7),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
                     // height: 25,
                     // width: 25,
                     child: const Wrap(

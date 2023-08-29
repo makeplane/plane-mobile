@@ -22,6 +22,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreads
 import 'package:plane_startup/utils/color_manager.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/completion_percentage.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -52,6 +53,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   List<ChartData> chartData = [];
   PageController? pageController = PageController();
   List tempIssuesList = [];
+
+  DateTime? dueDate;
+  DateTime? startDate;
 
   @override
   void initState() {
@@ -541,10 +545,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -1012,6 +1018,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
+
+    startDate = DateFormat('yyyy-MM-dd').parse(
+        detailData['start_date'] == null || detailData['start_date'] == ''
+            ? DateTime.now().toString()
+            : detailData['start_date']!);
+
+    dueDate = DateFormat('yyyy-MM-dd').parse(
+        detailData[widget.fromModule ? 'target_date' : 'end_date'] == null ||
+                detailData[widget.fromModule ? 'target_date' : 'end_date'] == ''
+            ? DateTime.now().toString()
+            : detailData[widget.fromModule ? 'target_date' : 'end_date']!);
+
     return Wrap(
       runSpacing: 20,
       children: [
@@ -1087,28 +1105,53 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               onTap: () async {
                 var date = await showDatePicker(
                   builder: (context, child) => Theme(
-                    data: themeProvider.isDarkThemeEnabled
-                        ? ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          )
-                        : ThemeData.light().copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          ),
+                    data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
                   ),
                   context: context,
-                  initialDate: DateFormat('yyyy-MM-dd').parse(
-                      detailData['start_date'] == null ||
-                              detailData['start_date'] == ''
-                          ? DateTime.now().toString()
-                          : detailData['start_date']!),
+                  initialDate: startDate!,
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2025),
                 );
+                if (date != null) {
+                  bool dateNotConflicted = dueDate == null
+                      ? true
+                      : widget.fromModule
+                          ? true
+                          : await cyclesProvider.dateCheck(
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject["id"],
+                              data: {
+                                "cycle_id": widget.cycleId!,
+                                "start_date":
+                                    DateFormat('yyyy-MM-dd').format(date),
+                                "end_date":
+                                    DateFormat('yyyy-MM-dd').format(dueDate!),
+                              },
+                            );
+                  if (dateNotConflicted) {
+                    if (dueDate != null && date.isAfter(dueDate!)) {
+                      CustomToast().showToast(context,
+                          'Start date cannot be after end date', themeProvider,
+                          toastType: ToastType.failure);
+                      return;
+                    }
+                    setState(() {
+                      startDate = date;
+                    });
+                  } else {
+                    CustomToast().showToast(context,
+                        'Date is conflicted with other cycle', themeProvider,
+                        toastType: ToastType.failure);
+                    return;
+                  }
+                }
+
                 if (date != null) {
                   if (widget.fromModule) {
                     modulesProvider.updateModules(
@@ -1196,65 +1239,88 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               onTap: () async {
                 var date = await showDatePicker(
                   builder: (context, child) => Theme(
-                    data: themeProvider.isDarkThemeEnabled
-                        ? ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          )
-                        : ThemeData.light().copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          ),
+                    data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
                   ),
                   context: context,
-                  initialDate: DateFormat('yyyy-MM-dd').parse(detailData[
-                                  widget.fromModule
-                                      ? 'target_date'
-                                      : 'end_date'] ==
-                              null ||
-                          detailData[widget.fromModule
-                                  ? 'target_date'
-                                  : 'end_date'] ==
-                              ''
-                      ? DateTime.now().toString()
-                      : detailData[
-                          widget.fromModule ? 'target_date' : 'end_date']!),
-                  firstDate: DateTime(2020),
+                  initialDate: dueDate!,
+                  firstDate: startDate ?? DateTime.now(),
                   lastDate: DateTime(2025),
                 );
 
                 if (date != null) {
-                  if (widget.fromModule) {
-                    modulesProvider.updateModules(
-                        disableLoading: true,
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
-                            .workspaceSlug,
-                        projId: ref
-                            .read(ProviderList.projectProvider)
-                            .currentProject["id"],
-                        moduleId: widget.moduleId!,
-                        data: {
-                          'target_date': DateFormat('yyyy-MM-dd').format(date)
-                        });
+                  if (!date.isAfter(DateTime.now())) {
+                    CustomToast().showToast(
+                        context, 'Due date not valid ', themeProvider,
+                        toastType: ToastType.failure);
+                    return;
+                  }
+                  if (date.isAfter(startDate!)) {
+                    bool dateNotConflicted = widget.fromModule
+                        ? true
+                        : await cyclesProvider.dateCheck(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projectId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                            data: {
+                              "cycle_id": widget.cycleId!,
+                              "start_date":
+                                  DateFormat('yyyy-MM-dd').format(startDate!),
+                              "end_date": DateFormat('yyyy-MM-dd').format(date),
+                            },
+                          );
+
+                    if (dateNotConflicted) {
+                      setState(() {
+                        dueDate = date;
+                      });
+                      if (widget.fromModule) {
+                        modulesProvider.updateModules(
+                            disableLoading: true,
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                            moduleId: widget.moduleId!,
+                            data: {
+                              'target_date':
+                                  DateFormat('yyyy-MM-dd').format(date)
+                            });
+                        modulesProvider.changeTabIndex(1);
+                      } else {
+                        cyclesProvider.cycleDetailsCrud(
+                          disableLoading: true,
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace!
+                              .workspaceSlug,
+                          projectId: ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject["id"],
+                          method: CRUD.update,
+                          cycleId: widget.cycleId!,
+                          data: {
+                            'end_date': DateFormat('yyyy-MM-dd').format(date)
+                          },
+                        );
+                        cyclesProvider.changeTabIndex(1);
+                      }
+                    } else {
+                      CustomToast().showToast(context,
+                          'Date is conflicted with other cycle ', themeProvider,
+                          toastType: ToastType.failure);
+                    }
                   } else {
-                    cyclesProvider.cycleDetailsCrud(
-                      disableLoading: true,
-                      slug: ref
-                          .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
-                          .workspaceSlug,
-                      projectId: ref
-                          .read(ProviderList.projectProvider)
-                          .currentProject["id"],
-                      method: CRUD.update,
-                      cycleId: widget.cycleId!,
-                      data: {'end_date': DateFormat('yyyy-MM-dd').format(date)},
-                    );
+                    CustomToast().showToast(context,
+                        'Start date cannot be after end date ', themeProvider,
+                        toastType: ToastType.failure);
                   }
                 }
               },
@@ -1428,10 +1494,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               color: themeProvider.themeManager.primaryTextColor,
             )),
         const SizedBox(height: 10),
-        detailData['distribution']['assignees'].length == 0 ||
-                (detailData['distribution']['assignees'].length == 1 &&
-                    detailData['distribution']['assignees'][0]['assignee_id'] ==
-                        null)
+        detailData['distribution']['assignees'].length == 0
             ? const CustomText('No data found.')
             : Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -1448,166 +1511,148 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     ...List.generate(
                       detailData['distribution']['assignees'].length,
                       (idx) {
-                        return detailData['distribution']['assignees'][idx]
-                                    ['first_name'] !=
-                                null
-                            ? InkWell(
-                                onTap: () async {
-                                  {
-                                    setState(
-                                      () {
-                                        if (issuesProvider
-                                            .issues.filters.assignees
-                                            .contains(detailData['distribution']
-                                                    ['assignees'][idx]
-                                                ['assignee_id'])) {
-                                          issuesProvider
-                                              .issues.filters.assignees
-                                              .remove(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['assignee_id']);
-                                        } else {
-                                          issuesProvider
-                                              .issues.filters.assignees
-                                              .add(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['assignee_id']);
-                                        }
-                                      },
-                                    );
-                                  }
-                                  pageController!.animateTo(
-                                    0,
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeInOut,
-                                  );
-                                  if (fromModule) {
-                                    modulesProvider.changeTabIndex(0);
-
-                                    await modulesProvider.filterModuleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    modulesProvider.initializeBoard();
+                        return InkWell(
+                          onTap: () async {
+                            {
+                              setState(
+                                () {
+                                  if (issuesProvider.issues.filters.assignees
+                                      .contains(detailData['distribution']
+                                          ['assignees'][idx]['assignee_id'])) {
+                                    issuesProvider.issues.filters.assignees
+                                        .remove(detailData['distribution']
+                                            ['assignees'][idx]['assignee_id']);
                                   } else {
-                                    cyclesProviderRead.changeTabIndex(0);
-                                    await cyclesProviderRead.filterCycleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    cyclesProviderRead.initializeBoard();
+                                    issuesProvider.issues.filters.assignees.add(
+                                        detailData['distribution']['assignees']
+                                            [idx]['assignee_id']);
                                   }
                                 },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 8),
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        // themeProvider.isDarkThemeEnabled
-                                        //     ?
-                                        (issuesProvider.issues.filters.assignees
-                                                .contains(
+                              );
+                            }
+                            pageController!.animateTo(
+                              0,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                            if (fromModule) {
+                              modulesProvider.changeTabIndex(0);
+
+                              await modulesProvider.filterModuleIssues(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projectId: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject["id"],
+                              );
+                              modulesProvider.initializeBoard();
+                            } else {
+                              cyclesProviderRead.changeTabIndex(0);
+                              await cyclesProviderRead.filterCycleIssues(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projectId: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject["id"],
+                              );
+                              cyclesProviderRead.initializeBoard();
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
+                            margin: const EdgeInsets.symmetric(vertical: 2),
+                            decoration: BoxDecoration(
+                              color:
+                                  // themeProvider.isDarkThemeEnabled
+                                  //     ?
+                                  (issuesProvider.issues.filters.assignees
+                                          .contains(detailData['distribution']
+                                              ['assignees'][idx]['assignee_id'])
+                                      ? themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor
+                                      : themeProvider.themeManager
+                                          .primaryBackgroundDefaultColor),
+                              // : (issuesProvider
+                              //         .issues.filters.assignees
+                              //         .contains(
+                              //             detailData['distribution']
+                              //                     ['assignees'][idx]
+                              //                 ['assignee_id'])
+                              //     ? lightGreeyColor
+                              //     : lightBackgroundColor),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: detailData['distribution']
+                                                            ['assignees'][idx]
+                                                        ['avatar'] !=
+                                                    null &&
+                                                detailData['distribution']
+                                                            ['assignees'][idx]
+                                                        ['avatar'] !=
+                                                    ''
+                                            ? CircleAvatar(
+                                                radius: 10,
+                                                backgroundImage: NetworkImage(
                                                     detailData['distribution']
                                                             ['assignees'][idx]
-                                                        ['assignee_id'])
-                                            ? themeProvider.themeManager
-                                                .primaryBackgroundDefaultColor
-                                            : themeProvider.themeManager
-                                                .secondaryBackgroundDefaultColor),
-                                    // : (issuesProvider
-                                    //         .issues.filters.assignees
-                                    //         .contains(
-                                    //             detailData['distribution']
-                                    //                     ['assignees'][idx]
-                                    //                 ['assignee_id'])
-                                    //     ? lightGreeyColor
-                                    //     : lightBackgroundColor),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: detailData['distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar'] !=
-                                                          null &&
-                                                      detailData['distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar'] !=
-                                                          ''
-                                                  ? CircleAvatar(
-                                                      radius: 10,
-                                                      backgroundImage:
-                                                          NetworkImage(detailData[
-                                                                      'distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar']),
-                                                    )
-                                                  : CircleAvatar(
-                                                      radius: 10,
-                                                      backgroundColor:
-                                                          darkSecondaryBGC,
-                                                      child: Center(
-                                                        child: CustomText(
-                                                          detailData['distribution']
-                                                                              ['assignees']
-                                                                          [idx][
-                                                                      'first_name'] !=
-                                                                  null
-                                                              ? detailData['distribution']
-                                                                              [
-                                                                              'assignees']
-                                                                          [idx][
-                                                                      'first_name'][0]
-                                                                  .toString()
-                                                                  .toUpperCase()
-                                                              : '',
-                                                          color: themeProvider
-                                                              .themeManager
-                                                              .secondaryTextColor,
-                                                        ),
-                                                      ),
-                                                    )),
-                                          CustomText(
-                                            detailData['distribution']
-                                                        ['assignees'][idx]
-                                                    ['first_name'] ??
-                                                'Without Assignees',
-                                            color: themeProvider.themeManager
-                                                .secondaryTextColor,
-                                          ),
-                                        ],
-                                      ),
-                                      CompletionPercentage(
-                                          value: detailData['distribution']
-                                                  ['assignees'][idx]
-                                              ['completed_issues'],
-                                          totalValue: detailData['distribution']
-                                                  ['assignees'][idx]
-                                              ['total_issues'])
-                                    ],
-                                  ),
+                                                        ['avatar']),
+                                              )
+                                            : CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor:
+                                                    darkSecondaryBGC,
+                                                child: Center(
+                                                  child: CustomText(
+                                                    detailData['distribution'][
+                                                                        'assignees']
+                                                                    [idx][
+                                                                'first_name'] !=
+                                                            null
+                                                        ? detailData['distribution']
+                                                                        [
+                                                                        'assignees']
+                                                                    [idx][
+                                                                'first_name'][0]
+                                                            .toString()
+                                                            .toUpperCase()
+                                                        : '',
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .secondaryTextColor,
+                                                  ),
+                                                ),
+                                              )),
+                                    CustomText(
+                                      detailData['distribution']['assignees']
+                                              [idx]['first_name'] ??
+                                          'No Assignees',
+                                      color: themeProvider
+                                          .themeManager.secondaryTextColor,
+                                    ),
+                                  ],
                                 ),
-                              )
-                            : Container(height: 25);
+                                CompletionPercentage(
+                                    value: detailData['distribution']
+                                        ['assignees'][idx]['completed_issues'],
+                                    totalValue: detailData['distribution']
+                                        ['assignees'][idx]['total_issues'])
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -1745,187 +1790,153 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               color: themeProvider.themeManager.primaryTextColor,
             )),
         const SizedBox(height: 10),
-        detailData['distribution']['labels'].length == 1 &&
-                detailData['distribution']['labels'][0]['label_id'] == null
-            ? const Align(
+        detailData['distribution']['labels'].isNotEmpty
+            ? Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: getBorderColor(themeProvider),
+                  ),
+                ),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: detailData['distribution']['labels'].length,
+                    itemBuilder: (context, index) {
+                      log('index $index');
+                      return InkWell(
+                        onTap: () async {
+                          setState(() {
+                            if (issuesProvider.issues.filters.labels.contains(
+                                detailData['distribution']['labels'][index]
+                                    ['label_id'])) {
+                              issuesProvider.issues.filters.labels.remove(
+                                  detailData['distribution']['labels'][index]
+                                      ['label_id']);
+                            } else {
+                              issuesProvider.issues.filters.labels.add(
+                                  detailData['distribution']['labels'][index]
+                                      ['label_id']);
+                            }
+                          });
+                          pageController!.animateTo(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                          if (fromModule) {
+                            modulesProvider.changeTabIndex(0);
+                            await modulesProvider.filterModuleIssues(
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject["id"],
+                            );
+                            modulesProvider.initializeBoard();
+                          }
+                          cyclesProviderRead.changeTabIndex(0);
+                          await cyclesProviderRead.filterCycleIssues(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projectId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                          );
+                          cyclesProviderRead.initializeBoard();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 2),
+                          decoration: BoxDecoration(
+                            color: issuesProvider.issues.filters.labels
+                                    .contains(detailData['distribution']
+                                        ['labels'][index]['label_id'])
+                                ? themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor
+                                : themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.circle,
+                                    size: 10,
+                                    color: detailData['distribution']['labels']
+                                                    [index]['color'] ==
+                                                '' ||
+                                            detailData['distribution']['labels']
+                                                    [index]['color'] ==
+                                                null
+                                        ? themeProvider
+                                            .themeManager.placeholderTextColor
+                                        : ColorManager.getColorFromHexaDecimal(
+                                            detailData['distribution']['labels']
+                                                    [index]['color']
+                                                .toString()),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  CustomText(
+                                    detailData['distribution']['labels'][index]
+                                            ['label_name'] ??
+                                        'No Label',
+                                    maxLines: 2,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CompletionPercentage(
+                                      value: detailData['distribution']
+                                          ['labels'][index]['completed_issues'],
+                                      totalValue: detailData['distribution']
+                                          ['labels'][index]['total_issues'])
+                                  //   CircularPercentIndicator(
+                                  //       radius: 10,
+                                  //       lineWidth: 2,
+                                  //       progressColor: primaryColor,
+                                  //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
+                                  //               detailData['distribution']
+                                  //                               ['labels']
+                                  //                           [index][
+                                  //                       'completed_issues'] ==
+                                  //                   null
+                                  //           ? 1.0
+                                  //           : convertToRatio(
+                                  //               detailData['distribution']
+                                  //                           ['labels']
+                                  //                       [index][
+                                  //                   'completed_issues'],
+                                  //               detailData['distribution']
+                                  //                       ['labels'][index]
+                                  //                   ['total_issues'])),
+                                  //   const SizedBox(width: 5),
+                                  //   CustomText(
+                                  //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              )
+            : const Align(
                 alignment: Alignment.center,
                 child: CustomText('No data found'),
               )
-            : detailData['distribution']['labels'].isNotEmpty
-                ? Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: themeProvider
-                          .themeManager.primaryBackgroundDefaultColor,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: getBorderColor(themeProvider),
-                      ),
-                    ),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: detailData['distribution']['labels'].length,
-                        itemBuilder: (context, index) {
-                          log('index $index');
-                          return detailData['distribution']['labels'][index]
-                                      ['label_id'] ==
-                                  null
-                              ? Container()
-                              : InkWell(
-                                  onTap: () async {
-                                    setState(() {
-                                      if (issuesProvider.issues.filters.labels
-                                          .contains(detailData['distribution']
-                                              ['labels'][index]['label_id'])) {
-                                        issuesProvider.issues.filters.labels
-                                            .remove(detailData['distribution']
-                                                ['labels'][index]['label_id']);
-                                      } else {
-                                        issuesProvider.issues.filters.labels
-                                            .add(detailData['distribution']
-                                                ['labels'][index]['label_id']);
-                                      }
-                                    });
-                                    pageController!.animateTo(0,
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.easeInOut);
-                                    if (fromModule) {
-                                      modulesProvider.changeTabIndex(0);
-                                      await modulesProvider.filterModuleIssues(
-                                        slug: ref
-                                            .read(
-                                                ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
-                                            .workspaceSlug,
-                                        projectId: ref
-                                            .read(ProviderList.projectProvider)
-                                            .currentProject["id"],
-                                      );
-                                      modulesProvider.initializeBoard();
-                                    }
-                                    cyclesProviderRead.changeTabIndex(0);
-                                    await cyclesProviderRead.filterCycleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    cyclesProviderRead.initializeBoard();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? (issuesProvider
-                                                  .issues.filters.labels
-                                                  .contains(
-                                                      detailData['distribution']
-                                                              ['labels'][index]
-                                                          ['label_id'])
-                                              ? darkThemeBorder
-                                              : darkBackgroundColor)
-                                          : (issuesProvider
-                                                  .issues.filters.labels
-                                                  .contains(
-                                                      detailData['distribution']
-                                                              ['labels'][index]
-                                                          ['label_id'])
-                                              ? lightGreeyColor
-                                              : lightBackgroundColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              size: 10,
-                                              color: detailData['distribution']
-                                                                  ['labels'][index]
-                                                              ['color'] ==
-                                                          '' ||
-                                                      detailData['distribution']
-                                                                      ['labels']
-                                                                  [index]
-                                                              ['color'] ==
-                                                          null
-                                                  ? themeProvider.themeManager
-                                                      .placeholderTextColor
-                                                  : ColorManager.getColorFromHexaDecimal(
-                                                      detailData['distribution']
-                                                                  ['labels']
-                                                              [index]['color']
-                                                          .toString()),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            CustomText(
-                                              detailData['distribution']
-                                                          ['labels'][index]
-                                                      ['label_name'] ??
-                                                  '',
-                                              maxLines: 2,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            CompletionPercentage(
-                                                value:
-                                                    detailData['distribution']
-                                                            ['labels'][index]
-                                                        ['completed_issues'],
-                                                totalValue:
-                                                    detailData['distribution']
-                                                            ['labels'][index]
-                                                        ['total_issues'])
-                                            //   CircularPercentIndicator(
-                                            //       radius: 10,
-                                            //       lineWidth: 2,
-                                            //       progressColor: primaryColor,
-                                            //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
-                                            //               detailData['distribution']
-                                            //                               ['labels']
-                                            //                           [index][
-                                            //                       'completed_issues'] ==
-                                            //                   null
-                                            //           ? 1.0
-                                            //           : convertToRatio(
-                                            //               detailData['distribution']
-                                            //                           ['labels']
-                                            //                       [index][
-                                            //                   'completed_issues'],
-                                            //               detailData['distribution']
-                                            //                       ['labels'][index]
-                                            //                   ['total_issues'])),
-                                            //   const SizedBox(width: 5),
-                                            //   CustomText(
-                                            //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                        }),
-                  )
-                : const Align(
-                    alignment: Alignment.center,
-                    child: CustomText('No data found'),
-                  )
       ],
     );
   }

@@ -41,9 +41,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
         ),
@@ -157,9 +155,8 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                 left: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryBGC
-                                    : const Color.fromRGBO(248, 249, 250, 1),
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
                               ),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: Row(

@@ -81,9 +81,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(
@@ -125,9 +123,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(
@@ -169,9 +165,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(
@@ -213,9 +207,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(
@@ -257,9 +249,7 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(

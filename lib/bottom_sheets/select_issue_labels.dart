@@ -426,10 +426,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                         bottomRight: Radius.circular(6),
                                       ),
                                     ),
-                                    fillColor: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : const Color.fromRGBO(
-                                            250, 250, 250, 1),
+                                    fillColor: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
                                     filled: true,
                                   ),
                                 ),

@@ -190,9 +190,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 height: 30,
                                 child: LoadingIndicator(
                                   indicatorType: Indicator.lineSpinFadeLoader,
-                                  colors: themeProvider.isDarkThemeEnabled
-                                      ? [Colors.white]
-                                      : [Colors.black],
+                                  colors: [
+                                    themeProvider.themeManager.primaryTextColor
+                                  ],
                                   strokeWidth: 1.0,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -595,7 +595,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             'Issues',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+            color: themeProvider.themeManager.primaryTextColor,
           ),
           const SizedBox(
             height: 20,
@@ -682,7 +682,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             'Projects',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            //color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,
@@ -767,7 +766,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             'Workspaces',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
+            color: themeProvider.themeManager.primaryTextColor,
           ),
           const SizedBox(
             height: 20,
@@ -835,9 +834,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             Icon(
                               Icons.grid_view_outlined,
                               size: 16,
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkPrimaryTextColor
-                                  : lightPrimaryTextColor,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             const SizedBox(
                               width: 10,
@@ -874,11 +872,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             'Cycles',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,
@@ -970,11 +967,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             'Modules',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,
@@ -1058,11 +1054,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             'Views',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,
@@ -1117,11 +1112,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             'Pages',
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Semibold,
-            color: themeProvider.isDarkThemeEnabled ? Colors.white : greyColor,
           ),
           const SizedBox(
             height: 20,

@@ -89,9 +89,7 @@ class _ThemeSheetState extends ConsumerState<ThemeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           SizedBox(

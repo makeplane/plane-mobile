@@ -137,11 +137,11 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                 CustomText(
                                   label["name"],
                                   type: FontStyle.Small,
+                                  overrride: true,
                                   color: selectedLabels.contains(label["id"])
                                       ? Colors.white
-                                      : (themeProvider.isDarkThemeEnabled
-                                          ? darkPrimaryTextColor
-                                          : lightPrimaryTextColor),
+                                      : (themeProvider
+                                          .themeManager.primaryTextColor),
                                 ),
                               ],
                             ),
@@ -183,9 +183,8 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                 ? Container(
                     height: height - 32,
                     alignment: Alignment.center,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryBGC.withOpacity(0.7)
-                        : lightSecondaryBackgroundColor.withOpacity(0.7),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
                     // height: 25,
                     // width: 25,
                     child: Center(
@@ -194,11 +193,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                         width: 25,
                         child: LoadingIndicator(
                           indicatorType: Indicator.lineSpinFadeLoader,
-                          colors: [
-                            themeProvider.isDarkThemeEnabled
-                                ? Colors.white
-                                : Colors.black
-                          ],
+                          colors: [themeProvider.themeManager.primaryTextColor],
                           strokeWidth: 1.0,
                           backgroundColor: Colors.transparent,
                         ),

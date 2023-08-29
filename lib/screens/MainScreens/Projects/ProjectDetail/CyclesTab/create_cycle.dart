@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -43,6 +44,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    BuildContext mainBuildContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -167,22 +169,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               FocusManager.instance.primaryFocus?.unfocus();
                               var date = await showDatePicker(
                                 builder: (context, child) => Theme(
-                                  data: themeProvider.themeManager.theme ==
-                                              THEME.dark ||
-                                          themeProvider.themeManager.theme ==
-                                              THEME.darkHighContrast
-                                      ? ThemeData.dark().copyWith(
-                                          colorScheme: ColorScheme.dark(
-                                            primary: themeProvider
-                                                .themeManager.primaryColour,
-                                          ),
-                                        )
-                                      : ThemeData.light().copyWith(
-                                          colorScheme: ColorScheme.light(
-                                            primary: themeProvider
-                                                .themeManager.primaryColour,
-                                          ),
-                                        ),
+                                  data: themeProvider
+                                      .themeManager.datePickerThemeData,
                                   child: child!,
                                 ),
                                 context: context,
@@ -250,22 +238,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               FocusManager.instance.primaryFocus?.unfocus();
                               var date = await showDatePicker(
                                 builder: (context, child) => Theme(
-                                  data: themeProvider.themeManager.theme ==
-                                              THEME.dark ||
-                                          themeProvider.themeManager.theme ==
-                                              THEME.darkHighContrast
-                                      ? ThemeData.dark().copyWith(
-                                          colorScheme: ColorScheme.dark(
-                                            primary: themeProvider
-                                                .themeManager.primaryColour,
-                                          ),
-                                        )
-                                      : ThemeData.light().copyWith(
-                                          colorScheme: ColorScheme.light(
-                                            primary: themeProvider
-                                                .themeManager.primaryColour,
-                                          ),
-                                        ),
+                                  data: themeProvider
+                                      .themeManager.datePickerThemeData,
                                   child: child!,
                                 ),
                                 context: context,
@@ -347,16 +321,12 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
 
                             if (startDate != null && dueDate != null) {
                               if (startDate!.isAfter(dueDate!)) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: Colors.redAccent,
-                                    content: CustomText(
-                                      'Start date cannot be after end date',
-                                      type: FontStyle.Medium,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
+                                CustomToast().showToast(
+                                    mainBuildContext,
+                                    'Start date cannot be after end date',
+                                    themeProvider,
+                                    toastType: ToastType.failure);
+
                                 return;
                               }
 
@@ -436,16 +406,12 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               }
                               Navigator.pop(Const.globalKey.currentContext!);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.redAccent,
-                                  content: CustomText(
-                                    'Cycle date is conflicted with other cycle',
-                                    type: FontStyle.Medium,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              );
+                              CustomToast().showToast(
+                                  mainBuildContext,
+                                  'Cycle date is conflicted with other cycle',
+                                  themeProvider,
+                                  toastType: ToastType.failure);
+
                               return;
                             }
                           }

@@ -28,9 +28,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(50), topRight: Radius.circular(50)),
       ),
@@ -138,9 +136,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                             left: 5,
                           ),
                           decoration: BoxDecoration(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryBGC
-                                : const Color.fromRGBO(248, 249, 250, 1),
+                            color: themeProvider
+                                .themeManager.secondaryBackgroundDefaultColor,
                           ),
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Row(

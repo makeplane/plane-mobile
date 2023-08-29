@@ -67,9 +67,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           Container(
@@ -93,9 +91,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           Container(
@@ -119,9 +115,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           Container(
@@ -145,9 +139,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           Container(
@@ -171,9 +163,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           Container(
@@ -185,17 +175,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
                 //show date time picker
                 var date = await showDatePicker(
                   builder: (context, child) => Theme(
-                    data: themeProvider.isDarkThemeEnabled
-                        ? ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          )
-                        : ThemeData.light().copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary: themeProvider.themeManager.primaryColour,
-                            ),
-                          ),
+                    data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
                   ),
                   context: context,

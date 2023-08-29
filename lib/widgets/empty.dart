@@ -11,6 +11,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.da
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/screens/create_view_screen.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 
 import 'custom_text.dart';
@@ -571,10 +572,19 @@ class EmptyPlaceholder {
           ),
           GestureDetector(
             onTap: () {
-              ref
-                  .read(ProviderList.issuesProvider)
+              var issueProvider = ref.read(ProviderList.issuesProvider);
+              issueProvider
                   .joinProject(projectId: projectId, slug: slug)
                   .then((_) {
+                if (issueProvider.joinprojectState == StateEnum.success) {
+                  CustomToast().showToast(
+                      context, "joined project successfully", themeProvider,
+                      toastType: ToastType.success);
+                } else if (issueProvider.joinprojectState == StateEnum.error) {
+                  CustomToast().showToast(
+                      context, "Something gone wrong", themeProvider,
+                      toastType: ToastType.failure);
+                }
                 ref.read(ProviderList.projectProvider).getProjects(slug: slug);
               });
             },

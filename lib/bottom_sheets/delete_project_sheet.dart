@@ -54,9 +54,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                 text: TextSpan(
                   text: 'Enter the project name ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -64,9 +62,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: projectProviderRead.currentProject['name'],
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -74,9 +70,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: ' to continue.',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -115,9 +109,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                 text: TextSpan(
                   text: 'To confirm, type ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -125,9 +117,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: '"Delete my project"',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -135,9 +125,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: '.',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -173,23 +161,18 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightSecondaryBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkStrokeColor
-                              : lightStrokeColor,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                       ),
                       child: CustomText(
                         'Cancel',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Semibold,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                     ),
                   ),
@@ -251,9 +234,10 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       ),
                       child: projectProviderRead.projectDetailState ==
                               StateEnum.loading
-                          ? const Center(
+                          ? Center(
                               child: CircularProgressIndicator(
-                                color: Colors.white,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                             )
                           : const CustomText(

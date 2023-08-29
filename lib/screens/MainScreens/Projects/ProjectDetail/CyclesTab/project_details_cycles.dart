@@ -263,7 +263,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -279,7 +279,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -553,7 +553,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -569,7 +569,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -1300,6 +1300,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    print("cyclesProvider.cycleUpcomingFavoriteData:" +
+        cyclesProvider.cycleUpcomingFavoriteData.toString());
+    print("cyclesProvider.cyclesUpcomingData:" +
+        cyclesProvider.cyclesUpcomingData.toString());
+    print("cyclesProvider.cyclesUpcomingData.length:" +
+        cyclesProvider.cyclesUpcomingData.length.toString());
     return LoadingWidget(
       loading: cyclesProvider.upcomingCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesUpcomingData.isEmpty &&
@@ -1315,6 +1321,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                   //         height: 15,
                   //       )
                   //     : const SizedBox.shrink(),
+
                   cyclesProvider.cycleUpcomingFavoriteData.isNotEmpty
                       ? ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -1569,11 +1576,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                             );
                           })
                       : const SizedBox.shrink(),
+
                   // cyclesProvider.cyclesUpcomingData.isNotEmpty
                   //     ? const SizedBox(
                   //         height: 15,
                   //       )
                   //     : const SizedBox.shrink(),
+
                   cyclesProvider.cyclesUpcomingData.isNotEmpty
                       ? ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -1581,6 +1590,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           itemCount: cyclesProvider.cyclesUpcomingData.length,
                           itemBuilder: (context, index) {
+                            print("cyclesProvider.cyclesUpcomingData:" +
+                                cyclesProvider.cyclesUpcomingData.toString());
                             return InkWell(
                               onTap: () {
                                 cyclesProviderRead.currentCycle =
@@ -1619,10 +1630,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             colorFilter: ColorFilter.mode(
                                                 checkDate(
                                                           startDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesUpcomingData[
                                                               index]['start_date'],
                                                           endDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesUpcomingData[
                                                               index]['end_date'],
                                                         ) ==
                                                         'Draft'
@@ -1630,11 +1641,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                         .placeholderTextColor
                                                     : checkDate(
                                                               startDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesUpcomingData[
                                                                       index][
                                                                   'start_date'],
                                                               endDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesUpcomingData[
                                                                       index]
                                                                   ['end_date'],
                                                             ) ==
@@ -2182,10 +2193,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             colorFilter: ColorFilter.mode(
                                                 checkDate(
                                                           startDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesDraftData[
                                                               index]['start_date'],
                                                           endDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesDraftData[
                                                               index]['end_date'],
                                                         ) ==
                                                         'Draft'
@@ -2193,11 +2204,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                         .placeholderTextColor
                                                     : checkDate(
                                                               startDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesDraftData[
                                                                       index][
                                                                   'start_date'],
                                                               endDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesDraftData[
                                                                       index]
                                                                   ['end_date'],
                                                             ) ==

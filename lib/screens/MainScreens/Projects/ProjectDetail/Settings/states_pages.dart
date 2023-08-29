@@ -196,7 +196,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               onPressed: () {
                                 showModalBottomSheet(
                                   constraints:
-                                      const BoxConstraints(maxHeight: 270),
+                                      const BoxConstraints(maxHeight: 300),
                                   enableDrag: true,
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(

@@ -29,11 +29,13 @@ class CreateIssue extends ConsumerStatefulWidget {
   final String? cycleId;
   final String? projectId;
   final bool fromMyIssues;
+  final Map<String, dynamic>? assignee;
   const CreateIssue({
     super.key,
     this.moduleId,
     this.cycleId,
     this.projectId,
+    this.assignee,
     this.fromMyIssues = false,
   });
 
@@ -106,6 +108,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     prov.createIssuedata['members'] = null;
     prov.createIssuedata['labels'] = null;
     prov.createIssueParent = '';
+    if (widget.assignee != null) {
+      prov.createIssuedata['members'] = widget.assignee;
+    }
 
     // prov.createIssuedata['state'] = prov.createIssuedata['state'] ??
     //     (prov.states.isNotEmpty ? prov.states.keys.first : null);

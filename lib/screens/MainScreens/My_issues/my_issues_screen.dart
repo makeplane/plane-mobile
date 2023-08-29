@@ -32,322 +32,330 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-    return Scaffold(
-        appBar: CustomAppBar(
-          text: 'My Issues',
-          onPressed: () {},
-          leading: false,
-          elevation: false,
-          centerTitle: false,
-          fontType: FontStyle.H4,
-          actions: [
-            workspaceProvider.role != Role.admin &&
-                    workspaceProvider.role != Role.member
-                ? Container()
-                : GestureDetector(
-                    onTap: () async {
-                      if (ref
-                          .watch(ProviderList.projectProvider)
-                          .projects
-                          .isEmpty) {
-                        CustomToast().showSimpleToast(
-                            'You dont have any projects yet, try creating one');
-                      } else {
-                        ref.watch(ProviderList.projectProvider).currentProject =
-                            ref.watch(ProviderList.projectProvider).projects[0];
-                        ref.watch(ProviderList.projectProvider).setState();
-                        await ref
-                            .read(ProviderList.projectProvider)
-                            .initializeProject();
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CreateIssue(),
-                          ),
-                        );
-                      }
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: themeProvider
-                          .themeManager.primaryBackgroundSelectedColour,
-                      radius: 20,
-                      child: Icon(
-                        size: 20,
-                        Icons.add,
-                        color: themeProvider.themeManager.secondaryTextColor,
-                      ),
-                    ),
-                  ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.9),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return const ViewsAndLayoutSheet(
-                        issueCategory: IssueCategory.myIssues,
-                      );
-                    });
-              },
-              child: CircleAvatar(
-                backgroundColor:
-                    themeProvider.themeManager.primaryBackgroundSelectedColour,
-                radius: 20,
-                child: Icon(
-                  size: 20,
-                  Icons.event_note_rounded,
-                  color: themeProvider.themeManager.secondaryTextColor,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.85),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return FilterSheet(
-                        issueCategory: IssueCategory.myIssues,
-                      );
-                    });
-              },
-              child: Stack(
-                children: [
-                  Center(
-                    child: CircleAvatar(
-                      backgroundColor: themeProvider
-                          .themeManager.primaryBackgroundSelectedColour,
-                      radius: 20,
-                      child: Icon(
-                        size: 20,
-                        Icons.filter_list_outlined,
-                        color: themeProvider.themeManager.secondaryTextColor,
-                      ),
-                    ),
-                  ),
-
-                  // blue dot
-                  (myIssuesProvider.issues.filters.priorities.isEmpty &&
-                          myIssuesProvider.issues.filters.states.isEmpty &&
-                          myIssuesProvider.issues.filters.labels.isEmpty &&
-                          myIssuesProvider.issues.filters.targetDate.isEmpty &&
-                          myIssuesProvider.issues.filters.startDate.isEmpty)
-                      ? Container()
-                      : Positioned(
-                          top: 4,
-                          right: 4,
-                          child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                              color: themeProvider.themeManager.primaryColour,
-                              shape: BoxShape.circle,
+    return SafeArea(
+      child: Scaffold(
+          appBar: CustomAppBar(
+            text: 'My Issues',
+            onPressed: () {},
+            leading: false,
+            elevation: false,
+            centerTitle: false,
+            fontType: FontStyle.H4,
+            actions: [
+              workspaceProvider.role != Role.admin &&
+                      workspaceProvider.role != Role.member
+                  ? Container()
+                  : GestureDetector(
+                      onTap: () async {
+                        if (ref
+                            .watch(ProviderList.projectProvider)
+                            .projects
+                            .isEmpty) {
+                          CustomToast().showSimpleToast(
+                              'You dont have any projects yet, try creating one');
+                        } else {
+                          ref
+                                  .watch(ProviderList.projectProvider)
+                                  .currentProject =
+                              ref
+                                  .watch(ProviderList.projectProvider)
+                                  .projects[0];
+                          ref.watch(ProviderList.projectProvider).setState();
+                          await ref
+                              .read(ProviderList.projectProvider)
+                              .initializeProject();
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CreateIssue(),
                             ),
-                          ),
-                        ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GlobalSearchSheet(),
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                backgroundColor:
-                    themeProvider.themeManager.primaryBackgroundSelectedColour,
-                radius: 20,
-                child: Icon(
-                  size: 20,
-                  Icons.search,
-                  color: themeProvider.themeManager.secondaryTextColor,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-          ],
-        ),
-        body: projectProvider.projects.isEmpty
-            ? EmptyPlaceholder.emptyProject(context, ref)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    //bottom border
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: themeProvider.themeManager.borderSubtle01Color,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              controller.jumpToPage(0);
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: CustomText(
-                                        'Assigned',
-                                        color: selected == 0
-                                            ? themeProvider
-                                                .themeManager.primaryColour
-                                            : themeProvider.themeManager
-                                                .placeholderTextColor,
-                                        overrride: true,
-                                        type: FontStyle.Medium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                selected == 0
-                                    ? Container(
-                                        height: 4,
-                                        color: themeProvider
-                                            .themeManager.primaryColour,
-                                      )
-                                    : Container(
-                                        height: 4,
-                                      )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              controller.jumpToPage(1);
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: CustomText(
-                                        'Created',
-                                        overrride: true,
-                                        color: selected == 1
-                                            ? themeProvider
-                                                .themeManager.primaryColour
-                                            : themeProvider.themeManager
-                                                .placeholderTextColor,
-                                        type: FontStyle.Medium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                selected == 1
-                                    ? Container(
-                                        height: 4,
-                                        color: themeProvider
-                                            .themeManager.primaryColour,
-                                      )
-                                    : Container(
-                                        height: 4,
-                                      )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              controller.jumpToPage(2);
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: CustomText(
-                                        'Subscribed',
-                                        color: selected == 2
-                                            ? themeProvider
-                                                .themeManager.primaryColour
-                                            : themeProvider.themeManager
-                                                .placeholderTextColor,
-                                        overrride: true,
-                                        type: FontStyle.Medium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                selected == 2
-                                    ? Container(
-                                        height: 4,
-                                        color: themeProvider
-                                            .themeManager.primaryColour,
-                                      )
-                                    : Container(
-                                        height: 4,
-                                      ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: PageView(
-                      //disable swipe
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: controller,
-                      onPageChanged: (value) {
-                        setState(() {
-                          selected = value;
-                          myIssuesProvider.changePage(value);
-                        });
+                          );
+                        }
                       },
-                      children: [
-                        issues(context, ref),
-                        issues(context, ref),
-                        issues(context, ref),
-                      ],
+                      child: CircleAvatar(
+                        backgroundColor: themeProvider
+                            .themeManager.primaryBackgroundSelectedColour,
+                        radius: 20,
+                        child: Icon(
+                          size: 20,
+                          Icons.add,
+                          color: themeProvider.themeManager.secondaryTextColor,
+                        ),
+                      ),
                     ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.9),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return const ViewsAndLayoutSheet(
+                          issueCategory: IssueCategory.myIssues,
+                        );
+                      });
+                },
+                child: CircleAvatar(
+                  backgroundColor: themeProvider
+                      .themeManager.primaryBackgroundSelectedColour,
+                  radius: 20,
+                  child: Icon(
+                    size: 20,
+                    Icons.view_list_outlined,
+                    color: themeProvider.themeManager.secondaryTextColor,
                   ),
-                ],
-              ));
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.85),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return FilterSheet(
+                          issueCategory: IssueCategory.myIssues,
+                        );
+                      });
+                },
+                child: Stack(
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        backgroundColor: themeProvider
+                            .themeManager.primaryBackgroundSelectedColour,
+                        radius: 20,
+                        child: Icon(
+                          size: 20,
+                          Icons.filter_list_outlined,
+                          color: themeProvider.themeManager.secondaryTextColor,
+                        ),
+                      ),
+                    ),
+
+                    // blue dot
+                    (myIssuesProvider.issues.filters.priorities.isEmpty &&
+                            myIssuesProvider.issues.filters.states.isEmpty &&
+                            myIssuesProvider.issues.filters.labels.isEmpty &&
+                            myIssuesProvider
+                                .issues.filters.targetDate.isEmpty &&
+                            myIssuesProvider.issues.filters.startDate.isEmpty)
+                        ? Container()
+                        : Positioned(
+                            top: 4,
+                            right: 4,
+                            child: Container(
+                              height: 10,
+                              width: 10,
+                              decoration: BoxDecoration(
+                                color: themeProvider.themeManager.primaryColour,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GlobalSearchSheet(),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: themeProvider
+                      .themeManager.primaryBackgroundSelectedColour,
+                  radius: 20,
+                  child: Icon(
+                    size: 20,
+                    Icons.search,
+                    color: themeProvider.themeManager.secondaryTextColor,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+            ],
+          ),
+          body: projectProvider.projects.isEmpty
+              ? EmptyPlaceholder.emptyProject(context, ref)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      //bottom border
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                controller.jumpToPage(0);
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: CustomText(
+                                          'Assigned',
+                                          color: selected == 0
+                                              ? themeProvider
+                                                  .themeManager.primaryColour
+                                              : themeProvider.themeManager
+                                                  .placeholderTextColor,
+                                          overrride: true,
+                                          type: FontStyle.Medium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  selected == 0
+                                      ? Container(
+                                          height: 4,
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
+                                        )
+                                      : Container(
+                                          height: 4,
+                                        )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                controller.jumpToPage(1);
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: CustomText(
+                                          'Created',
+                                          overrride: true,
+                                          color: selected == 1
+                                              ? themeProvider
+                                                  .themeManager.primaryColour
+                                              : themeProvider.themeManager
+                                                  .placeholderTextColor,
+                                          type: FontStyle.Medium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  selected == 1
+                                      ? Container(
+                                          height: 4,
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
+                                        )
+                                      : Container(
+                                          height: 4,
+                                        )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                controller.jumpToPage(2);
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: CustomText(
+                                          'Subscribed',
+                                          color: selected == 2
+                                              ? themeProvider
+                                                  .themeManager.primaryColour
+                                              : themeProvider.themeManager
+                                                  .placeholderTextColor,
+                                          overrride: true,
+                                          type: FontStyle.Medium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  selected == 2
+                                      ? Container(
+                                          height: 4,
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
+                                        )
+                                      : Container(
+                                          height: 4,
+                                        ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: PageView(
+                        //disable swipe
+                        physics: const NeverScrollableScrollPhysics(),
+                        controller: controller,
+                        onPageChanged: (value) {
+                          setState(() {
+                            selected = value;
+                            myIssuesProvider.changePage(value);
+                          });
+                        },
+                        children: [
+                          issues(context, ref),
+                          issues(context, ref),
+                          issues(context, ref),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+    );
   }
 
   Widget issues(BuildContext context, WidgetRef ref) {
@@ -373,8 +381,28 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      EmptyPlaceholder.emptyIssues(context,
-                          ref: ref, type: IssueCategory.myIssues),
+                      issueProvider.pageIndex == 2
+                          ? EmptyPlaceholder.emptySubscribedIssue(ref)
+                          : EmptyPlaceholder.emptyIssues(
+                              context,
+                              ref: ref,
+                              type: IssueCategory.myIssues,
+                              assignee: issueProvider.pageIndex == 0
+                                  ? {
+                                      ref
+                                          .watch(ProviderList.profileProvider)
+                                          .userProfile
+                                          .id!: {
+                                        'name':
+                                            "${ref.watch(ProviderList.profileProvider).userProfile.firstName} ${ref.watch(ProviderList.profileProvider).userProfile.lastName}",
+                                        'id': ref
+                                            .watch(ProviderList.profileProvider)
+                                            .userProfile
+                                            .id,
+                                      }
+                                    }
+                                  : null,
+                            ),
                     ],
                   )
                 : issueProvider.issues.projectView == ProjectView.list

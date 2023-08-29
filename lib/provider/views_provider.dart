@@ -111,4 +111,35 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       state = state.copyWith(viewsState: StateEnum.error);
     }
   }
+
+  Future updateViews(
+      {required int index,
+      required String id,
+      required Map<String, dynamic> data}) async {
+    state = state.copyWith(viewsState: StateEnum.loading);
+
+    log(data.toString());
+    log("${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/");
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url:
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
+        hasBody: true,
+        httpMethod: HttpMethod.patch,
+        data: data,
+      );
+      log('API success');
+      state = state.copyWith(views: [
+        ...state.views.sublist(0, index),
+        response.data,
+        ...state.views.sublist(index + 1)
+      ], viewsState: StateEnum.success);
+    } on DioException catch (e) {
+      log('Update views error: ');
+      log(e.error.toString());
+      state = state.copyWith(viewsState: StateEnum.error);
+      rethrow;
+    }
+  }
 }

@@ -211,12 +211,15 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset('assets/svg_images/cycles_icon.svg',
-                  height: 25,
-                  width: 25,
-                  colorFilter: ColorFilter.mode(
-                      themeProvider.themeManager.textSuccessColor,
-                      BlendMode.srcIn)),
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: SvgPicture.asset('assets/svg_images/cycles_icon.svg',
+                    height: 25,
+                    width: 25,
+                    colorFilter: ColorFilter.mode(
+                        themeProvider.themeManager.textSuccessColor,
+                        BlendMode.srcIn)),
+              ),
               const SizedBox(width: 5),
               Expanded(
                 child: CustomText(

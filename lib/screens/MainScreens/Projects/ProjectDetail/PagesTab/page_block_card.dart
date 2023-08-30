@@ -125,6 +125,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                 ref
                                     .read(ProviderList.pageProvider)
                                     .converToIssues(
+                                      context: context,
                                       blockID: pageProvider.blocks[widget.index]
                                           ["id"],
                                       slug: ref
@@ -150,6 +151,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                       GestureDetector(
                         onTap: () {
                           ref.read(ProviderList.pageProvider).handleBlocks(
+                                context: context,
                                 blockID: pageProvider.blocks[widget.index]
                                     ["id"],
                                 httpMethod: HttpMethod.delete,

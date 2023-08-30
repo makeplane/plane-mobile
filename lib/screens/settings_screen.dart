@@ -111,13 +111,17 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     isScrollable: true,
                     tabs: tabs
                         .map(
-                          (e) => CustomText(
-                            tabs[tabs.indexOf(e)],
-                            type: FontStyle.Medium,
-                            color: tabs.indexOf(e) == selectedIndex
-                                ? themeProvider.themeManager.primaryColour
-                                : themeProvider.themeManager.secondaryTextColor,
-                            overrride: true,
+                          (e) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: CustomText(
+                              tabs[tabs.indexOf(e)],
+                              type: FontStyle.Medium,
+                              color: tabs.indexOf(e) == selectedIndex
+                                  ? themeProvider.themeManager.primaryColour
+                                  : themeProvider
+                                      .themeManager.secondaryTextColor,
+                              overrride: true,
+                            ),
                           ),
                         )
                         .toList())

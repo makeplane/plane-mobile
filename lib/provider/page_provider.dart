@@ -63,6 +63,7 @@ class PageProvider with ChangeNotifier {
       String? name,
       String? description,
       required WidgetRef ref,
+      BuildContext? context,
       required String projectId}) async {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
@@ -113,23 +114,21 @@ class PageProvider with ChangeNotifier {
                       : httpMethod == HttpMethod.delete
                           ? 'BLOCK_DELETE'
                           : '',
-              properties: 
-              httpMethod == HttpMethod.delete ?
-              {}
-              : {
-                  'WORKSPACE_ID':
-                      workspaceProvider.selectedWorkspace!.workspaceId,
-                  'WORKSPACE_NAME':
-                      workspaceProvider.selectedWorkspace!.workspaceName,
-                  'WORKSPACE_SLUG':
-                      workspaceProvider.selectedWorkspace!.workspaceSlug,
-                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-                  'PAGE_ID': pageID,
-                  'BLOCK_ID': res.data['id']
-                },
-              ref: ref
-              )
+              properties: httpMethod == HttpMethod.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace!.workspaceId,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace!.workspaceName,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'PAGE_ID': pageID,
+                      'BLOCK_ID': res.data['id']
+                    },
+              ref: ref)
           : null;
       if (httpMethod == HttpMethod.delete) {
         blocks.removeWhere((element) => element['id'] == blockID);
@@ -147,8 +146,11 @@ class PageProvider with ChangeNotifier {
     } on DioException catch (e) {
       //log(e.response.toString());
       log(e.response!.data.toString());
-      CustomToast()
-          .showSimpleToast(e.response!.data['detail'] ?? e.response!.data);
+      if (context != null) {
+        CustomToast().showToastWithColors(
+            context, e.response!.data['detail'] ?? e.response!.data,
+            toastType: ToastType.failure);
+      }
       blockSheetState = StateEnum.failed;
       blockState = StateEnum.error;
       notifyListeners();
@@ -233,6 +235,7 @@ class PageProvider with ChangeNotifier {
       required String pageId,
       required dynamic data,
       required WidgetRef ref,
+      BuildContext? context,
       bool? fromDispose = false}) async {
     blockSheetState = StateEnum.loading;
     notifyListeners();
@@ -246,16 +249,19 @@ class PageProvider with ChangeNotifier {
           url:
               "${APIs.getPages.replaceAll("\$SLUG", slug).replaceAll("\$PROJECTID", projectId)}$pageId/",
           data: data);
-      postHogService(eventName: 'PAGE_UPDATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'PAGE_ID': res.data['id']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'PAGE_UPDATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PAGE_ID': res.data['id']
+          },
+          ref: ref);
       int index = pages[selectedFilter]!
           .indexWhere((element) => element["id"] == pageId);
       pagesListState = StateEnum.success;
@@ -267,9 +273,14 @@ class PageProvider with ChangeNotifier {
     } on DioException catch (e) {
       //log(e.response.toString());
       if (fromDispose == false) {
-        CustomToast().showSimpleToast(e.response!.data['detail'] != null
-            ? e.response!.data['detail'].toString()
-            : e.response!.data.toString());
+        if (context != null) {
+          CustomToast().showToastWithColors(
+              context,
+              e.response!.data['detail'] != null
+                  ? e.response!.data['detail'].toString()
+                  : e.response!.data.toString(),
+              toastType: ToastType.failure);
+        }
       }
       log(e.response!.data.toString());
       blockSheetState = StateEnum.error;
@@ -283,8 +294,8 @@ class PageProvider with ChangeNotifier {
       required String pageID,
       required String projectId,
       required String blockID,
-      required WidgetRef ref
-      }) async {
+      required WidgetRef ref,
+      BuildContext? context}) async {
     try {
       blockState = StateEnum.loading;
       notifyListeners();
@@ -302,16 +313,18 @@ class PageProvider with ChangeNotifier {
           httpMethod: HttpMethod.get,
           blockID: blockID,
           projectId: projectId,
-          ref: ref
-        );
+          ref: ref);
       blockState = StateEnum.success;
 
       log(res.data.toString());
       notifyListeners();
     } on DioException catch (e) {
       log(e.response!.data.toString());
-      CustomToast()
-          .showSimpleToast(e.response!.data['detail'] ?? e.response!.data);
+      if (context != null) {
+        CustomToast().showToastWithColors(
+            context, e.response!.data['detail'] ?? e.response!.data,
+            toastType: ToastType.failure);
+      }
       blockState = StateEnum.error;
       notifyListeners();
     }
@@ -335,16 +348,19 @@ class PageProvider with ChangeNotifier {
               .replaceAll("\$PROJECTID", projectId),
           data: {"name": pageTitle});
       pagesListState = StateEnum.success;
-      postHogService(eventName: 'PAGE_CREATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'PAGE_ID': response.data['id']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'PAGE_CREATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PAGE_ID': response.data['id']
+          },
+          ref: ref);
       updatepageList(
         slug: slug,
         projectId: projectId,

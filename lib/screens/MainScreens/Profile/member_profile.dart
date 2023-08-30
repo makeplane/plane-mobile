@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/timezone_manager.dart';
+import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -75,7 +79,14 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
     ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
 
     //log(memberprofileProvider.getMemberProfileState.name);
+    log(profileProv.userProfile.toString());
+
     return Scaffold(
+      appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'Profile'),
       body: SafeArea(
         child: LoadingWidget(
           loading:
@@ -294,7 +305,16 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                       margin: const EdgeInsets.only(
                                           left: 20, bottom: 10),
                                       child: CustomText(
-                                        profileData.values.toList()[index],
+                                        (index == 2
+                                                ? TimeZoneManager
+                                                        .getTimeForTimeZone(
+                                                            profileData.values
+                                                                        .toList()[
+                                                                    index] ??
+                                                                '')
+                                                    .toString()
+                                                : '') +
+                                            profileData.values.toList()[index],
                                         color: themeProvider
                                             .themeManager.secondaryTextColor,
                                         type: FontStyle.Small,

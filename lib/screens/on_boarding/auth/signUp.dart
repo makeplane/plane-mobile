@@ -207,7 +207,8 @@ class _SignUpState extends ConsumerState<SignUp> {
                               await authProvider
                                   .signUpWithEmailAndPassword(
                                       email: email.text,
-                                      password: password.text)
+                                      password: password.text,
+                                      context: context)
                                   .then((value) {
                                 if (authProvider.signUpState ==
                                         StateEnum.success &&

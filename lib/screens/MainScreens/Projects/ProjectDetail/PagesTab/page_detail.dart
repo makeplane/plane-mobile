@@ -45,6 +45,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
   void initState() {
     var prov = ref.read(ProviderList.pageProvider);
     prov.handleBlocks(
+        context: context,
         blockID: "",
         httpMethod: HttpMethod.get,
         pageID: prov.pages[prov.selectedFilter]![widget.index]["id"],
@@ -96,6 +97,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
           pageProvider.pages[pageProvider.selectedFilter]![widget.index]
               ['name'] = titleController.text;
           pageProvider.editPage(
+              context: context,
               slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
               projectId: projectProvider.currentProject['id'],
               pageId: pageProvider
@@ -128,6 +130,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
           pageProvider.pages[pageProvider.selectedFilter]![widget.index]
               ['name'] = titleController.text;
           pageProvider.editPage(
+              context: context,
               slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
               projectId: projectProvider.currentProject['id'],
               pageId: pageProvider
@@ -247,6 +250,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                             .selectedFilter]![widget.index]
                                         ['color'] = '#${colorController.text}';
                                     pageProvider.editPage(
+                                        context: context,
                                         slug: workspaceProvider
                                             .selectedWorkspace!.workspaceSlug,
                                         projectId: projectProvider
@@ -296,6 +300,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     onTap: () async {
                                       showLockLoading = !showLockLoading;
                                       await pageProvider.editPage(
+                                        context: context,
                                         pageId: pageProvider.pages[pageProvider
                                                 .selectedFilter]![widget.index]
                                             ['id'],
@@ -613,6 +618,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                 .toString());
                           });
                           pageProvider.editPage(
+                              context: context,
                               slug: workspaceProvider
                                   .selectedWorkspace!.workspaceSlug,
                               projectId: projectProvider.currentProject['id'],

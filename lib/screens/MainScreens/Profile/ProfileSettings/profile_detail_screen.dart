@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane_startup/bottom_sheets/time_zone_selector_sheet.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/Theming/prefrences.dart';
@@ -62,6 +63,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
     log('${profileProvider.userProfile.avatar} photo');
+    log('profile : ${profileProvider.userProfile} ');
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -457,6 +459,69 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         // const SizedBox(
                         //   height: 20,
                         // )
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomText('Time Zone',
+                              type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) {
+                                  return const TimeZoneSelectorSheet();
+                                });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 16),
+                                  child: CustomText(
+                                    profileProvider.selectedTimeZone.toString(),
+                                    type: FontStyle.Small,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 16),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                     Container(
@@ -466,9 +531,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           bottom: 15, left: 16, right: 16),
                       child: Button(
                         ontap: () async {
-                          
                           await profileProvider.updateProfile(
                             data: {
+                              "user_timezone":
+                                  profileProvider.selectedTimeZone.toString(),
                               "first_name": fullName.text,
                               "role": profileProvider.dropDownValue,
                               if (fileUploadProvider.downloadUrl != null)
@@ -478,7 +544,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           if (profileProvider.updateProfileState ==
                               StateEnum.success) {
                             Navigator.pop(Const.globalKey.currentContext!);
-                            
+
                             CustomToast().showToast(screenContext,
                                 'Profile updated successfully', themeProvider,
                                 toastType: ToastType.success);

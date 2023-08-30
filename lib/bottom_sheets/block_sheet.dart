@@ -136,6 +136,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                       return;
                     }
                     await ref.read(ProviderList.pageProvider).handleBlocks(
+                        context: context,
                         blockID: widget.blockIndex != null
                             ? pageProvider.blocks[widget.blockIndex!]["id"]
                             : "",

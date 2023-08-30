@@ -45,7 +45,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future validateMagicCode({required String key, required token}) async {
+  Future validateMagicCode(
+      {required String key, required token, BuildContext? context}) async {
     validateCodeState = StateEnum.loading;
     notifyListeners();
     try {
@@ -183,9 +184,11 @@ class AuthProvider extends ChangeNotifier {
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
           notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
+          if (context != null) {
+            CustomToast().showToastWithColors(context,
+                'Something went wrong while fetching your data, Please try again.',
+                toastType: ToastType.failure);
+          }
         }
       });
       log(response.data.toString());
@@ -196,9 +199,14 @@ class AuthProvider extends ChangeNotifier {
         var errorResponse = e.error;
         message = errorResponse;
         log(e.error.toString());
-        CustomToast().showSimpleToast(
-          message.toString(),
-        );
+        // CustomToast().showSimpleToast(
+        //   message.toString(),
+        // );
+
+        if (context != null) {
+          CustomToast().showToastWithColors(context, message.toString(),
+              toastType: ToastType.failure);
+        }
       } else {
         message = e;
       }
@@ -280,13 +288,16 @@ class AuthProvider extends ChangeNotifier {
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
           notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
+          if (context != null) {
+            CustomToast().showToastWithColors(context,
+                'Something went wrong while fetching your data, Please try again.',
+                toastType: ToastType.failure);
+          }
         }
       });
     } catch (e) {
       log(e.toString());
+
       CustomToast().showToast(
           context,
           'Something went wrong, please try again.',
@@ -298,7 +309,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future signInWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      BuildContext? context}) async {
     signInState = StateEnum.loading;
     notifyListeners();
     try {
@@ -373,21 +386,26 @@ class AuthProvider extends ChangeNotifier {
           SharedPrefrenceServices.sharedPreferences!.clear();
 
           notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
+          if (context != null) {
+            CustomToast().showToastWithColors(context,
+                'Something went wrong while fetching your data, Please try again.',
+                toastType: ToastType.failure);
+          }
         }
       });
     } on DioException catch (e) {
       log(e.toString());
       signInState = StateEnum.failed;
 
-      CustomToast().showSimpleToast(
-        e.error.toString(),
-      );
-      CustomToast().showSimpleToast(
-        'Something went wrong, please try again.',
-      );
+      if (context != null) {
+        CustomToast().showToastWithColors(context, e.error.toString(),
+            toastType: ToastType.failure);
+      }
+      if (context != null) {
+        CustomToast().showToastWithColors(
+            context, 'Something went wrong, please try again.',
+            toastType: ToastType.failure);
+      }
 
       notifyListeners();
     }
@@ -416,7 +434,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      BuildContext? context}) async {
     signUpState = StateEnum.loading;
     notifyListeners();
     try {
@@ -497,9 +517,11 @@ class AuthProvider extends ChangeNotifier {
           SharedPrefrenceServices.sharedPreferences!.clear();
 
           notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
+          if (context != null) {
+            CustomToast().showToastWithColors(context,
+                'Something went wrong while fetching your data, Please try again.',
+                toastType: ToastType.failure);
+          }
         }
       });
     } catch (e) {
@@ -507,13 +529,16 @@ class AuthProvider extends ChangeNotifier {
       signUpState = StateEnum.failed;
       notifyListeners();
       if (e is DioException) {
-        CustomToast().showSimpleToast(
-          e.error.toString(),
-        );
+        if (context != null) {
+          CustomToast().showToastWithColors(context, e.error.toString(),
+              toastType: ToastType.failure);
+        }
       } else {
-        CustomToast().showSimpleToast(
-          'Something went wrong, please try again.',
-        );
+        if (context != null) {
+          CustomToast().showToastWithColors(
+              context, 'Something went wrong, please try again.',
+              toastType: ToastType.failure);
+        }
       }
     }
   }

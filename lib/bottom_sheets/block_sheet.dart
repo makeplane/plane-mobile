@@ -151,7 +151,9 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                             .currentProject['id'],
                         pageID: widget.pageID,
                         name: titleController.text,
-                        description: descriptionController.text);
+                        description: descriptionController.text,
+                        ref: ref
+                      );
 
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);

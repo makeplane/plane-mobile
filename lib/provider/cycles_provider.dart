@@ -12,6 +12,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesT
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 
@@ -105,14 +106,17 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  Future cyclesCrud({
-    bool disableLoading = false,
-    required String slug,
-    required String projectId,
-    required CRUD method,
-    required String query,
-    Map<String, dynamic>? data,
-  }) async {
+  Future cyclesCrud(
+      {bool disableLoading = false,
+      required String slug,
+      required String projectId,
+      required CRUD method,
+      required String query,
+      Map<String, dynamic>? data,
+      required String cycleId,
+      required WidgetRef ref}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     if (query == 'all') {
       allCyclesState = StateEnum.loading;
     } else if (query == 'current') {
@@ -207,6 +211,32 @@ class CyclesProvider with ChangeNotifier {
         draftCyclesState = StateEnum.success;
       }
       cyclesState = StateEnum.success;
+      method == CRUD.read ?
+      null :
+      postHogService(
+          eventName: method == CRUD.create
+              ? 'CYCLE_CREATE'
+              : method == CRUD.update
+                  ? 'CYCLE_UPDATE'
+                  : method == CRUD.delete
+                      ? 'CYCLE_DELETE'
+                      : '',
+          properties: method == CRUD.delete
+              ? {}
+              : 
+              {
+                  'WORKSPACE_ID':
+                      workspaceProvider.selectedWorkspace!.workspaceId,
+                  'WORKSPACE_SLUG':
+                      workspaceProvider.selectedWorkspace!.workspaceSlug,
+                  'WORKSPACE_NAME':
+                      workspaceProvider.selectedWorkspace!.workspaceName,
+                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                  'CYCLE_ID': response.data['id']
+                },
+                ref: ref
+                );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
@@ -271,15 +301,16 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  Future updateCycle({
-    required String slug,
-    required String projectId,
-    Map<String, dynamic>? data,
-    required String cycleId,
-    required bool isFavorite,
-    required String query,
-    bool disableLoading = false,
-  }) async {
+  Future updateCycle(
+      {required String slug,
+      required String projectId,
+      Map<String, dynamic>? data,
+      required CRUD method,
+      required String cycleId,
+      required bool isFavorite,
+      required String query,
+      bool disableLoading = false,
+      required WidgetRef ref}) async {
     var url = !isFavorite
         ? APIs.toggleFavoriteCycle
             .replaceFirst('\$SLUG', slug)
@@ -307,26 +338,32 @@ class CyclesProvider with ChangeNotifier {
       if (query == 'all') {
         for (int i = 0; i < queries.length; i++) {
           cyclesCrud(
-            slug: slug,
-            projectId: projectId,
-            method: CRUD.read,
-            query: queries[i],
-          );
+              slug: slug,
+              projectId: projectId,
+              method: CRUD.read,
+              query: queries[i],
+              ref: ref,
+              cycleId: cycleId
+              );
         }
       }
 
       await cyclesCrud(
-        slug: slug,
-        projectId: projectId,
-        method: CRUD.read,
-        query: query,
-      );
+          slug: slug,
+          projectId: projectId,
+          method: CRUD.read,
+          query: query,
+          ref: ref,
+          cycleId: cycleId
+          );
       cyclesCrud(
-        slug: slug,
-        projectId: projectId,
-        method: CRUD.read,
-        query: 'all',
-      );
+          slug: slug,
+          projectId: projectId,
+          method: CRUD.read,
+          query: 'all',
+          ref: ref,
+          cycleId: cycleId
+          );
       cyclesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {

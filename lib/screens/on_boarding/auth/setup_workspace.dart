@@ -336,7 +336,9 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                     nameController.text.trim(),
                                                 slug: urlController.text.trim(),
                                                 size: prov.companySize,
-                                                context: context);
+                                                context: context,
+                                                ref: ref
+                                                );
                                             if (prov.createWorkspaceState ==
                                                 StateEnum.success) {
                                               if (!widget.fromHomeScreen) {

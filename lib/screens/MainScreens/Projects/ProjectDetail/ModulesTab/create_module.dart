@@ -625,6 +625,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                 projId: ref
                                     .read(ProviderList.projectProvider)
                                     .currentProject['id'],
+                                ref: ref
                               );
 
                               Navigator.pop(Const.globalKey.currentContext!);

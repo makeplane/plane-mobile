@@ -52,7 +52,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             .read(ProviderList.workspaceProvider)
             .selectedWorkspace!
             .workspaceSlug,
-        projectId: ref.read(ProviderList.projectProvider).currentProject["id"]);
+        projectId: ref.read(ProviderList.projectProvider).currentProject["id"],
+        ref: ref
+      );
     ref.read(ProviderList.issuesProvider).getLabels(
         slug: ref
             .read(ProviderList.workspaceProvider)
@@ -102,7 +104,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                 "color": '#${colorController.text}',
                 "name": titleController.text
               },
-              fromDispose: true);
+              fromDispose: true,
+              ref: ref
+              );
           Navigator.pop(context);
         },
         text: pageProvider.pages[pageProvider.selectedFilter]![widget.index]
@@ -131,7 +135,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               data: {
                 "color": '#${colorController.text}',
                 "name": titleController.text
-              });
+              },
+              ref: ref
+            );
 
           return true;
         },
@@ -250,7 +256,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                             ['id'],
                                         data: {
                                           "color": '#${colorController.text}'
-                                        });
+                                        },
+                                        ref: ref
+                                      );
                                   }
                                 },
                                 icon: Icon(
@@ -300,6 +308,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                   pageProvider.selectedFilter]![
                                               widget.index]['access']
                                         },
+                                        ref: ref
                                       ).then((value) {
                                         if (pageProvider.blockSheetState ==
                                             StateEnum.success) {
@@ -611,7 +620,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                   .selectedFilter]![widget.index]['id'],
                               data: {
                                 "labels_list": pageProvider.selectedLabels,
-                              }).then((value) {
+                              },
+                              ref: ref
+                            ).then((value) {
                             if (pageProvider.blockSheetState ==
                                 StateEnum.error) {
                               setState(() {

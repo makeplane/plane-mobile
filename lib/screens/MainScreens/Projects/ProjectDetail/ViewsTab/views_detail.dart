@@ -46,7 +46,9 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(ProviderList.projectProvider).initializeProject(
           filters:
-              Filters.fromJson(viewsProv.views[widget.index]["query_data"]));
+              Filters.fromJson(viewsProv.views[widget.index]["query_data"]),
+              ref: ref
+            );
     });
     super.initState();
   }

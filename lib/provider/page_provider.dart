@@ -1,10 +1,13 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/config/apis.dart';
+import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 
 class PageProvider with ChangeNotifier {
   StateEnum pagesListState = StateEnum.empty;
@@ -59,7 +62,10 @@ class PageProvider with ChangeNotifier {
       required String blockID,
       String? name,
       String? description,
+      required WidgetRef ref,
       required String projectId}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
       if (httpMethod != HttpMethod.get || httpMethod == HttpMethod.delete) {
         if (httpMethod == HttpMethod.delete) {
@@ -97,7 +103,34 @@ class PageProvider with ChangeNotifier {
                     ]
                   },
                 });
-      log(res.statusCode.toString());
+      log(res.data.toString());
+      httpMethod != HttpMethod.get
+          ? postHogService(
+              eventName: httpMethod == HttpMethod.post
+                  ? 'BLOCK_CREATE'
+                  : httpMethod == HttpMethod.patch
+                      ? 'BLOCK_UPDATE'
+                      : httpMethod == HttpMethod.delete
+                          ? 'BLOCK_DELETE'
+                          : '',
+              properties: 
+              httpMethod == HttpMethod.delete ?
+              {}
+              : {
+                  'WORKSPACE_ID':
+                      workspaceProvider.selectedWorkspace!.workspaceId,
+                  'WORKSPACE_NAME':
+                      workspaceProvider.selectedWorkspace!.workspaceName,
+                  'WORKSPACE_SLUG':
+                      workspaceProvider.selectedWorkspace!.workspaceSlug,
+                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                  'PAGE_ID': pageID,
+                  'BLOCK_ID': res.data['id']
+                },
+              ref: ref
+              )
+          : null;
       if (httpMethod == HttpMethod.delete) {
         blocks.removeWhere((element) => element['id'] == blockID);
       } else if (httpMethod == HttpMethod.post) {
@@ -199,9 +232,12 @@ class PageProvider with ChangeNotifier {
       required String projectId,
       required String pageId,
       required dynamic data,
+      required WidgetRef ref,
       bool? fromDispose = false}) async {
     blockSheetState = StateEnum.loading;
     notifyListeners();
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
       var res = await DioConfig().dioServe(
           httpMethod: HttpMethod.patch,
@@ -210,6 +246,16 @@ class PageProvider with ChangeNotifier {
           url:
               "${APIs.getPages.replaceAll("\$SLUG", slug).replaceAll("\$PROJECTID", projectId)}$pageId/",
           data: data);
+      postHogService(eventName: 'PAGE_UPDATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'PAGE_ID': res.data['id']
+      },
+      ref: ref
+      );
       int index = pages[selectedFilter]!
           .indexWhere((element) => element["id"] == pageId);
       pagesListState = StateEnum.success;
@@ -236,7 +282,9 @@ class PageProvider with ChangeNotifier {
       {required String slug,
       required String pageID,
       required String projectId,
-      required String blockID}) async {
+      required String blockID,
+      required WidgetRef ref
+      }) async {
     try {
       blockState = StateEnum.loading;
       notifyListeners();
@@ -253,7 +301,9 @@ class PageProvider with ChangeNotifier {
           slug: slug,
           httpMethod: HttpMethod.get,
           blockID: blockID,
-          projectId: projectId);
+          projectId: projectId,
+          ref: ref
+        );
       blockState = StateEnum.success;
 
       log(res.data.toString());
@@ -267,22 +317,34 @@ class PageProvider with ChangeNotifier {
     }
   }
 
-  Future addPage({
-    required String pageTitle,
-    required String slug,
-    required String projectId,
-    required String userId,
-  }) async {
+  Future addPage(
+      {required String pageTitle,
+      required String slug,
+      required String projectId,
+      required String userId,
+      required WidgetRef ref}) async {
     pagesListState = StateEnum.loading;
     setState();
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
-      await DioConfig().dioServe(
+      var response = await DioConfig().dioServe(
           httpMethod: HttpMethod.post,
           url: APIs.createPage
               .replaceAll("\$SLUG", slug)
               .replaceAll("\$PROJECTID", projectId),
           data: {"name": pageTitle});
       pagesListState = StateEnum.success;
+      postHogService(eventName: 'PAGE_CREATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'PAGE_ID': response.data['id']
+      },
+      ref: ref
+      );
       updatepageList(
         slug: slug,
         projectId: projectId,

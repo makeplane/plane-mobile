@@ -81,7 +81,9 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                         method: CRUD.delete,
                         stateId: widget.stateId,
                         context: context,
-                        data: {});
+                        data: {},
+                        ref: ref
+                      );
                     issuesProvider.getStates(
                       slug: ref
                           .watch(ProviderList.workspaceProvider)

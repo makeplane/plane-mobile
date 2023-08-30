@@ -239,6 +239,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
                     cyclesProvider.updateCycle(
                       disableLoading: true,
+                      method: CRUD.update,
                       slug: ref
                           .read(ProviderList.workspaceProvider)
                           .selectedWorkspace!
@@ -256,6 +257,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                               true
                           ? true
                           : false,
+                          ref: ref
                     );
                   },
                   child: isFavorite == true

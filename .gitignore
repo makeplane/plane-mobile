@@ -44,4 +44,7 @@ app.*.map.json
 /android/app/release
 
 .env
-/ios/Runner/CustomInfo.plist
+CustomInfo.plist
+Info.plist
+key.properties
+AndroidManifest.xml

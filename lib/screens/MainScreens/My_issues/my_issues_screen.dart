@@ -63,7 +63,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                           ref.watch(ProviderList.projectProvider).setState();
                           await ref
                               .read(ProviderList.projectProvider)
-                              .initializeProject();
+                              .initializeProject(ref: ref);
                           // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,

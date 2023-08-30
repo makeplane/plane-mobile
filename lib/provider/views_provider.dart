@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import '../config/apis.dart';
 
 class ViewsModel {
@@ -50,7 +51,9 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     }
   }
 
-  Future createViews({required dynamic data}) async {
+  Future createViews({required dynamic data, required WidgetRef ref}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
       var response = await DioConfig().dioServe(
           hasAuth: true,
@@ -69,6 +72,16 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       state = state.copyWith(
           views: [...state.views, response.data],
           viewsState: StateEnum.success);
+      postHogService(eventName: 'VIEW_CREATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'VIEW_ID': response.data['id']
+      },
+      ref: ref
+      );
     } on DioException catch (e) {
       log(e.error.toString());
       state = state.copyWith(viewsState: StateEnum.error);

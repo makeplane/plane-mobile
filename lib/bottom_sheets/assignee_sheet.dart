@@ -33,6 +33,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
             projId: ref.read(ProviderList.projectProvider).currentProject['id'],
             moduleId: modulesProvider.currentModule['id'],
             data: {'members_list': modulesProvider.currentModule['members']},
+            ref: ref
           );
         }
         return true;
@@ -77,6 +78,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                   'members_list':
                                       modulesProvider.currentModule['members']
                                 },
+                                ref: ref
                               );
                             }
                             Navigator.of(context).pop();

@@ -93,6 +93,7 @@ class CreatePage extends ConsumerWidget {
                                     .read(ProviderList.workspaceProvider)
                                     .selectedWorkspace!
                                     .workspaceSlug,
+                                ref: ref
                               );
                           // ignore: use_build_context_synchronously
                           Navigator.pop(context);

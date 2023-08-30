@@ -7,6 +7,7 @@ import 'package:plane_startup/bottom_sheets/member_status.dart';
 import 'package:plane_startup/bottom_sheets/select_emails.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/submit_button.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -307,6 +308,18 @@ class _ProjectInviteMembersSheetState
 
                           if (projectProvider.projectInvitationState ==
                               StateEnum.success) {
+                            postHogService(
+                                eventName: 'PROJECT_MEMBER_INVITE',
+                                properties: {
+                                  'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+                                  'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+                                  'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+                                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                                  'INVITED_PROJECT_MEMBER': emailController.text
+                                },
+                                ref: ref
+                              );
                             //show success snackbar
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(

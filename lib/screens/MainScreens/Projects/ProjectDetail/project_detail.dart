@@ -55,10 +55,10 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var issueProvider = ref.read(ProviderList.issuesProvider);
     issueProvider.orderByState = StateEnum.loading;
     issueProvider.statesState = StateEnum.restricted;
-    issueProvider.setsState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    issueProvider.setsState();
       issueProvider.statesState = StateEnum.restricted;
-      ref.read(ProviderList.projectProvider).initializeProject();
+      ref.read(ProviderList.projectProvider).initializeProject(ref: ref);
       //issueProvider.statesState = StateEnum.restricted;
     });
 
@@ -190,7 +190,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                         ontap: () {
                           ref
                               .read(ProviderList.projectProvider)
-                              .initializeProject();
+                              .initializeProject(ref: ref);
                         })
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

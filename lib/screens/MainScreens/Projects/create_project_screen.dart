@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';
@@ -67,6 +68,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -488,7 +490,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           "color": selectedColor,
                                         }
                                       : null
-                                });
+                                },
+                                ref: ref
+                                );
                             if (projectProvider.createProjectState ==
                                 StateEnum.success) {
                               Navigator.pop(Const.globalKey.currentContext!);

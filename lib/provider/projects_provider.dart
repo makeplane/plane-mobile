@@ -10,6 +10,7 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 
 import '../models/issues.dart';
 
@@ -73,7 +74,7 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initializeProject({Filters? filters}) async {
+  Future initializeProject({Filters? filters, required WidgetRef ref}) async {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
     var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
@@ -126,27 +127,37 @@ class ProjectsProvider extends ChangeNotifier {
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'all');
+        query: 'all',
+        ref: ref,
+        cycleId: '');
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'current');
+        query: 'current',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'upcoming');
+        query: 'upcoming',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'completed');
+        query: 'completed',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'draft');
+        query: 'draft',
+        cycleId: '',
+        ref: ref);
 
     pageProv.updatepageList(
       slug: workspaceSlug,
@@ -297,8 +308,10 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future createProjects({required String slug, required data}) async {
+  Future createProjects(
+      {required String slug, required data, WidgetRef? ref}) async {
     createProjectState = StateEnum.loading;
+    var workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
     notifyListeners();
     log(slug);
     try {
@@ -309,7 +322,15 @@ class ProjectsProvider extends ChangeNotifier {
         data: data,
         httpMethod: HttpMethod.post,
       );
-      log(response.data.toString());
+      postHogService(eventName: 'CREATE_PROJECT', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'PROJECT_ID': response.data['id'],
+        'PROJECT_NAME': response.data['name']
+      },
+      ref: ref
+      );
       await getProjects(slug: slug);
       createProjectState = StateEnum.success;
       notifyListeners();
@@ -378,8 +399,12 @@ class ProjectsProvider extends ChangeNotifier {
   }
 
   Future updateProject(
-      {required String slug, required String projId, required Map data}) async {
+      {required String slug,
+      required String projId,
+      required Map data,
+      WidgetRef? ref}) async {
     updateProjectState = StateEnum.loading;
+    var workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
     notifyListeners();
     log("${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/");
     try {
@@ -408,6 +433,15 @@ class ProjectsProvider extends ChangeNotifier {
             }
           : null;
       updateProjectState = StateEnum.success;
+      postHogService(eventName: 'UPDATE_PROJECT', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'PROJECT_ID': response.data['id'],
+        'PROJECT_NAME': response.data['name']
+      },
+      ref: ref
+      );
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
@@ -493,7 +527,10 @@ class ProjectsProvider extends ChangeNotifier {
       required String stateId,
       required CRUD method,
       required BuildContext context,
+      required WidgetRef ref,
       required Map data}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
       var url = method == CRUD.update || method == CRUD.delete
           ? '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projId)}$stateId/'
@@ -502,7 +539,7 @@ class ProjectsProvider extends ChangeNotifier {
               .replaceFirst('\$PROJECTID', projId);
       stateCrudState = StateEnum.loading;
       notifyListeners();
-      await DioConfig().dioServe(
+      var response = await DioConfig().dioServe(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -515,6 +552,25 @@ class ProjectsProvider extends ChangeNotifier {
                       : HttpMethod.patch,
           data: data);
       stateCrudState = StateEnum.success;
+      method != CRUD.read ?
+      postHogService(
+        eventName: method == CRUD.create ? 'STATE_CREATE'
+        : method == CRUD.update ? 'STATE_UPDATE'
+        : method == CRUD.delete ? 'STATE_DELETE'
+        : '', 
+        properties: method == CRUD.delete ?
+        {}
+        : {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'STATE_ID': method == CRUD.create ? response.data['id'] : stateId
+      },
+      ref: ref
+      )
+      : null;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {

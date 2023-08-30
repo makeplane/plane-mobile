@@ -420,7 +420,9 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 });
                                 await ref
                                     .read(ProviderList.viewsProvider.notifier)
-                                    .createViews(data: {
+                                    .createViews(
+                                      ref: ref,
+                                      data: {
                                   "name": title.text,
                                   "description": description.text,
                                   "query": {

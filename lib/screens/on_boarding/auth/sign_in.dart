@@ -14,6 +14,7 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/home_screen.dart';
 import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
@@ -314,6 +315,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                               //           method: HttpMethod.get,
                                               //           projectID: "");
                                               // });
+                                              postHogService(
+                                                eventName: 'Log In',
+                                                properties: {'Source': 'Magic Code', 'Email': email.text,},
+                                                ref: ref
+                                              );
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(

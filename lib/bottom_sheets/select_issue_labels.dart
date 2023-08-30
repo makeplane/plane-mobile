@@ -319,7 +319,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                         data: {
                                           "name": labelContrtoller.text,
                                           "color": "#${colorController.text}"
-                                        });
+                                        },
+                                        ref: ref
+                                    );
                                     setState(() {
                                       createNew = false;
                                       showColorPallette = false;

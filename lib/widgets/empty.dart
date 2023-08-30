@@ -615,7 +615,7 @@ class EmptyPlaceholder {
             onTap: () {
               var issueProvider = ref.read(ProviderList.issuesProvider);
               issueProvider
-                  .joinProject(projectId: projectId, slug: slug)
+                  .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
                 if (issueProvider.joinprojectState == StateEnum.success) {
                   CustomToast().showToast(

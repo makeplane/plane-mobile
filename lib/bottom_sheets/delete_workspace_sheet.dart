@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class DeleteWorkspace extends ConsumerStatefulWidget {
@@ -205,7 +206,11 @@ class _DeleteWorkspaceState extends ConsumerState<DeleteWorkspace> {
                         var isSuccesfullyDeleted =
                             await workspaceProvider.deleteWorkspace();
                         if (isSuccesfullyDeleted) {
-                          //show snackbar
+                          postHogService(eventName: 'DELETE_WORKSPACE', properties: {
+                            'WORKSPACE_NAME': widget.workspaceName
+                          },
+                          ref: ref
+                          );
                           await ref
                               .watch(ProviderList.profileProvider)
                               .updateProfile(data: {

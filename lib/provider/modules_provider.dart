@@ -12,6 +12,7 @@ import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 
@@ -138,8 +139,13 @@ class ModuleProvider with ChangeNotifier {
   }
 
   Future createNewModule(
-      {required String slug, required String projId, String? moduleId}) async {
+      {required String slug,
+      required String projId,
+      String? moduleId,
+      required WidgetRef ref}) async {
     createModuleState = StateEnum.loading;
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     notifyListeners();
     try {
       var response = await DioConfig().dioServe(
@@ -152,10 +158,19 @@ class ModuleProvider with ChangeNotifier {
         data: createModule,
       );
       createModuleState = StateEnum.success;
+      postHogService(eventName: 'MODULE_CREATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'MODULE_ID': response.data['id']
+      },
+      ref: ref
+      );
       getModules(slug: slug, projId: projId);
       createModule.clear();
       notifyListeners();
-      log('Create Module  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log('Create Module Error  ===> ${e.error.toString()}');
 
@@ -164,13 +179,15 @@ class ModuleProvider with ChangeNotifier {
     }
   }
 
-  Future updateModules({
-    required String slug,
-    required String projId,
-    required String moduleId,
-    required data,
-    bool disableLoading = false,
-  }) async {
+  Future updateModules(
+      {required String slug,
+      required String projId,
+      required String moduleId,
+      required data,
+      bool disableLoading = false,
+      required WidgetRef ref}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     if (!disableLoading) {
       moduleDetailState = StateEnum.loading;
       notifyListeners();
@@ -186,13 +203,22 @@ class ModuleProvider with ChangeNotifier {
         data: data,
       );
       moduleDetailState = StateEnum.success;
+      postHogService(eventName: 'MODULE_UPDATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'MODULE_ID': response.data['id']
+      },
+      ref: ref
+      );
       getModuleDetails(
           slug: slug,
           projId: projId,
           moduleId: moduleId,
           disableLoading: disableLoading);
       notifyListeners();
-      log('Update Module  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
       moduleDetailState = StateEnum.error;

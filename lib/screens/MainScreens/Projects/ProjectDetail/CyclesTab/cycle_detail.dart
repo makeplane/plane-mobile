@@ -545,12 +545,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -1166,7 +1164,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         moduleId: widget.moduleId!,
                         data: {
                           'start_date': DateFormat('yyyy-MM-dd').format(date)
-                        });
+                        },
+                        ref: ref);
                   } else {
                     cyclesProvider.cycleDetailsCrud(
                       disableLoading: true,
@@ -1292,7 +1291,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             data: {
                               'target_date':
                                   DateFormat('yyyy-MM-dd').format(date)
-                            });
+                            },
+                            ref: ref);
                         modulesProvider.changeTabIndex(1);
                       } else {
                         cyclesProvider.cycleDetailsCrud(

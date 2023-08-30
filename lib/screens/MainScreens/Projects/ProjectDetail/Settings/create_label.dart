@@ -209,7 +209,9 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             "name": lableController.text,
                             "color": lable,
                           },
-                          labelId: widget.labelId);
+                          labelId: widget.labelId,
+                          ref: ref
+                        );
                       Navigator.of(context).pop();
                     },
                   ),

@@ -30,7 +30,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
   void initState() {
     super.initState();
     var workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    workspaceProvider.invitingMembersRole.text = 'Viewer';
+    workspaceProvider.invitingMembersRole.text = 'Member';
     for (var element in workspaceProvider.workspaceMembers) {
       emailList.add(element['member']['email']);
     }
@@ -229,7 +229,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                       fromWorkspace: true,
                                       firstName: 'Set Role',
                                       lastName: '',
-                                      role: {'role': 10},
+                                      role: {'role': 15},
                                       userId: '',
                                       isInviteMembers: true,
                                     );
@@ -256,7 +256,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                           fromWorkspace: true,
                                           firstName: 'Set Role',
                                           lastName: '',
-                                          role: {'role': 10},
+                                          role: {'role': 15},
                                           userId: '',
                                           isInviteMembers: true,
                                         );

@@ -128,6 +128,9 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
   Widget build(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+
     return ListView.separated(
         itemCount: workspaceProvider.workspaceMembers.length,
         separatorBuilder: (context, index) => Container(
@@ -138,12 +141,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                   thickness: 1,
                   indent: 0,
                   endIndent: 0,
-                  color: themeProvider.themeManager.borderSubtle01Color
-                  // themeProvider.isDarkThemeEnabled
-                  //     ? darkThemeBorder
-                  //     : const Color.fromRGBO(
-                  //         238, 238, 238, 1),
-                  ),
+                  color: themeProvider.themeManager.borderSubtle01Color),
             ),
         itemBuilder: (context, index) {
           return ListTile(
@@ -269,20 +267,24 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                       : 'Guest',
                           type: FontStyle.Medium,
                           fontWeight: FontWeightt.Medium,
-                          color: themeProvider.themeManager.theme ==
-                                      THEME.dark ||
-                                  themeProvider.themeManager.theme ==
-                                      THEME.darkHighContrast
-                              ? fromRole(role: workspaceProvider.role) >=
-                                      workspaceProvider.workspaceMembers[index]
-                                          ['role']
-                                  ? Colors.white
-                                  : darkSecondaryTextColor
-                              : fromRole(role: workspaceProvider.role) >=
-                                      workspaceProvider.workspaceMembers[index]
-                                          ['role']
-                                  ? Colors.black
-                                  : greyColor,
+                          color: (workspaceProvider.workspaceMembers[index]
+                                      ['member']["id"] ==
+                                  profileProvider.userProfile.id)
+                              ? greyColor
+                              : themeProvider.themeManager.theme ==
+                                          THEME.dark ||
+                                      themeProvider.themeManager.theme ==
+                                          THEME.darkHighContrast
+                                  ? fromRole(role: workspaceProvider.role) >=
+                                          workspaceProvider
+                                              .workspaceMembers[index]['role']
+                                      ? Colors.white
+                                      : darkSecondaryTextColor
+                                  : fromRole(role: workspaceProvider.role) >=
+                                          workspaceProvider
+                                              .workspaceMembers[index]['role']
+                                      ? Colors.black
+                                      : greyColor,
                           // themeProvider.isDarkThemeEnabled
                           //     ? fromRole(role: workspaceProvider.role) >=
                           //             workspaceProvider.workspaceMembers[index]
@@ -298,33 +300,29 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      color: themeProvider.themeManager.theme == THEME.dark ||
-                              themeProvider.themeManager.theme ==
-                                  THEME.darkHighContrast
-                          ? fromRole(role: workspaceProvider.role) >=
-                                  workspaceProvider.workspaceMembers[index]
-                                      ['role']
-                              ? Colors.white
-                              : darkSecondaryTextColor
-                          : fromRole(role: workspaceProvider.role) >=
-                                  workspaceProvider.workspaceMembers[index]
-                                      ['role']
-                              ? Colors.black
-                              : greyColor,
-                      // themeProvider.isDarkThemeEnabled
-                      //     ? fromRole(role: workspaceProvider.role) >=
-                      //             workspaceProvider.workspaceMembers[index]
-                      //                 ['role']
-                      //         ? Colors.white
-                      //         : darkSecondaryTextColor
-                      //     : fromRole(role: workspaceProvider.role) >=
-                      //             workspaceProvider.workspaceMembers[index]
-                      //                 ['role']
-                      //         ? Colors.black
-                      //         : greyColor,
-                    )
+                    Icon(Icons.arrow_drop_down,
+                        color: (workspaceProvider.workspaceMembers[index]
+                                    ['member']["id"] ==
+                                profileProvider.userProfile.id)
+                            ? Colors.transparent
+                            : fromRole(role: workspaceProvider.role) >=
+                                    workspaceProvider.workspaceMembers[index]
+                                        ['role']
+                                ? themeProvider.themeManager.primaryTextColor
+                                : Colors.transparent
+
+                        // themeProvider.isDarkThemeEnabled
+                        //     ? fromRole(role: workspaceProvider.role) >=
+                        //             workspaceProvider.workspaceMembers[index]
+                        //                 ['role']
+                        //         ? Colors.white
+                        //         : darkSecondaryTextColor
+                        //     : fromRole(role: workspaceProvider.role) >=
+                        //             workspaceProvider.workspaceMembers[index]
+                        //                 ['role']
+                        //         ? Colors.black
+                        //         : greyColor,
+                        )
                   ],
                 ),
               ),
@@ -360,6 +358,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   Widget build(BuildContext context) {
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
 
     return ListView.separated(
       itemCount: projectsProvider.projectMembers.length,
@@ -494,36 +493,37 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                     : 'Guest',
                         type: FontStyle.Medium,
                         fontWeight: FontWeightt.Medium,
-                        color: themeProvider.themeManager.theme == THEME.dark ||
-                                themeProvider.themeManager.theme ==
-                                    THEME.darkHighContrast
-                            ? fromRole(role: projectsProvider.role) >=
-                                    projectsProvider.projectMembers[index]
-                                        ['role']
-                                ? Colors.white
-                                : darkSecondaryTextColor
-                            : fromRole(role: projectsProvider.role) >=
-                                    projectsProvider.projectMembers[index]
-                                        ['role']
-                                ? Colors.black
-                                : greyColor,
+                        color: (projectsProvider.projectMembers[index]['member']
+                                    ["id"] ==
+                                profileProvider.userProfile.id)
+                            ? greyColor
+                            : themeProvider.themeManager.theme == THEME.dark ||
+                                    themeProvider.themeManager.theme ==
+                                        THEME.darkHighContrast
+                                ? fromRole(role: projectsProvider.role) >=
+                                        projectsProvider.projectMembers[index]
+                                            ['role']
+                                    ? Colors.white
+                                    : darkSecondaryTextColor
+                                : fromRole(role: projectsProvider.role) >=
+                                        projectsProvider.projectMembers[index]
+                                            ['role']
+                                    ? Colors.black
+                                    : greyColor,
                         fontSize: 15,
                       ),
                     ),
                   ),
                   Icon(
-                    Icons.keyboard_arrow_down,
-                    color: themeProvider.themeManager.theme == THEME.dark ||
-                            themeProvider.themeManager.theme ==
-                                THEME.darkHighContrast
-                        ? fromRole(role: projectsProvider.role) >=
-                                projectsProvider.projectMembers[index]['role']
-                            ? Colors.white
-                            : darkSecondaryTextColor
+                    Icons.arrow_drop_down,
+                    color: (projectsProvider.projectMembers[index]['member']
+                                ["id"] ==
+                            profileProvider.userProfile.id)
+                        ? Colors.transparent
                         : fromRole(role: projectsProvider.role) >=
                                 projectsProvider.projectMembers[index]['role']
-                            ? Colors.black
-                            : greyColor,
+                            ? themeProvider.themeManager.primaryTextColor
+                            : Colors.transparent,
                   )
                 ],
               ),

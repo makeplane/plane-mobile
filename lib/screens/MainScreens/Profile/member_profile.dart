@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +56,8 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
         ref.read(ProviderList.memberProfileProvider.notifier);
     memberprofileProvider.getMemberProfile(userID: widget.userID).then((value) {
       profileData['Username'] = value['user_data']['display_name'];
-      profileData['Joined on'] = DateFormat('MMM dd, yyyy').format(DateTime.parse(value['user_data']['date_joined']));
+      profileData['Joined on'] = DateFormat('MMM dd, yyyy')
+          .format(DateTime.parse(value['user_data']['date_joined']));
       profileData['Timezone'] = value['user_data']['user_timezone'];
 
       expanded = List.generate(value['project_data'].length, (index) => false);
@@ -73,7 +73,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
     var themeProvider = ref.read(ProviderList.themeProvider);
     var memberprofileProvider = ref.watch(ProviderList.memberProfileProvider);
     ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
-   
+
     //log(memberprofileProvider.getMemberProfileState.name);
     return Scaffold(
       body: SafeArea(
@@ -248,7 +248,6 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                         child: CustomText(
                           memberprofileProvider.memberProfile['user_data']
                                   ['first_name'] +
-                           
                               memberprofileProvider.memberProfile['user_data']
                                   ['last_name'],
                           color: themeProvider.themeManager.primaryTextColor,
@@ -269,7 +268,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                       ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: profileData.length,
+                          itemCount: profileData.length - 1,
                           itemBuilder: (ctx, index) {
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
@@ -311,7 +310,8 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                           shrinkWrap: true,
                           primary: false,
                           itemCount: memberprofileProvider
-                              .memberProfile['project_data'].length,
+                                  .memberProfile['project_data'].length -
+                              1,
                           itemBuilder: (ctx, index) {
                             int assignedIssues = memberprofileProvider
                                     .memberProfile['project_data'][index]
@@ -402,45 +402,54 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                           ),
                                         ),
                                         const Spacer(),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          height: 23,
-                                          width: 40,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: assignedIssues == 0
-                                                  ? themeProvider.themeManager
-                                                      .successBackgroundColor
-                                                  : percentage <= 35
+                                        assignedIssues == 0
+                                            ? Container()
+                                            : Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 10),
+                                                height: 23,
+                                                width: 40,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    color: assignedIssues == 0
+                                                        ? themeProvider
+                                                            .themeManager
+                                                            .successBackgroundColor
+                                                        : percentage <= 35
+                                                            ? const Color
+                                                                .fromRGBO(254,
+                                                                226, 226, 1)
+                                                            : percentage <= 70
+                                                                ? themeProvider
+                                                                    .themeManager
+                                                                    .textWarningColor
+                                                                : themeProvider
+                                                                    .themeManager
+                                                                    .successBackgroundColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4)),
+                                                child: CustomText(
+                                                  "${assignedIssues == 0 ? '100' : percentage.toString()}%",
+                                                  type: FontStyle.overline,
+                                                  color: assignedIssues == 0
                                                       ? const Color.fromRGBO(
-                                                          254, 226, 226, 1)
-                                                      : percentage <= 70
+                                                          34, 197, 94, 1)
+                                                      : percentage <= 35
                                                           ? themeProvider
                                                               .themeManager
-                                                              .textWarningColor
-                                                          : themeProvider
-                                                              .themeManager
-                                                              .successBackgroundColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: CustomText(
-                                            "${assignedIssues == 0 ? '100' : percentage.toString()}%",
-                                            type: FontStyle.overline,
-                                            color: assignedIssues == 0
-                                                ? const Color.fromRGBO(
-                                                    34, 197, 94, 1)
-                                                : percentage <= 35
-                                                    ? themeProvider.themeManager
-                                                        .textErrorColor
-                                                    : percentage <= 70
-                                                        ? const Color.fromRGBO(
-                                                            245, 158, 11, 1)
-                                                        : const Color.fromRGBO(
-                                                            34, 197, 94, 1),
-                                            fontWeight: FontWeightt.Medium,
-                                          ),
-                                        ),
+                                                              .textErrorColor
+                                                          : percentage <= 70
+                                                              ? const Color
+                                                                  .fromRGBO(245,
+                                                                  158, 11, 1)
+                                                              : const Color
+                                                                  .fromRGBO(34,
+                                                                  197, 94, 1),
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
+                                                ),
+                                              ),
                                         Icon(
                                           expanded[index]
                                               ? Icons.arrow_drop_up_rounded

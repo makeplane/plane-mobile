@@ -55,15 +55,12 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var issueProvider = ref.read(ProviderList.issuesProvider);
     issueProvider.orderByState = StateEnum.loading;
     issueProvider.statesState = StateEnum.restricted;
-    print("issueProvider.statesState 1 ${issueProvider.statesState}");
     issueProvider.setsState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       issueProvider.statesState = StateEnum.restricted;
       ref.read(ProviderList.projectProvider).initializeProject();
       //issueProvider.statesState = StateEnum.restricted;
-      print("issueProvider.statesState 2 ${issueProvider.statesState}");
     });
-    print("issueProvider.statesState 3 ${issueProvider.statesState}");
 
     pages = [
       cycles(),
@@ -84,7 +81,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var cycleProvider = ref.watch(ProviderList.cyclesProvider);
     var moduleProvider = ref.watch(ProviderList.modulesProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    print("issueProvider.statesState ${issueProvider.statesState}");
 
     // log(issueProvider.issues.groupBY.name);
 

@@ -829,10 +829,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             colorFilter: ColorFilter.mode(
                                                 checkDate(
                                                           startDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cycleCompletedFavoriteData[
                                                               index]['start_date'],
                                                           endDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cycleCompletedFavoriteData[
                                                               index]['end_date'],
                                                         ) ==
                                                         'Draft'
@@ -840,11 +840,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                         .placeholderTextColor
                                                     : checkDate(
                                                               startDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cycleCompletedFavoriteData[
                                                                       index][
                                                                   'start_date'],
                                                               endDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cycleCompletedFavoriteData[
                                                                       index]
                                                                   ['end_date'],
                                                             ) ==
@@ -1085,10 +1085,10 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                             colorFilter: ColorFilter.mode(
                                                 checkDate(
                                                           startDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesCompletedData[
                                                               index]['start_date'],
                                                           endDate: cyclesProvider
-                                                                  .cycleFavoriteData[
+                                                                  .cyclesCompletedData[
                                                               index]['end_date'],
                                                         ) ==
                                                         'Draft'
@@ -1096,11 +1096,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                         .placeholderTextColor
                                                     : checkDate(
                                                               startDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesCompletedData[
                                                                       index][
                                                                   'start_date'],
                                                               endDate: cyclesProvider
-                                                                          .cycleFavoriteData[
+                                                                          .cyclesCompletedData[
                                                                       index]
                                                                   ['end_date'],
                                                             ) ==
@@ -1300,12 +1300,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    print("cyclesProvider.cycleUpcomingFavoriteData:" +
-        cyclesProvider.cycleUpcomingFavoriteData.toString());
-    print("cyclesProvider.cyclesUpcomingData:" +
-        cyclesProvider.cyclesUpcomingData.toString());
-    print("cyclesProvider.cyclesUpcomingData.length:" +
-        cyclesProvider.cyclesUpcomingData.length.toString());
+
     return LoadingWidget(
       loading: cyclesProvider.upcomingCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesUpcomingData.isEmpty &&
@@ -1590,8 +1585,6 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           itemCount: cyclesProvider.cyclesUpcomingData.length,
                           itemBuilder: (context, index) {
-                            print("cyclesProvider.cyclesUpcomingData:" +
-                                cyclesProvider.cyclesUpcomingData.toString());
                             return InkWell(
                               onTap: () {
                                 cyclesProviderRead.currentCycle =

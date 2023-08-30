@@ -294,29 +294,40 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       padding: const EdgeInsets.all(15),
       child: Row(
         children: [
-          Hero(
-              tag: 'photo',
-              child: profileProvider.userProfile.avatar != null &&
-                      profileProvider.userProfile.avatar != ""
-                  ? CircleAvatar(
-                      radius: 45,
-                      backgroundImage:
-                          NetworkImage(profileProvider.userProfile.avatar!),
-                    )
-                  : Container(
-                      height: 75,
-                      width: 75,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: themeProvider
-                            .themeManager.tertiaryBackgroundDefaultColor,
-                      ),
-                      child: Icon(
-                        Icons.person_2_outlined,
-                        color: themeProvider.themeManager.placeholderTextColor,
-                        size: 35,
-                      ))),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileDetailScreen(),
+                ),
+              );
+            },
+            child: Hero(
+                tag: 'photo',
+                child: profileProvider.userProfile.avatar != null &&
+                        profileProvider.userProfile.avatar != ""
+                    ? CircleAvatar(
+                        radius: 45,
+                        backgroundImage:
+                            NetworkImage(profileProvider.userProfile.avatar!),
+                      )
+                    : Container(
+                        height: 75,
+                        width: 75,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: themeProvider
+                              .themeManager.tertiaryBackgroundDefaultColor,
+                        ),
+                        child: Icon(
+                          Icons.person_2_outlined,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
+                          size: 35,
+                        ))),
+          ),
           const SizedBox(
             width: 20,
           ),

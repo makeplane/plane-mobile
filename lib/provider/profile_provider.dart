@@ -19,6 +19,7 @@ class ProfileProvider extends ChangeNotifier {
   // }
   // static Ref? ref;
   String? dropDownValue;
+  String selectedTimeZone = 'UTC';
   String? slug;
   List<String> dropDownItems = [
     'Founder or learship team',
@@ -40,6 +41,10 @@ class ProfileProvider extends ChangeNotifier {
   void changeIndex(int index) {
     roleIndex = index;
     dropDownValue = dropDownItems[index];
+    notifyListeners();
+  }
+
+  void setState() {
     notifyListeners();
   }
 
@@ -67,6 +72,7 @@ class ProfileProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       userProfile = UserProfile.fromMap(response.data);
+      selectedTimeZone = userProfile.userTimezone.toString();
       // if (userProfile.theme != null && userProfile.theme!.length > 1) {
       //   saveCustomTheme(userProfile.theme!);
       // }
@@ -76,6 +82,7 @@ class ProfileProvider extends ChangeNotifier {
       //  await Future.delayed(Duration(seconds: 1));
       getProfileState = StateEnum.success;
       slug = response.data["slug"];
+
       //log('----- SUCCESS ------ $slug');
       notifyListeners();
 

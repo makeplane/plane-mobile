@@ -330,8 +330,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       .watch(ProviderList.projectProvider)
                       .projects
                       .isEmpty) {
-                    CustomToast().showSimpleToast(
-                        'You dont have any projects yet, try creating one');
+                    CustomToast().showToast(
+                        context,
+                        'You dont have any projects yet, try creating one',
+                        themeProvider);
                   } else {
                     ref.watch(ProviderList.projectProvider).currentProject =
                         ref.watch(ProviderList.projectProvider).projects[0];
@@ -448,8 +450,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       .watch(ProviderList.projectProvider)
                       .projects
                       .isEmpty) {
-                    CustomToast().showSimpleToast(
-                        'You dont have any projects yet, try creating one');
+                    CustomToast().showToast(
+                        context,
+                        'You dont have any projects yet, try creating one',
+                        themeProvider);
                   } else {
                     ref.watch(ProviderList.projectProvider).currentProject =
                         ref.watch(ProviderList.projectProvider).projects[0];
@@ -551,8 +555,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                   await launchUrl(Uri.parse(items[index]['url']));
                 } catch (e) {
                   log(e.toString());
-                  CustomToast().showSimpleToast(
-                      'Something went wrong, please try again');
+                  CustomToast().showToast(context,
+                      'Something went wrong, please try again', themeProvider);
                 }
               },
               child: Padding(

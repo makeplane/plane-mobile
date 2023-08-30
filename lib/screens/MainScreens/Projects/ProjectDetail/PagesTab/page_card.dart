@@ -131,6 +131,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                                   ? 0
                                   : 1;
                           pageProvider.editPage(
+                            context: context,
                             pageId: pageProvider.pages[pageProvider
                                 .selectedFilter]![widget.index]['id'],
                             slug: workspaceProvider

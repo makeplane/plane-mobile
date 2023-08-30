@@ -188,7 +188,8 @@ class _SignInState extends ConsumerState<SignIn> {
                                   .read(ProviderList.authProvider)
                                   .signInWithEmailAndPassword(
                                       email: email.text,
-                                      password: password.text);
+                                      password: password.text,
+                                      context: context);
 
                               if (authProvider.signInState ==
                                       StateEnum.success &&

@@ -51,8 +51,10 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                             .watch(ProviderList.projectProvider)
                             .projects
                             .isEmpty) {
-                          CustomToast().showSimpleToast(
-                              'You dont have any projects yet, try creating one');
+                          CustomToast().showToast(
+                              context,
+                              'You dont have any projects yet, try creating one',
+                              themeProvider);
                         } else {
                           ref
                                   .watch(ProviderList.projectProvider)

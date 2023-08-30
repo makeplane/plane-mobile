@@ -81,17 +81,17 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
                   return;
                 }
                 await ref.read(ProviderList.pageProvider).editPage(
-                  data: {"name": pageTitleController.text},
-                  pageId: widget.page['id'],
-                  projectId: ref
-                      .read(ProviderList.projectProvider)
-                      .currentProject['id'],
-                  slug: ref
-                      .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
-                      .workspaceSlug,
-                  ref: ref
-                );
+                    data: {"name": pageTitleController.text},
+                    pageId: widget.page['id'],
+                    projectId: ref
+                        .read(ProviderList.projectProvider)
+                        .currentProject['id'],
+                    slug: ref
+                        .read(ProviderList.workspaceProvider)
+                        .selectedWorkspace!
+                        .workspaceSlug,
+                    ref: ref,
+                    context: context);
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);
               },

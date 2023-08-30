@@ -258,7 +258,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                           .read(ProviderList.authProvider)
                                           .validateMagicCode(
                                               key: "magic_${email.text}",
-                                              token: code.text)
+                                              token: code.text,
+                                              context: context)
                                           .then(
                                         (value) async {
                                           if (authProvider.validateCodeState ==

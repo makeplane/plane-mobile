@@ -74,7 +74,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                   text: 'Delete',
                   ontap: () async {
                     var projProv = ref.read(ProviderList.projectProvider);
-                    if (projProv.role != Role.admin ||
+                    print(projProv.role.toString());
+                    if (projProv.role != Role.admin &&
                         projProv.role != Role.member) {
                       Navigator.of(context).pop();
                       CustomToast().showToast(

@@ -6,6 +6,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
+import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
 import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/screens/billing_plans.dart';
 import 'package:plane_startup/screens/integrations.dart';
@@ -344,7 +345,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 0,
               ),
               SizedBox(
                 width: width * 0.5,
@@ -352,7 +353,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   profileProvider.userProfile.email ??
                       'rameshkumar2299@gmail.com',
                   type: FontStyle.Medium,
+                  color: themeProvider.themeManager.placeholderTextColor,
                   maxLines: 1,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => MemberProfile(
+                          userID: profileProvider.userProfile.id!)));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  width: width * 0.5,
+                  //color: Colors.red,
+                  child: CustomText(
+                    'View Profile',
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Medium,
+                    color: themeProvider.themeManager.primaryColour,
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ],

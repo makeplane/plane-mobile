@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 
 import 'package:plane_startup/widgets/custom_text.dart';
@@ -187,11 +186,15 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                   .primaryTextColor),
                                         ],
                                       ),
-                                      Container(
-                                        height: 1,
-                                        width: double.infinity,
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        child: Container(
+                                          height: 1,
+                                          width: double.infinity,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
+                                        ),
                                       ),
                                     ],
                                   );
@@ -203,39 +206,42 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                   ),
                   widget.isInviteMembers
                       ? Container()
-                      : Button(
-                          text: 'Update Changes',
-                          ontap: () {
-                            if (widget.fromWorkspace) {
-                              ref
-                                  .watch(ProviderList.workspaceProvider)
-                                  .updateWorkspaceMember(
-                                userId: widget.userId,
-                                method: selectedRole == 0
-                                    ? CRUD.delete
-                                    : CRUD.update,
-                                data: {'role': selectedRole.toString()},
-                              );
-                            } else {
-                              ref
-                                  .watch(ProviderList.projectProvider)
-                                  .updateProjectMember(
-                                slug: ref
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Button(
+                            text: 'Update Changes',
+                            ontap: () {
+                              if (widget.fromWorkspace) {
+                                ref
                                     .watch(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
+                                    .updateWorkspaceMember(
+                                  userId: widget.userId,
+                                  method: selectedRole == 0
+                                      ? CRUD.delete
+                                      : CRUD.update,
+                                  data: {'role': selectedRole.toString()},
+                                );
+                              } else {
+                                ref
                                     .watch(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                userId: widget.userId,
-                                method: selectedRole == 0
-                                    ? CRUD.delete
-                                    : CRUD.update,
-                                data: {'role': selectedRole.toString()},
-                              );
-                            }
-                            Navigator.of(context).pop();
-                          },
+                                    .updateProjectMember(
+                                  slug: ref
+                                      .watch(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId: ref
+                                      .watch(ProviderList.projectProvider)
+                                      .currentProject['id'],
+                                  userId: widget.userId,
+                                  method: selectedRole == 0
+                                      ? CRUD.delete
+                                      : CRUD.update,
+                                  data: {'role': selectedRole.toString()},
+                                );
+                              }
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         ),
                   const SizedBox(
                     height: 20,

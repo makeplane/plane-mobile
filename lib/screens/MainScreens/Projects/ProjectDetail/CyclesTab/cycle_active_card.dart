@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:plane_startup/models/chart_model.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
@@ -637,10 +636,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   Widget fourthPart() {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    print("ASSIGNEE: " +
-        cyclesProvider
-            .cyclesActiveData[widget.index]['distribution']['assignees'].length
-            .toString());
+
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

@@ -480,9 +480,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                       ? Container(
                           padding: const EdgeInsets.only(bottom: 150),
                           decoration: BoxDecoration(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? Colors.black.withOpacity(0.1)
-                                : Colors.white.withOpacity(0.1),
+                            color: themeProvider
+                                .themeManager.secondaryBackgroundDefaultColor,
                           ),
                           height: height,
                           child: Center(
@@ -494,9 +493,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                   height: 30,
                                   child: LoadingIndicator(
                                     indicatorType: Indicator.lineSpinFadeLoader,
-                                    colors: themeProvider.isDarkThemeEnabled
-                                        ? [Colors.white]
-                                        : [Colors.black],
+                                    colors: [
+                                      themeProvider
+                                          .themeManager.primaryTextColor
+                                    ],
                                     strokeWidth: 1.0,
                                     backgroundColor: Colors.transparent,
                                   ),

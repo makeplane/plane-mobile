@@ -119,7 +119,9 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 data: {
                                   'lead': projectProvider.projectMembers[index]
                                       ['member']['id']
-                                });
+                                },
+                                ref: ref
+                              );
                             Navigator.pop(context);
                             return;
                           }

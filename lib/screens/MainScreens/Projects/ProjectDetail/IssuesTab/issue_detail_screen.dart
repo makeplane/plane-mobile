@@ -170,13 +170,19 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         projectId: widget.projID ??
             ref.read(ProviderList.projectProvider).currentProject['id'],
         method: CRUD.read,
-        query: 'current');
+        query: 'current',
+        ref: ref,
+        cycleId: ''
+        );
     await cyclesProvider.cyclesCrud(
         slug: widget.workspaceSlug ?? slug,
         projectId: widget.projID ??
             ref.read(ProviderList.projectProvider).currentProject['id'],
         method: CRUD.read,
-        query: 'upcoming');
+        query: 'upcoming',
+        ref: ref,
+        cycleId: ''
+        );
     for (var element in cyclesProvider.cyclesActiveData) {
       issueProvider.cyclesList.add(element);
     }

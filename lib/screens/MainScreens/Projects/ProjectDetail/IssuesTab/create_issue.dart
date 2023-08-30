@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -1720,6 +1718,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                               projID:
                                   issuesProvider.createIssueProjectData['id'],
                               issueCategory: issueCategory,
+                              ref: ref
                             );
 
                             issuesProvider.createIssuedata = {};

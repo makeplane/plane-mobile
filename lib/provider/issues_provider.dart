@@ -11,6 +11,7 @@ import 'package:plane_startup/models/issues.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 import 'package:plane_startup/config/apis.dart';
@@ -468,13 +469,15 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future issueLabels({
-    required String slug,
-    required String projID,
-    required dynamic data,
-    CRUD? method,
-    String? labelId,
-  }) async {
+  Future issueLabels(
+      {required String slug,
+      required String projID,
+      required dynamic data,
+      CRUD? method,
+      String? labelId,
+      required WidgetRef ref}) async {
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     labelState = StateEnum.loading;
     notifyListeners();
     String url = method == CRUD.update || method == CRUD.delete
@@ -484,7 +487,7 @@ class IssuesProvider extends ChangeNotifier {
             .replaceAll('\$PROJECTID', projID);
 
     try {
-      await DioConfig().dioServe(
+      var response = await DioConfig().dioServe(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -495,6 +498,30 @@ class IssuesProvider extends ChangeNotifier {
                   : HttpMethod.post,
           data: data);
       //   log(response.data.toString());
+      method!=CRUD.read ?
+      postHogService(
+          eventName: method == CRUD.create
+              ? 'ISSUE_LABEL_CREATE'
+              : method == CRUD.update
+                  ? 'ISSUE_LABEL_UPDATE'
+                  : method == CRUD.delete
+                      ? 'ISSUE_LABEL_DELETE'
+                      : '',
+          properties: method == CRUD.delete
+              ? {}
+              : {
+                  'WORKSPACE_ID':
+                      workspaceProvider.selectedWorkspace!.workspaceId,
+                  'WORKSPACE_SLUG':
+                      workspaceProvider.selectedWorkspace!.workspaceSlug,
+                  'WORKSPACE_NAME':
+                      workspaceProvider.selectedWorkspace!.workspaceName,
+                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                  'LABEL_ID': response.data['id']
+                },
+          ref: ref)
+      : null;
       await getLabels(slug: slug, projID: projID);
       labelState = StateEnum.success;
       notifyListeners();
@@ -570,14 +597,14 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future createIssue({
-    required String slug,
-    required String projID,
-    required Enum issueCategory,
-  }) async {
+  Future createIssue(
+      {required String slug,
+      required String projID,
+      required Enum issueCategory,
+      required WidgetRef ref}) async {
     createIssueState = StateEnum.loading;
-    log(createIssuedata.toString());
-
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var projectProvider = ref.watch(ProviderList.projectProvider);
     notifyListeners();
     try {
       var response = await DioConfig().dioServe(
@@ -629,8 +656,19 @@ class IssuesProvider extends ChangeNotifier {
                   .format(createIssuedata['start_date']),
             if (createIssueParentId.isNotEmpty) "parent": createIssueParentId
           });
-      log(response.data.toString());
-
+      postHogService(
+          eventName: 'ISSUE_CREATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'ISSUE_ID': response.data['id']
+          },
+          ref: ref);
       // issuesResponse.add(response.data);
       if (issueCategory == IssueCategory.moduleIssues) {
         await ref!.read(ProviderList.modulesProvider).createModuleIssues(
@@ -1373,7 +1411,8 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future joinProject({String? projectId, String? slug}) async {
+  Future joinProject(
+      {String? projectId, String? slug, required WidgetRef refs}) async {
     try {
       joinprojectState = StateEnum.loading;
       notifyListeners();
@@ -1390,7 +1429,7 @@ class IssuesProvider extends ChangeNotifier {
       ref!.read(ProviderList.projectProvider).projects[ref!
           .read(ProviderList.projectProvider)
           .currentProject["index"]]["is_member"] = true;
-      ref!.read(ProviderList.projectProvider).initializeProject();
+      ref!.read(ProviderList.projectProvider).initializeProject(ref: refs);
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());

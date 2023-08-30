@@ -161,7 +161,9 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                           widget.pageIndex]['id'],
                       data: {
                         "labels_list": selectedLabels,
-                      });
+                      },
+                      ref: ref
+                    );
                   if (pageProvider.blockSheetState == StateEnum.success) {
                     pageProvider.selectedLabels.clear();
                     for (var element in (pageProvider.pages[

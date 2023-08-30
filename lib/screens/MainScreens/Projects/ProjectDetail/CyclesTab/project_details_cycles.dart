@@ -367,6 +367,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
+                                                method: CRUD.update,
                                                 disableLoading: true,
                                                 slug: ref
                                                     .read(ProviderList
@@ -383,6 +384,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 query: 'all',
                                                 cycleId: cycleId,
                                                 isFavorite: true,
+                                                ref: ref
                                               );
                                             },
                                             child: Icon(
@@ -652,6 +654,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProvider.updateCycle(
+                                                  method: CRUD.update,
                                                     disableLoading: true,
                                                     slug: ref
                                                         .read(ProviderList
@@ -667,7 +670,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     query: 'all',
                                                     data: {
                                                       'cycle': cycleId,
-                                                    });
+                                                    },
+                                                    ref: ref
+                                                  );
                                               },
                                               child: Icon(
                                                 Icons.star_border,
@@ -960,6 +965,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
+                                                method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -975,7 +981,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   query: 'completed',
                                                   data: {
                                                     'cycle': cycleId,
-                                                  });
+                                                  },
+                                                  ref: ref
+                                                );
                                             },
                                             child: Icon(
                                               Icons.star,
@@ -1215,6 +1223,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProviderRead.updateCycle(
+                                                  method: CRUD.update,
                                                     disableLoading: true,
                                                     slug: ref
                                                         .read(ProviderList
@@ -1230,7 +1239,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     query: 'completed',
                                                     data: {
                                                       'cycle': cycleId,
-                                                    });
+                                                    },
+                                                    ref: ref
+                                                  );
                                               },
                                               child: Icon(
                                                 Icons.star_border,
@@ -1496,6 +1507,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
+                                                method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -1511,7 +1523,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   query: 'upcoming',
                                                   data: {
                                                     'cycle': cycleId,
-                                                  });
+                                                  },
+                                                  ref: ref
+                                                );
                                             },
                                             child: Icon(
                                               Icons.star,
@@ -1752,6 +1766,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProviderRead.updateCycle(
+                                                method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -1767,7 +1782,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   query: 'upcoming',
                                                   data: {
                                                     'cycle': cycleId,
-                                                  });
+                                                  },
+                                                  ref: ref
+                                                );
                                             },
                                             child: Icon(
                                               Icons.star_border,
@@ -2051,6 +2068,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProvider.updateCycle(
+                                                  method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -2067,6 +2085,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   query: 'all',
                                                   cycleId: cycleId,
                                                   isFavorite: true,
+                                                  ref: ref
                                                 );
                                               },
                                               child: cyclesProvider
@@ -2325,6 +2344,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                           InkWell(
                                               onTap: () async {
                                                 await cyclesProvider.updateCycle(
+                                                  method: CRUD.update,
                                                     slug: ref
                                                         .read(ProviderList
                                                             .workspaceProvider)
@@ -2343,7 +2363,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                       'cycle': cyclesProvider
                                                               .cyclesDraftData[
                                                           index]['id'],
-                                                    });
+                                                    },
+                                                    ref: ref
+                                                  );
                                                 cyclesProviderRead.cyclesCrud(
                                                     slug: ref
                                                         .read(ProviderList
@@ -2355,7 +2377,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                             .projectProvider)
                                                         .currentProject['id'],
                                                     method: CRUD.read,
-                                                    query: 'draft');
+                                                    query: 'draft',
+                                                    ref: ref,
+                                                    cycleId: cyclesProvider
+                                                            .cyclesAllData[
+                                                        index]['id']
+                                                  );
                                               },
                                               child: cyclesProvider
                                                           .cyclesDraftData[

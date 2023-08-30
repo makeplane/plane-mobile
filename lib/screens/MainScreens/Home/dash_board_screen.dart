@@ -8,7 +8,9 @@ import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../on_boarding/auth/setup_workspace.dart';
@@ -194,6 +196,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                           'https://github.com/makeplane/plane-mobile');
 
                                       await launchUrl(url);
+                                      postHogService(
+                                          eventName: 'STAR_US_ON_GITHIB',
+                                          properties: {},
+                                          ref: ref);
                                     } catch (e) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

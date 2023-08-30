@@ -6,10 +6,12 @@ import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class DeleteProjectSheet extends ConsumerStatefulWidget {
-  const DeleteProjectSheet({super.key});
+  final Map<String, dynamic> data;
+  const DeleteProjectSheet({required this.data, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -193,12 +195,24 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                               toastType: ToastType.failure);
                           return;
                         }
-                        await projectProviderRead.deleteProject(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projId: projectProviderRead.currentProject['id']);
+                        await projectProviderRead
+                            .deleteProject(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projId:
+                                    projectProviderRead.currentProject['id'])
+                            .then((value) {
+                          if (projectProviderRead.deleteProjectState ==
+                              StateEnum.success) {
+                            postHogService(
+                              eventName: 'DELETE_PROJECT',
+                              properties: widget.data,
+                              ref: ref
+                            );
+                          }
+                        });
                         Navigator.of(context)
                           ..pop()
                           ..pop()

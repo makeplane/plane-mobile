@@ -135,6 +135,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                           .read(ProviderList.projectProvider)
                                           .currentProject['id'],
                                       pageID: widget.pageID,
+                                      ref: ref
                                     );
                               },
                               child: Icon(
@@ -160,6 +161,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                     .read(ProviderList.projectProvider)
                                     .currentProject['id'],
                                 pageID: widget.pageID,
+                                ref: ref
                               );
                         },
                         child: Icon(Icons.delete_outlined,

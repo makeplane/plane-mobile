@@ -448,7 +448,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               'organization_size':
                                   workspaceProvider.companySize,
                               'logo': workspaceProvider.tempLogo,
-                            });
+                            },
+                            ref: ref
+                            );
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.success) {

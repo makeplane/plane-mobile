@@ -10,6 +10,8 @@ import 'package:plane_startup/services/shared_preference_service.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/global_functions.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'config/const.dart';
@@ -36,12 +38,7 @@ void main() async {
   // Const.appBearerToken = null;
   // ConnectionService().checkConnectivity();
   prefs = pref;
-  // SentryFlutter.init((options) {
-  //   options.dsn = dotenv.env['SENTRY_DSN'];
-  // },
-  // appRunner: () => runApp(const ProviderScope(child: MyApp())),
-  // );
-  runApp(const ProviderScope(child: MyApp()));
+  sentryService();
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
@@ -291,6 +288,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
+      navigatorObservers: [PosthogObserver()],
       home:
           Const.appBearerToken == null ? const OnBoardingScreen() : const App(),
     );

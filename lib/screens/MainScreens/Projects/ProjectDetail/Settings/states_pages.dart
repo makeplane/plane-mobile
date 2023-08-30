@@ -196,7 +196,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               onPressed: () {
                                 showModalBottomSheet(
                                   constraints:
-                                      const BoxConstraints(maxHeight: 300),
+                                      const BoxConstraints(maxHeight: 310),
                                   enableDrag: true,
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
@@ -316,13 +316,17 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          widget.method == CRUD.update
-                              ? 'Update ${widget.name} state'
-                              : 'Add ${widget.name} state',
-                          type: FontStyle.H6,
-                          fontWeight: FontWeightt.Semibold,
-                          fontSize: 22,
+                        SizedBox(
+                          width: width * 0.7,
+                          child: CustomText(
+                            widget.method == CRUD.update
+                                ? 'Update ${widget.name} state'
+                                : 'Add ${widget.name} state',
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Semibold,
+                            maxLines: 1,
+                            fontSize: 22,
+                          ),
                         ),
                         IconButton(
                             onPressed: () {
@@ -498,7 +502,9 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             "color": color,
                             "group": states[widget.groupIndex],
                             "description": ""
-                          });
+                          },
+                          ref: ref
+                        );
                       issuesProvider.getStates(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)

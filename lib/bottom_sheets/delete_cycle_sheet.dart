@@ -94,6 +94,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                       cycleId: widget.cycleId,
                     );
                     cyclesProvider.cyclesCrud(
+                      ref: ref,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
                             .selectedWorkspace!
@@ -102,8 +103,10 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             .read(ProviderList.projectProvider)
                             .currentProject['id'],
                         method: CRUD.read,
+                        cycleId: '',
                         query: 'all');
                     cyclesProvider.cyclesCrud(
+                      ref: ref,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
                             .selectedWorkspace!
@@ -112,8 +115,10 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             .read(ProviderList.projectProvider)
                             .currentProject['id'],
                         method: CRUD.read,
+                        cycleId: '',
                         query: 'current');
                     cyclesProvider.cyclesCrud(
+                      ref: ref,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
                             .selectedWorkspace!
@@ -122,8 +127,10 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             .read(ProviderList.projectProvider)
                             .currentProject['id'],
                         method: CRUD.read,
+                        cycleId: '',
                         query: 'upcoming');
                     cyclesProvider.cyclesCrud(
+                      ref: ref,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
                             .selectedWorkspace!
@@ -132,8 +139,10 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             .read(ProviderList.projectProvider)
                             .currentProject['id'],
                         method: CRUD.read,
+                        cycleId: '',
                         query: 'completed');
                     cyclesProvider.cyclesCrud(
+                      ref: ref,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
                             .selectedWorkspace!
@@ -142,6 +151,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             .read(ProviderList.projectProvider)
                             .currentProject['id'],
                         method: CRUD.read,
+                        cycleId: '',
                         query: 'draft');
                     Navigator.of(context).pop();
                   },

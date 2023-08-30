@@ -70,7 +70,9 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
                         .currentProject['id'],
                     method: CRUD.delete,
                     data: {},
-                    labelId: widget.labelId);
+                    labelId: widget.labelId,
+                    ref: ref
+                  );
                 Navigator.of(context).pop();
               },
               text: 'Delete Label',

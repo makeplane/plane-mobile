@@ -73,6 +73,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+      var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     // projectProvider.projectDetailModel!.network == 1
     //     ? isProjectPublic = false
     //     : isProjectPublic = true;
@@ -614,7 +615,15 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         ),
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            const DeleteProjectSheet(),
+                                            DeleteProjectSheet(
+                                              data: {
+                                                'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+                                                'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+                                                'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+                                                'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                                                'PROJECT_NAME': projectProvider.projectDetailModel!.name
+                                              },
+                                            ),
                                       );
                                     },
                                     child: Container(
@@ -684,7 +693,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           'emoji': selectedEmoji,
                                           'cover_image': projectProvider
                                               .projectDetailModel!.coverImage
-                                        });
+                                        },
+                                        ref: ref
+                                      );
                                   } else {
                                     // ignore: use_build_context_synchronously
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -714,7 +725,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         'emoji': selectedEmoji,
                                         'cover_image': projectProvider
                                             .projectDetailModel!.coverImage
-                                      });
+                                      },
+                                      ref: ref
+                                    );
                                 }
                                 // await projectProvider.updateProject(
                                 //     projId: projectProvider.projectDetailModel!.id!,

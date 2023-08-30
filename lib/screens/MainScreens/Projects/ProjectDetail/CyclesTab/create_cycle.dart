@@ -373,6 +373,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                           .format(dueDate!),
                                   "status": "started"
                                 },
+                                ref: ref,
+                                cycleId: ''
                               );
 
                               await cyclesProvider.cyclesCrud(
@@ -385,6 +387,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                     .currentProject['id'],
                                 method: CRUD.read,
                                 query: 'all',
+                                ref: ref,
+                                cycleId: ''
                               );
 
                               for (int i = 0;
@@ -402,7 +406,10 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                             .read(ProviderList.projectProvider)
                                             .currentProject['id'],
                                         method: CRUD.read,
-                                        query: cyclesProvider.queries[i]);
+                                        query: cyclesProvider.queries[i],
+                                        ref: ref,
+                                        cycleId: ''
+                                      );
                               }
                               Navigator.pop(Const.globalKey.currentContext!);
                             } else {

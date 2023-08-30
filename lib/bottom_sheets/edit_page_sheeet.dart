@@ -90,6 +90,7 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
                       .read(ProviderList.workspaceProvider)
                       .selectedWorkspace!
                       .workspaceSlug,
+                  ref: ref
                 );
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);

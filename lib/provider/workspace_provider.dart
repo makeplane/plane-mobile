@@ -11,6 +11,7 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 
 class WorkspaceProvider extends ChangeNotifier {
   WorkspaceProvider(ChangeNotifierProviderRef<WorkspaceProvider> this.ref);
@@ -101,6 +102,9 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.post,
       );
       joinWorkspaceState = StateEnum.success;
+      // postHogService(eventName: 'WORKSPACE_USER_INVITE_ACCEPT', properties: {
+      //   'WORKSPACE_ID': data
+      // });
       getWorkspaces();
       log(response.data.toString());
       notifyListeners();
@@ -121,6 +125,7 @@ class WorkspaceProvider extends ChangeNotifier {
       {required String name,
       required String slug,
       required String size,
+      required WidgetRef ref,
       required BuildContext context}) async {
     createWorkspaceState = StateEnum.loading;
     notifyListeners();
@@ -136,6 +141,13 @@ class WorkspaceProvider extends ChangeNotifier {
       var projectProv = ref!.read(ProviderList.projectProvider);
       var profileProv = ref!.read(ProviderList.profileProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
+      postHogService(eventName: 'CREATE_WORKSPACE', properties: {
+        'WORKSPACE_ID': response.data['id'],
+        'WORKSPACE_NAME': response.data['name'],
+        'WORKSPACE_SLUG': response.data['slug']
+      },
+      ref: ref
+      );
       await profileProv.updateProfile(data: {
         "last_workspace_id": response.data['id'],
       });
@@ -397,7 +409,7 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
-  Future updateWorkspace({required data}) async {
+  Future updateWorkspace({required data, required WidgetRef ref}) async {
     updateWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
@@ -412,8 +424,12 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.patch,
       );
       updateWorkspaceState = StateEnum.success;
-      log(response.data.toString());
-      // response = jsonDecode(response.data);
+      postHogService(eventName: 'UPDATE_WORKSPACE', properties: {
+        'WORKSPACE_ID': response.data['id'],
+        'WORKSPACE_NAME': response.data['name'],
+        'WORKSPACE_SLUG': response.data['slug']
+      },
+      ref: ref);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
       tempLogo = selectedWorkspace!.workspaceLogo;
 
@@ -443,11 +459,7 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.delete,
       );
       selectWorkspaceState = StateEnum.success;
-      log(response.data.toString());
       await getWorkspaces();
-
-      // response = jsonDecode(response.data);
-
       notifyListeners();
       return true;
       // log(response.data.toString());

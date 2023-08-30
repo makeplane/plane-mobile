@@ -11,6 +11,7 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 
 class IssueProvider with ChangeNotifier {
   IssueProvider(ChangeNotifierProviderRef<IssueProvider> this.ref);
@@ -183,6 +184,8 @@ class IssueProvider with ChangeNotifier {
       required Map data,
       required WidgetRef refs,
       BuildContext? buildContext}) async {
+    var workspaceProvider = refs.watch(ProviderList.workspaceProvider);
+    var projectProvider = refs.watch(ProviderList.projectProvider);
     try {
       updateIssueState = StateEnum.loading;
       notifyListeners();
@@ -196,6 +199,16 @@ class IssueProvider with ChangeNotifier {
           httpMethod: HttpMethod.patch,
           data: data);
       updateIssueState = StateEnum.success;
+      postHogService(eventName: 'ISSUE_UPDATE', properties: {
+        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
+        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
+        'PROJECT_ID': projectProvider.projectDetailModel!.id,
+        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+        'ISSUE_ID': issueID
+      },
+      ref: refs
+      );
       await getIssueDetails(slug: slug, projID: projID, issueID: issueID);
       await getIssueActivity(slug: slug, projID: projID, issueID: issueID);
       await ref.read(ProviderList.myIssuesProvider.notifier).getMyIssues(

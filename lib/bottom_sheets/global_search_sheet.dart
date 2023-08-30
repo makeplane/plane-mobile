@@ -338,7 +338,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ref.watch(ProviderList.projectProvider).setState();
                     await ref
                         .read(ProviderList.projectProvider)
-                        .initializeProject();
+                        .initializeProject(ref: ref);
                     items[index]['screen']();
                   }
                 } else {
@@ -456,7 +456,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     ref.watch(ProviderList.projectProvider).setState();
                     await ref
                         .read(ProviderList.projectProvider)
-                        .initializeProject();
+                        .initializeProject(ref: ref);
                     items[index]['screen']();
                   }
                 } else {
@@ -618,7 +618,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             globalSearchProvider.data!.issues[index].projectId;
                         await ref
                             .read(ProviderList.projectProvider)
-                            .initializeProject();
+                            .initializeProject(ref: ref);
 
                         Navigator.push(
                           context,
@@ -896,7 +896,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             globalSearchProvider.data!.cycles[index].projectId;
                         await ref
                             .read(ProviderList.projectProvider)
-                            .initializeProject();
+                            .initializeProject(ref: ref);
                         cyclesProvider.currentCycle['id'] =
                             globalSearchProvider.data!.cycles[index].id;
                         cyclesProvider.currentCycle['name'] =
@@ -991,7 +991,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             globalSearchProvider.data!.modules[index].projectId;
                         await ref
                             .read(ProviderList.projectProvider)
-                            .initializeProject();
+                            .initializeProject(ref: ref);
                         modulesProvider.currentModule['id'] =
                             globalSearchProvider.data!.modules[index].id;
                         modulesProvider.currentModule['name'] =

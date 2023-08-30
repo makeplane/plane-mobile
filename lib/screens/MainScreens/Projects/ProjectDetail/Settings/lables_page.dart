@@ -475,7 +475,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                                 null,
                                                                           },
                                                                           labelId:
-                                                                              e["id"]);
+                                                                              e["id"],
+                                                                              ref: ref
+                                                                        );
                                                                 } else {
                                                                   showModalBottomSheet(
                                                                     constraints:
@@ -715,7 +717,9 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                           "parent": widget.labelID,
                                         },
                                         labelId: issuesProvider.labels[index]
-                                            ["id"]);
+                                            ["id"],
+                                            ref: ref
+                                      );
 
                                     Navigator.pop(context);
                                   },

@@ -6,6 +6,7 @@ import 'package:plane_startup/bottom_sheets/member_status.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/submit_button.dart';
@@ -443,6 +444,13 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                           if (!widget.isProject &&
                               workspaceProvider.workspaceInvitationState ==
                                   StateEnum.success) {
+                                    postHogService(
+                                      eventName: 'WORKSPACE_USER_INVITE',
+                                      properties: {
+                                        'INVITED_USER_EMAIL': emailController.text,
+                                      },
+                                    ref: ref
+                                );
                             //show success snackbar
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(

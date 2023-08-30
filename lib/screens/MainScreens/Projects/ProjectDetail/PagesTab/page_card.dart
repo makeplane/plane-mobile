@@ -140,6 +140,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                               "access": pageProvider.pages[pageProvider
                                   .selectedFilter]![widget.index]['access']
                             },
+                            ref: ref
                           );
                           setState(() {});
                         },

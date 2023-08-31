@@ -96,6 +96,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         return true;
       },
       child: Container(
+        height: issuesProvider.labels.length > 0
+            ? MediaQuery.of(context).size.height * 0.8
+            : MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(
           color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
@@ -144,87 +147,93 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                   ),
                   Container(height: 15),
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: issuesProvider.labels.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (widget.createIssue) {
-                                  if (selectedLabels.contains(index)) {
-                                    selectedLabels.remove(index);
-                                  } else {
-                                    selectedLabels.add(index);
-                                  }
-                                } else {
+                    child: issuesProvider.labels.length > 0
+                        ? ListView.builder(
+                            itemCount: issuesProvider.labels.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
                                   setState(() {
-                                    if (issueDetailsLabels.contains(
-                                        issuesProvider.labels[index]['id'])) {
-                                      issueDetailsLabels.remove(
-                                          issuesProvider.labels[index]['id']);
+                                    if (widget.createIssue) {
+                                      if (selectedLabels.contains(index)) {
+                                        selectedLabels.remove(index);
+                                      } else {
+                                        selectedLabels.add(index);
+                                      }
                                     } else {
-                                      issueDetailsLabels.add(
-                                          issuesProvider.labels[index]['id']);
+                                      setState(() {
+                                        if (issueDetailsLabels.contains(
+                                            issuesProvider.labels[index]
+                                                ['id'])) {
+                                          issueDetailsLabels.remove(
+                                              issuesProvider.labels[index]
+                                                  ['id']);
+                                        } else {
+                                          issueDetailsLabels.add(issuesProvider
+                                              .labels[index]['id']);
+                                        }
+                                      });
                                     }
                                   });
-                                }
-                              });
-                            },
-                            child: Container(
-                              //height: 40,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                              ),
-                              // decoration: BoxDecoration(
-                              //   color: themeProvider.isDarkThemeEnabled
-                              //       ? darkSecondaryBGC
-                              //       : const Color.fromRGBO(248, 249, 250, 1),
-                              // ),
-                              margin: issuesProvider.labels.length == index + 1
-                                  ? const EdgeInsets.only(bottom: 35)
-                                  : null,
-                              child: Column(
-                                children: [
-                                  Row(
+                                },
+                                child: Container(
+                                  //height: 40,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
+                                  // decoration: BoxDecoration(
+                                  //   color: themeProvider.isDarkThemeEnabled
+                                  //       ? darkSecondaryBGC
+                                  //       : const Color.fromRGBO(248, 249, 250, 1),
+                                  // ),
+                                  margin:
+                                      issuesProvider.labels.length == index + 1
+                                          ? const EdgeInsets.only(bottom: 35)
+                                          : null,
+                                  child: Column(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 8,
-                                        backgroundColor: ColorManager
-                                            .getColorFromHexaDecimal(
-                                                issuesProvider.labels[index]
-                                                        ['color']
-                                                    .toString()),
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 8,
+                                            backgroundColor: ColorManager
+                                                .getColorFromHexaDecimal(
+                                                    issuesProvider.labels[index]
+                                                            ['color']
+                                                        .toString()),
+                                          ),
+                                          Container(width: 10),
+                                          CustomText(
+                                            issuesProvider.labels[index]['name']
+                                                .toString(),
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Regular,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
+                                          const Spacer(),
+                                          widget.createIssue
+                                              ? createIssueSelectedIconsWidget(
+                                                  index)
+                                              : issueDetailSelectedIconsWidget(
+                                                  index),
+                                          const SizedBox(width: 10)
+                                        ],
                                       ),
-                                      Container(width: 10),
-                                      CustomText(
-                                        issuesProvider.labels[index]['name']
-                                            .toString(),
-                                        type: FontStyle.Medium,
-                                        fontWeight: FontWeightt.Regular,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                      ),
-                                      const Spacer(),
-                                      widget.createIssue
-                                          ? createIssueSelectedIconsWidget(
-                                              index)
-                                          : issueDetailSelectedIconsWidget(
-                                              index),
-                                      const SizedBox(width: 10)
+                                      const SizedBox(height: 20),
+                                      Container(
+                                          height: 1,
+                                          // margin: const EdgeInsets.only(bottom: 5),
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color)
                                     ],
                                   ),
-                                  const SizedBox(height: 20),
-                                  Container(
-                                      height: 1,
-                                      // margin: const EdgeInsets.only(bottom: 5),
-                                      color: themeProvider
-                                          .themeManager.borderSubtle01Color)
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
+                                ),
+                              );
+                            })
+                        : const Center(
+                            child: CustomText('No labels are created yet')),
                   ),
                   createNew
                       ? Container(
@@ -320,8 +329,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                           "name": labelContrtoller.text,
                                           "color": "#${colorController.text}"
                                         },
-                                        ref: ref
-                                    );
+                                        ref: ref);
                                     setState(() {
                                       createNew = false;
                                       showColorPallette = false;

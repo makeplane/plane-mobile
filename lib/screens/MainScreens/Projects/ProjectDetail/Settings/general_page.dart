@@ -73,7 +73,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-      var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     // projectProvider.projectDetailModel!.network == 1
     //     ? isProjectPublic = false
     //     : isProjectPublic = true;
@@ -183,8 +183,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           }
                         },
                         child: Container(
-                          height: 55,
-                          width: 55,
+                          height: 48,
+                          width: 48,
                           decoration: BoxDecoration(
                             color: themeProvider
                                 .themeManager.tertiaryBackgroundDefaultColor,
@@ -344,51 +344,55 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             ),
                           ),
                         ),
-                       checkUser()
+                        checkUser()
                             ? Positioned(
-                          top: 15,
-                          right: 15,
-                          child: GestureDetector(
-                            onTap: () async {
-                              Map<String, dynamic> url = {};
+                                top: 15,
+                                right: 15,
+                                child: GestureDetector(
+                                    onTap: () async {
+                                      Map<String, dynamic> url = {};
 
-                              await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  enableDrag: true,
-                                  constraints: BoxConstraints(
-                                      maxHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.75),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
-                                    ),
-                                  ),
-                                  context: context,
-                                  builder: (ctx) {
-                                    return SelectCoverImage(
-                                      uploadedUrl: url,
-                                    );
-                                  });
-                              log(url.toString());
-                              setState(() {
-                                projectProvider.projectDetailModel!.coverImage =
-                                    url['url'] ??
-                                        projectProvider
-                                            .projectDetailModel!.coverImage;
-                              });
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: themeProvider
-                                  .themeManager.primaryBackgroundDefaultColor,
-                              child: Center(
-                                child: Icon(
-                                  Icons.edit,
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
-                                ),
-                              ))))
+                                      await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          enableDrag: true,
+                                          constraints: BoxConstraints(
+                                              maxHeight: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.75),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(30),
+                                              topRight: Radius.circular(30),
+                                            ),
+                                          ),
+                                          context: context,
+                                          builder: (ctx) {
+                                            return SelectCoverImage(
+                                              uploadedUrl: url,
+                                            );
+                                          });
+                                      log(url.toString());
+                                      setState(() {
+                                        projectProvider.projectDetailModel!
+                                                .coverImage =
+                                            url['url'] ??
+                                                projectProvider
+                                                    .projectDetailModel!
+                                                    .coverImage;
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                        backgroundColor: themeProvider
+                                            .themeManager
+                                            .primaryBackgroundDefaultColor,
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
+                                        ))))
                             : Container(),
                       ],
                     ),
@@ -509,7 +513,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                         children: [
                           CustomText(
                             !isProjectPublic ? 'Secret' : 'Public',
-                            type: FontStyle.Small,
+                            type: FontStyle.Medium,
+                            fontWeight: FontWeightt.Regular,
                             color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const Spacer(),
@@ -616,14 +621,21 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             DeleteProjectSheet(
-                                              data: {
-                                                'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-                                                'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-                                                'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-                                                'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                                                'PROJECT_NAME': projectProvider.projectDetailModel!.name
-                                              },
-                                            ),
+                                          data: {
+                                            'WORKSPACE_ID': workspaceProvider
+                                                .selectedWorkspace!.workspaceId,
+                                            'WORKSPACE_NAME': workspaceProvider
+                                                .selectedWorkspace!
+                                                .workspaceName,
+                                            'WORKSPACE_SLUG': workspaceProvider
+                                                .selectedWorkspace!
+                                                .workspaceSlug,
+                                            'PROJECT_ID': projectProvider
+                                                .projectDetailModel!.id,
+                                            'PROJECT_NAME': projectProvider
+                                                .projectDetailModel!.name
+                                          },
+                                        ),
                                       );
                                     },
                                     child: Container(
@@ -694,8 +706,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           'cover_image': projectProvider
                                               .projectDetailModel!.coverImage
                                         },
-                                        ref: ref
-                                      );
+                                        ref: ref);
                                   } else {
                                     // ignore: use_build_context_synchronously
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -726,8 +737,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         'cover_image': projectProvider
                                             .projectDetailModel!.coverImage
                                       },
-                                      ref: ref
-                                    );
+                                      ref: ref);
                                 }
                                 // await projectProvider.updateProject(
                                 //     projId: projectProvider.projectDetailModel!.id!,

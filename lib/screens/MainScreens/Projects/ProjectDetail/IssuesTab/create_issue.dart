@@ -1006,12 +1006,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                 enableDrag: true,
                                                 isScrollControlled: true,
                                                 constraints: BoxConstraints(
-                                                  maxHeight:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.8,
-                                                ),
+                                                    // maxHeight:
+                                                    //     MediaQuery.of(context)
+                                                    //             .size
+                                                    //             .height *
+                                                    //         0.8,
+                                                    ),
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                   borderRadius:
@@ -1711,15 +1711,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                             }
 
                             await issuesProvider.createIssue(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
-                                  .workspaceSlug,
-                              projID:
-                                  issuesProvider.createIssueProjectData['id'],
-                              issueCategory: issueCategory,
-                              ref: ref
-                            );
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projID:
+                                    issuesProvider.createIssueProjectData['id'],
+                                issueCategory: issueCategory,
+                                ref: ref);
 
                             issuesProvider.createIssuedata = {};
                             issuesProvider.statesData = tempStatesData;

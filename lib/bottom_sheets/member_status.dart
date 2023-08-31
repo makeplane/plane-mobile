@@ -146,45 +146,65 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                 ? Container()
                                 : Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Radio(
-                                            activeColor: selectedRole ==
-                                                    options[index]['value']
-                                                ? null
-                                                : themeProvider
-                                                    .themeManager.primaryColour,
-                                            fillColor: selectedRole !=
-                                                    options[index]['value']
-                                                ? MaterialStateProperty
-                                                    .all<Color>(themeProvider
-                                                        .themeManager
-                                                        .borderSubtle01Color)
-                                                : null,
-                                            value: options[index]['value'],
-                                            groupValue: selectedRole,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedRole = value as int;
-                                                if (widget.isInviteMembers) {
-                                                  // widget.role['role'] =
-                                                  //     selectedRole;
-                                                  ref
-                                                          .read(ProviderList
-                                                              .workspaceProvider)
-                                                          .invitingMembersRole
-                                                          .text =
-                                                      options[index]['role'];
-                                                }
-                                                //  Navigator.pop(context);
-                                              });
-                                            },
-                                          ),
-                                          CustomText(options[index]['role'],
-                                              type: FontStyle.Small,
-                                              color: themeProvider.themeManager
-                                                  .primaryTextColor),
-                                        ],
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedRole =
+                                                options[index]['value'] as int;
+                                            if (widget.isInviteMembers) {
+                                              // widget.role['role'] =
+                                              //     selectedRole;
+                                              ref
+                                                      .read(ProviderList
+                                                          .workspaceProvider)
+                                                      .invitingMembersRole
+                                                      .text =
+                                                  options[index]['role'];
+                                            }
+                                            //  Navigator.pop(context);
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Radio(
+                                              activeColor: selectedRole ==
+                                                      options[index]['value']
+                                                  ? null
+                                                  : themeProvider.themeManager
+                                                      .primaryColour,
+                                              fillColor: selectedRole !=
+                                                      options[index]['value']
+                                                  ? MaterialStateProperty
+                                                      .all<Color>(themeProvider
+                                                          .themeManager
+                                                          .borderSubtle01Color)
+                                                  : null,
+                                              value: options[index]['value'],
+                                              groupValue: selectedRole,
+                                              onChanged: (value) {
+                                                // setState(() {
+                                                //   selectedRole = value as int;
+                                                //   if (widget.isInviteMembers) {
+                                                //     // widget.role['role'] =
+                                                //     //     selectedRole;
+                                                //     ref
+                                                //             .read(ProviderList
+                                                //                 .workspaceProvider)
+                                                //             .invitingMembersRole
+                                                //             .text =
+                                                //         options[index]['role'];
+                                                //   }
+                                                //   //  Navigator.pop(context);
+                                                // });
+                                              },
+                                            ),
+                                            CustomText(options[index]['role'],
+                                                type: FontStyle.Small,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor),
+                                          ],
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(

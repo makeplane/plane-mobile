@@ -93,13 +93,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 ? TabBar(
                     controller: tabController,
                     indicator: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: themeProvider.themeManager.primaryColour,
-                          width: 7,
-                        ),
+                        border: Border(
+                      bottom: BorderSide(
+                        color: themeProvider.themeManager.primaryColour,
+                        width: 6,
                       ),
-                    ),
+                    )),
                     // indicatorColor: primaryColor,
                     labelColor: themeProvider.themeManager.primaryColour,
                     indicatorWeight: 9,
@@ -112,7 +111,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     tabs: tabs
                         .map(
                           (e) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            padding: const EdgeInsets.only(bottom: 15),
                             child: CustomText(
                               tabs[tabs.indexOf(e)],
                               type: FontStyle.Medium,

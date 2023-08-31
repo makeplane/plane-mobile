@@ -2401,7 +2401,7 @@ class TimeZoneManager {
           SimpleTime(currentTime.toUtc().hour, currentTime.toUtc().minute);
 
       String? timeZoneLabel = findLabelFromTimeZonesList(timeZone);
-      log(timeZoneLabel.toString());
+      log('find timeZoneLabel: ' + timeZoneLabel.toString());
 
       if (timeZoneLabel == null) {
         log("time returned: $timeToReturn");
@@ -2422,22 +2422,39 @@ class TimeZoneManager {
       timeToReturn.isPm = true;
       timeToReturn.hour -= 12;
     }
+    if (timeToReturn.hour == 0) {
+      timeToReturn.hour = 12;
+    }
     return timeToReturn;
   }
 
   static SimpleTime getTimeToAdd(String data) {
     DateTime currentTime = DateTime.now();
     SimpleTime timeToReturn = SimpleTime(0, 0);
-    String timeToAddString = data.toString().split("GMT")[1];
+
+    String timeToAddString = data.toString().split(", GMT")[1];
 
     if (timeToAddString == '') {
       return timeToReturn;
-    } else {
+    } else if (timeToAddString[0] == '+') {
       String hour = timeToAddString.split(':')[0];
       String minute = timeToAddString.split(':')[1];
       timeToReturn.hour =
           int.tryParse(hour.replaceAll('+', '')) ?? currentTime.hour;
       timeToReturn.minute = int.tryParse(minute) ?? currentTime.minute;
+      return timeToReturn;
+    } else if (timeToAddString[0] == '-') {
+      String hour = timeToAddString.split(':')[0];
+      String minute = timeToAddString.split(':')[1];
+      timeToReturn.hour =
+          int.tryParse(hour.replaceAll('+', '')) ?? currentTime.hour;
+      timeToReturn.minute = int.tryParse(minute) ?? currentTime.minute;
+
+      timeToReturn.hour = timeToReturn.hour;
+      timeToReturn.minute = timeToReturn.minute;
+
+      return timeToReturn;
+    } else {
       return timeToReturn;
     }
   }
@@ -2464,12 +2481,20 @@ class SimpleTime {
   SimpleTime(this.hour, this.minute);
   bool isPm = false;
   SimpleTime operator +(SimpleTime otherTime) {
-    SimpleTime timeToReturn =
-        SimpleTime(this.hour + otherTime.hour, this.minute + otherTime.minute);
-    if (timeToReturn.minute >= 60) {
-      timeToReturn.hour += 1;
-      timeToReturn.minute -= 60;
-    }
+    DateTime time =
+        DateTime.now().copyWith(hour: this.hour, minute: this.minute);
+
+    time = time.add(Duration(hours: otherTime.hour, minutes: otherTime.minute));
+
+    // SimpleTime timeToReturn =
+    //     SimpleTime(this.hour + otherTime.hour, this.minute + otherTime.minute);
+    // if (timeToReturn.minute >= 60) {
+    //   timeToReturn.hour += 1;
+    //   timeToReturn.minute -= 60;
+    // }
+
+    SimpleTime timeToReturn = SimpleTime(time.hour, time.minute);
+
     return timeToReturn;
   }
 
@@ -2479,7 +2504,7 @@ class SimpleTime {
   String toString() {
     String hourInString = hour.toString();
     String minuteInString = minute.toString();
-    if (hour < 10) {
+    if (hour < 10 && hour > 0) {
       hourInString = '0$hour';
     }
     if (minute < 10) {

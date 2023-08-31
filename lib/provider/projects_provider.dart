@@ -47,7 +47,7 @@ class ProjectsProvider extends ChangeNotifier {
     {'title': 'Cycles', 'width': 60, 'show': true},
     {'title': 'Modules', 'width': 75, 'show': true},
     {'title': 'Views', 'width': 60, 'show': true},
-    {'title': 'Pages', 'width': 50, 'show': true},
+    {'title': 'Pages', 'width': 50, 'show': false},
   ];
 
   void clear() {
@@ -322,15 +322,18 @@ class ProjectsProvider extends ChangeNotifier {
         data: data,
         httpMethod: HttpMethod.post,
       );
-      postHogService(eventName: 'CREATE_PROJECT', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'PROJECT_ID': response.data['id'],
-        'PROJECT_NAME': response.data['name']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'CREATE_PROJECT',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'PROJECT_ID': response.data['id'],
+            'PROJECT_NAME': response.data['name']
+          },
+          ref: ref);
       await getProjects(slug: slug);
       createProjectState = StateEnum.success;
       notifyListeners();
@@ -433,15 +436,18 @@ class ProjectsProvider extends ChangeNotifier {
             }
           : null;
       updateProjectState = StateEnum.success;
-      postHogService(eventName: 'UPDATE_PROJECT', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'PROJECT_ID': response.data['id'],
-        'PROJECT_NAME': response.data['name']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'UPDATE_PROJECT',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'PROJECT_ID': response.data['id'],
+            'PROJECT_NAME': response.data['name']
+          },
+          ref: ref);
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
@@ -552,25 +558,31 @@ class ProjectsProvider extends ChangeNotifier {
                       : HttpMethod.patch,
           data: data);
       stateCrudState = StateEnum.success;
-      method != CRUD.read ?
-      postHogService(
-        eventName: method == CRUD.create ? 'STATE_CREATE'
-        : method == CRUD.update ? 'STATE_UPDATE'
-        : method == CRUD.delete ? 'STATE_DELETE'
-        : '', 
-        properties: method == CRUD.delete ?
-        {}
-        : {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'STATE_ID': method == CRUD.create ? response.data['id'] : stateId
-      },
-      ref: ref
-      )
-      : null;
+      method != CRUD.read
+          ? postHogService(
+              eventName: method == CRUD.create
+                  ? 'STATE_CREATE'
+                  : method == CRUD.update
+                      ? 'STATE_UPDATE'
+                      : method == CRUD.delete
+                          ? 'STATE_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace!.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace!.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'STATE_ID':
+                          method == CRUD.create ? response.data['id'] : stateId
+                    },
+              ref: ref)
+          : null;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {

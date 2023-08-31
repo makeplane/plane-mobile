@@ -25,73 +25,79 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Wrap(
       children: [
-        LoadingWidget(
-          loading: modulesProvider.moduleState == StateEnum.loading,
-          widgetClass: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomText(
-                          'Delete Module',
-                          type: FontStyle.H6,
-                          fontWeight: FontWeightt.Semibold,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: Icon(Icons.close,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const CustomText(
-                      'Are you sure you want to delete this module? All of the data related to the module will be permanently removed. This action cannot be undone.',
-                      maxLines: 5,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                ),
-                Button(
-                  color: Colors.redAccent,
-                  text: 'Delete',
-                  ontap: () async {
-                    var projProv = ref.read(ProviderList.projectProvider);
-                    if (projProv.role != Role.admin ||
-                        projProv.role != Role.member) {
-                      Navigator.of(context).pop();
-                      CustomToast().showToast(
-                          context, accessRestrictedMSG, themeProvider,
-                          toastType: ToastType.failure);
-                      return;
-                    }
-                    await modulesProvider.deleteModule(
-                      slug: ref
-                          .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
-                          .workspaceSlug,
-                      projId: ref
-                          .read(ProviderList.projectProvider)
-                          .currentProject['id'],
-                      moduleId: widget.moduleId,
-                    );
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.4,
+            minHeight: MediaQuery.of(context).size.height * 0.3,
+          ),
+          child: LoadingWidget(
+            loading: modulesProvider.deleteModuleState == StateEnum.loading,
+            widgetClass: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const CustomText(
+                            'Delete Module',
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Semibold,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(Icons.close,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const CustomText(
+                        'Are you sure you want to delete this module? All of the data related to the module will be permanently removed. This action cannot be undone.',
+                        maxLines: 5,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  ),
+                  Button(
+                    color: Colors.redAccent,
+                    text: 'Delete',
+                    ontap: () async {
+                      var projProv = ref.read(ProviderList.projectProvider);
+                      if (projProv.role != Role.admin &&
+                          projProv.role != Role.member) {
+                        Navigator.of(context).pop();
+                        CustomToast().showToast(
+                            context, accessRestrictedMSG, themeProvider,
+                            toastType: ToastType.failure);
+                        return;
+                      }
+                      await modulesProvider.deleteModule(
+                        slug: ref
+                            .read(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug,
+                        projId: ref
+                            .read(ProviderList.projectProvider)
+                            .currentProject['id'],
+                        moduleId: widget.moduleId,
+                      );
 
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

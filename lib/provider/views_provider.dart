@@ -155,4 +155,26 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       rethrow;
     }
   }
+
+  Future deleteViews({required int index, required String id}) async {
+    state = state.copyWith(viewsState: StateEnum.loading);
+
+    try {
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url:
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
+        hasBody: false,
+        httpMethod: HttpMethod.delete,
+      );
+      state = state.copyWith(views: [
+        ...state.views.sublist(0, index),
+        ...state.views.sublist(index + 1)
+      ], viewsState: StateEnum.success);
+    } on DioException catch (e) {
+      log(e.error.toString());
+      state = state.copyWith(viewsState: StateEnum.error);
+      rethrow;
+    }
+  }
 }

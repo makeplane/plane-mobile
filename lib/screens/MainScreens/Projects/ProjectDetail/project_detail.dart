@@ -56,7 +56,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     issueProvider.orderByState = StateEnum.loading;
     issueProvider.statesState = StateEnum.restricted;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    issueProvider.setsState();
+      issueProvider.setsState();
       issueProvider.statesState = StateEnum.restricted;
       ref.read(ProviderList.projectProvider).initializeProject(ref: ref);
       //issueProvider.statesState = StateEnum.restricted;
@@ -81,6 +81,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var cycleProvider = ref.watch(ProviderList.cyclesProvider);
     var moduleProvider = ref.watch(ProviderList.modulesProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
+    var pageProvider = ref.watch(ProviderList.pageProvider);
+    print("issueProvider.statesState ${issueProvider.statesState}");
 
     // log(issueProvider.issues.groupBY.name);
 
@@ -216,7 +218,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 children: [
                                                   Container(
                                                     margin: const EdgeInsets
-                                                        .symmetric(
+                                                            .symmetric(
                                                         vertical: 15),
                                                     child: CustomText(
                                                       e['title'].toString(),
@@ -304,7 +306,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                               itemCount: pages.length,
                             ),
                           ),
-
                           issueProvider.statesState == StateEnum.loading ||
                                   issueProvider.issueState == StateEnum.loading
                               ? Container()
@@ -563,122 +564,136 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                         )
                                       : Container(),
                           selected == 4
-                              ? Container(
-                                  height: 51,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                      color: themeProvider.themeManager
-                                          .primaryBackgroundDefaultColor,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: themeProvider
-                                                .themeManager.shadowColor,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, -5))
-                                      ]),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            projectProvider.role == Role.admin
-                                                ? Expanded(
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .push(
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const CreatePage(),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: SizedBox.expand(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.add,
-                                                              color: themeProvider
-                                                                  .themeManager
-                                                                  .primaryTextColor,
-                                                              size: 20,
+                              ? selected == 4 &&
+                                      pageProvider
+                                          .pages[pageProvider.selectedFilter]!
+                                          .isEmpty
+                                  ? Container()
+                                  : Container(
+                                      height: 51,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: themeProvider.themeManager
+                                              .primaryBackgroundDefaultColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: themeProvider
+                                                    .themeManager.shadowColor,
+                                                blurRadius: 5,
+                                                offset: const Offset(0, -5))
+                                          ]),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                projectProvider.role ==
+                                                        Role.admin
+                                                    ? Expanded(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const CreatePage(),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child:
+                                                              SizedBox.expand(
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.add,
+                                                                  color: themeProvider
+                                                                      .themeManager
+                                                                      .primaryTextColor,
+                                                                  size: 20,
+                                                                ),
+                                                                const CustomText(
+                                                                  ' Page',
+                                                                  type: FontStyle
+                                                                      .Medium,
+                                                                )
+                                                              ],
                                                             ),
-                                                            const CustomText(
-                                                              ' Page',
-                                                              type: FontStyle
-                                                                  .Medium,
-                                                            )
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                            Container(
-                                              height: 50,
-                                              width: 0.5,
-                                              color: themeProvider.themeManager
-                                                  .borderSubtle01Color,
-                                            ),
-                                            Expanded(
-                                                child: InkWell(
-                                              onTap: () {
-                                                showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    enableDrag: true,
-                                                    constraints: BoxConstraints(
-                                                        maxHeight:
-                                                            MediaQuery.of(
+                                                      )
+                                                    : Container(),
+                                                Container(
+                                                  height: 50,
+                                                  width: 0.5,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .borderSubtle01Color,
+                                                ),
+                                                Expanded(
+                                                    child: InkWell(
+                                                  onTap: () {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        enableDrag: true,
+                                                        constraints: BoxConstraints(
+                                                            maxHeight: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .height *
                                                                 0.8),
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                      topLeft:
-                                                          Radius.circular(30),
-                                                      topRight:
-                                                          Radius.circular(30),
-                                                    )),
-                                                    context: context,
-                                                    builder: (ctx) {
-                                                      return const FilterPageSheet();
-                                                    });
-                                              },
-                                              child: SizedBox.expand(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .filter_list_outlined,
-                                                      color: themeProvider
-                                                          .themeManager
-                                                          .primaryTextColor,
-                                                      size: 19,
+                                                        shape:
+                                                            const RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30),
+                                                        )),
+                                                        context: context,
+                                                        builder: (ctx) {
+                                                          return const FilterPageSheet();
+                                                        });
+                                                  },
+                                                  child: SizedBox.expand(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .filter_list_outlined,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .primaryTextColor,
+                                                          size: 19,
+                                                        ),
+                                                        const CustomText(
+                                                          ' Filters',
+                                                          type:
+                                                              FontStyle.Medium,
+                                                        )
+                                                      ],
                                                     ),
-                                                    const CustomText(
-                                                      ' Filters',
-                                                      type: FontStyle.Medium,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )),
-                                          ],
-                                        ),
+                                                  ),
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                )
+                                    )
                               : Container(),
 
                           // GestureDetector(
@@ -936,7 +951,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -947,7 +962,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -964,7 +979,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                         )
                                                 ],

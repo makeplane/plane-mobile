@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:plane_startup/bottom_sheets/delete_cycle_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -100,7 +101,7 @@ class _ViewsState extends ConsumerState<Views> {
 
                 Container(
                   margin: const EdgeInsets.only(left: 5),
-                  width: MediaQuery.sizeOf(context).width - 200,
+                  width: MediaQuery.sizeOf(context).width - 250,
                   padding: const EdgeInsets.only(left: 5, right: 15, top: 10),
                   child: CustomText(
                     viewsProvider.views[index]["name"],
@@ -150,7 +151,40 @@ class _ViewsState extends ConsumerState<Views> {
                             color: themeProvider.themeManager.tertiaryTextColor,
                           ),
                   ),
-                )
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      context: context,
+                      builder: (ctx) {
+                        return DeleteCycleSheet(
+                          name: viewsProvider.views[index]["name"],
+                          id: viewsProvider.views[index]["id"],
+                          type: 'View',
+                          index: index,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 12, right: 10),
+                    child: Icon(
+                      Icons.more_vert,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(

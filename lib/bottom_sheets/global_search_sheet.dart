@@ -296,14 +296,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         },
         'icon': 'assets/images/global_search_icons/view.png'
       },
-      {
-        'title': 'New Page',
-        'screen': () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const CreatePage()));
-        },
-        'icon': 'assets/images/global_search_icons/page.png'
-      },
+      // {
+      //   'title': 'New Page',
+      //   'screen': () {
+      //     Navigator.of(context).push(
+      //         MaterialPageRoute(builder: (context) => const CreatePage()));
+      //   },
+      //   'icon': 'assets/images/global_search_icons/page.png'
+      // },
     ];
 
     return Column(
@@ -624,8 +624,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             .read(ProviderList.projectProvider)
                             .initializeProject(ref: ref);
 
-                        Navigator.push(
-                          context,
+                        Navigator.of(Const.globalKey.currentContext!).push(
                           MaterialPageRoute(
                             builder: (context) => IssueDetail(
                               appBarTitle:
@@ -906,13 +905,15 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         cyclesProvider.currentCycle['name'] =
                             globalSearchProvider.data!.cycles[index].name;
                         Navigator.push(
-                          context,
+                          Const.globalKey.currentContext!,
                           MaterialPageRoute(
                             builder: (context) => CycleDetail(
                               cycleId:
                                   globalSearchProvider.data!.cycles[index].id,
                               cycleName:
                                   globalSearchProvider.data!.cycles[index].name,
+                              projId: globalSearchProvider
+                                  .data!.cycles[index].projectId,
                             ),
                           ),
                         );
@@ -1001,13 +1002,15 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         modulesProvider.currentModule['name'] =
                             globalSearchProvider.data!.modules[index].name;
                         Navigator.push(
-                          context,
+                          Const.globalKey.currentContext!,
                           MaterialPageRoute(
                             builder: (context) => CycleDetail(
                               moduleId:
                                   globalSearchProvider.data!.modules[index].id,
                               moduleName: globalSearchProvider
                                   .data!.modules[index].name,
+                              projId: globalSearchProvider
+                                  .data!.modules[index].projectId,
                               fromModule: true,
                             ),
                           ),

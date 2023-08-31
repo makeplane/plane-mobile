@@ -199,20 +199,28 @@ class IssueProvider with ChangeNotifier {
           httpMethod: HttpMethod.patch,
           data: data);
       updateIssueState = StateEnum.success;
-      postHogService(eventName: 'ISSUE_UPDATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'ISSUE_ID': issueID
-      },
-      ref: refs
-      );
+      postHogService(
+          eventName: 'ISSUE_UPDATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'PROJECT_ID': projID ?? projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projects
+                .firstWhere((element) => element['id'] == projID)['name'],
+            'ISSUE_ID': issueID
+          },
+          ref: refs);
       await getIssueDetails(slug: slug, projID: projID, issueID: issueID);
       await getIssueActivity(slug: slug, projID: projID, issueID: issueID);
       await ref.read(ProviderList.myIssuesProvider.notifier).getMyIssues(
             slug: slug,
+          );
+      await ref.read(ProviderList.issuesProvider).filterIssues(
+            slug: slug,
+            projID: projID,
           );
 
       refs.read(ProviderList.issuesProvider).issuesResponse[refs

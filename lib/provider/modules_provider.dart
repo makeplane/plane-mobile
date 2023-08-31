@@ -74,6 +74,7 @@ class ModuleProvider with ChangeNotifier {
   StateEnum moduleState = StateEnum.empty;
   StateEnum moduleDetailState = StateEnum.empty;
   StateEnum moduleIssueState = StateEnum.loading;
+  StateEnum deleteModuleState = StateEnum.empty;
 
   void changeIndex(int index) {
     statusIndex = index;
@@ -158,16 +159,19 @@ class ModuleProvider with ChangeNotifier {
         data: createModule,
       );
       createModuleState = StateEnum.success;
-      postHogService(eventName: 'MODULE_CREATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'MODULE_ID': response.data['id']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'MODULE_CREATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'MODULE_ID': response.data['id']
+          },
+          ref: ref);
       getModules(slug: slug, projId: projId);
       createModule.clear();
       notifyListeners();
@@ -203,16 +207,19 @@ class ModuleProvider with ChangeNotifier {
         data: data,
       );
       moduleDetailState = StateEnum.success;
-      postHogService(eventName: 'MODULE_UPDATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'MODULE_ID': response.data['id']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'MODULE_UPDATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'MODULE_ID': response.data['id']
+          },
+          ref: ref);
       getModuleDetails(
           slug: slug,
           projId: projId,
@@ -262,7 +269,7 @@ class ModuleProvider with ChangeNotifier {
     required String projId,
     required String moduleId,
   }) async {
-    moduleState = StateEnum.loading;
+    deleteModuleState = StateEnum.loading;
     notifyListeners();
     try {
       var response = await DioConfig().dioServe(
@@ -272,13 +279,13 @@ class ModuleProvider with ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.delete,
       );
-      moduleState = StateEnum.success;
+      deleteModuleState = StateEnum.success;
       getModules(slug: slug, projId: projId);
       notifyListeners();
       log('Delete Module  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
-      moduleState = StateEnum.error;
+      deleteModuleState = StateEnum.error;
       notifyListeners();
     }
   }
@@ -489,6 +496,7 @@ class ModuleProvider with ChangeNotifier {
         }
       }
       //log('RESPONSE : ' + filterIssues.toString());
+      log('Modulesssssssssssssssssssssss ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -497,7 +505,7 @@ class ModuleProvider with ChangeNotifier {
       issues.issues.add(BoardListsData(
         id: stateOrdering[j],
         items: items,
-        shrink: shrinkStates[j],
+        // shrink: shrinkStates[j],
         index: j,
         width: issuesProvider.issues.projectView == ProjectView.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width

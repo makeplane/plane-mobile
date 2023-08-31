@@ -27,6 +27,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
   int selected = 0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ref.watch(ProviderList.myIssuesProvider).pageIndex != 0) {
+        ref.read(ProviderList.myIssuesProvider).changePage(0);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);

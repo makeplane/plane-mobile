@@ -269,7 +269,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -285,7 +285,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -426,12 +426,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cycleFavoriteData[
                                                         index]['name'],
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cycleFavoriteData[
                                                         index]['id'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -568,7 +569,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -584,7 +585,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -720,12 +721,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cyclesAllData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cyclesAllData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -1037,12 +1039,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cycleCompletedFavoriteData[
                                                         index]['id'],
-                                                    cycleName: cyclesProviderRead
+                                                    name: cyclesProviderRead
                                                             .cycleCompletedFavoriteData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -1301,12 +1304,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cyclesCompletedData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cyclesCompletedData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -1591,12 +1595,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cycleUpcomingFavoriteData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cycleUpcomingFavoriteData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -1856,12 +1861,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cyclesUpcomingData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cyclesUpcomingData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -2173,12 +2179,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cycleDraftFavoriteData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cycleDraftFavoriteData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );
@@ -2475,12 +2482,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 context: context,
                                                 builder: (ctx) {
                                                   return DeleteCycleSheet(
-                                                    cycleId: cyclesProvider
+                                                    id: cyclesProvider
                                                             .cyclesDraftData[
                                                         index]['id'],
-                                                    cycleName: cyclesProvider
+                                                    name: cyclesProvider
                                                             .cyclesDraftData[
                                                         index]['name'],
+                                                    type: 'Cycle',
                                                   );
                                                 },
                                               );

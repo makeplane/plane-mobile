@@ -59,20 +59,31 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Button(
-              ontap: () {
-                issuesProvider.issueLabels(
-                    slug: ref
-                        .watch(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
-                        .workspaceSlug,
-                    projID: ref
-                        .watch(ProviderList.projectProvider)
-                        .currentProject['id'],
-                    method: CRUD.delete,
-                    data: {},
-                    labelId: widget.labelId,
-                    ref: ref
-                  );
+              ontap: () async {
+                await issuesProvider
+                    .issueLabels(
+                        slug: ref
+                            .watch(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug,
+                        projID: ref
+                            .watch(ProviderList.projectProvider)
+                            .currentProject['id'],
+                        method: CRUD.delete,
+                        data: {},
+                        labelId: widget.labelId,
+                        ref: ref)
+                    .then((value) {
+                  ref.read(ProviderList.issuesProvider).filterIssues(
+                        slug: ref
+                            .watch(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug,
+                        projID: ref
+                            .watch(ProviderList.projectProvider)
+                            .currentProject['id'],
+                      );
+                });
                 Navigator.of(context).pop();
               },
               text: 'Delete Label',

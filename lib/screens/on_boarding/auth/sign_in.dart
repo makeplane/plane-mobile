@@ -249,7 +249,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     if (!sentCode) {
                                       await ref
                                           .read(ProviderList.authProvider)
-                                          .sendMagicCode(email.text);
+                                          .sendMagicCode(email: email.text);
                                       setState(() {
                                         sentCode = true;
                                       });

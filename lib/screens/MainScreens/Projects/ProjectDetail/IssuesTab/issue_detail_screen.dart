@@ -172,8 +172,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         method: CRUD.read,
         query: 'current',
         ref: ref,
-        cycleId: ''
-        );
+        cycleId: '');
     await cyclesProvider.cyclesCrud(
         slug: widget.workspaceSlug ?? slug,
         projectId: widget.projID ??
@@ -181,8 +180,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         method: CRUD.read,
         query: 'upcoming',
         ref: ref,
-        cycleId: ''
-        );
+        cycleId: '');
     for (var element in cyclesProvider.cyclesActiveData) {
       issueProvider.cyclesList.add(element);
     }
@@ -971,9 +969,8 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                     Stack(
                                                                       children: [
                                                                         Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              right: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(right: 10),
                                                                           child:
                                                                               CircleAvatar(
                                                                             backgroundColor: themeProvider.isDarkThemeEnabled

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/models/issues.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
@@ -47,8 +48,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
       ref.read(ProviderList.projectProvider).initializeProject(
           filters:
               Filters.fromJson(viewsProv.views[widget.index]["query_data"]),
-              ref: ref
-            );
+          ref: ref);
     });
     super.initState();
   }
@@ -85,7 +85,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
               issuesProvider.issueState == StateEnum.loading ||
               issuesProvider.statesState == StateEnum.loading ||
               issuesProvider.projectViewState == StateEnum.loading ||
-              issuesProvider.orderByState == StateEnum.loading,
+              issuesProvider.orderByState == StateEnum.loading ||
+              viewsProv.viewsState == StateEnum.loading,
           widgetClass: Column(
             children: [
               Container(
@@ -105,64 +106,80 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           ),
                         ),
                         const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(ProviderList.viewsProvider.notifier)
-                                .updateViews(
-                                  id: viewsProv.views[widget.index]['id'],
-                                  data: {
-                                    "query_data": {
-                                      "state": issuesProvider
-                                              .issues.filters.states.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.states,
-                                      "priority": issuesProvider
-                                              .issues.filters.priorities.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.priorities,
-                                      "assignees": issuesProvider
-                                              .issues.filters.assignees.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.assignees,
-                                      "created_by": issuesProvider
-                                              .issues.filters.createdBy.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.createdBy,
-                                      "labels": issuesProvider
-                                              .issues.filters.labels.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.labels,
-                                      "target_date": issuesProvider
-                                              .issues.filters.targetDate.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.targetDate,
-                                      "start_date": issuesProvider
-                                              .issues.filters.startDate.isEmpty
-                                          ? null
-                                          : issuesProvider
-                                              .issues.filters.startDate,
+                        (projectProvider.role != Role.admin &&
+                                projectProvider.role != Role.member)
+                            ? Container()
+                            : GestureDetector(
+                                onTap: () {
+                                  ref
+                                      .read(ProviderList.viewsProvider.notifier)
+                                      .updateViews(
+                                        id: viewsProv.views[widget.index]['id'],
+                                        data: {
+                                          "query_data": {
+                                            "state": issuesProvider.issues
+                                                    .filters.states.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.states,
+                                            "priority": issuesProvider.issues
+                                                    .filters.priorities.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.priorities,
+                                            "assignees": issuesProvider.issues
+                                                    .filters.assignees.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.assignees,
+                                            "created_by": issuesProvider.issues
+                                                    .filters.createdBy.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.createdBy,
+                                            "labels": issuesProvider.issues
+                                                    .filters.labels.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.labels,
+                                            "target_date": issuesProvider.issues
+                                                    .filters.targetDate.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.targetDate,
+                                            "start_date": issuesProvider.issues
+                                                    .filters.startDate.isEmpty
+                                                ? null
+                                                : issuesProvider
+                                                    .issues.filters.startDate,
+                                          }
+                                        },
+                                        index: widget.index,
+                                      )
+                                      .then((value) {
+                                    countFilters();
+                                    if (viewsProv.viewsState !=
+                                        StateEnum.success) {
+                                      CustomToast().showToast(context,
+                                          'Soething went wrong ', themeProvider,
+                                          toastType: ToastType.failure);
+                                    } else {
+                                      CustomToast().showToast(
+                                          context,
+                                          'View updated successfully',
+                                          themeProvider,
+                                          toastType: ToastType.success);
                                     }
-                                  },
-                                  index: widget.index,
-                                )
-                                .then((value) {
-                              countFilters();
-                            });
-                          },
-                          child: CustomText(
-                            'Update',
-                            color: themeProvider.themeManager.primaryColour,
-                            fontSize: 17,
-                            fontWeight: FontWeightt.Medium,
-                          ),
-                        ),
+                                  });
+                                },
+                                child: CustomText(
+                                  'Update',
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                  fontSize: 17,
+                                  fontWeight: FontWeightt.Medium,
+                                ),
+                              ),
                       ],
                     ),
                     Container(

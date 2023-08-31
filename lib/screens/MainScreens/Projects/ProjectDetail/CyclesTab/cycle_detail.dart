@@ -38,11 +38,13 @@ class CycleDetail extends ConsumerStatefulWidget {
     this.moduleId,
     this.moduleName,
     this.fromModule = false,
+    this.projId,
   });
   final String? cycleName;
   final String? cycleId;
   final String? moduleName;
   final String? moduleId;
+  final String? projId;
   final bool fromModule;
 
   @override
@@ -80,6 +82,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       targetDate: [],
       startDate: [],
     );
+    issuesProvider.filterIssues(
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace!
+            .workspaceSlug,
+        projID: ref.read(ProviderList.projectProvider).currentProject['id']);
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }
@@ -218,36 +226,39 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: CustomAppBar(
-            centerTitle: true,
-            //elevation: false,
+          centerTitle: true,
+          //elevation: false,
 
-            onPressed: () {
-              // issueProvider.issuesList = tempIssuesList;
-              issueProvider.getIssues(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
-                    .workspaceSlug,
-                projID: projectProvider.currentProject['id'],
-              );
-              modulesProvider.selectedIssues = [];
-              cyclesProvider.selectedIssues = [];
-              issueProvider.issues.projectView = issueProvider.tempProjectView;
-              issueProvider.issues.groupBY = issueProvider.tempGroupBy;
+          onPressed: () {
+            // issueProvider.issuesList = tempIssuesList;
+            issueProvider.getIssues(
+              slug: ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+              projID: projectProvider.currentProject['id'],
+            );
+            modulesProvider.selectedIssues = [];
+            cyclesProvider.selectedIssues = [];
+            issueProvider.issues.projectView = issueProvider.tempProjectView;
+            issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
-              issueProvider.issues.orderBY = issueProvider.tempOrderBy;
-              issueProvider.issues.issueType = issueProvider.tempIssueType;
+            issueProvider.issues.orderBY = issueProvider.tempOrderBy;
+            issueProvider.issues.issueType = issueProvider.tempIssueType;
 
-              issueProvider.issues.filters = issueProvider.tempFilters;
+            issueProvider.issues.filters = issueProvider.tempFilters;
 
-              issueProvider.showEmptyStates =
-                  issueProvider.issueView["showEmptyGroups"];
-              log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-              Navigator.pop(context);
-            },
-            text: projectProvider.currentProject['name']
-            // color: themeProvider.primaryTextColor,
-            ),
+            issueProvider.showEmptyStates =
+                issueProvider.issueView["showEmptyGroups"];
+            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+            Navigator.pop(context);
+          },
+          text: widget.projId == null
+              ? projectProvider.currentProject['name']
+              : projectProvider.projects.firstWhere(
+                  (element) => element['id'] == widget.projId)['name'],
+          // color: themeProvider.primaryTextColor,
+        ),
         body: isLoading
             ? Center(
                 child: SizedBox(
@@ -503,6 +514,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                           ? EmptyPlaceholder.emptyIssues(context,
                                               cycleId: widget.cycleId,
                                               moduleId: widget.moduleId,
+                                              projectId: widget.projId,
+                                              type: IssueCategory.myIssues,
                                               ref: ref)
                                           : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
@@ -728,6 +741,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         CreateIssue(
+                                                      projectId: widget
+                                                              .projId ??
+                                                          projectProvider
+                                                                  .currentProject[
+                                                              'id'],
+                                                      fromMyIssues: true,
                                                       moduleId: widget.moduleId,
                                                       cycleId: widget.cycleId,
                                                     ),

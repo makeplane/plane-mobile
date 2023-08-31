@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/bottom_sheets/delete_cycle_sheet.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_detail.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -214,6 +215,41 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 themeProvider.themeManager.placeholderTextColor,
                           ),
                         ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        enableDrag: true,
+                        constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.50),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        context: context,
+                        builder: (ctx) {
+                          return DeleteCycleSheet(
+                            name: pageProvider.pages[pageProvider
+                                .selectedFilter]![widget.index]['name'],
+                            id: pageProvider.pages[pageProvider
+                                .selectedFilter]![widget.index]['id'],
+                            type: 'Page',
+                          );
+                        },
+                      );
+                    },
+                    child: Icon(
+                      Icons.more_vert,
+                      size: 18,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
+                  ),
                 ),
               ],
             ),

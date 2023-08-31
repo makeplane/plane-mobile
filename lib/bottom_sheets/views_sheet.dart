@@ -185,9 +185,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   groupValue: groupBy,
                                   title: CustomText(
                                     'State',
-                                    type: FontStyle.H6,
+                                    type: FontStyle.Small,
                                     color: themeProvider
-                                        .themeManager.tertiaryTextColor,
+                                        .themeManager.primaryTextColor,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 'state',

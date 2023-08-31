@@ -498,30 +498,30 @@ class IssuesProvider extends ChangeNotifier {
                   : HttpMethod.post,
           data: data);
       //   log(response.data.toString());
-      method!=CRUD.read ?
-      postHogService(
-          eventName: method == CRUD.create
-              ? 'ISSUE_LABEL_CREATE'
-              : method == CRUD.update
-                  ? 'ISSUE_LABEL_UPDATE'
-                  : method == CRUD.delete
-                      ? 'ISSUE_LABEL_DELETE'
-                      : '',
-          properties: method == CRUD.delete
-              ? {}
-              : {
-                  'WORKSPACE_ID':
-                      workspaceProvider.selectedWorkspace!.workspaceId,
-                  'WORKSPACE_SLUG':
-                      workspaceProvider.selectedWorkspace!.workspaceSlug,
-                  'WORKSPACE_NAME':
-                      workspaceProvider.selectedWorkspace!.workspaceName,
-                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-                  'LABEL_ID': response.data['id']
-                },
-          ref: ref)
-      : null;
+      method != CRUD.read
+          ? postHogService(
+              eventName: method == CRUD.create
+                  ? 'ISSUE_LABEL_CREATE'
+                  : method == CRUD.update
+                      ? 'ISSUE_LABEL_UPDATE'
+                      : method == CRUD.delete
+                          ? 'ISSUE_LABEL_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace!.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace!.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'LABEL_ID': response.data['id']
+                    },
+              ref: ref)
+          : null;
       await getLabels(slug: slug, projID: projID);
       labelState = StateEnum.success;
       notifyListeners();
@@ -713,7 +713,8 @@ class IssuesProvider extends ChangeNotifier {
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projID: projID ??
+              ref!.read(ProviderList.projectProvider).currentProject["id"],
           issueCategory: IssueCategory.cycleIssues,
         );
       }
@@ -1209,6 +1210,7 @@ class IssuesProvider extends ChangeNotifier {
     // }
     // else {
     cyclesProvider.issues.groupBY = issues.groupBY;
+    log('CycleProvider GroupBy ${cyclesProvider.issues.groupBY}');
     cyclesProvider.issues.orderBY = issues.orderBY;
     cyclesProvider.issues.issueType = issues.issueType;
 
@@ -1220,6 +1222,8 @@ class IssuesProvider extends ChangeNotifier {
       getLabels(slug: slug, projID: projID);
     } else if (issues.groupBY == GroupBY.createdBY) {
       getProjectMembers(slug: slug, projID: projID);
+    } else if (issues.groupBY == GroupBY.state) {
+      getStates(slug: slug, projID: projID);
     }
 
     String url;

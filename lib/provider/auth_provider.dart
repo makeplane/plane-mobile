@@ -22,9 +22,12 @@ class AuthProvider extends ChangeNotifier {
   StateEnum signUpState = StateEnum.empty;
   StateEnum resetPassState = StateEnum.empty;
 
-  Future sendMagicCode(String email) async {
-    sendCodeState = StateEnum.loading;
-    notifyListeners();
+  Future sendMagicCode({required String email, bool resend = false}) async {
+    if (!resend) {
+      sendCodeState = StateEnum.loading;
+      notifyListeners();
+    }
+
     try {
       var response = await DioConfig().dioServe(
         hasAuth: false,

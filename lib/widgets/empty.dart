@@ -94,6 +94,7 @@ class EmptyPlaceholder {
   static Widget emptyIssues(BuildContext context,
       {String? cycleId,
       String? moduleId,
+      String? projectId,
       Map<String, dynamic>? assignee,
       WidgetRef? ref,
       IssueCategory? type}) {
@@ -134,11 +135,12 @@ class EmptyPlaceholder {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CreateIssue(
-                            projectId: type == IssueCategory.myIssues
-                                ? ref
-                                    .read(ProviderList.projectProvider)
-                                    .projects[0]['id']
-                                : null,
+                            projectId: projectId ??
+                                (type == IssueCategory.myIssues
+                                    ? ref
+                                        .read(ProviderList.projectProvider)
+                                        .projects[0]['id']
+                                    : null),
                             cycleId: cycleId,
                             moduleId: moduleId,
                             assignee: assignee,

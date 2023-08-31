@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import '../utils/enums.dart';
 import 'custom_text.dart';
 
@@ -58,7 +59,15 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
             onTap: () async {
               await ref
                   .read(ProviderList.authProvider)
-                  .sendMagicCode(widget.email);
+                  .sendMagicCode(
+                    email: widget.email,
+                    resend: true,
+                  )
+                  .then((value) {
+                CustomToast().showToast(
+                    context, 'Code sent successfully', themeProvider,
+                    toastType: ToastType.success);
+              });
               if (mounted) {
                 setState(() {
                   start = 30;

@@ -377,7 +377,6 @@ class PageProvider with ChangeNotifier {
     required String pageId,
     required String slug,
     required String projectId,
-    required String userId,
   }) async {
     pagesListState = StateEnum.loading;
     setState();
@@ -390,6 +389,7 @@ class PageProvider with ChangeNotifier {
             .replaceAll("\$PROJECTID", projectId),
       );
 
+      updatepageList(slug: slug, projectId: projectId);
       pagesListState = StateEnum.success;
       setState();
     } on DioException catch (e) {

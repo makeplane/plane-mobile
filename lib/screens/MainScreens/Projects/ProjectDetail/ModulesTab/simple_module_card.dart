@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane_startup/bottom_sheets/delete_cycle_sheet.dart';
+import 'package:plane_startup/bottom_sheets/delete_module_sheet.dart';
 import 'package:plane_startup/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -209,6 +211,34 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                     .themeManager.placeholderTextColor),
                           ),
                   ),
+                  GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.50),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          context: context,
+                          builder: (ctx) {
+                            return DeleteCycleSheet(
+                              id: modulesProvider.modules[widget.index]['id'],
+                              name: modulesProvider.modules[widget.index]
+                                  ['name'],
+                              type: 'Module',
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(Icons.more_vert,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor)),
                 ],
               ),
               const SizedBox(height: 8),

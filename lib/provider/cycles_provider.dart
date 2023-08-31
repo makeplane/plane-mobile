@@ -211,32 +211,30 @@ class CyclesProvider with ChangeNotifier {
         draftCyclesState = StateEnum.success;
       }
       cyclesState = StateEnum.success;
-      method == CRUD.read ?
-      null :
-      postHogService(
-          eventName: method == CRUD.create
-              ? 'CYCLE_CREATE'
-              : method == CRUD.update
-                  ? 'CYCLE_UPDATE'
-                  : method == CRUD.delete
-                      ? 'CYCLE_DELETE'
-                      : '',
-          properties: method == CRUD.delete
-              ? {}
-              : 
-              {
-                  'WORKSPACE_ID':
-                      workspaceProvider.selectedWorkspace!.workspaceId,
-                  'WORKSPACE_SLUG':
-                      workspaceProvider.selectedWorkspace!.workspaceSlug,
-                  'WORKSPACE_NAME':
-                      workspaceProvider.selectedWorkspace!.workspaceName,
-                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-                  'CYCLE_ID': response.data['id']
-                },
-                ref: ref
-                );
+      method == CRUD.read
+          ? null
+          : postHogService(
+              eventName: method == CRUD.create
+                  ? 'CYCLE_CREATE'
+                  : method == CRUD.update
+                      ? 'CYCLE_UPDATE'
+                      : method == CRUD.delete
+                          ? 'CYCLE_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace!.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace!.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'CYCLE_ID': response.data['id']
+                    },
+              ref: ref);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
@@ -343,8 +341,7 @@ class CyclesProvider with ChangeNotifier {
               method: CRUD.read,
               query: queries[i],
               ref: ref,
-              cycleId: cycleId
-              );
+              cycleId: cycleId);
         }
       }
 
@@ -354,16 +351,14 @@ class CyclesProvider with ChangeNotifier {
           method: CRUD.read,
           query: query,
           ref: ref,
-          cycleId: cycleId
-          );
+          cycleId: cycleId);
       cyclesCrud(
           slug: slug,
           projectId: projectId,
           method: CRUD.read,
           query: 'all',
           ref: ref,
-          cycleId: cycleId
-          );
+          cycleId: cycleId);
       cyclesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -379,7 +374,7 @@ class CyclesProvider with ChangeNotifier {
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
-    for (int j = 0; j < stateOrdering.length; j++) {
+    for (int j = 0; j < filterIssues.length; j++) {
       List<Widget> items = [];
 
       for (int i = 0;
@@ -423,7 +418,7 @@ class CyclesProvider with ChangeNotifier {
         }
       }
       //log('RESPONSE : ' + filterIssues.toString());
-      log(stateOrdering[j]);
+      log('================================================================ ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state

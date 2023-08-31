@@ -33,11 +33,8 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                   borderRadius: widget.allowBorderRadius
                       ? BorderRadius.circular(30)
                       : BorderRadius.zero,
-                  color: themeProvider.themeManager.theme == THEME.dark ||
-                          themeProvider.themeManager.theme ==
-                              THEME.darkHighContrast
-                      ? Colors.black.withOpacity(0.1)
-                      : Colors.white.withOpacity(0.1),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                 ),
                 height: height,
                 child: Center(
@@ -49,17 +46,7 @@ class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
                         height: 30,
                         child: LoadingIndicator(
                           indicatorType: Indicator.lineSpinFadeLoader,
-                          colors: themeProvider.themeManager.theme ==
-                                      THEME.dark ||
-                                  themeProvider.themeManager.theme ==
-                                      THEME.darkHighContrast
-                              ? [Colors.white]
-                              : themeProvider.themeManager.theme == THEME.custom
-                                  ? [
-                                      themeProvider
-                                          .themeManager.primaryTextColor
-                                    ]
-                                  : [Colors.black],
+                          colors: [themeProvider.themeManager.primaryTextColor],
                           strokeWidth: 1.0,
                           backgroundColor: Colors.transparent,
                         ),

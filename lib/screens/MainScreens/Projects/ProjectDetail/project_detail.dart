@@ -67,7 +67,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       cycles(),
       const ModuleScreen(),
       const Views(),
-      const PageScreen()
+      //const PageScreen()
     ];
 
     super.initState();
@@ -82,7 +82,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var moduleProvider = ref.watch(ProviderList.modulesProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
     var pageProvider = ref.watch(ProviderList.pageProvider);
-    print("issueProvider.statesState ${issueProvider.statesState}");
 
     // log(issueProvider.issues.groupBY.name);
 
@@ -218,7 +217,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 children: [
                                                   Container(
                                                     margin: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         vertical: 15),
                                                     child: CustomText(
                                                       e['title'].toString(),
@@ -951,7 +950,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -962,7 +961,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -979,7 +978,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                         )
                                                 ],

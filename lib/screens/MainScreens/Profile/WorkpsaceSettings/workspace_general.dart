@@ -138,7 +138,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   ),
                           ),
                         ),
-                        checkUserAccess()
+                        getRole() == Role.admin
                             ? GestureDetector(
                                 onTap: () async {
                                   if (workspaceProvider.role != Role.admin &&
@@ -202,7 +202,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                     )),
                               )
                             : Container(),
-                        workspaceProvider.tempLogo != ''
+                        workspaceProvider.tempLogo != '' &&
+                                getRole() == Role.admin
                             ? GestureDetector(
                                 onTap: () {
                                   if (workspaceProvider.role != Role.admin &&
@@ -448,9 +449,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               'organization_size':
                                   workspaceProvider.companySize,
                               'logo': workspaceProvider.tempLogo,
-                            },
-                            ref: ref
-                            );
+                            }, ref: ref);
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.success) {

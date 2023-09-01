@@ -2401,7 +2401,7 @@ class TimeZoneManager {
           SimpleTime(currentTime.toUtc().hour, currentTime.toUtc().minute);
 
       String? timeZoneLabel = findLabelFromTimeZonesList(timeZone);
-      log('find timeZoneLabel: ' + timeZoneLabel.toString());
+      log('find timeZoneLabel: $timeZoneLabel');
 
       if (timeZoneLabel == null) {
         log("time returned: $timeToReturn");

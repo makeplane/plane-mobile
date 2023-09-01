@@ -146,9 +146,23 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           activeColor: themeProvider.themeManager.primaryColour,
                           value: 0,
                           onChanged: (val) {
-                            // setState(() {
-                            //   selected = 0;
-                            // });
+                            if (widget.issueCategory ==
+                                IssueCategory.myIssues) {
+                              myIssuesProv.issues.projectView =
+                                  ProjectView.kanban;
+                              myIssuesProv.setState();
+                              myIssuesProv.updateMyIssueView();
+                            } else {
+                              prov.issues.projectView = ProjectView.kanban;
+                              prov.tempProjectView = ProjectView.kanban;
+                              prov.setsState();
+                              if (widget.issueCategory ==
+                                  IssueCategory.issues) {
+                                prov.updateProjectView();
+                              }
+                            }
+
+                            Navigator.pop(context);
                           }),
                       const SizedBox(width: 10),
                       const CustomText(
@@ -203,7 +217,25 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           groupValue: selected,
                           activeColor: themeProvider.themeManager.primaryColour,
                           value: 1,
-                          onChanged: (val) {}),
+                          onChanged: (val) {
+                            if (widget.issueCategory ==
+                                IssueCategory.myIssues) {
+                              myIssuesProv.issues.projectView =
+                                  ProjectView.list;
+                              myIssuesProv.setState();
+                              myIssuesProv.updateMyIssueView();
+                            } else {
+                              prov.issues.projectView = ProjectView.list;
+                              prov.tempProjectView = ProjectView.list;
+                              prov.setsState();
+                              if (widget.issueCategory ==
+                                  IssueCategory.issues) {
+                                prov.updateProjectView();
+                              }
+                            }
+
+                            Navigator.pop(context);
+                          }),
                       const SizedBox(width: 10),
                       const CustomText(
                         'List View',
@@ -258,7 +290,19 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 activeColor:
                                     themeProvider.themeManager.primaryColour,
                                 value: 2,
-                                onChanged: (val) {}),
+                                onChanged: (val) {
+                                  prov.issues.projectView =
+                                      ProjectView.calendar;
+                                  prov.tempProjectView = ProjectView.calendar;
+
+                                  prov.setsState();
+                                  if (widget.issueCategory ==
+                                      IssueCategory.issues) {
+                                    prov.updateProjectView();
+                                  }
+
+                                  Navigator.pop(context);
+                                }),
                             const SizedBox(width: 10),
                             const CustomText(
                               'Calendar View',
@@ -313,7 +357,20 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 activeColor:
                                     themeProvider.themeManager.primaryColour,
                                 value: 3,
-                                onChanged: (val) {}),
+                                onChanged: (val) {
+                                  prov.issues.projectView =
+                                      ProjectView.spreadsheet;
+                                  prov.tempProjectView =
+                                      ProjectView.spreadsheet;
+
+                                  prov.setsState();
+                                  if (widget.issueCategory ==
+                                      IssueCategory.issues) {
+                                    prov.updateProjectView();
+                                  }
+
+                                  Navigator.pop(context);
+                                }),
                             const SizedBox(width: 10),
                             const CustomText(
                               'Spreadsheet View',

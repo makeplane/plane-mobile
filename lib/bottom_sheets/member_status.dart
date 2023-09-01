@@ -182,20 +182,21 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                               value: options[index]['value'],
                                               groupValue: selectedRole,
                                               onChanged: (value) {
-                                                // setState(() {
-                                                //   selectedRole = value as int;
-                                                //   if (widget.isInviteMembers) {
-                                                //     // widget.role['role'] =
-                                                //     //     selectedRole;
-                                                //     ref
-                                                //             .read(ProviderList
-                                                //                 .workspaceProvider)
-                                                //             .invitingMembersRole
-                                                //             .text =
-                                                //         options[index]['role'];
-                                                //   }
-                                                //   //  Navigator.pop(context);
-                                                // });
+                                                setState(() {
+                                                  selectedRole = options[index]
+                                                      ['value'] as int;
+                                                  if (widget.isInviteMembers) {
+                                                    // widget.role['role'] =
+                                                    //     selectedRole;
+                                                    ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .invitingMembersRole
+                                                            .text =
+                                                        options[index]['role'];
+                                                  }
+                                                  //  Navigator.pop(context);
+                                                });
                                               },
                                             ),
                                             CustomText(options[index]['role'],

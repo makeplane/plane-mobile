@@ -27,10 +27,13 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
-    print(MediaQuery.of(context).size.height.toString());
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
-      padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+      padding: const EdgeInsets.only(
+        top: 24,
+        left: 24,
+        right: 24,
+      ),
       child: Column(
         children: [
           Row(
@@ -85,7 +88,7 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: CustomText(
-                      filteredTimeZones[index]['value'] ?? '',
+                      filteredTimeZones[index]['label'] ?? '',
                       type: FontStyle.Small,
                     ),
                   ),

@@ -53,8 +53,9 @@ class _ImportEportState extends ConsumerState<ImportEport> {
               Container(
                 // height: 160,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
                   color:
                       themeProvider.themeManager.secondaryBackgroundActiveColor,
                 ),
@@ -80,30 +81,33 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         _launchUrl();
                       },
-                      child: Row(
-                        children: [
-                          CustomText(
-                            'Read more',
-                            textAlign: TextAlign.left,
-                            type: FontStyle.Small,
-                            color: themeProvider.themeManager.primaryColour,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.arrow_forward,
-                            size: 18,
-                            color:
-                                themeProvider.themeManager.placeholderTextColor,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Row(
+                          children: [
+                            CustomText(
+                              'Read more',
+                              textAlign: TextAlign.left,
+                              type: FontStyle.Small,
+                              color: themeProvider.themeManager.primaryColour,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              size: 18,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -129,7 +133,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
                       color: themeProvider
-                          .themeManager.secondaryBackgroundDefaultColor,
+                          .themeManager.primaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                           color:
@@ -163,16 +167,20 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                       .themeManager.primaryTextColor,
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.all(5),
-                                  color: integrationProvider
-                                                  .integrations["github"] !=
-                                              null &&
-                                          integrationProvider
-                                                  .integrations["github"]
-                                              ["installed"]
-                                      ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.themeManager
-                                          .tertiaryBackgroundDefaultColor,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                      color: integrationProvider
+                                                      .integrations["github"] !=
+                                                  null &&
+                                              integrationProvider
+                                                      .integrations["github"]
+                                                  ["installed"]
+                                          ? themeProvider.themeManager
+                                              .successBackgroundColor
+                                          : themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor,
+                                      borderRadius: BorderRadius.circular(5)),
                                   child: CustomText(
                                     integrationProvider
                                                     .integrations["github"] !=
@@ -189,7 +197,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                             integrationProvider
                                                     .integrations["github"]
                                                 ["installed"]
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .themeManager.textSuccessColor
                                         : themeProvider
                                             .themeManager.tertiaryTextColor,
                                   ),
@@ -197,6 +206,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 5),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
                             child: CustomText(
@@ -234,7 +244,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
                       color: themeProvider
-                          .themeManager.secondaryBackgroundDefaultColor,
+                          .themeManager.primaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                           color:
@@ -268,15 +278,21 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                       .themeManager.primaryTextColor,
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.all(5),
-                                  color: integrationProvider
-                                                  .integrations["jira"] !=
-                                              null &&
-                                          integrationProvider
-                                              .integrations["jira"]["installed"]
-                                      ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.themeManager
-                                          .tertiaryBackgroundDefaultColor,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: integrationProvider
+                                                    .integrations["jira"] !=
+                                                null &&
+                                            integrationProvider
+                                                    .integrations["jira"]
+                                                ["installed"]
+                                        ? themeProvider
+                                            .themeManager.successBackgroundColor
+                                        : themeProvider.themeManager
+                                            .tertiaryBackgroundDefaultColor,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
                                   child: CustomText(
                                     integrationProvider.integrations["jira"] !=
                                                 null &&
@@ -292,7 +308,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                             integrationProvider
                                                     .integrations["jira"]
                                                 ["installed"]
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .themeManager.textSuccessColor
                                         : themeProvider
                                             .themeManager.tertiaryTextColor,
                                   ),
@@ -300,6 +317,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 5),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
                             child: CustomText(

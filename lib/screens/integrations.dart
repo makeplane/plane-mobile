@@ -94,12 +94,16 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                     themeProvider.themeManager.primaryTextColor,
                               ),
                               Container(
-                                padding: const EdgeInsets.all(5),
-                                color:
-                                    workspaceProvider.slackIntegration == null
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: workspaceProvider.slackIntegration ==
+                                            null
                                         ? themeProvider.themeManager
                                             .tertiaryBackgroundDefaultColor
-                                        : darkSucessBackground,
+                                        : themeProvider.themeManager
+                                            .successBackgroundColor,
+                                    borderRadius: BorderRadius.circular(5)),
                                 child: CustomText(
                                   workspaceProvider.slackIntegration == null
                                       ? 'Not Installed'
@@ -171,11 +175,16 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                   themeProvider.themeManager.primaryTextColor,
                             ),
                             Container(
-                              padding: const EdgeInsets.all(5),
-                              color: workspaceProvider.githubIntegration == null
-                                  ? themeProvider.themeManager
-                                      .tertiaryBackgroundDefaultColor
-                                  : darkSucessBackground,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: workspaceProvider.githubIntegration ==
+                                          null
+                                      ? themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor
+                                      : themeProvider
+                                          .themeManager.successBackgroundColor,
+                                  borderRadius: BorderRadius.circular(5)),
                               child: CustomText(
                                   workspaceProvider.githubIntegration == null
                                       ? 'Not Installed'

@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/Theming/prefrences.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/timezone_manager.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/bottom_sheets/role_sheet.dart';
@@ -147,11 +149,18 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                               profileProvider
                                                       .userProfile.avatar !=
                                                   ""
-                                          ? CircleAvatar(
-                                              radius: 50,
-                                              backgroundImage: NetworkImage(
-                                                  profileProvider
-                                                      .userProfile.avatar!),
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(900),
+                                              child: SizedBox(
+                                                height: 100,
+                                                width: 100,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: profileProvider
+                                                      .userProfile.avatar!,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             )
                                           : Container(
                                               height: 75,
@@ -505,7 +514,13 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                 Container(
                                   margin: const EdgeInsets.only(left: 16),
                                   child: CustomText(
-                                    profileProvider.selectedTimeZone.toString(),
+                                    TimeZoneManager.timeZones.firstWhere(
+                                                (element) =>
+                                                    element['value'] ==
+                                                    profileProvider
+                                                        .selectedTimeZone)[
+                                            'label'] ??
+                                        '',
                                     type: FontStyle.Small,
                                   ),
                                 ),
@@ -521,7 +536,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               ],
                             ),
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 30),
                       ],
                     ),
                     Container(

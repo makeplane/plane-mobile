@@ -203,7 +203,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                 type: FontStyle.Small,
               ),
             ),
-            trailing: GestureDetector(
+            trailing: InkWell(
               onTap: () {
                 if (fromRole(role: workspaceProvider.role) <
                     workspaceProvider.workspaceMembers[index]['role']) {
@@ -245,6 +245,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                 }
               },
               child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 constraints: const BoxConstraints(maxWidth: 87),
                 child: Row(
                   // crossAxisAlignment: WrapCrossAlignment.center,

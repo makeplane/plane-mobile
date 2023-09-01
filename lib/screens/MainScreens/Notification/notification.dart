@@ -35,6 +35,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
         centerTitle: false,
         leading: false,
         fontType: FontStyle.H4,
+        elevation: false,
         actions: [
           GestureDetector(
             onTap: () {

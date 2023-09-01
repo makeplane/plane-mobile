@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/member_status.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
@@ -42,6 +43,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    BuildContext mainBuildContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -367,6 +369,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: themeProvider
@@ -444,38 +448,26 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                           if (!widget.isProject &&
                               workspaceProvider.workspaceInvitationState ==
                                   StateEnum.success) {
-                                    postHogService(
-                                      eventName: 'WORKSPACE_USER_INVITE',
-                                      properties: {
-                                        'INVITED_USER_EMAIL': emailController.text,
-                                      },
-                                    ref: ref
-                                );
+                            postHogService(
+                                eventName: 'WORKSPACE_USER_INVITE',
+                                properties: {
+                                  'INVITED_USER_EMAIL': emailController.text,
+                                },
+                                ref: ref);
                             //show success snackbar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: CustomText(
-                                'Invitation sent successfully',
-                                type: FontStyle.Medium,
-                                color: Colors.white,
-                              ),
-                              backgroundColor: Colors.green,
-                            ));
-                            Navigator.of(context).pop();
+                            CustomToast().showToast(mainBuildContext,
+                                'Invitation sent successfully', themeProvider,
+                                toastType: ToastType.success);
+
+                            Navigator.of(mainBuildContext).pop();
                           }
                           if (widget.isProject &&
                               projectProvider.projectInvitationState ==
                                   StateEnum.success) {
                             //show success snackbar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: CustomText(
-                                'Invitation sent successfully',
-                                type: FontStyle.Medium,
-                                color: Colors.white,
-                              ),
-                              backgroundColor: greenHighLight,
-                            ));
+                            CustomToast().showToast(mainBuildContext,
+                                'Invitation sent successfully', themeProvider,
+                                toastType: ToastType.success);
                           }
                         },
                         text: 'Invite',

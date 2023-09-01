@@ -10,6 +10,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesT
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_rich_text.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/error_state.dart';
@@ -46,6 +47,12 @@ class _ActivityState extends ConsumerState<Activity> {
       //     ? darkSecondaryBackgroundColor
       //     : lightSecondaryBackgroundColor,
 
+      appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: "Activity"),
+
       body: LoadingWidget(
           loading: activityProvider.getActivityState == StateEnum.loading,
           widgetClass: activityProvider.getActivityState == StateEnum.success
@@ -57,12 +64,6 @@ class _ActivityState extends ConsumerState<Activity> {
                       children: [
                         const SizedBox(
                           height: 10,
-                        ),
-                        CustomText(
-                          'Activity',
-                          type: FontStyle.H4,
-                          fontWeight: FontWeightt.Semibold,
-                          color: themeProvider.themeManager.primaryTextColor,
                         ),
                         Expanded(
                           child: activityProvider.data.isEmpty

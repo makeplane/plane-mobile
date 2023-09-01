@@ -645,7 +645,14 @@ class _DayDetailState extends ConsumerState<DayDetail> {
           Container(
             height: 50,
             width: MediaQuery.of(context).size.width,
-            color: darkBackgroundColor,
+            decoration: BoxDecoration(
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: themeProvider.themeManager.shadowColor,
+                      blurRadius: 5,
+                      offset: const Offset(0, -5))
+                ]),
             child: Row(
               children: [
                 ref.read(ProviderList.projectProvider).role == Role.admin
@@ -661,19 +668,19 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                               ),
                             );
                           },
-                          child: const SizedBox.expand(
+                          child: SizedBox.expand(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                   size: 20,
                                 ),
                                 CustomText(
                                   ' Issue',
                                   type: FontStyle.Medium,
-                                  color: Colors.white,
                                 )
                               ],
                             ),
@@ -684,7 +691,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 Container(
                   height: 50,
                   width: 0.5,
-                  color: greyColor,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                 ),
                 Expanded(
                     child: InkWell(
@@ -705,19 +712,18 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           );
                         });
                   },
-                  child: const SizedBox.expand(
+                  child: SizedBox.expand(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.menu,
-                          color: Colors.white,
+                          color: themeProvider.themeManager.primaryTextColor,
                           size: 19,
                         ),
                         CustomText(
                           ' Layout',
                           type: FontStyle.Medium,
-                          color: Colors.white,
                         )
                       ],
                     ),
@@ -726,13 +732,13 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 Container(
                   height: 50,
                   width: 0.5,
-                  color: greyColor,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                 ),
-                Container(
-                  height: 50,
-                  width: 0.5,
-                  color: greyColor,
-                ),
+                // Container(
+                //   height: 50,
+                //   width: 0.5,
+                //   color: greyColor,
+                // ),
                 Expanded(
                     child: InkWell(
                   onTap: () {
@@ -754,19 +760,18 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           );
                         });
                   },
-                  child: const SizedBox.expand(
+                  child: SizedBox.expand(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
+                          Icons.filter_list_outlined,
+                          color: themeProvider.themeManager.primaryTextColor,
                           size: 19,
                         ),
                         CustomText(
                           ' Filters',
                           type: FontStyle.Medium,
-                          color: Colors.white,
                         )
                       ],
                     ),

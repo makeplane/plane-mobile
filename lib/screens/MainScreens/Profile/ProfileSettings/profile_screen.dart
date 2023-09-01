@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/select_workspace.dart';
@@ -308,10 +309,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 tag: 'photo',
                 child: profileProvider.userProfile.avatar != null &&
                         profileProvider.userProfile.avatar != ""
-                    ? CircleAvatar(
-                        radius: 45,
-                        backgroundImage:
-                            NetworkImage(profileProvider.userProfile.avatar!),
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(900),
+                        child: SizedBox(
+                          height: 90,
+                          width: 90,
+                          child: CachedNetworkImage(
+                            imageUrl: profileProvider.userProfile.avatar!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       )
                     : Container(
                         height: 75,
@@ -453,8 +460,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          child: Image.network(
-                                            workspaceProvider.selectedWorkspace!
+                                          child: CachedNetworkImage(
+                                            imageUrl: workspaceProvider
+                                                .selectedWorkspace!
                                                 .workspaceLogo,
                                             width: 25,
                                             height: 35,

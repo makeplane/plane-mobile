@@ -151,8 +151,10 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                   uploadedUrl: url,
                                                 );
                                               });
-                                          log(url.toString());
-                                          projectProvider.coverUrl = url['url'];
+                                          setState(() {
+                                            projectProvider.coverUrl =
+                                                url['url'];
+                                          });
                                         },
                                         child: CircleAvatar(
                                           backgroundColor: themeProvider
@@ -491,8 +493,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                         }
                                       : null
                                 },
-                                ref: ref
-                                );
+                                ref: ref);
                             if (projectProvider.createProjectState ==
                                 StateEnum.success) {
                               Navigator.pop(Const.globalKey.currentContext!);

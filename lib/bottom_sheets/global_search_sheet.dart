@@ -256,9 +256,18 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     List items = [
       {
         'title': 'New Issue',
-        'screen': () {
+        'screen': () async {
+          ref.watch(ProviderList.projectProvider).currentProject =
+              ref.watch(ProviderList.projectProvider).projects[0];
+          ref.watch(ProviderList.projectProvider).setState();
+          // await ref
+          //     .read(ProviderList.projectProvider)
+          //     .initializeProject(ref: ref);
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const CreateIssue(
+              builder: (context) => CreateIssue(
+                    projectId: ref
+                        .read(ProviderList.projectProvider)
+                        .projects[0]['id'],
                     fromMyIssues: true,
                   )));
         },
@@ -335,12 +344,12 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         'You dont have any projects yet, try creating one',
                         themeProvider);
                   } else {
-                    ref.watch(ProviderList.projectProvider).currentProject =
-                        ref.watch(ProviderList.projectProvider).projects[0];
-                    ref.watch(ProviderList.projectProvider).setState();
-                    await ref
-                        .read(ProviderList.projectProvider)
-                        .initializeProject(ref: ref);
+                    // ref.watch(ProviderList.projectProvider).currentProject =
+                    //     ref.watch(ProviderList.projectProvider).projects[0];
+                    // ref.watch(ProviderList.projectProvider).setState();
+                    // await ref
+                    //     .read(ProviderList.projectProvider)
+                    //     .initializeProject(ref: ref);
                     items[index]['screen']();
                   }
                 } else {

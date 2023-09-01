@@ -94,8 +94,8 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                     themeProvider.themeManager.primaryTextColor,
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5, bottom: 8),
                                 decoration: BoxDecoration(
                                     color: workspaceProvider.slackIntegration ==
                                             null
@@ -175,8 +175,8 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                   themeProvider.themeManager.primaryTextColor,
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 5, bottom: 8),
                               decoration: BoxDecoration(
                                   color: workspaceProvider.githubIntegration ==
                                           null

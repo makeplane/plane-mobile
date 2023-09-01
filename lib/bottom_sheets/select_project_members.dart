@@ -302,14 +302,16 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                         .themeManager.primaryBackgroundDefaultColor,
                     // height: 25,
                     // width: 25,
-                    child: const Wrap(
+                    child: Wrap(
                       children: [
                         SizedBox(
                           height: 25,
                           width: 25,
                           child: LoadingIndicator(
                             indicatorType: Indicator.lineSpinFadeLoader,
-                            colors: [Colors.black],
+                            colors: [
+                              themeProvider.themeManager.primaryTextColor
+                            ],
                             strokeWidth: 1.0,
                             backgroundColor: Colors.transparent,
                           ),

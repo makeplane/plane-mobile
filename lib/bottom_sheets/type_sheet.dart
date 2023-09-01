@@ -192,8 +192,11 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       myIssuesProv.updateMyIssueView();
                     } else {
                       prov.issues.projectView = ProjectView.list;
-                      prov.tempProjectView = ProjectView.list;
+                      if (widget.issueCategory == IssueCategory.issues) {
+                        prov.tempProjectView = ProjectView.list;
+                      }
                       prov.setsState();
+
                       if (widget.issueCategory == IssueCategory.issues) {
                         prov.updateProjectView();
                       }

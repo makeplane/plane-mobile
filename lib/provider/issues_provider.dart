@@ -532,9 +532,15 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getStates({required String slug, required String projID}) async {
-    statesState = StateEnum.loading;
-    // notifyListeners();
+  Future getStates({
+    required String slug,
+    required String projID,
+    bool showLoading = true,
+  }) async {
+    if (showLoading) {
+      statesState = StateEnum.loading;
+      notifyListeners();
+    }
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -664,8 +670,11 @@ class IssuesProvider extends ChangeNotifier {
                 workspaceProvider.selectedWorkspace!.workspaceSlug,
             'WORKSPACE_NAME':
                 workspaceProvider.selectedWorkspace!.workspaceName,
-            'PROJECT_ID': projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PROJECT_ID': projID ?? projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': ref!
+                .read(ProviderList.projectProvider)
+                .projects
+                .firstWhere((element) => element['id'] == projID)['name'],
             'ISSUE_ID': response.data['id']
           },
           ref: ref);
@@ -1223,7 +1232,12 @@ class IssuesProvider extends ChangeNotifier {
     } else if (issues.groupBY == GroupBY.createdBY) {
       getProjectMembers(slug: slug, projID: projID);
     } else if (issues.groupBY == GroupBY.state) {
-      getStates(slug: slug, projID: projID);
+      log('Getting States from filterIssues=======================================');
+      getStates(
+        slug: slug,
+        projID: projID,
+        showLoading: false,
+      );
     }
 
     String url;

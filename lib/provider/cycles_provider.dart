@@ -716,6 +716,9 @@ class CyclesProvider with ChangeNotifier {
           stateOrdering.add(key);
         });
       }
+
+      initializeBoard();
+
       cyclesIssueState = StateEnum.success;
       notifyListeners();
     } catch (e) {

@@ -243,7 +243,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                             issueId: activityProvider.data[index]["issue"],
                                                                                           )));
                                                                                 },
-                                                                              text: ' ${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}',
+                                                                              text: activityProvider.data[index]['issue_detail'] != null ? ' ${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
                                                                               style: TextStyle(
                                                                                 color: themeProvider.themeManager.primaryTextColor,
                                                                                 fontSize: 14,
@@ -448,8 +448,9 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                           issueId: activityProvider.data[index]["issue"],
                                                                                         )));
                                                                               },
-                                                                            text:
-                                                                                '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}',
+                                                                            text: activityProvider.data[index]['issue_detail'] != null
+                                                                                ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}'
+                                                                                : '',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: themeProvider.themeManager.primaryTextColor,
@@ -545,7 +546,10 @@ class _ActivityState extends ConsumerState<Activity> {
         formattedActivity = activity['actor_detail']['display_name'] +
             ' updated the description to ';
       } else {
-        formattedActivity = "${activity['comment']} to ";
+        formattedActivity = "${activity['comment']} ";
+      }
+      if (activity['issue_detail'] != null) {
+        formattedActivity += "to ";
       }
       return formattedActivity;
     } else {

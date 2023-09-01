@@ -91,6 +91,46 @@ class EmptyPlaceholder {
     );
   }
 
+  static Widget emptySubIssues(
+    WidgetRef ref,
+  ) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return Container(
+      alignment: Alignment.center,
+      //  margin: const EdgeInsets.only(top: 150),
+      child: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/svg_images/empty_issues.svg",
+            width: 130,
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 35),
+            child: CustomText(
+              'No Issues yet',
+              type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
+            ),
+          ),
+          Container(
+            width: 300,
+            padding: const EdgeInsets.only(top: 10),
+            child: CustomText(
+              'You have not created any issues yet. Create issues to select them for your issues.',
+              color: themeProvider.themeManager.placeholderTextColor,
+              textAlign: TextAlign.center,
+              type: FontStyle.Small,
+              maxLines: 3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   static Widget emptyIssues(BuildContext context,
       {String? cycleId,
       String? moduleId,
@@ -131,6 +171,15 @@ class EmptyPlaceholder {
           ),
           GestureDetector(
             onTap: () {
+              if (type == IssueCategory.myIssues) {
+                ref.watch(ProviderList.projectProvider).currentProject =
+                    ref.watch(ProviderList.projectProvider).projects[0];
+                ref.watch(ProviderList.projectProvider).setState();
+                // await ref
+                //     .read(ProviderList.projectProvider)
+                //     .initializeProject(ref: ref);
+              }
+
               Navigator.push(
                   context,
                   MaterialPageRoute(

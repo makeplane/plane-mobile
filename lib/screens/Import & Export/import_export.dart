@@ -167,8 +167,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                       .themeManager.primaryTextColor,
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 5, bottom: 8),
                                   decoration: BoxDecoration(
                                       color: integrationProvider
                                                       .integrations["github"] !=
@@ -291,8 +291,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                         : themeProvider.themeManager
                                             .tertiaryBackgroundDefaultColor,
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 5, bottom: 8),
                                   child: CustomText(
                                     integrationProvider.integrations["jira"] !=
                                                 null &&

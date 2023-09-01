@@ -437,6 +437,7 @@ class ModuleProvider with ChangeNotifier {
           stateOrdering.add(key);
         });
       }
+      initializeBoard();
       moduleIssueState = StateEnum.success;
       notifyListeners();
     } catch (e) {
@@ -505,7 +506,7 @@ class ModuleProvider with ChangeNotifier {
       issues.issues.add(BoardListsData(
         id: stateOrdering[j],
         items: items,
-        // shrink: shrinkStates[j],
+        shrink: shrinkStates[j],
         index: j,
         width: issuesProvider.issues.projectView == ProjectView.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width

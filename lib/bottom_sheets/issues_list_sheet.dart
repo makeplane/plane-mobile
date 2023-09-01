@@ -107,10 +107,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                       ],
                     ),
                     const Spacer(),
-                    EmptyPlaceholder.emptyIssues(
-                      ref: ref,
-                      context,
-                    ),
+                    EmptyPlaceholder.emptySubIssues(ref),
                     const Spacer(),
                   ],
                 )

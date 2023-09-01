@@ -741,8 +741,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               .read(ProviderList.projectProvider)
                               .currentProject["id"],
                         );
-                      }
-                      if (widget.issueCategory == IssueCategory.moduleIssues) {
+                      } else if (widget.issueCategory ==
+                          IssueCategory.moduleIssues) {
                         modulesProvider.filterModuleIssues(
                           slug: ref
                               .read(ProviderList.workspaceProvider)

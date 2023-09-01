@@ -67,6 +67,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     var issuesProvider = ref.read(ProviderList.issuesProvider);
     tempIssuesList = issuesProvider.issuesList;
+    issuesProvider.tempProjectView = issuesProvider.issues.projectView;
+    issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
+    issuesProvider.tempOrderBy = issuesProvider.issues.orderBY;
+    issuesProvider.tempIssueType = issuesProvider.issues.issueType;
+    issuesProvider.tempFilters = issuesProvider.issues.filters;
+
     issuesProvider.issues.projectView = ProjectView.kanban;
     issuesProvider.issues.groupBY = GroupBY.state;
 
@@ -87,6 +93,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             .read(ProviderList.workspaceProvider)
             .selectedWorkspace!
             .workspaceSlug,
+        issueCategory: widget.fromModule
+            ? IssueCategory.moduleIssues
+            : IssueCategory.cycleIssues,
         projID: ref.read(ProviderList.projectProvider).currentProject['id']);
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
@@ -221,6 +230,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.showEmptyStates =
             issueProvider.issueView["showEmptyGroups"];
         log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+
+        issueProvider.setsState();
+        issueProvider.filterIssues(
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug,
+            projID: projectProvider.currentProject['id']);
         return true;
       },
       child: Scaffold(
@@ -250,7 +267,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
             issueProvider.showEmptyStates =
                 issueProvider.issueView["showEmptyGroups"];
-            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).issues.projectView}');
+            issueProvider.setsState();
+            issueProvider.filterIssues(
+                slug: ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+                projID: projectProvider.currentProject['id']);
             Navigator.pop(context);
           },
           text: widget.projId == null
@@ -500,11 +524,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     .lineSpinFadeLoader,
                                                 colors: [
                                                   themeProvider.themeManager
-                                                      .primaryBackgroundDefaultColor
+                                                      .primaryTextColor
                                                 ],
                                                 strokeWidth: 1.0,
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                backgroundColor: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundDefaultColor,
                                               )),
                                         )
                                       : ((!widget.fromModule && cyclesProvider.isIssuesEmpty) ||

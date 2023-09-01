@@ -73,14 +73,19 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   .watch(ProviderList.projectProvider)
                                   .projects[0];
                           ref.watch(ProviderList.projectProvider).setState();
-                          await ref
-                              .read(ProviderList.projectProvider)
-                              .initializeProject(ref: ref);
+                          // await ref
+                          //     .read(ProviderList.projectProvider)
+                          //     .initializeProject(ref: ref);
                           // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CreateIssue(),
+                              builder: (context) => CreateIssue(
+                                projectId: ref
+                                    .watch(ProviderList.projectProvider)
+                                    .projects[0]['id'],
+                                fromMyIssues: true,
+                              ),
                             ),
                           );
                         }
@@ -497,6 +502,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                                                             // createIssuedata['s'] = element.id;
                                                           }
+                                                          projectProvider
+                                                                  .currentProject =
+                                                              projectProvider
+                                                                  .projects[0];
+                                                          projectProvider
+                                                              .setState();
                                                           Navigator.of(context).push(
                                                               MaterialPageRoute(
                                                                   builder: (ctx) =>

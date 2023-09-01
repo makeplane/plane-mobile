@@ -682,14 +682,18 @@ class MyIssuesProvider extends ChangeNotifier {
                     // createIssuedata['s'] = element.id;
                   }
 
+                  ref!.watch(ProviderList.projectProvider).currentProject =
+                      ref!.watch(ProviderList.projectProvider).projects[0];
+                  ref!.watch(ProviderList.projectProvider).setState();
+
                   Navigator.push(
                       Const.globalKey.currentContext!,
                       MaterialPageRoute(
                           builder: (ctx) => CreateIssue(
-                                fromMyIssues: true,
                                 projectId: ref!
                                     .read(ProviderList.projectProvider)
                                     .projects[0]['id'],
+                                fromMyIssues: true,
                               )));
                 },
                 child: Icon(

@@ -241,12 +241,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 decoration: BoxDecoration(
                     color: themeProvider
                         .themeManager.primaryBackgroundDefaultColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: themeProvider.themeManager.shadowColor,
-                          blurRadius: 5,
-                          offset: const Offset(0, -5))
-                    ]),
+                    boxShadow:
+                        themeProvider.themeManager.shadowBottomControlButtons),
                 child: Row(
                   children: [
                     projectProvider.role == Role.admin

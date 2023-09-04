@@ -269,7 +269,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -285,7 +285,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -373,25 +373,24 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
-                                                method: CRUD.update,
-                                                disableLoading: true,
-                                                slug: ref
-                                                    .read(ProviderList
-                                                        .workspaceProvider)
-                                                    .selectedWorkspace!
-                                                    .workspaceSlug,
-                                                projectId: ref
-                                                    .read(ProviderList
-                                                        .projectProvider)
-                                                    .currentProject['id'],
-                                                data: {
-                                                  'cycle': cycleId,
-                                                },
-                                                query: 'all',
-                                                cycleId: cycleId,
-                                                isFavorite: true,
-                                                ref: ref
-                                              );
+                                                  method: CRUD.update,
+                                                  disableLoading: true,
+                                                  slug: ref
+                                                      .read(ProviderList
+                                                          .workspaceProvider)
+                                                      .selectedWorkspace!
+                                                      .workspaceSlug,
+                                                  projectId: ref
+                                                      .read(ProviderList
+                                                          .projectProvider)
+                                                      .currentProject['id'],
+                                                  data: {
+                                                    'cycle': cycleId,
+                                                  },
+                                                  query: 'all',
+                                                  cycleId: cycleId,
+                                                  isFavorite: true,
+                                                  ref: ref);
                                             },
                                             child: Icon(
                                               Icons.star,
@@ -569,7 +568,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -585,7 +584,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -668,7 +667,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProvider.updateCycle(
-                                                  method: CRUD.update,
+                                                    method: CRUD.update,
                                                     disableLoading: true,
                                                     slug: ref
                                                         .read(ProviderList
@@ -685,8 +684,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     data: {
                                                       'cycle': cycleId,
                                                     },
-                                                    ref: ref
-                                                  );
+                                                    ref: ref);
                                               },
                                               child: Icon(
                                                 Icons.star_border,
@@ -986,7 +984,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
-                                                method: CRUD.update,
+                                                  method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -1003,8 +1001,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   data: {
                                                     'cycle': cycleId,
                                                   },
-                                                  ref: ref
-                                                );
+                                                  ref: ref);
                                             },
                                             child: Icon(
                                               Icons.star,
@@ -1251,7 +1248,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProviderRead.updateCycle(
-                                                  method: CRUD.update,
+                                                    method: CRUD.update,
                                                     disableLoading: true,
                                                     slug: ref
                                                         .read(ProviderList
@@ -1268,8 +1265,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     data: {
                                                       'cycle': cycleId,
                                                     },
-                                                    ref: ref
-                                                  );
+                                                    ref: ref);
                                               },
                                               child: Icon(
                                                 Icons.star_border,
@@ -1542,7 +1538,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProvider.updateCycle(
-                                                method: CRUD.update,
+                                                  method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -1559,8 +1555,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   data: {
                                                     'cycle': cycleId,
                                                   },
-                                                  ref: ref
-                                                );
+                                                  ref: ref);
                                             },
                                             child: Icon(
                                               Icons.star,
@@ -1808,7 +1803,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   .removeAt(index);
                                               cyclesProviderRead.setState();
                                               cyclesProviderRead.updateCycle(
-                                                method: CRUD.update,
+                                                  method: CRUD.update,
                                                   disableLoading: true,
                                                   slug: ref
                                                       .read(ProviderList
@@ -1825,8 +1820,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   data: {
                                                     'cycle': cycleId,
                                                   },
-                                                  ref: ref
-                                                );
+                                                  ref: ref);
                                             },
                                             child: Icon(
                                               Icons.star_border,
@@ -2117,25 +2111,24 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     .removeAt(index);
                                                 cyclesProviderRead.setState();
                                                 cyclesProvider.updateCycle(
-                                                  method: CRUD.update,
-                                                  disableLoading: true,
-                                                  slug: ref
-                                                      .read(ProviderList
-                                                          .workspaceProvider)
-                                                      .selectedWorkspace!
-                                                      .workspaceSlug,
-                                                  projectId: ref
-                                                      .read(ProviderList
-                                                          .projectProvider)
-                                                      .currentProject['id'],
-                                                  data: {
-                                                    'cycle': cycleId,
-                                                  },
-                                                  query: 'all',
-                                                  cycleId: cycleId,
-                                                  isFavorite: true,
-                                                  ref: ref
-                                                );
+                                                    method: CRUD.update,
+                                                    disableLoading: true,
+                                                    slug: ref
+                                                        .read(ProviderList
+                                                            .workspaceProvider)
+                                                        .selectedWorkspace!
+                                                        .workspaceSlug,
+                                                    projectId: ref
+                                                        .read(ProviderList
+                                                            .projectProvider)
+                                                        .currentProject['id'],
+                                                    data: {
+                                                      'cycle': cycleId,
+                                                    },
+                                                    query: 'all',
+                                                    cycleId: cycleId,
+                                                    isFavorite: true,
+                                                    ref: ref);
                                               },
                                               child: cyclesProvider
                                                           .cycleDraftFavoriteData[
@@ -2399,29 +2392,30 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           InkWell(
                                               onTap: () async {
-                                                await cyclesProvider.updateCycle(
-                                                  method: CRUD.update,
-                                                    slug: ref
-                                                        .read(ProviderList
-                                                            .workspaceProvider)
-                                                        .selectedWorkspace!
-                                                        .workspaceSlug,
-                                                    projectId: ref
-                                                        .read(ProviderList
-                                                            .projectProvider)
-                                                        .currentProject['id'],
-                                                    cycleId: cyclesProvider
-                                                            .cyclesAllData[
-                                                        index]['id'],
-                                                    isFavorite: false,
-                                                    query: 'draft',
-                                                    data: {
-                                                      'cycle': cyclesProvider
-                                                              .cyclesDraftData[
-                                                          index]['id'],
-                                                    },
-                                                    ref: ref
-                                                  );
+                                                await cyclesProvider
+                                                    .updateCycle(
+                                                        method: CRUD.update,
+                                                        slug: ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .selectedWorkspace!
+                                                            .workspaceSlug,
+                                                        projectId: ref
+                                                                .read(ProviderList
+                                                                    .projectProvider)
+                                                                .currentProject[
+                                                            'id'],
+                                                        cycleId: cyclesProvider
+                                                                .cyclesAllData[
+                                                            index]['id'],
+                                                        isFavorite: false,
+                                                        query: 'draft',
+                                                        data: {
+                                                          'cycle': cyclesProvider
+                                                                  .cyclesDraftData[
+                                                              index]['id'],
+                                                        },
+                                                        ref: ref);
                                                 cyclesProviderRead.cyclesCrud(
                                                     slug: ref
                                                         .read(ProviderList
@@ -2437,8 +2431,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     ref: ref,
                                                     cycleId: cyclesProvider
                                                             .cyclesAllData[
-                                                        index]['id']
-                                                  );
+                                                        index]['id']);
                                               },
                                               child: cyclesProvider
                                                           .cyclesDraftData[

@@ -53,7 +53,7 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
     }
   }
 
-  setState() {
+  clear() {
     state = state.copyWith(data: null);
   }
 }

@@ -74,6 +74,8 @@ class ProfileProvider extends ChangeNotifier {
       );
       userProfile = UserProfile.fromMap(response.data);
       selectedTimeZone = userProfile.userTimezone.toString();
+      TimeZoneManager.findLabelFromTimeZonesList(selectedTimeZone) ??
+          'UTC, GMT';
       // if (userProfile.theme != null && userProfile.theme!.length > 1) {
       //   saveCustomTheme(userProfile.theme!);
       // }

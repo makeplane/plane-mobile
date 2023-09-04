@@ -62,11 +62,15 @@ class _PageCardState extends ConsumerState<PageCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
+            boxShadow: themeProvider.themeManager.theme == THEME.light
+                ? themeProvider.themeManager.shadowXXS
+                : null,
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-            border: Border.all(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-            //elevation
+            border: themeProvider.themeManager.theme == THEME.light
+                ? null
+                : Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                    width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,18 +136,17 @@ class _PageCardState extends ConsumerState<PageCard> {
                                   ? 0
                                   : 1;
                           pageProvider.editPage(
-                            context: context,
-                            pageId: pageProvider.pages[pageProvider
-                                .selectedFilter]![widget.index]['id'],
-                            slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
-                            projectId: projectProvider.currentProject['id'],
-                            data: {
-                              "access": pageProvider.pages[pageProvider
-                                  .selectedFilter]![widget.index]['access']
-                            },
-                            ref: ref
-                          );
+                              context: context,
+                              pageId: pageProvider.pages[pageProvider
+                                  .selectedFilter]![widget.index]['id'],
+                              slug: workspaceProvider
+                                  .selectedWorkspace!.workspaceSlug,
+                              projectId: projectProvider.currentProject['id'],
+                              data: {
+                                "access": pageProvider.pages[pageProvider
+                                    .selectedFilter]![widget.index]['access']
+                              },
+                              ref: ref);
                           setState(() {});
                         },
                         child: Container(

@@ -224,6 +224,9 @@ const darkToastBackgroundColor = Color.fromRGBO(23, 23, 23, 1);
 const lightSucessBackground = Color.fromRGBO(240, 253, 244, 1);
 const darkSucessBackground = Color.fromRGBO(34, 197, 94, 0.15);
 
+const lightShadowColorXS = Color.fromRGBO(0, 0, 0, 0.16);
+const darkShadowColorXS = Color.fromRGBO(0, 0, 0, 0.2);
+
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
       fontFamily: 'SF Pro Display',

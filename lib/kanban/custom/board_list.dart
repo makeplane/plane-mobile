@@ -67,12 +67,12 @@ class _BoardListState extends ConsumerState<BoardList> {
                             prov.draggedItemState!.width +
                                 prov.valueNotifier.value.dx)) &&
                         (prov.board.dragItemOfListIndex! != widget.index)) {
-                     // print("RIGHT ->");
-                     // print(prov.board.lists[widget.index].items.length);
+                      // print("RIGHT ->");
+                      // print(prov.board.lists[widget.index].items.length);
                       // CASE: WHEN ELEMENT IS DRAGGED RIGHT SIDE AND LIST HAVE NO ELEMENT IN IT //
                       if (prov.board.lists[widget.index].items.isEmpty) {
                         log("LIST 0 RIGHT");
-                       prov.move = "REPLACE";
+                        prov.move = "REPLACE";
                         prov.board.lists[widget.index].items.add(ListItem(
                             child: Container(
                               decoration: prov
@@ -112,7 +112,7 @@ class _BoardListState extends ConsumerState<BoardList> {
                               1 &&
                           prov.draggedItemState!.itemIndex == 0 &&
                           prov.draggedItemState!.listIndex == widget.index) {
-                       // print("RIGHT LENGTH == 1");
+                        // print("RIGHT LENGTH == 1");
                         WidgetsBinding.instance
                             .addPostFrameCallback((timeStamp) {
                           if (prov.board.lists[draggedItemListIndex!]
@@ -156,8 +156,8 @@ class _BoardListState extends ConsumerState<BoardList> {
                                 prov.valueNotifier.value.dx)) &&
                         (prov.board.dragItemOfListIndex! != widget.index)) {
                       if (prov.board.lists[widget.index].items.isEmpty) {
-                      prov.move = "REPLACE";
-                      //  print("LIST 0 LEFT");
+                        prov.move = "REPLACE";
+                        //  print("LIST 0 LEFT");
                         prov.board.lists[widget.index].items.add(ListItem(
                             child: Container(
                               decoration: prov
@@ -198,7 +198,7 @@ class _BoardListState extends ConsumerState<BoardList> {
                               1 &&
                           prov.draggedItemState!.itemIndex == 0 &&
                           prov.draggedItemState!.listIndex == widget.index) {
-                       // print("LEFT LENGTH == 1");
+                        // print("LEFT LENGTH == 1");
                         WidgetsBinding.instance
                             .addPostFrameCallback((timeStamp) {
                           // CASE : IF PREVIOUSLY PLACEHOLDER IS ADDED IN EMPTY LIST THEN EXPLICITLY REMOVE THAT PLACEHOLDER, AND MAKE THAT LIST EMPTY AGAIN //

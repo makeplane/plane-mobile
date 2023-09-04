@@ -51,7 +51,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
 
       var prov = ref.read(ProviderList.globalSearchProvider.notifier);
       if (input.text.isEmpty) {
-        prov.setState();
+        prov.clear();
       } else {
         log("HERE");
         prov.getGlobalData(
@@ -63,6 +63,15 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         );
       }
     });
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(ProviderList.globalSearchProvider.notifier).clear();
+    });
+
+    super.initState();
   }
 
   @override
@@ -121,7 +130,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                       onPressed: () {
                                         input.clear();
                                         globalSearchProvider.data = null;
-                                        globalSearchProviderRead.setState();
+                                        globalSearchProviderRead.clear();
                                       },
                                       icon: Icon(Icons.cancel,
                                           color: themeProvider.themeManager
@@ -836,7 +845,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                           },
                         );
                         globalSearchProvider.data = null;
-                        globalSearchProviderRead.setState();
+                        globalSearchProviderRead.clear();
                         Navigator.of(Const.globalKey.currentContext!).pop();
                       },
                       child: Padding(

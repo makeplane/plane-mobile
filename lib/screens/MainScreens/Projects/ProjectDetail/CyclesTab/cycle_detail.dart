@@ -583,10 +583,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -732,13 +734,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 decoration: BoxDecoration(
                                     color: themeProvider.themeManager
                                         .primaryBackgroundDefaultColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: themeProvider
-                                              .themeManager.shadowColor,
-                                          blurRadius: 5,
-                                          offset: const Offset(0, -5))
-                                    ]),
+                                    boxShadow: themeProvider.themeManager
+                                        .shadowBottomControlButtons),
                                 child: Row(
                                   children: [
                                     projectProvider.role == Role.admin ||

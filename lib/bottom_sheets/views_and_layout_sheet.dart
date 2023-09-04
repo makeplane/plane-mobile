@@ -720,7 +720,11 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                               activeColor:
                                   themeProvider.themeManager.primaryColour,
                               value: 1,
-                              onChanged: (val) {}),
+                              onChanged: (val) {
+                                setState(() {
+                                  selected = 1;
+                                });
+                              }),
                           const SizedBox(width: 10),
                           CustomText(
                             'List View',
@@ -766,9 +770,9 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                   themeProvider.themeManager.primaryColour,
                               value: 0,
                               onChanged: (val) {
-                                // setState(() {
-                                //   selected = 0;
-                                // });
+                                setState(() {
+                                  selected = 0;
+                                });
                               }),
                           const SizedBox(width: 10),
                           CustomText(

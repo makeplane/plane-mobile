@@ -65,7 +65,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[0]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(0);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[0]['name'].toString(),
@@ -104,7 +107,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[1]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(1);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[1]['name'].toString(),
@@ -143,7 +149,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[2]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(2);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[2]['name'].toString(),
@@ -182,7 +191,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[3]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(3);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[3]['name'].toString(),
@@ -221,7 +233,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[4]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(4);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[4]['name'].toString(),
@@ -260,7 +275,10 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
                       groupValue: modulesProvider.moduleSatatus[5]['value'],
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: modulesProvider.createModule['status'],
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                        modulesProvider.changeIndex(5);
+                        Navigator.of(context).pop();
+                      }),
                   const SizedBox(width: 10),
                   CustomText(
                     modulesProvider.moduleSatatus[5]['name'].toString(),

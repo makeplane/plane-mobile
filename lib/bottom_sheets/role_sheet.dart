@@ -76,7 +76,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[0],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(0);
+                        profileProvider.changeIndex(0);
+                        Navigator.pop(context);
                       }),
 
                   // Text(
@@ -127,7 +128,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[1],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(1);
+                        profileProvider.changeIndex(1);
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -171,7 +173,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[2],
                       onChanged: (val) {
-                        //profileProvider.changeIndex(2);
+                        profileProvider.changeIndex(2);
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -215,7 +218,9 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[3],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(3);
+                        profileProvider.changeIndex(3);
+
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -258,7 +263,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[4],
                       onChanged: (val) {
-                        //profileProvider.changeIndex(4);
+                        profileProvider.changeIndex(4);
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -301,7 +307,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[5],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(5);
+                        profileProvider.changeIndex(5);
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(

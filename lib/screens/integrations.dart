@@ -104,15 +104,17 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                         : themeProvider.themeManager
                                             .successBackgroundColor,
                                     borderRadius: BorderRadius.circular(5)),
-                                child: CustomText(
-                                  workspaceProvider.slackIntegration == null
-                                      ? 'Not Installed'
-                                      : 'Installed',
-                                  type: FontStyle.XSmall,
-                                  color:
-                                      workspaceProvider.slackIntegration == null
-                                          ? lightPlaceholderTextColor
-                                          : lightTextSuccessColor,
+                                child: Center(
+                                  child: CustomText(
+                                    workspaceProvider.slackIntegration == null
+                                        ? 'Not Installed'
+                                        : 'Installed',
+                                    type: FontStyle.XSmall,
+                                    color: workspaceProvider.slackIntegration ==
+                                            null
+                                        ? lightPlaceholderTextColor
+                                        : lightTextSuccessColor,
+                                  ),
                                 ),
                               )
                             ],

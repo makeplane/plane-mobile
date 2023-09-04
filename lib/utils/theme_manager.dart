@@ -41,7 +41,9 @@ class ThemeManager {
   late Color primaryToastBackgroundColor;
   late Color successBackgroundColor;
 
-  late Color shadowColor;
+  late Color shadowColorXS;
+  late List<BoxShadow> shadowXXS;
+  late List<BoxShadow> shadowBottomControlButtons;
 
   late ThemeData datePickerThemeData;
 
@@ -346,14 +348,14 @@ class ThemeManager {
                         shade: 10,
                         color: convertHexToSpecificShade(
                             shade: 100, color: primaryColour));
-    shadowColor = theme == THEME.light
-        ? const Color.fromARGB(40, 150, 150, 150)
+    shadowColorXS = theme == THEME.light
+        ? lightShadowColorXS
         : theme == THEME.dark
-            ? Colors.transparent
+            ? darkShadowColorXS
             : theme == THEME.lightHighContrast
-                ? const Color.fromARGB(40, 150, 150, 150)
+                ? lightShadowColorXS
                 : theme == THEME.darkHighContrast
-                    ? Colors.transparent
+                    ? darkShadowColorXS
                     : Colors.transparent;
 
     datePickerThemeData = theme == THEME.light
@@ -414,5 +416,103 @@ class ThemeManager {
                                     customBackgroundColor, // primary text color
                                 surface: customAccentColor,
                                 onSurface: customTextColor));
+
+    shadowXXS = theme == THEME.light
+        ? [
+            const BoxShadow(
+                color: Color.fromRGBO(23, 23, 23, 0.06),
+                offset: Offset(0, 0),
+                blurRadius: 1,
+                spreadRadius: 0),
+            const BoxShadow(
+                color: Color.fromRGBO(23, 23, 23, 0.06),
+                offset: Offset(0, 1),
+                blurRadius: 2,
+                spreadRadius: 0),
+            const BoxShadow(
+                color: Color.fromRGBO(23, 23, 23, 0.14),
+                offset: Offset(0, 1),
+                blurRadius: 2,
+                spreadRadius: 0),
+          ]
+        : theme == THEME.dark
+            ? [
+                const BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.15),
+                    offset: Offset(0, 0),
+                    blurRadius: 1,
+                    spreadRadius: 0),
+                const BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                    offset: Offset(0, 1),
+                    blurRadius: 3,
+                    spreadRadius: 0),
+              ]
+            : theme == THEME.lightHighContrast
+                ? [
+                    const BoxShadow(
+                        color: Color.fromRGBO(23, 23, 23, 0.06),
+                        offset: Offset(0, 0),
+                        blurRadius: 1,
+                        spreadRadius: 0),
+                    const BoxShadow(
+                        color: Color.fromRGBO(23, 23, 23, 0.06),
+                        offset: Offset(0, 1),
+                        blurRadius: 2,
+                        spreadRadius: 0),
+                    const BoxShadow(
+                        color: Color.fromRGBO(23, 23, 23, 0.14),
+                        offset: Offset(0, 1),
+                        blurRadius: 2,
+                        spreadRadius: 0),
+                  ]
+                : theme == THEME.darkHighContrast
+                    ? [
+                        const BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.15),
+                            offset: Offset(0, 0),
+                            blurRadius: 1,
+                            spreadRadius: 0),
+                        const BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            offset: Offset(0, 1),
+                            blurRadius: 3,
+                            spreadRadius: 0),
+                      ]
+                    : [];
+
+    shadowBottomControlButtons = theme == THEME.light
+        ? [
+            const BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.1),
+                offset: Offset(0, -2),
+                blurRadius: 4,
+                spreadRadius: 0),
+          ]
+        : theme == THEME.dark
+            ? [
+                const BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                    offset: Offset(0, -2),
+                    blurRadius: 4,
+                    spreadRadius: 0),
+              ]
+            : theme == THEME.lightHighContrast
+                ? [
+                    const BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.1),
+                        offset: Offset(0, -2),
+                        blurRadius: 4,
+                        spreadRadius: 0),
+                  ]
+                : theme == THEME.darkHighContrast
+                    ? [
+                        const BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                            offset: Offset(0, -2),
+                            blurRadius: 4,
+                            spreadRadius: 0),
+                      ]
+                    : [];
   }
 }

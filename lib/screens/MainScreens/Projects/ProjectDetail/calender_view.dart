@@ -646,13 +646,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
             height: 50,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: themeProvider.themeManager.shadowColor,
-                      blurRadius: 5,
-                      offset: const Offset(0, -5))
-                ]),
+              color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+              boxShadow: themeProvider.themeManager.shadowBottomControlButtons,
+            ),
             child: Row(
               children: [
                 ref.read(ProviderList.projectProvider).role == Role.admin
@@ -678,7 +674,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                       .themeManager.primaryTextColor,
                                   size: 20,
                                 ),
-                                CustomText(
+                                const CustomText(
                                   ' Issue',
                                   type: FontStyle.Medium,
                                 )
@@ -721,7 +717,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           color: themeProvider.themeManager.primaryTextColor,
                           size: 19,
                         ),
-                        CustomText(
+                        const CustomText(
                           ' Layout',
                           type: FontStyle.Medium,
                         )
@@ -769,7 +765,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           color: themeProvider.themeManager.primaryTextColor,
                           size: 19,
                         ),
-                        CustomText(
+                        const CustomText(
                           ' Filters',
                           type: FontStyle.Medium,
                         )

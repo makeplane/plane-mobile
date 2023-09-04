@@ -52,10 +52,15 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
+            boxShadow: themeProvider.themeManager.theme == THEME.light
+                ? themeProvider.themeManager.shadowXXS
+                : null,
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-            border: Border.all(
-                color: themeProvider.themeManager.borderSubtle01Color,
-                width: 1),
+            border: themeProvider.themeManager.theme == THEME.light
+                ? null
+                : Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                    width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(15.0),

@@ -317,16 +317,12 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                               StateEnum.success
                                       ? Container(
                                           decoration: BoxDecoration(
-                                              color: themeProvider.themeManager
-                                                  .primaryBackgroundDefaultColor,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: themeProvider
-                                                        .themeManager
-                                                        .shadowColor,
-                                                    blurRadius: 5,
-                                                    offset: const Offset(0, -5))
-                                              ]),
+                                            color: themeProvider.themeManager
+                                                .primaryBackgroundDefaultColor,
+                                            boxShadow: themeProvider
+                                                .themeManager
+                                                .shadowBottomControlButtons,
+                                          ),
                                           height: 50,
                                           width:
                                               MediaQuery.of(context).size.width,
@@ -572,15 +568,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                       height: 51,
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
-                                          color: themeProvider.themeManager
-                                              .primaryBackgroundDefaultColor,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: themeProvider
-                                                    .themeManager.shadowColor,
-                                                blurRadius: 5,
-                                                offset: const Offset(0, -5))
-                                          ]),
+                                        color: themeProvider.themeManager
+                                            .primaryBackgroundDefaultColor,
+                                        boxShadow: themeProvider.themeManager
+                                            .shadowBottomControlButtons,
+                                      ),
                                       child: Column(
                                         children: [
                                           SizedBox(
@@ -1012,16 +1004,11 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                 cardPlaceHolderColor: themeProvider
                                     .themeManager.primaryBackgroundDefaultColor,
                                 cardPlaceHolderDecoration: BoxDecoration(
-                                    color: themeProvider.themeManager
-                                        .primaryBackgroundDefaultColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 2,
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color,
-                                        spreadRadius: 0,
-                                      )
-                                    ]),
+                                  color: themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor,
+                                  boxShadow: themeProvider
+                                      .themeManager.shadowBottomControlButtons,
+                                ),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,
                                     duration: const Duration(milliseconds: 100),

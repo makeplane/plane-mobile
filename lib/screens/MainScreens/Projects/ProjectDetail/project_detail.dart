@@ -4,7 +4,6 @@ import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane_startup/bottom_sheets/type_sheet.dart';
 import 'package:plane_startup/bottom_sheets/views_sheet.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane_startup/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +24,7 @@ import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
+import '../../../../utils/custom_toast.dart';
 import '../../../create_view_screen.dart';
 import 'CyclesTab/create_cycle.dart';
 import 'ModulesTab/create_module.dart';
@@ -217,7 +217,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 children: [
                                                   Container(
                                                     margin: const EdgeInsets
-                                                        .symmetric(
+                                                            .symmetric(
                                                         vertical: 15),
                                                     child: CustomText(
                                                       e['title'].toString(),
@@ -942,7 +942,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -953,7 +953,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -970,7 +970,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                         )
                                                 ],
@@ -990,12 +990,28 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     oldCardIndex,
                                     oldListIndex}) {
                                   //  print('newCardIndex: $newCardIndex, newListIndex: $newListIndex, oldCardIndex: $oldCardIndex, oldListIndex: $oldListIndex');
-                                  issueProvider.reorderIssue(
+                                  issueProvider
+                                      .reorderIssue(
                                     newCardIndex: newCardIndex!,
                                     newListIndex: newListIndex!,
                                     oldCardIndex: oldCardIndex!,
                                     oldListIndex: oldListIndex!,
-                                  );
+                                  )
+                                      .then((value) {
+                                    if (issueProvider.issues.orderBY !=OrderBY.manual
+                                         ) {
+                                        
+                                      CustomToast().showToast(
+                                          context,
+                                          'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
+                                          themeProvider,
+                                          toastType: ToastType.warning);
+                                    }
+                                  }).catchError((e) {
+                                    CustomToast().showToast(context,
+                                        'Failed to update issue', themeProvider,
+                                        toastType: ToastType.failure);
+                                  });
                                 },
                                 groupEmptyStates:
                                     !issueProvider.showEmptyStates,

@@ -18,7 +18,6 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesT
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/screens/billing_plans.dart';
 import 'package:plane_startup/screens/create_view_screen.dart';

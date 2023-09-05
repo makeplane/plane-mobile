@@ -497,7 +497,7 @@ class ModuleProvider with ChangeNotifier {
         }
       }
       //log('RESPONSE : ' + filterIssues.toString());
-      log('Modulesssssssssssssssssssssss ${stateOrdering[j]}');
+      // log('Modulesssssssssssssssssssssss ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -668,6 +668,73 @@ class ModuleProvider with ChangeNotifier {
     }
     //   log(issues.issues.toString());
     return issues.issues;
+  }
+
+  Future reorderIssue({
+    required int newCardIndex,
+    required int oldCardIndex,
+    required int newListIndex,
+    required int oldListIndex,
+  }) async {
+    try {
+      if (oldListIndex == newListIndex) {
+        notifyListeners();
+        return;
+      }
+      (filterIssues[stateOrdering[newListIndex]] as List).insert(newCardIndex,
+          filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+
+      notifyListeners();
+      var issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      var response = await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.issueDetails
+              .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
+              .replaceAll('\$PROJECTID', issue['project_detail']['id'])
+              .replaceAll('\$ISSUEID', issue['id']),
+          hasBody: true,
+          httpMethod: HttpMethod.patch,
+          data: issues.groupBY == GroupBY.state
+              ? {
+                  'state': stateOrdering[newListIndex],
+                  'priority': issue['priority']
+                }
+              : {
+                  'state': issue['state'],
+                  'priority': stateOrdering[newListIndex],
+                });
+      filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
+      // log(response.data.toString());
+      if (issues.groupBY == GroupBY.priority) {
+        log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
+        filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
+            stateOrdering[newListIndex];
+      }
+      if (issues.orderBY != OrderBY.manual) {
+        (filterIssues[stateOrdering[newListIndex]] as List).sort((a, b) {
+          if (issues.orderBY == OrderBY.priority) {
+            return priorityParser(a['priority'])
+                .compareTo(priorityParser(b['priority']));
+          } else if (issues.orderBY == OrderBY.lastCreated) {
+            return DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at']));
+          } else if (issues.orderBY == OrderBY.lastUpdated) {
+            return DateTime.parse(a['updated_at'])
+                .compareTo(DateTime.parse(b['updated_at']));
+          } else {
+            return 0;
+          }
+        });
+      }
+      log("ISSUE REPOSITIONED");
+      notifyListeners();
+    } on DioException catch (err) {
+      (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,
+          filterIssues[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      log(err.toString());
+      notifyListeners();
+      rethrow;
+    }
   }
 
   bool isTagsEnabled() {

@@ -375,13 +375,7 @@ class IssuesProvider extends ChangeNotifier {
 
     return (issues.groupBY == GroupBY.state ||
             issues.groupBY == GroupBY.priority) &&
-        (projProv.role == Role.admin || projProv.role == Role.member) &&
-        (issues.filters.assignees.isEmpty &&
-            issues.filters.labels.isEmpty &&
-            issues.filters.states.isEmpty &&
-            issues.filters.priorities.isEmpty &&
-            issues.filters.createdBy.isEmpty &&
-            issues.filters.targetDate.isEmpty);
+        (projProv.role == Role.admin || projProv.role == Role.member);
   }
 
   Future reorderIssue({
@@ -391,13 +385,17 @@ class IssuesProvider extends ChangeNotifier {
     required int oldListIndex,
   }) async {
     try {
+      if (oldListIndex == newListIndex) {
+        notifyListeners();
+        return;
+      }
       (groupByResponse[stateOrdering[newListIndex]] as List).insert(
           newCardIndex,
           groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
       updateIssueState = StateEnum.loading;
       notifyListeners();
       var issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
-      await DioConfig().dioServe(
+      var response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
@@ -414,7 +412,8 @@ class IssuesProvider extends ChangeNotifier {
                   'state': issue['state'],
                   'priority': stateOrdering[newListIndex],
                 });
-
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex] =
+          response.data;
       updateIssueState = StateEnum.success;
       // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
@@ -422,11 +421,32 @@ class IssuesProvider extends ChangeNotifier {
         groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
             stateOrdering[newListIndex];
       }
+      if (issues.orderBY != OrderBY.manual) {
+        (groupByResponse[stateOrdering[newListIndex]] as List).sort((a, b) {
+          if (issues.orderBY == OrderBY.priority) {
+            return priorityParser(a['priority'])
+                .compareTo(priorityParser(b['priority']));
+          } else if (issues.orderBY == OrderBY.lastCreated) {
+            return DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at']));
+          } else if (issues.orderBY == OrderBY.lastUpdated) {
+            return DateTime.parse(a['updated_at'])
+                .compareTo(DateTime.parse(b['updated_at']));
+          } else {
+            return 0;
+          }
+        });
+      }
+      log("ISSUE REPOSITIONED");
       notifyListeners();
-    } on DioException catch (e) {
-      log('Error : issues_provider : upDateIssue : ${e.message.toString()}');
+    } on DioException catch (err) {
+       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+          oldCardIndex,
+          groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      log(err.toString());
       updateIssueState = StateEnum.error;
       notifyListeners();
+      rethrow;
     }
   }
 
@@ -649,7 +669,7 @@ class IssuesProvider extends ChangeNotifier {
               "module": createIssuedata['module'],
             if (createIssuedata['cycle'] != null)
               "cycle": createIssuedata['cycle'],
-            if (ref!
+            if (ref
                     .read(ProviderList.projectProvider)
                     .currentProject['estimate'] !=
                 null)
@@ -670,8 +690,8 @@ class IssuesProvider extends ChangeNotifier {
                 workspaceProvider.selectedWorkspace!.workspaceSlug,
             'WORKSPACE_NAME':
                 workspaceProvider.selectedWorkspace!.workspaceName,
-            'PROJECT_ID': projID ?? projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': ref!
+            'PROJECT_ID': projID ,
+            'PROJECT_NAME': ref
                 .read(ProviderList.projectProvider)
                 .projects
                 .firstWhere((element) => element['id'] == projID)['name'],
@@ -680,57 +700,56 @@ class IssuesProvider extends ChangeNotifier {
           ref: ref);
       // issuesResponse.add(response.data);
       if (issueCategory == IssueCategory.moduleIssues) {
-        await ref!.read(ProviderList.modulesProvider).createModuleIssues(
-          slug: ref!
+        await ref.read(ProviderList.modulesProvider).createModuleIssues(
+          slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projID: ref.read(ProviderList.projectProvider).currentProject["id"],
           issues: [response.data['id']],
         );
 
-        ref!.read(ProviderList.modulesProvider).filterModuleIssues(
+        ref.read(ProviderList.modulesProvider).filterModuleIssues(
               slug: slug,
               projectId:
-                  ref!.read(ProviderList.projectProvider).currentProject["id"],
+                  ref.read(ProviderList.projectProvider).currentProject["id"],
             );
         filterIssues(
-          slug: ref!
+          slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projID: ref.read(ProviderList.projectProvider).currentProject["id"],
           issueCategory: IssueCategory.moduleIssues,
         );
       }
       if (issueCategory == IssueCategory.cycleIssues) {
-        await ref!.read(ProviderList.cyclesProvider).createCycleIssues(
-          slug: ref!
+        await ref.read(ProviderList.cyclesProvider).createCycleIssues(
+          slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projId: ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projId: ref.read(ProviderList.projectProvider).currentProject["id"],
           issues: [response.data['id']],
         );
-        ref!.read(ProviderList.cyclesProvider).filterCycleIssues(
+        ref.read(ProviderList.cyclesProvider).filterCycleIssues(
               slug: slug,
               projectId:
-                  ref!.read(ProviderList.projectProvider).currentProject["id"],
+                  ref.read(ProviderList.projectProvider).currentProject["id"],
             );
         filterIssues(
-          slug: ref!
+          slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: projID ??
-              ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projID: projID ,
           issueCategory: IssueCategory.cycleIssues,
         );
       }
-      await ref!.read(ProviderList.myIssuesProvider).filterIssues();
+      await ref.read(ProviderList.myIssuesProvider).filterIssues();
       if (issueCategory == IssueCategory.issues) {
         if (projID ==
-            ref!.read(ProviderList.projectProvider).currentProject["id"]) {
+            ref.read(ProviderList.projectProvider).currentProject["id"]) {
           filterIssues(
             slug: slug,
             projID: projID,

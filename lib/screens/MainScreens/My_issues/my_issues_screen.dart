@@ -577,6 +577,49 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                         groupEmptyStates: !issueProvider.showEmptyStates,
                         backgroundColor: themeProvider
                             .themeManager.secondaryBackgroundDefaultColor,
+                        isCardsDraggable:
+                            issueProvider.checkIsCardsDaraggable(),
+                        onItemReorder: (
+                            {newCardIndex,
+                            newListIndex,
+                            oldCardIndex,
+                            oldListIndex}) {
+                          //  print('newCardIndex: $newCardIndex, newListIndex: $newListIndex, oldCardIndex: $oldCardIndex, oldListIndex: $oldListIndex');
+                          issueProvider
+                              .reorderIssue(
+                            newCardIndex: newCardIndex!,
+                            newListIndex: newListIndex!,
+                            oldCardIndex: oldCardIndex!,
+                            oldListIndex: oldListIndex!,
+                          )
+                              .then((value) {
+                            if (issueProvider.issues.orderBY !=
+                                    OrderBY.manual) {
+                              CustomToast().showToast(
+                                  context,
+                                  'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
+                                  themeProvider,
+                                  toastType: ToastType.warning);
+                            }
+                          }).catchError((e) {
+                            CustomToast().showToast(context,
+                                'Failed to update issue', themeProvider,
+                                toastType: ToastType.failure);
+                          });
+                        },
+                        cardPlaceHolderColor: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
+                        cardPlaceHolderDecoration: BoxDecoration(
+                            color: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
+                                spreadRadius: 0,
+                              )
+                            ]),
                         listScrollConfig: ScrollConfig(
                             offset: 65,
                             duration: const Duration(milliseconds: 100),

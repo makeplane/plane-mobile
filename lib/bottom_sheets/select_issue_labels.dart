@@ -147,7 +147,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                   ),
                   Container(height: 15),
                   Expanded(
-                    child: issuesProvider.labels.length > 0
+                    child: issuesProvider.labels.isNotEmpty
                         ? ListView.builder(
                             itemCount: issuesProvider.labels.length,
                             shrinkWrap: true,

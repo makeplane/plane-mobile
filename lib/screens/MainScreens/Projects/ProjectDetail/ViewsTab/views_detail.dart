@@ -44,8 +44,25 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     issuesProv.orderByState = StateEnum.loading;
     filtersData = Filters.toJson(issuesProv.issues.filters);
     issuesData = json.decode(json.encode(issuesProv.groupByResponse));
+
+    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    // tempIssuesList = issuesProvider.issuesList;
+    issuesProvider.tempProjectView = issuesProvider.issues.projectView;
+    issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
+    issuesProvider.tempOrderBy = issuesProvider.issues.orderBY;
+    issuesProvider.tempIssueType = issuesProvider.issues.issueType;
+    issuesProvider.tempFilters = issuesProvider.issues.filters;
+
+    issuesProvider.issues.projectView = ProjectView.kanban;
+    issuesProvider.issues.groupBY = GroupBY.state;
+
+    issuesProvider.issues.orderBY = OrderBY.lastCreated;
+    issuesProvider.issues.issueType = IssueType.all;
+    issuesProvider.showEmptyStates = true;
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(ProviderList.projectProvider).initializeProject(
+          fromViews: true,
           filters:
               Filters.fromJson(viewsProv.views[widget.index]["query_data"]),
           ref: ref);
@@ -61,26 +78,73 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
 
     log(issuesProvider.issues.filters.priorities.toString());
-    return Scaffold(
-      appBar: CustomAppBar(
-          onPressed: () {
-            issuesProvider.issues.filters = Filters.fromJson(filtersData);
-            issuesProvider.groupByResponse = issuesData;
-            issuesProvider.isISsuesEmpty = issuesData.isEmpty;
-            issuesProvider.setsState();
+    return WillPopScope(
+      onWillPop: () async {
+        issuesProvider.getIssues(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSlug,
+          projID: projectProvider.currentProject['id'],
+        );
+        issuesProvider.issues.projectView = issuesProvider.tempProjectView;
+        log(issuesProvider.tempProjectView.toString());
+        issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
 
-            Navigator.pop(context);
-          },
-          text: projectProvider.currentProject['name']),
-      body: WillPopScope(
-        onWillPop: () async {
-          issuesProvider.issues.filters = Filters.fromJson(filtersData);
-          issuesProvider.groupByResponse = issuesData;
-          issuesProvider.isISsuesEmpty = issuesData.isEmpty;
-          issuesProvider.setsState();
-          return true;
-        },
-        child: LoadingWidget(
+        issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
+        issuesProvider.issues.issueType = issuesProvider.tempIssueType;
+
+        issuesProvider.issues.filters = issuesProvider.tempFilters;
+
+        issuesProvider.showEmptyStates =
+            issuesProvider.issueView["showEmptyGroups"];
+        log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+
+        issuesProvider.setsState();
+        issuesProvider.filterIssues(
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug,
+            projID: projectProvider.currentProject['id']);
+        return true;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+            onPressed: () {
+              issuesProvider.getIssues(
+                slug: ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace!
+                    .workspaceSlug,
+                projID: projectProvider.currentProject['id'],
+              );
+              issuesProvider.issues.projectView =
+                  issuesProvider.tempProjectView;
+              log(issuesProvider.tempProjectView.toString());
+              issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
+
+              issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
+              issuesProvider.issues.issueType = issuesProvider.tempIssueType;
+
+              issuesProvider.issues.filters = issuesProvider.tempFilters;
+
+              issuesProvider.showEmptyStates =
+                  issuesProvider.issueView["showEmptyGroups"];
+              log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+
+              issuesProvider.setsState();
+              issuesProvider.filterIssues(
+                  slug: ref
+                      .read(ProviderList.workspaceProvider)
+                      .selectedWorkspace!
+                      .workspaceSlug,
+                  projID: projectProvider.currentProject['id']);
+
+              Navigator.pop(context);
+            },
+            text: projectProvider.currentProject['name']),
+        body: LoadingWidget(
           loading: issuesProvider.issuePropertyState == StateEnum.loading ||
               issuesProvider.issueState == StateEnum.loading ||
               issuesProvider.statesState == StateEnum.loading ||
@@ -296,7 +360,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             context: context,
                             builder: (ctx) {
                               return const TypeSheet(
-                                issueCategory: IssueCategory.issues,
+                                issueCategory: IssueCategory.views,
                               );
                             });
                       },
@@ -340,7 +404,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             context: context,
                             builder: (ctx) {
                               return const ViewsSheet(
-                                issueCategory: IssueCategory.issues,
+                                fromView: true,
+                                issueCategory: IssueCategory.views,
                               );
                             });
                       },
@@ -384,7 +449,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             context: context,
                             builder: (ctx) {
                               return FilterSheet(
-                                issueCategory: IssueCategory.issues,
+                                fromViews: true,
+                                issueCategory: IssueCategory.views,
                               );
                             });
                       },

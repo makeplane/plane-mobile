@@ -93,7 +93,7 @@ class Issues {
         return OrderBY.manual;
       case "-created_at":
         return OrderBY.lastCreated;
-      case "updated_at":
+      case "-updated_at":
         return OrderBY.lastUpdated;
       case "priority":
         return OrderBY.priority;
@@ -111,7 +111,7 @@ class Issues {
       case OrderBY.lastCreated:
         return "-created_at";
       case OrderBY.lastUpdated:
-        return "updated_at";
+        return "-updated_at";
       case OrderBY.priority:
         return "priority";
       case OrderBY.startDate:

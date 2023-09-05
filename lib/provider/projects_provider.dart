@@ -41,13 +41,14 @@ class ProjectsProvider extends ChangeNotifier {
 
   TextEditingController lead = TextEditingController();
   TextEditingController assignee = TextEditingController();
+  int memberCount = 0;
 
   List features = [
     {'title': 'Issues', 'width': 60, 'show': true},
     {'title': 'Cycles', 'width': 60, 'show': true},
     {'title': 'Modules', 'width': 75, 'show': true},
     {'title': 'Views', 'width': 60, 'show': true},
-    {'title': 'Pages', 'width': 50, 'show': false},
+    // {'title': 'Pages', 'width': 50, 'show': false},
   ];
 
   void clear() {
@@ -63,9 +64,11 @@ class ProjectsProvider extends ChangeNotifier {
     stateCrudState = StateEnum.empty;
     unsplashImages = [];
     currentProject = {};
+
     coverUrl =
         "https://app.plane.so/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1575116464504-9e7652fddcb3%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwyODUyNTV8MHwxfHNlYXJjaHwxOHx8cGxhbmV8ZW58MHx8fHwxNjgxNDY4NTY5%26ixlib%3Drb-4.0.3%26q%3D80%26w%3D1080&w=1920&q=75";
     projectDetailModel = null;
+    memberCount = 0;
     lead.clear();
     assignee.clear();
   }
@@ -74,7 +77,10 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initializeProject({Filters? filters, required WidgetRef ref}) async {
+  Future initializeProject(
+      {Filters? filters,
+      bool fromViews = false,
+      required WidgetRef ref}) async {
     var prov = ref.read(ProviderList.issuesProvider);
     var moduleProv = ref.read(ProviderList.modulesProvider);
     var viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
@@ -103,6 +109,7 @@ class ProjectsProvider extends ChangeNotifier {
         prov.issues.filters = filters;
       }
       prov.filterIssues(
+        fromViews: fromViews,
         slug: workspaceSlug,
         projID: currentProject['id'],
       );
@@ -220,6 +227,11 @@ class ProjectsProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       projects = response.data;
+      for (int i = 0; i < projects.length; i++) {
+        if (projects[i]['is_member'] == true) {
+          memberCount++;
+        }
+      }
       projectState = StateEnum.success;
       notifyListeners();
       // log(response.data.toString());
@@ -381,11 +393,12 @@ class ProjectsProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      log("THIS IS THE PROJECT DETAIL : ");
+
       projectDetailModel = ProjectDetailModel.fromMap(response.data);
+      log("THIS IS THE PROJECT DETAIL : ${projectDetailModel!.issueViewsView}");
       features[1]['show'] = projectDetailModel!.cycleView ?? true;
       features[2]['show'] = projectDetailModel!.moduleView ?? true;
-      // features[3]['show'] = projectDetailModel!.issueViewsView ?? true;
+      features[3]['show'] = projectDetailModel!.issueViewsView ?? true;
       // features[4]['show'] = projectDetailModel!.pageView ?? true;
 
       getProjectMembers(slug: slug, projId: projId);

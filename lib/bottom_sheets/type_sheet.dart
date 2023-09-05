@@ -120,7 +120,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       myIssuesProv.updateMyIssueView();
                     } else {
                       prov.issues.projectView = ProjectView.kanban;
-                      prov.tempProjectView = ProjectView.kanban;
+                      if (widget.issueCategory == IssueCategory.issues) {
+                        prov.tempProjectView = ProjectView.kanban;
+                      }
+                      // prov.tempProjectView = ProjectView.kanban;
                       prov.setsState();
                       if (widget.issueCategory == IssueCategory.issues) {
                         prov.updateProjectView();

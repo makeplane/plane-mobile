@@ -1220,6 +1220,7 @@ class IssuesProvider extends ChangeNotifier {
   Future filterIssues({
     required String slug,
     required String projID,
+    bool fromViews = false,
     // String? cycleId,
     // String? moduleId,
     Enum issueCategory = IssueCategory.issues,
@@ -1261,7 +1262,7 @@ class IssuesProvider extends ChangeNotifier {
 
     String url;
     // log(issues.issueType.toString());
-    if (issueCategory == IssueCategory.issues) {
+    if (issueCategory == IssueCategory.issues && !fromViews) {
       log('Updating temp GroupBy');
       tempGroupBy = issues.groupBY;
       tempFilters = issues.filters;

@@ -28,7 +28,7 @@ enum IssueType { all, activeIssues, backlogIssues }
 
 enum CRUD { create, read, update, delete }
 
-enum IssueCategory { issues, cycleIssues, moduleIssues, myIssues }
+enum IssueCategory { issues, cycleIssues, moduleIssues, myIssues, views }
 
 enum IssueDetailCategory {
   parent,

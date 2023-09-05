@@ -56,6 +56,7 @@ class DioConfig {
         if (error.response?.statusCode == 401) {
           await SharedPrefrenceServices.sharedPreferences!.clear();
           Const.appBearerToken = '';
+          Const.userId = null;
           Navigator.push(Const.globalKey.currentContext!,
               MaterialPageRoute(builder: (ctx) => const OnBoardingScreen()));
         }

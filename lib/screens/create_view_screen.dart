@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -460,7 +462,6 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 ref
                                     .read(ProviderList.viewsProvider.notifier)
                                     .getViews();
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               } catch (err) {
                                 setState(() {

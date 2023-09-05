@@ -306,12 +306,12 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.patch,
       );
       selectWorkspaceState = StateEnum.success;
-      ref!.read(ProviderList.profileProvider).userProfile =
+      ref.read(ProviderList.profileProvider).userProfile =
           UserProfile.fromMap(response.data);
 
-      ref!.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
+      ref.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
 
-      ref!.read(ProviderList.issuesProvider).clearData();
+      ref.read(ProviderList.issuesProvider).clearData();
 
       // currentWorkspace = workspaces.where((element) {
       //   if (element['id'] ==
@@ -326,7 +326,7 @@ class WorkspaceProvider extends ChangeNotifier {
       // }).first;
       selectedWorkspace = WorkspaceModel.fromJson(
           workspaces.where((element) => element['id'] == id).first);
-      ref!.read(ProviderList.dashboardProvider).getDashboard();
+      ref.read(ProviderList.dashboardProvider).getDashboard();
       role = Role.none;
       getWorkspaceMembers();
 

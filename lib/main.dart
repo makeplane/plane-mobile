@@ -33,6 +33,8 @@ void main() async {
   await SharedPrefrenceServices.init();
   Const.appBearerToken =
       SharedPrefrenceServices.sharedPreferences!.getString("token");
+  Const.userId =
+      SharedPrefrenceServices.sharedPreferences!.getString("user_id");
   var pref = await SharedPreferences.getInstance();
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.appBearerToken = null;
@@ -288,9 +290,22 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
-      navigatorObservers: [PosthogObserver()],
+      navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
       home:
           Const.appBearerToken == null ? const OnBoardingScreen() : const App(),
     );
+  }
+
+  bool checkPostHog() {
+    bool enablePostHog = false;
+    if (dotenv.env['ENABLE_TRACK_EVENTS'] != null &&
+        dotenv.env['ENABLE_TRACK_EVENTS'] == '1' &&
+        dotenv.env['POSTHOG_API'] != null &&
+        dotenv.env['POSTHOG_API'] != '') {
+      enablePostHog = true;
+    } else {
+      enablePostHog = false;
+    }
+    return enablePostHog;
   }
 }

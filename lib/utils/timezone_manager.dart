@@ -2482,7 +2482,7 @@ class SimpleTime {
   bool isPm = false;
   SimpleTime operator +(SimpleTime otherTime) {
     DateTime time =
-        DateTime.now().copyWith(hour: this.hour, minute: this.minute);
+        DateTime.now().copyWith(hour: hour, minute: minute);
 
     time = time.add(Duration(hours: otherTime.hour, minutes: otherTime.minute));
 

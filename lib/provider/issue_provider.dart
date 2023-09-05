@@ -207,7 +207,7 @@ class IssueProvider with ChangeNotifier {
                 workspaceProvider.selectedWorkspace!.workspaceSlug,
             'WORKSPACE_NAME':
                 workspaceProvider.selectedWorkspace!.workspaceName,
-            'PROJECT_ID': projID ?? projectProvider.projectDetailModel!.id,
+            'PROJECT_ID': projID,
             'PROJECT_NAME': projectProvider.projects
                 .firstWhere((element) => element['id'] == projID)['name'],
             'ISSUE_ID': issueID

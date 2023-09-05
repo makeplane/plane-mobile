@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -61,9 +63,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   @override
   void initState() {
-    log('Grouped By: ${ref.read(ProviderList.issuesProvider).issues.groupBY}');
-    log('Cycle Id: ${widget.cycleId}');
-    log('Module Id: ${widget.moduleId}');
+
 
     var issuesProvider = ref.read(ProviderList.issuesProvider);
     tempIssuesList = issuesProvider.issuesList;
@@ -146,7 +146,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     cyclesProvider.changeStateToLoading(cyclesProvider.cyclesDetailState);
 
-    log(cyclesProvider.cycleDetailSelectedIndex.toString());
 
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
@@ -204,7 +203,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
 
-    log(isLoading.toString());
+
     return WillPopScope(
       onWillPop: () async {
         // await issueProvider.getProjectView();
@@ -219,7 +218,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
-        log(issueProvider.tempProjectView.toString());
+ 
         issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
         issueProvider.issues.orderBY = issueProvider.tempOrderBy;
@@ -229,7 +228,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
         issueProvider.showEmptyStates =
             issueProvider.issueView["showEmptyGroups"];
-        log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+      
 
         issueProvider.setsState();
         issueProvider.filterIssues(
@@ -267,7 +266,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
             issueProvider.showEmptyStates =
                 issueProvider.issueView["showEmptyGroups"];
-            log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).issues.projectView}');
+          
             issueProvider.setsState();
             issueProvider.filterIssues(
                 slug: ref
@@ -680,12 +679,88 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                 .initializeBoard()
                                                             : cyclesProvider
                                                                 .initializeBoard(),
+                                                        onItemReorder: (
+                                                            {newCardIndex,
+                                                            newListIndex,
+                                                            oldCardIndex,
+                                                            oldListIndex}) {
+                                                      
+
+                                                          if (widget
+                                                              .fromModule) {
+                                                            modulesProvider
+                                                                .reorderIssue(
+                                                              newCardIndex:
+                                                                  newCardIndex!,
+                                                              newListIndex:
+                                                                  newListIndex!,
+                                                              oldCardIndex:
+                                                                  oldCardIndex!,
+                                                              oldListIndex:
+                                                                  oldListIndex!,
+                                                            )
+                                                                .catchError(
+                                                                    (err) {
+                                                              CustomToast().showToast(
+                                                                  context,
+                                                                  'Failed to update issue',
+                                                                  themeProvider,
+                                                                  toastType:
+                                                                      ToastType
+                                                                          .failure);
+                                                            });
+                                                          } else {
+                                                            cyclesProvider
+                                                                .reorderIssue(
+                                                              newCardIndex:
+                                                                  newCardIndex!,
+                                                              newListIndex:
+                                                                  newListIndex!,
+                                                              oldCardIndex:
+                                                                  oldCardIndex!,
+                                                              oldListIndex:
+                                                                  oldListIndex!,
+                                                            )
+                                                                .catchError(
+                                                                    (err) {
+                                                              log(err.toString());
+                                                              CustomToast().showToast(
+                                                                  context,
+                                                                  'Failed to update issue',
+                                                                  themeProvider,
+                                                                  toastType:
+                                                                      ToastType
+                                                                          .failure);
+                                                            });
+                                                          }
+                                                        },
+                                                        isCardsDraggable:
+                                                            issueProvider
+                                                                .checkIsCardsDaraggable(),
                                                         groupEmptyStates: !(widget
                                                                 .fromModule
                                                             ? modulesProvider
                                                                 .showEmptyStates
                                                             : issueProvider
                                                                 .showEmptyStates),
+                                                        cardPlaceHolderColor:
+                                                            themeProvider
+                                                                .themeManager
+                                                                .primaryBackgroundDefaultColor,
+                                                        cardPlaceHolderDecoration:
+                                                            BoxDecoration(
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .primaryBackgroundDefaultColor,
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 2,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .borderSubtle01Color,
+                                                                spreadRadius: 0,
+                                                              )
+                                                            ]),
                                                         backgroundColor:
                                                             themeProvider
                                                                 .themeManager
@@ -1522,7 +1597,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    log("assignees : ${detailData['distribution']['assignees']}");
+    
 
     return Column(
       children: [
@@ -2165,7 +2240,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    log(detailData.toString());
+ 
 
     return Container(
       height: 45,

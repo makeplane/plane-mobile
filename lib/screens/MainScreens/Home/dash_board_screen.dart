@@ -10,7 +10,6 @@ import 'package:plane_startup/bottom_sheets/select_workspace.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../on_boarding/auth/setup_workspace.dart';

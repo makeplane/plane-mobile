@@ -682,9 +682,9 @@ class MyIssuesProvider extends ChangeNotifier {
                     // createIssuedata['s'] = element.id;
                   }
 
-                  ref!.watch(ProviderList.projectProvider).currentProject =
-                      ref!.watch(ProviderList.projectProvider).projects[0];
-                  ref!.watch(ProviderList.projectProvider).setState();
+                  ref!.read(ProviderList.projectProvider).currentProject =
+                      ref!.read(ProviderList.projectProvider).projects[0];
+                  ref!.read(ProviderList.projectProvider).setState();
 
                   Navigator.push(
                       Const.globalKey.currentContext!,
@@ -706,6 +706,80 @@ class MyIssuesProvider extends ChangeNotifier {
     }
 
     return issues.issues;
+  }
+
+  bool checkIsCardsDaraggable() {
+    return (issues.groupBY == GroupBY.priority);
+  }
+
+  Future reorderIssue({
+    required int newCardIndex,
+    required int oldCardIndex,
+    required int newListIndex,
+    required int oldListIndex,
+  }) async {
+    try {
+      if (oldListIndex == newListIndex) {
+        notifyListeners();
+        return;
+      }
+      (groupByResponse[stateOrdering[newListIndex]] as List).insert(
+          newCardIndex,
+          groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+      notifyListeners();
+      var issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
+      await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.issueDetails
+              .replaceAll(
+                  "\$SLUG",
+                  ref!
+                      .read(ProviderList.workspaceProvider)
+                      .selectedWorkspace!
+                      .workspaceSlug)
+              .replaceAll('\$PROJECTID', issue['project'])
+              .replaceAll('\$ISSUEID', issue['id']),
+          hasBody: true,
+          httpMethod: HttpMethod.patch,
+          data: {
+            'priority': stateOrdering[newListIndex].toString().toLowerCase(),
+          });
+
+      // log(response.data.toString());
+      if (issues.groupBY == GroupBY.priority) {
+        log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
+        groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
+            stateOrdering[newListIndex];
+      }
+
+      if (issues.orderBY != OrderBY.manual) {
+        (groupByResponse[stateOrdering[newListIndex]] as List).sort((a, b) {
+          if (issues.orderBY == OrderBY.priority) {
+            return priorityParser(a['priority'])
+                .compareTo(priorityParser(b['priority']));
+          } else if (issues.orderBY == OrderBY.lastCreated) {
+            return DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at']));
+          } else if (issues.orderBY == OrderBY.lastUpdated) {
+            return DateTime.parse(a['updated_at'])
+                .compareTo(DateTime.parse(b['updated_at']));
+          } else {
+            return 0;
+          }
+        });
+      }
+
+      log("ISSUE REPOSITIONED");
+      notifyListeners();
+    } on DioException catch (err) {
+      (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+          oldCardIndex,
+          groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      log(err.toString());
+      notifyListeners();
+      log('Error : issues_provider : upDateIssue');
+      rethrow;
+    }
   }
 
   Future updateMyIssueView() async {

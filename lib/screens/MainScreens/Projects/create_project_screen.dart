@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';

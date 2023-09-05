@@ -26,8 +26,8 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
               padding: const EdgeInsets.only(top: 16, bottom: 16),
               margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
               decoration: BoxDecoration(
-                  color: themeProvider
-                      .themeManager.secondaryBackgroundDefaultColor,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
                       color: themeProvider.themeManager.borderSubtle01Color)),
@@ -81,8 +81,8 @@ class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
               padding: const EdgeInsets.only(top: 16, bottom: 16),
               margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
               decoration: BoxDecoration(
-                  color: themeProvider
-                      .themeManager.secondaryBackgroundDefaultColor,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
                       color: themeProvider.themeManager.borderSubtle01Color)),

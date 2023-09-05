@@ -91,10 +91,11 @@ class _ViewsState extends ConsumerState<Views> {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //icon of cards stacked on each other
                 Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 20),
+                    padding: const EdgeInsets.only(left: 15, top: 16),
                     child: SvgPicture.asset(
                       "assets/svg_images/view_card.svg",
                       height: 20,
@@ -110,7 +111,7 @@ class _ViewsState extends ConsumerState<Views> {
                   padding: const EdgeInsets.only(left: 5, right: 15, top: 15),
                   child: CustomText(
                     viewsProvider.views[index]["name"],
-                    type: FontStyle.H5,
+                    type: FontStyle.H6,
                     fontWeight: FontWeightt.Medium,
                     color: themeProvider.themeManager.primaryTextColor,
                   ),

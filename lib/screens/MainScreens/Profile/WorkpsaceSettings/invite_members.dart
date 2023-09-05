@@ -228,11 +228,14 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                   )),
                                   context: context,
                                   builder: (ctx) {
-                                    return const MemberStatus(
+                                    return MemberStatus(
                                       fromWorkspace: true,
                                       firstName: 'Set Role',
                                       lastName: '',
-                                      role: {'role': 15},
+                                      role: {
+                                        'role': getRoleIndex(workspaceProvider
+                                            .invitingMembersRole.text)
+                                      },
                                       userId: '',
                                       isInviteMembers: true,
                                     );
@@ -454,12 +457,18 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                   'INVITED_USER_EMAIL': emailController.text,
                                 },
                                 ref: ref);
-                            //show success snackbar
-                            CustomToast().showToast(mainBuildContext,
-                                'Invitation sent successfully', themeProvider,
-                                toastType: ToastType.success);
+                            if (workspaceProvider.workspaceInvitationState ==
+                                StateEnum.success) {
+                              CustomToast().showToast(mainBuildContext,
+                                  'Invitation sent successfully', themeProvider,
+                                  toastType: ToastType.success);
 
-                            Navigator.of(mainBuildContext).pop();
+                              Navigator.of(mainBuildContext).pop();
+                            } else {
+                              CustomToast().showToast(mainBuildContext,
+                                  'Something went wrong', themeProvider,
+                                  toastType: ToastType.failure);
+                            }
                           }
                           if (widget.isProject &&
                               projectProvider.projectInvitationState ==
@@ -481,5 +490,22 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
         ),
       ),
     );
+  }
+
+  int getRoleIndex(String value) {
+    List<Map<String, int>> options = [
+      {'Admin': 20},
+      {'Member': 15},
+      {'Viewer': 10},
+      {'Guest': 5},
+      {'Remove User': 0}
+    ];
+
+    for (Map<String, int> item in options) {
+      if (item.containsKey(value)) {
+        return item[value]!;
+      }
+    }
+    return 5;
   }
 }

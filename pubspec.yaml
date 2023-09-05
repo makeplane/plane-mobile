@@ -173,6 +173,9 @@ flutter:
     - assets/svg_images/arrow_forward.svg
     - assets/svg_images/empty_notification.svg
     - assets/svg_images/notification.svg
+    - assets/svg_images/cycle_settings.svg
+    - assets/svg_images/module_settings.svg
+    - assets/svg_images/view_settings.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

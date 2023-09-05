@@ -330,8 +330,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                           shrinkWrap: true,
                           primary: false,
                           itemCount: memberprofileProvider
-                                  .memberProfile['project_data'].length -
-                              1,
+                              .memberProfile['project_data'].length,
                           itemBuilder: (ctx, index) {
                             int assignedIssues = memberprofileProvider
                                     .memberProfile['project_data'][index]

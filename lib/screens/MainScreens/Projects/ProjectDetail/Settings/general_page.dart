@@ -302,8 +302,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       readOnly: true,
                       controller: description,
                       maxLines: 4,
-                      decoration:
-                          themeProvider.themeManager.textFieldDecoration),
+                      decoration: themeProvider.themeManager.textFieldDecoration
+                          .copyWith(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15))),
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -500,7 +502,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       }
                     },
                     child: Container(
-                      height: 60,
+                      height: 50,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         color: Colors.transparent,

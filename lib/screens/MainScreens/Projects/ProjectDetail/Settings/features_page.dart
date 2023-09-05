@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
 
@@ -19,19 +20,22 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
       'title': 'Cycles',
       'description':
           'Cycles are enabled for all the projects in this workspace. Access them from the sidebar.',
-      'switched': false
+      'switched': false,
+      'logo': 'assets/svg_images/cycle_settings.svg'
     },
     {
       'title': 'Modules',
       'description':
           'Modules are enabled for all the projects in this workspace. Access it from the sidebar.',
-      'switched': false
+      'switched': false,
+      'logo': 'assets/svg_images/module_settings.svg'
     },
     {
       'title': 'Views',
       'description':
           'Views are enabled for all the projects in this workspace. Access it from the sidebar.',
-      'switched': false
+      'switched': false,
+      'logo': 'assets/svg_images/view_settings.svg'
     },
     // {
     //   'title': 'Pages',
@@ -58,8 +62,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                 border: Border.all(
                     color: themeProvider.themeManager.borderSubtle01Color),
                 borderRadius: BorderRadius.circular(10),
-                color:
-                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -67,6 +70,12 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SvgPicture.asset(
+                      cardData[index]['logo'],
+                      // fit: BoxFit.cover,
+                      height: 30,
+                      width: 30,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,7 +90,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                           height: 10,
                         ),
                         SizedBox(
-                          width: width * 0.7,
+                          width: width * 0.63,
                           child: CustomText(
                             cardData[index]['description'],
                             textAlign: TextAlign.left,
@@ -142,7 +151,10 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                                   ['show']
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
-                          child: const CircleAvatar(radius: 6),
+                          child: const CircleAvatar(
+                            radius: 6,
+                            backgroundColor: Colors.white,
+                          ),
                         ),
                       ),
                     )

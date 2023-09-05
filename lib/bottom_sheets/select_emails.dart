@@ -32,6 +32,7 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
   @override
   Widget build(BuildContext context) {
     var themeProv = ref.watch(ProviderList.themeProvider);
+    var profProv = ref.watch(ProviderList.profileProvider);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -68,62 +69,72 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                   ],
                 ),
               ),
-              ListView.builder(
-                  itemCount: emails.length,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              widget.email["email"] = emails[index]["email"];
-                              widget.email["id"] = emails[index]["id"];
+              emails.length == 1
+                  ? Container()
+                  : ListView.builder(
+                      itemCount: emails.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        return emails[index]["email"] ==
+                                profProv.userProfile.email
+                            ? Container()
+                            : Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        widget.email["email"] =
+                                            emails[index]["email"];
+                                        widget.email["id"] =
+                                            emails[index]["id"];
 
-                              selectedEmail = index;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Radio(
-                                activeColor: primaryColor,
-                                value: index,
-                                groupValue: selectedEmail,
-                                onChanged: (value) {
-                                  setState(() {
-                                    widget.email["email"] =
-                                        emails[index]["email"];
-                                    widget.email["id"] = emails[index]["id"];
+                                        selectedEmail = index;
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Radio(
+                                          activeColor: primaryColor,
+                                          value: index,
+                                          groupValue: selectedEmail,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              widget.email["email"] =
+                                                  emails[index]["email"];
+                                              widget.email["id"] =
+                                                  emails[index]["id"];
 
-                                    selectedEmail = index;
-                                  });
-                                },
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(5, 15, 15, 15),
-                                child: CustomText(
-                                  emails[index]["email"],
-                                  type: FontStyle.Small,
-                                  color: themeProv.isDarkThemeEnabled
-                                      ? darkSecondaryTextColor
-                                      : Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 2,
-                          width: double.infinity,
-                          color: themeProv.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : strokeColor,
-                        ),
-                      ],
-                    );
-                  }),
+                                              selectedEmail = index;
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              5, 15, 15, 15),
+                                          child: CustomText(
+                                            emails[index]["email"],
+                                            type: FontStyle.Small,
+                                            color: themeProv.isDarkThemeEnabled
+                                                ? darkSecondaryTextColor
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 2,
+                                    width: double.infinity,
+                                    color: themeProv.isDarkThemeEnabled
+                                        ? darkThemeBorder
+                                        : strokeColor,
+                                  ),
+                                ],
+                              );
+                      }),
               const SizedBox(
                 height: 20,
               ),

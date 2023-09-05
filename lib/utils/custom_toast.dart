@@ -10,7 +10,7 @@ class CustomToast {
   void showToast(
     BuildContext context,
     String message,
-    ThemeProvider themeprovider, {
+    ThemeProvider themeProvider, {
     int duration = 2,
     ToastType toastType = ToastType.defult,
   }) {
@@ -19,7 +19,7 @@ class CustomToast {
     Widget toast = Card(
       borderOnForeground: true,
       elevation: 20,
-      color: themeprovider.themeManager.primaryToastBackgroundColor,
+      color: themeProvider.themeManager.primaryToastBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(
@@ -30,23 +30,27 @@ class CustomToast {
                 : toastType == ToastType.success
                     ? Icon(
                         Icons.check_circle_outline,
-                        color: themeprovider.themeManager.textSuccessColor,
+                        color: themeProvider.themeManager.textSuccessColor,
                       )
                     : toastType == ToastType.failure
                         ? Icon(
                             Icons.error_outline,
-                            color: themeprovider.themeManager.textErrorColor,
+                            color: themeProvider.themeManager.textErrorColor,
                           )
                         : const Icon(
                             Icons.warning_amber_outlined,
                             color: Colors.amber,
                           ),
             const SizedBox(width: 10),
-            CustomText(
-              message,
-              type: FontStyle.Small,
-              fontWeight: FontWeightt.Medium,
-              maxLines: 3,
+            Expanded(
+              flex: 500,
+              child: CustomText(
+                message,
+                type: FontStyle.Small,
+                fontWeight: FontWeightt.Medium,
+                maxLines: 3,
+                overflow: TextOverflow.visible,
+              ),
             ),
             const Spacer(),
             GestureDetector(
@@ -55,7 +59,7 @@ class CustomToast {
               },
               child: Icon(
                 Icons.close,
-                color: themeprovider.themeManager.primaryTextColor,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
             )
           ],

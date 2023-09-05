@@ -138,8 +138,8 @@ class WorkspaceProvider extends ChangeNotifier {
           httpMethod: HttpMethod.post,
           data: {"name": name, "slug": slug, "organization_size": size});
 
-      var projectProv = ref!.read(ProviderList.projectProvider);
-      var profileProv = ref!.read(ProviderList.profileProvider);
+      var projectProv = ref.read(ProviderList.projectProvider);
+      var profileProv = ref.read(ProviderList.profileProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
       postHogService(eventName: 'CREATE_WORKSPACE', properties: {
         'WORKSPACE_ID': response.data['id'],
@@ -152,7 +152,7 @@ class WorkspaceProvider extends ChangeNotifier {
         "last_workspace_id": response.data['id'],
       });
       await getWorkspaces();
-      ref!.read(ProviderList.dashboardProvider).getDashboard();
+      ref.read(ProviderList.dashboardProvider).getDashboard();
       projectProv.projects = [];
       projectProv.getProjects(slug: slug);
       createWorkspaceState = StateEnum.success;
@@ -165,7 +165,7 @@ class WorkspaceProvider extends ChangeNotifier {
         log(e.response!.data.toString());
         log(e.message.toString());
         CustomToast().showToast(context, e.response.toString(),
-            ref!.read(ProviderList.themeProvider),
+            ref.read(ProviderList.themeProvider),
             toastType: ToastType.failure);
       } else {
         log(e.toString());
@@ -449,7 +449,7 @@ class WorkspaceProvider extends ChangeNotifier {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+       await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll(
           '\$SLUG',

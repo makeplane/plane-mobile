@@ -310,6 +310,22 @@ Role roleParser({required int role}) {
   }
 }
 
+int priorityParser(String priority) {
+  switch (priority) {
+    case "urgent":
+      return 0;
+    case "high":
+      return 1;
+    case "medium":
+      return 2;
+    case "low":
+      return 3;
+    default:
+      return 0;
+  }
+}
+
+
 int fromRole({required Role role}) {
   switch (role) {
     case Role.admin:

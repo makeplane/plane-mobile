@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane_startup/bottom_sheets/delete_cycle_sheet.dart';
-import 'package:plane_startup/bottom_sheets/delete_module_sheet.dart';
 import 'package:plane_startup/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';

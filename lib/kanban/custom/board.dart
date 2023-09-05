@@ -21,7 +21,7 @@ class KanbanBoard extends StatefulWidget {
     this.cardTransitionDuration = const Duration(milliseconds: 150),
     this.listTransitionDuration = const Duration(milliseconds: 150),
     this.listDecoration,
-    this.isCardsDraggable=true,
+    this.isCardsDraggable = true,
     this.textStyle,
     this.onItemTap,
     this.displacementX = 0.0,
@@ -118,7 +118,7 @@ class Board extends ConsumerStatefulWidget {
     this.cardPlaceHolderDecoration,
     this.listPlaceHolderColor,
     this.boardDecoration,
-    this.isCardsDraggable=true,
+    this.isCardsDraggable = true,
     this.boardScrollConfig,
     this.listScrollConfig,
     this.cardTransitionBuilder,
@@ -311,9 +311,13 @@ class _BoardState extends ConsumerState<Board> {
       onPointerUp: (event) {
         if (boardProv.board.isElementDragged || boardProv.board.isListDragged) {
           if (boardProv.board.isElementDragged) {
-            ref
-                .read(ProviderList.cardProvider)
-                .reorderCard(onItemReorder: widget.onItemReorder!);
+            ref.read(ProviderList.cardProvider).reorderCard(
+                onItemReorder: widget.onItemReorder ??
+                    (
+                        {int? newCardIndex,
+                        int? newListIndex,
+                        int? oldCardIndex,
+                        int? oldListIndex}) {});
           }
           boardProv.setcanDrag(value: false, listIndex: 0, itemIndex: 0);
           setState(() {});

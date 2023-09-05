@@ -251,7 +251,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
                                                   fontWeight:
                                                       FontWeightt.Medium,
                                                 ),
@@ -552,7 +552,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesAllData[index]
                                                       ['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(

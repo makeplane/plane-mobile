@@ -330,7 +330,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 90,
+          height: 100,
           width: 150,
           child: Stack(
             children: [

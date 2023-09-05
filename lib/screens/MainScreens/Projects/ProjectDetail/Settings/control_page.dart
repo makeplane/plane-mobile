@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/project_lead_assignee_sheet.dart';
@@ -21,12 +22,12 @@ class _ControlPageState extends ConsumerState<ControlPage> {
         var projectProvider = ref.read(ProviderList.projectProvider);
         projectProvider.lead.text =
             (projectProvider.projectDetailModel!.projectLead == null
-                ? 'Select lead'
+                ? ''
                 : projectProvider
                     .projectDetailModel!.projectLead!['first_name']);
         projectProvider.assignee.text =
             projectProvider.projectDetailModel!.defaultAssignee == null
-                ? 'Select Assingnee'
+                ? ''
                 : projectProvider
                     .projectDetailModel!.defaultAssignee!['first_name'];
       },
@@ -93,7 +94,13 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.lead,
-                decoration: themeProvider.themeManager.textFieldDecoration,
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
+                  suffixIcon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: themeProvider.themeManager.primaryTextColor,
+                  ),
+                ),
                 enabled: false,
               ),
             ),
@@ -198,7 +205,12 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.assignee,
-                decoration: themeProvider.themeManager.textFieldDecoration,
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
+                        suffixIcon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: themeProvider.themeManager.primaryTextColor,
+                )),
                 enabled: false,
               ),
             ),

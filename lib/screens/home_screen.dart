@@ -119,9 +119,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               : (themeProvider.themeManager
                                                   .placeholderTextColor),
                                       BlendMode.srcIn)),
-                              const SizedBox(
-                                height: 8,
-                              ),
+                              const Spacer(),
                               CustomText(
                                 e['label'],
                                 overrride: true,
@@ -133,7 +131,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         : (themeProvider
                                             .themeManager.placeholderTextColor),
                                 fontWeight: FontWeightt.Medium,
-                              )
+                              ),
+                              const SizedBox(height: 5),
                             ],
                           ),
                         ),

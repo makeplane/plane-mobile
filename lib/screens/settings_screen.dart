@@ -68,8 +68,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: AppBar(
-            elevation: 1,
-            shadowColor: strokeColor,
+            elevation: 0,
+            //shadowColor: themeProvider.themeManager.borderSubtle01Color,
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -90,40 +90,60 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
               color: themeProvider.themeManager.primaryTextColor,
             ),
             bottom: hasAccess()
-                ? TabBar(
-                    controller: tabController,
-                    indicator: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: themeProvider.themeManager.primaryColour,
-                        width: 6,
-                      ),
-                    )),
-                    // indicatorColor: primaryColor,
-                    labelColor: themeProvider.themeManager.primaryColour,
-                    indicatorWeight: 9,
-                    onTap: (index) {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    isScrollable: true,
-                    tabs: tabs
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: CustomText(
-                              tabs[tabs.indexOf(e)],
-                              type: FontStyle.Medium,
-                              color: tabs.indexOf(e) == selectedIndex
-                                  ? themeProvider.themeManager.primaryColour
-                                  : themeProvider
-                                      .themeManager.secondaryTextColor,
-                              overrride: true,
-                            ),
-                          ),
-                        )
-                        .toList())
+                ? PreferredSize(
+                    preferredSize: Size(width, 60),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          color: themeProvider.themeManager.borderSubtle01Color,
+                          height: 1,
+                        ),
+                        Theme(
+                          data: ThemeData(highlightColor: Colors.transparent),
+                          child: TabBar(
+                              controller: tabController,
+                              indicator: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                    width: 6,
+                                  ),
+                                ),
+                              ),
+                              // indicatorColor: primaryColor,
+                              labelColor:
+                                  themeProvider.themeManager.primaryColour,
+                              indicatorWeight: 9,
+                              splashFactory: NoSplash.splashFactory,
+                              onTap: (index) {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              },
+                              isScrollable: true,
+                              tabs: tabs
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: CustomText(
+                                        tabs[tabs.indexOf(e)],
+                                        type: FontStyle.Medium,
+                                        color: tabs.indexOf(e) == selectedIndex
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .secondaryTextColor,
+                                        overrride: true,
+                                      ),
+                                    ),
+                                  )
+                                  .toList()),
+                        ),
+                      ],
+                    ),
+                  )
                 : null),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
@@ -213,6 +233,11 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
             height: height,
             child: Column(
               children: [
+                Container(
+                  height: 1,
+                  //width: double.infinity,
+                  color: themeProvider.themeManager.borderSubtle01Color,
+                ),
                 //grey line
                 const SizedBox(
                   height: 1,

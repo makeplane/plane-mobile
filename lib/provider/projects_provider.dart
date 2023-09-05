@@ -305,6 +305,10 @@ class ProjectsProvider extends ChangeNotifier {
       );
       // log(response.data.toString());
       projectInvitationState = StateEnum.success;
+      CustomToast().showToast(context, 'Invitation sent successfully',
+          ref.read(ProviderList.themeProvider),
+          toastType: ToastType.success);
+      projectInvitationState = StateEnum.error;
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {

@@ -93,12 +93,19 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        CustomText(
-                                          issuesProvider.labels[index]['name'],
-                                          type: FontStyle.H5,
-                                          maxLines: 1,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
+                                        LimitedBox(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          child: CustomText(
+                                            issuesProvider.labels[index]
+                                                ['name'],
+                                            type: FontStyle.H5,
+                                            maxLines: 1,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -353,13 +360,13 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                             .labels[index]["id"]
                                                     ? Container(
                                                         margin: const EdgeInsets
-                                                                .only(
+                                                            .only(
                                                             bottom: 15,
                                                             left: 15,
                                                             right: 15),
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10,
                                                                 top: 5,
                                                                 bottom: 5),
@@ -459,25 +466,16 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                   );
                                                                 } else if (val ==
                                                                     'CONVERT') {
-                                                                  issuesProvider
-                                                                      .issueLabels(
-                                                                          slug: ref
-                                                                              .watch(ProviderList
-                                                                                  .workspaceProvider)
-                                                                              .selectedWorkspace!
-                                                                              .workspaceSlug,
-                                                                          projID: ref.watch(ProviderList.projectProvider).currentProject[
-                                                                              'id'],
-                                                                          method: CRUD
-                                                                              .update,
-                                                                          data: {
-                                                                            "parent":
-                                                                                null,
-                                                                          },
-                                                                          labelId:
-                                                                              e["id"],
-                                                                              ref: ref
-                                                                        );
+                                                                  issuesProvider.issueLabels(
+                                                                      slug: ref.watch(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug,
+                                                                      projID: ref.watch(ProviderList.projectProvider).currentProject['id'],
+                                                                      method: CRUD.update,
+                                                                      data: {
+                                                                        "parent":
+                                                                            null,
+                                                                      },
+                                                                      labelId: e["id"],
+                                                                      ref: ref);
                                                                 } else {
                                                                   showModalBottomSheet(
                                                                     constraints:
@@ -718,8 +716,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         },
                                         labelId: issuesProvider.labels[index]
                                             ["id"],
-                                            ref: ref
-                                      );
+                                        ref: ref);
 
                                     Navigator.pop(context);
                                   },

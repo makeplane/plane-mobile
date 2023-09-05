@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +63,14 @@ class AuthProvider extends ChangeNotifier {
           httpMethod: HttpMethod.post,
           data: {"key": key, "token": token});
       Const.appBearerToken = response.data["access_token"];
+      Const.userId = response.data["user"]['id'];
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("user_id", response.data["user"]['id']);
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
       // await ref.read(ProviderList.profileProvider).getProfile();
       // .userProfile = UserProfile.fromMap(response.data);
       validateCodeState = StateEnum.success;
-
       await ref
           .read(ProviderList.profileProvider)
           .getProfile()
@@ -184,6 +188,7 @@ class AuthProvider extends ChangeNotifier {
           });
         } else {
           Const.appBearerToken = null;
+          Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
           notifyListeners();
@@ -234,6 +239,9 @@ class AuthProvider extends ChangeNotifier {
       Const.appBearerToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
+      Const.userId = response.data["user"]['id'];
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("user_id", response.data["user"]['id']);
       googleAuthState = StateEnum.success;
       notifyListeners();
       await ref
@@ -288,14 +296,13 @@ class AuthProvider extends ChangeNotifier {
           });
         } else {
           Const.appBearerToken = null;
+          Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
           notifyListeners();
-          if (context != null) {
             CustomToast().showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
                 toastType: ToastType.failure);
-          }
         }
       });
     } catch (e) {
@@ -332,6 +339,9 @@ class AuthProvider extends ChangeNotifier {
       Const.appBearerToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
+      Const.userId = response.data["user"]['id'];
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("user_id", response.data["user"]['id']);
       signInState = StateEnum.success;
       notifyListeners();
       await ref
@@ -386,6 +396,7 @@ class AuthProvider extends ChangeNotifier {
           });
         } else {
           Const.appBearerToken = null;
+          Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
 
           notifyListeners();
@@ -457,6 +468,9 @@ class AuthProvider extends ChangeNotifier {
       Const.appBearerToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
+      Const.userId = response.data["user"]['id'];
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("user_id", response.data["user"]['id']);
       signUpState = StateEnum.success;
       notifyListeners();
       await ref
@@ -517,6 +531,7 @@ class AuthProvider extends ChangeNotifier {
           });
         } else {
           Const.appBearerToken = null;
+          Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
 
           notifyListeners();

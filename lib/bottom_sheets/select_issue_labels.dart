@@ -96,7 +96,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         return true;
       },
       child: Container(
-        height: issuesProvider.labels.length > 0
+        height: issuesProvider.labels.isNotEmpty
             ? MediaQuery.of(context).size.height * 0.8
             : MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(

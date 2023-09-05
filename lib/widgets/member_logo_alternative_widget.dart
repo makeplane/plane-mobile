@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 class MemeberLogoAlternativeWidget extends StatelessWidget {
-  MemeberLogoAlternativeWidget(this.imageUrl, this.color, {super.key});
-  String imageUrl;
-  Color color;
+  const MemeberLogoAlternativeWidget(this.imageUrl, this.color, {super.key});
+  final String imageUrl;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return Container(

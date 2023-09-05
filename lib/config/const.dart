@@ -5,4 +5,5 @@ class Const {
   static String? appBearerToken;
   static bool dark = false;
   static bool isOnline = false;
+  static String? userId;
 }

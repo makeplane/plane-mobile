@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,7 +16,6 @@ void sentryService() {
       },
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
     );
-    runApp(const ProviderScope(child: MyApp()));
   } else {
     runApp(const ProviderScope(child: MyApp()));
   }
@@ -43,10 +42,10 @@ void postHogService(
         properties: properties,
       );
     } catch (e) {
-      log(e.toString());
       sentryService();
     }
   } else {
     return;
   }
 }
+

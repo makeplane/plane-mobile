@@ -10,6 +10,7 @@ import 'package:plane_startup/bottom_sheets/delete_state_sheet.dart';
 import 'package:plane_startup/provider/issues_provider.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
 
@@ -194,25 +195,46 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                showModalBottomSheet(
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 310),
-                                  enableDrag: true,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  context: context,
-                                  builder: (context) {
-                                    return DeleteStateSheet(
-                                      stateName: issuesProvider
-                                              .statesData[states[index]][idx]
-                                          ['name'],
-                                      stateId: issuesProvider
-                                          .statesData[states[index]][idx]['id'],
-                                    );
-                                  },
-                                );
+                                if (issuesProvider.statesData[states[index]]
+                                        [idx]['default'] ==
+                                    true) {
+                                  CustomToast().showToast(
+                                    context,
+                                    'Cannot delete the default state',
+                                    themeProvider,
+                                    toastType: ToastType.failure,
+                                  );
+                                } else if (issuesProvider
+                                        .statesData[states[index]].length ==
+                                    1) {
+                                  CustomToast().showToast(
+                                    context,
+                                    'Cannot have an empty group',
+                                    themeProvider,
+                                    toastType: ToastType.failure,
+                                  );
+                                } else {
+                                  showModalBottomSheet(
+                                    constraints:
+                                        const BoxConstraints(maxHeight: 310),
+                                    enableDrag: true,
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20))),
+                                    context: context,
+                                    builder: (context) {
+                                      return DeleteStateSheet(
+                                        stateName: issuesProvider
+                                                .statesData[states[index]][idx]
+                                            ['name'],
+                                        stateId: issuesProvider
+                                                .statesData[states[index]][idx]
+                                            ['id'],
+                                      );
+                                    },
+                                  );
+                                }
                               },
                               icon: SvgPicture.asset(
                                 'assets/svg_images/delete_icon.svg',
@@ -503,8 +525,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             "group": states[widget.groupIndex],
                             "description": ""
                           },
-                          ref: ref
-                        );
+                          ref: ref);
                       issuesProvider.getStates(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)

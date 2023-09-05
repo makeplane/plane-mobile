@@ -96,7 +96,8 @@ class _ProjectLeadAssigneeSheetState
                               projId: ref
                                   .read(ProviderList.projectProvider)
                                   .currentProject['id'],
-                              data: widget.title == 'Lead'
+                              ref: ref,
+                              data: widget.title == 'Lead '
                                   ? {
                                       'project_lead':
                                           projectProvider.projectMembers[index]
@@ -194,7 +195,7 @@ class _ProjectLeadAssigneeSheetState
                               const SizedBox(
                                 width: 10,
                               ),
-                              (widget.title == 'Lead'
+                              (widget.title == 'Lead '
                                           ? widget.leadId
                                           : widget.assigneId) ==
                                       projectProvider.projectMembers[index]
@@ -252,7 +253,7 @@ class _ProjectLeadAssigneeSheetState
                       height: height,
                       alignment: Alignment.center,
                       color: themeProvider
-                          .themeManager.secondaryBackgroundDefaultColor,
+                          .themeManager.primaryBackgroundDefaultColor,
                       // height: 25,
                       // width: 25,
                       child: Center(

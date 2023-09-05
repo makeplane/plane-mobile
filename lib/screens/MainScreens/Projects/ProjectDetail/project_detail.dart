@@ -297,8 +297,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                 children: [
                                                   Container(
                                                     margin: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 15),
+                                                        .symmetric(vertical: 8),
                                                     child: CustomText(
                                                       e['title'].toString(),
                                                       color: pages.indexOf(e) ==
@@ -334,14 +333,16 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                                   true)
                                                       ? Container(
                                                           height: 6,
-                                                          decoration: BoxDecoration(
-                                                              color: themeProvider
-                                                                  .themeManager
-                                                                  .primaryColour,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          6)),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryColour,
+                                                            // borderRadius:
+                                                            //     BorderRadius
+                                                            //         .circular(
+                                                            //             6),
+                                                          ),
                                                         )
                                                       : Container(
                                                           height: 6,
@@ -1016,7 +1017,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1027,7 +1028,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1044,7 +1045,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                         )
                                                 ],
@@ -1072,9 +1073,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     oldListIndex: oldListIndex!,
                                   )
                                       .then((value) {
-                                    if (issueProvider.issues.orderBY !=OrderBY.manual
-                                         ) {
-                                        
+                                    if (issueProvider.issues.orderBY !=
+                                        OrderBY.manual) {
                                       CustomToast().showToast(
                                           context,
                                           'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',

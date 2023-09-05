@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/bottom_sheets/member_status.dart';
 import 'package:plane_startup/bottom_sheets/select_emails.dart';
 import 'package:plane_startup/utils/constants.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/submit_button.dart';
@@ -47,6 +48,7 @@ class _ProjectInviteMembersSheetState
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    BuildContext mainBuildContext = context;
     return LoadingWidget(
       loading: projectProvider.projectInvitationState == StateEnum.loading,
       widgetClass: GestureDetector(
@@ -63,7 +65,7 @@ class _ProjectInviteMembersSheetState
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
@@ -112,33 +114,42 @@ class _ProjectInviteMembersSheetState
                             ),
                           ),
                           GestureDetector(
-                            onTap: () async {
-                              isEmailEmpty = false;
-                              await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  enableDrag: true,
-                                  constraints:
-                                      BoxConstraints(maxHeight: height * 0.8),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  )),
-                                  context: context,
-                                  builder: (ctx) {
-                                    return SelectEmails(
-                                      email: selectedEmail,
+                            onTap: workspaceProvider.workspaceMembers.length > 1
+                                ? () async {
+                                    isEmailEmpty = false;
+                                    await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        enableDrag: true,
+                                        constraints: BoxConstraints(
+                                            maxHeight: height * 0.8),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(30),
+                                        )),
+                                        context: context,
+                                        builder: (ctx) {
+                                          return SelectEmails(
+                                            email: selectedEmail,
+                                          );
+                                        });
+                                    setState(() {});
+                                    log(selectedEmail.toString());
+                                  }
+                                : () {
+                                    CustomToast().showToast(
+                                      context,
+                                      'You are the only member of this workspace. Please add more members to workspace first.',
+                                      themeProvider,
+                                      //toastType: ToastType.warning
                                     );
-                                  });
-                              setState(() {});
-                              log(selectedEmail.toString());
-                            },
+                                  },
                             child: Container(
                                 margin: const EdgeInsets.only(
                                   left: 20,
                                   right: 20,
                                 ),
-                                height: 55,
+                                height: 48,
                                 padding: const EdgeInsets.only(
                                   left: 10,
                                 ),
@@ -215,7 +226,10 @@ class _ProjectInviteMembersSheetState
                                       fromWorkspace: true,
                                       firstName: 'Set User',
                                       lastName: '',
-                                      role: selectedRole,
+                                      role: {
+                                        'role': getRoleIndex(workspaceProvider
+                                            .invitingMembersRole.text)
+                                      },
                                       userId: '',
                                       isInviteMembers: true,
                                     );
@@ -224,7 +238,7 @@ class _ProjectInviteMembersSheetState
                             },
                             child: Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
                                 controller:
                                     workspaceProvider.invitingMembersRole,
@@ -235,9 +249,6 @@ class _ProjectInviteMembersSheetState
                                       .primaryBackgroundDefaultColor,
                                   filled: true,
                                 ),
-                                style: TextStyle(
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor),
                                 enabled: false,
                               ),
                             ),
@@ -265,6 +276,8 @@ class _ProjectInviteMembersSheetState
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration
                                   .copyWith(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
                                 fillColor: themeProvider
                                     .themeManager.primaryBackgroundDefaultColor,
                                 filled: true,
@@ -278,7 +291,7 @@ class _ProjectInviteMembersSheetState
                       margin: const EdgeInsets.only(
                         left: 20,
                         right: 20,
-                        top: 20,
+                        top: 30,
                         bottom: 20,
                       ),
                       child: SubmitButton(
@@ -292,7 +305,7 @@ class _ProjectInviteMembersSheetState
                           }
                           // log( projectProvider.currentProject["id"]);
                           await projectProvider.inviteToProject(
-                            context: context,
+                            context: mainBuildContext,
                             slug: workspaceProvider
                                 .selectedWorkspace!.workspaceSlug,
                             projId: projectProvider.currentProject['id'],
@@ -311,27 +324,33 @@ class _ProjectInviteMembersSheetState
                             postHogService(
                                 eventName: 'PROJECT_MEMBER_INVITE',
                                 properties: {
-                                  'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-                                  'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-                                  'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-                                  'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                                  'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                                  'WORKSPACE_ID': workspaceProvider
+                                      .selectedWorkspace!.workspaceId,
+                                  'WORKSPACE_SLUG': workspaceProvider
+                                      .selectedWorkspace!.workspaceSlug,
+                                  'WORKSPACE_NAME': workspaceProvider
+                                      .selectedWorkspace!.workspaceName,
+                                  'PROJECT_ID':
+                                      projectProvider.projectDetailModel!.id,
+                                  'PROJECT_NAME':
+                                      projectProvider.projectDetailModel!.name,
                                   'INVITED_PROJECT_MEMBER': emailController.text
                                 },
-                                ref: ref
-                              );
+                                ref: ref);
                             //show success snackbar
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: CustomText(
-                                  'Invitation sent successfully',
-                                  type: FontStyle.Medium,
-                                  color: Colors.white,
-                                ),
-                                backgroundColor: greenHighLight,
-                              ),
-                            );
+
+                            if (projectProvider.projectInvitationState ==
+                                StateEnum.success) {
+                              //show success snackbar
+                              CustomToast().showToast(mainBuildContext,
+                                  'Invitation sent successfully', themeProvider,
+                                  toastType: ToastType.success);
+                              Navigator.pop(mainBuildContext);
+                            } else {
+                              CustomToast().showToast(mainBuildContext,
+                                  'Something went wrong', themeProvider,
+                                  toastType: ToastType.failure);
+                            }
                           } else {}
                         },
                         text: 'Invite',
@@ -345,5 +364,22 @@ class _ProjectInviteMembersSheetState
         ),
       ),
     );
+  }
+
+  int getRoleIndex(String value) {
+    List<Map<String, int>> options = [
+      {'Admin': 20},
+      {'Member': 15},
+      {'Viewer': 10},
+      {'Guest': 5},
+      {'Remove User': 0}
+    ];
+
+    for (Map<String, int> item in options) {
+      if (item.containsKey(value)) {
+        return item[value]!;
+      }
+    }
+    return 10;
   }
 }

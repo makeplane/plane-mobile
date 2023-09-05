@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/invite_members.dart';
@@ -13,6 +15,8 @@ import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/error_state.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane_startup/widgets/member_logo_alternative_widget.dart';
+import 'package:plane_startup/widgets/member_logo_widget.dart';
 
 class Members extends ConsumerStatefulWidget {
   final bool fromWorkspace;
@@ -164,26 +168,42 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                     workspaceProvider.workspaceMembers[index]['member']
                             ['avatar'] ==
                         ""
-                ? CircleAvatar(
-                    radius: 20,
-                    backgroundColor: strokeColor,
-                    child: Center(
-                      child: CustomText(
-                        workspaceProvider.workspaceMembers[index]['member']
-                                ['first_name'][0]
-                            .toString()
-                            .toUpperCase(),
-                        color: Colors.black,
-                        type: FontStyle.Medium,
-                        fontWeight: FontWeightt.Semibold,
-                      ),
-                    ),
-                  )
-                : CircleAvatar(
+                ? MemeberLogoAlternativeWidget(
+                    workspaceProvider.workspaceMembers[index]['member']
+                            ['first_name'][0]
+                        .toString()
+                        .toUpperCase(),
+                    ColorManager.getColorWithIndex(index))
+                // CircleAvatar(
+                //     radius: 20,
+                //     backgroundColor: strokeColor,
+                //     child: Center(
+                //       child: CustomText(
+                //         workspaceProvider.workspaceMembers[index]['member']
+                //                 ['first_name'][0]
+                //             .toString()
+                //             .toUpperCase(),
+                //         color: Colors.black,
+                //         type: FontStyle.Medium,
+                //         fontWeight: FontWeightt.Semibold,
+                //       ),
+                //     ),
+                //   )
+                : MemberLogoWidget(
+                    imageUrl: workspaceProvider.workspaceMembers[index]
+                        ['member']['avatar'],
+                    colorForErrorWidget: ColorManager.getColorWithIndex(index),
+                    memberNameFirstLetterForErrorWidget: workspaceProvider
+                        .workspaceMembers[index]['member']['first_name'][0]
+                        .toString()
+                        .toUpperCase()),
+            /*
+                CircleAvatar(
                     radius: 20,
                     backgroundImage: NetworkImage(workspaceProvider
                         .workspaceMembers[index]['member']['avatar']),
                   ),
+                  */
             title: CustomText(
               '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
               type: FontStyle.H6,
@@ -395,26 +415,58 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       null ||
                   projectsProvider.projectMembers[index]['member']['avatar'] ==
                       ""
-              ? CircleAvatar(
-                  radius: 20,
-                  backgroundColor: strokeColor,
-                  child: Center(
-                    child: CustomText(
-                      projectsProvider.projectMembers[index]['member']
-                              ['first_name'][0]
-                          .toString()
-                          .toUpperCase(),
-                      color: Colors.black,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Semibold,
-                    ),
+              ? MemeberLogoAlternativeWidget(
+                  projectsProvider.projectMembers[index]['member']['first_name']
+                          [0]
+                      .toString()
+                      .toUpperCase(),
+                  ColorManager.getColorWithIndex(index))
+              // Container(
+              //     height: 45,
+              //     width: 45,
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(5),
+              //       color: ColorManager.getColorWithIndex(index),
+              //     ),
+              //     child: Center(
+              //       child: CustomText(
+              //         projectsProvider.projectMembers[index]['member']
+              //                 ['first_name'][0]
+              //             .toString()
+              //             .toUpperCase(),
+              //         color: Colors.white,
+              //         type: FontStyle.Medium,
+              //         fontWeight: FontWeightt.Semibold,
+              //       ),
+              //     ),
+              //   )
+              : MemberLogoWidget(
+                  imageUrl: projectsProvider.projectMembers[index]['member']
+                      ['avatar'],
+                  colorForErrorWidget: ColorManager.getColorWithIndex(index),
+                  memberNameFirstLetterForErrorWidget: projectsProvider
+                      .projectMembers[index]['member']['first_name'][0]
+                      .toString()
+                      .toUpperCase()),
+          /*
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: CachedNetworkImage(
+                    imageUrl: projectsProvider.projectMembers[index]['member']
+                        ['avatar'],
+                    errorWidget: (context, url, error) =>
+                        MemeberLogoAlternativeWidget(
+                            projectsProvider.projectMembers[index]['member']
+                                    ['first_name'][0]
+                                .toString()
+                                .toUpperCase(),
+                            ColorManager.getColorWithIndex(index)),
+                    height: 45,
+                    width: 45,
+                    fit: BoxFit.cover,
                   ),
-                )
-              : CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(projectsProvider
-                      .projectMembers[index]['member']['avatar']),
                 ),
+                */
           title: CustomText(
             '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
             type: FontStyle.H6,

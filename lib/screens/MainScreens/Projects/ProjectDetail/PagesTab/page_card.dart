@@ -96,7 +96,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                     pageProvider
                             .pages[pageProvider.selectedFilter]![widget.index]
                         ['name'],
-                    type: FontStyle.H5,
+                    type: FontStyle.H6,
                     fontWeight: FontWeightt.Medium,
                     color: themeProvider.themeManager.primaryTextColor,
                   ),

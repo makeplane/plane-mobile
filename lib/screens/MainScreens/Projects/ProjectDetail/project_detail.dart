@@ -333,16 +333,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                                   true)
                                                       ? Container(
                                                           height: 6,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: themeProvider
-                                                                .themeManager
-                                                                .primaryColour,
-                                                            // borderRadius:
-                                                            //     BorderRadius
-                                                            //         .circular(
-                                                            //             6),
-                                                          ),
+                                                          decoration: BoxDecoration(
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryColour,
+                                                              ),
                                                         )
                                                       : Container(
                                                           height: 6,
@@ -355,7 +350,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                   }).toList(),
                                 )
                               : Container(),
-
                           Container(
                             height: 2,
                             width: MediaQuery.of(context).size.width,

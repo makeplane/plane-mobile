@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/delete_project_sheet.dart';
+import 'package:plane_startup/bottom_sheets/delete_leave_project_sheet.dart';
 import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
 import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';
 
@@ -31,10 +31,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   TextEditingController identifier = TextEditingController();
   ScrollController scrollController = ScrollController();
   bool isProjectPublic = true;
-
   List<String> emojisWidgets = [];
   bool isEmoji = false;
   String selectedColor = '#3A3A3A';
+  Role? role;
 
   generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
@@ -56,6 +56,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
       identifier.text = projectProvider.projectDetailModel!.identifier!;
+      getRole();
     });
   }
 
@@ -560,8 +561,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   //   ],
                   //   onChanged: (val) {},
                   // ),
-                  checkUser()
-                      ? Column(
+                  getRole() == Role.member
+                      ? Container()
+                      : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
@@ -597,7 +599,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 ),
                                 children: [
                                   CustomText(
-                                    'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.',
+                                    getRole() == Role.admin
+                                        ? 'The danger zone of the project delete page is a critical area that requires careful consideration and attention. When deleting a project, all of the data and resources within that project will be permanently removed and cannot be recovered.'
+                                        : 'Departing from the project implies a loss of access to future updates and project data. However, your existing issue data will remain secure within the "My Issues" section. Rejoining is feasible through the Projects page.',
                                     type: FontStyle.Medium,
                                     maxLines: 8,
                                     textAlign: TextAlign.left,
@@ -622,7 +626,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         ),
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            DeleteProjectSheet(
+                                            DeleteLeaveProjectSheet(
                                           data: {
                                             'WORKSPACE_ID': workspaceProvider
                                                 .selectedWorkspace!.workspaceId,
@@ -637,6 +641,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                             'PROJECT_NAME': projectProvider
                                                 .projectDetailModel!.name
                                           },
+                                          role: getRole(),
                                         ),
                                       );
                                     },
@@ -652,9 +657,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
-                                        child: const Center(
+                                        child: Center(
                                             child: CustomText(
-                                          'Delete Project',
+                                          getRole() == Role.admin
+                                              ? 'Delete Project'
+                                              : 'Leave Project',
                                           color: Colors.white,
                                           type: FontStyle.Medium,
                                           overrride: true,
@@ -665,8 +672,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                               ),
                             ),
                           ],
-                        )
-                      : Container(),
+                        ),
                   checkUser()
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -859,5 +865,29 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
         ],
       ),
     );
+  }
+
+  Role getRole() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    int? userRole;
+    List members = projectProvider.projectMembers;
+    for (var element in members) {
+      if (element['member']['id'] == profileProvider.userProfile.id) {
+        userRole = element['role'];
+      }
+    }
+    switch (userRole) {
+      case 20:
+        return role = Role.admin;
+      case 15:
+        return role = Role.member;
+      case 10:
+        return role = Role.viewer;
+      case 5:
+        return role = Role.guest;
+      default:
+        return role = Role.guest;
+    }
   }
 }

@@ -27,28 +27,30 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
   @override
   void initState() {
     super.initState();
-    _workspaceNameController.text = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
-        .workspaceName;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _workspaceNameController.text = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace!
+          .workspaceName;
 
-    ref.read(ProviderList.workspaceProvider).changeCompanySize(
-        size: ref
-            .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
-            .workspaceSize
-            .toString());
+      ref.read(ProviderList.workspaceProvider).changeCompanySize(
+          size: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace!
+              .workspaceSize
+              .toString());
 
-    dropDownValue = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
-        .workspaceSize
-        .toString();
+      dropDownValue = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace!
+          .workspaceSize
+          .toString();
 
-    _workspaceUrlController.text = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
-        .workspaceUrl;
+      _workspaceUrlController.text = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace!
+          .workspaceUrl;
+    });
   }
 
   Role? role;
@@ -489,94 +491,87 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               ))),
                         )
                       : Container(),
-                  checkUserAccess()
-                      ? Container(
-                          decoration: BoxDecoration(
-                              //light red
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: const Color.fromRGBO(255, 12, 12, 1))),
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, top: 20),
-                          child: ExpansionTile(
-                            childrenPadding: const EdgeInsets.only(
-                                left: 15, right: 15, bottom: 10),
-                            iconColor:
-                                themeProvider.themeManager.primaryTextColor,
-                            collapsedIconColor:
-                                themeProvider.themeManager.primaryTextColor,
-                            backgroundColor:
-                                const Color.fromRGBO(255, 12, 12, 0.1),
-                            collapsedBackgroundColor:
-                                const Color.fromRGBO(255, 12, 12, 0.1),
-                            title: const CustomText(
-                              'Danger Zone',
-                              textAlign: TextAlign.left,
-                              type: FontStyle.H5,
-                              color: Color.fromRGBO(255, 12, 12, 1),
-                            ),
-                            children: [
-                              CustomText(
+                  Container(
+                    decoration: BoxDecoration(
+                        //light red
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                            color: const Color.fromRGBO(255, 12, 12, 1))),
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: ExpansionTile(
+                      childrenPadding: const EdgeInsets.only(
+                          left: 15, right: 15, bottom: 10),
+                      iconColor: themeProvider.themeManager.primaryTextColor,
+                      collapsedIconColor:
+                          themeProvider.themeManager.primaryTextColor,
+                      backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
+                      collapsedBackgroundColor:
+                          const Color.fromRGBO(255, 12, 12, 0.1),
+                      title: const CustomText(
+                        'Danger Zone',
+                        textAlign: TextAlign.left,
+                        type: FontStyle.H5,
+                        color: Color.fromRGBO(255, 12, 12, 1),
+                      ),
+                      children: [
+                        CustomText(
+                          getRole() == Role.admin
+                              ? 'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.'
+                              : 'Once you leave the workspace, you will not be able to access any data associated with this workspace. All of your projects and issues associated with you will become inaccessible. You will only be able to rejoin this workspace when someone invites you back.',
+                          type: FontStyle.Medium,
+                          maxLines: 8,
+                          textAlign: TextAlign.left,
+                          color: Colors.grey,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.8),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                ),
+                              ),
+                              context: context,
+                              builder: (BuildContext context) => Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.viewInsetsOf(context)
+                                        .bottom),
+                                child: DeleteOrLeaveWorkpace(
+                                  workspaceName: workspaceProvider
+                                      .selectedWorkspace!.workspaceName,
+                                  role: getRole(),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              height: 45,
+                              width: MediaQuery.of(context).size.width,
+                              margin:
+                                  const EdgeInsets.only(top: 20, bottom: 15),
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(255, 12, 12, 1),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Center(
+                                  child: CustomText(
                                 getRole() == Role.admin
-                                    ? 'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.'
-                                    : 'Once you leave the workspace, you will not be able to access any data associated with this workspace. All of your projects and issues associated with you will become inaccessible. You will only be able to rejoin this workspace when someone invites you back.',
+                                    ? 'Delete Workspace'
+                                    : 'Leave Workspace',
+                                color: Colors.white,
                                 type: FontStyle.Medium,
-                                maxLines: 8,
-                                textAlign: TextAlign.left,
-                                color: Colors.grey,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    enableDrag: true,
-                                    constraints: BoxConstraints(
-                                        maxHeight:
-                                            MediaQuery.of(context).size.height *
-                                                0.8),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30),
-                                      ),
-                                    ),
-                                    context: context,
-                                    builder: (BuildContext context) => Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              MediaQuery.viewInsetsOf(context)
-                                                  .bottom),
-                                      child: DeleteWorkspace(
-                                        workspaceName: workspaceProvider
-                                            .selectedWorkspace!.workspaceName,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                    height: 45,
-                                    width: MediaQuery.of(context).size.width,
-                                    margin: const EdgeInsets.only(
-                                        top: 20, bottom: 15),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromRGBO(255, 12, 12, 1),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Center(
-                                        child: CustomText(
-                                      getRole() == Role.admin
-                                          ? 'Delete Workspace'
-                                          : 'Leave Workspace',
-                                      color: Colors.white,
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Bold,
-                                    ))),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(),
+                                fontWeight: FontWeightt.Bold,
+                              ))),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),

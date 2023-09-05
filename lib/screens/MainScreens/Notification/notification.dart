@@ -213,11 +213,11 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                         ),
                         selected == 0
                             ? Container(
-                                height: 4,
+                                height: 6,
                                 color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
-                                height: 4,
+                                height: 6,
                               )
                       ],
                     ),
@@ -267,11 +267,11 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                         ),
                         selected == 1
                             ? Container(
-                                height: 4,
+                                height: 6,
                                 color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
-                                height: 4,
+                                height: 6,
                               )
                       ],
                     ),
@@ -321,11 +321,11 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                         ),
                         selected == 2
                             ? Container(
-                                height: 4,
+                                height: 6,
                                 color: themeProvider.themeManager.primaryColour,
                               )
                             : Container(
-                                height: 4,
+                                height: 6,
                               ),
                       ],
                     ),

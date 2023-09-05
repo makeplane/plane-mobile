@@ -22,6 +22,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen
 import 'package:plane_startup/screens/billing_plans.dart';
 import 'package:plane_startup/screens/create_view_screen.dart';
 import 'package:plane_startup/screens/integrations.dart';
+import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
@@ -351,6 +352,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         context,
                         'You dont have any projects yet, try creating one',
                         themeProvider);
+                  } else if (ref
+                          .watch(ProviderList.projectProvider)
+                          .memberCount ==
+                      0) {
+                    CustomToast().showToast(
+                        context,
+                        'You are not a member of any project, try joining one',
+                        themeProvider);
                   } else {
                     // ref.watch(ProviderList.projectProvider).currentProject =
                     //     ref.watch(ProviderList.projectProvider).projects[0];
@@ -369,26 +378,32 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                   items[index]['screen']();
                 }
               },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      items[index]['icon'],
-                      height: 20,
-                      width: 20,
-                      color: themeProvider.themeManager.primaryTextColor,
+              child: ((index == 2 || index == 3 || index == 4) &&
+                      ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject['id'] ==
+                          null)
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            items[index]['icon'],
+                            height: 20,
+                            width: 20,
+                            color: themeProvider.themeManager.primaryTextColor,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomText(
+                            items[index]['title'],
+                            type: FontStyle.Medium,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomText(
-                      items[index]['title'],
-                      type: FontStyle.Medium,
-                    ),
-                  ],
-                ),
-              ),
             );
           },
         )
@@ -398,6 +413,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
 
   Widget workspaceWidget() {
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var workspaceProv = ref.watch(ProviderList.workspaceProvider);
     List items = [
       {
         'title': 'General',
@@ -441,6 +457,16 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             },
         'icon': 'assets/images/global_search_icons/imports&exports.png'
       },
+      {
+        'title': 'Workspace Invites',
+        'screen': () => {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const JoinWorkspaces(
+                        fromOnboard: false,
+                      )))
+            },
+        'icon': 'assets/images/global_search_icons/workspace_invites.png'
+      }
     ];
 
     return Column(
@@ -460,56 +486,35 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           itemCount: items.length,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () async {
-                if (index == 0) {
-                  if (ref
-                      .watch(ProviderList.projectProvider)
-                      .projects
-                      .isEmpty) {
-                    CustomToast().showToast(
-                        context,
-                        'You dont have any projects yet, try creating one',
-                        themeProvider);
-                  } else {
-                    ref.watch(ProviderList.projectProvider).currentProject =
-                        ref.watch(ProviderList.projectProvider).projects[0];
-                    ref.watch(ProviderList.projectProvider).setState();
-                    await ref
-                        .read(ProviderList.projectProvider)
-                        .initializeProject(ref: ref);
-                    items[index]['screen']();
-                  }
-                } else {
-                  if (index == 2) {
-                    ref.watch(ProviderList.projectProvider).currentProject =
-                        ref.watch(ProviderList.projectProvider).projects[0];
-                    ref.watch(ProviderList.projectProvider).setState();
-                  }
-                  items[index]['screen']();
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      items[index]['icon'],
-                      height: 20,
-                      width: 20,
-                      color: themeProvider.themeManager.primaryTextColor,
+            return (index != 0 &&
+                    index != 5 &&
+                    workspaceProv.role != Role.admin)
+                ? Container()
+                : InkWell(
+                    onTap: () async {
+                      items[index]['screen']();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            items[index]['icon'],
+                            height: 20,
+                            width: 20,
+                            color: themeProvider.themeManager.primaryTextColor,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomText(
+                            items[index]['title'],
+                            type: FontStyle.Medium,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomText(
-                      items[index]['title'],
-                      type: FontStyle.Medium,
-                    ),
-                  ],
-                ),
-              ),
-            );
+                  );
           },
         )
       ],

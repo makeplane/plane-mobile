@@ -115,6 +115,7 @@ class ProjectDetailModel {
       id: map['id'],
       cycleView: map['cycle_view'],
       moduleView: map['module_view'],
+      issueViewsView: map['issue_views_view'],
       emoji: map['emoji'],
       name: map['name'],
       description: map['description'],

@@ -400,7 +400,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
                           RadioListTile(
-                              fillColor: orderBy == 'updated_at'
+                              fillColor: orderBy == '-updated_at'
                                   ? null
                                   : MaterialStateProperty.all<Color>(
                                       themeProvider
@@ -415,10 +415,10 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
-                              value: 'updated_at',
+                              value: '-updated_at',
                               onChanged: (newValue) {
                                 setState(() {
-                                  orderBy = 'updated_at';
+                                  orderBy = '-updated_at';
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,

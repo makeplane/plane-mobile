@@ -11,8 +11,14 @@ import 'package:plane_startup/widgets/custom_text.dart';
 
 class ViewsSheet extends ConsumerStatefulWidget {
   final Enum issueCategory;
+  final bool fromView;
   final String? cycleId;
-  const ViewsSheet({required this.issueCategory, this.cycleId, super.key});
+  const ViewsSheet({
+    required this.issueCategory,
+    this.cycleId,
+    this.fromView = false,
+    super.key,
+  });
 
   @override
   ConsumerState<ViewsSheet> createState() => _ViewsSheetState();
@@ -384,7 +390,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
                           RadioListTile(
-                              fillColor: orderBy == 'updated_at'
+                              fillColor: orderBy == '-updated_at'
                                   ? null
                                   : MaterialStateProperty.all<Color>(
                                       themeProvider
@@ -399,10 +405,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                 type: FontStyle.Small,
                                 textAlign: TextAlign.start,
                               ),
-                              value: 'updated_at',
+                              value: '-updated_at',
                               onChanged: (newValue) {
                                 setState(() {
-                                  orderBy = 'updated_at';
+                                  orderBy = '-updated_at';
                                 });
                               },
                               controlAffinity: ListTileControlAffinity.leading,
@@ -753,7 +759,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               .currentProject["id"],
                         );
                       } else {
+                        log('filtering issues=============================${widget.fromView}');
                         issueProvider.filterIssues(
+                            fromViews: widget.fromView,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace!
@@ -761,7 +769,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             projID: ref
                                 .read(ProviderList.projectProvider)
                                 .currentProject["id"],
-                            issueCategory: widget.issueCategory);
+                            issueCategory: IssueCategory.issues);
                       }
                     }
 
@@ -814,7 +822,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueProvider.showEmptyStates = showEmptyStates;
                       }
                       // if (widget.issueCategory == IssueCategory.issues) {
-                      issueProvider.updateProjectView();
+                      if (widget.issueCategory == IssueCategory.issues) {
+                        issueProvider.updateProjectView();
+                      }
                       // }
                     }
 

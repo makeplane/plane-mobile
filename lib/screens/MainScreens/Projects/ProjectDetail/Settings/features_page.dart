@@ -27,12 +27,12 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
           'Modules are enabled for all the projects in this workspace. Access it from the sidebar.',
       'switched': false
     },
-    // {
-    //   'title': 'Views',
-    //   'description':
-    //       'Views are enabled for all the projects in this workspace. Access it from the sidebar.',
-    //   'switched': false
-    // },
+    {
+      'title': 'Views',
+      'description':
+          'Views are enabled for all the projects in this workspace. Access it from the sidebar.',
+      'switched': false
+    },
     // {
     //   'title': 'Pages',
     //   'description':
@@ -97,36 +97,37 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                             !projectsProvider.features[index + 1]['show'];
                         projectsProvider.setState();
                         // print(projectsProvider.features[index + 1]);
-                        // projectsProvider.updateProject(
-                        //     slug: ref
-                        //         .read(ProviderList.workspaceProvider)
-                        //         .selectedWorkspace!
-                        //         .workspaceSlug,
-                        //     projId: ref
-                        //         .read(ProviderList.projectProvider)
-                        //         .currentProject['id'],
-                        //     data: {
-                        //       if (projectsProvider.features[index + 1]
-                        //               ['title'] ==
-                        //           'Cycles')
-                        //         "cycle_view": projectsProvider
-                        //             .features[index + 1]['show'],
-                        //       if (projectsProvider.features[index + 1]
-                        //               ['title'] ==
-                        //           'Modules')
-                        //         "module_view": projectsProvider
-                        //             .features[index + 1]['show'],
-                        //       if (projectsProvider.features[index + 1]
-                        //               ['title'] ==
-                        //           'Views')
-                        //         "issue_views_view": projectsProvider
-                        //             .features[index + 1]['show'],
-                        //       if (projectsProvider.features[index + 1]
-                        //               ['title'] ==
-                        //           'Pages')
-                        //         "page_view": projectsProvider
-                        //             .features[index + 1]['show'],
-                        //     });
+                        projectsProvider.updateProject(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject['id'],
+                            ref: ref,
+                            data: {
+                              if (projectsProvider.features[index + 1]
+                                      ['title'] ==
+                                  'Cycles')
+                                "cycle_view": projectsProvider
+                                    .features[index + 1]['show'],
+                              if (projectsProvider.features[index + 1]
+                                      ['title'] ==
+                                  'Modules')
+                                "module_view": projectsProvider
+                                    .features[index + 1]['show'],
+                              if (projectsProvider.features[index + 1]
+                                      ['title'] ==
+                                  'Views')
+                                "issue_views_view": projectsProvider
+                                    .features[index + 1]['show'],
+                              if (projectsProvider.features[index + 1]
+                                      ['title'] ==
+                                  'Pages')
+                                "page_view": projectsProvider
+                                    .features[index + 1]['show'],
+                            });
                       },
                       child: Container(
                         width: 30,

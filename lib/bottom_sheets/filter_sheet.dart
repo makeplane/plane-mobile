@@ -19,9 +19,11 @@ class FilterSheet extends ConsumerStatefulWidget {
       {super.key,
       required this.issueCategory,
       this.filtersData,
+      this.fromViews = false,
       this.fromCreateView = false});
   final Enum issueCategory;
   final bool fromCreateView;
+  final bool fromViews;
   dynamic filtersData;
   @override
   ConsumerState<FilterSheet> createState() => _FilterSheetState();
@@ -1150,8 +1152,11 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         .updateMyIssueView();
                     ref.watch(ProviderList.myIssuesProvider).filterIssues();
                   } else {
-                    issuesProvider.updateProjectView();
+                    if (widget.issueCategory == IssueCategory.issues) {
+                      issuesProvider.updateProjectView();
+                    }
                     issuesProvider.filterIssues(
+                      fromViews: widget.fromViews,
                       slug: ref
                           .read(ProviderList.workspaceProvider)
                           .selectedWorkspace!

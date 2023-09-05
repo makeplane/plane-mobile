@@ -49,6 +49,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
 
   var selected = 0;
   var pages = [];
+  int numberOfTabs = 0;
 
   @override
   void initState() {
@@ -58,19 +59,49 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       issueProvider.setsState();
       issueProvider.statesState = StateEnum.restricted;
+
       ref.read(ProviderList.projectProvider).initializeProject(ref: ref);
       //issueProvider.statesState = StateEnum.restricted;
     });
 
-    pages = [
-      cycles(),
-      cycles(),
-      const ModuleScreen(),
-      const Views(),
-      //const PageScreen()
-    ];
+    // pages = [
+    //   cycles(),
+    //   cycles(),
+    //   const ModuleScreen(),
+    //   const Views(),
+    //   //const PageScreen()
+    // ];
 
     super.initState();
+  }
+
+  setPages() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+
+    pages = [
+      {
+        'title': 'Issues',
+        'width': 60,
+        'show': true,
+        'page': issues(context, ref)
+      },
+    ];
+    if (projectProvider.features[1]['show'] == true) {
+      pages.add(
+          {'title': 'Cycles', 'width': 60, 'show': true, 'page': cycles()});
+    }
+    if (projectProvider.features[2]['show'] == true) {
+      pages.add({
+        'title': 'Modules',
+        'width': 75,
+        'show': true,
+        'page': const ModuleScreen()
+      });
+    }
+    if (projectProvider.features[3]['show'] == true) {
+      pages.add(
+          {'title': 'Views', 'width': 60, 'show': true, 'page': const Views()});
+    }
   }
 
   @override
@@ -82,6 +113,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     var moduleProvider = ref.watch(ProviderList.modulesProvider);
     var viewsProvider = ref.watch(ProviderList.viewsProvider);
     var pageProvider = ref.watch(ProviderList.pageProvider);
+
+    setPages();
 
     // log(issueProvider.issues.groupBY.name);
 
@@ -101,7 +134,21 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                       MaterialPageRoute(
                         builder: (context) => const SettingScreen(),
                       ),
-                    );
+                    ).then((value) {
+                      int count = 0;
+                      for (int i = 0;
+                          i < projectProvider.features.length;
+                          i++) {
+                        if (projectProvider.features[i]['show']) {
+                          count++;
+                        }
+                      }
+                      if (count < selected + 1) {
+                        setState(() {
+                          selected = count - 1;
+                        });
+                      }
+                    });
                   },
                   icon: issueProvider.statesState == StateEnum.restricted
                       ? Container()
@@ -141,17 +188,53 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                 color: themeProvider.themeManager.textonColor,
               ),
               onPressed: () {
-                if (selected == 1) {
+                if (selected == 1 && projectProvider.features[1]['show']) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const CreateCycle(),
                     ),
                   );
                 }
-                if (selected == 2) {
+
+                if (selected == 1 &&
+                    !projectProvider.features[1]['show'] &&
+                    projectProvider.features[2]['show']) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const CreateModule(),
+                    ),
+                  );
+                }
+
+                if (selected == 1 &&
+                    !projectProvider.features[1]['show'] &&
+                    !projectProvider.features[2]['show']) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreateView(),
+                    ),
+                  );
+                }
+
+                if (selected == 2 &&
+                    projectProvider.features[2]['show'] &&
+                    projectProvider.features[1]['show']) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreateModule(),
+                    ),
+                  );
+                }
+
+                if ((selected == 2 &&
+                        projectProvider.features[2]['show'] &&
+                        !projectProvider.features[1]['show']) ||
+                    (selected == 2 &&
+                        !projectProvider.features[2]['show'] &&
+                        projectProvider.features[1]['show'])) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreateView(),
                     ),
                   );
                 }
@@ -162,13 +245,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                     ),
                   );
                 }
-                if (selected == 4) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const CreatePage(),
-                    ),
-                  );
-                }
+                // if (selected == 4) {
+                //   Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //       builder: (ctx) => const CreatePage(),
+                //     ),
+                //   );
+                // }
               },
             )
           : Container(),
@@ -199,18 +282,15 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                           issueProvider.statesState != StateEnum.loading
                               ? Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: projectProvider.features.map((e) {
+                                  children: pages.map((e) {
                                     return e['show']
                                         ? Expanded(
                                             child: InkWell(
                                               onTap: () {
                                                 controller.jumpToPage(
-                                                    projectProvider.features
-                                                        .indexOf(e));
+                                                    pages.indexOf(e));
                                                 setState(() {
-                                                  selected = projectProvider
-                                                      .features
-                                                      .indexOf(e);
+                                                  selected = pages.indexOf(e);
                                                 });
                                               },
                                               child: Column(
@@ -221,9 +301,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                         vertical: 15),
                                                     child: CustomText(
                                                       e['title'].toString(),
-                                                      color: projectProvider
-                                                                  .features
-                                                                  .indexOf(e) ==
+                                                      color: pages.indexOf(e) ==
                                                               selected
                                                           ? themeProvider
                                                               .themeManager
@@ -233,30 +311,26 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                               .placeholderTextColor,
                                                       overrride: true,
                                                       type: FontStyle.Medium,
-                                                      fontWeight:
-                                                          projectProvider
-                                                                      .features
-                                                                      .indexOf(
-                                                                          e) ==
-                                                                  selected
-                                                              ? FontWeightt
-                                                                  .Medium
-                                                              : null,
+                                                      fontWeight: pages
+                                                                  .indexOf(e) ==
+                                                              selected
+                                                          ? FontWeightt.Medium
+                                                          : null,
                                                     ),
                                                   ),
                                                   selected ==
-                                                              projectProvider
-                                                                  .features
+                                                              pages
                                                                   .indexOf(e) &&
-                                                          (projectProvider.features
-                                                                          .elementAt(
-                                                                              1)[
+                                                          (pages.elementAt(pages
+                                                                          .indexOf(
+                                                                              e))[
                                                                       'show'] ==
                                                                   true ||
                                                               projectProvider
                                                                       .features
                                                                       .elementAt(
-                                                                          2)['show'] ==
+                                                                          pages.indexOf(
+                                                                              e))['show'] ==
                                                                   true)
                                                       ? Container(
                                                           height: 6,
@@ -300,7 +374,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                 return Container(
                                     child: index == 0
                                         ? issues(ctx, ref)
-                                        : pages[index]);
+                                        : pages[index]['page']);
                               },
                               itemCount: pages.length,
                             ),

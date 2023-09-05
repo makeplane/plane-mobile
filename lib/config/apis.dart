@@ -126,7 +126,11 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/github-repository-sync/';
   static String retrieveSlackIntegrations =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/project-slack-sync/';
-  
-  static String memberProfile = '$baseApi/api/workspaces/\$SLUG/user-profile/\$USERID/';
 
+  static String memberProfile =
+      '$baseApi/api/workspaces/\$SLUG/user-profile/\$USERID/';
+  static String leaveWorkspace =
+      '$baseApi/api/workspaces/\$SLUG/members/leave/';
+  static String leaveProject =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/leave/';
 }

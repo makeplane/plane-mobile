@@ -70,7 +70,9 @@ class ProviderList {
   static var notificationProvider =
       ChangeNotifierProvider<NotificationProvider>(
           (ref) => NotificationProvider(ref));
-  static var memberProfileProvider = StateNotifierProvider<MemberProfileProvider,MemberProfileStateModel>((ref) => MemberProfileProvider(ref));
+  static var memberProfileProvider =
+      StateNotifierProvider<MemberProfileProvider, MemberProfileStateModel>(
+          (ref) => MemberProfileProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();
@@ -83,5 +85,6 @@ class ProviderList {
     GoogleSignInApi.logout();
     SharedPrefrenceServices.sharedPreferences!.clear();
     Const.appBearerToken = null;
+    Const.userId = null;
   }
 }

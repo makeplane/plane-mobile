@@ -406,7 +406,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 color:
                     themeProvider.themeManager.secondaryBackgroundActiveColor,
               ),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: menus[index]['menu'] == 'Workspace Settings'
                     ? () {
                         showModalBottomSheet(

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -26,6 +28,7 @@ class ProjectsProvider extends ChangeNotifier {
   var projectDetailState = StateEnum.empty;
   var projectMembersState = StateEnum.empty;
   var deleteProjectState = StateEnum.empty;
+  var leaveProjectState = StateEnum.empty;
   var updateProjectMemberState = StateEnum.empty;
   var updateProjectState = StateEnum.empty;
   var stateCrudState = StateEnum.empty;
@@ -62,6 +65,7 @@ class ProjectsProvider extends ChangeNotifier {
     updateProjectMemberState = StateEnum.empty;
     updateProjectState = StateEnum.empty;
     stateCrudState = StateEnum.empty;
+    leaveProjectState = StateEnum.empty;
     unsplashImages = [];
     currentProject = {};
 
@@ -513,6 +517,33 @@ class ProjectsProvider extends ChangeNotifier {
       log(e.error.toString());
       deleteProjectState = StateEnum.error;
       notifyListeners();
+    }
+  }
+
+  Future<bool> leaveProject(
+      {required String slug,
+      required String projId,
+      required int index}) async {
+    try {
+      leaveProjectState = StateEnum.loading;
+      notifyListeners();
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.leaveProject
+            .replaceFirst('\$SLUG', slug)
+            .replaceFirst('\$PROJECTID', projId),
+        hasBody: false,
+        httpMethod: HttpMethod.delete,
+      );
+      leaveProjectState = StateEnum.success;
+      getProjects(slug: slug);
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      log(e.error.toString());
+      leaveProjectState = StateEnum.error;
+      notifyListeners();
+      return false;
     }
   }
 

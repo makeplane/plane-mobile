@@ -630,7 +630,6 @@ class IssuesProvider extends ChangeNotifier {
       required WidgetRef ref}) async {
     createIssueState = StateEnum.loading;
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
     notifyListeners();
     try {
       var response = await DioConfig().dioServe(

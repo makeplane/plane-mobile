@@ -8,60 +8,47 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/global_functions.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
-class DeleteOrLeaveWorkpace extends ConsumerStatefulWidget {
-  final String workspaceName;
-  final Role role;
-  const DeleteOrLeaveWorkpace(
-      {required this.workspaceName, required this.role, super.key});
+class DeleteLeaveProjectSheet extends ConsumerStatefulWidget {
+  final Map<String, dynamic> data;
+  final Role? role;
+  const DeleteLeaveProjectSheet(
+      {required this.data, required this.role, super.key});
 
   @override
-  ConsumerState<DeleteOrLeaveWorkpace> createState() =>
-      _DeleteOrLeaveWorkpaceState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DeleteLeaveProjectSheetState();
 }
 
-class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
+class _DeleteLeaveProjectSheetState
+    extends ConsumerState<DeleteLeaveProjectSheet> {
+  final TextEditingController projectName = TextEditingController();
+  final TextEditingController deleteProject = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    return SingleChildScrollView(
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Form(
           key: _formKey,
           child: Wrap(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    widget.role == Role.admin
-                        ? 'Delete Workspace'
-                        : 'Leave Workspace',
-                    type: FontStyle.H6,
-                    fontWeight: FontWeightt.Semibold,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      size: 27,
-                      color: Color.fromRGBO(143, 143, 147, 1),
-                    ),
-                  ),
-                ],
+              CustomText(
+                widget.role == Role.admin ? 'Delete Project' : 'Leave Project',
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               Container(
                 height: 20,
               ),
               CustomText(
                 widget.role == Role.admin
-                    ? 'Are you sure you want to delete workspace ${widget.workspaceName}? All of the data related to the workspace will be permanently removed. This action cannot be undone.'
-                    : 'Are you sure you want to leave the workspce?',
+                    ? 'Are you sure you want to delete this project?'
+                    : 'Are you sure you want to leave this project?',
                 type: FontStyle.H5,
                 fontSize: 20,
               ),
@@ -71,11 +58,10 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
               //itext instructing enter the project name
               widget.role == Role.admin
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: 'Enter the workspace name ',
+                            text: 'Enter the project name ',
                             style: TextStyle(
                               color:
                                   themeProvider.themeManager.tertiaryTextColor,
@@ -84,11 +70,12 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                             ),
                             children: [
                               TextSpan(
-                                text: widget.workspaceName,
+                                text: projectProvider.currentProject['name'],
                                 style: TextStyle(
                                   color: themeProvider
                                       .themeManager.primaryTextColor,
                                   fontSize: 18,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               TextSpan(
@@ -110,19 +97,20 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                               .themeManager.textFieldDecoration
                               .copyWith(
                             // hintText: 'Enter project name',
-                            labelText: 'Workspace Name',
+                            labelText: 'Project Name',
                             //avaid the label text from floating
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             filled: true,
                           ),
                           validator: (value) {
-                            if (value!.trim() != widget.workspaceName) {
-                              return 'Workspace name does not match';
+                            if (value!.trim().toLowerCase() !=
+                                projectProvider.currentProject['name']
+                                    .toLowerCase()) {
+                              return 'Project name does not match';
                             }
                             return null;
                           },
                         ),
-
                         Container(height: 20),
                         // CustomText(
                         //   'To confirm, type "delete my project".',
@@ -140,16 +128,16 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                             ),
                             children: [
                               TextSpan(
-                                text: 'delete my workspace ',
+                                text: '"Delete my project"',
                                 style: TextStyle(
                                   color: themeProvider
                                       .themeManager.primaryTextColor,
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               TextSpan(
-                                text: 'below:',
+                                text: '.',
                                 style: TextStyle(
                                   color: themeProvider
                                       .themeManager.tertiaryTextColor,
@@ -167,14 +155,14 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                               .themeManager.textFieldDecoration
                               .copyWith(
                                   // hintText: 'Enter detele my project',
-                                  labelText: 'Enter "Delete my workspace"',
+                                  labelText: 'Enter "Delete my project"',
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.never,
                                   filled: true),
                           validator: (value) {
                             if (value!.trim().toLowerCase() !=
-                                'delete my workspace') {
-                              return 'Please enter "Delete my workspace"';
+                                'delete my project') {
+                              return 'Please enter "Delete my project"';
                             }
                             return null;
                           },
@@ -182,9 +170,8 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                         Container(height: 20),
                       ],
                     )
-                  : const SizedBox(
-                      height: 50,
-                    ),
+                  : Container(),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -219,85 +206,64 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                   GestureDetector(
                     onTap: () async {
                       if (widget.role == Role.guest ||
-                          widget.role == Role.viewer) {
-                        var isSuccessfullyLeft = await workspaceProvider
-                            .leaveWorkspace(context, ref);
-                        if (isSuccessfullyLeft) {
-                          postHogService(
-                              eventName: 'LEAVE_WORKSPACE',
-                              properties: {
-                                'WORKSPACE_NAME': widget.workspaceName
-                              },
-                              ref: ref);
-                          await ref
-                              .watch(ProviderList.profileProvider)
-                              .updateProfile(data: {
-                            'last_workspace_id': workspaceProvider
-                                .selectedWorkspace!.workspaceId,
-                          });
-                          await ref
-                              .watch(ProviderList.projectProvider)
-                              .getProjects(
-                                  slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug);
+                          widget.role == Role.viewer || widget.role == Role.member) {
+                        var leftSuccessfully =
+                            await projectProvider.leaveProject(
+                                slug: ref
+                                    .watch(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projId: projectProvider.currentProject['id'],
+                                index: 0);
+                        if (leftSuccessfully) {
                           CustomToast().showToast(
                             context,
-                            'Left workspace successfully',
+                            'Left project successfully',
                             themeProvider,
-                            toastType: ToastType.success,
                           );
-                          Navigator.of(context).pop();
+                          postHogService(
+                              eventName: 'LEAVE_PROJECT',
+                              properties: widget.data,
+                              ref: ref);
+                          Navigator.of(context)
+                            ..pop()
+                            ..pop()
+                            ..pop();
                         }
-                        Navigator.of(context).pop();
                       } else {
                         if (_formKey.currentState!.validate()) {
-                          // if (workspaceProvider.role != Role.admin &&
-                          //     workspaceProvider.role != Role.member) {
-                          //   CustomToast().showToast(
-                          //       context,
-                          //       'You don\'t have permissions to delete this workspace',
-                          //       themeProvider,
-                          //       toastType: ToastType.failure);
-                          //   return;
-                          // }
-                          var isSuccesfullyDeleted =
-                              await workspaceProvider.deleteWorkspace();
-                          if (isSuccesfullyDeleted) {
-                            postHogService(
-                                eventName: 'DELETE_WORKSPACE',
-                                properties: {
-                                  'WORKSPACE_NAME': widget.workspaceName
-                                },
-                                ref: ref);
-                            await ref
-                                .watch(ProviderList.profileProvider)
-                                .updateProfile(data: {
-                              'last_workspace_id': workspaceProvider
-                                  .selectedWorkspace!.workspaceId,
-                            });
-                            await ref
-                                .watch(ProviderList.projectProvider)
-                                .getProjects(
-                                    slug: workspaceProvider
-                                        .selectedWorkspace!.workspaceSlug);
-                            CustomToast().showToast(
-                              context,
-                              'Workspace deleted successfully',
-                              themeProvider,
-                              toastType: ToastType.success,
-                            );
-                            Navigator.of(context).pop();
-                          } else {
-                            //show snackbar
-                            CustomToast().showToast(
-                              context,
-                              'Workspace could not be deleted',
-                              themeProvider,
-                              toastType: ToastType.warning,
-                            );
-                          }
+                          await projectProvider
+                              .deleteProject(
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId: projectProvider.currentProject['id'])
+                              .then((value) {
+                            if (projectProvider.deleteProjectState ==
+                                StateEnum.success) {
+                              CustomToast().showToast(
+                                context,
+                                'Deleted project successfully',
+                                themeProvider,
+                              );
+                              postHogService(
+                                  eventName: 'DELETE_PROJECT',
+                                  properties: widget.data,
+                                  ref: ref);
+                            }
+                          });
+                          Navigator.of(context)
+                            ..pop()
+                            ..pop()
+                            ..pop();
+                          projectProvider.getProjects(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                          );
                         }
-                      Navigator.of(context).pop();
                       }
                     },
                     child: Container(
@@ -307,24 +273,20 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                         color: const Color.fromRGBO(255, 12, 12, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: workspaceProvider.selectWorkspaceState ==
+                      child: projectProvider.deleteProjectState ==
                                   StateEnum.loading ||
-                              workspaceProvider.leaveWorspaceState ==
+                              projectProvider.leaveProjectState ==
                                   StateEnum.loading
                           ? Center(
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
-                                ),
+                              child: CircularProgressIndicator(
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                             )
                           : CustomText(
                               widget.role == Role.admin
-                                  ? 'Delete Workspace'
-                                  : 'Leave workspace',
+                                  ? 'Delete Project'
+                                  : 'Leave Project',
                               type: FontStyle.Medium,
                               fontWeight: FontWeightt.Semibold,
                               color: Colors.white,

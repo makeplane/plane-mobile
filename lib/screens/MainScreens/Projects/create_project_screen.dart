@@ -66,7 +66,6 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

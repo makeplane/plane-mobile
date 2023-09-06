@@ -76,7 +76,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace> {
                     return GestureDetector(
                       onTap: () async {
                         await prov
-                            .selectWorkspace(id: prov.workspaces[index]["id"])
+                            .selectWorkspace(id: prov.workspaces[index]["id"], context: context, ref: ref)
                             .then(
                           (value) async {
                             ref.read(ProviderList.cyclesProvider).clearData();

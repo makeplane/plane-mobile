@@ -48,3 +48,5 @@ CustomInfo.plist
 Info.plist
 key.properties
 AndroidManifest.xml
+pubspec.lock
+

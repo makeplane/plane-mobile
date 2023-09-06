@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane_startup/bottom_sheets/delete_leave_project_sheet.dart';
+import 'package:plane_startup/bottom_sheets/delete_workspace_sheet.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
 import 'package:plane_startup/utils/color_manager.dart';
@@ -128,11 +129,12 @@ class WrokspaceMebersWidget extends ConsumerStatefulWidget {
 }
 
 class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
+  Role? role;
+
   @override
   Widget build(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-
     var profileProvider = ref.watch(ProviderList.profileProvider);
 
     return ListView.separated(
@@ -233,35 +235,56 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                 } else if (workspaceProvider.workspaceMembers[index]['member']
                         ["id"] ==
                     ref.read(ProviderList.profileProvider).userProfile.id) {
-                  CustomToast().showToast(
-                      context, "You can't change your own role", themeProvider,
-                      toastType: ToastType.warning);
-                } else {
-                  showModalBottomSheet(
+                  if (workspaceProvider.workspaceMembers[index]['role'] == 15) {
+                    showModalBottomSheet(
                       isScrollControlled: true,
                       enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.85),
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
                       context: context,
-                      builder: (ctx) {
-                        return MemberStatus(
-                          fromWorkspace: true,
-                          firstName: workspaceProvider.workspaceMembers[index]
-                              ['member']['first_name'],
-                          lastName: workspaceProvider.workspaceMembers[index]
-                              ['member']['last_name'],
-                          role: {
-                            "role": workspaceProvider.workspaceMembers[index]
-                                ['role']
-                          },
-                          userId: workspaceProvider.workspaceMembers[index]
-                              ['id'],
-                          isInviteMembers: false,
-                        );
-                      });
+                      builder: (BuildContext context) => DeleteOrLeaveWorkpace(
+                        workspaceName:
+                            workspaceProvider.selectedWorkspace!.workspaceName,
+                        role: getRole(),
+                      ),
+                    );
+                  } else {
+                    CustomToast().showToast(context,
+                        "You can't change your own role", themeProvider,
+                        toastType: ToastType.warning);
+                  }
+                } else {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return MemberStatus(
+                        fromWorkspace: true,
+                        firstName: workspaceProvider.workspaceMembers[index]
+                            ['member']['first_name'],
+                        lastName: workspaceProvider.workspaceMembers[index]
+                            ['member']['last_name'],
+                        role: {
+                          "role": workspaceProvider.workspaceMembers[index]
+                              ['role']
+                        },
+                        userId: workspaceProvider.workspaceMembers[index]['id'],
+                        isInviteMembers: false,
+                      );
+                    },
+                  );
                 }
               },
               child: Container(
@@ -364,6 +387,30 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
     }
     return isAdmin;
   }
+
+  Role getRole() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    int? userRole;
+    List members = projectProvider.projectMembers;
+    for (var element in members) {
+      if (element['member']['id'] == profileProvider.userProfile.id) {
+        userRole = element['role'];
+      }
+    }
+    switch (userRole) {
+      case 20:
+        return role = Role.admin;
+      case 15:
+        return role = Role.member;
+      case 10:
+        return role = Role.viewer;
+      case 5:
+        return role = Role.guest;
+      default:
+        return role = Role.guest;
+    }
+  }
 }
 
 class ProjectMembersWidget extends ConsumerStatefulWidget {
@@ -375,11 +422,13 @@ class ProjectMembersWidget extends ConsumerStatefulWidget {
 }
 
 class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
+  Role? role;
   @override
   Widget build(BuildContext context) {
     var projectsProvider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
 
     return ListView.separated(
       itemCount: projectsProvider.projectMembers.length,
@@ -494,34 +543,64 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
               } else if (projectsProvider.projectMembers[index]['member']
                       ["id"] ==
                   ref.read(ProviderList.profileProvider).userProfile.id) {
-                CustomToast().showToast(
-                    context, "You can't change your own role", themeProvider,
-                    toastType: ToastType.warning);
+                if (projectsProvider.projectMembers[index]['role'] == 15) {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return DeleteLeaveProjectSheet(
+                          data: {
+                            'WORKSPACE_ID': workspaceProvider
+                                .selectedWorkspace!.workspaceId,
+                            'WORKSPACE_NAME': workspaceProvider
+                                .selectedWorkspace!.workspaceName,
+                            'WORKSPACE_SLUG': workspaceProvider
+                                .selectedWorkspace!.workspaceSlug,
+                            'PROJECT_ID':
+                                projectsProvider.projectDetailModel!.id,
+                            'PROJECT_NAME':
+                                projectsProvider.projectDetailModel!.name
+                          },
+                          role: getRole(),
+                        );
+                      });
+                } else {
+                  CustomToast().showToast(
+                      context, "You can't change your own role", themeProvider,
+                      toastType: ToastType.warning);
+                }
               } else {
                 // if (projectsProvider.role == Role.admin) {
                 showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return MemberStatus(
-                        fromWorkspace: false,
-                        firstName: projectsProvider.projectMembers[index]
-                            ['member']['first_name'],
-                        lastName: projectsProvider.projectMembers[index]
-                            ['member']['last_name'],
-                        role: {
-                          "role": projectsProvider.projectMembers[index]['role']
-                        },
-                        userId: projectsProvider.projectMembers[index]['id'],
-                        isInviteMembers: false,
-                      );
-                    });
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return MemberStatus(
+                      fromWorkspace: false,
+                      firstName: projectsProvider.projectMembers[index]
+                          ['member']['first_name'],
+                      lastName: projectsProvider.projectMembers[index]['member']
+                          ['last_name'],
+                      role: {
+                        "role": projectsProvider.projectMembers[index]['role']
+                      },
+                      userId: projectsProvider.projectMembers[index]['id'],
+                      isInviteMembers: false,
+                    );
+                  },
+                );
               }
             },
             child: Container(
@@ -598,5 +677,29 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
       }
     }
     return isAdmin;
+  }
+
+  Role getRole() {
+    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var profileProvider = ref.watch(ProviderList.profileProvider);
+    int? userRole;
+    List members = projectProvider.projectMembers;
+    for (var element in members) {
+      if (element['member']['id'] == profileProvider.userProfile.id) {
+        userRole = element['role'];
+      }
+    }
+    switch (userRole) {
+      case 20:
+        return role = Role.admin;
+      case 15:
+        return role = Role.member;
+      case 10:
+        return role = Role.viewer;
+      case 5:
+        return role = Role.guest;
+      default:
+        return role = Role.guest;
+    }
   }
 }

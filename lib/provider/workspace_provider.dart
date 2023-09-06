@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,7 @@ class WorkspaceProvider extends ChangeNotifier {
   StateEnum joinWorkspaceState = StateEnum.empty;
   StateEnum createWorkspaceState = StateEnum.empty;
   StateEnum updateWorkspaceState = StateEnum.empty;
+  StateEnum leaveWorspaceState = StateEnum.empty;
   Role role = Role.none;
   void clear() {
     workspaceInvitations = [];
@@ -49,6 +52,7 @@ class WorkspaceProvider extends ChangeNotifier {
     joinWorkspaceState = StateEnum.empty;
     createWorkspaceState = StateEnum.empty;
     updateWorkspaceState = StateEnum.empty;
+    leaveWorspaceState = StateEnum.empty;
     workspaceMembers = [];
   }
 
@@ -141,13 +145,14 @@ class WorkspaceProvider extends ChangeNotifier {
       var projectProv = ref.read(ProviderList.projectProvider);
       var profileProv = ref.read(ProviderList.profileProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
-      postHogService(eventName: 'CREATE_WORKSPACE', properties: {
-        'WORKSPACE_ID': response.data['id'],
-        'WORKSPACE_NAME': response.data['name'],
-        'WORKSPACE_SLUG': response.data['slug']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'CREATE_WORKSPACE',
+          properties: {
+            'WORKSPACE_ID': response.data['id'],
+            'WORKSPACE_NAME': response.data['name'],
+            'WORKSPACE_SLUG': response.data['slug']
+          },
+          ref: ref);
       await profileProv.updateProfile(data: {
         "last_workspace_id": response.data['id'],
       });
@@ -285,9 +290,13 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
-  Future selectWorkspace({required String id}) async {
+  Future selectWorkspace(
+      {required String id,
+      required BuildContext context,
+      required WidgetRef ref}) async {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -297,12 +306,12 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.patch,
       );
       selectWorkspaceState = StateEnum.success;
-      ref!.read(ProviderList.profileProvider).userProfile =
+      ref.read(ProviderList.profileProvider).userProfile =
           UserProfile.fromMap(response.data);
 
-      ref!.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
+      ref.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
 
-      ref!.read(ProviderList.issuesProvider).clearData();
+      ref.read(ProviderList.issuesProvider).clearData();
 
       // currentWorkspace = workspaces.where((element) {
       //   if (element['id'] ==
@@ -317,7 +326,7 @@ class WorkspaceProvider extends ChangeNotifier {
       // }).first;
       selectedWorkspace = WorkspaceModel.fromJson(
           workspaces.where((element) => element['id'] == id).first);
-      ref!.read(ProviderList.dashboardProvider).getDashboard();
+      ref.read(ProviderList.dashboardProvider).getDashboard();
       role = Role.none;
       getWorkspaceMembers();
 
@@ -335,6 +344,8 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       // return response.data;
     } on DioException catch (e) {
+      CustomToast().showToast(context, e.error.toString(), themeProvider,
+          toastType: ToastType.failure);
       log(e.toString());
       selectWorkspaceState = StateEnum.error;
       notifyListeners();
@@ -424,12 +435,14 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.patch,
       );
       updateWorkspaceState = StateEnum.success;
-      postHogService(eventName: 'UPDATE_WORKSPACE', properties: {
-        'WORKSPACE_ID': response.data['id'],
-        'WORKSPACE_NAME': response.data['name'],
-        'WORKSPACE_SLUG': response.data['slug']
-      },
-      ref: ref);
+      postHogService(
+          eventName: 'UPDATE_WORKSPACE',
+          properties: {
+            'WORKSPACE_ID': response.data['id'],
+            'WORKSPACE_NAME': response.data['name'],
+            'WORKSPACE_SLUG': response.data['slug']
+          },
+          ref: ref);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
       tempLogo = selectedWorkspace!.workspaceLogo;
 
@@ -449,7 +462,7 @@ class WorkspaceProvider extends ChangeNotifier {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
-       await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll(
           '\$SLUG',
@@ -466,6 +479,36 @@ class WorkspaceProvider extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
       selectWorkspaceState = StateEnum.error;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> leaveWorkspace(BuildContext context, WidgetRef ref) async {
+    leaveWorspaceState = StateEnum.loading;
+    notifyListeners();
+    try {
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.leaveWorkspace.replaceFirst(
+          '\$SLUG',
+          selectedWorkspace!.workspaceSlug,
+        ),
+        hasBody: false,
+        httpMethod: HttpMethod.delete,
+      );
+      leaveWorspaceState = StateEnum.success;
+      await getWorkspaces();
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      CustomToast().showToast(
+          context,
+          e.message == null ? 'something went wrong!' : e.message.toString(),
+          ref.read(ProviderList.themeProvider),
+          toastType: ToastType.failure);
+      log(e.error.toString());
+      leaveWorspaceState == StateEnum.error;
       notifyListeners();
       return false;
     }

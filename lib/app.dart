@@ -39,7 +39,7 @@ class _AppState extends ConsumerState<App> {
                   child: LoadingIndicator(
                     indicatorType: Indicator.lineSpinFadeLoader,
                     colors: [
-                      themeProvider.themeManager.primaryBackgroundDefaultColor
+                      themeProvider.themeManager.primaryTextColor
                     ],
                     strokeWidth: 1.0,
                     backgroundColor: Colors.transparent,

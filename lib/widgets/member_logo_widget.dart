@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:plane_startup/widgets/member_logo_alternative_widget.dart';
 
 class MemberLogoWidget extends StatelessWidget {
-  MemberLogoWidget({
+  const MemberLogoWidget({
     super.key,
     required this.imageUrl,
     required this.colorForErrorWidget,
     required this.memberNameFirstLetterForErrorWidget,
   });
-  String imageUrl;
-  String memberNameFirstLetterForErrorWidget;
+  final String imageUrl;
+  final String memberNameFirstLetterForErrorWidget;
 // int index;
-  Color colorForErrorWidget;
+  final Color colorForErrorWidget;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

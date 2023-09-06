@@ -260,12 +260,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 0
                                       ? Container(
-                                          height: 4,
+                                          height: 6,
                                           color: themeProvider
                                               .themeManager.primaryColour,
                                         )
                                       : Container(
-                                          height: 4,
+                                          height: 6,
                                         )
                                 ],
                               ),
@@ -299,12 +299,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 1
                                       ? Container(
-                                          height: 4,
+                                          height: 6,
                                           color: themeProvider
                                               .themeManager.primaryColour,
                                         )
                                       : Container(
-                                          height: 4,
+                                          height: 6,
                                         )
                                 ],
                               ),
@@ -338,12 +338,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 2
                                       ? Container(
-                                          height: 4,
+                                          height: 6,
                                           color: themeProvider
                                               .themeManager.primaryColour,
                                         )
                                       : Container(
-                                          height: 4,
+                                          height: 6,
                                         ),
                                 ],
                               ),

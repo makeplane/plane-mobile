@@ -809,7 +809,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         await workspaceProv
                             .selectWorkspace(
                                 id: globalSearchProvider
-                                    .data!.workspaces[index].id)
+                                    .data!.workspaces[index].id,
+                                    context: context,
+                                    ref: ref
+                                    )
                             .then(
                           (value) async {
                             ref.watch(ProviderList.cyclesProvider).clearData();

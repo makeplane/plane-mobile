@@ -100,60 +100,64 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                         ),
                       ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        projectsProvider.features[index + 1]['show'] =
-                            !projectsProvider.features[index + 1]['show'];
-                        projectsProvider.setState();
-                        // print(projectsProvider.features[index + 1]);
-                        projectsProvider.updateProject(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projId: ref
-                                .read(ProviderList.projectProvider)
-                                .currentProject['id'],
-                            ref: ref,
-                            data: {
-                              if (projectsProvider.features[index + 1]
-                                      ['title'] ==
-                                  'Cycles')
-                                "cycle_view": projectsProvider
-                                    .features[index + 1]['show'],
-                              if (projectsProvider.features[index + 1]
-                                      ['title'] ==
-                                  'Modules')
-                                "module_view": projectsProvider
-                                    .features[index + 1]['show'],
-                              if (projectsProvider.features[index + 1]
-                                      ['title'] ==
-                                  'Views')
-                                "issue_views_view": projectsProvider
-                                    .features[index + 1]['show'],
-                              if (projectsProvider.features[index + 1]
-                                      ['title'] ==
-                                  'Pages')
-                                "page_view": projectsProvider
-                                    .features[index + 1]['show'],
-                            });
-                      },
-                      child: Container(
-                        width: 30,
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: projectsProvider.features[index + 1]['show']
-                                ? Colors.green
-                                : Colors.grey[300]),
-                        child: Align(
-                          alignment: projectsProvider.features[index + 1]
-                                  ['show']
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: const CircleAvatar(
-                            radius: 6,
-                            backgroundColor: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: InkWell(
+                        onTap: () {
+                          projectsProvider.features[index + 1]['show'] =
+                              !projectsProvider.features[index + 1]['show'];
+                          projectsProvider.setState();
+                          // print(projectsProvider.features[index + 1]);
+                          projectsProvider.updateProject(
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              projId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject['id'],
+                              ref: ref,
+                              data: {
+                                if (projectsProvider.features[index + 1]
+                                        ['title'] ==
+                                    'Cycles')
+                                  "cycle_view": projectsProvider
+                                      .features[index + 1]['show'],
+                                if (projectsProvider.features[index + 1]
+                                        ['title'] ==
+                                    'Modules')
+                                  "module_view": projectsProvider
+                                      .features[index + 1]['show'],
+                                if (projectsProvider.features[index + 1]
+                                        ['title'] ==
+                                    'Views')
+                                  "issue_views_view": projectsProvider
+                                      .features[index + 1]['show'],
+                                if (projectsProvider.features[index + 1]
+                                        ['title'] ==
+                                    'Pages')
+                                  "page_view": projectsProvider
+                                      .features[index + 1]['show'],
+                              });
+                        },
+                        child: Container(
+                          width: 30,
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: projectsProvider.features[index + 1]
+                                      ['show']
+                                  ? Colors.green
+                                  : Colors.grey[300]),
+                          child: Align(
+                            alignment: projectsProvider.features[index + 1]
+                                    ['show']
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                            child: const CircleAvatar(
+                              radius: 6,
+                              backgroundColor: Colors.white,
+                            ),
                           ),
                         ),
                       ),

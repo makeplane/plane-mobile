@@ -198,7 +198,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               colorFilter: ColorFilter.mode(
@@ -497,7 +497,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                                 'assets/svg_images/cycles_icon.svg',
                                                 height: 25,
@@ -844,7 +844,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -897,7 +897,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleCompletedFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1109,7 +1111,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -1162,7 +1164,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesCompletedData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1398,7 +1402,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -1451,7 +1455,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleUpcomingFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1665,7 +1671,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -1718,7 +1724,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesUpcomingData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -1950,7 +1958,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -2003,7 +2011,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cycleDraftFavoriteData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -2245,7 +2255,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                                const EdgeInsets.only(top: 0),
                                             child: SvgPicture.asset(
                                               'assets/svg_images/cycles_icon.svg',
                                               height: 25,
@@ -2298,7 +2308,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           .cyclesDraftData[
                                                       index]['name'],
                                                   maxLines: 2,
-                                                  type: FontStyle.H5,
+                                                  type: FontStyle.H6,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
                                                 ),
                                               ),
                                               const SizedBox(

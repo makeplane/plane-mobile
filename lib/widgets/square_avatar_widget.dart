@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane_startup/provider/provider_list.dart';
@@ -41,9 +42,22 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       widget.details[0]['avatar'] != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: Image.network(
-                        widget.details[0]['avatar'],
+                      child: CachedNetworkImage(
+                        imageUrl: widget.details[0]['avatar'],
                         fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return Center(
+                            child: CustomText(
+                              widget.details[0]['display_name'][0]
+                                  .toString()
+                                  .toUpperCase(),
+                              type: FontStyle.Small,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              //  color: Colors.white,
+                            ),
+                          );
+                        },
                       ))
                   : Center(
                       child: CustomText(
@@ -67,15 +81,28 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: darkSecondaryBGC,
+                        color: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
                       ),
                       child: widget.details[1]['avatar'] != "" &&
                               widget.details[1]['avatar'] != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                widget.details[1]['avatar'],
+                              child: CachedNetworkImage(
+                                imageUrl: widget.details[1]['avatar'],
                                 fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return Center(
+                                    child: CustomText(
+                                      widget.details[1]['display_name'][0]
+                                          .toString()
+                                          .toUpperCase(),
+                                      type: FontStyle.Small,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    ),
+                                  );
+                                },
                               ))
                           : Center(
                               child: CustomText(
@@ -101,16 +128,28 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: darkSecondaryBGC,
+                        color: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
                       ),
                       child: widget.details[2]['avatar'] != "" &&
                               widget.details[2]['avatar'] != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                widget.details[2]['avatar'],
-                                fit: BoxFit.cover,
-                              ))
+                              child: CachedNetworkImage(
+                                  imageUrl: widget.details[2]['avatar'],
+                                  errorWidget: (context, url, error) {
+                                    return Center(
+                                      child: CustomText(
+                                        widget.details[2]['display_name'][0]
+                                            .toString()
+                                            .toUpperCase(),
+                                        type: FontStyle.Small,
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.cover))
                           : Center(
                               child: CustomText(
                                 widget.details[2]['display_name'][0]

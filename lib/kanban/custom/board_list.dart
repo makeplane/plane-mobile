@@ -102,6 +102,19 @@ class _BoardListState extends ConsumerState<BoardList> {
                                   .items[prov.board.dragItemIndex!].prevChild;
                           prov.board.lists[prov.board.dragItemOfListIndex!]
                               .items[prov.board.dragItemIndex!].setState!();
+                          if (prov
+                                  .board
+                                  .lists[prov.board.dragItemOfListIndex!]
+                                  .items[prov.board.dragItemIndex!]
+                                  .addedBySystem ==
+                              true) {
+                            prov.board.lists[prov.board.dragItemOfListIndex!]
+                                .items
+                                .removeAt(0);
+                            log("ITEM REMOVED");
+                            prov.board.lists[prov.board.dragItemOfListIndex!]
+                                .setState!();
+                          }
                           prov.board.dragItemIndex = 0;
                           prov.board.dragItemOfListIndex = widget.index;
                           setState(() {});
@@ -187,6 +200,19 @@ class _BoardListState extends ConsumerState<BoardList> {
                                   .items[prov.board.dragItemIndex!].prevChild;
                           prov.board.lists[prov.board.dragItemOfListIndex!]
                               .items[prov.board.dragItemIndex!].setState!();
+                          if (prov
+                                  .board
+                                  .lists[prov.board.dragItemOfListIndex!]
+                                  .items[prov.board.dragItemIndex!]
+                                  .addedBySystem ==
+                              true) {
+                            prov.board.lists[prov.board.dragItemOfListIndex!]
+                                .items
+                                .removeAt(0);
+                            log("ITEM REMOVED");
+                            prov.board.lists[prov.board.dragItemOfListIndex!]
+                                .setState!();
+                          }
                           prov.board.dragItemIndex = 0;
                           prov.board.dragItemOfListIndex = widget.index;
                           setState(() {});

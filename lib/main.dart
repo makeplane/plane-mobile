@@ -31,10 +31,13 @@ void main() async {
     statusBarIconBrightness: Brightness.dark,
   ));
   await SharedPrefrenceServices.init();
-  Const.appBearerToken =
-      SharedPrefrenceServices.sharedPreferences!.getString("token");
   Const.userId =
       SharedPrefrenceServices.sharedPreferences!.getString("user_id");
+  Const.accessToken =
+      SharedPrefrenceServices.sharedPreferences!.getString("access_token");
+  Const.refreshToken =
+      SharedPrefrenceServices.sharedPreferences!.getString("refresh_token");
+  // print(Const.refreshToken);
   var pref = await SharedPreferences.getInstance();
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.appBearerToken = null;
@@ -61,8 +64,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     var themeProv = ref.read(ProviderList.themeProvider);
-    if (Const.appBearerToken != null) {
-      log(Const.appBearerToken.toString());
+    if (Const.accessToken != null) {
+      log(Const.accessToken.toString());
       var prov = ref.read(ProviderList.profileProvider);
       var workspaceProv = ref.read(ProviderList.workspaceProvider);
       var projectProv = ref.read(ProviderList.projectProvider);
@@ -291,7 +294,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       navigatorKey: Const.globalKey,
       navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
       home:
-          Const.appBearerToken == null ? const OnBoardingScreen() : const App(),
+          Const.accessToken == null ? const OnBoardingScreen() : const App(),
     );
   }
 

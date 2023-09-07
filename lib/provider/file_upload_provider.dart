@@ -10,7 +10,6 @@ import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/config/const.dart';
 import 'package:plane_startup/utils/enums.dart';
 
-
 class FileUploadProvider extends ChangeNotifier {
   FileUploadProvider(ChangeNotifierProviderRef<FileUploadProvider> this.ref);
   Ref? ref;
@@ -28,7 +27,7 @@ class FileUploadProvider extends ChangeNotifier {
           filename: 'fileName.$type', contentType: MediaType(fileType, type)),
       "attributes": jsonEncode("{}")
     });
-    var token = Const.appBearerToken;
+    var token = Const.accessToken;
     var response = await dio
         .post(APIs.fileUpload,
             data: formData,

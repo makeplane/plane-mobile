@@ -249,9 +249,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     if (!sentCode) {
                                       await ref
                                           .read(ProviderList.authProvider)
-                                          .sendMagicCode(email: email.text);
-                                      setState(() {
-                                        sentCode = true;
+                                          .sendMagicCode(email:email.text)
+                                          .then((value) {
+                                        if (authProvider.sendCodeState ==
+                                            StateEnum.error) {
+                                          CustomToast.showToast(
+                                              context,
+                                              message:'Something went wrong, please try again.',
+                                              
+                                              toastType: ToastType.failure);
+                                        } else {
+                                          setState(() {
+                                            sentCode = true;
+                                          });
+                                        }
                                       });
                                     } else {
                                       await ref

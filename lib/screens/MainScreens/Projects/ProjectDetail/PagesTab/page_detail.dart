@@ -1,17 +1,17 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/bottom_sheets/block_sheet.dart';
 import 'package:plane_startup/bottom_sheets/label_sheet.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_block_card.dart';
 import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
 
 class PageDetail extends ConsumerStatefulWidget {
   const PageDetail({required this.index, super.key});
@@ -39,8 +39,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
   ];
 
   Map deletedLabel = {};
-
+  bool isBlocksLoading = false;
   bool showLockLoading = false;
+  late InAppWebViewController controller;
   @override
   void initState() {
     var prov = ref.read(ProviderList.pageProvider);
@@ -66,6 +67,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
         ['label_details'] as List)) {
       prov.selectedLabels.add(element['id']);
     }
+    ref.read(ProviderList.issueProvider).initCookies();
 
     titleController.text =
         prov.pages[prov.selectedFilter]![widget.index]['name'] ?? '';
@@ -82,7 +84,8 @@ class _PageDetailState extends ConsumerState<PageDetail> {
     var pageProvider = ref.watch(ProviderList.pageProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
-    //  log(projectProvider.currentProject["id"]);
+    var page = pageProvider.pages[pageProvider.selectedFilter]![widget.index];
+    log('https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace!.workspaceSlug}/projects/${page['project']}/pages/${page['page']}/blocks');
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -751,26 +754,90 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                     ),
                   )
                 : Container(),
+
             Expanded(
-              child: LoadingWidget(
-                loading: pageProvider.pagesListState == StateEnum.loading ||
-                    pageProvider.blockState == StateEnum.loading,
-                widgetClass: ListView.builder(
-                  itemCount: pageProvider.blocks.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: PageBlockCard(
-                        pageID: pageProvider.pages[
-                            pageProvider.selectedFilter]![widget.index]['id'],
-                        index: index,
+              child: page['blocks'].isEmpty
+                  ? Center(
+                      child: Text(
+                        'No blocks found',
+                        style: TextStyle(
+                            color: themeProvider.themeManager.primaryTextColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       ),
-                    );
-                  },
-                ),
-              ),
+                    )
+                  : Stack(
+                      children: [
+                        InAppWebView(
+                          contextMenu: ContextMenu(
+                            menuItems: [],
+                            options: ContextMenuOptions(
+                              hideDefaultSystemContextMenuItems: true,
+                            ),
+                          ),
+                          onLoadStart: (controller, url) => setState(() {
+                            isBlocksLoading = true;
+                          }),
+                          onLoadStop: (controller, url) => setState(() {
+                            isBlocksLoading = false;
+                          }),
+                          onWebViewCreated: (controller) =>
+                              this.controller = controller,
+                          pullToRefreshController: PullToRefreshController(
+                            options: PullToRefreshOptions(
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                            ),
+                            onRefresh: () async {
+                              controller.reload();
+                            },
+                          ),
+                          initialUrlRequest: URLRequest(
+                              url: Uri.parse(
+                                  'https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace!.workspaceSlug}/projects/${page['project']}/pages/${page['id']}/blocks')),
+                        ),
+                        isBlocksLoading
+                            ? Container(
+                            alignment: Alignment.center,
+                            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: LoadingIndicator(
+                                    indicatorType: Indicator.lineSpinFadeLoader,
+                                    colors: [
+                                      themeProvider
+                                          .themeManager.primaryTextColor
+                                    ],
+                                    strokeWidth: 1.0,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
             )
+            // Expanded(
+            //   child: LoadingWidget(
+            //     loading: pageProvider.pagesListState == StateEnum.loading ||
+            //         pageProvider.blockState == StateEnum.loading,
+            //     widgetClass: ListView.builder(
+            //       itemCount: pageProvider.blocks.length,
+            //       itemBuilder: (context, index) {
+            //         return Padding(
+            //           padding: const EdgeInsets.symmetric(
+            //               horizontal: 15, vertical: 5),
+            //           child: PageBlockCard(
+            //             pageID: pageProvider.pages[
+            //                 pageProvider.selectedFilter]![widget.index]['id'],
+            //             index: index,
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

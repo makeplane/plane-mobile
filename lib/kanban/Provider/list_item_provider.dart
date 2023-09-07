@@ -155,7 +155,8 @@ class ListItemProvider extends ChangeNotifier {
     var willPlaceHolderAtBottom = ((itemIndex ==
             prov.board.lists[listIndex].items.length - 1) &&
         ((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy >
-            item.y! + item.height!));
+            item.y! + item.height!) &&
+        item.addedBySystem != true);
 
     var willPlaceHolderAtTop =
         (((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy <
@@ -267,7 +268,7 @@ class ListItemProvider extends ChangeNotifier {
             prov.board.lists[listIndex].items.length - 1) &&
         ((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy >
             item.y! + item.height!) &&
-        prov.board.lists[listIndex].items.last.addedBySystem != true);
+        item.addedBySystem != true);
     //log("WILL PLACE HOLDER AT BOTTOM $willPlaceHolderAtBottom");
     var willPlaceHolderAtTop =
         (((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy <

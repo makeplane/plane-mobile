@@ -27,6 +27,10 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void notify() {
+    notifyListeners();
+  }
+
   Future<void> toggleTheme(THEME theme) async {
     theme = theme;
     themeManager = ThemeManager(theme);
@@ -67,12 +71,13 @@ class ThemeProvider extends ChangeNotifier {
     }
     log(theme.toString());
     themeManager = ThemeManager(theme);
+    CustomToast(manager: themeManager);
     var profileProv = ref.read(ProviderList.profileProvider);
     profileProv.updateProfile(data: data).then((value) {
       if (profileProv.updateProfileState == StateEnum.success &&
           context != null) {
-        CustomToast().showToast(context, 'Theme updated!', this,
-            toastType: ToastType.success);
+        CustomToast.showToast(context,
+            message: 'Theme updated!', toastType: ToastType.success);
       } else {}
     });
     setUiOverlayStyle(data['theme']['theme']);
@@ -180,6 +185,7 @@ class ThemeProvider extends ChangeNotifier {
       isDarkThemeEnabled = false;
     }
     themeManager = ThemeManager(theme);
+    CustomToast(manager: themeManager);
     // print(themeManager);
   }
 }

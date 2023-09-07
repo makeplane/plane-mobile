@@ -64,8 +64,8 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
                     resend: true,
                   )
                   .then((value) {
-                CustomToast().showToast(
-                    context, 'Code sent successfully', themeProvider,
+                CustomToast.showToast(
+                    context, message:'Code sent successfully',
                     toastType: ToastType.success);
               });
               if (mounted) {

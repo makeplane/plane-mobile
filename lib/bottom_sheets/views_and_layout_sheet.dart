@@ -578,12 +578,16 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                       borderRadius: BorderRadius.circular(10),
                                       color: showEmptyStates
                                           ? greenHighLight
-                                          : Colors.grey[300]),
+                                          : themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor),
                                   child: Align(
                                     alignment: showEmptyStates
                                         ? Alignment.centerRight
                                         : Alignment.centerLeft,
-                                    child: const CircleAvatar(radius: 6),
+                                    child: const CircleAvatar(
+                                      radius: 6,
+                                      backgroundColor: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ],

@@ -229,8 +229,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
               onTap: () {
                 if (fromRole(role: workspaceProvider.role) <
                     workspaceProvider.workspaceMembers[index]['role']) {
-                  CustomToast().showToast(
-                      context, accessRestrictedMSG, themeProvider,
+                  CustomToast.showToast(context,
+                      message: accessRestrictedMSG,
                       toastType: ToastType.failure);
                 } else if (workspaceProvider.workspaceMembers[index]['member']
                         ["id"] ==
@@ -255,8 +255,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                       ),
                     );
                   } else {
-                    CustomToast().showToast(context,
-                        "You can't change your own role", themeProvider,
+                    CustomToast.showToast(context,
+                         message:"You can't change your own role",
                         toastType: ToastType.warning);
                   }
                 } else {
@@ -537,9 +537,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
             onTap: () {
               if (fromRole(role: projectsProvider.role) <
                   projectsProvider.projectMembers[index]['role']) {
-                CustomToast().showToast(
-                    context, accessRestrictedMSG, themeProvider,
-                    toastType: ToastType.failure);
+                CustomToast.showToast(context,
+                    message: accessRestrictedMSG, toastType: ToastType.failure);
               } else if (projectsProvider.projectMembers[index]['member']
                       ["id"] ==
                   ref.read(ProviderList.profileProvider).userProfile.id) {
@@ -571,8 +570,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                         );
                       });
                 } else {
-                  CustomToast().showToast(
-                      context, "You can't change your own role", themeProvider,
+                  CustomToast.showToast(
+                      context,  message:"You can't change your own role",
                       toastType: ToastType.warning);
                 }
               } else {

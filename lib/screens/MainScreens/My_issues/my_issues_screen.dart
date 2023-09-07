@@ -61,10 +61,11 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                             .watch(ProviderList.projectProvider)
                             .projects
                             .isEmpty) {
-                          CustomToast().showToast(
-                              context,
-                              'You dont have any projects yet, try creating one',
-                              themeProvider);
+                          CustomToast.showToast(
+                            context,
+                            message:
+                                'You dont have any projects yet, try creating one',
+                          );
                         } else {
                           ref
                                   .watch(ProviderList.projectProvider)
@@ -594,16 +595,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                           )
                               .then((value) {
                             if (issueProvider.issues.orderBY !=
-                                    OrderBY.manual) {
-                              CustomToast().showToast(
+                                OrderBY.manual) {
+                              CustomToast.showToast(
                                   context,
-                                  'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
-                                  themeProvider,
+                                   message:'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
+                                  
                                   toastType: ToastType.warning);
                             }
                           }).catchError((e) {
-                            CustomToast().showToast(context,
-                                'Failed to update issue', themeProvider,
+                            CustomToast.showToast(context,
+                                 message:'Failed to update issue',
                                 toastType: ToastType.failure);
                           });
                         },

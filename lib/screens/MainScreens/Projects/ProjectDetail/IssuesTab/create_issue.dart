@@ -1662,16 +1662,17 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: createMoreIssues
-                                                  ? themeProvider.themeManager
-                                                      .primaryColour
+                                                  ? greenHighLight
                                                   : themeProvider.themeManager
                                                       .tertiaryBackgroundDefaultColor),
                                           child: Align(
                                             alignment: createMoreIssues
                                                 ? Alignment.centerRight
                                                 : Alignment.centerLeft,
-                                            child:
-                                                const CircleAvatar(radius: 6),
+                                            child: const CircleAvatar(
+                                              radius: 6,
+                                              backgroundColor: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -1737,8 +1738,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
 
                             if (issuesProvider.createIssueState ==
                                 StateEnum.success) {
-                              CustomToast().showToast(baseContext,
-                                  'Issue created successfully ', themeProvider,
+                              CustomToast.showToast(baseContext,
+                                  message: 'Issue created successfully ',
                                   toastType: ToastType.success);
                               if (createMoreIssues) {
                                 title.text = '';
@@ -1822,8 +1823,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                 Navigator.pop(Const.globalKey.currentContext!);
                               }
                             } else {
-                              CustomToast().showToast(baseContext,
-                                  'Soething went wrong ', themeProvider,
+                              CustomToast.showToast(baseContext,
+                                  message: 'Soething went wrong ',
                                   toastType: ToastType.failure);
                             }
                           },

@@ -193,7 +193,7 @@ class AuthProvider extends ChangeNotifier {
           validateCodeState = StateEnum.failed;
           notifyListeners();
           if (context != null) {
-            CustomToast().showToastWithColors(context,
+            CustomToast.showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
                 toastType: ToastType.failure);
           }
@@ -207,12 +207,12 @@ class AuthProvider extends ChangeNotifier {
         var errorResponse = e.error;
         message = errorResponse;
         log(e.error.toString());
-        // CustomToast().showSimpleToast(
+        // CustomToast.showSimpleToast(
         //   message.toString(),
         // );
 
         if (context != null) {
-          CustomToast().showToastWithColors(context, message.toString(),
+          CustomToast.showToastWithColors(context, message.toString(),
               toastType: ToastType.failure);
         }
       } else {
@@ -300,7 +300,7 @@ class AuthProvider extends ChangeNotifier {
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
           notifyListeners();
-            CustomToast().showToastWithColors(context,
+            CustomToast.showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
                 toastType: ToastType.failure);
         }
@@ -308,10 +308,8 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       log(e.toString());
 
-      CustomToast().showToast(
-          context,
-          'Something went wrong, please try again.',
-          ref.read(ProviderList.themeProvider),
+      CustomToast.showToast(context, message:'Something went wrong, please try again.',
+        
           toastType: ToastType.failure);
       googleAuthState = StateEnum.failed;
       notifyListeners();
@@ -401,7 +399,7 @@ class AuthProvider extends ChangeNotifier {
 
           notifyListeners();
           if (context != null) {
-            CustomToast().showToastWithColors(context,
+            CustomToast.showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
                 toastType: ToastType.failure);
           }
@@ -412,11 +410,11 @@ class AuthProvider extends ChangeNotifier {
       signInState = StateEnum.failed;
 
       if (context != null) {
-        CustomToast().showToastWithColors(context, e.error.toString(),
+        CustomToast.showToastWithColors(context, e.error.toString(),
             toastType: ToastType.failure);
       }
       if (context != null) {
-        CustomToast().showToastWithColors(
+        CustomToast.showToastWithColors(
             context, 'Something went wrong, please try again.',
             toastType: ToastType.failure);
       }
@@ -536,7 +534,7 @@ class AuthProvider extends ChangeNotifier {
 
           notifyListeners();
           if (context != null) {
-            CustomToast().showToastWithColors(context,
+            CustomToast.showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
                 toastType: ToastType.failure);
           }
@@ -548,12 +546,12 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       if (e is DioException) {
         if (context != null) {
-          CustomToast().showToastWithColors(context, e.error.toString(),
+          CustomToast.showToastWithColors(context, e.error.toString(),
               toastType: ToastType.failure);
         }
       } else {
         if (context != null) {
-          CustomToast().showToastWithColors(
+          CustomToast.showToastWithColors(
               context, 'Something went wrong, please try again.',
               toastType: ToastType.failure);
         }

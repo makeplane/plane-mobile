@@ -95,111 +95,119 @@ class _ViewsState extends ConsumerState<Views> {
               children: [
                 //icon of cards stacked on each other
                 Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 16),
+                    padding: const EdgeInsets.only(left: 15, top: 20),
                     child: SvgPicture.asset(
                       "assets/svg_images/view_card.svg",
-                      height: 20,
-                      width: 20,
+                      height: 16,
+                      width: 16,
                       colorFilter: ColorFilter.mode(
                           themeProvider.themeManager.primaryTextColor,
                           BlendMode.srcIn),
                     )),
 
-                Container(
-                  margin: const EdgeInsets.only(left: 5),
-                  width: MediaQuery.sizeOf(context).width - 250,
-                  padding: const EdgeInsets.only(left: 5, right: 15, top: 15),
-                  child: CustomText(
-                    viewsProvider.views[index]["name"],
-                    type: FontStyle.H6,
-                    fontWeight: FontWeightt.Medium,
-                    color: themeProvider.themeManager.primaryTextColor,
+                Expanded(
+                  flex: 500,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 5),
+                    //width: MediaQuery.sizeOf(context).width - 250,
+                    padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
+                    child: CustomText(
+                      viewsProvider.views[index]["name"],
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    ),
                   ),
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 3, bottom: 3),
-                      color: themeProvider
-                          .themeManager.tertiaryBackgroundDefaultColor,
-                      height: 28,
-                      child: Center(
-                        child: CustomText('${countFilters(index)} Filters',
-                            type: FontStyle.XSmall,
-                            color:
-                                themeProvider.themeManager.tertiaryTextColor),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: themeProvider
+                              .themeManager.tertiaryBackgroundDefaultColor,
+                        ),
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, top: 3, bottom: 3),
+                        height: 28,
+                        child: Center(
+                          child: CustomText('${countFilters(index)} Filters',
+                              type: FontStyle.XSmall,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        ref
-                            .read(ProviderList.viewsProvider.notifier)
-                            .favouriteViews(
-                                index: index,
-                                method: viewsProvider.views[index]
-                                            ["is_favorite"] ==
-                                        false
-                                    ? HttpMethod.post
-                                    : HttpMethod.delete);
-                        viewsProvider.views[index]["is_favorite"] =
-                            !viewsProvider.views[index]["is_favorite"];
-                        setState(() {});
-                      },
-                      child: Container(
-                        margin:
-                            const EdgeInsets.only(top: 12, left: 10, right: 10),
-                        child:
-                            viewsProvider.views[index]["is_favorite"] == false
-                                ? Icon(
-                                    Icons.star_border,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor,
-                                  )
-                                : Icon(
-                                    Icons.star,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
+                      GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(ProviderList.viewsProvider.notifier)
+                              .favouriteViews(
+                                  index: index,
+                                  method: viewsProvider.views[index]
+                                              ["is_favorite"] ==
+                                          false
+                                      ? HttpMethod.post
+                                      : HttpMethod.delete);
+                          viewsProvider.views[index]["is_favorite"] =
+                              !viewsProvider.views[index]["is_favorite"];
+                          setState(() {});
+                        },
+                        child: Container(
+                          //margin: const EdgeInsets.only(top: 12, left: 10, right: 10),
+                          child:
+                              viewsProvider.views[index]["is_favorite"] == false
+                                  ? Icon(
+                                      Icons.star_border,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    )
+                                  : Icon(
+                                      Icons.star,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
+                                    ),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          enableDrag: true,
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.50),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            enableDrag: true,
+                            constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.50),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
                             ),
-                          ),
-                          context: context,
-                          builder: (ctx) {
-                            return DeleteCycleSheet(
-                              name: viewsProvider.views[index]["name"],
-                              id: viewsProvider.views[index]["id"],
-                              type: 'View',
-                              index: index,
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 12, right: 10),
+                            context: context,
+                            builder: (ctx) {
+                              return DeleteCycleSheet(
+                                name: viewsProvider.views[index]["name"],
+                                id: viewsProvider.views[index]["id"],
+                                type: 'View',
+                                index: index,
+                              );
+                            },
+                          );
+                        },
                         child: Icon(
                           Icons.more_vert,
                           color:
                               themeProvider.themeManager.placeholderTextColor,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                    ],
+                  ),
                 )
               ],
             ),

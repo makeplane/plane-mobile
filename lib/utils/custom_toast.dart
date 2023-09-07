@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/enums.dart';
+import 'package:plane_startup/utils/theme_manager.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 enum ToastType { defult, success, failure, warning }
 
 class CustomToast {
-  void showToast(
-    BuildContext context,
-    String message,
-    ThemeProvider themeProvider, {
+  static final FToast _fToast = FToast();
+  static ThemeManager? themeManager;
+  CustomToast({required ThemeManager manager}) {
+    themeManager = manager;
+  }
+
+  static void showToast(
+    BuildContext context, {
+    required String message,
     int duration = 2,
     ToastType toastType = ToastType.defult,
   }) {
-    FToast fToast = FToast();
-    fToast.init(context);
+    _fToast.init(context);
     Widget toast = Card(
       borderOnForeground: true,
       elevation: 20,
-      color: themeProvider.themeManager.primaryToastBackgroundColor,
+      color: themeManager!.primaryToastBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(
@@ -30,12 +34,12 @@ class CustomToast {
                 : toastType == ToastType.success
                     ? Icon(
                         Icons.check_circle_outline,
-                        color: themeProvider.themeManager.textSuccessColor,
+                        color: themeManager!.textSuccessColor,
                       )
                     : toastType == ToastType.failure
                         ? Icon(
                             Icons.error_outline,
-                            color: themeProvider.themeManager.textErrorColor,
+                            color: themeManager!.textErrorColor,
                           )
                         : const Icon(
                             Icons.warning_amber_outlined,
@@ -55,38 +59,38 @@ class CustomToast {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                fToast.removeCustomToast();
+                _fToast.removeCustomToast();
               },
               child: Icon(
                 Icons.close,
-                color: themeProvider.themeManager.primaryTextColor,
+                color: themeManager!.primaryTextColor,
               ),
             )
           ],
         ),
       ),
     );
-    fToast.showToast(
+
+    _fToast.showToast(
       child: toast,
       toastDuration: Duration(seconds: duration),
       gravity: ToastGravity.BOTTOM,
     );
   }
 
-  void showToastWithCustomChild(
+  static void showToastWithCustomChild(
       BuildContext context, String message, Widget child,
       {int duration = 1}) {
-    FToast fToast = FToast();
-    fToast.init(context);
+    _fToast.init(context);
 
-    fToast.showToast(
+    _fToast.showToast(
       child: child,
       toastDuration: Duration(seconds: duration),
       gravity: ToastGravity.BOTTOM,
     );
   }
 
-  void showToastWithColors(
+  static void showToastWithColors(
     BuildContext context,
     String message, {
     Color primaryToastBackgroundColor = Colors.white,
@@ -96,8 +100,6 @@ class CustomToast {
     int duration = 2,
     ToastType toastType = ToastType.defult,
   }) {
-    FToast fToast = FToast();
-    fToast.init(context);
     Widget toast = Card(
       borderOnForeground: true,
       elevation: 20,
@@ -136,7 +138,7 @@ class CustomToast {
               alignment: Alignment.topRight,
               child: GestureDetector(
                 onTap: () {
-                  fToast.removeCustomToast();
+                  _fToast.removeCustomToast;
                 },
                 child: Icon(
                   Icons.close,
@@ -148,7 +150,7 @@ class CustomToast {
         ),
       ),
     );
-    fToast.showToast(
+    _fToast.showToast(
       child: toast,
       toastDuration: Duration(seconds: duration),
       gravity: ToastGravity.BOTTOM,

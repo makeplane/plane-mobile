@@ -759,10 +759,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                                   if (_targetRangeDatePickerValueWithDefaultValue
                                                           .length !=
                                                       2) {
-                                                    CustomToast().showToast(
+                                                    CustomToast.showToast(
                                                         context,
-                                                        'Please select a date range',
-                                                        themeProvider,
+                                                       message: 'Please select a date range',
+                                                        
                                                         toastType:
                                                             ToastType.warning);
                                                     return;
@@ -1045,10 +1045,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                                   if (_startRangeDatePickerValueWithDefaultValue
                                                           .length !=
                                                       2) {
-                                                    CustomToast().showToast(
+                                                    CustomToast.showToast(
                                                         context,
-                                                        'Please select a date range',
-                                                        themeProvider,
+                                                       message: 'Please select a date range',
+                                                        
                                                         toastType:
                                                             ToastType.warning);
                                                     return;

@@ -66,7 +66,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         children: [
                           CustomText(
                             'Delete ${widget.type}',
-                            type: FontStyle.H6,
+                            type: FontStyle.H4,
                             fontWeight: FontWeightt.Semibold,
                           ),
                           IconButton(
@@ -85,8 +85,11 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         height: 20,
                       ),
                       CustomText(
-                        'Are you sure you want to delete ${widget.type.toLowerCase()} - ${widget.name}? All of the data related to the cycle will be permanently removed. This action cannot be undone.',
+                        'Are you sure you want to delete ${widget.type.toLowerCase()} - ${widget.name}? All of the data related to the ${widget.type.toLowerCase()} will be permanently removed. This action cannot be undone.',
                         maxLines: 5,
+                        type: FontStyle.H6,
+                        textAlign: TextAlign.left,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                       const SizedBox(
                         height: 20,
@@ -101,8 +104,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                       if (projProv.role != Role.admin &&
                           projProv.role != Role.member) {
                         Navigator.of(context).pop();
-                        CustomToast().showToast(
-                            context, accessRestrictedMSG, themeProvider,
+                        CustomToast.showToast(
+                            context,message: accessRestrictedMSG,
                             toastType: ToastType.failure);
                         return;
                       }
@@ -218,8 +221,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         log('Unknown type');
                       }
 
-                      CustomToast().showToast(
-                          context, '${widget.type} deleted', themeProvider,
+                      CustomToast.showToast(
+                          context, message:'${widget.type} deleted',
                           toastType: ToastType.success);
 
                       Navigator.of(context).pop();

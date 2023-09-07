@@ -69,13 +69,17 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SvgPicture.asset('assets/svg_images/group.svg',
-                      width: 17,
-                      height: 17,
-                      colorFilter: ColorFilter.mode(
-                          themeProvider.themeManager.primaryTextColor,
-                          BlendMode.srcIn)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SvgPicture.asset('assets/svg_images/group.svg',
+                        width: 16,
+                        height: 16,
+                        colorFilter: ColorFilter.mode(
+                            themeProvider.themeManager.primaryTextColor,
+                            BlendMode.srcIn)),
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: CustomText(
@@ -90,159 +94,167 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: widget.isFav
-                            ? (((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0)
-                                                .toDouble() /
-                                            (modulesProvider.favModules[widget.index]
-                                                        ['total_issues'] ==
-                                                    0
-                                                ? 1
-                                                : modulesProvider.favModules[widget.index]
-                                                    ['total_issues'])) *
-                                        100) >=
-                                    75
-                                ? themeProvider
-                                    .themeManager.successBackgroundColor
-                                : themeProvider
-                                    .themeManager.tertiaryBackgroundDefaultColor
-                            : (((modulesProvider.modules[widget.index]['completed_issues'] ?? 0)
-                                                .toDouble() /
-                                            (modulesProvider.modules[widget.index]
-                                                        ['total_issues'] ==
-                                                    0
-                                                ? 1
-                                                : modulesProvider.modules[widget.index]
-                                                    ['total_issues'])) *
-                                        100) >=
-                                    75
-                                ? themeProvider.themeManager.successBackgroundColor
-                                : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
-                        borderRadius: BorderRadius.circular(5)), // success 10
-                    height: 28,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: CustomText(
-                          widget.isFav
-                              ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %'
-                              : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
-                          type: FontStyle.Small,
-                          fontWeight: FontWeightt.Regular,
-                          color: widget.isFav
-                              ? (((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0)
-                                                  .toDouble() /
-                                              (modulesProvider.favModules[widget.index]
-                                                          ['total_issues'] ==
-                                                      0
-                                                  ? 1
-                                                  : modulesProvider.favModules[widget.index]
-                                                      ['total_issues'])) *
-                                          100) >=
-                                      75
-                                  ? themeProvider.themeManager.textSuccessColor
-                                  : themeProvider
-                                      .themeManager.placeholderTextColor
-                              : (((modulesProvider.modules[widget.index]['completed_issues'] ?? 0)
-                                                  .toDouble() /
-                                              (modulesProvider.modules[widget.index]
-                                                          ['total_issues'] ==
-                                                      0
-                                                  ? 1
-                                                  : modulesProvider
-                                                          .modules[widget.index]
-                                                      ['total_issues'])) *
-                                          100) >=
-                                      75
-                                  ? themeProvider.themeManager.textSuccessColor
-                                  : themeProvider.themeManager.placeholderTextColor,
-                          //themeProvider.themeManager.textSuccessColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    child: widget.isFav
-                        ? GestureDetector(
-                            //visualDensity: VisualDensity.compact,
-                            onTap: () async {
-                              String moduleID = modulesProvider
-                                  .favModules[widget.index]['id'];
-                              modulesProvider.modules.add(
-                                  modulesProvider.favModules[widget.index]);
-                              modulesProvider.favModules.removeAt(widget.index);
-                              modulesProvider.setState();
-                              modulesProvider.favouriteModule(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                moduleId: moduleID,
-                                isFav: true,
-                              );
-                            },
-                            child: Icon(
-                              Icons.star,
-                              color: themeProvider.themeManager.secondaryIcon,
-                            ))
-                        : GestureDetector(
-                            onTap: () async {
-                              String moduleId =
-                                  modulesProvider.modules[widget.index]['id'];
-                              modulesProvider.favModules
-                                  .add(modulesProvider.modules[widget.index]);
-                              modulesProvider.modules.removeAt(widget.index);
-                              modulesProvider.setState();
-                              modulesProvider.favouriteModule(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                moduleId: moduleId,
-                                isFav: false,
-                              );
-                            },
-                            child: Icon(Icons.star_border,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor),
-                          ),
-                  ),
-                  GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          enableDrag: true,
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.50),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: widget.isFav
+                                ? (((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0)
+                                                    .toDouble() /
+                                                (modulesProvider.favModules[widget.index]['total_issues'] == 0
+                                                    ? 1
+                                                    : modulesProvider.favModules[widget.index]
+                                                        ['total_issues'])) *
+                                            100) >=
+                                        75
+                                    ? themeProvider
+                                        .themeManager.successBackgroundColor
+                                    : themeProvider.themeManager
+                                        .tertiaryBackgroundDefaultColor
+                                : (((modulesProvider.modules[widget.index]['completed_issues'] ?? 0)
+                                                    .toDouble() /
+                                                (modulesProvider.modules[widget.index]
+                                                            ['total_issues'] ==
+                                                        0
+                                                    ? 1
+                                                    : modulesProvider
+                                                            .modules[widget.index]
+                                                        ['total_issues'])) *
+                                            100) >=
+                                        75
+                                    ? themeProvider.themeManager.successBackgroundColor
+                                    : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                            borderRadius: BorderRadius.circular(5)), // success 10
+                        height: 28,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: CustomText(
+                              widget.isFav
+                                  ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %'
+                                  : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(0)} %',
+                              type: FontStyle.Small,
+                              fontWeight: FontWeightt.Regular,
+                              color: widget.isFav
+                                  ? (((modulesProvider.favModules[widget.index]['completed_issues'] ??
+                                                          0)
+                                                      .toDouble() /
+                                                  (modulesProvider.favModules[widget.index]['total_issues'] == 0
+                                                      ? 1
+                                                      : modulesProvider
+                                                              .favModules[widget.index]
+                                                          ['total_issues'])) *
+                                              100) >=
+                                          75
+                                      ? themeProvider
+                                          .themeManager.textSuccessColor
+                                      : themeProvider
+                                          .themeManager.placeholderTextColor
+                                  : (((modulesProvider.modules[widget.index]['completed_issues'] ??
+                                                          0)
+                                                      .toDouble() /
+                                                  (modulesProvider.modules[widget.index]['total_issues'] == 0
+                                                      ? 1
+                                                      : modulesProvider
+                                                              .modules[widget.index]
+                                                          ['total_issues'])) *
+                                              100) >=
+                                          75
+                                      ? themeProvider.themeManager.textSuccessColor
+                                      : themeProvider.themeManager.placeholderTextColor,
+                              //themeProvider.themeManager.textSuccessColor,
                             ),
                           ),
-                          context: context,
-                          builder: (ctx) {
-                            return DeleteCycleSheet(
-                              id: modulesProvider.modules[widget.index]['id'],
-                              name: modulesProvider.modules[widget.index]
-                                  ['name'],
-                              type: 'Module',
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        child: widget.isFav
+                            ? GestureDetector(
+                                //visualDensity: VisualDensity.compact,
+                                onTap: () async {
+                                  String moduleID = modulesProvider
+                                      .favModules[widget.index]['id'];
+                                  modulesProvider.modules.add(
+                                      modulesProvider.favModules[widget.index]);
+                                  modulesProvider.favModules
+                                      .removeAt(widget.index);
+                                  modulesProvider.setState();
+                                  modulesProvider.favouriteModule(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    projId: ref
+                                        .read(ProviderList.projectProvider)
+                                        .currentProject['id'],
+                                    moduleId: moduleID,
+                                    isFav: true,
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.star,
+                                  color:
+                                      themeProvider.themeManager.secondaryIcon,
+                                ))
+                            : GestureDetector(
+                                onTap: () async {
+                                  String moduleId = modulesProvider
+                                      .modules[widget.index]['id'];
+                                  modulesProvider.favModules.add(
+                                      modulesProvider.modules[widget.index]);
+                                  modulesProvider.modules
+                                      .removeAt(widget.index);
+                                  modulesProvider.setState();
+                                  modulesProvider.favouriteModule(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    projId: ref
+                                        .read(ProviderList.projectProvider)
+                                        .currentProject['id'],
+                                    moduleId: moduleId,
+                                    isFav: false,
+                                  );
+                                },
+                                child: Icon(Icons.star_border,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor),
+                              ),
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height *
+                                          0.50),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                ),
+                              ),
+                              context: context,
+                              builder: (ctx) {
+                                return DeleteCycleSheet(
+                                  id: modulesProvider.modules[widget.index]
+                                      ['id'],
+                                  name: modulesProvider.modules[widget.index]
+                                      ['name'],
+                                  type: 'Module',
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                      child: Icon(Icons.more_vert,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor)),
+                          child: Icon(Icons.more_vert,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor)),
+                    ],
+                  )
                 ],
               ),
               const SizedBox(height: 8),

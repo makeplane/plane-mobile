@@ -206,7 +206,8 @@ class _DeleteLeaveProjectSheetState
                   GestureDetector(
                     onTap: () async {
                       if (widget.role == Role.guest ||
-                          widget.role == Role.viewer || widget.role == Role.member) {
+                          widget.role == Role.viewer ||
+                          widget.role == Role.member) {
                         var leftSuccessfully =
                             await projectProvider.leaveProject(
                                 slug: ref
@@ -216,10 +217,9 @@ class _DeleteLeaveProjectSheetState
                                 projId: projectProvider.currentProject['id'],
                                 index: 0);
                         if (leftSuccessfully) {
-                          CustomToast().showToast(
+                          CustomToast.showToast(
                             context,
-                            'Left project successfully',
-                            themeProvider,
+                            message: 'Left project successfully',
                           );
                           postHogService(
                               eventName: 'LEAVE_PROJECT',
@@ -242,10 +242,9 @@ class _DeleteLeaveProjectSheetState
                               .then((value) {
                             if (projectProvider.deleteProjectState ==
                                 StateEnum.success) {
-                              CustomToast().showToast(
+                              CustomToast.showToast(
                                 context,
-                                'Deleted project successfully',
-                                themeProvider,
+                                message: 'Deleted project successfully',
                               );
                               postHogService(
                                   eventName: 'DELETE_PROJECT',

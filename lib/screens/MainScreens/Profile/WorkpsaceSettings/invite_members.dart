@@ -270,8 +270,17 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 },
                                 controller:
                                     workspaceProvider.invitingMembersRole,
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
                                 decoration: themeProvider
-                                    .themeManager.textFieldDecoration,
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                        suffixIcon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                )),
                                 enabled: false,
                               ),
                             ),
@@ -459,14 +468,14 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 ref: ref);
                             if (workspaceProvider.workspaceInvitationState ==
                                 StateEnum.success) {
-                              CustomToast().showToast(mainBuildContext,
-                                  'Invitation sent successfully', themeProvider,
+                              CustomToast.showToast(mainBuildContext,
+                                   message:'Invitation sent successfully',
                                   toastType: ToastType.success);
 
                               Navigator.of(mainBuildContext).pop();
                             } else {
-                              CustomToast().showToast(mainBuildContext,
-                                  'Something went wrong', themeProvider,
+                              CustomToast.showToast(mainBuildContext,
+                                  message: 'Something went wrong',
                                   toastType: ToastType.failure);
                             }
                           }
@@ -474,8 +483,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               projectProvider.projectInvitationState ==
                                   StateEnum.success) {
                             //show success snackbar
-                            CustomToast().showToast(mainBuildContext,
-                                'Invitation sent successfully', themeProvider,
+                            CustomToast.showToast(mainBuildContext,
+                               message: 'Invitation sent successfully',
                                 toastType: ToastType.success);
                           }
                         },

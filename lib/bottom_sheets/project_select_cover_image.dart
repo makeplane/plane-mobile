@@ -18,7 +18,6 @@ import 'package:plane_startup/widgets/custom_text.dart';
 
 // ignore: must_be_immutable
 class SelectCoverImage extends ConsumerStatefulWidget {
-  
   SelectCoverImage({required this.uploadedUrl, super.key});
   Map<String, dynamic> uploadedUrl;
   @override
@@ -320,7 +319,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                   }
                                   return GestureDetector(
                                     onTap: () {
-                                      widget.uploadedUrl['url']= images[index];
+                                      widget.uploadedUrl['url'] = images[index];
                                       Navigator.of(context).pop();
                                     },
                                     child: Container(
@@ -428,10 +427,9 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                         .lengthInBytes;
 
                                     if (sizeOfImage > 5000000) {
-                                      CustomToast().showToast(
-                                          context,
-                                          'File size should be less than 5MB',
-                                          themeProvider,
+                                      CustomToast.showToast(context,
+                                          message:
+                                              'File size should be less than 5MB',
                                           toastType: ToastType.warning);
                                       return;
                                     }
@@ -441,7 +439,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                       coverImage!.path.split('.').last,
                                     );
                                     if (url != null) {
-                                        widget.uploadedUrl['url']= url;
+                                      widget.uploadedUrl['url'] = url;
                                     }
                                     Navigator.of(context).pop();
                                   },

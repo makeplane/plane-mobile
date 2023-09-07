@@ -63,6 +63,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
   Widget build(BuildContext context) {
     var projectprovider = ref.watch(ProviderList.projectProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -147,7 +148,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 : null),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
-                selectedIndex == 7
+                (selectedIndex == 7 && estimatesProvider.estimates.isNotEmpty)
             ? FloatingActionButton(
                 onPressed: () {
                   if (selectedIndex == 2) {

@@ -10,18 +10,25 @@ import '../config/apis.dart';
 class ViewsModel {
   StateEnum viewsState = StateEnum.empty;
   var views = [];
+  var viewDetail = {};
 
-  ViewsModel({required this.views, required this.viewsState});
+  ViewsModel(
+      {required this.views,
+      required this.viewsState,
+      required this.viewDetail});
 
-  ViewsModel copyWith({StateEnum? viewsState, List? views}) {
+  ViewsModel copyWith({StateEnum? viewsState, List? views, Map? viewDetail}) {
     return ViewsModel(
-        views: views ?? this.views, viewsState: viewsState ?? this.viewsState);
+        views: views ?? this.views,
+        viewsState: viewsState ?? this.viewsState,
+        viewDetail: viewDetail ?? this.viewDetail);
   }
 }
 
 class ViewsNotifier extends StateNotifier<ViewsModel> {
   ViewsNotifier(StateNotifierProviderRef<ViewsNotifier, ViewsModel> this.ref)
-      : super(ViewsModel(views: [], viewsState: StateEnum.empty));
+      : super(
+            ViewsModel(views: [], viewsState: StateEnum.empty, viewDetail: {}));
   Ref ref;
 
   Future getViews() async {
@@ -72,16 +79,19 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       state = state.copyWith(
           views: [...state.views, response.data],
           viewsState: StateEnum.success);
-      postHogService(eventName: 'VIEW_CREATE', properties: {
-        'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-        'WORKSPACE_NAME': workspaceProvider.selectedWorkspace!.workspaceName,
-        'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace!.workspaceSlug,
-        'PROJECT_ID': projectProvider.projectDetailModel!.id,
-        'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-        'VIEW_ID': response.data['id']
-      },
-      ref: ref
-      );
+      postHogService(
+          eventName: 'VIEW_CREATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
+            'WORKSPACE_NAME':
+                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_SLUG':
+                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'PROJECT_ID': projectProvider.projectDetailModel!.id,
+            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'VIEW_ID': response.data['id']
+          },
+          ref: ref);
     } on DioException catch (e) {
       log(e.error.toString());
       state = state.copyWith(viewsState: StateEnum.error);
@@ -128,6 +138,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
   Future updateViews(
       {required int index,
       required String id,
+      bool fromGlobalSearch = false,
       required Map<String, dynamic> data}) async {
     state = state.copyWith(viewsState: StateEnum.loading);
 
@@ -143,11 +154,14 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
         data: data,
       );
       log('API success');
-      state = state.copyWith(views: [
-        ...state.views.sublist(0, index),
-        response.data,
-        ...state.views.sublist(index + 1)
-      ], viewsState: StateEnum.success);
+      if (!fromGlobalSearch) {
+        state = state.copyWith(views: [
+          ...state.views.sublist(0, index),
+          response.data,
+          ...state.views.sublist(index + 1)
+        ]);
+      }
+      state = state.copyWith(viewsState: StateEnum.success);
     } on DioException catch (e) {
       log('Update views error: ');
       log(e.error.toString());
@@ -171,6 +185,26 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
         ...state.views.sublist(0, index),
         ...state.views.sublist(index + 1)
       ], viewsState: StateEnum.success);
+    } on DioException catch (e) {
+      log(e.error.toString());
+      state = state.copyWith(viewsState: StateEnum.error);
+      rethrow;
+    }
+  }
+
+  Future getViewDetail({required String id, required String projId}) async {
+    state = state.copyWith(viewsState: StateEnum.loading);
+
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url:
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', projId)}$id/",
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      state = state.copyWith(
+          viewsState: StateEnum.success, viewDetail: response.data);
     } on DioException catch (e) {
       log(e.error.toString());
       state = state.copyWith(viewsState: StateEnum.error);

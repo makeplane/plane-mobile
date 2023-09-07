@@ -689,7 +689,13 @@ class ModuleProvider with ChangeNotifier {
       var response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
-              .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
+              .replaceAll(
+                  "\$SLUG",
+                  ref!
+                      .read(ProviderList.workspaceProvider)
+                      .workspaces
+                      .firstWhere((element) =>
+                          element['id'] == issue['workspace'])['slug'])
               .replaceAll('\$PROJECTID', issue['project_detail']['id'])
               .replaceAll('\$ISSUEID', issue['id']),
           hasBody: true,
@@ -704,7 +710,25 @@ class ModuleProvider with ChangeNotifier {
                   'priority': stateOrdering[newListIndex],
                 });
       filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
-      // log(response.data.toString());
+
+      List labelDetails = [];
+      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
+          .forEach((element) {
+        for (int i = 0; i < issuesProvider.labels.length; i++) {
+          if (issuesProvider.labels[i]['id'] == element) {
+            labelDetails.add(issuesProvider.labels[i]);
+            break;
+          }
+        }
+
+        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
+      });
+
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
+          labelDetails;
+
+      log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
         log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
         filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =

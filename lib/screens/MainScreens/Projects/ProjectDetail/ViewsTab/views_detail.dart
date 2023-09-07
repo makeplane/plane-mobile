@@ -19,8 +19,16 @@ import '../../../../../widgets/custom_text.dart';
 import '../IssuesTab/create_issue.dart';
 
 class ViewsDetail extends ConsumerStatefulWidget {
-  const ViewsDetail({required this.index, super.key});
+  const ViewsDetail(
+      {required this.index,
+      this.fromGlobalSearch = false,
+      this.viewID,
+      this.projId,
+      super.key});
   final int index;
+  final bool fromGlobalSearch;
+  final String? viewID;
+  final String? projId;
   @override
   ConsumerState<ViewsDetail> createState() => _ViewsDetailState();
 }
@@ -29,13 +37,15 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
   var filtersData = {};
   var issuesData = {};
   int countFilters() {
-    var prov = ref.read(ProviderList.viewsProvider);
+    // var prov = ref.read(ProviderList.viewsProvider);
     int count = 0;
-    prov.views[widget.index]["query_data"].forEach((key, value) {
+    viewData["query_data"].forEach((key, value) {
       if (value != null && value.isNotEmpty) count++;
     });
     return count;
   }
+
+  var viewData = {};
 
   @override
   void initState() {
@@ -46,6 +56,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     issuesData = json.decode(json.encode(issuesProv.groupByResponse));
 
     var issuesProvider = ref.read(ProviderList.issuesProvider);
+
     // tempIssuesList = issuesProvider.issuesList;
     issuesProvider.tempProjectView = issuesProvider.issues.projectView;
     issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
@@ -60,13 +71,24 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     issuesProvider.issues.issueType = IssueType.all;
     issuesProvider.showEmptyStates = true;
 
+    if (widget.fromGlobalSearch) {
+      viewData = viewsProv.viewDetail;
+
+      var projectProvider = ref.read(ProviderList.projectProvider);
+
+      projectProvider.currentProject = projectProvider.projects
+          .firstWhere((element) => element['id'] == widget.projId);
+    } else {
+      viewData = viewsProv.views[widget.index];
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(ProviderList.projectProvider).initializeProject(
           fromViews: true,
-          filters:
-              Filters.fromJson(viewsProv.views[widget.index]["query_data"]),
+          filters: Filters.fromJson(viewData["query_data"]),
           ref: ref);
     });
+
     super.initState();
   }
 
@@ -77,73 +99,81 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     var viewsProv = ref.watch(ProviderList.viewsProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
 
+    // viewData = viewsProv.viewDetail;
+
     log(issuesProvider.issues.filters.priorities.toString());
     return WillPopScope(
       onWillPop: () async {
-        issuesProvider.getIssues(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projID: projectProvider.currentProject['id'],
-        );
-        issuesProvider.issues.projectView = issuesProvider.tempProjectView;
-        log(issuesProvider.tempProjectView.toString());
-        issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
-
-        issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
-        issuesProvider.issues.issueType = issuesProvider.tempIssueType;
-
-        issuesProvider.issues.filters = issuesProvider.tempFilters;
-
-        issuesProvider.showEmptyStates =
-            issuesProvider.issueView["showEmptyGroups"];
-        log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-
-        issuesProvider.setsState();
-        issuesProvider.filterIssues(
+        if (!widget.fromGlobalSearch) {
+          issuesProvider.getIssues(
             slug: ref
                 .read(ProviderList.workspaceProvider)
                 .selectedWorkspace!
                 .workspaceSlug,
-            projID: projectProvider.currentProject['id']);
+            projID: projectProvider.currentProject['id'],
+          );
+          issuesProvider.issues.projectView = issuesProvider.tempProjectView;
+          log(issuesProvider.tempProjectView.toString());
+          issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
+
+          issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
+          issuesProvider.issues.issueType = issuesProvider.tempIssueType;
+
+          issuesProvider.issues.filters = issuesProvider.tempFilters;
+
+          issuesProvider.showEmptyStates =
+              issuesProvider.issueView["showEmptyGroups"];
+          log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+
+          issuesProvider.setsState();
+          issuesProvider.filterIssues(
+              slug: ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+              projID: projectProvider.currentProject['id']);
+        }
+
         return true;
       },
       child: Scaffold(
         appBar: CustomAppBar(
             onPressed: () {
-              issuesProvider.getIssues(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
-                    .workspaceSlug,
-                projID: projectProvider.currentProject['id'],
-              );
-              issuesProvider.issues.projectView =
-                  issuesProvider.tempProjectView;
-              log(issuesProvider.tempProjectView.toString());
-              issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
-
-              issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
-              issuesProvider.issues.issueType = issuesProvider.tempIssueType;
-
-              issuesProvider.issues.filters = issuesProvider.tempFilters;
-
-              issuesProvider.showEmptyStates =
-                  issuesProvider.issueView["showEmptyGroups"];
-              log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-
-              issuesProvider.setsState();
-              issuesProvider.filterIssues(
+              if (!widget.fromGlobalSearch) {
+                issuesProvider.getIssues(
                   slug: ref
                       .read(ProviderList.workspaceProvider)
                       .selectedWorkspace!
                       .workspaceSlug,
-                  projID: projectProvider.currentProject['id']);
+                  projID: projectProvider.currentProject['id'],
+                );
+                issuesProvider.issues.projectView =
+                    issuesProvider.tempProjectView;
+                log(issuesProvider.tempProjectView.toString());
+                issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
+
+                issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
+                issuesProvider.issues.issueType = issuesProvider.tempIssueType;
+
+                issuesProvider.issues.filters = issuesProvider.tempFilters;
+
+                issuesProvider.showEmptyStates =
+                    issuesProvider.issueView["showEmptyGroups"];
+                log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+
+                issuesProvider.setsState();
+                issuesProvider.filterIssues(
+                    slug: ref
+                        .read(ProviderList.workspaceProvider)
+                        .selectedWorkspace!
+                        .workspaceSlug,
+                    projID: projectProvider.currentProject['id']);
+              }
 
               Navigator.pop(context);
             },
-            text: projectProvider.currentProject['name']),
+            text:
+                ref.read(ProviderList.projectProvider).currentProject['name']),
         body: LoadingWidget(
           loading: issuesProvider.issuePropertyState == StateEnum.loading ||
               issuesProvider.issueState == StateEnum.loading ||
@@ -164,7 +194,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                         SizedBox(
                           width: MediaQuery.sizeOf(context).width - 120,
                           child: CustomText(
-                            viewsProv.views[widget.index]['name'],
+                            viewData['name'],
                             type: FontStyle.H6,
                             fontWeight: FontWeightt.Semibold,
                           ),
@@ -178,7 +208,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                   ref
                                       .read(ProviderList.viewsProvider.notifier)
                                       .updateViews(
-                                        id: viewsProv.views[widget.index]['id'],
+                                        id: viewData['id'],
                                         data: {
                                           "query_data": {
                                             "state": issuesProvider.issues
@@ -218,6 +248,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                                     .issues.filters.startDate,
                                           }
                                         },
+                                        fromGlobalSearch:
+                                            widget.fromGlobalSearch,
                                         index: widget.index,
                                       )
                                       .then((value) {
@@ -228,10 +260,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                           message: 'Soething went wrong ',
                                           toastType: ToastType.failure);
                                     } else {
-                                      CustomToast.showToast(
-                                          context,
+                                      CustomToast.showToast(context,
                                           message: 'View updated successfully',
-                                         
                                           toastType: ToastType.success);
                                     }
                                   });

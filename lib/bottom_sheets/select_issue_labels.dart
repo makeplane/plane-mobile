@@ -55,7 +55,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         projID: widget.createIssue
             ? ref.read(ProviderList.issuesProvider).createIssueProjectData['id']
             : ref.read(ProviderList.projectProvider).currentProject['id']);
-    colorController.text = '#BC009E';
+    colorController.text = 'BC009E';
 
     selectedLabels.addAll(
         (ref.read(ProviderList.issuesProvider).createIssuedata['labels'] ?? [])
@@ -252,10 +252,12 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       height: 25,
                                       width: 25,
                                       decoration: BoxDecoration(
-                                        color: ColorManager
-                                            .getColorFromHexaDecimal(
-                                                colorController.text
-                                                    .toString()),
+                                        color: int.tryParse(
+                                                    '0xFF${colorController.text}') !=
+                                                null
+                                            ? Color(int.tryParse(
+                                                '0xFF${colorController.text}')!)
+                                            : Colors.grey,
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                     ),
@@ -302,8 +304,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     ),
                                     child: Icon(
                                       Icons.close,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                      color: themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor,
                                     )),
                               ),
                               const Spacer(),
@@ -350,8 +352,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     ),
                                     child: Icon(
                                       Icons.done,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                      color: themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor,
                                     )),
                               ),
                               const Spacer(),
@@ -415,32 +417,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  controller: colorController,
-                                  decoration: themeProvider
-                                      .themeManager.textFieldDecoration
-                                      .copyWith(
-                                    border: InputBorder.none,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(6)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 1.0),
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(6),
-                                        bottomRight: Radius.circular(6),
-                                      ),
-                                    ),
-                                    fillColor: themeProvider.themeManager
-                                        .primaryBackgroundDefaultColor,
-                                    filled: true,
-                                  ),
-                                ),
+                                    controller: colorController,
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration),
                               ),
                             ],
                           ),

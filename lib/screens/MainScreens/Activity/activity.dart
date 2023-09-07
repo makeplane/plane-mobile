@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -16,6 +15,8 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/error_state.dart';
 import 'package:plane/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class Activity extends ConsumerStatefulWidget {
   const Activity({super.key});
@@ -85,7 +86,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => IssueDetail(
-                                                        fromMyIssues: true,
+                                                
                                                         projID: activityProvider
                                                                 .data[index]
                                                             ["project"],
@@ -242,7 +243,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 ..onTap = () {
                                                                                   Navigator.of(context).push(MaterialPageRoute(
                                                                                       builder: (_) => IssueDetail(
-                                                                                            fromMyIssues: true,
+                                                                                       
                                                                                             projID: activityProvider.data[index]["project"],
                                                                                             workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
                                                                                             appBarTitle: '',
@@ -456,10 +457,12 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               ..onTap = () {
                                                                                 Navigator.of(context).push(MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                                                                          fromMyIssues: true,
+                                                                                          
                                                                                           projID: activityProvider.data[index]["project"],
                                                                                           workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                          appBarTitle: '',
+                                                                                          appBarTitle:activityProvider.data[index]['issue_detail'] != null
+                                                                                ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}'
+                                                                                : '',
                                                                                           issueId: activityProvider.data[index]["issue"],
                                                                                         )));
                                                                               },

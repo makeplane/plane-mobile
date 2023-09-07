@@ -15,7 +15,6 @@ import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/workspace_ge
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
@@ -29,6 +28,8 @@ import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class GlobalSearchSheet extends ConsumerStatefulWidget {
   const GlobalSearchSheet({super.key});

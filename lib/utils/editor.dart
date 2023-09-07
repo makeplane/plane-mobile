@@ -16,10 +16,11 @@ import 'dart:developer';
 
 class EDITOR extends ConsumerStatefulWidget {
   const EDITOR(
-      {required this.url, required this.title, this.controller, super.key});
+      {required this.url, required this.title,this.fromCreateIssue=false, this.controller, super.key});
   final InAppWebViewController? controller;
   final String url;
   final String title;
+  final bool fromCreateIssue;
   @override
   ConsumerState<EDITOR> createState() => _EDITORState();
 }
@@ -29,6 +30,14 @@ class _EDITORState extends ConsumerState<EDITOR> {
   late InAppWebViewController controller;
   Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
   final cookieManager = CookieManager.instance();
+
+  @override
+  void initState() {
+    if(!widget.fromCreateIssue){
+      ref.read(ProviderList.issueProvider).initCookies();
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {

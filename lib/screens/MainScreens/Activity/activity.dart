@@ -114,10 +114,10 @@ class _ActivityState extends ConsumerState<Activity> {
                                                       ["new_value"]
                                                   .toString()))) {
                                             // ignore: use_build_context_synchronously
-                                            CustomToast().showToast(
+                                            CustomToast.showToast(
                                                 context,
-                                                'Failed to launch',
-                                                themeProvider,
+                                               message: 'Failed to launch',
+                                                
                                                 toastType: ToastType.failure);
                                           }
                                         }

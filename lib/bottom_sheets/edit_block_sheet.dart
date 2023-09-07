@@ -107,8 +107,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
               ontap: () async {
                 if (titleController.text.isEmpty ||
                     titleController.text.trim() == "") {
-                  CustomToast().showToast(context,
-                      'Title and description is required', themeProvider,
+                  CustomToast.showToast(context,
+                     message: 'Title and description is required',
                       toastType: ToastType.warning);
                   return;
                 }

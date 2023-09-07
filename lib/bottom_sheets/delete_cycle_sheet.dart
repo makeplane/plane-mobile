@@ -101,8 +101,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                       if (projProv.role != Role.admin &&
                           projProv.role != Role.member) {
                         Navigator.of(context).pop();
-                        CustomToast().showToast(
-                            context, accessRestrictedMSG, themeProvider,
+                        CustomToast.showToast(
+                            context,message: accessRestrictedMSG,
                             toastType: ToastType.failure);
                         return;
                       }
@@ -218,8 +218,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         log('Unknown type');
                       }
 
-                      CustomToast().showToast(
-                          context, '${widget.type} deleted', themeProvider,
+                      CustomToast.showToast(
+                          context, message:'${widget.type} deleted',
                           toastType: ToastType.success);
 
                       Navigator.of(context).pop();

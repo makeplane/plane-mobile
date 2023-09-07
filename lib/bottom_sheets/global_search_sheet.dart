@@ -348,18 +348,18 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       .watch(ProviderList.projectProvider)
                       .projects
                       .isEmpty) {
-                    CustomToast().showToast(
+                    CustomToast.showToast(
                         context,
-                        'You dont have any projects yet, try creating one',
-                        themeProvider);
+                        message:'You dont have any projects yet, try creating one',
+                        );
                   } else if (ref
                           .watch(ProviderList.projectProvider)
                           .memberCount ==
                       0) {
-                    CustomToast().showToast(
+                    CustomToast.showToast(
                         context,
-                        'You are not a member of any project, try joining one',
-                        themeProvider);
+                         message:'You are not a member of any project, try joining one',
+                        );
                   } else {
                     // ref.watch(ProviderList.projectProvider).currentProject =
                     //     ref.watch(ProviderList.projectProvider).projects[0];
@@ -577,8 +577,10 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                   await launchUrl(Uri.parse(items[index]['url']));
                 } catch (e) {
                   log(e.toString());
-                  CustomToast().showToast(context,
-                      'Something went wrong, please try again', themeProvider);
+                  CustomToast.showToast(
+                    context,
+                    message: 'Something went wrong, please try again',
+                  );
                 }
               },
               child: Padding(

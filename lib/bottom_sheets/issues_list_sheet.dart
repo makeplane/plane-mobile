@@ -451,8 +451,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                               IssueDetailCategory.blocked &&
                                           issuesProvider
                                               .blockedByIssuesIds.isEmpty)) {
-                                    CustomToast().showToast(context,
-                                        'No issues selected', themeProvider,
+                                    CustomToast.showToast(context,
+                                        message: 'No issues selected',
                                         toastType: ToastType.warning);
 
                                     return;

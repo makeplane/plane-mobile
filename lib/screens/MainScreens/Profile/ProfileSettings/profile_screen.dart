@@ -230,7 +230,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(20),
-          height: 300,
+          height: 250,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -259,7 +259,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               CustomText(
                 'Are you sure you want to logout from your account?',
-                type: FontStyle.Small,
+                type: FontStyle.H5,
                 textAlign: TextAlign.left,
                 maxLines: 4,
                 color: themeProvider.themeManager.primaryTextColor,

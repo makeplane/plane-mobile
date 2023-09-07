@@ -333,11 +333,12 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                                   true)
                                                       ? Container(
                                                           height: 6,
-                                                          decoration: BoxDecoration(
-                                                              color: themeProvider
-                                                                  .themeManager
-                                                                  .primaryColour,
-                                                              ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .primaryColour,
+                                                          ),
                                                         )
                                                       : Container(
                                                           height: 6,
@@ -1011,7 +1012,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1022,7 +1023,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1039,7 +1040,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                         )
                                                 ],
@@ -1069,15 +1070,14 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                       .then((value) {
                                     if (issueProvider.issues.orderBY !=
                                         OrderBY.manual) {
-                                      CustomToast().showToast(
-                                          context,
-                                          'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
-                                          themeProvider,
+                                      CustomToast.showToast(context,
+                                          message:
+                                              'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
                                           toastType: ToastType.warning);
                                     }
                                   }).catchError((e) {
-                                    CustomToast().showToast(context,
-                                        'Failed to update issue', themeProvider,
+                                    CustomToast.showToast(context,
+                                        message: 'Failed to update issue',
                                         toastType: ToastType.failure);
                                   });
                                 },

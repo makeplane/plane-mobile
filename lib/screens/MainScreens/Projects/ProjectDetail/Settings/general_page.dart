@@ -294,10 +294,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             )
                           : null,
                       onTap: () {
-                        CustomToast().showToast(
+                        CustomToast.showToast(
                             context,
-                            'This operation cannot be performed using Plane Mobile',
-                            themeProvider,
+                            message: 'This operation cannot be performed using Plane Mobile',
+                           
                             toastType: ToastType.defult);
                       },
                       readOnly: true,

@@ -240,10 +240,9 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                               .getProjects(
                                   slug: workspaceProvider
                                       .selectedWorkspace!.workspaceSlug);
-                          CustomToast().showToast(
+                          CustomToast.showToast(
                             context,
-                            'Left workspace successfully',
-                            themeProvider,
+                            message: 'Left workspace successfully',
                             toastType: ToastType.success,
                           );
                           Navigator.of(context).pop();
@@ -253,7 +252,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                         if (_formKey.currentState!.validate()) {
                           // if (workspaceProvider.role != Role.admin &&
                           //     workspaceProvider.role != Role.member) {
-                          //   CustomToast().showToast(
+                          //   CustomToast.showToast(
                           //       context,
                           //       'You don\'t have permissions to delete this workspace',
                           //       themeProvider,
@@ -280,24 +279,22 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                 .getProjects(
                                     slug: workspaceProvider
                                         .selectedWorkspace!.workspaceSlug);
-                            CustomToast().showToast(
+                            CustomToast.showToast(
                               context,
-                              'Workspace deleted successfully',
-                              themeProvider,
+                              message: 'Workspace deleted successfully',
                               toastType: ToastType.success,
                             );
                             Navigator.of(context).pop();
                           } else {
                             //show snackbar
-                            CustomToast().showToast(
+                            CustomToast.showToast(
                               context,
-                              'Workspace could not be deleted',
-                              themeProvider,
+                              message: 'Workspace could not be deleted',
                               toastType: ToastType.warning,
                             );
                           }
                         }
-                      Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       }
                     },
                     child: Container(

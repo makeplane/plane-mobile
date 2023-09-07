@@ -218,10 +218,10 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                       }).then((value) {
                                         if (profileProv.updateProfileState ==
                                             StateEnum.error) {
-                                          CustomToast().showToast(
+                                          CustomToast.showToast(
                                               context,
-                                              'Failed to update profile',
-                                              themeProvider,
+                                             message: 'Failed to update profile',
+                          
                                               toastType: ToastType.failure);
                                         } else {
                                           setState(() {
@@ -436,8 +436,11 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                             .successBackgroundColor
                                                         : percentage <= 35
                                                             ? const Color
-                                                                .fromRGBO(254,
-                                                                226, 226, 1)
+                                                                    .fromRGBO(
+                                                                254,
+                                                                226,
+                                                                226,
+                                                                1)
                                                             : percentage <= 70
                                                                 ? themeProvider
                                                                     .themeManager
@@ -460,11 +463,17 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                               .textErrorColor
                                                           : percentage <= 70
                                                               ? const Color
-                                                                  .fromRGBO(245,
-                                                                  158, 11, 1)
+                                                                      .fromRGBO(
+                                                                  245,
+                                                                  158,
+                                                                  11,
+                                                                  1)
                                                               : const Color
-                                                                  .fromRGBO(34,
-                                                                  197, 94, 1),
+                                                                      .fromRGBO(
+                                                                  34,
+                                                                  197,
+                                                                  94,
+                                                                  1),
                                                   fontWeight:
                                                       FontWeightt.Medium,
                                                 ),

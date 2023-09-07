@@ -148,7 +148,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 : null),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
-                (selectedIndex == 7 && !estimatesProvider.estimates.isEmpty)
+                (selectedIndex == 7 && estimatesProvider.estimates.isNotEmpty)
             ? FloatingActionButton(
                 onPressed: () {
                   if (selectedIndex == 2) {

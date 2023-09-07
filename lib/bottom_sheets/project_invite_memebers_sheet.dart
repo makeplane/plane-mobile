@@ -137,10 +137,11 @@ class _ProjectInviteMembersSheetState
                                     log(selectedEmail.toString());
                                   }
                                 : () {
-                                    CustomToast().showToast(
+                                    CustomToast.showToast(
                                       context,
-                                      'You are the only member of this workspace. Please add more members to workspace first.',
-                                      themeProvider,
+                                      message:
+                                          'You are the only member of this workspace. Please add more members to workspace first.',
+
                                       //toastType: ToastType.warning
                                     );
                                   },
@@ -342,13 +343,13 @@ class _ProjectInviteMembersSheetState
                             if (projectProvider.projectInvitationState ==
                                 StateEnum.success) {
                               //show success snackbar
-                              CustomToast().showToast(mainBuildContext,
-                                  'Invitation sent successfully', themeProvider,
+                              CustomToast.showToast(mainBuildContext,
+                                  message: 'Invitation sent successfully',
                                   toastType: ToastType.success);
                               Navigator.pop(mainBuildContext);
                             } else {
-                              CustomToast().showToast(mainBuildContext,
-                                  'Something went wrong', themeProvider,
+                              CustomToast.showToast(mainBuildContext,
+                                  message: 'Something went wrong',
                                   toastType: ToastType.failure);
                             }
                           } else {}

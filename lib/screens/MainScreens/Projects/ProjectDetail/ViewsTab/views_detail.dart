@@ -224,14 +224,14 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                     countFilters();
                                     if (viewsProv.viewsState !=
                                         StateEnum.success) {
-                                      CustomToast().showToast(context,
-                                          'Soething went wrong ', themeProvider,
+                                      CustomToast.showToast(context,
+                                          message: 'Soething went wrong ',
                                           toastType: ToastType.failure);
                                     } else {
-                                      CustomToast().showToast(
+                                      CustomToast.showToast(
                                           context,
-                                          'View updated successfully',
-                                          themeProvider,
+                                          message: 'View updated successfully',
+                                         
                                           toastType: ToastType.success);
                                     }
                                   });

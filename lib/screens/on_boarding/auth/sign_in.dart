@@ -317,10 +317,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                               //           projectID: "");
                                               // });
                                               postHogService(
-                                                eventName: 'Log In',
-                                                properties: {'Source': 'Magic Code', 'Email': email.text,},
-                                                ref: ref
-                                              );
+                                                  eventName: 'Log In',
+                                                  properties: {
+                                                    'Source': 'Magic Code',
+                                                    'Email': email.text,
+                                                  },
+                                                  ref: ref);
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
@@ -423,8 +425,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                       )
                                     : Button(
                                         text: 'Sign In with Google',
-                                        widget: Image.asset(
-                                            'assets/images/google-icon.png'),
+                                        widget: Container(
+                                          height: 25,
+                                          width: 25,
+                                          margin: const EdgeInsets.only(right: 10),
+                                          child: SvgPicture.asset(
+                                              'assets/svg_images/google-icon.svg'),
+                                        ),
                                         // SvgPicture.asset('assets/svg_images/google-icon.svg',),
                                         textColor: themeProvider
                                             .themeManager.primaryTextColor,
@@ -435,10 +442,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                             var user =
                                                 await GoogleSignInApi.logIn();
                                             if (user == null) {
-                                              CustomToast().showToast(
+                                              CustomToast.showToast(
                                                   context,
-                                                  'Something went wrong, please try again.',
-                                                  themeProvider,
+                                                  message: 'Something went wrong, please try again.',
+                                                
                                                   toastType: ToastType.failure);
                                               return;
                                             }

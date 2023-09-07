@@ -309,8 +309,8 @@ class ProjectsProvider extends ChangeNotifier {
       );
       // log(response.data.toString());
       projectInvitationState = StateEnum.success;
-      CustomToast().showToast(context, 'Invitation sent successfully',
-          ref.read(ProviderList.themeProvider),
+      CustomToast.showToast(context,
+          message: 'Invitation sent successfully',
           toastType: ToastType.success);
       projectInvitationState = StateEnum.error;
       notifyListeners();
@@ -318,10 +318,10 @@ class ProjectsProvider extends ChangeNotifier {
     } on DioException catch (e) {
       log('Project Invite Error =  ${e.message}');
       log(e.error.toString());
-      CustomToast().showToast(
-          context,
-          e.message == null ? 'something went wrong!' : e.message.toString(),
-          ref.read(ProviderList.themeProvider),
+      CustomToast.showToast(context,
+          message: e.message == null
+              ? 'something went wrong!'
+              : e.message.toString(),
           toastType: ToastType.failure);
       projectInvitationState = StateEnum.error;
       notifyListeners();
@@ -359,7 +359,7 @@ class ProjectsProvider extends ChangeNotifier {
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
-      // CustomToast().showToast(
+      // CustomToast.showToast(
       //     Const.globalKey.currentContext!, 'Identifier already exists');
       ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
           const SnackBar(content: Text('Identifier already exists')));
@@ -636,10 +636,8 @@ class ProjectsProvider extends ChangeNotifier {
       if (e is DioException) {
         log(e.message.toString());
       }
-      CustomToast().showToast(
-          context,
-          'Something went wrong, Please try again.',
-          ref.read(ProviderList.themeProvider),
+      CustomToast.showToast(context,
+          message: 'Something went wrong, Please try again.',
           toastType: ToastType.failure);
       log(e.toString());
       stateCrudState = StateEnum.error;

@@ -145,10 +145,10 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 onTap: () async {
                                   if (workspaceProvider.role != Role.admin &&
                                       workspaceProvider.role != Role.member) {
-                                    CustomToast().showToast(
+                                    CustomToast.showToast(
                                         context,
-                                        'You are not allowed to change the logo',
-                                        themeProvider,
+                                        message:'You are not allowed to change the logo',
+                                      
                                         toastType: ToastType.warning);
                                     return;
                                   }
@@ -210,10 +210,10 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 onTap: () {
                                   if (workspaceProvider.role != Role.admin &&
                                       workspaceProvider.role != Role.member) {
-                                    CustomToast().showToast(
+                                    CustomToast.showToast(
                                         context,
-                                        'You are not allowed to change the logo',
-                                        themeProvider,
+                                       message: 'You are not allowed to change the logo',
+                                    
                                         toastType: ToastType.warning);
                                     return;
                                   }
@@ -304,8 +304,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         //not editable
                         //enabled: true,
                         onTap: () {
-                          CustomToast().showToast(
-                              context, accessRestrictedMSG, themeProvider,
+                          CustomToast.showToast(
+                              context,message: accessRestrictedMSG,
                               toastType: ToastType.failure);
                         },
                         readOnly: true,
@@ -382,8 +382,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   GestureDetector(
                     onTap: () {
                       if (workspaceProvider.role != Role.admin) {
-                        CustomToast().showToast(
-                            context, accessRestrictedMSG, themeProvider,
+                        CustomToast.showToast(
+                            context,message: accessRestrictedMSG,
                             toastType: ToastType.failure);
                         return;
                       }
@@ -455,19 +455,19 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.success) {
-                              CustomToast().showToast(
+                              CustomToast.showToast(
                                   context,
-                                  'Workspace updated successfully',
-                                  themeProvider,
+                                  message:'Workspace updated successfully',
+                                
                                   toastType: ToastType.success);
                               Navigator.pop(context);
                             }
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.error) {
-                              CustomToast().showToast(
+                              CustomToast.showToast(
                                   context,
-                                  'Something went wrong, please try again',
-                                  themeProvider,
+                                  message:'Something went wrong, please try again',
+                                 
                                   toastType: ToastType.failure);
                             }
                             // refreshImage();

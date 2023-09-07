@@ -24,9 +24,12 @@ class DioConfig {
 
     // Passing Headers
     requestHeaders = {
-      'Content-Type': 'application/json',
       // 'Accept': 'application/json;charset=UTF-8',
-      if (hasAuth) 'Authorization': 'Bearer ${Const.appBearerToken}',
+      if (hasAuth) 'Authorization': 'Bearer ${Const.accessToken}',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': 'true',
+          'Access-Control-Allow-Headers': 'Content-Type',
       // 'User-Agent': Platform.isAndroid ? 'Android' : 'iOS',
     };
 
@@ -55,7 +58,7 @@ class DioConfig {
         ConnectionService().checkConnectivity();
         if (error.response?.statusCode == 401) {
           await SharedPrefrenceServices.sharedPreferences!.clear();
-          Const.appBearerToken = '';
+          Const.accessToken = '';
           Const.userId = null;
           Navigator.push(Const.globalKey.currentContext!,
               MaterialPageRoute(builder: (ctx) => const OnBoardingScreen()));

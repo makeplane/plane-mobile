@@ -195,7 +195,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var projectProvider = ref.read(ProviderList.projectProvider);
-
     bool isLoading = widget.fromModule
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
@@ -214,7 +213,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
-
         issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
         issueProvider.issues.orderBY = issueProvider.tempOrderBy;
@@ -1610,6 +1608,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
+    // log("assignees : ${detailData['distribution']['assignees']}");
+
     return Column(
       children: [
         Align(
@@ -2249,6 +2249,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
+
+    // log(detailData.toString());
 
     return Container(
       height: 45,

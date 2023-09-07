@@ -3,8 +3,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane_startup/bottom_sheets/issues_list_sheet.dart';
 import 'package:plane_startup/bottom_sheets/selectProjectSheet.dart';
 import 'package:plane_startup/bottom_sheets/select_estimate.dart';
@@ -18,6 +21,7 @@ import 'package:plane_startup/provider/theme_provider.dart';
 import 'package:plane_startup/utils/color_manager.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/custom_toast.dart';
+import 'package:plane_startup/utils/editor.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
 import 'package:plane_startup/widgets/custom_button.dart';
@@ -53,12 +57,16 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   var tempLabels = [];
   var tempIssues = [];
   var tempAssignees = [];
+  bool descriptionExpanded = false;
+  double descriptionHeight = 0;
+  bool descriptionLoading = false;
+  InAppWebViewController? webviewController;
 
   @override
   void initState() {
     var prov = ref.read(ProviderList.issuesProvider);
     var projectProvider = ref.read(ProviderList.projectProvider);
-    // notificationsServices.initialiseNotifications();
+    ref.read(ProviderList.issueProvider).initCookies();
     prov.createIssueProjectData['name'] = widget.projectId != null
         ? projectProvider.projects
             .firstWhere((element) => element['id'] == widget.projectId)['name']
@@ -161,6 +169,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
         issuesProvider.members = tempAssignees;
         issuesProvider.setsState();
         ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
+        ref.read(ProviderList.issueProvider).clearCookies();
         return true;
       },
       child: GestureDetector(
@@ -185,6 +194,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
               issuesProvider.labels = tempLabels;
               issuesProvider.members = tempAssignees;
               issuesProvider.setsState();
+              ref.read(ProviderList.issueProvider).clearCookies();
               ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
               Navigator.pop(context);
             },
@@ -195,7 +205,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                 issuesProvider.statesState == StateEnum.loading,
             widgetClass: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              log(issuesProvider.createIssuedata.toString());
               return SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
@@ -372,47 +381,269 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                     decoration: themeProvider
                                         .themeManager.textFieldDecoration,
                                   ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  issuesProvider.createIssuedata[
+                                                  'description_html'] !=
+                                              null &&
+                                          issuesProvider.createIssuedata[
+                                                  'description_html']
+                                              .toString()
+                                              .isNotEmpty
+                                      ? CustomText(
+                                          'Description',
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                          // color: themeProvider.secondaryTextColor,
+                                        )
+                                      : GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (ctx) => EDITOR(
+                                                          controller:
+                                                              webviewController,
+                                                          title: 'Description',
+                                                          url:
+                                                              '${dotenv.env['EDITOR_URL']!}${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                        )));
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .borderSubtle01Color),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            height: 50,
+                                            width: double.infinity,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.add,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                CustomText(
+                                                  'Add Description',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight:
+                                                      FontWeightt.Medium,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .placeholderTextColor,
+                                                  // color: themeProvider.secondaryTextColor,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
 
-                                  // const SizedBox(height: 20),
+                                  issuesProvider.createIssuedata[
+                                                  'description_html'] !=
+                                              null &&
+                                          issuesProvider
+                                              .createIssuedata[
+                                                  'description_html']
+                                              .toString()
+                                              .isNotEmpty
+                                      ? Container(
+                                          margin: const EdgeInsets.only(top: 5),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .borderSubtle01Color),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          height: descriptionExpanded
+                                              ? descriptionHeight + 48
+                                              : 208,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: descriptionExpanded
+                                                    ? descriptionHeight
+                                                    : 160,
+                                                child: SizedBox(
+                                                  // height: 500,
+                                                  child: Stack(
+                                                    children: [
+                                                      InAppWebView(
+                                                          onWebViewCreated:
+                                                              (controller) {
+                                                            webviewController =
+                                                                controller;
+                                                          },
+                                                          contextMenu:
+                                                              ContextMenu(
+                                                            menuItems: [],
+                                                            options:
+                                                                ContextMenuOptions(
+                                                              hideDefaultSystemContextMenuItems:
+                                                                  true,
+                                                            ),
+                                                          ),
+                                                          onLoadStart:
+                                                              (controller,
+                                                                      url) =>
+                                                                  setState(() {
+                                                                    descriptionHeight =
+                                                                        160;
+                                                                    descriptionExpanded =
+                                                                        false;
+                                                                    descriptionLoading =
+                                                                        true;
+                                                                  }),
+                                                          onLoadStop:
+                                                              (controller,
+                                                                      url) =>
+                                                                  setState(() {
+                                                                    descriptionLoading =
+                                                                        false;
+                                                                  }),
+                                                          initialUrlRequest:
+                                                              URLRequest(
+                                                                  url: Uri.parse(
+                                                                      '${dotenv.env['EDITOR_URL']!}${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=false'))),
+                                                      descriptionLoading
+                                                          ? Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .primaryBackgroundDefaultColor,
+                                                              child: SizedBox(
+                                                                width: 30,
+                                                                height: 30,
+                                                                child:
+                                                                    LoadingIndicator(
+                                                                  indicatorType:
+                                                                      Indicator
+                                                                          .lineSpinFadeLoader,
+                                                                  colors: [
+                                                                    themeProvider
+                                                                        .themeManager
+                                                                        .primaryTextColor
+                                                                  ],
+                                                                  strokeWidth:
+                                                                      1.0,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .push(MaterialPageRoute(
+                                                                        builder: (ctx) => EDITOR(
+                                                                              controller: webviewController,
+                                                                              title: 'Description',
+                                                                              url: '${dotenv.env['EDITOR_URL']!}${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                                            )));
+                                                              },
+                                                              child: SizedBox(
+                                                                width: double
+                                                                    .infinity,
+                                                                   
+                                                                  height: descriptionExpanded
+                                                                      ? descriptionHeight
+                                                                      : 160),
+                                                            )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  if (descriptionLoading) {
+                                                    return;
+                                                  }
+                                                  await webviewController
+                                                      ?.getContentHeight()
+                                                      .then((value) =>
+                                                          descriptionHeight =
+                                                              (value ??
+                                                                      descriptionHeight)
+                                                                  .toDouble());
+                                                  setState(() {
+                                                    descriptionExpanded =
+                                                        !descriptionExpanded;
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: 45,
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        width: 1,
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .borderSubtle01Color,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      CustomText(
+                                                        descriptionExpanded
+                                                            ? "Collapse"
+                                                            : 'Expand',
+                                                        type: FontStyle.Medium,
+                                                        fontWeight:
+                                                            FontWeightt.Regular,
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .primaryColour,
+                                                      ),
 
-                                  // const CustomText(
-                                  //   'Description',
-                                  //   type: FontStyle.Small,
-                                  //   // color: themeProvider.secondaryTextColor,
-                                  // ),
-                                  // const SizedBox(height: 10),
-                                  // TextField(
-                                  //     maxLines: 4,
-                                  //     decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
-                                  //       enabledBorder: OutlineInputBorder(
-                                  //         borderSide: BorderSide(
-                                  //             color:
-                                  //                 themeProvider.isDarkThemeEnabled
-                                  //                     ? darkThemeBorder
-                                  //                     : const Color(0xFFE5E5E5),
-                                  //             width: 1.0),
-                                  //         borderRadius: const BorderRadius.all(
-                                  //             Radius.circular(8)),
-                                  //       ),
-                                  //       disabledBorder: OutlineInputBorder(
-                                  //         borderSide: BorderSide(
-                                  //             color:
-                                  //                 themeProvider.isDarkThemeEnabled
-                                  //                     ? darkThemeBorder
-                                  //                     : const Color(0xFFE5E5E5),
-                                  //             width: 1.0),
-                                  //         borderRadius: const BorderRadius.all(
-                                  //             Radius.circular(8)),
-                                  //       ),
-                                  //       focusedBorder: const OutlineInputBorder(
-                                  //         borderSide: BorderSide(
-                                  //             color: primaryColor, width: 2.0),
-                                  //         borderRadius: BorderRadius.all(
-                                  //             Radius.circular(8)),
-                                  //       ),
-                                  //     )),
+                                                      const SizedBox(width: 5),
+                                                      //icon
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                            .only(top: 2),
+                                                        child: Icon(
+                                                          //arrow down icon
 
-                                  const SizedBox(height: 20),
+                                                          descriptionExpanded
+                                                              ? Icons
+                                                                  .keyboard_arrow_up_rounded
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+
+                                                          color: const Color
+                                                                  .fromRGBO(
+                                                              63, 118, 255, 1),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ))
+                                      : Container(),
+
+                                  const SizedBox(height: 10),
                                   CustomText(
                                     'Details',
                                     type: FontStyle.Medium,

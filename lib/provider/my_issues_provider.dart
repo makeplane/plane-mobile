@@ -94,7 +94,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
   Future getMyIssues({required String slug}) async {
     getMyIssuesState = StateEnum.loading;
-    notifyListeners();
+    // notifyListeners();
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,

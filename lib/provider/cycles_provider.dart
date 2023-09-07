@@ -369,12 +369,14 @@ class CyclesProvider with ChangeNotifier {
   }
 
   List<BoardListsData> initializeBoard() {
+    log("INITIALIZE BOARD");
     var themeProvider = ref!.read(ProviderList.themeProvider);
     var issuesProvider = ref!.read(ProviderList.issuesProvider);
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
-    for (int j = 0; j < filterIssues.length; j++) {
+    issuesResponse = [];
+    for (int j = 0; j < stateOrdering.length; j++) {
       List<Widget> items = [];
 
       for (int i = 0;
@@ -382,7 +384,7 @@ class CyclesProvider with ChangeNotifier {
               i < filterIssues[stateOrdering[j]]!.length;
           i++) {
         issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
-
+        log(stateOrdering[j].toString());
         items.add(
           IssueCardWidget(
             cardIndex: count++,

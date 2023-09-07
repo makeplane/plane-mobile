@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,9 @@ import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/config/apis.dart';
 import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/global_functions.dart';
+
+import '../utils/global_functions.dart';
+// import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 class IssueProvider with ChangeNotifier {
   IssueProvider(ChangeNotifierProviderRef<IssueProvider> this.ref);
@@ -21,7 +25,7 @@ class IssueProvider with ChangeNotifier {
   StateEnum issueDetailState = StateEnum.empty;
   StateEnum issueActivityState = StateEnum.empty;
   StateEnum subscriptionState = StateEnum.empty;
-
+  StateEnum cookiesState = StateEnum.empty;
   StateEnum updateIssueState = StateEnum.empty;
   StateEnum attachmentState = StateEnum.empty;
   StateEnum addLinkState = StateEnum.empty;
@@ -131,6 +135,7 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
+      issueActivityState = StateEnum.loading;
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
@@ -313,7 +318,7 @@ class IssueProvider with ChangeNotifier {
         data: formData,
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${Const.appBearerToken}',
+            'Authorization': 'Bearer ${Const.accessToken}',
             'Content-Type': 'multipart/form-data',
           },
         ),
@@ -448,6 +453,56 @@ class IssueProvider with ChangeNotifier {
         );
       }
       getSubIssueState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  Future setCookies({required String key, required String value}) async {
+    if (value.isEmpty) return;
+    Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+    final cookieManager = CookieManager.instance();
+    await cookieManager.setCookie(
+      url: baseWebUrl,
+      name: key,
+      value: value,
+    );
+  }
+  Future clearCookies()async{
+    final cookieManager = CookieManager.instance();
+    cookieManager.deleteAllCookies();
+  }
+
+  Future initCookies({String data = ""}) async {
+    try {
+      cookiesState = StateEnum.loading;
+      final cookieManager = CookieManager.instance();
+      cookieManager.deleteAllCookies();
+      Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+      if (data.isNotEmpty) {
+        await cookieManager.setCookie(
+          url: baseWebUrl,
+          name: "data",
+          value: data,
+        );
+      }
+      await cookieManager.setCookie(
+        url: baseWebUrl,
+        name: "accessToken",
+        value: Const.accessToken!,
+      );
+      await cookieManager.setCookie(
+        url: baseWebUrl,
+        name: "refreshToken",
+        value: Const.refreshToken!,
+      );
+      // await cookieManager.getCookies(url: baseWebUrl).then((value) {
+      //   log(value.toString());
+      // });
+      cookiesState = StateEnum.success;
+      notifyListeners();
+    } catch (e) {
+      log(e.toString());
+      cookiesState = StateEnum.error;
       notifyListeners();
     }
   }

@@ -12,6 +12,7 @@ import 'package:plane_startup/provider/provider_list.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/utils/global_functions.dart';
+import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/issue_card_widget.dart';
 import 'package:plane_startup/config/apis.dart';
@@ -379,6 +380,7 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future reorderIssue({
+    required BuildContext context,
     required int newCardIndex,
     required int oldCardIndex,
     required int newListIndex,
@@ -417,7 +419,7 @@ class IssuesProvider extends ChangeNotifier {
       updateIssueState = StateEnum.success;
       // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
-        log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
+        //  log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
         groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
             stateOrdering[newListIndex];
       }
@@ -439,11 +441,15 @@ class IssuesProvider extends ChangeNotifier {
       }
       log("ISSUE REPOSITIONED");
       notifyListeners();
-    } on DioException catch (err) {
-       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+    } on DioException catch (e) {
+      log('Error : issues_provider : upDateIssue : ${e.message.toString()}');
+      (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
           oldCardIndex,
           groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
-      log(err.toString());
+
+      CustomToast.showToast(context, message:'Failed to update issue',
+         
+          toastType: ToastType.failure);
       updateIssueState = StateEnum.error;
       notifyListeners();
       rethrow;
@@ -647,6 +653,7 @@ class IssuesProvider extends ChangeNotifier {
                 ? []
                 : (createIssuedata["members"] as Map).keys.toList(),
             "cycle": null,
+            "description_html": createIssuedata['description_html'],
             "estimate_point": null,
             "labels": createIssuedata["labels"] == null
                 ? []

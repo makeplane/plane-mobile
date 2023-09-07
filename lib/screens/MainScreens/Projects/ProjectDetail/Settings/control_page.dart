@@ -93,6 +93,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.lead,
+                style: TextStyle(
+                    color: themeProvider.themeManager.primaryTextColor),
                 decoration:
                     themeProvider.themeManager.textFieldDecoration.copyWith(
                   suffixIcon: Icon(
@@ -204,6 +206,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
               },
               child: TextField(
                 controller: projectProvider.assignee,
+                style: TextStyle(
+                    color: themeProvider.themeManager.primaryTextColor),
                 decoration:
                     themeProvider.themeManager.textFieldDecoration.copyWith(
                         suffixIcon: Icon(

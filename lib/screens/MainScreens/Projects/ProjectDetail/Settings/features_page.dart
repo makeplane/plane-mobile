@@ -147,8 +147,9 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: projectsProvider.features[index + 1]
                                       ['show']
-                                  ? Colors.green
-                                  : Colors.grey[300]),
+                                  ? greenHighLight
+                                  : themeProvider.themeManager
+                                      .tertiaryBackgroundDefaultColor),
                           child: Align(
                             alignment: projectsProvider.features[index + 1]
                                     ['show']

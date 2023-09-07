@@ -192,11 +192,18 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   CircleAvatar(
+                                                    radius: 16,
                                                     backgroundColor:
-                                                        darkSecondaryBGC,
-                                                    radius: 15,
-                                                    child: Center(
-                                                      child: CustomText(
+                                                        themeProvider
+                                                            .themeManager
+                                                            .borderSubtle01Color,
+                                                    child: CircleAvatar(
+                                                      backgroundColor: themeProvider
+                                                          .themeManager
+                                                          .tertiaryBackgroundDefaultColor,
+                                                      radius: 15,
+                                                      child: Center(
+                                                        child: CustomText(
                                                           widget.data[index][
                                                                   'triggered_by_details']
                                                                   ['first_name']
@@ -205,10 +212,11 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                               .toUpperCase(),
                                                           // color: Colors.black,
                                                           type: FontStyle.Small,
-                                                          overrride: true,
+
                                                           fontWeight:
                                                               FontWeightt.Bold,
-                                                          color: Colors.white),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(

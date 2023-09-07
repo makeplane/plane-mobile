@@ -971,8 +971,9 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                                                     Stack(
                                                                       children: [
                                                                         Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(right: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              right: 10),
                                                                           child:
                                                                               CircleAvatar(
                                                                             backgroundColor: themeProvider.isDarkThemeEnabled
@@ -2419,7 +2420,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                                       type: FontStyle.Medium,
                                       fontWeight: FontWeightt.Regular,
                                       color: themeProvider
-                                          .themeManager.primaryTextColor,
+                                          .themeManager.placeholderTextColor,
                                     ),
                                     Expanded(
                                       child: CustomText(
@@ -2483,13 +2484,13 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
                             ],
                           ),
                         ),
-                        index == issueProvider.subIssues.length - 1
-                            ? Container()
-                            : Container(
-                                width: width,
-                                height: 1,
-                                color: getBorderColor(themeProvider),
-                              )
+                        // index == issueProvider.subIssues.length - 1
+                        //     ? Container()
+                        //     : Container(
+                        //         width: width,
+                        //         height: 1,
+                        //         color: getBorderColor(themeProvider),
+                        // )
                       ],
                     );
                   },

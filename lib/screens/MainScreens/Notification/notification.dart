@@ -162,7 +162,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: themeProvider.themeManager.borderDisabledColor,
+                  color: themeProvider.themeManager.borderSubtle01Color,
                   width: 1,
                 ),
               ),

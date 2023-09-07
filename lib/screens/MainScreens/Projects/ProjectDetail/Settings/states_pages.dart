@@ -108,7 +108,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                     ),
                     decoration: BoxDecoration(
                         color: themeProvider
-                            .themeManager.tertiaryBackgroundDefaultColor,
+                            .themeManager.primaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
                             color: themeProvider

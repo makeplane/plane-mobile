@@ -55,7 +55,9 @@ class CustomProgressBar extends StatelessWidget {
                       flex: itemValue[index],
                       child: Container(
                         margin: const EdgeInsets.only(left: 3),
-                        color: _getColor(index),
+                        decoration: BoxDecoration(
+                            color: _getColor(index),
+                            borderRadius: BorderRadius.circular(5)),
                       ),
                     )
                   : Container();

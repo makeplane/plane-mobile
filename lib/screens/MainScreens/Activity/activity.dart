@@ -151,24 +151,32 @@ class _ActivityState extends ConsumerState<Activity> {
                                                               backgroundColor:
                                                                   themeProvider
                                                                       .themeManager
-                                                                      .tertiaryBackgroundDefaultColor,
-                                                              radius: 15,
-                                                              child: Center(
-                                                                child:
-                                                                    CustomText(
-                                                                  activityProvider
-                                                                      .data[
-                                                                          index]
-                                                                          [
-                                                                          'actor_detail']
-                                                                          [
-                                                                          'first_name']
-                                                                          [0]
-                                                                      .toString()
-                                                                      .toUpperCase(),
-                                                                  // color: Colors.black,
-                                                                  type: FontStyle
-                                                                      .Medium,
+                                                                      .borderSubtle01Color,
+                                                              radius: 16,
+                                                              child:
+                                                                  CircleAvatar(
+                                                                backgroundColor:
+                                                                    themeProvider
+                                                                        .themeManager
+                                                                        .tertiaryBackgroundDefaultColor,
+                                                                radius: 15,
+                                                                child: Center(
+                                                                  child:
+                                                                      CustomText(
+                                                                    activityProvider
+                                                                        .data[
+                                                                            index]
+                                                                            [
+                                                                            'actor_detail']
+                                                                            [
+                                                                            'first_name']
+                                                                            [0]
+                                                                        .toString()
+                                                                        .toUpperCase(),
+                                                                    // color: Colors.black,
+                                                                    type: FontStyle
+                                                                        .Medium,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
@@ -302,82 +310,85 @@ class _ActivityState extends ConsumerState<Activity> {
                                                             backgroundColor:
                                                                 themeProvider
                                                                     .themeManager
-                                                                    .tertiaryBackgroundDefaultColor,
-                                                            radius: 15,
-                                                            child: Center(
-                                                                child: activityProvider.data[index]
-                                                                            [
-                                                                            'field'] ==
-                                                                        'state'
-                                                                    ? Icon(
-                                                                        Icons
-                                                                            .grid_view_outlined,
-                                                                        size:
-                                                                            15,
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .primaryTextColor,
-                                                                      )
-                                                                    : activityProvider.data[index]['field'] ==
-                                                                            'priority'
-                                                                        ? SvgPicture
-                                                                            .asset(
-                                                                            'assets/svg_images/priority.svg',
-                                                                            height:
-                                                                                15,
-                                                                            width:
-                                                                                15,
-                                                                            colorFilter:
-                                                                                ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
-                                                                          )
-                                                                        : activityProvider.data[index]['field'] == 'assignees' ||
-                                                                                activityProvider.data[index]['field'] == 'assignee'
-                                                                            ? Icon(
-                                                                                Icons.people_outline,
-                                                                                size: 18,
-                                                                                color: themeProvider.themeManager.primaryTextColor,
-                                                                              )
-                                                                            : activityProvider.data[index]['field'] == 'labels'
-                                                                                ? Icon(
-                                                                                    Icons.local_offer_outlined,
-                                                                                    size: 15,
-                                                                                    color: themeProvider.themeManager.primaryTextColor,
-                                                                                  )
-                                                                                : activityProvider.data[index]['field'] == 'blocks'
-                                                                                    ? SvgPicture.asset(
-                                                                                        'assets/svg_images/blocked_icon.svg',
-                                                                                        height: 15,
-                                                                                        width: 15,
-                                                                                        colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
-                                                                                      )
-                                                                                    : activityProvider.data[index]['field'] == 'blocking'
-                                                                                        ? SvgPicture.asset(
-                                                                                            'assets/svg_images/blocking_icon.svg',
-                                                                                            height: 15,
-                                                                                            width: 15,
-                                                                                            colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
-                                                                                          )
-                                                                                        : activityProvider.data[index]['field'] == 'description'
-                                                                                            ? Icon(
-                                                                                                Icons.comment_outlined,
-                                                                                                color: themeProvider.themeManager.primaryTextColor,
-                                                                                                size: 15,
-                                                                                              )
-                                                                                            : activityProvider.data[index]['field'] == 'link'
-                                                                                                ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
-                                                                                                : activityProvider.data[index]['field'] == 'modules'
-                                                                                                    ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
-                                                                                                    : activityProvider.data[index]['field'] == 'cycles'
-                                                                                                        ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
-                                                                                                        : activityProvider.data[index]['field'] == 'attachment'
-                                                                                                            ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
-                                                                                                            : activityProvider.data[index]['field'] == 'parent'
-                                                                                                                ? Icon(
-                                                                                                                    Icons.person_outline,
-                                                                                                                    size: 16,
-                                                                                                                    color: themeProvider.themeManager.primaryTextColor,
-                                                                                                                  )
-                                                                                                                : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))),
+                                                                    .borderSubtle01Color,
+                                                            radius: 16,
+                                                            child: CircleAvatar(
+                                                              backgroundColor:
+                                                                  themeProvider
+                                                                      .themeManager
+                                                                      .tertiaryBackgroundDefaultColor,
+                                                              radius: 15,
+                                                              child: Center(
+                                                                  child: activityProvider.data[index]
+                                                                              [
+                                                                              'field'] ==
+                                                                          'state'
+                                                                      ? Icon(
+                                                                          Icons
+                                                                              .grid_view_outlined,
+                                                                          size:
+                                                                              15,
+                                                                          color: themeProvider
+                                                                              .themeManager
+                                                                              .primaryTextColor,
+                                                                        )
+                                                                      : activityProvider.data[index]['field'] ==
+                                                                              'priority'
+                                                                          ? SvgPicture
+                                                                              .asset(
+                                                                              'assets/svg_images/priority.svg',
+                                                                              height: 15,
+                                                                              width: 15,
+                                                                              colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
+                                                                            )
+                                                                          : activityProvider.data[index]['field'] == 'assignees' || activityProvider.data[index]['field'] == 'assignee'
+                                                                              ? Icon(
+                                                                                  Icons.people_outline,
+                                                                                  size: 18,
+                                                                                  color: themeProvider.themeManager.primaryTextColor,
+                                                                                )
+                                                                              : activityProvider.data[index]['field'] == 'labels'
+                                                                                  ? Icon(
+                                                                                      Icons.local_offer_outlined,
+                                                                                      size: 15,
+                                                                                      color: themeProvider.themeManager.primaryTextColor,
+                                                                                    )
+                                                                                  : activityProvider.data[index]['field'] == 'blocks'
+                                                                                      ? SvgPicture.asset(
+                                                                                          'assets/svg_images/blocked_icon.svg',
+                                                                                          height: 15,
+                                                                                          width: 15,
+                                                                                          colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
+                                                                                        )
+                                                                                      : activityProvider.data[index]['field'] == 'blocking'
+                                                                                          ? SvgPicture.asset(
+                                                                                              'assets/svg_images/blocking_icon.svg',
+                                                                                              height: 15,
+                                                                                              width: 15,
+                                                                                              colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn),
+                                                                                            )
+                                                                                          : activityProvider.data[index]['field'] == 'description'
+                                                                                              ? Icon(
+                                                                                                  Icons.comment_outlined,
+                                                                                                  color: themeProvider.themeManager.primaryTextColor,
+                                                                                                  size: 15,
+                                                                                                )
+                                                                                              : activityProvider.data[index]['field'] == 'link'
+                                                                                                  ? SvgPicture.asset('assets/svg_images/link.svg', height: 15, width: 15, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
+                                                                                                  : activityProvider.data[index]['field'] == 'modules'
+                                                                                                      ? SvgPicture.asset('assets/svg_images/module.svg', height: 18, width: 18, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
+                                                                                                      : activityProvider.data[index]['field'] == 'cycles'
+                                                                                                          ? SvgPicture.asset('assets/svg_images/cycles_icon.svg', height: 22, width: 22, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
+                                                                                                          : activityProvider.data[index]['field'] == 'attachment'
+                                                                                                              ? SvgPicture.asset('assets/svg_images/attachment.svg', height: 20, width: 20, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))
+                                                                                                              : activityProvider.data[index]['field'] == 'parent'
+                                                                                                                  ? Icon(
+                                                                                                                      Icons.person_outline,
+                                                                                                                      size: 16,
+                                                                                                                      color: themeProvider.themeManager.primaryTextColor,
+                                                                                                                    )
+                                                                                                                  : SvgPicture.asset('assets/svg_images/calendar_icon.svg', height: 15, width: 15, colorFilter: ColorFilter.mode(themeProvider.themeManager.primaryTextColor, BlendMode.srcIn))),
+                                                            ),
                                                           ),
                                                           const SizedBox(
                                                             width: 10,

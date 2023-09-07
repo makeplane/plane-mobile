@@ -468,7 +468,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                             1)
                                     ? themeProvider.themeManager.primaryColour
                                     : Colors.transparent,
-                              )
+                              ),
                             ],
                           ),
                         )),
@@ -536,7 +536,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.myIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
+                                          : ((!widget.fromModule &&
+                                                      issueProvider.issues.projectView ==
+                                                          ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
@@ -577,10 +579,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -659,9 +663,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
-                                                      (widget.fromModule &&
-                                                          issueProvider.issues.projectView == ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -694,8 +696,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                     (err) {
                                                               CustomToast.showToast(
                                                                   context,
-                                                                   message:'Failed to update issue',
-                                                                 
+                                                                  message:
+                                                                      'Failed to update issue',
                                                                   toastType:
                                                                       ToastType
                                                                           .failure);
@@ -718,8 +720,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                   .toString());
                                                               CustomToast.showToast(
                                                                   context,
-                                                                   message:'Failed to update issue',
-                                                                 
+                                                                  message:
+                                                                      'Failed to update issue',
                                                                   toastType:
                                                                       ToastType
                                                                           .failure);
@@ -1050,9 +1052,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 child: activeCycleDetails(fromModule: true),
                               )
                             : Container(
-                                color: themeProvider
-                                    .themeManager.primaryBackgroundDefaultColor,
-                                padding: const EdgeInsets.all(25),
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                padding: const EdgeInsets.only(
+                                    top: 25, left: 25, right: 25),
                                 child: activeCycleDetails(),
                               ),
                       ],
@@ -1112,6 +1115,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           statesPart(),
           const SizedBox(height: 30),
           labelsPart(fromModule: widget.fromModule),
+          const SizedBox(height: 30),
         ],
       );
     }
@@ -1297,6 +1301,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
                       width: 1, color: getBorderColor(themeProvider)),
                 ),
@@ -1436,7 +1442,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  // color: Colors.white,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
                       width: 1, color: getBorderColor(themeProvider)),
                 ),
@@ -1518,60 +1525,74 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               fontWeight: FontWeightt.Medium,
               color: themeProvider.themeManager.primaryTextColor,
             )),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: 200,
-          child: SfCartesianChart(
-            margin: EdgeInsets.zero,
-            primaryYAxis: NumericAxis(
-              majorGridLines:
-                  const MajorGridLines(width: 0), // Remove major grid lines
+        const SizedBox(height: 10),
+        Container(
+          padding:
+              const EdgeInsets.only(left: 20, right: 30, top: 35, bottom: 20),
+          decoration: BoxDecoration(
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: getBorderColor(themeProvider),
             ),
-            primaryXAxis: CategoryAxis(
-              labelPlacement:
-                  LabelPlacement.betweenTicks, // Adjust label placement
-              interval: chartData.length > 5 ? 3 : 1,
-              majorGridLines: const MajorGridLines(
-                width: 0,
-              ), // Remove major grid lines
-              minorGridLines: const MinorGridLines(width: 0),
-              axisLabelFormatter: (axisLabelRenderArgs) {
-                return ChartAxisLabel(
-                    DateFormat('dd MMM')
-                        .format(DateTime.parse(axisLabelRenderArgs.text)),
-                    const TextStyle(fontWeight: FontWeight.normal));
-              },
+          ),
+          child: SizedBox(
+            height: 200,
+            child: SfCartesianChart(
+              plotAreaBorderColor: Colors.transparent,
+              margin: EdgeInsets.zero,
+              primaryYAxis: NumericAxis(
+                majorGridLines:
+                    const MajorGridLines(width: 0), // Remove major grid lines
+              ),
+              primaryXAxis: CategoryAxis(
+                labelPlacement:
+                    LabelPlacement.betweenTicks, // Adjust label placement
+                interval: chartData.length > 5 ? 3 : 1,
+                majorGridLines: const MajorGridLines(
+                  width: 0,
+                ), // Remove major grid lines
+                minorGridLines: const MinorGridLines(width: 0),
+                axisLabelFormatter: (axisLabelRenderArgs) {
+                  return ChartAxisLabel(
+                      DateFormat('dd MMM')
+                          .format(DateTime.parse(axisLabelRenderArgs.text)),
+                      const TextStyle(fontWeight: FontWeight.normal));
+                },
+              ),
+              series: <ChartSeries>[
+                // Renders area chart
+                AreaSeries<ChartData, DateTime>(
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.5),
+                        Colors.white.withOpacity(0.2),
+                        themeProvider.themeManager.primaryColour
+                            .withOpacity(0.2),
+                        themeProvider.themeManager.primaryColour
+                            .withOpacity(0.3),
+                      ]),
+                  dataSource: chartData,
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
+                ),
+                LineSeries<ChartData, DateTime>(
+                  dashArray: [5.0, 5.0],
+                  dataSource: chartData.isNotEmpty
+                      ? <ChartData>[
+                          ChartData(chartData.first.x,
+                              chartData.first.y), // First data point
+                          ChartData(chartData.last.x,
+                              0.0), // Data point at current time with Y-value of last data point
+                        ]
+                      : [],
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
+                ),
+              ],
             ),
-            series: <ChartSeries>[
-              // Renders area chart
-              AreaSeries<ChartData, DateTime>(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.5),
-                      Colors.white.withOpacity(0.2),
-                      themeProvider.themeManager.primaryColour.withOpacity(0.2),
-                      themeProvider.themeManager.primaryColour.withOpacity(0.3),
-                    ]),
-                dataSource: chartData,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y,
-              ),
-              LineSeries<ChartData, DateTime>(
-                dashArray: [5.0, 5.0],
-                dataSource: chartData.isNotEmpty
-                    ? <ChartData>[
-                        ChartData(chartData.first.x,
-                            chartData.first.y), // First data point
-                        ChartData(chartData.last.x,
-                            0.0), // Data point at current time with Y-value of last data point
-                      ]
-                    : [],
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y,
-              ),
-            ],
           ),
         ),
       ],
@@ -1718,8 +1739,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               )
                                             : CircleAvatar(
                                                 radius: 10,
-                                                backgroundColor:
-                                                    darkSecondaryBGC,
+                                                backgroundColor: themeProvider
+                                                    .themeManager
+                                                    .tertiaryBackgroundDefaultColor,
                                                 child: Center(
                                                   child: CustomText(
                                                     detailData['distribution'][
@@ -1735,9 +1757,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toString()
                                                             .toUpperCase()
                                                         : '',
-                                                    color: themeProvider
-                                                        .themeManager
-                                                        .secondaryTextColor,
+                                                    type: FontStyle.Small,
                                                   ),
                                                 ),
                                               )),
@@ -1977,7 +1997,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 children: [
                                   Icon(
                                     Icons.circle,
-                                    size: 10,
+                                    size: 20,
                                     color: detailData['distribution']['labels']
                                                     [index]['color'] ==
                                                 '' ||

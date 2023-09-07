@@ -4,13 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 
 import 'package:plane/widgets/square_avatar_widget.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'custom_rich_text.dart';
 import 'custom_text.dart';
 
@@ -53,7 +53,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             Const.globalKey.currentContext!,
             MaterialPageRoute(
                 builder: (context) => IssueDetail(
-                      fromMyIssues: widget.fromMyIssues,
                       projID: widget.issueCategory == IssueCategory.myIssues
                           ? provider.issuesResponse[widget.cardIndex]
                               ['project_detail']['id']

@@ -403,6 +403,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (ctx) => EDITOR(
+                                                          fromCreateIssue: true,
                                                           controller:
                                                               webviewController,
                                                           title: 'Description',
@@ -549,6 +550,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                     .push(MaterialPageRoute(
                                                                         builder: (ctx) => EDITOR(
                                                                               controller: webviewController,
+                                                                              fromCreateIssue: true,
                                                                               title: 'Description',
                                                                               url: '${dotenv.env['EDITOR_URL']!}${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
                                                                             )));

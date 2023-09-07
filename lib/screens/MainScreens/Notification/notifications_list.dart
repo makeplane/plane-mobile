@@ -4,7 +4,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/snooze_time_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_rich_text.dart';
@@ -12,6 +11,8 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/error_state.dart';
 import 'package:plane/widgets/loading_widget.dart';
+
+import '../Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class NotificationsList extends ConsumerStatefulWidget {
   final List<dynamic> data;

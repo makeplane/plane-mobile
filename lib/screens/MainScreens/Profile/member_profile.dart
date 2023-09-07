@@ -9,6 +9,7 @@ import 'package:plane_startup/utils/custom_toast.dart';
 import 'package:plane_startup/utils/enums.dart';
 import 'package:plane_startup/utils/timezone_manager.dart';
 import 'package:plane_startup/widgets/custom_app_bar.dart';
+import 'package:plane_startup/widgets/custom_progress_bar.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 import 'package:plane_startup/widgets/loading_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -489,66 +490,136 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                     ),
                                   ),
                                   expanded[index]
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: projectData.length,
-                                          itemBuilder: (ctx, i) {
-                                            return Container(
-                                              margin: const EdgeInsets.only(
-                                                  top: 20),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
+                                      ? Column(
+                                          children: [
+                                            memberprofileProvider.memberProfile[
+                                                                    'project_data']
+                                                                [index][
+                                                            projectData[0]
+                                                                ['key']] ==
+                                                        0 &&
+                                                    memberprofileProvider
+                                                                    .memberProfile[
+                                                                'project_data'][index]
+                                                            [projectData[1]
+                                                                ['key']] ==
+                                                        0
+                                                ? Container()
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 25,
+                                                            bottom: 10),
+                                                    child: CustomProgressBar
+                                                        .withColorOverride(
+                                                            width: width,
+                                                            itemValue: [
+                                                          memberprofileProvider
+                                                                      .memberProfile[
+                                                                  'project_data'][index]
+                                                              [projectData[0]
+                                                                  ['key']],
+                                                          memberprofileProvider
+                                                                      .memberProfile[
+                                                                  'project_data'][index]
+                                                              [projectData[1]
+                                                                  ['key']],
+                                                          memberprofileProvider
+                                                                      .memberProfile[
+                                                                  'project_data'][index]
+                                                              [projectData[2]
+                                                                  ['key']],
+                                                          memberprofileProvider
+                                                                      .memberProfile[
+                                                                  'project_data'][index]
+                                                              [projectData[3]
+                                                                  ['key']],
+                                                        ],
+                                                            itemColors: [
+                                                          projectData[0]
+                                                              ['color'],
+                                                          projectData[1]
+                                                              ['color'],
+                                                          projectData[2]
+                                                              ['color'],
+                                                          projectData[3]
+                                                              ['color'],
+                                                        ]),
+                                                  ),
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                itemCount: projectData.length,
+                                                itemBuilder: (ctx, i) {
+                                                  return Container(
                                                     margin:
                                                         const EdgeInsets.only(
-                                                            left: 30,
-                                                            right: 10),
-                                                    height: 12,
-                                                    width: 12,
-                                                    decoration: BoxDecoration(
-                                                        color: projectData[i]
-                                                            ['color'],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(),
-                                                    child: CustomText(
-                                                      projectData[i]['name'],
-                                                      color: themeProvider
-                                                          .themeManager
-                                                          .placeholderTextColor,
-                                                      type: FontStyle.Small,
-                                                      fontWeight:
-                                                          FontWeightt.Regular,
+                                                            top: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 30,
+                                                                  right: 10),
+                                                          height: 12,
+                                                          width: 12,
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  projectData[i]
+                                                                      ['color'],
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4)),
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(),
+                                                          child: CustomText(
+                                                            projectData[i]
+                                                                ['name'],
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .placeholderTextColor,
+                                                            type:
+                                                                FontStyle.Small,
+                                                            fontWeight:
+                                                                FontWeightt
+                                                                    .Regular,
+                                                          ),
+                                                        ),
+                                                        const Spacer(),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            right: 30,
+                                                          ),
+                                                          child: CustomText(
+                                                            "${memberprofileProvider.memberProfile['project_data'][index][projectData[i]['key']]} Issues",
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .tertiaryTextColor,
+                                                            type:
+                                                                FontStyle.Small,
+                                                            fontWeight:
+                                                                FontWeightt
+                                                                    .Medium,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                  const Spacer(),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      right: 30,
-                                                    ),
-                                                    child: CustomText(
-                                                      "${memberprofileProvider.memberProfile['project_data'][index][projectData[i]['key']]} Issues",
-                                                      color: themeProvider
-                                                          .themeManager
-                                                          .tertiaryTextColor,
-                                                      type: FontStyle.Small,
-                                                      fontWeight:
-                                                          FontWeightt.Medium,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          })
+                                                  );
+                                                }),
+                                          ],
+                                        )
                                       : Container(),
                                   const SizedBox(
                                     height: 15,

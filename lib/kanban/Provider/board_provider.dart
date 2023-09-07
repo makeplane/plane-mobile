@@ -49,7 +49,7 @@ class BoardProvider extends ChangeNotifier {
       {required List<BoardListsData> data,
       Color backgroundColor = Colors.white,
       TextStyle? textStyle,
-      final bool isCardsDraggable=true,
+      final bool isCardsDraggable = true,
       Function(int? itemIndex, int? listIndex)? onItemTap,
       Function(int? itemIndex, int? listIndex)? onItemLongPress,
       Function(int? listIndex)? onListTap,
@@ -126,13 +126,9 @@ class BoardProvider extends ChangeNotifier {
           height: 50,
           margin: const EdgeInsets.only(bottom: 15),
           decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : darkPrimaryTextColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkBackgroundColor
-                    : Colors.grey.shade200,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 2),
             borderRadius: BorderRadius.circular(6),
           ),
@@ -202,9 +198,8 @@ class BoardProvider extends ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? const Color.fromRGBO(39, 42, 45, 1)
-                      : const Color.fromRGBO(222, 226, 230, 1)),
+                  color: themeProvider
+                      .themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(

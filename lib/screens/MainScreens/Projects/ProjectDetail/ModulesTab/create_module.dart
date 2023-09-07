@@ -362,6 +362,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                 .placeholderTextColor,
                                             BlendMode.srcIn),
                                       ),
+
                                       // Icon(
                                       //       Icons.bento_outlined,
                                       //   color: themeProvider
@@ -380,6 +381,12 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                 .toString(),
                                         type: FontStyle.Medium,
                                       ),
+                                      const Spacer(),
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -460,6 +467,12 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                     ['last_name'],
                                         type: FontStyle.Medium,
                                       ),
+                                      const Spacer(),
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -549,6 +562,12 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                 : 'Multiple Assignees',
                                         type: FontStyle.Medium,
                                       ),
+                                      const Spacer(),
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -618,15 +637,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               log(modulesProvider.createModule.toString());
 
                               await modulesProvider.createNewModule(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                ref: ref
-                              );
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId: ref
+                                      .read(ProviderList.projectProvider)
+                                      .currentProject['id'],
+                                  ref: ref);
 
                               Navigator.pop(Const.globalKey.currentContext!);
                             },

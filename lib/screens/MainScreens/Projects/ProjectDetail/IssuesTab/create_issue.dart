@@ -1662,16 +1662,17 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: createMoreIssues
-                                                  ? themeProvider.themeManager
-                                                      .primaryColour
+                                                  ? greenHighLight
                                                   : themeProvider.themeManager
                                                       .tertiaryBackgroundDefaultColor),
                                           child: Align(
                                             alignment: createMoreIssues
                                                 ? Alignment.centerRight
                                                 : Alignment.centerLeft,
-                                            child:
-                                                const CircleAvatar(radius: 6),
+                                            child: const CircleAvatar(
+                                              radius: 6,
+                                              backgroundColor: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ],

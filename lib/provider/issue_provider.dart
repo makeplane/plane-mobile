@@ -26,6 +26,7 @@ class IssueProvider with ChangeNotifier {
   StateEnum attachmentState = StateEnum.empty;
   StateEnum addLinkState = StateEnum.empty;
   StateEnum getSubIssueState = StateEnum.empty;
+  StateEnum addSubIssueState = StateEnum.empty;
   Map<String, dynamic> issueDetails = {};
   List<dynamic> issueActivity = [];
   // Map<String, dynamic> subIssues = {};
@@ -39,6 +40,7 @@ class IssueProvider with ChangeNotifier {
     updateIssueState = StateEnum.empty;
     attachmentState = StateEnum.empty;
     subscriptionState = StateEnum.empty;
+    addSubIssueState = StateEnum.empty;
     //updateIssueState = StateEnum.empty;
     addLinkState = StateEnum.empty;
     getSubIssueState = StateEnum.empty;
@@ -492,6 +494,7 @@ class IssueProvider with ChangeNotifier {
     required Map data,
   }) async {
     try {
+      addSubIssueState = StateEnum.loading;
       notifyListeners();
       var url = APIs.subIssues
           .replaceAll("\$SLUG", slug)
@@ -508,6 +511,7 @@ class IssueProvider with ChangeNotifier {
         slug: slug,
         issueId: issueId,
       );
+      addSubIssueState = StateEnum.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
@@ -518,6 +522,7 @@ class IssueProvider with ChangeNotifier {
           content: Text('Something went wrong, please try again!'),
         ),
       );
+      addSubIssueState = StateEnum.error;
       notifyListeners();
     }
   }
@@ -526,6 +531,7 @@ class IssueProvider with ChangeNotifier {
     issueDetailState = StateEnum.loading;
     issueActivityState = StateEnum.loading;
     updateIssueState = StateEnum.empty;
+    addSubIssueState = StateEnum.empty;
     issueDetails = {};
     issueActivity = [];
     notifyListeners();

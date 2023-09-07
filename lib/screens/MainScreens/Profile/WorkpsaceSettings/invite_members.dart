@@ -270,8 +270,17 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 },
                                 controller:
                                     workspaceProvider.invitingMembersRole,
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
                                 decoration: themeProvider
-                                    .themeManager.textFieldDecoration,
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                        suffixIcon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                )),
                                 enabled: false,
                               ),
                             ),

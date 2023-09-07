@@ -716,15 +716,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         ref: ref);
                                   } else {
                                     // ignore: use_build_context_synchronously
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: CustomText(
-                                          'Identifier already taken',
-                                          color: Colors.white,
-                                        ),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
+                                    CustomToast.showToast(context,
+                                        message: 'Identifier already taken',
+                                        toastType: ToastType.failure);
                                     return;
                                   }
                                 } else {

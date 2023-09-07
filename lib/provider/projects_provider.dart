@@ -329,7 +329,10 @@ class ProjectsProvider extends ChangeNotifier {
   }
 
   Future createProjects(
-      {required String slug, required data, WidgetRef? ref}) async {
+      {required String slug,
+      required data,
+      WidgetRef? ref,
+      BuildContext? context}) async {
     createProjectState = StateEnum.loading;
     var workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
     notifyListeners();
@@ -359,10 +362,11 @@ class ProjectsProvider extends ChangeNotifier {
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
-      // CustomToast.showToast(
-      //     Const.globalKey.currentContext!, 'Identifier already exists');
-      ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
-          const SnackBar(content: Text('Identifier already exists')));
+      if (context != null) {
+        CustomToast.showToast(context,
+            message: 'Identifier already exists', toastType: ToastType.failure);
+      }
+
       log(e.error.toString());
       createProjectState = StateEnum.error;
       notifyListeners();

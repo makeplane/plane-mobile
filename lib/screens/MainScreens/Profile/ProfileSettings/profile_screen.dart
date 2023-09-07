@@ -99,18 +99,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             );
           }
         },
-        {
-          'title': 'Billing & Plans',
-          'icon': Icons.credit_card,
-          'onTap': (context) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BillingPlans(),
-              ),
-            );
-          }
-        },
+        // {
+        //   'title': 'Billing & Plans',
+        //   'icon': Icons.credit_card,
+        //   'onTap': (context) {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => const BillingPlans(),
+        //       ),
+        //     );
+        //   }
+        // },
         {
           'title': 'Integrations',
           'icon': Icons.route,

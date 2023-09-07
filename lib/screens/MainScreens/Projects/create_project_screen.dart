@@ -66,6 +66,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    BuildContext mainContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -476,6 +477,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                     .read(ProviderList.workspaceProvider)
                                     .selectedWorkspace!
                                     .workspaceSlug,
+                                context: mainContext,
                                 data: {
                                   "cover_image": projectProvider.coverUrl,
                                   "name": name.text,

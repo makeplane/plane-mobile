@@ -436,14 +436,14 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
             },
         'icon': 'assets/images/global_search_icons/members.png'
       },
-      {
-        'title': 'Billing & Plans',
-        'screen': () => {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const BillingPlans()))
-            },
-        'icon': 'assets/images/global_search_icons/billing&plans.png'
-      },
+      // {
+      //   'title': 'Billing & Plans',
+      //   'screen': () => {
+      //         Navigator.of(context).push(
+      //             MaterialPageRoute(builder: (context) => const BillingPlans()))
+      //       },
+      //   'icon': 'assets/images/global_search_icons/billing&plans.png'
+      // },
       {
         'title': 'Integrations',
         'screen': () => {
@@ -547,11 +547,11 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         'url': 'https://github.com/makeplane/plane-mobile/issues',
         'icon': 'assets/images/global_search_icons/report.png'
       },
-      {
-        'title': 'Chat with us',
-        'url': '',
-        'icon': 'assets/images/global_search_icons/chat.png'
-      },
+      // {
+      //   'title': 'Chat with us',
+      //   'url': '',
+      //   'icon': 'assets/images/global_search_icons/chat.png'
+      // },
     ];
 
     return Column(

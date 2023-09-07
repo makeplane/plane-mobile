@@ -10,6 +10,7 @@ import 'package:plane/bottom_sheets/assignee_sheet.dart';
 import 'package:plane/bottom_sheets/lead_sheet.dart';
 import 'package:plane/bottom_sheets/status_sheet.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
@@ -603,16 +604,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               }
                               if (modulesProvider.createModule['status'] ==
                                   null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: Colors.redAccent,
-                                    content: CustomText(
-                                      'Please select module status',
-                                      type: FontStyle.Medium,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
+                                CustomToast.showToast(context,
+                                    message: 'Please select module status',
+                                    toastType: ToastType.warning);
                                 return;
                               }
                               modulesProvider.createModule['name'] =

@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/company_size_sheet.dart';
-import 'package:plane_startup/bottom_sheets/delete_workspace_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/bottom_sheets/workspace_logo.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/company_size_sheet.dart';
+import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/bottom_sheets/workspace_logo.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class WorkspaceGeneral extends ConsumerStatefulWidget {
   const WorkspaceGeneral({super.key});
@@ -145,10 +145,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 onTap: () async {
                                   if (workspaceProvider.role != Role.admin &&
                                       workspaceProvider.role != Role.member) {
-                                    CustomToast.showToast(
-                                        context,
-                                        message:'You are not allowed to change the logo',
-                                      
+                                    CustomToast.showToast(context,
+                                        message:
+                                            'You are not allowed to change the logo',
                                         toastType: ToastType.warning);
                                     return;
                                   }
@@ -210,10 +209,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 onTap: () {
                                   if (workspaceProvider.role != Role.admin &&
                                       workspaceProvider.role != Role.member) {
-                                    CustomToast.showToast(
-                                        context,
-                                       message: 'You are not allowed to change the logo',
-                                    
+                                    CustomToast.showToast(context,
+                                        message:
+                                            'You are not allowed to change the logo',
                                         toastType: ToastType.warning);
                                     return;
                                   }
@@ -304,8 +302,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         //not editable
                         //enabled: true,
                         onTap: () {
-                          CustomToast.showToast(
-                              context,message: accessRestrictedMSG,
+                          CustomToast.showToast(context,
+                              message: accessRestrictedMSG,
                               toastType: ToastType.failure);
                         },
                         readOnly: true,
@@ -382,8 +380,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                   GestureDetector(
                     onTap: () {
                       if (workspaceProvider.role != Role.admin) {
-                        CustomToast.showToast(
-                            context,message: accessRestrictedMSG,
+                        CustomToast.showToast(context,
+                            message: accessRestrictedMSG,
                             toastType: ToastType.failure);
                         return;
                       }
@@ -455,19 +453,16 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.success) {
-                              CustomToast.showToast(
-                                  context,
-                                  message:'Workspace updated successfully',
-                                
+                              CustomToast.showToast(context,
+                                  message: 'Workspace updated successfully',
                                   toastType: ToastType.success);
                               Navigator.pop(context);
                             }
                             if (workspaceProvider.updateWorkspaceState ==
                                 StateEnum.error) {
-                              CustomToast.showToast(
-                                  context,
-                                  message:'Something went wrong, please try again',
-                                 
+                              CustomToast.showToast(context,
+                                  message:
+                                      'Something went wrong, please try again',
                                   toastType: ToastType.failure);
                             }
                             // refreshImage();

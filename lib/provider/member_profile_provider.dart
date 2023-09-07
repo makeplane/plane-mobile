@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/utils/enums.dart';
 
 import '../config/apis.dart';
 import '../services/dio_service.dart';

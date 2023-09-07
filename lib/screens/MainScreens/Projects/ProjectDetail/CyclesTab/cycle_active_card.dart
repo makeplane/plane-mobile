@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/models/chart_model.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/completion_percentage.dart';
-import 'package:plane_startup/widgets/custom_progress_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/profile_circle_avatar_widget.dart';
+import 'package:plane/models/chart_model.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/completion_percentage.dart';
+import 'package:plane/widgets/custom_progress_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/profile_circle_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '/utils/enums.dart';
 
@@ -241,27 +241,26 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     setState(() {});
 
                     cyclesProvider.updateCycle(
-                      disableLoading: true,
-                      method: CRUD.update,
-                      slug: ref
-                          .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
-                          .workspaceSlug,
-                      projectId: ref
-                          .read(ProviderList.projectProvider)
-                          .currentProject['id'],
-                      data: {
-                        'cycle': cyclesProvider.cyclesActiveData[index]['id'],
-                      },
-                      query: 'current',
-                      cycleId: cyclesProvider.cyclesActiveData[index]['id'],
-                      isFavorite: cyclesProvider.cyclesActiveData[index]
-                                  ['is_favorite'] ==
-                              true
-                          ? true
-                          : false,
-                          ref: ref
-                    );
+                        disableLoading: true,
+                        method: CRUD.update,
+                        slug: ref
+                            .read(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug,
+                        projectId: ref
+                            .read(ProviderList.projectProvider)
+                            .currentProject['id'],
+                        data: {
+                          'cycle': cyclesProvider.cyclesActiveData[index]['id'],
+                        },
+                        query: 'current',
+                        cycleId: cyclesProvider.cyclesActiveData[index]['id'],
+                        isFavorite: cyclesProvider.cyclesActiveData[index]
+                                    ['is_favorite'] ==
+                                true
+                            ? true
+                            : false,
+                        ref: ref);
                   },
                   child: isFavorite == true
                       ? Icon(Icons.star,

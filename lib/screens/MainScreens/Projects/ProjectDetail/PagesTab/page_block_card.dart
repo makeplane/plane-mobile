@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/bottom_sheets/block_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/block_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class PageBlockCard extends ConsumerStatefulWidget {
   final int index;
@@ -125,19 +125,19 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                 ref
                                     .read(ProviderList.pageProvider)
                                     .converToIssues(
-                                      context: context,
-                                      blockID: pageProvider.blocks[widget.index]
-                                          ["id"],
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject['id'],
-                                      pageID: widget.pageID,
-                                      ref: ref
-                                    );
+                                        context: context,
+                                        blockID: pageProvider
+                                            .blocks[widget.index]["id"],
+                                        slug: ref
+                                            .read(
+                                                ProviderList.workspaceProvider)
+                                            .selectedWorkspace!
+                                            .workspaceSlug,
+                                        projectId: ref
+                                            .read(ProviderList.projectProvider)
+                                            .currentProject['id'],
+                                        pageID: widget.pageID,
+                                        ref: ref);
                               },
                               child: Icon(
                                 Icons.flash_on,
@@ -151,20 +151,18 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                       GestureDetector(
                         onTap: () {
                           ref.read(ProviderList.pageProvider).handleBlocks(
-                                context: context,
-                                blockID: pageProvider.blocks[widget.index]
-                                    ["id"],
-                                httpMethod: HttpMethod.delete,
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                pageID: widget.pageID,
-                                ref: ref
-                              );
+                              context: context,
+                              blockID: pageProvider.blocks[widget.index]["id"],
+                              httpMethod: HttpMethod.delete,
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject['id'],
+                              pageID: widget.pageID,
+                              ref: ref);
                         },
                         child: Icon(Icons.delete_outlined,
                             size: 18,

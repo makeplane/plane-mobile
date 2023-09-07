@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class LeadSheet extends ConsumerStatefulWidget {
   final bool fromModuleDetail;
@@ -120,8 +120,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                   'lead': projectProvider.projectMembers[index]
                                       ['member']['id']
                                 },
-                                ref: ref
-                              );
+                                ref: ref);
                             Navigator.pop(context);
                             return;
                           }

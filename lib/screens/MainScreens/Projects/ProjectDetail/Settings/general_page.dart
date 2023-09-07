@@ -3,18 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/delete_leave_project_sheet.dart';
-import 'package:plane_startup/bottom_sheets/emoji_sheet.dart';
-import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';
+import 'package:plane/bottom_sheets/delete_leave_project_sheet.dart';
+import 'package:plane/bottom_sheets/emoji_sheet.dart';
+import 'package:plane/bottom_sheets/project_select_cover_image.dart';
 
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class GeneralPage extends ConsumerStatefulWidget {
   const GeneralPage({super.key});
@@ -294,10 +294,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             )
                           : null,
                       onTap: () {
-                        CustomToast.showToast(
-                            context,
-                            message: 'This operation cannot be performed using Plane Mobile',
-                           
+                        CustomToast.showToast(context,
+                            message:
+                                'This operation cannot be performed using Plane Mobile',
                             toastType: ToastType.defult);
                       },
                       readOnly: true,

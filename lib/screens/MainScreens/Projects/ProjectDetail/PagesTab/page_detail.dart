@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/block_sheet.dart';
-import 'package:plane_startup/bottom_sheets/label_sheet.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/block_sheet.dart';
+import 'package:plane/bottom_sheets/label_sheet.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class PageDetail extends ConsumerStatefulWidget {
   const PageDetail({required this.index, super.key});
@@ -55,8 +55,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             .selectedWorkspace!
             .workspaceSlug,
         projectId: ref.read(ProviderList.projectProvider).currentProject["id"],
-        ref: ref
-      );
+        ref: ref);
     ref.read(ProviderList.issuesProvider).getLabels(
         slug: ref
             .read(ProviderList.workspaceProvider)
@@ -110,8 +109,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                 "name": titleController.text
               },
               fromDispose: true,
-              ref: ref
-              );
+              ref: ref);
           Navigator.pop(context);
         },
         text: pageProvider.pages[pageProvider.selectedFilter]![widget.index]
@@ -142,8 +140,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                 "color": '#${colorController.text}',
                 "name": titleController.text
               },
-              ref: ref
-            );
+              ref: ref);
 
           return true;
         },
@@ -264,8 +261,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                         data: {
                                           "color": '#${colorController.text}'
                                         },
-                                        ref: ref
-                                      );
+                                        ref: ref);
                                   }
                                 },
                                 icon: Icon(
@@ -302,22 +298,26 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                 : InkWell(
                                     onTap: () async {
                                       showLockLoading = !showLockLoading;
-                                      await pageProvider.editPage(
-                                        context: context,
-                                        pageId: pageProvider.pages[pageProvider
-                                                .selectedFilter]![widget.index]
-                                            ['id'],
-                                        slug: workspaceProvider
-                                            .selectedWorkspace!.workspaceSlug,
-                                        projectId: projectProvider
-                                            .currentProject['id'],
-                                        data: {
-                                          "access": pageProvider.pages[
-                                                  pageProvider.selectedFilter]![
-                                              widget.index]['access']
-                                        },
-                                        ref: ref
-                                      ).then((value) {
+                                      await pageProvider
+                                          .editPage(
+                                              context: context,
+                                              pageId: pageProvider.pages[
+                                                      pageProvider
+                                                          .selectedFilter]![
+                                                  widget.index]['id'],
+                                              slug: workspaceProvider
+                                                  .selectedWorkspace!
+                                                  .workspaceSlug,
+                                              projectId: projectProvider
+                                                  .currentProject['id'],
+                                              data: {
+                                                "access": pageProvider.pages[
+                                                        pageProvider
+                                                            .selectedFilter]![
+                                                    widget.index]['access']
+                                              },
+                                              ref: ref)
+                                          .then((value) {
                                         if (pageProvider.blockSheetState ==
                                             StateEnum.success) {
                                           pageProvider.pages[pageProvider
@@ -620,18 +620,20 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     ['label_details'] as List)
                                 .toString());
                           });
-                          pageProvider.editPage(
-                              context: context,
-                              slug: workspaceProvider
-                                  .selectedWorkspace!.workspaceSlug,
-                              projectId: projectProvider.currentProject['id'],
-                              pageId: pageProvider.pages[pageProvider
-                                  .selectedFilter]![widget.index]['id'],
-                              data: {
-                                "labels_list": pageProvider.selectedLabels,
-                              },
-                              ref: ref
-                            ).then((value) {
+                          pageProvider
+                              .editPage(
+                                  context: context,
+                                  slug: workspaceProvider
+                                      .selectedWorkspace!.workspaceSlug,
+                                  projectId:
+                                      projectProvider.currentProject['id'],
+                                  pageId: pageProvider.pages[pageProvider
+                                      .selectedFilter]![widget.index]['id'],
+                                  data: {
+                                    "labels_list": pageProvider.selectedLabels,
+                                  },
+                                  ref: ref)
+                              .then((value) {
                             if (pageProvider.blockSheetState ==
                                 StateEnum.error) {
                               setState(() {
@@ -798,8 +800,9 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                         ),
                         isBlocksLoading
                             ? Container(
-                            alignment: Alignment.center,
-                            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                                alignment: Alignment.center,
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 child: SizedBox(
                                   width: 30,
                                   height: 30,

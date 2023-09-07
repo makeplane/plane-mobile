@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class CreatePage extends ConsumerWidget {
   const CreatePage({super.key});
@@ -75,8 +75,8 @@ class CreatePage extends ConsumerWidget {
                         ontap: () async {
                           if (pageTitleController.text.isEmpty ||
                               pageTitleController.text.trim() == "") {
-                            CustomToast.showToast(
-                                context,message: 'Title is required',
+                            CustomToast.showToast(context,
+                                message: 'Title is required',
                                 toastType: ToastType.warning);
                             return;
                           }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
 

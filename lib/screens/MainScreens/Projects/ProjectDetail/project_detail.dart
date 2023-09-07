@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
-import 'package:plane_startup/bottom_sheets/page_filter_sheet.dart';
-import 'package:plane_startup/bottom_sheets/type_sheet.dart';
-import 'package:plane_startup/bottom_sheets/views_sheet.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
-import 'package:plane_startup/kanban/custom/board.dart';
+import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/page_filter_sheet.dart';
+import 'package:plane/bottom_sheets/type_sheet.dart';
+import 'package:plane/bottom_sheets/views_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
+import 'package:plane/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/project_details_cycles.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.dart';
-import 'package:plane_startup/screens/settings_screen.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/empty.dart';
-import 'package:plane_startup/widgets/error_state.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/project_details_cycles.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
+import 'package:plane/screens/MainScreens/Projects/create_page_screen.dart';
+import 'package:plane/screens/settings_screen.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/error_state.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../../kanban/models/inputs.dart';
 import '../../../../utils/custom_toast.dart';
@@ -1012,7 +1012,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1023,7 +1023,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1040,7 +1040,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                         )
                                                 ],
@@ -1060,7 +1060,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     oldCardIndex,
                                     oldListIndex}) {
                                   //  print('newCardIndex: $newCardIndex, newListIndex: $newListIndex, oldCardIndex: $oldCardIndex, oldListIndex: $oldListIndex');
-                                  issueProvider.reorderIssue(
+                                  issueProvider
+                                      .reorderIssue(
                                     context: context,
                                     newCardIndex: newCardIndex!,
                                     newListIndex: newListIndex!,
@@ -1097,7 +1098,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     offset: 65,
                                     duration: const Duration(milliseconds: 100),
                                     curve: Curves.linear),
-                                  boardScrollConfig: ScrollConfig(
+                                boardScrollConfig: ScrollConfig(
                                     offset: 45,
                                     duration: const Duration(milliseconds: 100),
                                     curve: Curves.linear),

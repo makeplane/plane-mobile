@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../../provider/provider_list.dart';
 import '../../utils/enums.dart';

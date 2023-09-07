@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/global_functions.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/global_functions.dart';
 
 import '/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class FeaturesPage extends ConsumerStatefulWidget {
   const FeaturesPage({super.key});

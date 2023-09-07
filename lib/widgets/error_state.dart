@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 Widget errorState(
     {required BuildContext context,
@@ -28,20 +28,20 @@ Widget errorState(
             type: FontStyle.Medium,
             fontWeight: FontWeightt.Medium,
           ),
-          !Const.isOnline ?
-          const Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                'Please check your internet and try again',
-                type: FontStyle.XSmall,
-                fontWeight: FontWeightt.Regular,
-              ),
-            ],
-          )
-          : Container(),
+          !Const.isOnline
+              ? const Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      'Please check your internet and try again',
+                      type: FontStyle.XSmall,
+                      fontWeight: FontWeightt.Regular,
+                    ),
+                  ],
+                )
+              : Container(),
           const SizedBox(
             height: 24,
           ),

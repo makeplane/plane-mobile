@@ -3,16 +3,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/member_status.dart';
-import 'package:plane_startup/bottom_sheets/select_emails.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/global_functions.dart';
-import 'package:plane_startup/widgets/submit_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/member_status.dart';
+import 'package:plane/bottom_sheets/select_emails.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/widgets/submit_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class ProjectInviteMembersSheet extends ConsumerStatefulWidget {
   const ProjectInviteMembersSheet({super.key});

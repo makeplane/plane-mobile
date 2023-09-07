@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../utils/constants.dart';
 import '../../../widgets/custom_app_bar.dart';
@@ -283,10 +283,9 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                 Navigator.of(context).pop();
                               }
                             } else {
-                              CustomToast.showToast(
-                                  context,
-                                  message: 'Please select atleast one workspace',
-                                
+                              CustomToast.showToast(context,
+                                  message:
+                                      'Please select atleast one workspace',
                                   toastType: ToastType.defult);
                             }
                           },

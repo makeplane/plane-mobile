@@ -2,22 +2,22 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/delete_leave_project_sheet.dart';
-import 'package:plane_startup/bottom_sheets/delete_workspace_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/invite_members.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/bottom_sheets/member_status.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/error_state.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/widgets/member_logo_alternative_widget.dart';
-import 'package:plane_startup/widgets/member_logo_widget.dart';
+import 'package:plane/bottom_sheets/delete_leave_project_sheet.dart';
+import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/invite_members.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/bottom_sheets/member_status.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/error_state.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/member_logo_alternative_widget.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 class Members extends ConsumerStatefulWidget {
   final bool fromWorkspace;
@@ -256,7 +256,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                     );
                   } else {
                     CustomToast.showToast(context,
-                         message:"You can't change your own role",
+                        message: "You can't change your own role",
                         toastType: ToastType.warning);
                   }
                 } else {
@@ -570,8 +570,8 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                         );
                       });
                 } else {
-                  CustomToast.showToast(
-                      context,  message:"You can't change your own role",
+                  CustomToast.showToast(context,
+                      message: "You can't change your own role",
                       toastType: ToastType.warning);
                 }
               } else {

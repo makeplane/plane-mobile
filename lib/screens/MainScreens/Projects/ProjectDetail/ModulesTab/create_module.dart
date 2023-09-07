@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/bottom_sheets/assignee_sheet.dart';
-import 'package:plane_startup/bottom_sheets/lead_sheet.dart';
-import 'package:plane_startup/bottom_sheets/status_sheet.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/assignee_sheet.dart';
+import 'package:plane/bottom_sheets/lead_sheet.dart';
+import 'package:plane/bottom_sheets/status_sheet.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
 
 class CreateModule extends ConsumerStatefulWidget {
   const CreateModule({super.key});

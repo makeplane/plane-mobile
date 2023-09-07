@@ -4,16 +4,16 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/models/user_profile_model.dart';
-import 'package:plane_startup/models/workspace_model.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/global_functions.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/models/user_profile_model.dart';
+import 'package:plane/models/workspace_model.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
 
 class WorkspaceProvider extends ChangeNotifier {
   WorkspaceProvider(ChangeNotifierProviderRef<WorkspaceProvider> this.ref);

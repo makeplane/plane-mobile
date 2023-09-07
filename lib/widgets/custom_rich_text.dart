@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/enums.dart';
 import '../utils/constants.dart';
 import 'custom_text.dart';
 
@@ -42,12 +42,12 @@ class CustomRichText extends ConsumerWidget {
 
   TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider) {
     return GoogleFonts.inter(
-        height: type!=null? lineHeight[type] : null,
+        height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:
             fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,
-        color:themeProvider.theme == THEME.custom
-            ? customTextColor:( color ?? themeProvider.themeManager.primaryTextColor));
-
+        color: themeProvider.theme == THEME.custom
+            ? customTextColor
+            : (color ?? themeProvider.themeManager.primaryTextColor));
   }
 }

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/delete_state_sheet.dart';
-import 'package:plane_startup/provider/issues_provider.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
+import 'package:plane/bottom_sheets/delete_state_sheet.dart';
+import 'package:plane/provider/issues_provider.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
 
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 List states = ['backlog', 'unstarted', 'started', 'completed', 'cancelled'];
 

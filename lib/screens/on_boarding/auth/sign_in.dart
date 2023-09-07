@@ -9,17 +9,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/Authentication/google_sign_in.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
-import 'package:plane_startup/utils/global_functions.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/widgets/resend_code_button.dart';
+import 'package:plane/Authentication/google_sign_in.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/screens/home_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_rich_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/resend_code_button.dart';
 
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';
@@ -249,14 +249,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     if (!sentCode) {
                                       await ref
                                           .read(ProviderList.authProvider)
-                                          .sendMagicCode(email:email.text)
+                                          .sendMagicCode(email: email.text)
                                           .then((value) {
                                         if (authProvider.sendCodeState ==
                                             StateEnum.error) {
-                                          CustomToast.showToast(
-                                              context,
-                                              message:'Something went wrong, please try again.',
-                                              
+                                          CustomToast.showToast(context,
+                                              message:
+                                                  'Something went wrong, please try again.',
                                               toastType: ToastType.failure);
                                         } else {
                                           setState(() {
@@ -439,7 +438,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                         widget: Container(
                                           height: 25,
                                           width: 25,
-                                          margin: const EdgeInsets.only(right: 10),
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
                                           child: SvgPicture.asset(
                                               'assets/svg_images/google-icon.svg'),
                                         ),
@@ -453,11 +453,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                             var user =
                                                 await GoogleSignInApi.logIn();
                                             if (user == null) {
-                                              CustomToast.showToast(
-                                                  context,
-                                                  message: 'Something went wrong, please try again.',
-                                                
-                                                  toastType: ToastType.failure);
+                                              // CustomToast.showToast(context,
+                                              //     message:
+                                              //         'Something went wrong, please try again.',
+                                              //     toastType: ToastType.failure);
                                               return;
                                             }
                                             GoogleSignInAuthentication

@@ -3,10 +3,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
 
@@ -75,13 +75,13 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                     );
 
                 if (result == null) {
-                  CustomToast.showToast(context,message: 'File is empty',
-                      toastType: ToastType.warning);
+                  CustomToast.showToast(context,
+                      message: 'File is empty', toastType: ToastType.warning);
                   Navigator.pop(context);
                   return;
                 } else if (result.files.single.size > 5000000) {
                   CustomToast.showToast(context,
-                     message: 'File size should be less than 5MB',
+                      message: 'File size should be less than 5MB',
                       toastType: ToastType.warning);
                   Navigator.pop(context);
                   return;

@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class CreateView extends ConsumerStatefulWidget {
   const CreateView({super.key});
@@ -422,9 +422,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 });
                                 await ref
                                     .read(ProviderList.viewsProvider.notifier)
-                                    .createViews(
-                                      ref: ref,
-                                      data: {
+                                    .createViews(ref: ref, data: {
                                   "name": title.text,
                                   "description": description.text,
                                   "query": {

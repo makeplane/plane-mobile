@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/global_functions.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
 import '../config/apis.dart';
 
 class ViewsModel {

@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/Provider/provider_list.dart';
-
+import 'package:plane/kanban/Provider/provider_list.dart';
 
 class Item extends ConsumerStatefulWidget {
   const Item({
@@ -100,28 +98,30 @@ class _ItemState extends ConsumerState<Item> {
                   prov.draggedItemState!.listIndex == widget.listIndex &&
                   prov.board.dragItemOfListIndex! == widget.listIndex
               ? Container(
-                  decoration:prov.board.cardPlaceHolderDecoration?? BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade100),
-                    borderRadius: BorderRadius.circular(6),
-                    color: prov.board.lists[widget.listIndex]
-                            .items[widget.itemIndex].backgroundColor ??
-                        Colors.white,
-                  ),
-                  margin: const EdgeInsets.only(
-                      bottom: 15, left: 10, right: 10,top:5),
-                  width: prov.draggedItemState!.width,
-                  height: prov.draggedItemState!.height,
-                )
-              : cardProv.isCurrentElementDragged(
-                      listIndex: widget.listIndex, itemIndex: widget.itemIndex)
-                  ? Container(
-                      decoration: prov.board.cardPlaceHolderDecoration?? BoxDecoration(
+                  decoration: prov.board.cardPlaceHolderDecoration ??
+                      BoxDecoration(
                         border: Border.all(color: Colors.grey.shade100),
                         borderRadius: BorderRadius.circular(6),
                         color: prov.board.lists[widget.listIndex]
                                 .items[widget.itemIndex].backgroundColor ??
                             Colors.white,
                       ),
+                  margin: const EdgeInsets.only(
+                      bottom: 15, left: 10, right: 10, top: 5),
+                  width: prov.draggedItemState!.width,
+                  height: prov.draggedItemState!.height,
+                )
+              : cardProv.isCurrentElementDragged(
+                      listIndex: widget.listIndex, itemIndex: widget.itemIndex)
+                  ? Container(
+                      decoration: prov.board.cardPlaceHolderDecoration ??
+                          BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade100),
+                            borderRadius: BorderRadius.circular(6),
+                            color: prov.board.lists[widget.listIndex]
+                                    .items[widget.itemIndex].backgroundColor ??
+                                Colors.white,
+                          ),
                       width: prov.board.lists[widget.listIndex]
                           .items[widget.itemIndex].width,
                     )

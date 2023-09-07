@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/square_avatar_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/square_avatar_widget.dart';
 
 class SpreadSheetView extends ConsumerStatefulWidget {
   final IssueCategory issueCategory;

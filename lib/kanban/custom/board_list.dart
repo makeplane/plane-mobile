@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/Provider/provider_list.dart';
-import 'package:plane_startup/kanban/models/item_state.dart';
+import 'package:plane/kanban/Provider/provider_list.dart';
+import 'package:plane/kanban/models/item_state.dart';
 
 import 'list_item.dart';
 

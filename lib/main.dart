@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 
-import 'package:plane_startup/services/shared_preference_service.dart';
+import 'package:plane/services/shared_preference_service.dart';
 // import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane/provider/provider_list.dart';
 
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/global_functions.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/global_functions.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
@@ -293,8 +293,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
       navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
-      home:
-          Const.accessToken == null ? const OnBoardingScreen() : const App(),
+      home: Const.accessToken == null ? const OnBoardingScreen() : const App(),
     );
   }
 

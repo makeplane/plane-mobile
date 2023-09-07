@@ -4,17 +4,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/error_state.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_rich_text.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/error_state.dart';
+import 'package:plane/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Activity extends ConsumerStatefulWidget {
@@ -114,10 +114,8 @@ class _ActivityState extends ConsumerState<Activity> {
                                                       ["new_value"]
                                                   .toString()))) {
                                             // ignore: use_build_context_synchronously
-                                            CustomToast.showToast(
-                                                context,
-                                               message: 'Failed to launch',
-                                                
+                                            CustomToast.showToast(context,
+                                                message: 'Failed to launch',
                                                 toastType: ToastType.failure);
                                           }
                                         }

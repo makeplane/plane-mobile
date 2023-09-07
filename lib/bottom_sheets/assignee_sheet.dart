@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
 
@@ -25,16 +25,16 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
       onWillPop: () async {
         if (widget.fromModuleDetail) {
           modulesProvider.updateModules(
-            disableLoading: true,
-            slug: ref
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
-                .workspaceSlug,
-            projId: ref.read(ProviderList.projectProvider).currentProject['id'],
-            moduleId: modulesProvider.currentModule['id'],
-            data: {'members_list': modulesProvider.currentModule['members']},
-            ref: ref
-          );
+              disableLoading: true,
+              slug: ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+              projId:
+                  ref.read(ProviderList.projectProvider).currentProject['id'],
+              moduleId: modulesProvider.currentModule['id'],
+              data: {'members_list': modulesProvider.currentModule['members']},
+              ref: ref);
         }
         return true;
       },
@@ -65,21 +65,20 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                           onPressed: () {
                             if (widget.fromModuleDetail) {
                               modulesProvider.updateModules(
-                                disableLoading: true,
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                moduleId: modulesProvider.currentModule['id'],
-                                data: {
-                                  'members_list':
-                                      modulesProvider.currentModule['members']
-                                },
-                                ref: ref
-                              );
+                                  disableLoading: true,
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projId: ref
+                                      .read(ProviderList.projectProvider)
+                                      .currentProject['id'],
+                                  moduleId: modulesProvider.currentModule['id'],
+                                  data: {
+                                    'members_list':
+                                        modulesProvider.currentModule['members']
+                                  },
+                                  ref: ref);
                             }
                             Navigator.of(context).pop();
                           },

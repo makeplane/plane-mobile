@@ -4,13 +4,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteCycleSheet extends ConsumerStatefulWidget {
   final String name;
@@ -104,8 +104,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                       if (projProv.role != Role.admin &&
                           projProv.role != Role.member) {
                         Navigator.of(context).pop();
-                        CustomToast.showToast(
-                            context,message: accessRestrictedMSG,
+                        CustomToast.showToast(context,
+                            message: accessRestrictedMSG,
                             toastType: ToastType.failure);
                         return;
                       }
@@ -221,8 +221,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         log('Unknown type');
                       }
 
-                      CustomToast.showToast(
-                          context, message:'${widget.type} deleted',
+                      CustomToast.showToast(context,
+                          message: '${widget.type} deleted',
                           toastType: ToastType.success);
 
                       Navigator.of(context).pop();

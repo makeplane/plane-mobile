@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/screens/MainScreens/My_issues/my_issues_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Notification/notification.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profile_screen.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/error_state.dart';
+import 'package:plane/screens/MainScreens/My_issues/my_issues_screen.dart';
+import 'package:plane/screens/MainScreens/Notification/notification.dart';
+import 'package:plane/screens/MainScreens/Profile/ProfileSettings/profile_screen.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/error_state.dart';
 
 import 'MainScreens/Home/dash_board_screen.dart';
 import 'MainScreens/Projects/project_screen.dart';

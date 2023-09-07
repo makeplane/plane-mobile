@@ -6,9 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/utils/enums.dart';
 
 class FileUploadProvider extends ChangeNotifier {
   FileUploadProvider(ChangeNotifierProviderRef<FileUploadProvider> this.ref);

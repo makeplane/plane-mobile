@@ -1,5 +1,5 @@
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/utils/enums.dart';
 
 class DisplayProperties {
   bool assignee = false;

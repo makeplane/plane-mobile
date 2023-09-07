@@ -8,25 +8,25 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/issues_list_sheet.dart';
-import 'package:plane_startup/bottom_sheets/selectProjectSheet.dart';
-import 'package:plane_startup/bottom_sheets/select_estimate.dart';
-import 'package:plane_startup/bottom_sheets/select_issue_labels.dart';
-import 'package:plane_startup/bottom_sheets/select_priority.dart';
-import 'package:plane_startup/bottom_sheets/select_project_members.dart';
-import 'package:plane_startup/bottom_sheets/select_states.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/editor.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/issues_list_sheet.dart';
+import 'package:plane/bottom_sheets/selectProjectSheet.dart';
+import 'package:plane/bottom_sheets/select_estimate.dart';
+import 'package:plane/bottom_sheets/select_issue_labels.dart';
+import 'package:plane/bottom_sheets/select_priority.dart';
+import 'package:plane/bottom_sheets/select_project_members.dart';
+import 'package:plane/bottom_sheets/select_states.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/editor.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class CreateIssue extends ConsumerStatefulWidget {
   final String? moduleId;
@@ -629,7 +629,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                   .keyboard_arrow_down,
 
                                                           color: const Color
-                                                                  .fromRGBO(
+                                                              .fromRGBO(
                                                               63, 118, 255, 1),
                                                         ),
                                                       ),
@@ -1823,8 +1823,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           ),
                                           const SizedBox(width: 5),
                                           Container(
-                                           margin: const EdgeInsets.only(
-                                                top: 5), 
+                                            margin:
+                                                const EdgeInsets.only(top: 5),
                                             child: Icon(
                                               //arrow down icon
 

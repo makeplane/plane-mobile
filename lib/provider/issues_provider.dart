@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/models/issues.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/global_functions.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/issue_card_widget.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/models/issues.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/issue_card_widget.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
 
 class IssuesProvider extends ChangeNotifier {
   IssuesProvider(ChangeNotifierProviderRef<IssuesProvider> this.ref);
@@ -462,13 +462,12 @@ class IssuesProvider extends ChangeNotifier {
       log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
-       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+      (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
           oldCardIndex,
           groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
 
-      CustomToast.showToast(context, message:'Failed to update issue',
-         
-          toastType: ToastType.failure);
+      CustomToast.showToast(context,
+          message: 'Failed to update issue', toastType: ToastType.failure);
       updateIssueState = StateEnum.error;
       notifyListeners();
       rethrow;

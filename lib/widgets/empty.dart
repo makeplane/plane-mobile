@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane_startup/bottom_sheets/issues_list_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_page_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane_startup/screens/create_view_screen.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/bottom_sheets/issues_list_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
+import 'package:plane/screens/MainScreens/Projects/create_page_screen.dart';
+import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
+import 'package:plane/screens/create_view_screen.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
 
 import 'custom_text.dart';
 
@@ -669,12 +669,12 @@ class EmptyPlaceholder {
                   .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
                 if (issueProvider.joinprojectState == StateEnum.success) {
-                  CustomToast.showToast(
-                      context, message: "joined project successfully",
+                  CustomToast.showToast(context,
+                      message: "joined project successfully",
                       toastType: ToastType.success);
                 } else if (issueProvider.joinprojectState == StateEnum.error) {
-                  CustomToast.showToast(
-                      context, message: "Something gone wrong",
+                  CustomToast.showToast(context,
+                      message: "Something gone wrong",
                       toastType: ToastType.failure);
                 }
                 ref.read(ProviderList.projectProvider).getProjects(slug: slug);

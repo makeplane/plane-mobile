@@ -1,17 +1,17 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane_startup/screens/create_state.dart';
-import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
-import 'package:plane_startup/screens/on_boarding/auth/sign_in.dart';
-import 'package:plane_startup/utils/page_route_builder.dart';
+import 'package:plane/screens/MainScreens/Activity/activity.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
+import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
+import 'package:plane/screens/create_state.dart';
+import 'package:plane/screens/home_screen.dart';
+import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/screens/on_boarding/auth/sign_in.dart';
+import 'package:plane/utils/page_route_builder.dart';
 import 'routes_path.dart';
 
 class GeneratedRoutes {
@@ -23,7 +23,9 @@ class GeneratedRoutes {
     switch (settings.name) {
       case RoutesPaths.home:
         return PageRoutesBuilder.sharedAxis(
-          const HomeScreen(fromSignUp: false,),
+          const HomeScreen(
+            fromSignUp: false,
+          ),
           SharedAxisTransitionType.horizontal,
         );
       case RoutesPaths.createCycle:
@@ -79,7 +81,9 @@ class GeneratedRoutes {
 
       default:
         return PageRoutesBuilder.sharedAxis(
-          const HomeScreen(fromSignUp: false,),
+          const HomeScreen(
+            fromSignUp: false,
+          ),
           SharedAxisTransitionType.horizontal,
         );
     }

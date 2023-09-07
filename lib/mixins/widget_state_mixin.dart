@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/utils/theme_manager.dart';
-import 'package:plane_startup/widgets/error_state.dart';
+import 'package:plane/utils/theme_manager.dart';
+import 'package:plane/widgets/error_state.dart';
 
 import '../provider/provider_list.dart';
 import '../utils/enums.dart';

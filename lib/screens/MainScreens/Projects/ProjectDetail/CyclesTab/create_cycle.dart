@@ -305,19 +305,6 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             cyclesProvider.cyclesState = StateEnum.loading;
                             cyclesProvider.setState();
                             bool dateNotConflicted = false;
-                            // if (startDate == null || dueDate == null) {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     SnackBar(
-                            //       backgroundColor: Colors.redAccent,
-                            //       content: CustomText(
-                            //         'Please select start and end date',
-                            //         type: FontStyle.Medium,
-                            //         color: Colors.white,
-                            //       ),
-                            //     ),
-                            //   );
-                            //   return;
-                            // }
 
                             if (startDate != null && dueDate != null) {
                               if (startDate!.isAfter(dueDate!)) {

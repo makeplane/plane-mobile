@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
@@ -112,9 +113,8 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                                   builder: (context) => const ResetPassword()));
                             } else {
                               // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Please check the email')));
+                              CustomToast.showToast(context,
+                                  message: 'Please check the email');
                             }
                           }
                         }),

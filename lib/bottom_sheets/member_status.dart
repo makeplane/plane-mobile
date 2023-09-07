@@ -161,7 +161,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                       .text =
                                                   options[index]['role'];
                                             }
-                                            Navigator.pop(context);
+                                            // Navigator.pop(context);
                                           });
                                         },
                                         child: Row(
@@ -195,7 +195,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                             .text =
                                                         options[index]['role'];
                                                   }
-                                                  Navigator.pop(context);
+                                                  // Navigator.pop(context);
                                                 });
                                               },
                                             ),

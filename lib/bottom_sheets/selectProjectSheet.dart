@@ -87,9 +87,10 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                                                 )
                                               : Text(
                                                   int.tryParse(projectProvider
-                                                                      .projects[
-                                                                  index]
-                                                              ['emoji']) !=
+                                                                          .projects[
+                                                                      index]
+                                                                  ['emoji'] ??
+                                                              '') !=
                                                           null
                                                       ? String.fromCharCode(int
                                                           .parse(projectProvider
@@ -120,7 +121,7 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                                           width: width,
                                           height: 1,
                                           color: themeProvider.themeManager
-                                              .placeholderTextColor),
+                                              .borderSubtle01Color),
                                     ],
                                   ),
                                 ),

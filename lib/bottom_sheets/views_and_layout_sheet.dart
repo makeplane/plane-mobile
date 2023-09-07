@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/widgets/custom_button.dart';
@@ -903,15 +904,10 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                         issueType == '' &&
                         !isTagsEnabled() &&
                         issueProvider.showEmptyStates == showEmptyStates) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red[400],
-                          content: const Text(
-                            'Please select atleast one filter',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      );
+                      CustomToast.showToast(context,
+                          message: 'Please select atleast one filter',
+                          toastType: ToastType.warning);
+
                       return;
                     }
                     if (widget.issueCategory == IssueCategory.myIssues) {

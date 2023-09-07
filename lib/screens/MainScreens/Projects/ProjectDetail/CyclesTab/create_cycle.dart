@@ -321,10 +321,10 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
 
                             if (startDate != null && dueDate != null) {
                               if (startDate!.isAfter(dueDate!)) {
-                                CustomToast().showToast(
+                                CustomToast.showToast(
                                     mainBuildContext,
-                                    'Start date cannot be after end date',
-                                    themeProvider,
+                                    message: 'Start date cannot be after end date',
+                                   
                                     toastType: ToastType.failure);
 
                                 return;
@@ -351,45 +351,43 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                             if (dateNotConflicted ||
                                 (startDate == null && dueDate == null)) {
                               await cyclesProvider.cyclesCrud(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
-                                method: CRUD.create,
-                                query: '',
-                                data: {
-                                  "name": cycleNameController.text,
-                                  "description": descriptionController.text,
-                                  "start_date": startDate == null
-                                      ? null
-                                      : DateFormat('yyyy-MM-dd')
-                                          .format(startDate!),
-                                  "end_date": dueDate == null
-                                      ? null
-                                      : DateFormat('yyyy-MM-dd')
-                                          .format(dueDate!),
-                                  "status": "started"
-                                },
-                                ref: ref,
-                                cycleId: ''
-                              );
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projectId: ref
+                                      .read(ProviderList.projectProvider)
+                                      .currentProject["id"],
+                                  method: CRUD.create,
+                                  query: '',
+                                  data: {
+                                    "name": cycleNameController.text,
+                                    "description": descriptionController.text,
+                                    "start_date": startDate == null
+                                        ? null
+                                        : DateFormat('yyyy-MM-dd')
+                                            .format(startDate!),
+                                    "end_date": dueDate == null
+                                        ? null
+                                        : DateFormat('yyyy-MM-dd')
+                                            .format(dueDate!),
+                                    "status": "started"
+                                  },
+                                  ref: ref,
+                                  cycleId: '');
 
                               await cyclesProvider.cyclesCrud(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                method: CRUD.read,
-                                query: 'all',
-                                ref: ref,
-                                cycleId: ''
-                              );
+                                  slug: ref
+                                      .read(ProviderList.workspaceProvider)
+                                      .selectedWorkspace!
+                                      .workspaceSlug,
+                                  projectId: ref
+                                      .read(ProviderList.projectProvider)
+                                      .currentProject['id'],
+                                  method: CRUD.read,
+                                  query: 'all',
+                                  ref: ref,
+                                  cycleId: '');
 
                               for (int i = 0;
                                   i < cyclesProvider.queries.length;
@@ -408,15 +406,14 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                         method: CRUD.read,
                                         query: cyclesProvider.queries[i],
                                         ref: ref,
-                                        cycleId: ''
-                                      );
+                                        cycleId: '');
                               }
                               Navigator.pop(Const.globalKey.currentContext!);
                             } else {
-                              CustomToast().showToast(
+                              CustomToast.showToast(
                                   mainBuildContext,
-                                  'Cycle date is conflicted with other cycle',
-                                  themeProvider,
+                                  message: 'Cycle date is conflicted with other cycle',
+                                 
                                   toastType: ToastType.failure);
 
                               return;

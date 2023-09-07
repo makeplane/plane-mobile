@@ -283,10 +283,10 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                 Navigator.of(context).pop();
                               }
                             } else {
-                              CustomToast().showToast(
+                              CustomToast.showToast(
                                   context,
-                                  'Please select atleast one workspace',
-                                  themeProvider,
+                                  message: 'Please select atleast one workspace',
+                                
                                   toastType: ToastType.defult);
                             }
                           },

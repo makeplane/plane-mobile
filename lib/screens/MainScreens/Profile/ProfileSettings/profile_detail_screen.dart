@@ -561,12 +561,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               StateEnum.success) {
                             Navigator.pop(Const.globalKey.currentContext!);
 
-                            CustomToast().showToast(screenContext,
-                                'Profile updated successfully', themeProvider,
+                            CustomToast.showToast(screenContext,
+                                message: 'Profile updated successfully',
                                 toastType: ToastType.success);
                           } else {
-                            CustomToast().showToast(screenContext,
-                                'Something went wrong', themeProvider,
+                            CustomToast.showToast(screenContext,
+                                message: 'Something went wrong',
                                 toastType: ToastType.failure);
                           }
                         },
@@ -606,8 +606,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       if (image == null) return;
       int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
-        CustomToast().showToast(context, 'File size should be less than 5MB',
-            ref.read(ProviderList.themeProvider),
+        CustomToast.showToast(context,
+            message: 'File size should be less than 5MB',
             toastType: ToastType.warning);
         return;
       }

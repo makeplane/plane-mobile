@@ -669,12 +669,12 @@ class EmptyPlaceholder {
                   .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
                 if (issueProvider.joinprojectState == StateEnum.success) {
-                  CustomToast().showToast(
-                      context, "joined project successfully", themeProvider,
+                  CustomToast.showToast(
+                      context, message: "joined project successfully",
                       toastType: ToastType.success);
                 } else if (issueProvider.joinprojectState == StateEnum.error) {
-                  CustomToast().showToast(
-                      context, "Something gone wrong", themeProvider,
+                  CustomToast.showToast(
+                      context, message: "Something gone wrong",
                       toastType: ToastType.failure);
                 }
                 ref.read(ProviderList.projectProvider).getProjects(slug: slug);

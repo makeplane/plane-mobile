@@ -62,6 +62,7 @@ class _ButtonState extends ConsumerState<Button> {
           ),
           child: Center(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 widget.widget ?? Container(),

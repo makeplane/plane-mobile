@@ -63,8 +63,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   @override
   void initState() {
-
-
     var issuesProvider = ref.read(ProviderList.issuesProvider);
     tempIssuesList = issuesProvider.issuesList;
     issuesProvider.tempProjectView = issuesProvider.issues.projectView;
@@ -146,7 +144,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     cyclesProvider.changeStateToLoading(cyclesProvider.cyclesDetailState);
 
-
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
         keepPage: true,
@@ -203,7 +200,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
 
-
     return WillPopScope(
       onWillPop: () async {
         // await issueProvider.getProjectView();
@@ -218,7 +214,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
- 
+
         issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
         issueProvider.issues.orderBY = issueProvider.tempOrderBy;
@@ -228,7 +224,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
         issueProvider.showEmptyStates =
             issueProvider.issueView["showEmptyGroups"];
-      
 
         issueProvider.setsState();
         issueProvider.filterIssues(
@@ -266,7 +261,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
             issueProvider.showEmptyStates =
                 issueProvider.issueView["showEmptyGroups"];
-          
+
             issueProvider.setsState();
             issueProvider.filterIssues(
                 slug: ref
@@ -582,12 +577,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -684,8 +677,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             newListIndex,
                                                             oldCardIndex,
                                                             oldListIndex}) {
-                                                      
-
                                                           if (widget
                                                               .fromModule) {
                                                             modulesProvider
@@ -701,10 +692,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             )
                                                                 .catchError(
                                                                     (err) {
-                                                              CustomToast().showToast(
+                                                              CustomToast.showToast(
                                                                   context,
-                                                                  'Failed to update issue',
-                                                                  themeProvider,
+                                                                   message:'Failed to update issue',
+                                                                 
                                                                   toastType:
                                                                       ToastType
                                                                           .failure);
@@ -723,11 +714,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             )
                                                                 .catchError(
                                                                     (err) {
-                                                              log(err.toString());
-                                                              CustomToast().showToast(
+                                                              log(err
+                                                                  .toString());
+                                                              CustomToast.showToast(
                                                                   context,
-                                                                  'Failed to update issue',
-                                                                  themeProvider,
+                                                                   message:'Failed to update issue',
+                                                                 
                                                                   toastType:
                                                                       ToastType
                                                                           .failure);
@@ -1250,8 +1242,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             );
                   if (dateNotConflicted) {
                     if (dueDate != null && date.isAfter(dueDate!)) {
-                      CustomToast().showToast(context,
-                          'Start date cannot be after end date', themeProvider,
+                      CustomToast.showToast(context,
+                          message: 'Start date cannot be after end date',
                           toastType: ToastType.failure);
                       return;
                     }
@@ -1259,8 +1251,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       startDate = date;
                     });
                   } else {
-                    CustomToast().showToast(context,
-                        'Date is conflicted with other cycle', themeProvider,
+                    CustomToast.showToast(context,
+                        message: 'Date is conflicted with other cycle',
                         toastType: ToastType.failure);
                     return;
                   }
@@ -1365,8 +1357,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
                 if (date != null) {
                   if (!date.isAfter(DateTime.now())) {
-                    CustomToast().showToast(
-                        context, 'Due date not valid ', themeProvider,
+                    CustomToast.showToast(context,
+                        message: 'Due date not valid ',
                         toastType: ToastType.failure);
                     return;
                   }
@@ -1429,13 +1421,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         cyclesProvider.changeTabIndex(1);
                       }
                     } else {
-                      CustomToast().showToast(context,
-                          'Date is conflicted with other cycle ', themeProvider,
+                      CustomToast.showToast(context,
+                          message: 'Date is conflicted with other cycle ',
                           toastType: ToastType.failure);
                     }
                   } else {
-                    CustomToast().showToast(context,
-                        'Start date cannot be after end date ', themeProvider,
+                    CustomToast.showToast(context,
+                        message: 'Start date cannot be after end date ',
                         toastType: ToastType.failure);
                   }
                 }
@@ -1596,8 +1588,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
-
-    
 
     return Column(
       children: [
@@ -2239,8 +2229,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     var detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
-
- 
 
     return Container(
       height: 45,

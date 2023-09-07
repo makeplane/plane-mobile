@@ -337,8 +337,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                 slug: urlController.text.trim(),
                                                 size: prov.companySize,
                                                 context: context,
-                                                ref: ref
-                                                );
+                                                ref: ref);
                                             if (prov.createWorkspaceState ==
                                                 StateEnum.success) {
                                               if (!widget.fromHomeScreen) {
@@ -364,10 +363,10 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                               }
                                             }
                                           } else {
-                                            CustomToast().showToast(
+                                            CustomToast.showToast(
                                                 context,
-                                                'Workspace url is already taken',
-                                                themeProvider,
+                                                message: 'Workspace url is already taken',
+                               
                                                 toastType: ToastType.defult);
                                           }
                                         })

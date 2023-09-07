@@ -75,8 +75,8 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
               ontap: () async {
                 if (pageTitleController.text.isEmpty ||
                     pageTitleController.text.trim() == "") {
-                  CustomToast().showToast(
-                      context, 'Title is required', themeProvider,
+                  CustomToast.showToast(
+                      context,message: 'Title is required',
                       toastType: ToastType.warning);
                   return;
                 }

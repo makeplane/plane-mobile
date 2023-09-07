@@ -75,26 +75,25 @@ class CreatePage extends ConsumerWidget {
                         ontap: () async {
                           if (pageTitleController.text.isEmpty ||
                               pageTitleController.text.trim() == "") {
-                            CustomToast().showToast(
-                                context, 'Title is required', themeProvider,
+                            CustomToast.showToast(
+                                context,message: 'Title is required',
                                 toastType: ToastType.warning);
                             return;
                           }
                           await ref.read(ProviderList.pageProvider).addPage(
-                                userId: ref
-                                    .read(ProviderList.profileProvider)
-                                    .userProfile
-                                    .id!,
-                                pageTitle: pageTitleController.text,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                ref: ref
-                              );
+                              userId: ref
+                                  .read(ProviderList.profileProvider)
+                                  .userProfile
+                                  .id!,
+                              pageTitle: pageTitleController.text,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject['id'],
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace!
+                                  .workspaceSlug,
+                              ref: ref);
                           // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         },

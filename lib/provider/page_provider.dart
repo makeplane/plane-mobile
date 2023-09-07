@@ -149,7 +149,7 @@ class PageProvider with ChangeNotifier {
       //log(e.response.toString());
       log(e.response!.data.toString());
       if (context != null) {
-        CustomToast().showToastWithColors(
+        CustomToast.showToastWithColors(
             context, e.response!.data['detail'] ?? e.response!.data,
             toastType: ToastType.failure);
       }
@@ -276,7 +276,7 @@ class PageProvider with ChangeNotifier {
       //log(e.response.toString());
       if (fromDispose == false) {
         if (context != null) {
-          CustomToast().showToastWithColors(
+          CustomToast.showToastWithColors(
               context,
               e.response!.data['detail'] != null
                   ? e.response!.data['detail'].toString()
@@ -323,7 +323,7 @@ class PageProvider with ChangeNotifier {
     } on DioException catch (e) {
       log(e.response!.data.toString());
       if (context != null) {
-        CustomToast().showToastWithColors(
+        CustomToast.showToastWithColors(
             context, e.response!.data['detail'] ?? e.response!.data,
             toastType: ToastType.failure);
       }

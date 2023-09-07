@@ -195,7 +195,7 @@
 //                                     }
 //                                     log(data.toString());
 //                                     await prov.joinWorkspaces(data: data);
-//                                     CustomToast().showToast(context,
+//                                     CustomToast.showToast(context,
 //                                         'Joined Workspace Successfully');
 
 //                                     for (var element in selectedWorkspaces) {

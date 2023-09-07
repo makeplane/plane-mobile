@@ -169,9 +169,8 @@ class WorkspaceProvider extends ChangeNotifier {
       if (e is DioException) {
         log(e.response!.data.toString());
         log(e.message.toString());
-        CustomToast().showToast(context, e.response.toString(),
-            ref.read(ProviderList.themeProvider),
-            toastType: ToastType.failure);
+        CustomToast.showToast(context,
+            message: e.response.toString(), toastType: ToastType.failure);
       } else {
         log(e.toString());
       }
@@ -296,7 +295,6 @@ class WorkspaceProvider extends ChangeNotifier {
       required WidgetRef ref}) async {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
-    var themeProvider = ref.watch(ProviderList.themeProvider);
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -344,8 +342,8 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       // return response.data;
     } on DioException catch (e) {
-      CustomToast().showToast(context, e.error.toString(), themeProvider,
-          toastType: ToastType.failure);
+      CustomToast.showToast(context,
+          message: e.error.toString(), toastType: ToastType.failure);
       log(e.toString());
       selectWorkspaceState = StateEnum.error;
       notifyListeners();
@@ -502,10 +500,10 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } on DioException catch (e) {
-      CustomToast().showToast(
-          context,
-          e.message == null ? 'something went wrong!' : e.message.toString(),
-          ref.read(ProviderList.themeProvider),
+      CustomToast.showToast(context,
+          message: e.message == null
+              ? 'something went wrong!'
+              : e.message.toString(),
           toastType: ToastType.failure);
       log(e.error.toString());
       leaveWorspaceState == StateEnum.error;

@@ -234,8 +234,8 @@ class IssueProvider with ChangeNotifier {
     } on DioException catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast().showToast(
-            buildContext, messageOnError, ref.read(ProviderList.themeProvider),
+        CustomToast.showToast(
+            buildContext,message: messageOnError, 
             toastType: ToastType.failure, duration: 2);
       }
 
@@ -385,8 +385,8 @@ class IssueProvider with ChangeNotifier {
     } catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast().showToast(
-            buildContext, messageOnError, ref.read(ProviderList.themeProvider),
+        CustomToast.showToast(
+            buildContext, message:messageOnError,
             toastType: ToastType.failure, duration: 2);
       }
       if (e is DioException) {
@@ -476,8 +476,8 @@ class IssueProvider with ChangeNotifier {
       }
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast().showToast(
-            buildContext, messageOnError, ref.read(ProviderList.themeProvider),
+        CustomToast.showToast(
+            buildContext, message:messageOnError,
             toastType: ToastType.failure, duration: 2);
       }
 

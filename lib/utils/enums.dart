@@ -71,3 +71,5 @@ enum THEME {
   custom,
   systemPreferences
 }
+
+enum LoadingType { translucent, opaque , error, wrap,none}

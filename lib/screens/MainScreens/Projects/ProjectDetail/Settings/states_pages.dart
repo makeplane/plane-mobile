@@ -198,19 +198,17 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                 if (issuesProvider.statesData[states[index]]
                                         [idx]['default'] ==
                                     true) {
-                                  CustomToast().showToast(
+                                  CustomToast.showToast(
                                     context,
-                                    'Cannot delete the default state',
-                                    themeProvider,
+                                    message: 'Cannot delete the default state',
                                     toastType: ToastType.failure,
                                   );
                                 } else if (issuesProvider
                                         .statesData[states[index]].length ==
                                     1) {
-                                  CustomToast().showToast(
+                                  CustomToast.showToast(
                                     context,
-                                    'Cannot have an empty group',
-                                    themeProvider,
+                                    message: 'Cannot have an empty group',
                                     toastType: ToastType.failure,
                                   );
                                 } else {

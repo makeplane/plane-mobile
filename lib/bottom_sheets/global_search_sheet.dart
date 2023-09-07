@@ -17,6 +17,7 @@ import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesT
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
+import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane_startup/screens/billing_plans.dart';
@@ -349,17 +350,19 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       .projects
                       .isEmpty) {
                     CustomToast.showToast(
-                        context,
-                        message:'You dont have any projects yet, try creating one',
-                        );
+                      context,
+                      message:
+                          'You dont have any projects yet, try creating one',
+                    );
                   } else if (ref
                           .watch(ProviderList.projectProvider)
                           .memberCount ==
                       0) {
                     CustomToast.showToast(
-                        context,
-                         message:'You are not a member of any project, try joining one',
-                        );
+                      context,
+                      message:
+                          'You are not a member of any project, try joining one',
+                    );
                   } else {
                     // ref.watch(ProviderList.projectProvider).currentProject =
                     //     ref.watch(ProviderList.projectProvider).projects[0];
@@ -812,9 +815,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             .selectWorkspace(
                                 id: globalSearchProvider
                                     .data!.workspaces[index].id,
-                                    context: context,
-                                    ref: ref
-                                    )
+                                context: context,
+                                ref: ref)
                             .then(
                           (value) async {
                             ref.watch(ProviderList.cyclesProvider).clearData();
@@ -1104,27 +1106,52 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                   itemCount: globalSearchProvider.data!.views.length,
                   // globalSearchProvider.data!.issues.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/global_search_icons/view.png',
-                            width: 20,
-                            height: 20,
-                            color: themeProvider.themeManager.primaryTextColor,
+                    return GestureDetector(
+                      onTap: () async {
+                        await ref
+                            .read(ProviderList.viewsProvider.notifier)
+                            .getViewDetail(
+                                projId: globalSearchProvider
+                                    .data!.views[index].projectId,
+                                id: globalSearchProvider.data!.views[index].id);
+
+                        Navigator.push(
+                          Const.globalKey.currentContext!,
+                          MaterialPageRoute(
+                            builder: (context) => ViewsDetail(
+                              index: 0,
+                              viewID:
+                                  globalSearchProvider.data!.views[index].id,
+                              fromGlobalSearch: true,
+                              projId: globalSearchProvider
+                                  .data!.views[index].projectId,
+                            ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                              width: width * 0.8,
-                              child: CustomText(
-                                globalSearchProvider.data!.views[index].name,
-                                type: FontStyle.Medium,
-                                maxLines: 2,
-                              )),
-                        ],
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/global_search_icons/view.png',
+                              width: 20,
+                              height: 20,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                                width: width * 0.8,
+                                child: CustomText(
+                                  globalSearchProvider.data!.views[index].name,
+                                  type: FontStyle.Medium,
+                                  maxLines: 2,
+                                )),
+                          ],
+                        ),
                       ),
                     );
                   },

@@ -218,9 +218,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                         children: [
                           Container(
                             height: 1,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : strokeColor,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(

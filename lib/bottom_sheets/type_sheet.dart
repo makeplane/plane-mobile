@@ -269,7 +269,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       child: InkWell(
                         onTap: () {
                           prov.issues.projectView = ProjectView.calendar;
-                          prov.tempProjectView = ProjectView.calendar;
+
+                          if (widget.issueCategory == IssueCategory.issues) {
+                            prov.tempProjectView = ProjectView.calendar;
+                          }
 
                           prov.setsState();
                           if (widget.issueCategory == IssueCategory.issues) {
@@ -336,7 +339,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       child: InkWell(
                         onTap: () {
                           prov.issues.projectView = ProjectView.spreadsheet;
-                          prov.tempProjectView = ProjectView.spreadsheet;
+
+                          if (widget.issueCategory == IssueCategory.issues) {
+                            prov.tempProjectView = ProjectView.spreadsheet;
+                          }
 
                           prov.setsState();
                           if (widget.issueCategory == IssueCategory.issues) {

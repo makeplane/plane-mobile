@@ -568,14 +568,17 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                       borderRadius: BorderRadius.circular(10),
                                       color: showEmptyStates
                                           ? themeProvider
-                                              .themeManager.primaryColour
+                                              .themeManager.textSuccessColor
                                           : themeProvider.themeManager
                                               .tertiaryBackgroundDefaultColor),
                                   child: Align(
                                     alignment: showEmptyStates
                                         ? Alignment.centerRight
                                         : Alignment.centerLeft,
-                                    child: const CircleAvatar(radius: 6),
+                                    child: const CircleAvatar(
+                                      radius: 6,
+                                      backgroundColor: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ],

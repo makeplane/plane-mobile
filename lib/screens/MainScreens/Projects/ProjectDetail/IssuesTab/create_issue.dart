@@ -555,9 +555,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                             )));
                                                               },
                                                               child: SizedBox(
-                                                                width: double
-                                                                    .infinity,
-                                                                   
+                                                                  width: double
+                                                                      .infinity,
                                                                   height: descriptionExpanded
                                                                       ? descriptionHeight
                                                                       : 160),
@@ -620,7 +619,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                       //icon
                                                       Container(
                                                         margin: const EdgeInsets
-                                                            .only(top: 2),
+                                                            .only(top: 5),
                                                         child: Icon(
                                                           //arrow down icon
 
@@ -1814,33 +1813,30 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          // const Text(
-                                          //   'View all',
-                                          //   style: TextStyle(
-                                          //     fontSize: 17,
-                                          //     fontWeight: FontWeight.w400,
-                                          //     color: Color.fromRGBO(63, 118, 255, 1),
-                                          //   ),
-                                          // ),
                                           CustomText(
                                             expanded ? "View less" : 'View all',
-                                            type: FontStyle.Small,
+                                            type: FontStyle.Medium,
                                             color: themeProvider
                                                 .themeManager.primaryColour,
                                           ),
+                                          const SizedBox(width: 5),
+                                          Container(
+                                           margin: const EdgeInsets.only(
+                                                top: 5), 
+                                            child: Icon(
+                                              //arrow down icon
 
-                                          const SizedBox(width: 10),
-                                          //icon
-                                          Icon(
-                                            //arrow down icon
+                                              expanded
+                                                  ? Icons
+                                                      .keyboard_arrow_up_rounded
+                                                  : Icons.keyboard_arrow_down,
 
-                                            expanded
-                                                ? Icons
-                                                    .keyboard_arrow_up_rounded
-                                                : Icons.keyboard_arrow_down,
-                                            color: const Color.fromRGBO(
-                                                63, 118, 255, 1),
+                                              color: const Color.fromRGBO(
+                                                  63, 118, 255, 1),
+                                            ),
                                           ),
                                         ],
                                       ),

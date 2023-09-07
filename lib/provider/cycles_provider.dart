@@ -45,7 +45,7 @@ class CyclesProvider with ChangeNotifier {
   List shrinkStates = [];
   Map filterIssues = {};
   Map issueProperty = {};
-  bool showEmptyStates = false;
+  bool showEmptyStates = true;
   bool isIssuesEmpty = false;
   int cycleDetailSelectedIndex = 0;
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
@@ -604,16 +604,22 @@ class CyclesProvider with ChangeNotifier {
         notifyListeners();
         return;
       }
-      (filterIssues[stateOrdering[newListIndex]] as List).insert(
-          newCardIndex,
+      (filterIssues[stateOrdering[newListIndex]] as List).insert(newCardIndex,
           filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
-      
+
       notifyListeners();
       var issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      // log(issue.toString());
       var response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
-              .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
+              .replaceAll(
+                  "\$SLUG",
+                  ref!
+                      .read(ProviderList.workspaceProvider)
+                      .workspaces
+                      .firstWhere((element) =>
+                          element['id'] == issue['workspace'])['slug'])
               .replaceAll('\$PROJECTID', issue['project_detail']['id'])
               .replaceAll('\$ISSUEID', issue['id']),
           hasBody: true,
@@ -627,9 +633,26 @@ class CyclesProvider with ChangeNotifier {
                   'state': issue['state'],
                   'priority': stateOrdering[newListIndex],
                 });
-      filterIssues[stateOrdering[newListIndex]][newCardIndex] =
-          response.data;
-      // log(response.data.toString());
+      filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
+
+      List labelDetails = [];
+      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
+          .forEach((element) {
+        for (int i = 0; i < issuesProvider.labels.length; i++) {
+          if (issuesProvider.labels[i]['id'] == element) {
+            labelDetails.add(issuesProvider.labels[i]);
+            break;
+          }
+        }
+
+        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
+      });
+
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
+          labelDetails;
+
+      log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
         log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
         filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
@@ -654,8 +677,7 @@ class CyclesProvider with ChangeNotifier {
       log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
-       (filterIssues[stateOrdering[oldListIndex]] as List).insert(
-          oldCardIndex,
+      (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,
           filterIssues[stateOrdering[newListIndex]].removeAt(newCardIndex));
       log(err.toString());
       notifyListeners();

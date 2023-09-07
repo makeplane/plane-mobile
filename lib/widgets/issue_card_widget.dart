@@ -131,7 +131,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 : ref
                                     .watch(ProviderList.issuesProvider)
                                     .issues
-                                    .issues[widget.listIndex]
+                                    .issues[0]
                                     .width,
                 padding: const EdgeInsets.only(
                   left: 15.0,

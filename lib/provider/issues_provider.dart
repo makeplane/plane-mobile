@@ -416,6 +416,26 @@ class IssuesProvider extends ChangeNotifier {
                 });
       groupByResponse[stateOrdering[newListIndex]][newCardIndex] =
           response.data;
+
+      List labelDetails = [];
+
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex]['labels']
+          .forEach((element) {
+        for (int i = 0; i < labels.length; i++) {
+          if (labels[i]['id'] == element) {
+            labelDetails.add(labels[i]);
+            break;
+          }
+        }
+
+        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
+      });
+
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex]
+          ['label_details'] = labelDetails;
+
+      log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]
+          .toString());
       updateIssueState = StateEnum.success;
       // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
@@ -441,9 +461,8 @@ class IssuesProvider extends ChangeNotifier {
       }
       log("ISSUE REPOSITIONED");
       notifyListeners();
-    } on DioException catch (e) {
-      log('Error : issues_provider : upDateIssue : ${e.message.toString()}');
-      (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+    } on DioException catch (err) {
+       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
           oldCardIndex,
           groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
 
@@ -502,8 +521,8 @@ class IssuesProvider extends ChangeNotifier {
       CRUD? method,
       String? labelId,
       required WidgetRef ref}) async {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    var projectProvider = ref.read(ProviderList.projectProvider);
     labelState = StateEnum.loading;
     notifyListeners();
     String url = method == CRUD.update || method == CRUD.delete
@@ -696,7 +715,7 @@ class IssuesProvider extends ChangeNotifier {
                 workspaceProvider.selectedWorkspace!.workspaceSlug,
             'WORKSPACE_NAME':
                 workspaceProvider.selectedWorkspace!.workspaceName,
-            'PROJECT_ID': projID ,
+            'PROJECT_ID': projID,
             'PROJECT_NAME': ref
                 .read(ProviderList.projectProvider)
                 .projects
@@ -748,7 +767,7 @@ class IssuesProvider extends ChangeNotifier {
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace!
               .workspaceSlug,
-          projID: projID ,
+          projID: projID,
           issueCategory: IssueCategory.cycleIssues,
         );
       }

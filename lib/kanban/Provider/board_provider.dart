@@ -128,7 +128,7 @@ class BoardProvider extends ChangeNotifier {
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
                 color: themeProvider.themeManager.borderSubtle01Color,
-                width: 2),
+                width: 1),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
@@ -184,10 +184,11 @@ class BoardProvider extends ChangeNotifier {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            const CustomText(
+            CustomText(
               'Hidden groups',
               type: FontStyle.H6,
               fontWeight: FontWeightt.Semibold,
+              color: themeProvider.themeManager.primaryTextColor,
               fontSize: 20,
             ),
             Container(
@@ -203,7 +204,7 @@ class BoardProvider extends ChangeNotifier {
               width: 35,
               child: CustomText(
                 emptyStates.items.length.toString(),
-                type: FontStyle.Medium,
+                type: FontStyle.Small,
               ),
             ),
           ],

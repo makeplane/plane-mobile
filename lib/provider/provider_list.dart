@@ -84,7 +84,7 @@ class ProviderList {
     // ref.read(themeProvider).clear();
     GoogleSignInApi.logout();
     SharedPrefrenceServices.sharedPreferences!.clear();
-    Const.appBearerToken = null;
+    Const.accessToken = null;
     Const.userId = null;
   }
 }

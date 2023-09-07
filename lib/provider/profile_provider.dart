@@ -20,6 +20,7 @@ class ProfileProvider extends ChangeNotifier {
   //   print("Called");
   // }
   // static Ref? ref;
+  final DioConfig dioConfig = DioConfig();
   String? dropDownValue;
   String selectedTimeZone = 'UTC';
   String? slug;
@@ -67,7 +68,7 @@ class ProfileProvider extends ChangeNotifier {
     getProfileState = StateEnum.loading;
 
     try {
-      var response = await DioConfig().dioServe(
+      var response = await dioConfig.dioServe(
         hasAuth: true,
         url: '${APIs.baseApi}${APIs.profile}',
         hasBody: false,
@@ -116,7 +117,7 @@ class ProfileProvider extends ChangeNotifier {
     updateProfileState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      var response = await dioConfig.dioServe(
           hasAuth: true,
           url: APIs.baseApi + APIs.profile,
           hasBody: true,
@@ -145,6 +146,7 @@ class ProfileProvider extends ChangeNotifier {
           httpMethod: HttpMethod.patch,
           data: {"is_onboarded": val});
       userProfile.isOnboarded = val;
+      return val;
     } on DioException catch (e) {
       log(e.error.toString());
     }
@@ -154,7 +156,7 @@ class ProfileProvider extends ChangeNotifier {
     updateProfileState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      var response = await dioConfig.dioServe(
         hasAuth: true,
         url: "${APIs.fileUpload}${userProfile.avatar!.split('/').last}/",
         hasBody: false,

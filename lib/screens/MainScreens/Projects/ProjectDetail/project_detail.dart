@@ -1060,8 +1060,8 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                     oldCardIndex,
                                     oldListIndex}) {
                                   //  print('newCardIndex: $newCardIndex, newListIndex: $newListIndex, oldCardIndex: $oldCardIndex, oldListIndex: $oldListIndex');
-                                  issueProvider
-                                      .reorderIssue(
+                                  issueProvider.reorderIssue(
+                                    context: context,
                                     newCardIndex: newCardIndex!,
                                     newListIndex: newListIndex!,
                                     oldCardIndex: oldCardIndex!,
@@ -1095,6 +1095,10 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                 ),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.linear),
+                                  boardScrollConfig: ScrollConfig(
+                                    offset: 45,
                                     duration: const Duration(milliseconds: 100),
                                     curve: Curves.linear),
                                 listTransitionDuration:

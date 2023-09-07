@@ -89,8 +89,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
       isLoading = false;
       if (!isFirstReq) isSearched = true;
       setState(() {});
-    } catch (e) {
-      log(e.toString());
+    }on DioException catch (e) {
+      log(e.error.toString());
     }
   }
 

@@ -282,6 +282,7 @@ class WorkspaceProvider extends ChangeNotifier {
       log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
       workspaceInvitationState = StateEnum.success;
       notifyListeners();
+      return selectedWorkspace;
     } catch (e) {
       log(e.toString());
       workspaceInvitationState = StateEnum.error;

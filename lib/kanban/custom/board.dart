@@ -228,31 +228,32 @@ class _BoardState extends ConsumerState<Board> {
     }
 
     // Board Scroll Listener
-    boardProv.board.controller.addListener(() {
-      if (boardProv.scrolling) {
-        if (boardProv.scrollingLeft && boardProv.board.isListDragged) {
-          for (var element in boardProv.board.lists) {
-            if (element.context == null) break;
-            var of = (element.context!.findRenderObject() as RenderBox)
-                .localToGlobal(Offset.zero);
-            element.x = of.dx - boardProv.board.displacementX! - 10;
-            element.width = element.context!.size!.width - 30;
-            element.y = of.dy - widget.displacementY + 24;
-          }
-          boardListProv.moveListLeft();
-        } else if (boardProv.scrollingRight && boardProv.board.isListDragged) {
-          for (var element in boardProv.board.lists) {
-            if (element.context == null) break;
-            var of = (element.context!.findRenderObject() as RenderBox)
-                .localToGlobal(Offset.zero);
-            element.x = of.dx - boardProv.board.displacementX! - 10;
-            element.width = element.context!.size!.width - 30;
-            element.y = of.dy - widget.displacementY + 24;
-          }
-          boardListProv.moveListRight();
-        }
-      }
-    });
+    // boardProv.board.controller.addListener(() {
+    //   if (boardProv.scrolling) {
+    //     if (boardProv.scrollingLeft && boardProv.board.isListDragged) {
+    //       for (var element in boardProv.board.lists) {
+    //         if (element.context == null) break;
+    //         var of = (element.context!.findRenderObject() as RenderBox)
+    //             .localToGlobal(Offset.zero);
+    //         element.x = of.dx - boardProv.board.displacementX! - 10;
+    //         element.width = element.context!.size!.width - 30;
+    //         element.y = of.dy - widget.displacementY + 24;
+    //       }
+    //       boardListProv.moveListLeft();
+    //     } else if (boardProv.scrollingRight && boardProv.board.isListDragged) {
+    //       print("RIGHT");
+    //       for (var element in boardProv.board.lists) {
+    //         if (element.context == null) break;
+    //         var of = (element.context!.findRenderObject() as RenderBox)
+    //             .localToGlobal(Offset.zero);
+    //         element.x = of.dx - boardProv.board.displacementX! - 10;
+    //         element.width = element.context!.size!.width - 30;
+    //         element.y = of.dy - widget.displacementY + 24;
+    //       }
+    //       boardListProv.moveListRight();
+    //     }
+    //   }
+    // });
 
     super.initState();
   }
@@ -320,7 +321,11 @@ class _BoardState extends ConsumerState<Board> {
                         int? oldListIndex}) {});
           }
           boardProv.setcanDrag(value: false, listIndex: 0, itemIndex: 0);
-          setState(() {});
+          setState(() {
+            boardProv.scrolling = false;
+            boardProv.scrollingLeft = false;
+            boardProv.scrollingRight = false;
+          });
         }
       },
       onPointerMove: (event) {
@@ -330,15 +335,16 @@ class _BoardState extends ConsumerState<Board> {
           } else {
             boardProv.boardScroll();
           }
-        } else if (boardProv.board.isListDragged) {
-          if (event.delta.dx > 0) {
-            boardProv.boardScroll();
-            boardListProv.moveListRight();
-          } else {
-            boardProv.boardScroll();
-            boardListProv.moveListLeft();
-          }
         }
+        //  else if (boardProv.board.isListDragged) {
+        //   if (event.delta.dx > 0) {
+        //     boardProv.boardScroll();
+        //     boardListProv.moveListRight();
+        //   } else {
+        //     boardProv.boardScroll();
+        //     boardListProv.moveListLeft();
+        //   }
+        // }
         boardProv.valueNotifier.value = Offset(
             event.delta.dx + boardProv.valueNotifier.value.dx,
             event.delta.dy + boardProv.valueNotifier.value.dy);

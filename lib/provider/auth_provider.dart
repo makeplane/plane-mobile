@@ -62,12 +62,14 @@ class AuthProvider extends ChangeNotifier {
           hasBody: true,
           httpMethod: HttpMethod.post,
           data: {"key": key, "token": token});
-      Const.appBearerToken = response.data["access_token"];
+      Const.accessToken = response.data["access_token"];
       Const.userId = response.data["user"]['id'];
       SharedPrefrenceServices.sharedPreferences!
           .setString("user_id", response.data["user"]['id']);
       SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
+          .setString("access_token", response.data["access_token"]);
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("refresh_token", response.data["refresh_token"]);
       // await ref.read(ProviderList.profileProvider).getProfile();
       // .userProfile = UserProfile.fromMap(response.data);
       validateCodeState = StateEnum.success;
@@ -187,7 +189,7 @@ class AuthProvider extends ChangeNotifier {
             });
           });
         } else {
-          Const.appBearerToken = null;
+          Const.accessToken = null;
           Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
@@ -236,7 +238,7 @@ class AuthProvider extends ChangeNotifier {
         httpMethod: HttpMethod.post,
         data: data,
       );
-      Const.appBearerToken = response.data["access_token"];
+      Const.accessToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
       Const.userId = response.data["user"]['id'];
@@ -295,7 +297,7 @@ class AuthProvider extends ChangeNotifier {
                 projectID: "");
           });
         } else {
-          Const.appBearerToken = null;
+          Const.accessToken = null;
           Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
           validateCodeState = StateEnum.failed;
@@ -334,7 +336,7 @@ class AuthProvider extends ChangeNotifier {
           'medium': 'email',
         },
       );
-      Const.appBearerToken = response.data["access_token"];
+      Const.accessToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
       Const.userId = response.data["user"]['id'];
@@ -393,7 +395,7 @@ class AuthProvider extends ChangeNotifier {
                 projectID: "");
           });
         } else {
-          Const.appBearerToken = null;
+          Const.accessToken = null;
           Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
 
@@ -463,7 +465,7 @@ class AuthProvider extends ChangeNotifier {
         },
       );
       log('signUp response: ${response.data}');
-      Const.appBearerToken = response.data["access_token"];
+      Const.accessToken = response.data["access_token"];
       SharedPrefrenceServices.sharedPreferences!
           .setString("token", response.data["access_token"]);
       Const.userId = response.data["user"]['id'];
@@ -528,7 +530,7 @@ class AuthProvider extends ChangeNotifier {
                 projectID: "");
           });
         } else {
-          Const.appBearerToken = null;
+          Const.accessToken = null;
           Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
 

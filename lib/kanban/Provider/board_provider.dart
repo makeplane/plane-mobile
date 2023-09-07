@@ -5,7 +5,6 @@ import 'package:plane_startup/kanban/models/board_list.dart';
 import 'package:plane_startup/kanban/models/inputs.dart';
 import 'package:plane_startup/kanban/models/item_state.dart';
 import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
 import 'package:plane_startup/widgets/custom_text.dart';
 
 import '../../utils/enums.dart';
@@ -231,44 +230,81 @@ class BoardProvider extends ChangeNotifier {
         scrolling) {
       return;
     }
-    if (board.controller.offset < board.controller.position.maxScrollExtent &&
-        valueNotifier.value.dx + (draggedItemState!.width / 2) >
-            board.controller.position.viewportDimension - 100) {
-      scrolling = true;
-      scrollingRight = true;
-      if (board.boardScrollConfig == null) {
-        await board.controller.animateTo(board.controller.offset + 100,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
-      } else {
-        await board.controller.animateTo(
-            board.boardScrollConfig!.offset + board.controller.offset,
-            duration: board.boardScrollConfig!.duration,
-            curve: board.boardScrollConfig!.curve);
-      }
-      scrolling = false;
-      scrollingRight = false;
-      boardScroll();
-    } else if (board.controller.offset > 0 && valueNotifier.value.dx <= 0) {
-      scrolling = true;
-      scrollingLeft = true;
-
-      if (board.boardScrollConfig == null) {
-        await board.controller.animateTo(board.controller.offset - 100,
+    if (board.boardScrollConfig == null) {
+      if (board.controller.offset < board.controller.position.maxScrollExtent &&
+          valueNotifier.value.dx + (draggedItemState!.width / 2) >
+              board.controller.position.viewportDimension - 100) {
+        scrolling = true;
+        scrollingRight = true;
+        await board.controller.animateTo(board.controller.offset + 65,
+            duration: const Duration(milliseconds: 150), curve: Curves.linear);
+        scrolling = false;
+        scrollingRight = false;
+        boardScroll();
+      } else if (board.controller.offset > 0 && valueNotifier.value.dx <= 0) {
+        scrolling = true;
+        scrollingLeft = true;
+        await board.controller.animateTo(board.controller.offset - 65,
             duration:
                 Duration(milliseconds: valueNotifier.value.dx < 20 ? 50 : 100),
             curve: Curves.linear);
-      } else {
+        scrolling = false;
+        scrollingLeft = false;
+        boardScroll();
+      }
+    } else {
+      
+      if (board.controller.offset < board.controller.position.maxScrollExtent &&
+          valueNotifier.value.dx + (draggedItemState!.width *0.6) >
+              board.controller.position.viewportDimension) {
+      //print("SCROLLING 0.3");
+        scrolling = true;
+        scrollingRight = true;
+        await board.controller.animateTo(
+            board.controller.offset + board.boardScrollConfig!.offset,
+            duration: board.boardScrollConfig!.duration,
+            curve: board.boardScrollConfig!.curve);
+        scrolling = false;
+        scrollingRight = false;
+        boardScroll();
+      }
+      else if (board.controller.offset < board.controller.position.maxScrollExtent &&
+          valueNotifier.value.dx + (draggedItemState!.width *0.8) >
+              board.controller.position.viewportDimension) {
+        scrolling = true;
+        scrollingRight = true;
+        await board.controller.animateTo(
+            board.controller.offset + board.boardScrollConfig!.offset,
+            duration:Duration(
+                milliseconds: board.boardScrollConfig!.duration.inMilliseconds * 3),
+            curve: board.boardScrollConfig!.curve);
+        scrolling = false;
+        scrollingRight = false;
+        boardScroll();
+      }
+       else if (board.controller.offset > 0 && valueNotifier.value.dx + (draggedItemState!.width *0.1)<=0) {
+        scrolling = true;
+        scrollingLeft = true;
         await board.controller.animateTo(
             board.controller.offset - board.boardScrollConfig!.offset,
             duration: board.boardScrollConfig!.duration,
             curve: board.boardScrollConfig!.curve);
+        scrolling = false;
+        scrollingLeft = false;
+        boardScroll();
       }
-
-      scrolling = false;
-      scrollingLeft = false;
-      boardScroll();
-    } else {
-      return;
+      else if (board.controller.offset > 0 && valueNotifier.value.dx <=20) {
+        scrolling = true;
+        scrollingLeft = true;
+        await board.controller.animateTo(
+            board.controller.offset - board.boardScrollConfig!.offset,
+        duration:Duration(
+                milliseconds: board.boardScrollConfig!.duration.inMilliseconds * 3),
+            curve: board.boardScrollConfig!.curve);
+        scrolling = false;
+        scrollingLeft = false;
+        boardScroll();
+      }
     }
   }
 }

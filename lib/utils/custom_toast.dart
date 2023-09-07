@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/theme_manager.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/theme_manager.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 enum ToastType { defult, success, failure, warning }
 

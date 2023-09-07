@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/custom/list_item.dart';
-import 'package:plane_startup/kanban/custom/text_field.dart';
-import 'package:plane_startup/kanban/models/item_state.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/kanban/custom/list_item.dart';
+import 'package:plane/kanban/custom/text_field.dart';
+import 'package:plane/kanban/models/item_state.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../../utils/enums.dart';
 import 'provider_list.dart';

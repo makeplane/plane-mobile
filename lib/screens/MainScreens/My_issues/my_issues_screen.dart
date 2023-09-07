@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
-import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
-import 'package:plane_startup/bottom_sheets/views_and_layout_sheet.dart';
-import 'package:plane_startup/kanban/custom/board.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/global_search_sheet.dart';
+import 'package:plane/bottom_sheets/views_and_layout_sheet.dart';
+import 'package:plane/kanban/custom/board.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/empty.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class MyIssuesScreen extends ConsumerStatefulWidget {
   const MyIssuesScreen({super.key});
@@ -596,15 +596,14 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                               .then((value) {
                             if (issueProvider.issues.orderBY !=
                                 OrderBY.manual) {
-                              CustomToast.showToast(
-                                  context,
-                                   message:'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
-                                  
+                              CustomToast.showToast(context,
+                                  message:
+                                      'This board is ordered by ${issueProvider.issues.orderBY == OrderBY.lastUpdated ? 'last updated' : 'created at'} ',
                                   toastType: ToastType.warning);
                             }
                           }).catchError((e) {
                             CustomToast.showToast(context,
-                                 message:'Failed to update issue',
+                                message: 'Failed to update issue',
                                 toastType: ToastType.failure);
                           });
                         },

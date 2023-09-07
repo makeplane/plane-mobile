@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteStateSheet extends ConsumerStatefulWidget {
   final String stateName;
@@ -82,8 +82,7 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                         stateId: widget.stateId,
                         context: context,
                         data: {},
-                        ref: ref
-                      );
+                        ref: ref);
                     issuesProvider.getStates(
                       slug: ref
                           .watch(ProviderList.workspaceProvider)

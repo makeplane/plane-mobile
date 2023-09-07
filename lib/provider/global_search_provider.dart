@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/models/global_search_modal.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/models/global_search_modal.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
 
 class SearchModal {
   StateEnum globalSearchState = StateEnum.loading;

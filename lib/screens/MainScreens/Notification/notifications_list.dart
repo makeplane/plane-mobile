@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/bottom_sheets/snooze_time_sheet.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/empty.dart';
-import 'package:plane_startup/widgets/error_state.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/snooze_time_sheet.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail_screen.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_rich_text.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/error_state.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class NotificationsList extends ConsumerStatefulWidget {
   final List<dynamic> data;

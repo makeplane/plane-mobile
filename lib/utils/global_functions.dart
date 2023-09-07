@@ -1,10 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/main.dart';
-import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane/main.dart';
+import 'package:plane/provider/provider_list.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -48,4 +46,3 @@ void postHogService(
     return;
   }
 }
-

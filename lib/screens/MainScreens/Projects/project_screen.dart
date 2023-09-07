@@ -3,20 +3,20 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/bottom_sheets/global_search_sheet.dart';
-import 'package:plane_startup/provider/projects_provider.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane_startup/utils/color_manager.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/empty.dart';
-import 'package:plane_startup/widgets/error_state.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane/bottom_sheets/global_search_sheet.dart';
+import 'package:plane/provider/projects_provider.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/error_state.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
 
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class ProjectScreen extends ConsumerStatefulWidget {
   const ProjectScreen({super.key});

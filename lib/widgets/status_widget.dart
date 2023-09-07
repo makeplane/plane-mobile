@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/text_styles.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/text_styles.dart';
 
 class StautsWidget extends StatelessWidget {
   const StautsWidget({super.key});

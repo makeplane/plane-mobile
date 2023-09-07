@@ -1,26 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/select_workspace.dart';
-import 'package:plane_startup/provider/profile_provider.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
-import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/member_profile.dart';
-import 'package:plane_startup/screens/Theming/prefrences.dart';
-import 'package:plane_startup/screens/billing_plans.dart';
-import 'package:plane_startup/screens/integrations.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profile_detail_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
-import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/bottom_sheets/select_workspace.dart';
+import 'package:plane/provider/profile_provider.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/screens/Import%20&%20Export/import_export.dart';
+import 'package:plane/screens/MainScreens/Activity/activity.dart';
+import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane/screens/Theming/prefrences.dart';
+import 'package:plane/screens/billing_plans.dart';
+import 'package:plane/screens/integrations.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
+import 'package:plane/screens/MainScreens/Profile/ProfileSettings/profile_detail_screen.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
+import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
 
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});

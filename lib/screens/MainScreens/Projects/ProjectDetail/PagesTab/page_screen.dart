@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/PagesTab/page_card.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/empty.dart';
 
 class PageScreen extends ConsumerStatefulWidget {
   const PageScreen({super.key});

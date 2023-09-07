@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:plane_startup/config/http_satus_codes.dart';
+import 'package:plane/config/http_satus_codes.dart';
 
-
-
-typedef RetryEvaluator = FutureOr<bool> Function(DioException error, int attempt);
+typedef RetryEvaluator = FutureOr<bool> Function(
+    DioException error, int attempt);
 
 /// An interceptor that will try to send failed request again
 class RetryInterceptor extends Interceptor {
@@ -18,7 +17,7 @@ class RetryInterceptor extends Interceptor {
       Duration(seconds: 15),
     ],
     required RetryEvaluator retryEvaluator,
-  }) : _retryEvaluator = retryEvaluator ;
+  }) : _retryEvaluator = retryEvaluator;
 
   /// The original dio
   final Dio dio;
@@ -101,7 +100,7 @@ extension RequestOptionsX on RequestOptions {
   static const _kAttemptKey = 'ro_attempt';
   static const _kDisableRetryKey = 'ro_disable_retry';
 
-  int get _attempt => (extra[_kAttemptKey] as int) ;
+  int get _attempt => (extra[_kAttemptKey] as int);
 
   set _attempt(int value) => extra[_kAttemptKey] = value;
 

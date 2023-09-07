@@ -4,14 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/timezone_manager.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_progress_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/timezone_manager.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_progress_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../bottom_sheets/project_select_cover_image.dart';
@@ -219,10 +219,9 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                       }).then((value) {
                                         if (profileProv.updateProfileState ==
                                             StateEnum.error) {
-                                          CustomToast.showToast(
-                                              context,
-                                             message: 'Failed to update profile',
-                          
+                                          CustomToast.showToast(context,
+                                              message:
+                                                  'Failed to update profile',
                                               toastType: ToastType.failure);
                                         } else {
                                           setState(() {
@@ -437,11 +436,8 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                             .successBackgroundColor
                                                         : percentage <= 35
                                                             ? const Color
-                                                                    .fromRGBO(
-                                                                254,
-                                                                226,
-                                                                226,
-                                                                1)
+                                                                .fromRGBO(254,
+                                                                226, 226, 1)
                                                             : percentage <= 70
                                                                 ? themeProvider
                                                                     .themeManager
@@ -464,17 +460,11 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                               .textErrorColor
                                                           : percentage <= 70
                                                               ? const Color
-                                                                      .fromRGBO(
-                                                                  245,
-                                                                  158,
-                                                                  11,
-                                                                  1)
+                                                                  .fromRGBO(245,
+                                                                  158, 11, 1)
                                                               : const Color
-                                                                      .fromRGBO(
-                                                                  34,
-                                                                  197,
-                                                                  94,
-                                                                  1),
+                                                                  .fromRGBO(34,
+                                                                  197, 94, 1),
                                                   fontWeight:
                                                       FontWeightt.Medium,
                                                 ),

@@ -9,12 +9,12 @@ import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
 
 import '../utils/global_functions.dart';
 // import 'package:webview_cookie_manager/webview_cookie_manager.dart';
@@ -241,9 +241,8 @@ class IssueProvider with ChangeNotifier {
     } on DioException catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast.showToast(
-            buildContext,message: messageOnError, 
-            toastType: ToastType.failure, duration: 2);
+        CustomToast.showToast(buildContext,
+            message: messageOnError, toastType: ToastType.failure, duration: 2);
       }
 
       log('Error : issue_provider : upDateIssue : ${e.message.toString()}');
@@ -392,9 +391,8 @@ class IssueProvider with ChangeNotifier {
     } catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast.showToast(
-            buildContext, message:messageOnError,
-            toastType: ToastType.failure, duration: 2);
+        CustomToast.showToast(buildContext,
+            message: messageOnError, toastType: ToastType.failure, duration: 2);
       }
       if (e is DioException) {
         log(e.response.toString());
@@ -467,7 +465,8 @@ class IssueProvider with ChangeNotifier {
       value: value,
     );
   }
-  Future clearCookies()async{
+
+  Future clearCookies() async {
     final cookieManager = CookieManager.instance();
     cookieManager.deleteAllCookies();
   }
@@ -533,9 +532,8 @@ class IssueProvider with ChangeNotifier {
       }
       const String messageOnError = 'Something went wrong, please try again';
       if (buildContext != null) {
-        CustomToast.showToast(
-            buildContext, message:messageOnError,
-            toastType: ToastType.failure, duration: 2);
+        CustomToast.showToast(buildContext,
+            message: messageOnError, toastType: ToastType.failure, duration: 2);
       }
 
       notifyListeners();

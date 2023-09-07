@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class MemeberLogoAlternativeWidget extends StatelessWidget {
   const MemeberLogoAlternativeWidget(this.imageUrl, this.color, {super.key});

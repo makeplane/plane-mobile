@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/models/board.dart';
-import 'package:plane_startup/kanban/models/board_list.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/kanban/models/item_state.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/kanban/models/board.dart';
+import 'package:plane/kanban/models/board_list.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/kanban/models/item_state.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../../utils/enums.dart';
 
@@ -254,11 +254,10 @@ class BoardProvider extends ChangeNotifier {
         boardScroll();
       }
     } else {
-      
       if (board.controller.offset < board.controller.position.maxScrollExtent &&
-          valueNotifier.value.dx + (draggedItemState!.width *0.6) >
+          valueNotifier.value.dx + (draggedItemState!.width * 0.6) >
               board.controller.position.viewportDimension) {
-      //print("SCROLLING 0.3");
+        //print("SCROLLING 0.3");
         scrolling = true;
         scrollingRight = true;
         await board.controller.animateTo(
@@ -268,22 +267,23 @@ class BoardProvider extends ChangeNotifier {
         scrolling = false;
         scrollingRight = false;
         boardScroll();
-      }
-      else if (board.controller.offset < board.controller.position.maxScrollExtent &&
-          valueNotifier.value.dx + (draggedItemState!.width *0.8) >
+      } else if (board.controller.offset <
+              board.controller.position.maxScrollExtent &&
+          valueNotifier.value.dx + (draggedItemState!.width * 0.8) >
               board.controller.position.viewportDimension) {
         scrolling = true;
         scrollingRight = true;
         await board.controller.animateTo(
             board.controller.offset + board.boardScrollConfig!.offset,
-            duration:Duration(
-                milliseconds: board.boardScrollConfig!.duration.inMilliseconds * 3),
+            duration: Duration(
+                milliseconds:
+                    board.boardScrollConfig!.duration.inMilliseconds * 3),
             curve: board.boardScrollConfig!.curve);
         scrolling = false;
         scrollingRight = false;
         boardScroll();
-      }
-       else if (board.controller.offset > 0 && valueNotifier.value.dx + (draggedItemState!.width *0.1)<=0) {
+      } else if (board.controller.offset > 0 &&
+          valueNotifier.value.dx + (draggedItemState!.width * 0.1) <= 0) {
         scrolling = true;
         scrollingLeft = true;
         await board.controller.animateTo(
@@ -293,14 +293,14 @@ class BoardProvider extends ChangeNotifier {
         scrolling = false;
         scrollingLeft = false;
         boardScroll();
-      }
-      else if (board.controller.offset > 0 && valueNotifier.value.dx <=20) {
+      } else if (board.controller.offset > 0 && valueNotifier.value.dx <= 20) {
         scrolling = true;
         scrollingLeft = true;
         await board.controller.animateTo(
             board.controller.offset - board.boardScrollConfig!.offset,
-        duration:Duration(
-                milliseconds: board.boardScrollConfig!.duration.inMilliseconds * 3),
+            duration: Duration(
+                milliseconds:
+                    board.boardScrollConfig!.duration.inMilliseconds * 3),
             curve: board.boardScrollConfig!.curve);
         scrolling = false;
         scrollingLeft = false;

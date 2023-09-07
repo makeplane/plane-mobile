@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:plane/utils/constants.dart';
 
 import 'custom_text.dart';
 
@@ -17,7 +17,11 @@ class _ProfileCircleAvatarsWidgetState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.details.length == 1 ? 20 : widget.details.length == 2 ? 35 : 50,
+      width: widget.details.length == 1
+          ? 20
+          : widget.details.length == 2
+              ? 35
+              : 50,
       height: 20,
       child: Stack(
         children: [
@@ -36,8 +40,8 @@ class _ProfileCircleAvatarsWidgetState
                     child: Center(
                         child: CustomText(
                       widget.details[0]['first_name'][0]
-                              .toString()
-                              .toUpperCase(),
+                          .toString()
+                          .toUpperCase(),
                       color: Colors.white,
                     )),
                   ),
@@ -59,8 +63,8 @@ class _ProfileCircleAvatarsWidgetState
                           child: Center(
                               child: CustomText(
                                   widget.details[1]['first_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
+                                      .toString()
+                                      .toUpperCase(),
                                   color: Colors.white)),
                         ),
                 )
@@ -82,8 +86,8 @@ class _ProfileCircleAvatarsWidgetState
                           child: Center(
                               child: CustomText(
                                   widget.details[2]['first_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
+                                      .toString()
+                                      .toUpperCase(),
                                   color: Colors.white)),
                         ),
                 )

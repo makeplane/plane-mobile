@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/screens/home_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_rich_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';

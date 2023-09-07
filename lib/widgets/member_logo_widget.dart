@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/widgets/member_logo_alternative_widget.dart';
+import 'package:plane/widgets/member_logo_alternative_widget.dart';
 
 class MemberLogoWidget extends StatelessWidget {
   const MemberLogoWidget({

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/provider/workspace_provider.dart';
-import 'package:plane_startup/screens/on_boarding/auth/invite_co_workers.dart';
-import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
-import 'package:plane_startup/screens/on_boarding/auth/sign_in.dart';
-import 'package:plane_startup/widgets/error_state.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/provider/workspace_provider.dart';
+import 'package:plane/screens/on_boarding/auth/invite_co_workers.dart';
+import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
+import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/screens/on_boarding/auth/sign_in.dart';
+import 'package:plane/widgets/error_state.dart';
 import 'utils/enums.dart';
 import 'provider/profile_provider.dart';
 import 'provider/provider_list.dart';
@@ -38,9 +38,7 @@ class _AppState extends ConsumerState<App> {
                   height: 30,
                   child: LoadingIndicator(
                     indicatorType: Indicator.lineSpinFadeLoader,
-                    colors: [
-                      themeProvider.themeManager.primaryTextColor
-                    ],
+                    colors: [themeProvider.themeManager.primaryTextColor],
                     strokeWidth: 1.0,
                     backgroundColor: Colors.transparent,
                   ),

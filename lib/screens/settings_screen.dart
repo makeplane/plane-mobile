@@ -2,21 +2,21 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/create_estimate.dart';
-import 'package:plane_startup/bottom_sheets/project_invite_memebers_sheet.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/estimates_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/features_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/general_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/integrations_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/lables_page.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/create_estimate.dart';
+import 'package:plane/bottom_sheets/project_invite_memebers_sheet.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/estimates_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/features_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/general_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/integrations_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/lables_page.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import 'MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
 

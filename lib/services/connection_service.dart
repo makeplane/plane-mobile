@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:plane_startup/config/const.dart';
+import 'package:plane/config/const.dart';
 
 class ConnectionService {
   Future checkConnectivity() async {
@@ -17,7 +17,6 @@ class ConnectionService {
         Const.isOnline = false;
       }
     } catch (e) {
-
       log("DIO SERVICE ERROR");
     }
   }

@@ -5,11 +5,11 @@ import 'dart:io';
 // Package imports:
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/services/connection_service.dart';
-import 'package:plane_startup/services/shared_preference_service.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/services/connection_service.dart';
+import 'package:plane/services/shared_preference_service.dart';
+import 'package:plane/utils/enums.dart';
 import 'package:retry/retry.dart';
 
 class DioConfig {
@@ -26,10 +26,10 @@ class DioConfig {
     requestHeaders = {
       // 'Accept': 'application/json;charset=UTF-8',
       if (hasAuth) 'Authorization': 'Bearer ${Const.accessToken}',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Headers': 'Content-Type',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Headers': 'Content-Type',
       // 'User-Agent': Platform.isAndroid ? 'Android' : 'iOS',
     };
 

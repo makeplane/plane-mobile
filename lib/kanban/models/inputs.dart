@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 import '../../utils/enums.dart';
 

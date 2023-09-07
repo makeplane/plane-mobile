@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 // ignore: must_be_immutable
 class SelectCoverImage extends ConsumerStatefulWidget {
@@ -89,7 +89,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
       isLoading = false;
       if (!isFirstReq) isSearched = true;
       setState(() {});
-    }on DioException catch (e) {
+    } on DioException catch (e) {
       log(e.error.toString());
     }
   }

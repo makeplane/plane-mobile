@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
 
 class ThemeManager {
   final THEME theme;

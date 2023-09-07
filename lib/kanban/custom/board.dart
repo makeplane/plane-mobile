@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/Provider/provider_list.dart';
-import 'package:plane_startup/kanban/custom/board_list.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
+import 'package:plane/kanban/Provider/provider_list.dart';
+import 'package:plane/kanban/custom/board_list.dart';
+import 'package:plane/kanban/models/inputs.dart';
 
 class KanbanBoard extends StatefulWidget {
   const KanbanBoard(

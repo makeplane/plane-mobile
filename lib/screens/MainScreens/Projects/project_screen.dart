@@ -140,14 +140,16 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                   ? const SizedBox(height: 10)
                                   : const SizedBox.shrink(),
                               starredProjects(projectProvider, themeProvider),
-                              projectProvider.projects.isNotEmpty &&
-                                      // checkStarredProjects(
-                                      //     projects: projectProvider.projects) &&
-                                      checkUnstarredProject(
-                                          projects:
-                                              projectProvider.projects) //&&
-                                  // checkUnJoinedProject(
-                                  //     projects: projectProvider.projects)
+                              (projectProvider.projects.isNotEmpty &&
+                                          checkUnstarredProject(
+                                              projects:
+                                                  projectProvider.projects)) &&
+                                      (checkStarredProjects(
+                                              projects:
+                                                  projectProvider.projects) ||
+                                          checkUnJoinedProject(
+                                              projects:
+                                                  projectProvider.projects))
                                   ? CustomText(
                                       'Projects',
                                       type: FontStyle.Medium,
@@ -177,6 +179,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                   ? const SizedBox(height: 10)
                                   : const SizedBox.shrink(),
                               unJoinedProjects(projectProvider, themeProvider),
+                              const SizedBox(height: 30),
                             ],
                           ),
                         ),

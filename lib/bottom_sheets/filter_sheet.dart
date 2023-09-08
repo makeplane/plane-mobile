@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
@@ -502,12 +503,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   child: expandedWidget(
                                     icon: CircleAvatar(
                                         radius: 5,
-                                        backgroundColor: (e['color'] == null ||
-                                                e['color'][0] != '#')
-                                            ? Colors.amber
-                                            : Color(int.parse(
-                                                "FF${e['color'].toString().replaceAll('#', '')}",
-                                                radix: 16))),
+                                        backgroundColor: ColorManager
+                                            .getColorFromHexaDecimal(
+                                                e['color'])),
                                     text: e['name'],
                                     selected: filters.labels.contains(e['id']),
                                     color: filters.labels.contains(e['id'])

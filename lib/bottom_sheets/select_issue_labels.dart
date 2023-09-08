@@ -1,11 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -23,28 +27,11 @@ class SelectIssueLabels extends ConsumerStatefulWidget {
 class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
   var labelContrtoller = TextEditingController();
   var colorController = TextEditingController();
-  List lables = [
-    '#B71F1F',
-    '#08AB22',
-    '#BC009E',
-    '#F15700',
-    '#290CDE',
-    '#B1700D',
-    '#08BECA',
-    '#6500CA',
-    '#E98787',
-    '#ADC57C',
-    '#75A0C8',
-    '#E96B6B'
-    // {'lable': 'Lable 1', 'color': Colors.orange},
-    // {'lable': 'Lable 2', 'color': Colors.purple},
-    // {'lable': 'Lable 3', 'color': Colors.blue},
-    // {'lable': 'Lable 4', 'color': Colors.pink}
-  ];
+
   var selectedLabels = [];
   List issueDetailsLabels = [];
   var createNew = false;
-  var showColorPallette = false;
+  var showColorPallette = true;
   @override
   void initState() {
     ref.read(ProviderList.issuesProvider).getLabels(
@@ -55,13 +42,18 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         projID: widget.createIssue
             ? ref.read(ProviderList.issuesProvider).createIssueProjectData['id']
             : ref.read(ProviderList.projectProvider).currentProject['id']);
-    colorController.text = 'BC009E';
+    colorController.text =
+        colorsForLabel[Random().nextInt(colorsForLabel.length)]
+            .replaceAll('#', '');
+    //.replaceAll('#F', '');
+    // 'BC009E';
 
     selectedLabels.addAll(
         (ref.read(ProviderList.issuesProvider).createIssuedata['labels'] ?? [])
             .map((e) => e['index'])
             .toList());
     if (!widget.createIssue) getIssueLabels();
+
     super.initState();
   }
 
@@ -108,7 +100,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
               child: Column(
                 children: [
                   Row(
@@ -161,6 +153,21 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       } else {
                                         selectedLabels.add(index);
                                       }
+                                      var prov =
+                                          ref.read(ProviderList.issuesProvider);
+                                      prov.createIssuedata['labels'] =
+                                          selectedLabels.isEmpty
+                                              ? null
+                                              : selectedLabels
+                                                  .map((e) => {
+                                                        'id': issuesProvider
+                                                            .labels[e]['id'],
+                                                        'color': issuesProvider
+                                                            .labels[e]['color'],
+                                                        'index': e
+                                                      })
+                                                  .toList();
+                                      prov.setsState();
                                     } else {
                                       setState(() {
                                         if (issueDetailsLabels.contains(
@@ -182,11 +189,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 10,
                                   ),
-                                  // decoration: BoxDecoration(
-                                  //   color: themeProvider.isDarkThemeEnabled
-                                  //       ? darkSecondaryBGC
-                                  //       : const Color.fromRGBO(248, 249, 250, 1),
-                                  // ),
                                   margin:
                                       issuesProvider.labels.length == index + 1
                                           ? const EdgeInsets.only(bottom: 35)
@@ -235,301 +237,149 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                         : const Center(
                             child: CustomText('No labels are created yet')),
                   ),
-                  createNew
-                      ? Container(
-                          margin: const EdgeInsets.only(bottom: 15),
-                          child: Row(
+                  showColorPallette && createNew
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showColorPallette = !showColorPallette;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 25,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                        color: int.tryParse(
-                                                    '0xFF${colorController.text}') !=
-                                                null
-                                            ? Color(int.tryParse(
-                                                '0xFF${colorController.text}')!)
-                                            : Colors.grey,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      showColorPallette
-                                          ? Icons.keyboard_arrow_up_outlined
-                                          : Icons.keyboard_arrow_down,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 10,
-                              ),
-                              SizedBox(
-                                height: 40,
-                                width: MediaQuery.of(context).size.width - 201,
-                                child: TextFormField(
-                                  controller: labelContrtoller,
-                                  decoration: themeProvider
-                                      .themeManager.textFieldDecoration,
-                                ),
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    createNew = false;
-                                  });
-                                },
-                                child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromRGBO(255, 12, 12, 1),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Icon(
-                                      Icons.close,
-                                      color: themeProvider.themeManager
-                                          .secondaryBackgroundDefaultColor,
-                                    )),
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (labelContrtoller.text.isNotEmpty) {
-                                    await issuesProvider.issueLabels(
-                                        slug: ref
-                                            .read(
-                                                ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
-                                            .workspaceSlug,
-                                        projID: widget.createIssue
-                                            ? ref
-                                                .read(
-                                                    ProviderList.issuesProvider)
-                                                .createIssueProjectData['id']
-                                            : ref
-                                                .read(ProviderList
-                                                    .projectProvider)
-                                                .currentProject['id'],
-                                        data: {
-                                          "name": labelContrtoller.text,
-                                          "color": "#${colorController.text}"
-                                        },
-                                        ref: ref);
-                                    setState(() {
-                                      createNew = false;
-                                      showColorPallette = false;
-                                      colorController.clear();
-                                      labelContrtoller.clear();
-                                    });
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                                child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromRGBO(9, 169, 83, 1),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Icon(
-                                      Icons.done,
-                                      color: themeProvider.themeManager
-                                          .secondaryBackgroundDefaultColor,
-                                    )),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  showColorPallette
-                      ? Wrap(
-                          spacing: 10,
-                          children: lables
-                              .map(
-                                (e) => GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      colorController.text = e
-                                          .toString()
-                                          .toUpperCase()
-                                          .replaceAll("#", "");
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    margin: const EdgeInsets.only(bottom: 20),
-                                    padding: const EdgeInsets.all(10),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                controller: labelContrtoller,
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                  label: const Text('Label Text'),
+                                  prefixIconConstraints: const BoxConstraints(
+                                      minWidth: 0, minHeight: 0),
+                                  prefixIcon: Container(
+                                    // padding: EdgeInsets.all(5),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 7, vertical: 5),
+                                    height: 25,
+                                    width: 25,
                                     decoration: BoxDecoration(
                                       color:
                                           ColorManager.getColorFromHexaDecimal(
-                                              e.toString()),
+                                              '#${colorController.text}'),
                                       borderRadius: BorderRadius.circular(5),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                            blurRadius: 1.0, color: greyColor),
-                                      ],
                                     ),
                                   ),
                                 ),
-                              )
-                              .toList(),
-                        )
-                      : Container(),
-                  showColorPallette
-                      ? SizedBox(
-                          height: 50,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 55,
-                                height: 55,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(6)),
-                                child: const CustomText(
-                                  '#',
-                                  color: Colors.white,
-                                  fontWeight: FontWeightt.Semibold,
-                                  fontSize: 20,
+                              ),
+                              const SizedBox(height: 10),
+                              Wrap(
+                                spacing: 10,
+                                children: colorsForLabel
+                                    .map(
+                                      (e) => GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            colorController.text = e
+                                                .toString()
+                                                .replaceAll('#', '');
+                                            // .toUpperCase()
+                                            // .replaceAll("#", "");
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: ColorManager
+                                                .getColorFromHexaDecimal(
+                                                    e.toString()),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                  blurRadius: 1.0,
+                                                  color: greyColor),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                              SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[0-9a-zA-Z]")),
+                                        ],
+                                        controller: colorController,
+                                        decoration: themeProvider
+                                            .themeManager.textFieldDecoration
+                                            .copyWith(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 3,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundSelectedColour), //<-- SEE HERE
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 3,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundSelectedColour),
+                                          ),
+                                          filled: true,
+                                          fillColor: themeProvider.themeManager
+                                              .secondaryBackgroundDefaultColor,
+                                          prefixIcon: Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            width: 55,
+                                            height: 55,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundSelectedColour,
+                                                borderRadius: const BorderRadius
+                                                    .only(
+                                                    topLeft: Radius.circular(5),
+                                                    bottomLeft:
+                                                        Radius.circular(5))),
+                                            child: CustomText(
+                                              '#',
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
+                                              fontWeight: FontWeightt.Semibold,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                    controller: colorController,
-                                    decoration: themeProvider
-                                        .themeManager.textFieldDecoration),
-                              ),
+                              )
                             ],
                           ),
                         )
                       : Container(),
                   widget.createIssue
-                      ? Column(
+                      ? const Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  createNew = true;
-                                });
-                              },
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 5, top: 15),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                        height: 25,
-                                        width: 25,
-                                        // decoration: BoxDecoration(
-                                        //   color: Colors.grey,
-                                        //   borderRadius: BorderRadius.circular(5),
-                                        // ),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: themeProvider.themeManager
-                                              .placeholderTextColor,
-                                        )),
-                                    Container(width: 10),
-                                    const CustomText(
-                                      'Create New Label',
-                                      type: FontStyle.Small,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
+                            SizedBox(
                               height: 60,
                             )
                           ],
                         )
                       : Container(),
-
-                  // : Row(
-                  //     mainAxisAlignment: MainAxisAlignment.end,
-                  //     children: [
-                  //       ElevatedButton(
-                  //         style: ElevatedButton.styleFrom(
-                  //             backgroundColor: primaryColor),
-                  //         onPressed: () {
-                  //           Navigator.pop(context);
-                  //           issueProvider.upDateIssue(
-                  //               slug: ref
-                  //                   .read(ProviderList.workspaceProvider)
-                  //                   .selectedWorkspace!
-                  //                   .workspaceSlug,
-                  //               index: widget.index!,
-                  //               ref: ref,
-                  //               projID: ref
-                  //                   .read(ProviderList.projectProvider)
-                  //                   .currentProject['id'],
-                  //               issueID: widget.issueId!,
-                  //               data: {
-                  //                 "labels_list": issueDetailsLabels
-                  //               }).then((value) {
-                  //             ref
-                  //                 .read(ProviderList.issueProvider)
-                  //                 .getIssueDetails(
-                  //                     slug: ref
-                  //                         .read(ProviderList
-                  //                             .workspaceProvider)
-                  //                         .selectedWorkspace!
-                  //                         .workspaceSlug,
-                  //                     projID: ref
-                  //                         .read(
-                  //                             ProviderList.projectProvider)
-                  //                         .currentProject['id'],
-                  //                     issueID: widget.issueId!)
-                  //                 .then(
-                  //                   (value) => ref
-                  //                       .read(ProviderList.issueProvider)
-                  //                       .getIssueActivity(
-                  //                         slug: ref
-                  //                             .read(ProviderList
-                  //                                 .workspaceProvider)
-                  //                             .selectedWorkspace!
-                  //                             .workspaceSlug,
-                  //                         projID: ref
-                  //                             .read(ProviderList
-                  //                                 .projectProvider)
-                  //                             .currentProject['id'],
-                  //                         issueID: widget.issueId!,
-                  //                       ),
-                  //                   //)
-                  //                   //.then((value) {Navigator.pop(context);}
-                  //                 );
-                  //           });
-                  //         },
-                  //         child: const CustomText(
-                  //           'Add',
-                  //           type: FontStyle.Medium,
-                  //            fontWeight: FontWeightt.Bold,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   )
                 ],
               ),
             ),
@@ -574,69 +424,82 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                 Container(
                   margin: const EdgeInsets.only(
                       bottom: 10, top: 10, left: 10, right: 10),
-                  child: Button(
-                    text: 'Select Label',
-                    ontap: () {
-                      if (!widget.createIssue) {
-                        Navigator.pop(context);
-                        issueProvider.upDateIssue(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            refs: ref,
-                            projID: ref
-                                .read(ProviderList.projectProvider)
-                                .currentProject['id'],
-                            issueID: widget.issueId!,
-                            data: {
-                              "labels_list": issueDetailsLabels
-                            }).then((value) {
-                          ref
-                              .read(ProviderList.issueProvider)
-                              .getIssueDetails(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
-                                      .workspaceSlug,
-                                  projID: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject['id'],
-                                  issueID: widget.issueId!)
-                              .then(
-                                (value) => ref
-                                    .read(ProviderList.issueProvider)
-                                    .getIssueActivity(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projID: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject['id'],
-                                      issueID: widget.issueId!,
-                                    ),
-                                //)
-                                //.then((value) {Navigator.pop(context);}
-                              );
-                        });
-                      } else {
-                        var prov = ref.read(ProviderList.issuesProvider);
-                        prov.createIssuedata['labels'] = selectedLabels.isEmpty
-                            ? null
-                            : selectedLabels
-                                .map((e) => {
-                                      'id': issuesProvider.labels[e]['id'],
-                                      'color': issuesProvider.labels[e]
-                                          ['color'],
-                                      'index': e
-                                    })
-                                .toList();
-                        prov.setsState();
-                        Navigator.of(context).pop();
-                      }
-                    },
-                  ),
+                  child: createNew
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Button(
+                            text: 'Save Label',
+                            ontap: () async {
+                              if (labelContrtoller.text.isNotEmpty) {
+                                await issuesProvider.issueLabels(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace!
+                                        .workspaceSlug,
+                                    projID: widget.createIssue
+                                        ? ref
+                                            .read(ProviderList.issuesProvider)
+                                            .createIssueProjectData['id']
+                                        : ref
+                                            .read(ProviderList.projectProvider)
+                                            .currentProject['id'],
+                                    data: {
+                                      "name": labelContrtoller.text,
+                                      "color": "#${colorController.text}"
+                                    },
+                                    ref: ref);
+                                setState(() {
+                                  createNew = false;
+                                  // showColorPallette = false;
+                                  colorController.clear();
+                                  labelContrtoller.clear();
+                                });
+                                // Navigator.of(context).pop();
+                              } else {
+                                CustomToast.showToast(context,
+                                    message: 'Label is empty',
+                                    toastType: ToastType.warning);
+                              }
+                            },
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: InkWell(
+                            child: Container(
+                              height: 45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: themeProvider.themeManager.primaryColour
+                                    .withOpacity(0.2),
+                                border: Border.all(
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.add,
+                                      color: themeProvider
+                                          .themeManager.primaryColour),
+                                  const SizedBox(width: 5),
+                                  CustomText(
+                                    'Create New Label',
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                createNew = true;
+                              });
+                            },
+                          ),
+                        ),
                 ),
               ],
             ),

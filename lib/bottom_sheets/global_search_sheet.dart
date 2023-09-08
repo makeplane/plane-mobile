@@ -19,7 +19,6 @@ import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/crea
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
-import 'package:plane/screens/billing_plans.dart';
 import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/screens/integrations.dart';
 import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';

@@ -9,7 +9,6 @@ import 'package:plane/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane/screens/MainScreens/Activity/activity.dart';
 import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
 import 'package:plane/screens/Theming/prefrences.dart';
-import 'package:plane/screens/billing_plans.dart';
 import 'package:plane/screens/integrations.dart';
 import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
 import 'package:plane/screens/MainScreens/Profile/ProfileSettings/profile_detail_screen.dart';
@@ -278,7 +277,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _onLogout() {
-    ref.read(ProviderList.themeProvider).toggleTheme(THEME.light);
+    var profileProvider = ref.read(ProviderList.profileProvider);
+    var theme = profileProvider.userProfile.theme;
+    theme!['theme'] = fromTHEME(theme: THEME.light);
+
+    ref.read(ProviderList.themeProvider).changeTheme(
+      data: {'theme': theme},
+      context: context,
+      fromLogout: true,
+    );
     ProviderList.clear(ref: ref);
     Navigator.pushAndRemoveUntil(
         context,

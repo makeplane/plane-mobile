@@ -461,6 +461,7 @@ class IssuesProvider extends ChangeNotifier {
       }
       log("ISSUE REPOSITIONED");
       notifyListeners();
+      // ignore: unused_catch_clause
     } on DioException catch (err) {
       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
           oldCardIndex,

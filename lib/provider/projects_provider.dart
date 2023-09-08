@@ -5,7 +5,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/project_detail_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';

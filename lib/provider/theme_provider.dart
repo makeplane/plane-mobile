@@ -23,8 +23,7 @@ class ThemeProvider extends ChangeNotifier {
   //function to change theme and stor the theme in shared preferences
   void clear() {
     isDarkThemeEnabled = false;
-    themeManager = ThemeManager(THEME.light);
-    notifyListeners();
+    // notifyListeners();
   }
 
   void notify() {
@@ -37,8 +36,11 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeTheme(
-      {required Map data, required BuildContext? context}) async {
+  Future<void> changeTheme({
+    required Map data,
+    required BuildContext? context,
+    bool fromLogout = false,
+  }) async {
     var profileProvider = ref.read(ProviderList.profileProvider);
     if (data['theme']['theme'] == 'custom' &&
         ((profileProvider.userProfile.theme == null ||
@@ -72,14 +74,18 @@ class ThemeProvider extends ChangeNotifier {
     log(theme.toString());
     themeManager = ThemeManager(theme);
     CustomToast(manager: themeManager);
-    var profileProv = ref.read(ProviderList.profileProvider);
-    profileProv.updateProfile(data: data).then((value) {
-      if (profileProv.updateProfileState == StateEnum.success &&
-          context != null) {
-        CustomToast.showToast(context,
-            message: 'Theme updated!', toastType: ToastType.success);
-      } else {}
-    });
+
+    if (!fromLogout) {
+      var profileProv = ref.read(ProviderList.profileProvider);
+      profileProv.updateProfile(data: data).then((value) {
+        if (profileProv.updateProfileState == StateEnum.success &&
+            context != null) {
+          CustomToast.showToast(context,
+              message: 'Theme updated!', toastType: ToastType.success);
+        } else {}
+      });
+    }
+
     setUiOverlayStyle(data['theme']['theme']);
     await prefs.setString('selected-theme', fromTHEME(theme: theme));
     notifyListeners();

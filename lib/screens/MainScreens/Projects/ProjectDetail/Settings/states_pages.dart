@@ -524,7 +524,17 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                             "description": ""
                           },
                           ref: ref);
-                      issuesProvider.getStates(
+                      await issuesProvider.getStates(
+                        slug: ref
+                            .watch(ProviderList.workspaceProvider)
+                            .selectedWorkspace!
+                            .workspaceSlug,
+                        projID: ref
+                            .watch(ProviderList.projectProvider)
+                            .currentProject['id'],
+                      );
+
+                      issuesProvider.filterIssues(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
                             .selectedWorkspace!

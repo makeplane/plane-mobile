@@ -62,8 +62,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   bool descriptionLoading = false;
   InAppWebViewController? webviewController;
 
-  @override
-  void initState() {
+  initCreateIssue() {
     var prov = ref.read(ProviderList.issuesProvider);
     var projectProvider = ref.read(ProviderList.projectProvider);
     ref.read(ProviderList.issueProvider).initCookies();
@@ -119,9 +118,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     if (widget.assignee != null) {
       prov.createIssuedata['members'] = widget.assignee;
     }
+  }
 
-    // prov.createIssuedata['state'] = prov.createIssuedata['state'] ??
-    //     (prov.states.isNotEmpty ? prov.states.keys.first : null);
+  @override
+  void initState() {
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    initCreateIssue();
+    // });
     super.initState();
   }
 
@@ -631,7 +634,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                   .keyboard_arrow_down,
 
                                                           color: const Color
-                                                              .fromRGBO(
+                                                                  .fromRGBO(
                                                               63, 118, 255, 1),
                                                         ),
                                                       ),

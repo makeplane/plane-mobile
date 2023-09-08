@@ -402,6 +402,14 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                   ? Expanded(
                                                       child: InkWell(
                                                         onTap: () {
+                                                          issueProvider
+                                                                      .createIssuedata[
+                                                                  'state'] =
+                                                              issueProvider
+                                                                  .states
+                                                                  .keys
+                                                                  .first;
+
                                                           Navigator.of(context)
                                                               .push(
                                                             MaterialPageRoute(
@@ -1012,7 +1020,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1023,7 +1031,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1040,7 +1048,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                         )
                                                 ],

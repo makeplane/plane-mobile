@@ -40,7 +40,8 @@ void main() async {
   // print(Const.refreshToken);
   var pref = await SharedPreferences.getInstance();
   // SharedPrefrenceServices.sharedPreferences!.clear();
-  // Const.appBearerToken = null;
+  // Const.accessToken = null;
+  // Const.refreshToken = null;
   // ConnectionService().checkConnectivity();
   prefs = pref;
   sentryService();
@@ -99,9 +100,21 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
             } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
               theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else {
-              theme!['theme'] = fromTHEME(theme: THEME.light);
+            } else if (prov.userProfile.theme!['theme'] == 'custom') {
+              theme!['theme'] = fromTHEME(theme: THEME.custom);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
+            } else {
+              themeProv.changeTheme(data: {
+                'theme': {
+                  'primary': prov.userProfile.theme!['primary'],
+                  'background': prov.userProfile.theme!['background'],
+                  'text': prov.userProfile.theme!['text'],
+                  'sidebarText': prov.userProfile.theme!['sidebarText'],
+                  'sidebarBackground':
+                      prov.userProfile.theme!['sidebarBackground'],
+                  'theme': 'custom',
+                }
+              }, context: null);
             }
           }
           workspaceProv.getWorkspaceMembers();

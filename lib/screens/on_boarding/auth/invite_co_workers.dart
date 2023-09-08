@@ -322,7 +322,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                           .workspace!['last_workspace_slug'],
                                   email: data);
 
-                              ref
+                              await ref
                                   .read(ProviderList.profileProvider)
                                   .updateIsOnBoarded(val: true);
                               ref
@@ -342,6 +342,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                                       slug: prov
                                           .selectedWorkspace!.workspaceSlug);
 
+                              // ignore: use_build_context_synchronously
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
@@ -366,11 +367,11 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                         textColor:
                             themeProvider.themeManager.placeholderTextColor,
                         ontap: () async {
-                          await prov.getWorkspaces().then((value) {
+                          await prov.getWorkspaces().then((value) async {
                             log(prov.selectedWorkspace!.workspaceName
                                 .toString());
 
-                            ref
+                            await ref
                                 .read(ProviderList.profileProvider)
                                 .updateIsOnBoarded(val: true);
                             ref
@@ -387,6 +388,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                             ref.read(ProviderList.projectProvider).getProjects(
                                 slug: prov.selectedWorkspace!.workspaceSlug);
 
+                            // ignore: use_build_context_synchronously
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(

@@ -112,6 +112,9 @@ class AuthProvider extends ChangeNotifier {
               } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
                 theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
                 themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'custom') {
+                theme!['theme'] = fromTHEME(theme: THEME.custom);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
               } else {
                 themeProv.changeTheme(data: {
                   'theme': {
@@ -152,28 +155,28 @@ class AuthProvider extends ChangeNotifier {
               ref
                   .read(ProviderList.myIssuesProvider)
                   .filterIssues(assigned: true);
-
-              ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'assigned');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'created');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'watching');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'unread', getUnread: true);
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'archived', getArchived: true);
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'snoozed', getSnoozed: true);
             });
+
+            ref.read(ProviderList.notificationProvider).getUnreadCount();
+
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'assigned');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'created');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'watching');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'unread', getUnread: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'archived', getArchived: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'snoozed', getSnoozed: true);
           });
         } else {
           Const.accessToken = null;
@@ -274,6 +277,9 @@ class AuthProvider extends ChangeNotifier {
               } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
                 theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
                 themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'custom') {
+                theme!['theme'] = fromTHEME(theme: THEME.custom);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
               } else {
                 themeProv.changeTheme(data: {
                   'theme': {
@@ -344,6 +350,7 @@ class AuthProvider extends ChangeNotifier {
           GoogleSignInApi.logout();
           validateCodeState = StateEnum.failed;
           notifyListeners();
+          // ignore: unnecessary_null_comparison
           if (context != null) {
             CustomToast.showToastWithColors(context,
                 'Something went wrong while fetching your data, Please try again.',
@@ -381,17 +388,21 @@ class AuthProvider extends ChangeNotifier {
         },
       );
       Const.accessToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
       Const.userId = response.data["user"]['id'];
       SharedPrefrenceServices.sharedPreferences!
           .setString("user_id", response.data["user"]['id']);
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("access_token", response.data["access_token"]);
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("refresh_token", response.data["refresh_token"]);
       signInState = StateEnum.success;
       notifyListeners();
       await ref
           .read(ProviderList.profileProvider)
           .getProfile()
           .then((value) async {
+        var prov = ref.read(ProviderList.profileProvider);
+        var themeProv = ref.read(ProviderList.themeProvider);
         if (ref.read(ProviderList.profileProvider).getProfileState ==
             StateEnum.success) {
           await ref
@@ -412,6 +423,42 @@ class AuthProvider extends ChangeNotifier {
                 .lastWorkspaceId
                 .toString());
 
+            var theme = prov.userProfile.theme;
+
+            if (prov.userProfile.theme != null) {
+              if (prov.userProfile.theme!['theme'] == 'dark') {
+                theme!['theme'] = fromTHEME(theme: THEME.dark);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light') {
+                theme!['theme'] = fromTHEME(theme: THEME.light);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'system') {
+                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'custom') {
+                theme!['theme'] = fromTHEME(theme: THEME.custom);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else {
+                themeProv.changeTheme(data: {
+                  'theme': {
+                    'primary': prov.userProfile.theme!['primary'],
+                    'background': prov.userProfile.theme!['background'],
+                    'text': prov.userProfile.theme!['text'],
+                    'sidebarText': prov.userProfile.theme!['sidebarText'],
+                    'sidebarBackground':
+                        prov.userProfile.theme!['sidebarBackground'],
+                    'theme': 'custom',
+                  }
+                }, context: null);
+              }
+            }
+
             ref.read(ProviderList.projectProvider).getProjects(
                 slug: ref
                     .read(ProviderList.workspaceProvider)
@@ -423,20 +470,35 @@ class AuthProvider extends ChangeNotifier {
                             .userProfile
                             .lastWorkspaceId)
                     .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
+            ref
+                .read(ProviderList.myIssuesProvider)
+                .getMyIssuesView()
+                .then((value) {
+              ref
+                  .read(ProviderList.myIssuesProvider)
+                  .filterIssues(assigned: true);
+            });
+
+            ref.read(ProviderList.notificationProvider).getUnreadCount();
+
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'assigned');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'created');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'watching');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'unread', getUnread: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'archived', getArchived: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'snoozed', getSnoozed: true);
           });
         } else {
           Const.accessToken = null;
@@ -455,6 +517,8 @@ class AuthProvider extends ChangeNotifier {
       log(e.toString());
       signInState = StateEnum.failed;
 
+      notifyListeners();
+
       if (context != null) {
         CustomToast.showToastWithColors(context, e.error.toString(),
             toastType: ToastType.failure);
@@ -464,8 +528,6 @@ class AuthProvider extends ChangeNotifier {
             context, 'Something went wrong, please try again.',
             toastType: ToastType.failure);
       }
-
-      notifyListeners();
     }
   }
 
@@ -510,11 +572,13 @@ class AuthProvider extends ChangeNotifier {
       );
       log('signUp response: ${response.data}');
       Const.accessToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
       Const.userId = response.data["user"]['id'];
       SharedPrefrenceServices.sharedPreferences!
           .setString("user_id", response.data["user"]['id']);
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("access_token", response.data["access_token"]);
+      SharedPrefrenceServices.sharedPreferences!
+          .setString("refresh_token", response.data["refresh_token"]);
       signUpState = StateEnum.success;
       notifyListeners();
       await ref
@@ -540,6 +604,44 @@ class AuthProvider extends ChangeNotifier {
                     null) {
               return;
             }
+            var prov = ref.read(ProviderList.profileProvider);
+            var themeProv = ref.read(ProviderList.themeProvider);
+            var theme = prov.userProfile.theme;
+
+            if (prov.userProfile.theme != null) {
+              if (prov.userProfile.theme!['theme'] == 'dark') {
+                theme!['theme'] = fromTHEME(theme: THEME.dark);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light') {
+                theme!['theme'] = fromTHEME(theme: THEME.light);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'system') {
+                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
+                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else if (prov.userProfile.theme!['theme'] == 'custom') {
+                theme!['theme'] = fromTHEME(theme: THEME.custom);
+                themeProv.changeTheme(data: {'theme': theme}, context: null);
+              } else {
+                themeProv.changeTheme(data: {
+                  'theme': {
+                    'primary': prov.userProfile.theme!['primary'],
+                    'background': prov.userProfile.theme!['background'],
+                    'text': prov.userProfile.theme!['text'],
+                    'sidebarText': prov.userProfile.theme!['sidebarText'],
+                    'sidebarBackground':
+                        prov.userProfile.theme!['sidebarBackground'],
+                    'theme': 'custom',
+                  }
+                }, context: null);
+              }
+            }
+
             ref.read(ProviderList.dashboardProvider).getDashboard();
             log(ref
                 .read(ProviderList.profileProvider)
@@ -558,20 +660,35 @@ class AuthProvider extends ChangeNotifier {
                             .userProfile
                             .lastWorkspaceId)
                     .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
+            ref
+                .read(ProviderList.myIssuesProvider)
+                .getMyIssuesView()
+                .then((value) {
+              ref
+                  .read(ProviderList.myIssuesProvider)
+                  .filterIssues(assigned: true);
+            });
+
+            ref.read(ProviderList.notificationProvider).getUnreadCount();
+
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'assigned');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'created');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'watching');
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'unread', getUnread: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'archived', getArchived: true);
+            ref
+                .read(ProviderList.notificationProvider)
+                .getNotifications(type: 'snoozed', getSnoozed: true);
           });
         } else {
           Const.accessToken = null;
@@ -592,14 +709,19 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       if (e is DioException) {
         if (context != null) {
-          CustomToast.showToastWithColors(context, e.error.toString(),
-              toastType: ToastType.failure);
+          CustomToast.showToast(
+            context,
+            message: e.error.toString(),
+            toastType: ToastType.failure,
+          );
         }
       } else {
         if (context != null) {
-          CustomToast.showToastWithColors(
-              context, 'Something went wrong, please try again.',
-              toastType: ToastType.failure);
+          CustomToast.showToast(
+            context,
+            message: "Something went wrong, please try again.",
+            toastType: ToastType.failure,
+          );
         }
       }
     }

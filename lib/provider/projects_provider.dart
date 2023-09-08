@@ -98,6 +98,8 @@ class ProjectsProvider extends ChangeNotifier {
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
+
+    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
     prov.getProjectMembers(
       slug: workspaceSlug,
       projID: currentProject['id'],
@@ -123,7 +125,6 @@ class ProjectsProvider extends ChangeNotifier {
       projId: currentProject['id'],
     );
     viewsProvider.getViews();
-    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
 
     prov.getLabels(slug: workspaceSlug, projID: currentProject['id']);
 

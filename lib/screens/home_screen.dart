@@ -53,7 +53,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: profileProvider.getProfileState == StateEnum.success
-            ? screens[currentIndex]
+            ? IndexedStack(
+                index: currentIndex,
+                children: screens,
+              )
+            //screens[currentIndex]
             : profileProvider.getProfileState == StateEnum.error
                 ? errorState(context: context)
                 : Container(),

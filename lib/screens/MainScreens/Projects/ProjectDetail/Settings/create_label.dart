@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/utils/constants.dart';
-import 'package:plane/widgets/custom_rich_text.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class CreateLabel extends ConsumerStatefulWidget {
@@ -25,26 +29,31 @@ class CreateLabel extends ConsumerStatefulWidget {
 
 class _CreateLabelState extends ConsumerState<CreateLabel> {
   TextEditingController lableController = TextEditingController();
-  String lable = '';
-  List colors = [
-    '#FF6900',
-    '#FCB900',
-    '#7BDCB5',
-    '#00D084',
-    '#8ED1FC',
-    '#0693E3',
-    '#ABB8C3',
-    '#EB144C',
-    '#F78DA7',
-    '#9900EF'
-  ];
+  var colorController = TextEditingController();
+  //String lable = '';
+  // List colors = [
+  //   '#FF6900',
+  //   '#FCB900',
+  //   '#7BDCB5',
+  //   '#00D084',
+  //   '#8ED1FC',
+  //   '#0693E3',
+  //   '#ABB8C3',
+  //   '#EB144C',
+  //   '#F78DA7',
+  //   '#9900EF'
+  // ];
   bool showColoredBox = false;
 
   @override
   void initState() {
     super.initState();
     lableController.text = widget.label ?? '';
-    lable = widget.labelColor ?? '#ABB8C3';
+    // lable = widget.labelColor ??
+    //     colorsForLabel[Random().nextInt(colorsForLabel.length)];
+    colorController.text =
+        colorsForLabel[Random().nextInt(colorsForLabel.length)]
+            .replaceAll('#', '');
   }
 
   @override
@@ -60,7 +69,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
       child: Stack(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             child: SingleChildScrollView(
               child: Wrap(
                 //  crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,99 +101,136 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                           )
                         ],
                       ),
-                      Container(
-                        height: 20,
-                      ),
-                      const CustomText(
-                        'Color',
-                        type: FontStyle.Small,
-                      ),
-                      Container(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showColoredBox = !showColoredBox;
-                                });
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Color(int.parse(
-                                        '0xFF${lable.toString().replaceAll('#', '')}'))),
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          showColoredBox
-                              ? Container(
-                                  width: 300,
-                                  padding: const EdgeInsets.all(10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            TextField(
+                              controller: lableController,
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
+                                label: const Text('Label Text'),
+                                prefixIconConstraints: const BoxConstraints(
+                                    minWidth: 0, minHeight: 0),
+                                prefixIcon: Container(
+                                  // padding: EdgeInsets.all(5),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 7, vertical: 5),
+                                  height: 25,
+                                  width: 25,
                                   decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkSecondaryBGC
-                                        : lightBackgroundColor,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          blurRadius: 2.0, color: greyColor),
-                                    ],
+                                    color: ColorManager.getColorFromHexaDecimal(
+                                        '#${colorController.text}'),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: colors
-                                        .map((e) => GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  lable = e;
-                                                  showColoredBox = false;
-                                                });
-                                              },
-                                              child: Container(
-                                                height: 40,
-                                                width: 40,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: Color(int.parse(
-                                                      '0xFF${e.toString().replaceAll('#', '')}')),
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
-                      Container(
-                        height: 20,
-                      ),
-                      const CustomRichText(
-                        widgets: [
-                          TextSpan(text: 'Title'),
-                          TextSpan(
-                            text: '*',
-                            style: TextStyle(
-                              color: Colors.red,
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                        type: FontStyle.Small,
+                            const SizedBox(height: 10),
+                            Wrap(
+                              spacing: 10,
+                              children: colorsForLabel
+                                  .map(
+                                    (e) => GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          colorController.text =
+                                              e.toString().replaceAll('#', '');
+                                          // .toUpperCase()
+                                          // .replaceAll("#", "");
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        margin:
+                                            const EdgeInsets.only(bottom: 10),
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: ColorManager
+                                              .getColorFromHexaDecimal(
+                                                  e.toString()),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                blurRadius: 1.0,
+                                                color: greyColor),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[0-9a-zA-Z]")),
+                                      ],
+                                      controller: colorController,
+                                      onChanged: (value) {
+                                        setState(() {});
+                                      },
+                                      decoration: themeProvider
+                                          .themeManager.textFieldDecoration
+                                          .copyWith(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 3,
+                                              color: themeProvider.themeManager
+                                                  .primaryBackgroundSelectedColour),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 3,
+                                              color: themeProvider.themeManager
+                                                  .primaryBackgroundSelectedColour),
+                                        ),
+                                        filled: true,
+                                        fillColor: themeProvider.themeManager
+                                            .secondaryBackgroundDefaultColor,
+                                        prefixIcon: Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          width: 55,
+                                          height: 55,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: themeProvider.themeManager
+                                                  .primaryBackgroundSelectedColour,
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(5),
+                                                      bottomLeft:
+                                                          Radius.circular(5))),
+                                          child: CustomText(
+                                            '#',
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
+                                            fontWeight: FontWeightt.Semibold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Container(
                         height: 10,
-                      ),
-                      TextField(
-                        controller: lableController,
-                        decoration:
-                            themeProvider.themeManager.textFieldDecoration,
                       ),
                     ],
                   ),
@@ -196,22 +242,28 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                         ? 'Update Label'
                         : 'Add Label',
                     ontap: () {
-                      issuesProvider.issueLabels(
-                          slug: ref
-                              .watch(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
-                              .workspaceSlug,
-                          projID: ref
-                              .watch(ProviderList.projectProvider)
-                              .currentProject['id'],
-                          method: widget.method,
-                          data: {
-                            "name": lableController.text,
-                            "color": lable,
-                          },
-                          labelId: widget.labelId,
-                          ref: ref);
-                      Navigator.of(context).pop();
+                      if (lableController.text.trim() == '') {
+                        CustomToast.showToast(context,
+                            message: "Label is empty",
+                            toastType: ToastType.failure);
+                      } else {
+                        issuesProvider.issueLabels(
+                            slug: ref
+                                .watch(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projID: ref
+                                .watch(ProviderList.projectProvider)
+                                .currentProject['id'],
+                            method: widget.method,
+                            data: {
+                              "name": lableController.text,
+                              "color": '#${colorController.text}',
+                            },
+                            labelId: widget.labelId,
+                            ref: ref);
+                        Navigator.of(context).pop();
+                      }
                     },
                   ),
                 ],

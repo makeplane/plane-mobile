@@ -1044,8 +1044,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         ),
                         widget.fromModule
                             ? Container(
-                                color: themeProvider
-                                    .themeManager.primaryBackgroundDefaultColor,
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
                                 padding: const EdgeInsets.all(25),
                                 child: activeCycleDetails(fromModule: true),
                               )

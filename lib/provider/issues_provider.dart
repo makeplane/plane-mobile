@@ -467,6 +467,7 @@ class IssuesProvider extends ChangeNotifier {
           oldCardIndex,
           groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
 
+      // ignore: use_build_context_synchronously
       CustomToast.showToast(context,
           message: 'Failed to update issue', toastType: ToastType.failure);
       updateIssueState = StateEnum.error;

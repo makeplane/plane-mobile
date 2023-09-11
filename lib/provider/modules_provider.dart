@@ -16,6 +16,8 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
   Ref? ref;
@@ -464,6 +466,7 @@ class ModuleProvider with ChangeNotifier {
 
         items.add(
           IssueCardWidget(
+            from: PreviousScreen.modules,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.moduleIssues,

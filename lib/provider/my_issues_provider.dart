@@ -17,6 +17,8 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+
 class MyIssuesProvider extends ChangeNotifier {
   MyIssuesProvider(ChangeNotifierProviderRef<MyIssuesProvider> this.ref);
   Ref? ref;
@@ -210,10 +212,10 @@ class MyIssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future filterIssues(
-      {bool created = false,
-      bool assigned = false,
-      bool subscribed = false}) async {
+  Future filterIssues({
+    bool created = false,
+    bool assigned = false,
+  }) async {
     var slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
@@ -447,6 +449,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
         items.add(
           IssueCardWidget(
+            from: PreviousScreen.myIssues,
             fromMyIssues: true,
             cardIndex: count++,
             listIndex: j,

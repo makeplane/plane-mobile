@@ -16,6 +16,8 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
   Ref? ref;
@@ -387,6 +389,7 @@ class CyclesProvider with ChangeNotifier {
         log(stateOrdering[j].toString());
         items.add(
           IssueCardWidget(
+            from: PreviousScreen.cycles,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.cycleIssues,

@@ -16,6 +16,10 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setState() {
+    notifyListeners();
+  }
+
   getAcivity({
     required String slug,
   }) async {

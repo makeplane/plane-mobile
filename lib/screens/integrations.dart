@@ -192,10 +192,10 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                                       ? 'Not Installed'
                                       : 'Installed',
                                   type: FontStyle.XSmall,
-                                  color:
-                                      workspaceProvider.slackIntegration == null
-                                          ? lightPlaceholderTextColor
-                                          : lightTextSuccessColor),
+                                  color: workspaceProvider.githubIntegration ==
+                                          null
+                                      ? lightPlaceholderTextColor
+                                      : lightTextSuccessColor),
                             )
                           ],
                         ),

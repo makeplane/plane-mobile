@@ -175,7 +175,7 @@ class _ProjectLeadAssigneeSheetState
                                       ),
                                     )
                                   : CircleAvatar(
-                                      radius: 20,
+                                      radius: 16,
                                       backgroundImage: NetworkImage(
                                           projectProvider.projectMembers[index]
                                               ['member']['avatar']),
@@ -186,7 +186,7 @@ class _ProjectLeadAssigneeSheetState
                               Expanded(
                                 child: CustomText(
                                   '${projectProvider.projectMembers[index]['member']['first_name']} ${projectProvider.projectMembers[index]['member']['last_name'] ?? ''}',
-                                  type: FontStyle.H5,
+                                  type: FontStyle.Medium,
                                   maxLines: 1,
                                   color: themeProvider
                                       .themeManager.primaryTextColor,

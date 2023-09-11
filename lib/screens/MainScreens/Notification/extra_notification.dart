@@ -32,8 +32,6 @@ class _ExtraNotificationsState extends ConsumerState<ExtraNotifications> {
         },
         text: widget.title,
         centerTitle: true,
-        // leading: false,
-        fontType: FontStyle.Small,
       ),
       body: LoadingWidget(
         loading: widget.type == 'archived'

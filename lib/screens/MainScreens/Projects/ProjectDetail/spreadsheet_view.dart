@@ -222,6 +222,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => IssueDetail(
+                ref: ref.read(ProviderList.workspaceProvider).ref!,
+                from: PreviousScreen.projectDetail,
                 issueId: issuesProvider.issuesList[index]['id'],
                 appBarTitle:
                     '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',

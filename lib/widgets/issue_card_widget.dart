@@ -19,10 +19,12 @@ class IssueCardWidget extends ConsumerStatefulWidget {
   final int listIndex;
   final Enum issueCategory;
   final bool fromMyIssues;
+  final PreviousScreen from;
 
   const IssueCardWidget(
       {required this.cardIndex,
       required this.listIndex,
+      required this.from,
       required this.issueCategory,
       this.fromMyIssues = false,
       super.key});
@@ -53,6 +55,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             Const.globalKey.currentContext!,
             MaterialPageRoute(
                 builder: (context) => IssueDetail(
+                  ref: ref.read(ProviderList.workspaceProvider).ref!,
+                      from: widget.from,
                       projID: widget.issueCategory == IssueCategory.myIssues
                           ? provider.issuesResponse[widget.cardIndex]
                               ['project_detail']['id']

@@ -86,7 +86,12 @@ class _ActivityState extends ConsumerState<Activity> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => IssueDetail(
-                                                
+                                                        ref: ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .ref!,
+                                                        from: PreviousScreen
+                                                            .activity,
                                                         projID: activityProvider
                                                                 .data[index]
                                                             ["project"],
@@ -243,7 +248,8 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 ..onTap = () {
                                                                                   Navigator.of(context).push(MaterialPageRoute(
                                                                                       builder: (_) => IssueDetail(
-                                                                                       
+                                                                                            ref: ref.read(ProviderList.workspaceProvider).ref!,
+                                                                                            from: PreviousScreen.activity,
                                                                                             projID: activityProvider.data[index]["project"],
                                                                                             workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
                                                                                             appBarTitle: '',
@@ -457,12 +463,12 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               ..onTap = () {
                                                                                 Navigator.of(context).push(MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                                                                          
+                                              
+                                                                                          ref: ref.read(ProviderList.workspaceProvider).ref!,
+                                                                                          from: PreviousScreen.activity,
                                                                                           projID: activityProvider.data[index]["project"],
                                                                                           workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                          appBarTitle:activityProvider.data[index]['issue_detail'] != null
-                                                                                ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}'
-                                                                                : '',
+                                                                                          appBarTitle: activityProvider.data[index]['issue_detail'] != null ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
                                                                                           issueId: activityProvider.data[index]["issue"],
                                                                                         )));
                                                                               },

@@ -19,6 +19,8 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+
 class IssuesProvider extends ChangeNotifier {
   IssuesProvider(ChangeNotifierProviderRef<IssuesProvider> this.ref);
   Ref? ref;
@@ -134,7 +136,7 @@ class IssuesProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
-  List<BoardListsData> initializeBoard() {
+  List<BoardListsData> initializeBoard({bool views = false}) {
     var themeProvider = ref!.read(ProviderList.themeProvider);
     int count = 0;
     //   log(issues.groupBY.name);
@@ -154,6 +156,7 @@ class IssuesProvider extends ChangeNotifier {
 
         items.add(
           IssueCardWidget(
+            from: views ? PreviousScreen.views : PreviousScreen.projectDetail,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.issues,

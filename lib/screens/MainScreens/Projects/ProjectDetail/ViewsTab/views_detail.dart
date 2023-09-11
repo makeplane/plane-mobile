@@ -328,7 +328,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 color: themeProvider.themeManager.borderSubtle01Color,
                 width: double.infinity,
               ),
-              Expanded(child: issues(context, ref)),
+              Expanded(child: issues(context, ref, isViews: true)),
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,

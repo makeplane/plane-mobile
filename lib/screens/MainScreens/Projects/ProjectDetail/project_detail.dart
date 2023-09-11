@@ -852,13 +852,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
   }
 }
 
-Widget issues(BuildContext context, WidgetRef ref) {
+Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
   var themeProvider = ref.watch(ProviderList.themeProvider);
   var issueProvider = ref.watch(ProviderList.issuesProvider);
   var projectProvider = ref.watch(ProviderList.projectProvider);
   // log(issueProvider.issueState.name);
   if (issueProvider.issues.projectView == ProjectView.list) {
-    issueProvider.initializeBoard();
+    issueProvider.initializeBoard(views: isViews);
   }
 
   return LoadingWidget(
@@ -1059,7 +1059,7 @@ Widget issues(BuildContext context, WidgetRef ref) {
                           )
                         : issueProvider.issues.projectView == ProjectView.kanban
                             ? KanbanBoard(
-                                issueProvider.initializeBoard(),
+                                issueProvider.initializeBoard(views: isViews),
                                 isCardsDraggable:
                                     issueProvider.checkIsCardsDaraggable(),
                                 onItemReorder: (

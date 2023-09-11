@@ -364,8 +364,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               SizedBox(
                 width: width * 0.5,
                 child: CustomText(
-                  profileProvider.userProfile.email ??
-                      'rameshkumar2299@gmail.com',
+                  profileProvider.userProfile.email ?? '',
                   type: FontStyle.Medium,
                   color: themeProvider.themeManager.placeholderTextColor,
                   maxLines: 1,

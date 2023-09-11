@@ -11,6 +11,7 @@ import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/error_state.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -25,7 +26,10 @@ class ProjectScreen extends ConsumerStatefulWidget {
   ConsumerState<ProjectScreen> createState() => _ProjectScreenState();
 }
 
+@override
 class _ProjectScreenState extends ConsumerState<ProjectScreen> {
+  int selected = 0;
+  PageController controller = PageController();
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
@@ -35,60 +39,25 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
     log(projectProvider.projectState.toString());
     //   log(projectProvider.starredProjects.toString());
     return Scaffold(
-      appBar: AppBar(
-        //back ground color same as scaffold
-        backgroundColor: Colors.transparent,
-
-        elevation: 0,
-        actions: const [
-          //switch theme
-        ],
-        leadingWidth: 0,
-        leading: const Text(''),
-        title: Row(
-          children: [
-            CustomText(
-              'Projects',
-              type: FontStyle.H4,
-              fontWeight: FontWeightt.Semibold,
-              color: themeProvider.themeManager.primaryTextColor,
-            ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                workspaceProvider.role != Role.admin &&
-                        workspaceProvider.role != Role.member
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CreateProject(),
-                            ),
-                          );
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: themeProvider
-                              .themeManager.primaryBackgroundSelectedColour,
-                          radius: 20,
-                          child: Icon(
-                            size: 20,
-                            Icons.add,
-                            color:
-                                themeProvider.themeManager.secondaryTextColor,
-                          ),
-                        ),
-                      ),
-                const SizedBox(width: 10),
-                GestureDetector(
+      appBar: CustomAppBar(
+        onPressed: () {},
+        text: 'Projects',
+        centerTitle: false,
+        leading: false,
+        fontType: FontStyle.H4,
+        elevation: false,
+        actions: [
+          workspaceProvider.role != Role.admin &&
+                  workspaceProvider.role != Role.member
+              ? Container()
+              : GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const GlobalSearchSheet()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateProject(),
+                      ),
+                    );
                   },
                   child: CircleAvatar(
                     backgroundColor: themeProvider
@@ -96,588 +65,739 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                     radius: 20,
                     child: Icon(
                       size: 20,
-                      Icons.search,
+                      Icons.add,
                       color: themeProvider.themeManager.secondaryTextColor,
                     ),
                   ),
                 ),
-              ],
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const GlobalSearchSheet()));
+            },
+            child: CircleAvatar(
+              backgroundColor:
+                  themeProvider.themeManager.primaryBackgroundSelectedColour,
+              radius: 20,
+              child: Icon(
+                size: 20,
+                Icons.search,
+                color: themeProvider.themeManager.secondaryTextColor,
+              ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: LoadingWidget(
-          loading: projectProvider.projectState == StateEnum.loading,
-          widgetClass: projectProvider.projectState == StateEnum.success
-              ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: projectProvider.projects.isEmpty &&
-                          projectProvider.starredProjects.isEmpty
-                      ? Center(
-                          child: EmptyPlaceholder.emptyProject(context, ref),
-                        )
-                      : SingleChildScrollView(
-                          // physics: NeverScrollableScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+        loading: projectProvider.projectState == StateEnum.loading,
+        widgetClass: projectProvider.projectState == StateEnum.success
+            ? projectProvider.projects.isEmpty &&
+                    projectProvider.starredProjects.isEmpty
+                ? Center(
+                    child: EmptyPlaceholder.emptyProject(context, ref),
+                  )
+                : Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  controller.jumpToPage(0);
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: CustomText(
+                                        'Projects',
+                                        color: selected == 0
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
+                                        type: FontStyle.Medium,
+                                        overrride: true,
+                                      ),
+                                    ),
+                                    selected == 0
+                                        ? Container(
+                                            height: 6,
+                                            color: themeProvider
+                                                .themeManager.primaryColour,
+                                          )
+                                        : Container(
+                                            height: 6,
+                                          )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  controller.jumpToPage(1);
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: CustomText(
+                                        overrride: true,
+                                        'Favorites',
+                                        color: selected == 1
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
+                                        type: FontStyle.Medium,
+                                      ),
+                                    ),
+                                    selected == 1
+                                        ? Container(
+                                            height: 6,
+                                            color: themeProvider
+                                                .themeManager.primaryColour,
+                                          )
+                                        : Container(
+                                            height: 6,
+                                          )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  controller.jumpToPage(2);
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: CustomText(
+                                        overrride: true,
+                                        'Unjoined',
+                                        color: selected == 2
+                                            ? themeProvider
+                                                .themeManager.primaryColour
+                                            : themeProvider.themeManager
+                                                .placeholderTextColor,
+                                        type: FontStyle.Medium,
+                                      ),
+                                    ),
+                                    selected == 2
+                                        ? Container(
+                                            height: 6,
+                                            color: themeProvider
+                                                .themeManager.primaryColour,
+                                          )
+                                        : Container(
+                                            height: 6,
+                                          ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15),
+                          child: PageView(
+                            controller: controller,
+                            onPageChanged: (value) {
+                              setState(() {
+                                selected = value;
+                              });
+                            },
                             children: [
-                              checkStarredProjects(
-                                      projects: projectProvider.projects)
-                                  ? const SizedBox(height: 10)
-                                  : Container(),
-                              checkStarredProjects(
-                                      projects: projectProvider.projects)
-                                  ? CustomText(
-                                      'Favorites',
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Medium,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    )
-                                  : const SizedBox.shrink(),
-                              checkStarredProjects(
-                                      projects: projectProvider.projects)
-                                  ? const SizedBox(height: 10)
-                                  : const SizedBox.shrink(),
-                              starredProjects(projectProvider, themeProvider),
-                              (projectProvider.projects.isNotEmpty &&
-                                          checkUnstarredProject(
-                                              projects:
-                                                  projectProvider.projects)) &&
-                                      (checkStarredProjects(
-                                              projects:
-                                                  projectProvider.projects) ||
-                                          checkUnJoinedProject(
-                                              projects:
-                                                  projectProvider.projects))
-                                  ? CustomText(
-                                      'Projects',
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Medium,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    )
-                                  : const SizedBox.shrink(),
-                              checkUnstarredProject(
-                                      projects: projectProvider.projects)
-                                  ? const SizedBox(height: 10)
-                                  : const SizedBox.shrink(),
                               unstarredProjects(projectProvider, themeProvider),
-                              projectProvider.projects.isNotEmpty &&
-                                      checkUnJoinedProject(
-                                          projects: projectProvider.projects)
-                                  ? CustomText(
-                                      'Unjoined Projects',
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Medium,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    )
-                                  : Container(),
-                              checkUnJoinedProject(
-                                      projects: projectProvider.projects)
-                                  ? const SizedBox(height: 10)
-                                  : const SizedBox.shrink(),
+                              starredProjects(projectProvider, themeProvider),
                               unJoinedProjects(projectProvider, themeProvider),
-                              const SizedBox(height: 30),
                             ],
                           ),
                         ),
-                )
-              : errorState(
-                  context: context,
-                  ontap: () {
-                    projectProvider.getProjects(
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
-                            .workspaceSlug);
-                  })),
+                      )
+                    ],
+                  )
+            : errorState(
+                context: context,
+                ontap: () {
+                  projectProvider.getProjects(
+                    slug: ref
+                        .read(ProviderList.workspaceProvider)
+                        .selectedWorkspace!
+                        .workspaceSlug,
+                  );
+                },
+              ),
+      ),
     );
   }
 
-  ListView unstarredProjects(
-      ProjectsProvider projectProvider, ThemeProvider themeProvider) {
-    return ListView.separated(
-      padding: checkUnstarredProject(projects: projectProvider.projects)
-          ? const EdgeInsets.only(bottom: 20)
-          : EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      separatorBuilder: (context, index) {
-        return projectProvider.projects[index]['is_favorite'] == true ||
-                projectProvider.projects[index]['is_member'] == false
-            ? Container()
-            : Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Divider(
-                    height: 1,
-                    thickness: 1,
-                    indent: 0,
-                    endIndent: 0,
-                    color: themeProvider.themeManager.borderSubtle01Color),
-              );
-      },
-      itemCount: projectProvider.projects.length,
-      itemBuilder: (context, index) {
-        return projectProvider.projects[index]['is_favorite'] == true ||
-                projectProvider.projects[index]['is_member'] == false
-            ? Container()
-            : ListTile(
-                onTap: () {
-                  //   log(projectProvider.projects[index].toString());
-                  if (projectProvider.currentProject !=
-                      projectProvider.projects[index]) {
-                    ref.read(ProviderList.issuesProvider).clearData();
-                  }
-                  projectProvider.currentProject =
-                      projectProvider.projects[index];
-                  projectProvider.currentProject["index"] = index;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProjectDetail(
-                        index: index,
-                      ),
-                    ),
-                  );
-                },
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  height: 54,
-                  width: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ColorManager.getColorWithIndex(index),
-                  ),
-                  child: Center(
-                    child: projectProvider.projects[index]['icon_prop'] != null
-                        ? Icon(
-                            iconList[projectProvider.projects[index]
-                                ['icon_prop']['name']],
-                            color: Color(
-                              int.parse(
-                                projectProvider.projects[index]['icon_prop']
-                                        ["color"]
-                                    .toString()
-                                    .replaceAll('#', '0xFF'),
-                              ),
-                            ),
-                          )
-                        : Text(
-                            int.tryParse(projectProvider.projects[index]
-                                            ['emoji']
-                                        .toString()) !=
-                                    null
-                                ? String.fromCharCode(int.parse(
-                                    projectProvider.projects[index]['emoji']))
-                                : '🚀',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                            ),
-                          ),
-                  ),
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  // child: Text(
-                  //   allProject[index].title,
-                  //   style: TextStyle(
-                  //     color: themeProvider.primaryTextColor,
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeightt.Medium,
-                  //   ),
-                  // ),
-                  child: CustomText(
-                    projectProvider.projects[index]['name'],
-                    // color: themeProvider.primaryTextColor,
-
-                    type: FontStyle.H6,
-                    fontWeight: FontWeightt.Medium,
-                    color: themeProvider.themeManager.primaryTextColor,
-                    textAlign: TextAlign.start,
-                    maxLines: 1,
-                  ),
-                ),
-                subtitle: Row(
-                  children: [
-                    // Text(
-                    //   allProject[index].subtitle,
-                    //   style: TextStyle(
-                    //     color: themeProvider.strokeColor,
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeightt.Medium,
-                    //   ),
-                    // ),
-                    CustomText(
-                      projectProvider.projects[index]['is_member']
-                          ? 'Member'
-                          : 'Not a Member',
-                      // color: themeProvider.strokeColor,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
-                    ),
-                    const SizedBox(width: 10),
-                    //dot as a separator
-                    CircleAvatar(
-                      radius: 3,
-                      backgroundColor:
-                          themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    const SizedBox(width: 10),
-                    // Text(
-                    //   allProject[index].date,
-                    //   style: TextStyle(
-                    //     color: themeProvider.strokeColor,
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeightt.Medium,
-                    //   ),
-                    // ),
-                    CustomText(
-                      DateFormat('d MMMM').format(DateTime.parse(
-                          projectProvider.projects[index]['created_at'])),
-                      // color: themeProvider.strokeColor,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
-
-                      // fontSize: 16,
-                    ),
-                  ],
-                ),
-                //clickable star icon
-                trailing: IconButton(
-                  onPressed: () {
-                    projectProvider.favouriteProjects(
-                        index: index,
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .workspaces
-                            .where((element) =>
-                                element['id'] ==
-                                ref
-                                    .read(ProviderList.profileProvider)
-                                    .userProfile
-                                    .lastWorkspaceId)
-                            .first['slug'],
-                        method: HttpMethod.post,
-                        projectID: projectProvider.projects[index]["id"]);
-                  },
-                  icon: Icon(
-                    Icons.star_border,
-                    color: themeProvider.themeManager.placeholderTextColor,
-                  ),
-                ),
-              );
-      },
-    );
+  Future refresh() async {
+    var projectProvider = ref.read(ProviderList.projectProvider);
+    await projectProvider.getProjects(
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace!
+            .workspaceSlug);
+    // await projectProvider.initializeProject(ref: ref);
   }
 
-  ListView starredProjects(
+  Widget unstarredProjects(
       ProjectsProvider projectProvider, ThemeProvider themeProvider) {
-    return ListView.separated(
-      padding: checkStarredProjects(projects: projectProvider.projects)
-          ? const EdgeInsets.only(bottom: 20)
-          : EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      separatorBuilder: (context, index) {
-        return projectProvider.projects[index]['is_favorite'] == false ||
-                projectProvider.projects[index]['is_member'] == false
-            ? Container()
-            : Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Divider(
-                    height: 1,
-                    thickness: 1,
-                    indent: 0,
-                    endIndent: 0,
-                    color: themeProvider.themeManager.borderSubtle01Color
-                    // themeProvider.isDarkThemeEnabled
-                    //     ? darkThemeBorder
-                    //     : const Color.fromRGBO(
-                    //         238, 238, 238, 1),
-                    ),
-              );
-      },
-      itemCount: projectProvider.projects.length,
-      itemBuilder: (context, index) {
-        return projectProvider.projects[index]['is_favorite'] == false ||
-                projectProvider.projects[index]['is_member'] == false
-            ? Container()
-            : ListTile(
-                onTap: () {
-                  if (projectProvider.currentProject !=
-                      projectProvider.projects[index]) {
-                    ref.read(ProviderList.issuesProvider).clearData();
-                  }
-                  projectProvider.currentProject =
-                      projectProvider.projects[index];
-
-                  projectProvider.currentProject["index"] = index;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProjectDetail(
-                        index: index,
-                      ),
-                    ),
-                  );
-                },
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  height: 54,
-                  width: 54,
-                  decoration: BoxDecoration(
-                    color: ColorManager.getColorWithIndex(index),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: projectProvider.projects[index]['icon_prop'] != null
-                        ? Icon(
-                            iconList[projectProvider.projects[index]
-                                ['icon_prop']['name']],
-                            color: Color(
-                              int.parse(
-                                projectProvider.projects[index]['icon_prop']
-                                        ["color"]
-                                    .toString()
-                                    .replaceAll('#', '0xFF'),
+    selected = 0;
+    return checkUnstarredProject(projects: projectProvider.projects)
+        ? RefreshIndicator(
+            color: themeProvider.themeManager.primaryColour,
+            backgroundColor:
+                themeProvider.themeManager.primaryBackgroundDefaultColor,
+            onRefresh: refresh,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 20, top: 20),
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: false,
+              separatorBuilder: (context, index) {
+                return projectProvider.projects[index]['is_favorite'] == true ||
+                        projectProvider.projects[index]['is_member'] == false
+                    ? Container()
+                    : Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            indent: 0,
+                            endIndent: 0,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color),
+                      );
+              },
+              itemCount: projectProvider.projects.length,
+              itemBuilder: (context, index) {
+                return projectProvider.projects[index]['is_favorite'] == true ||
+                        projectProvider.projects[index]['is_member'] == false
+                    ? Container()
+                    : ListTile(
+                        onTap: () {
+                          //   log(projectProvider.projects[index].toString());
+                          if (projectProvider.currentProject !=
+                              projectProvider.projects[index]) {
+                            ref.read(ProviderList.issuesProvider).clearData();
+                          }
+                          projectProvider.currentProject =
+                              projectProvider.projects[index];
+                          projectProvider.currentProject["index"] = index;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectDetail(
+                                index: index,
                               ),
                             ),
-                          )
-                        : Text(
-                            int.tryParse(projectProvider.projects[index]
-                                            ['emoji']
-                                        .toString()) !=
-                                    null
-                                ? String.fromCharCode(int.parse(
-                                    projectProvider.projects[index]['emoji']))
-                                : '🚀',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                            ),
+                          );
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          height: 54,
+                          width: 54,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: ColorManager.getColorWithIndex(index),
                           ),
-                  ),
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  // child: Text(
-                  //   starredProject[index].title,
-                  //   style: TextStyle(
-                  //     color: themeProvider.primaryTextColor,
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeightt.Medium,
-                  //   ),
-                  // ),
-                  child: CustomText(
-                    projectProvider.projects[index]['name'],
-                    color: themeProvider.themeManager.primaryTextColor,
-                    type: FontStyle.H6,
-                    fontWeight: FontWeightt.Medium,
-                    textAlign: TextAlign.start,
-                    maxLines: 1,
-                  ),
-                ),
-                subtitle: Row(
-                  children: [
-                    CustomText(
-                      projectProvider.projects[index]['is_member']
-                          ? 'Member'
-                          : 'Not a Member',
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
-                    ),
-                    const SizedBox(width: 10),
-                    //dot as a separator
-                    CircleAvatar(
-                      radius: 3,
-                      backgroundColor:
-                          themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    const SizedBox(width: 10),
-                    CustomText(
-                      DateFormat('d MMMM').format(DateTime.parse(
-                          projectProvider.projects[index]['created_at'])),
-                      // color: themeProvider.strokeColor,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
-                      // fontSize: 16,
-                    ),
-                    // Text(
-                    //   starredProject[index].date,
-                    //   style: TextStyle(
-                    //     color: themeProvider.strokeColor,
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeightt.Medium,
-                    //   ),
-                    // ),
-                  ],
-                ),
-                //clickable star icon
+                          child: Center(
+                            child: projectProvider.projects[index]
+                                        ['icon_prop'] !=
+                                    null
+                                ? Icon(
+                                    iconList[projectProvider.projects[index]
+                                        ['icon_prop']['name']],
+                                    color: Color(
+                                      int.parse(
+                                        projectProvider.projects[index]
+                                                ['icon_prop']["color"]
+                                            .toString()
+                                            .replaceAll('#', '0xFF'),
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    int.tryParse(projectProvider.projects[index]
+                                                    ['emoji']
+                                                .toString()) !=
+                                            null
+                                        ? String.fromCharCode(int.parse(
+                                            projectProvider.projects[index]
+                                                ['emoji']))
+                                        : '🚀',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          // child: Text(
+                          //   allProject[index].title,
+                          //   style: TextStyle(
+                          //     color: themeProvider.primaryTextColor,
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeightt.Medium,
+                          //   ),
+                          // ),
+                          child: CustomText(
+                            projectProvider.projects[index]['name'],
+                            // color: themeProvider.primaryTextColor,
 
-                trailing: IconButton(
-                  onPressed: () {
-                    projectProvider.favouriteProjects(
-                        index: index,
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .workspaces
-                            .where((element) =>
-                                element['id'] ==
-                                ref
-                                    .read(ProviderList.profileProvider)
-                                    .userProfile
-                                    .lastWorkspaceId)
-                            .first['slug'],
-                        method: HttpMethod.delete,
-                        projectID: projectProvider.projects[index]["id"]);
-                  },
-                  icon: Icon(Icons.star,
-                      color: themeProvider.themeManager.tertiaryTextColor),
-                ),
-              );
-      },
-    );
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Medium,
+                            color: themeProvider.themeManager.primaryTextColor,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                          ),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            // Text(
+                            //   allProject[index].subtitle,
+                            //   style: TextStyle(
+                            //     color: themeProvider.strokeColor,
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeightt.Medium,
+                            //   ),
+                            // ),
+                            CustomText(
+                              projectProvider.projects[index]['is_member']
+                                  ? 'Member'
+                                  : 'Not a Member',
+                              // color: themeProvider.strokeColor,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                            const SizedBox(width: 10),
+                            //dot as a separator
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: themeProvider
+                                  .themeManager.borderSubtle01Color,
+                            ),
+                            const SizedBox(width: 10),
+                            // Text(
+                            //   allProject[index].date,
+                            //   style: TextStyle(
+                            //     color: themeProvider.strokeColor,
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeightt.Medium,
+                            //   ),
+                            // ),
+                            CustomText(
+                              DateFormat('d MMMM').format(DateTime.parse(
+                                  projectProvider.projects[index]
+                                      ['created_at'])),
+                              // color: themeProvider.strokeColor,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+
+                              // fontSize: 16,
+                            ),
+                          ],
+                        ),
+                        //clickable star icon
+                        trailing: IconButton(
+                          onPressed: () {
+                            projectProvider.favouriteProjects(
+                                index: index,
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .workspaces
+                                    .where((element) =>
+                                        element['id'] ==
+                                        ref
+                                            .read(ProviderList.profileProvider)
+                                            .userProfile
+                                            .lastWorkspaceId)
+                                    .first['slug'],
+                                method: HttpMethod.post,
+                                projectID: projectProvider.projects[index]
+                                    ["id"]);
+                          },
+                          icon: Icon(
+                            Icons.star_border,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                          ),
+                        ),
+                      );
+              },
+            ),
+          )
+        : EmptyPlaceholder.emptyUnstaredProject(context, ref, refresh);
   }
 
-  ListView unJoinedProjects(
+  Widget starredProjects(
       ProjectsProvider projectProvider, ThemeProvider themeProvider) {
-    return ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      separatorBuilder: (context, index) {
-        return projectProvider.projects[index]['is_member'] == true
-            ? Container()
-            : Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Divider(
-                    height: 1,
-                    thickness: 1,
-                    indent: 0,
-                    endIndent: 0,
-                    color: themeProvider.themeManager.borderSubtle01Color),
-              );
-      },
-      itemCount: projectProvider.projects.length,
-      itemBuilder: (context, index) {
-        return projectProvider.projects[index]['is_member'] == true
-            ? Container()
-            : ListTile(
-                onTap: () {
-                  //   log(projectProvider.projects[index].toString());
-                  if (projectProvider.currentProject !=
-                      projectProvider.projects[index]) {
-                    ref.read(ProviderList.issuesProvider).clearData();
-                  }
-                  projectProvider.currentProject =
-                      projectProvider.projects[index];
-                  projectProvider.currentProject["index"] = index;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProjectDetail(
-                        index: index,
-                      ),
-                    ),
-                  );
-                },
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  height: 54,
-                  width: 54,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ColorManager.getColorWithIndex(index),
-                  ),
-                  child: Center(
-                    child: projectProvider.projects[index]['icon_prop'] != null
-                        ? Icon(
-                            iconList[projectProvider.projects[index]
-                                ['icon_prop']['name']],
-                            color: Color(
-                              int.parse(
-                                projectProvider.projects[index]['icon_prop']
-                                        ["color"]
-                                    .toString()
-                                    .replaceAll('#', '0xFF'),
+    selected = 0;
+    return checkStarredProjects(projects: projectProvider.projects)
+        ? RefreshIndicator(
+            color: themeProvider.themeManager.primaryColour,
+            backgroundColor:
+                themeProvider.themeManager.primaryBackgroundDefaultColor,
+            onRefresh: refresh,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 20, top: 20),
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: false,
+              separatorBuilder: (context, index) {
+                return projectProvider.projects[index]['is_favorite'] ==
+                            false ||
+                        projectProvider.projects[index]['is_member'] == false
+                    ? Container()
+                    : Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            indent: 0,
+                            endIndent: 0,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color
+                            // themeProvider.isDarkThemeEnabled
+                            //     ? darkThemeBorder
+                            //     : const Color.fromRGBO(
+                            //         238, 238, 238, 1),
+                            ),
+                      );
+              },
+              itemCount: projectProvider.projects.length,
+              itemBuilder: (context, index) {
+                return projectProvider.projects[index]['is_favorite'] ==
+                            false ||
+                        projectProvider.projects[index]['is_member'] == false
+                    ? Container()
+                    : ListTile(
+                        onTap: () {
+                          if (projectProvider.currentProject !=
+                              projectProvider.projects[index]) {
+                            ref.read(ProviderList.issuesProvider).clearData();
+                          }
+                          projectProvider.currentProject =
+                              projectProvider.projects[index];
+
+                          projectProvider.currentProject["index"] = index;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectDetail(
+                                index: index,
                               ),
                             ),
-                          )
-                        : Text(
-                            int.tryParse(projectProvider.projects[index]
-                                            ['emoji']
-                                        .toString()) !=
-                                    null
-                                ? String.fromCharCode(int.parse(
-                                    projectProvider.projects[index]['emoji']))
-                                : '🚀',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                            ),
+                          );
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          height: 54,
+                          width: 54,
+                          decoration: BoxDecoration(
+                            color: ColorManager.getColorWithIndex(index),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                  ),
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: CustomText(
-                    projectProvider.projects[index]['name'],
-                    type: FontStyle.H6,
-                    fontWeight: FontWeightt.Medium,
-                    color: themeProvider.themeManager.primaryTextColor,
-                    textAlign: TextAlign.start,
-                    maxLines: 1,
-                  ),
-                ),
-                subtitle: Row(
-                  children: [
-                    CustomText(
-                      projectProvider.projects[index]['is_member']
-                          ? 'Member'
-                          : 'Not a Member',
-                      // color: themeProvider.strokeColor,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
-                    ),
-                    const SizedBox(width: 10),
-                    //dot as a separator
-                    CircleAvatar(
-                      radius: 3,
-                      backgroundColor:
-                          themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    const SizedBox(width: 10),
-                    CustomText(
-                      DateFormat('d MMMM').format(DateTime.parse(
-                          projectProvider.projects[index]['created_at'])),
-                      // color: themeProvider.strokeColor,
-                      type: FontStyle.Medium,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.placeholderTextColor,
+                          child: Center(
+                            child: projectProvider.projects[index]
+                                        ['icon_prop'] !=
+                                    null
+                                ? Icon(
+                                    iconList[projectProvider.projects[index]
+                                        ['icon_prop']['name']],
+                                    color: Color(
+                                      int.parse(
+                                        projectProvider.projects[index]
+                                                ['icon_prop']["color"]
+                                            .toString()
+                                            .replaceAll('#', '0xFF'),
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    int.tryParse(projectProvider.projects[index]
+                                                    ['emoji']
+                                                .toString()) !=
+                                            null
+                                        ? String.fromCharCode(int.parse(
+                                            projectProvider.projects[index]
+                                                ['emoji']))
+                                        : '🚀',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          // child: Text(
+                          //   starredProject[index].title,
+                          //   style: TextStyle(
+                          //     color: themeProvider.primaryTextColor,
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeightt.Medium,
+                          //   ),
+                          // ),
+                          child: CustomText(
+                            projectProvider.projects[index]['name'],
+                            color: themeProvider.themeManager.primaryTextColor,
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Medium,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                          ),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            CustomText(
+                              projectProvider.projects[index]['is_member']
+                                  ? 'Member'
+                                  : 'Not a Member',
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                            const SizedBox(width: 10),
+                            //dot as a separator
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: themeProvider
+                                  .themeManager.borderSubtle01Color,
+                            ),
+                            const SizedBox(width: 10),
+                            CustomText(
+                              DateFormat('d MMMM').format(DateTime.parse(
+                                  projectProvider.projects[index]
+                                      ['created_at'])),
+                              // color: themeProvider.strokeColor,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              // fontSize: 16,
+                            ),
+                            // Text(
+                            //   starredProject[index].date,
+                            //   style: TextStyle(
+                            //     color: themeProvider.strokeColor,
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeightt.Medium,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        //clickable star icon
 
-                      // fontSize: 16,
-                    ),
-                  ],
-                ),
-                //clickable star icon
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 15, left: 0),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                    color: themeProvider.themeManager.placeholderTextColor,
-                  ),
-                ),
-              );
-      },
-    );
+                        trailing: IconButton(
+                          onPressed: () {
+                            projectProvider.favouriteProjects(
+                                index: index,
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .workspaces
+                                    .where((element) =>
+                                        element['id'] ==
+                                        ref
+                                            .read(ProviderList.profileProvider)
+                                            .userProfile
+                                            .lastWorkspaceId)
+                                    .first['slug'],
+                                method: HttpMethod.delete,
+                                projectID: projectProvider.projects[index]
+                                    ["id"]);
+                          },
+                          icon: Icon(Icons.star,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor),
+                        ),
+                      );
+              },
+            ),
+          )
+        : EmptyPlaceholder.emptyFavoriteProject(context, ref, refresh);
+  }
+
+  Widget unJoinedProjects(
+      ProjectsProvider projectProvider, ThemeProvider themeProvider) {
+    selected = 0;
+    return checkUnJoinedProject(projects: projectProvider.projects)
+        ? RefreshIndicator(
+            color: themeProvider.themeManager.primaryColour,
+            backgroundColor:
+                themeProvider.themeManager.primaryBackgroundDefaultColor,
+            onRefresh: refresh,
+            child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 20, top: 20),
+              shrinkWrap: false,
+              separatorBuilder: (context, index) {
+                return projectProvider.projects[index]['is_member'] == true
+                    ? Container()
+                    : Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            indent: 0,
+                            endIndent: 0,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color),
+                      );
+              },
+              itemCount: projectProvider.projects.length,
+              itemBuilder: (context, index) {
+                return projectProvider.projects[index]['is_member'] == true
+                    ? Container()
+                    : ListTile(
+                        onTap: () {
+                          //   log(projectProvider.projects[index].toString());
+                          if (projectProvider.currentProject !=
+                              projectProvider.projects[index]) {
+                            ref.read(ProviderList.issuesProvider).clearData();
+                          }
+                          projectProvider.currentProject =
+                              projectProvider.projects[index];
+                          projectProvider.currentProject["index"] = index;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectDetail(
+                                index: index,
+                              ),
+                            ),
+                          );
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          height: 54,
+                          width: 54,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: ColorManager.getColorWithIndex(index),
+                          ),
+                          child: Center(
+                            child: projectProvider.projects[index]
+                                        ['icon_prop'] !=
+                                    null
+                                ? Icon(
+                                    iconList[projectProvider.projects[index]
+                                        ['icon_prop']['name']],
+                                    color: Color(
+                                      int.parse(
+                                        projectProvider.projects[index]
+                                                ['icon_prop']["color"]
+                                            .toString()
+                                            .replaceAll('#', '0xFF'),
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    int.tryParse(projectProvider.projects[index]
+                                                    ['emoji']
+                                                .toString()) !=
+                                            null
+                                        ? String.fromCharCode(int.parse(
+                                            projectProvider.projects[index]
+                                                ['emoji']))
+                                        : '🚀',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: CustomText(
+                            projectProvider.projects[index]['name'],
+                            type: FontStyle.H6,
+                            fontWeight: FontWeightt.Medium,
+                            color: themeProvider.themeManager.primaryTextColor,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                          ),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            CustomText(
+                              projectProvider.projects[index]['is_member']
+                                  ? 'Member'
+                                  : 'Not a Member',
+                              // color: themeProvider.strokeColor,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                            const SizedBox(width: 10),
+                            //dot as a separator
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: themeProvider
+                                  .themeManager.borderSubtle01Color,
+                            ),
+                            const SizedBox(width: 10),
+                            CustomText(
+                              DateFormat('d MMMM').format(DateTime.parse(
+                                  projectProvider.projects[index]
+                                      ['created_at'])),
+                              // color: themeProvider.strokeColor,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+
+                              // fontSize: 16,
+                            ),
+                          ],
+                        ),
+                        //clickable star icon
+                        trailing: Padding(
+                          padding: const EdgeInsets.only(right: 15, left: 0),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                          ),
+                        ),
+                      );
+              },
+            ),
+          )
+        : EmptyPlaceholder.emptyUnjoinedProject(context, ref, refresh);
   }
 
   bool checkStarredProjects({List? projects}) {

@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int currentIndex = 0;
+  static int currentIndex = 0;
   List navBarItems = [
     {'icon': 'assets/svg_images/home.svg', 'label': 'Home'},
     {'icon': 'assets/svg_images/projects.svg', 'label': 'Projects'},

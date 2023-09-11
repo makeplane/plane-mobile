@@ -144,6 +144,7 @@ class WorkspaceProvider extends ChangeNotifier {
 
       var projectProv = ref.read(ProviderList.projectProvider);
       var profileProv = ref.read(ProviderList.profileProvider);
+      var myissuesProv = ref.read(ProviderList.myIssuesProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
       postHogService(
           eventName: 'CREATE_WORKSPACE',
@@ -160,6 +161,31 @@ class WorkspaceProvider extends ChangeNotifier {
       ref.read(ProviderList.dashboardProvider).getDashboard();
       projectProv.projects = [];
       projectProv.getProjects(slug: slug);
+      myissuesProv.getMyIssuesView().then((value) {
+        myissuesProv.filterIssues(assigned: true);
+      });
+
+      ref.read(ProviderList.notificationProvider).getUnreadCount();
+      ref.read(ProviderList.myIssuesProvider).getLabels();
+
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'assigned');
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'created');
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'watching');
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'unread', getUnread: true);
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'archived', getArchived: true);
+      ref
+          .read(ProviderList.notificationProvider)
+          .getNotifications(type: 'snoozed', getSnoozed: true);
       createWorkspaceState = StateEnum.success;
       log(response.data.toString());
       notifyListeners();
@@ -264,6 +290,7 @@ class WorkspaceProvider extends ChangeNotifier {
           // currentWorkspace = element;
 
           selectedWorkspace = WorkspaceModel.fromJson(element);
+
           tempLogo = selectedWorkspace!.workspaceLogo;
 
           return true;
@@ -271,10 +298,45 @@ class WorkspaceProvider extends ChangeNotifier {
         return false;
       });
 
+      var projectProv = ref!.read(ProviderList.projectProvider);
+      var myissuesProv = ref!.read(ProviderList.myIssuesProvider);
+
       if (isWorkspacePresent.isEmpty) {
         // currentWorkspace = workspaces[0];
         selectedWorkspace = WorkspaceModel.fromJson(workspaces[0]);
+        var slug = selectedWorkspace!.workspaceSlug;
         log('AFTER DELETE WORKSPACE ${selectedWorkspace!.workspaceName} }');
+        ref!.read(ProviderList.dashboardProvider).getDashboard();
+        projectProv.projects = [];
+        projectProv.getProjects(slug: slug);
+        myissuesProv.getMyIssuesView().then((value) {
+          myissuesProv.filterIssues(assigned: true);
+        });
+
+        ref!.read(ProviderList.notificationProvider).getUnreadCount();
+        ref!.read(ProviderList.myIssuesProvider).getLabels();
+
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'assigned');
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'created');
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'watching');
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'unread', getUnread: true);
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'archived', getArchived: true);
+        ref!
+            .read(ProviderList.notificationProvider)
+            .getNotifications(type: 'snoozed', getSnoozed: true);
+        createWorkspaceState = StateEnum.success;
+        log(response.data.toString());
+        notifyListeners();
       }
 
       getWorkspaceMembers();

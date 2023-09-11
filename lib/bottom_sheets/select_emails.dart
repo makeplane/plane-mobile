@@ -96,6 +96,9 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                     child: Row(
                                       children: [
                                         Radio(
+                                          fillColor: MaterialStateProperty.all(
+                                              themeProv.themeManager
+                                                  .borderStrong01Color),
                                           activeColor: primaryColor,
                                           value: index,
                                           groupValue: selectedEmail,
@@ -117,9 +120,8 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                           child: CustomText(
                                             emails[index]["email"],
                                             type: FontStyle.Small,
-                                            color: themeProv.isDarkThemeEnabled
-                                                ? darkSecondaryTextColor
-                                                : Colors.black,
+                                            color: themeProv
+                                                .themeManager.primaryTextColor,
                                           ),
                                         ),
                                       ],
@@ -128,9 +130,8 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                   Container(
                                     height: 2,
                                     width: double.infinity,
-                                    color: themeProv.isDarkThemeEnabled
-                                        ? darkThemeBorder
-                                        : strokeColor,
+                                    color: themeProv
+                                        .themeManager.borderSubtle01Color,
                                   ),
                                 ],
                               );

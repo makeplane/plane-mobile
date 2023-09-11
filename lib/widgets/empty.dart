@@ -799,6 +799,118 @@ class EmptyPlaceholder {
     );
   }
 
+  static Widget emptyFavoriteProject(
+      BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return RefreshIndicator(
+      color: themeProvider.themeManager.primaryColour,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+      onRefresh: onRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height - 200,
+          child: Column(
+            children: [
+              const Spacer(),
+              SvgPicture.asset(
+                "assets/svg_images/empty_project.svg",
+                width: 130,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 35),
+                child: CustomText(
+                  'No Favorites yet',
+                  type: FontStyle.H5,
+                  fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget emptyUnstaredProject(
+      BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return RefreshIndicator(
+      color: themeProvider.themeManager.primaryColour,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+      onRefresh: onRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height - 200,
+          child: Column(
+            children: [
+              const Spacer(),
+              SvgPicture.asset(
+                "assets/svg_images/empty_project.svg",
+                width: 130,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 35),
+                child: CustomText(
+                  'No  Projects yet',
+                  type: FontStyle.H5,
+                  fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget emptyUnjoinedProject(
+      BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    return RefreshIndicator(
+      color: themeProvider.themeManager.primaryColour,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+      onRefresh: onRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          // color: Colors.black,
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height - 200,
+          //  margin: const EdgeInsets.only(top: 150),
+          child: Column(
+            // direction: Axis.vertical,
+            // crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              const Spacer(),
+              SvgPicture.asset(
+                "assets/svg_images/empty_project.svg",
+                width: 130,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 35),
+                child: CustomText(
+                  'No Projects to Join',
+                  type: FontStyle.H5,
+                  fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget emptyLabels(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(

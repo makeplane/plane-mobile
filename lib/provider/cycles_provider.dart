@@ -260,6 +260,7 @@ class CyclesProvider with ChangeNotifier {
     required String cycleId,
     Map<String, dynamic>? data,
   }) async {
+
     try {
       if (!disableLoading) {
         cyclesDetailState = StateEnum.loading;
@@ -779,6 +780,8 @@ class CyclesProvider with ChangeNotifier {
   Future filterCycleIssues({
     required String slug,
     required String projectId,
+    String? cycleID,
+    String? moduleID,
     // required Map<String, dynamic> data,
   }) async {
     cyclesIssueState = StateEnum.loading;
@@ -788,6 +791,8 @@ class CyclesProvider with ChangeNotifier {
       filterIssues = await issuesProvider.filterIssues(
         slug: slug,
         projID: projectId,
+        cycleId: cycleID,
+        moduleId: moduleID,
         issueCategory: IssueCategory.cycleIssues,
       );
 

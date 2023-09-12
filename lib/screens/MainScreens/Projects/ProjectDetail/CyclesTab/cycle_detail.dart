@@ -87,6 +87,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       startDate: [],
     );
     issuesProvider.filterIssues(
+        cycleId: widget.cycleId,
+        moduleId: widget.moduleId,
         slug: ref
             .read(ProviderList.workspaceProvider)
             .selectedWorkspace!
@@ -94,7 +96,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueCategory: widget.fromModule
             ? IssueCategory.moduleIssues
             : IssueCategory.cycleIssues,
-        projID: ref.read(ProviderList.projectProvider).currentProject['id']);
+        projID:widget.projId?? ref.read(ProviderList.projectProvider).currentProject['id']);
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }
@@ -156,9 +158,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 .selectedWorkspace!
                 .workspaceSlug,
             projectId:
-                ref.read(ProviderList.projectProvider).currentProject['id'],
+             widget.projId??   ref.read(ProviderList.projectProvider).currentProject['id'],
             method: CRUD.read,
-            cycleId: widget.cycleId!)
+            cycleId: widget.cycleId!         
+            )
         .then((value) => getChartData(cyclesProvider
             .cyclesDetailsData['distribution']['completion_chart']));
 
@@ -168,6 +171,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     // ref.read(ProviderList.issuesProvider).getProjectView().then((value) {
     cyclesProvider
         .filterCycleIssues(
+          cycleID: widget.cycleId!,
       slug: ref
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace!

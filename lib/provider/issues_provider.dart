@@ -1250,8 +1250,8 @@ class IssuesProvider extends ChangeNotifier {
     required String slug,
     required String projID,
     bool fromViews = false,
-    // String? cycleId,
-    // String? moduleId,
+    String? cycleId,
+     String? moduleId,
     Enum issueCategory = IssueCategory.issues,
   }) async {
     var cyclesProvider = ref!.read(ProviderList.cyclesProvider);
@@ -1260,6 +1260,7 @@ class IssuesProvider extends ChangeNotifier {
       orderByState = StateEnum.loading;
       notifyListeners();
     }
+    log("cycleID=$cycleId");
 
     // if(cycleIssues){
     //   issues.groupBY = cyclesProvider.issues.groupBY;
@@ -1307,8 +1308,8 @@ class IssuesProvider extends ChangeNotifier {
                   : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID', cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID', modulesProvider.currentModule['id'] ?? '')
+          .replaceAll('\$CYCLEID',cycleId?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',moduleId?? modulesProvider.currentModule['id'] ??'')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
@@ -1353,8 +1354,8 @@ class IssuesProvider extends ChangeNotifier {
                   : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID', cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID', modulesProvider.currentModule['id'] ?? '')
+          .replaceAll('\$CYCLEID',cycleId?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',moduleId?? modulesProvider.currentModule['id'] ?? '')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));

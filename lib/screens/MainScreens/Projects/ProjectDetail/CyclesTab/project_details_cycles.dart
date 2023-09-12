@@ -269,7 +269,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -285,7 +285,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -468,7 +468,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                               onTap: () {
                                 cyclesProvider.currentCycle =
                                     cyclesProvider.cyclesAllData[index];
-                                cyclesProviderRead.setState();
+                                // cyclesProviderRead.setState();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -570,7 +570,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -586,7 +586,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(

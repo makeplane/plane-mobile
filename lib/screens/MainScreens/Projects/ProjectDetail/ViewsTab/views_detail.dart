@@ -122,7 +122,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
           issuesProvider.issues.filters = issuesProvider.tempFilters;
 
           issuesProvider.showEmptyStates =
-              issuesProvider.issueView["showEmptyGroups"];
+              issuesProvider.issueView['display_filters']['show_empty_groups'];
           log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
 
           issuesProvider.setsState();
@@ -157,8 +157,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
 
                 issuesProvider.issues.filters = issuesProvider.tempFilters;
 
-                issuesProvider.showEmptyStates =
-                    issuesProvider.issueView["showEmptyGroups"];
+                issuesProvider.showEmptyStates = issuesProvider
+                    .issueView['display_filters']['show_empty_groups'];
                 log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
 
                 issuesProvider.setsState();

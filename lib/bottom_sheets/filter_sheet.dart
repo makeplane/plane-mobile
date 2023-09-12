@@ -36,7 +36,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     {'icon': Icons.signal_cellular_alt, 'text': 'high'},
     {'icon': Icons.signal_cellular_alt_2_bar, 'text': 'medium'},
     {'icon': Icons.signal_cellular_alt_1_bar, 'text': 'low'},
-    {'icon': Icons.do_disturb_alt_outlined, 'text': 'null'}
+    {'icon': Icons.do_disturb_alt_outlined, 'text': 'none'}
   ];
 
   List states = [
@@ -55,6 +55,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     labels: [],
     targetDate: [],
     startDate: [],
+    stateGroup: [],
+    subscriber: [],
   );
 
   List<DateTime?> _targetRangeDatePickerValueWithDefaultValue = [];
@@ -268,9 +270,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                               : themeProvider.themeManager
                                                   .secondaryTextColor,
                                     ),
-                                    text: e['text'] == 'null'
-                                        ? 'None'
-                                        : e['text'],
+                                    text: e['text'],
                                     color: filters.priorities
                                             .contains(e['text'])
                                         ? themeProvider

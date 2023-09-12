@@ -65,6 +65,8 @@ class Issues {
     states: [],
     targetDate: [],
     startDate: [],
+    stateGroup: [],
+    subscriber: [],
   );
 
   DisplayProperties displayProperties;
@@ -190,6 +192,8 @@ class Filters {
   List labels = [];
   List targetDate = [];
   List startDate = [];
+  List stateGroup = [];
+  List subscriber = [];
   Filters({
     required this.priorities,
     required this.states,
@@ -198,6 +202,8 @@ class Filters {
     required this.labels,
     required this.targetDate,
     required this.startDate,
+    required this.stateGroup,
+    required this.subscriber,
   });
 
   static Map<String, List<dynamic>> toJson(Filters filters) {
@@ -209,6 +215,8 @@ class Filters {
       "state": filters.states,
       "target_date": filters.targetDate,
       "start_date": filters.startDate,
+      "state_group": filters.stateGroup,
+      "subscriber": filters.subscriber,
     };
   }
 
@@ -221,6 +229,8 @@ class Filters {
       labels: json['labels'] ?? [],
       targetDate: json['target_date'] ?? [],
       startDate: json['start_date'] ?? [],
+      stateGroup: json['state_group'] ?? [],
+      subscriber: json['subscriber'] ?? [],
     );
   }
 }

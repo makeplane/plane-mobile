@@ -85,6 +85,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       states: [],
       targetDate: [],
       startDate: [],
+      stateGroup: [],
+      subscriber: [],
     );
     issuesProvider.filterIssues(
         cycleId: widget.cycleId,
@@ -96,7 +98,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueCategory: widget.fromModule
             ? IssueCategory.moduleIssues
             : IssueCategory.cycleIssues,
-        projID:widget.projId?? ref.read(ProviderList.projectProvider).currentProject['id']);
+        projID: widget.projId ??
+            ref.read(ProviderList.projectProvider).currentProject['id']);
+
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }
@@ -157,11 +161,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 .read(ProviderList.workspaceProvider)
                 .selectedWorkspace!
                 .workspaceSlug,
-            projectId:
-             widget.projId??   ref.read(ProviderList.projectProvider).currentProject['id'],
+            projectId: widget.projId ??
+                ref.read(ProviderList.projectProvider).currentProject['id'],
             method: CRUD.read,
-            cycleId: widget.cycleId!         
-            )
+            cycleId: widget.cycleId!)
         .then((value) => getChartData(cyclesProvider
             .cyclesDetailsData['distribution']['completion_chart']));
 
@@ -171,7 +174,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     // ref.read(ProviderList.issuesProvider).getProjectView().then((value) {
     cyclesProvider
         .filterCycleIssues(
-          cycleID: widget.cycleId!,
+      cycleID: widget.cycleId!,
       slug: ref
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace!
@@ -225,7 +228,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.issues.filters = issueProvider.tempFilters;
 
         issueProvider.showEmptyStates =
-            issueProvider.issueView["showEmptyGroups"];
+            issueProvider.issueView["show_empty_groups"];
 
         issueProvider.setsState();
         issueProvider.filterIssues(
@@ -262,7 +265,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             issueProvider.issues.filters = issueProvider.tempFilters;
 
             issueProvider.showEmptyStates =
-                issueProvider.issueView["showEmptyGroups"];
+                issueProvider.issueView['display_filters']["show_empty_groups"];
 
             issueProvider.setsState();
             issueProvider.filterIssues(
@@ -538,9 +541,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.myIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule &&
-                                                      issueProvider.issues.projectView ==
-                                                          ProjectView.list) ||
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
@@ -581,12 +582,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -665,7 +664,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                                      (widget.fromModule &&
+                                                          issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(

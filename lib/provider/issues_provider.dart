@@ -49,6 +49,8 @@ class IssuesProvider extends ChangeNotifier {
     states: [],
     targetDate: [],
     startDate: [],
+    stateGroup: [],
+    subscriber: [],
   );
   var tempIssueType = IssueType.all;
   var tempProjectView = ProjectView.kanban;
@@ -947,6 +949,8 @@ class IssuesProvider extends ChangeNotifier {
                 "state": true,
                 "sub_issue_count": false,
                 "start_date": false,
+                "created_on": false,
+                "updated_on": false,
               },
             });
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -973,6 +977,12 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['properties']['priority'];
           issues.displayProperties.estimate =
               issueProperty['properties']['estimate'];
+          issues.displayProperties.startDate =
+              issueProperty['properties']['start_date'];
+          issues.displayProperties.createdOn =
+              issueProperty['properties']['created_on'];
+          issues.displayProperties.updatedOn =
+              issueProperty['properties']['updated_on'];
         }
       } else {
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -999,6 +1009,10 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['estimate'];
           cyclesProvider.issues.displayProperties.startDate =
               cyclesProvider.issueProperty['properties']['start_date'];
+          cyclesProvider.issues.displayProperties.createdOn =
+              cyclesProvider.issueProperty['properties']['created_on'];
+          cyclesProvider.issues.displayProperties.updatedOn =
+              cyclesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
               cyclesProvider.issues.displayProperties;
         } else if (issueCategory == IssueCategory.moduleIssues) {
@@ -1025,6 +1039,10 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issueProperty['properties']['estimate'];
           modulesProvider.issues.displayProperties.startDate =
               modulesProvider.issueProperty['properties']['start_date'];
+          modulesProvider.issues.displayProperties.createdOn =
+              modulesProvider.issueProperty['properties']['created_on'];
+          modulesProvider.issues.displayProperties.updatedOn =
+              modulesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =
               modulesProvider.issues.displayProperties;
         } else {
@@ -1050,6 +1068,10 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['properties']['estimate'];
           issues.displayProperties.startDate =
               issueProperty['properties']['start_date'] ?? false;
+          issues.displayProperties.createdOn =
+              issueProperty['properties']['created_on'] ?? false;
+          issues.displayProperties.updatedOn =
+              issueProperty['properties']['updated_on'] ?? false;
 
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
@@ -1133,11 +1155,11 @@ class IssuesProvider extends ChangeNotifier {
   Future updateProjectView() async {
     log(tempProjectView.toString());
     dynamic filterPriority;
-    if (issues.filters.priorities.isNotEmpty) {
-      filterPriority = issues.filters.priorities
-          .map((element) => element == 'none' ? null : element)
-          .toList();
-    }
+    // if (issues.filters.priorities.isNotEmpty) {
+    //   filterPriority = issues.filters.priorities
+    //       .map((element) => element == 'none' ? null : element)
+    //       .toList();
+    // }
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1157,8 +1179,10 @@ class IssuesProvider extends ChangeNotifier {
             "collapsed": false,
             "filterIssue": null,
             "filters": {
-              'type': null,
-              "priority": filterPriority,
+              // 'type': null,
+              // "priority": filterPriority,
+              if (issues.filters.priorities.isNotEmpty)
+                "priority": issues.filters.priorities,
               if (issues.filters.states.isNotEmpty)
                 "state": issues.filters.states,
               if (issues.filters.assignees.isNotEmpty)
@@ -1171,18 +1195,25 @@ class IssuesProvider extends ChangeNotifier {
                 "target_date": issues.filters.targetDate,
               if (issues.filters.startDate.isNotEmpty)
                 "start_date": issues.filters.startDate,
+              if (issues.filters.subscriber.isNotEmpty)
+                "subscriber": issues.filters.subscriber,
+              if (issues.filters.stateGroup.isNotEmpty)
+                "state_group": issues.filters.stateGroup,
             },
-            "type": null,
-            "groupByProperty": Issues.fromGroupBY(issues.groupBY),
-            'issueView': issues.projectView == ProjectView.kanban
-                ? 'kanban'
-                : issues.projectView == ProjectView.list
-                    ? 'list'
-                    : issues.projectView == ProjectView.calendar
-                        ? 'calendar'
-                        : 'spreadsheet',
-            "orderBy": Issues.fromOrderBY(issues.orderBY),
-            "showEmptyGroups": showEmptyStates
+            "display_filters": {
+              "group_by": Issues.fromGroupBY(issues.groupBY),
+              "order_by": Issues.fromOrderBY(issues.orderBY),
+              "type": Issues.fromIssueType(issues.issueType),
+              "show_empty_groups": showEmptyStates,
+              "layout": issues.projectView == ProjectView.kanban
+                  ? 'kanban'
+                  : issues.projectView == ProjectView.list
+                      ? 'list'
+                      : issues.projectView == ProjectView.calendar
+                          ? 'calendar'
+                          : 'spreadsheet',
+              "sub_issue": false,
+            },
           }
         },
         httpMethod: HttpMethod.post,
@@ -1217,16 +1248,19 @@ class IssuesProvider extends ChangeNotifier {
       );
       issueView = response.data["view_props"];
       log("project view=>${response.data["view_props"]}");
-      issues.projectView = issueView["issueView"] == 'list'
+      issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
           : issueView['issueView'] == 'calendar'
               ? ProjectView.calendar
               : issueView['issueView'] == 'spreadsheet'
                   ? ProjectView.spreadsheet
                   : ProjectView.kanban;
-      issues.groupBY = Issues.toGroupBY(issueView["groupByProperty"]);
-      issues.orderBY = Issues.toOrderBY(issueView["orderBy"]);
-      issues.issueType = Issues.toIssueType(issueView["filters"]["type"]);
+      issues.groupBY =
+          Issues.toGroupBY(issueView["display_filters"]["group_by"]);
+      issues.orderBY =
+          Issues.toOrderBY(issueView["display_filters"]["order_by"]);
+      issues.issueType =
+          Issues.toIssueType(issueView["display_filters"]["type"]);
       issues.filters.priorities = issueView["filters"]["priority"] ?? [];
       issues.filters.states = issueView["filters"]["state"] ?? [];
       issues.filters.assignees = issueView["filters"]["assignees"] ?? [];
@@ -1234,7 +1268,9 @@ class IssuesProvider extends ChangeNotifier {
       issues.filters.labels = issueView["filters"]["labels"] ?? [];
       issues.filters.targetDate = issueView["filters"]["target_date"] ?? [];
       issues.filters.startDate = issueView["filters"]["start_date"] ?? [];
-      showEmptyStates = issueView["showEmptyGroups"];
+      issues.filters.subscriber = issueView["filters"]["subscriber"] ?? [];
+      issues.filters.stateGroup = issueView["filters"]["state_group"] ?? [];
+      showEmptyStates = issueView["display_filters"]["show_empty_groups"];
 
       projectViewState = StateEnum.success;
       notifyListeners();
@@ -1251,7 +1287,7 @@ class IssuesProvider extends ChangeNotifier {
     required String projID,
     bool fromViews = false,
     String? cycleId,
-     String? moduleId,
+    String? moduleId,
     Enum issueCategory = IssueCategory.issues,
   }) async {
     var cyclesProvider = ref!.read(ProviderList.cyclesProvider);
@@ -1308,8 +1344,10 @@ class IssuesProvider extends ChangeNotifier {
                   : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID',cycleId?? cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID',moduleId?? modulesProvider.currentModule['id'] ??'')
+          .replaceAll(
+              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',
+              moduleId ?? modulesProvider.currentModule['id'] ?? '')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
@@ -1354,8 +1392,10 @@ class IssuesProvider extends ChangeNotifier {
                   : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID',cycleId?? cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID',moduleId?? modulesProvider.currentModule['id'] ?? '')
+          .replaceAll(
+              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',
+              moduleId ?? modulesProvider.currentModule['id'] ?? '')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));

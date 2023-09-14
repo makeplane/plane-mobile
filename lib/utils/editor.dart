@@ -99,9 +99,13 @@ class _EDITORState extends ConsumerState<EDITOR> {
                     onLoadStart: (controller, url) => setState(() {
                       isLoading = true;
                     }),
-                    onLoadStop: (controller, url) => setState(() {
-                      isLoading = false;
-                    }),
+                    onLoadStop: (controller, url) {
+                      // This is to remove the default crisp chatbot from the editor
+                      // as it is not needed in the editor
+                      controller.evaluateJavascript(
+                          source: '\$crisp.push(["safe", true])');
+                      setState(() => isLoading = false);
+                    },
                     onConsoleMessage: (controller, msg) async {
                       log(msg.message);
                       if (msg.message.startsWith("submitted")) {

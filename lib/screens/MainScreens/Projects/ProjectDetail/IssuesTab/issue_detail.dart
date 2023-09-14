@@ -113,7 +113,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     return Scaffold(
       body: EDITOR(
         url:
-            '${dotenv.env['EDITOR_URL']}m/$workspaceSlug/projects/$projID/issues/${widget.issueId}',
+            '${dotenv.env['EDITOR_URL']}/$workspaceSlug/projects/$projID/issues/${widget.issueId}',
         title: widget.appBarTitle,
       ),
     );

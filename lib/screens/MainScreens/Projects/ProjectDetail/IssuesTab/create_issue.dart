@@ -411,7 +411,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                               webviewController,
                                                           title: 'Description',
                                                           url:
-                                                              '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                              '${dotenv.env['EDITOR_URL']!}/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
                                                         )));
                                           },
                                           child: Container(
@@ -516,7 +516,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           initialUrlRequest:
                                                               URLRequest(
                                                                   url: Uri.parse(
-                                                                      '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=false'))),
+                                                                      '${dotenv.env['EDITOR_URL']!}/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=false'))),
                                                       descriptionLoading
                                                           ? Container(
                                                               alignment:
@@ -555,7 +555,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                               controller: webviewController,
                                                                               fromCreateIssue: true,
                                                                               title: 'Description',
-                                                                              url: '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                                              url: '${dotenv.env['EDITOR_URL']!}/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
                                                                             )));
                                                               },
                                                               child: Container(

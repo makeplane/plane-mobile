@@ -1248,19 +1248,27 @@ class IssuesProvider extends ChangeNotifier {
       );
       issueView = response.data["view_props"];
       log("project view=>${response.data["view_props"]}");
-      issues.projectView = issueView['display_filters']['layout'] == 'list'
-          ? ProjectView.list
-          : issueView['issueView'] == 'calendar'
-              ? ProjectView.calendar
-              : issueView['issueView'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
-      issues.groupBY =
-          Issues.toGroupBY(issueView["display_filters"]["group_by"]);
-      issues.orderBY =
-          Issues.toOrderBY(issueView["display_filters"]["order_by"]);
-      issues.issueType =
-          Issues.toIssueType(issueView["display_filters"]["type"]);
+      if (issueView.containsKey('display_filters')) {
+        issues.projectView = issueView['display_filters']['layout'] == 'list'
+            ? ProjectView.list
+            : issueView['issueView'] == 'calendar'
+                ? ProjectView.calendar
+                : issueView['issueView'] == 'spreadsheet'
+                    ? ProjectView.spreadsheet
+                    : ProjectView.kanban;
+        issues.groupBY =
+            Issues.toGroupBY(issueView["display_filters"]["group_by"]);
+        issues.orderBY =
+            Issues.toOrderBY(issueView["display_filters"]["order_by"]);
+        issues.issueType =
+            Issues.toIssueType(issueView["display_filters"]["type"]);
+        showEmptyStates = issueView["display_filters"]["show_empty_groups"] ?? false;
+      } else {
+        issues.projectView = ProjectView.kanban;
+        issues.groupBY = GroupBY.state;
+        issues.orderBY = OrderBY.startDate;
+        issues.issueType = IssueType.all;
+      }
       issues.filters.priorities = issueView["filters"]["priority"] ?? [];
       issues.filters.states = issueView["filters"]["state"] ?? [];
       issues.filters.assignees = issueView["filters"]["assignees"] ?? [];
@@ -1270,7 +1278,6 @@ class IssuesProvider extends ChangeNotifier {
       issues.filters.startDate = issueView["filters"]["start_date"] ?? [];
       issues.filters.subscriber = issueView["filters"]["subscriber"] ?? [];
       issues.filters.stateGroup = issueView["filters"]["state_group"] ?? [];
-      showEmptyStates = issueView["display_filters"]["show_empty_groups"];
 
       projectViewState = StateEnum.success;
       notifyListeners();

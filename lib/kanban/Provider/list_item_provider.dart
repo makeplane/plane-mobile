@@ -16,7 +16,7 @@ class ListItemProvider extends ChangeNotifier {
       required VoidCallback setsate}) {
     if (!context.mounted) return;
     var prov = ref.read(ProviderList.boardProvider);
-
+    if (prov.board.lists.length <= listIndex) return;
     prov.board.lists[listIndex].items[itemIndex].context = context;
     var box = context.findRenderObject() as RenderBox;
     var location = box.localToGlobal(Offset.zero);

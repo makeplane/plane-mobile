@@ -135,19 +135,30 @@ class MyIssuesProvider extends ChangeNotifier {
       );
       myIssueView = response.data["view_props"];
       log("project view=>${response.data["view_props"]}");
-      issues.projectView = myIssueView["display_filters"]['layout'] == 'list'
-          ? ProjectView.list
-          : myIssueView["display_filters"]['layout'] == 'calendar'
-              ? ProjectView.calendar
-              : myIssueView["display_filters"]['layout'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
-      issues.groupBY =
-          Issues.toGroupBY(myIssueView["display_filters"]['group_by']);
-      issues.orderBY =
-          Issues.toOrderBY(myIssueView["display_filters"]['order_by']);
-      issues.issueType =
-          Issues.toIssueType(myIssueView["display_filters"]['type']);
+      if (myIssueView.containsKey('display_filters')) {
+        issues.projectView = (myIssueView["display_filters"] as Map)
+                .containsKey('layout')
+            ? (myIssueView["display_filters"]['layout'] == 'list'
+                ? ProjectView.list
+                : myIssueView["display_filters"]['layout'] == 'calendar'
+                    ? ProjectView.calendar
+                    : myIssueView["display_filters"]['layout'] == 'spreadsheet'
+                        ? ProjectView.spreadsheet
+                        : ProjectView.kanban)
+            : ProjectView.kanban;
+        issues.groupBY =
+            Issues.toGroupBY(myIssueView["display_filters"]['group_by']);
+        issues.orderBY =
+            Issues.toOrderBY(myIssueView["display_filters"]['order_by']);
+        issues.issueType =
+            Issues.toIssueType(myIssueView["display_filters"]['type']);
+      showEmptyStates = myIssueView["display_filters"]["show_empty_groups"] ?? true;
+      } else {
+        issues.projectView = ProjectView.kanban;
+        issues.groupBY = GroupBY.state;
+        issues.orderBY = OrderBY.manual;
+        issues.issueType = IssueType.all;
+      }
       issues.filters.priorities = myIssueView["filters"]["priority"] ?? [];
       issues.filters.stateGroup = myIssueView["filters"]["state_group"] ?? [];
       // issues.filters.assignees = myIssueView["filters"]["assignees"] ?? [];
@@ -156,34 +167,36 @@ class MyIssuesProvider extends ChangeNotifier {
       issues.filters.startDate = myIssueView["filters"]["start_date"] ?? [];
       // issues.displayProperties = myIssueView["displayProperties"];
       issues.filters.targetDate = myIssueView["filters"]["target_date"] ?? [];
-      showEmptyStates = myIssueView["display_filters"]["show_empty_groups"];
-      issues.displayProperties.assignee =
-          myIssueView['display_properties']['assignee'] ?? false;
-      issues.displayProperties.dueDate =
-          myIssueView['display_properties']['due_date'] ?? false;
-      issues.displayProperties.id =
-          myIssueView['display_properties']['key'] ?? false;
-      issues.displayProperties.label =
-          myIssueView['display_properties']['labels'] ?? false;
-      issues.displayProperties.state =
-          myIssueView['display_properties']['state'] ?? false;
-      issues.displayProperties.subIsseCount =
-          myIssueView['display_properties']['sub_issue_count'] ?? false;
-      issues.displayProperties.linkCount =
-          myIssueView['display_properties']['link'] ?? false;
-      issues.displayProperties.attachmentCount =
-          myIssueView['display_properties']['attachment_count'] ?? false;
-      issues.displayProperties.priority =
-          myIssueView['display_properties']['priority'] ?? false;
-      issues.displayProperties.estimate =
-          myIssueView['display_properties']['estimate'] ?? false;
-      issues.displayProperties.startDate =
-          myIssueView['display_properties']['start_date'] ?? false;
-      issues.displayProperties.createdOn =
-          myIssueView['display_properties']['created_on'] ?? false;
-      issues.displayProperties.updatedOn =
-          myIssueView['display_properties']['updated_on'] ?? false;
-
+      if (myIssueView.containsKey('display_properties')) {
+        issues.displayProperties.assignee =
+            myIssueView['display_properties']['assignee'] ?? false;
+        issues.displayProperties.dueDate =
+            myIssueView['display_properties']['due_date'] ?? false;
+        issues.displayProperties.id =
+            myIssueView['display_properties']['key'] ?? false;
+        issues.displayProperties.label =
+            myIssueView['display_properties']['labels'] ?? false;
+        issues.displayProperties.state =
+            myIssueView['display_properties']['state'] ?? false;
+        issues.displayProperties.subIsseCount =
+            myIssueView['display_properties']['sub_issue_count'] ?? false;
+        issues.displayProperties.linkCount =
+            myIssueView['display_properties']['link'] ?? false;
+        issues.displayProperties.attachmentCount =
+            myIssueView['display_properties']['attachment_count'] ?? false;
+        issues.displayProperties.priority =
+            myIssueView['display_properties']['priority'] ?? false;
+        issues.displayProperties.estimate =
+            myIssueView['display_properties']['estimate'] ?? false;
+        issues.displayProperties.startDate =
+            myIssueView['display_properties']['start_date'] ?? false;
+        issues.displayProperties.createdOn =
+            myIssueView['display_properties']['created_on'] ?? false;
+        issues.displayProperties.updatedOn =
+            myIssueView['display_properties']['updated_on'] ?? false;
+      } else {
+        issues.displayProperties = DisplayProperties.initialize();
+      }
       // log("My Issues view=>${myIssueView.toString()}");
 
       myIssuesViewState = StateEnum.success;

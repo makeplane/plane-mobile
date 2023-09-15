@@ -46,6 +46,7 @@ class ThemeManager {
   late List<BoxShadow> shadowBottomControlButtons;
 
   late ThemeData datePickerThemeData;
+  late ThemeData timePickerThemeData;
 
   Color convertHexToSpecificShade({required int shade, required Color color}) {
     if (shade <= 100) {
@@ -415,6 +416,65 @@ class ThemeManager {
                                 onPrimary:
                                     customBackgroundColor, // primary text color
                                 surface: customAccentColor,
+                                onSurface: customTextColor));
+
+    timePickerThemeData = theme == THEME.light
+        ? ThemeData.light().copyWith(
+            dialogBackgroundColor: lightPrimaryBackgroundDefaultColor,
+            colorScheme: const ColorScheme.light(
+                brightness: Brightness.light,
+                primary: primaryColor, // primary
+                onPrimary:
+                    lightPrimaryBackgroundDefaultColor, // primary text color
+                surface: lightPrimaryBackgroundDefaultColor,
+                onSurface: lightPrimaryTextColor))
+        : theme == THEME.dark
+            ? ThemeData.light().copyWith(
+                dialogBackgroundColor: darkPrimaryBackgroundDefaultColor,
+                colorScheme: const ColorScheme.light(
+                    brightness: Brightness.dark,
+                    primary: primaryColor, // primary
+                    onPrimary:
+                        darkPrimaryBackgroundDefaultColor, // primary text color
+                    surface: darkPrimaryBackgroundDefaultColor,
+                    onSurface: darkPrimaryTextColor))
+            : theme == THEME.lightHighContrast
+                ? ThemeData.light().copyWith(
+                    dialogBackgroundColor: lightPrimaryBackgroundDefaultColor,
+                    colorScheme: const ColorScheme.light(
+                        brightness: Brightness.light,
+                        primary: primaryColor, // primary
+                        onPrimary:
+                            lightPrimaryBackgroundDefaultColor, // primary text color
+                        surface: lightPrimaryBackgroundDefaultColor,
+                        onSurface: lightContrastPrimaryTextColor))
+                : theme == THEME.darkHighContrast
+                    ? ThemeData.light().copyWith(
+                        dialogBackgroundColor:
+                            darkPrimaryBackgroundDefaultColor,
+                        colorScheme: const ColorScheme.light(
+                            brightness: Brightness.dark,
+                            primary: primaryColor, // primary
+                            onPrimary:
+                                darkPrimaryBackgroundDefaultColor, // primary text color
+                            surface: darkPrimaryBackgroundDefaultColor,
+                            onSurface: darkContrastPrimaryTextColor))
+                    : theme == THEME.custom
+                        ? ThemeData.light().copyWith(
+                            dialogBackgroundColor: customBackgroundColor,
+                            colorScheme: ColorScheme.light(
+                                primary: customAccentColor, // primary
+                                onPrimary:
+                                    customBackgroundColor, // primary text color
+                                surface: customBackgroundColor,
+                                onSurface: customTextColor))
+                        : ThemeData.light().copyWith(
+                            dialogBackgroundColor: customBackgroundColor,
+                            colorScheme: ColorScheme.light(
+                                primary: customAccentColor, // primary
+                                onPrimary:
+                                    customBackgroundColor, // primary text color
+                                surface: customBackgroundColor,
                                 onSurface: customTextColor));
 
     shadowXXS = theme == THEME.light

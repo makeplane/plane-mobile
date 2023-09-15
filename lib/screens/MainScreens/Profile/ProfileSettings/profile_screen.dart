@@ -470,6 +470,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                             imageUrl: workspaceProvider
                                                 .selectedWorkspace!
                                                 .workspaceLogo,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundDefaultColor,
+                                              ),
+                                              child: Center(
+                                                child: CustomText(
+                                                  workspaceProvider
+                                                      .selectedWorkspace!
+                                                      .workspaceName[0]
+                                                      .toUpperCase(),
+                                                  fontSize: 14,
+                                                  fontWeight:
+                                                      FontWeightt.Semibold,
+                                                  // color: const Color.fromRGBO(
+                                                  //     48, 0, 240, 1),
+                                                ),
+                                              ),
+                                            ),
                                             width: 25,
                                             height: 35,
                                             fit: BoxFit.cover,

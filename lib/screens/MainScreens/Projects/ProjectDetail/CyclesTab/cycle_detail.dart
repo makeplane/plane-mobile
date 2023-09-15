@@ -607,7 +607,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.myIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
+                                          : ((!widget.fromModule &&
+                                                      issueProvider.issues.projectView ==
+                                                          ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
@@ -648,10 +650,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -1042,7 +1046,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                     size: 19,
                                                   ),
                                                   const CustomText(
-                                                    ' Views',
+                                                    ' Display',
                                                     type: FontStyle.Medium,
                                                   )
                                                 ],

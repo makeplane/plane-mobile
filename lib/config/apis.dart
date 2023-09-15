@@ -137,4 +137,5 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/members/leave/';
   static String leaveProject =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/leave/';
+  static String releaseNotes = '$baseApi/api/release-notes/';
 }

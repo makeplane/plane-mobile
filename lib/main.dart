@@ -70,9 +70,10 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       var prov = ref.read(ProviderList.profileProvider);
       var workspaceProv = ref.read(ProviderList.workspaceProvider);
       var projectProv = ref.read(ProviderList.projectProvider);
+      var whatsNewProv = ref.read(ProviderList.whatsNewProvider.notifier);
 
       var dashProv = ref.read(ProviderList.dashboardProvider);
-
+      whatsNewProv.getWhatsNew();
       prov.getProfile().then((value) {
         // log(prov.userProfile.workspace.toString());
 
@@ -117,6 +118,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
               }, context: null);
             }
           }
+
           workspaceProv.getWorkspaceMembers();
           // log(prov.userProfile.last_workspace_id.toString());
           dashProv.getDashboard();

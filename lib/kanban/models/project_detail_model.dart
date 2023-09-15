@@ -118,6 +118,7 @@ class ProjectDetailModel {
       issueViewsView: map['issue_views_view'],
       emoji: map['emoji'],
       name: map['name'],
+      network: map['network'],
       description: map['description'],
       coverImage: map['cover_image'],
       identifier: map['identifier'],

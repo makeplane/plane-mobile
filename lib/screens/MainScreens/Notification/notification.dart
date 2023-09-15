@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/bottom_sheets/notification_filter_sheet.dart';
+import 'package:plane/bottom_sheets/notification_more_options_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Notification/extra_notification.dart';
 import 'package:plane/screens/MainScreens/Notification/notifications_list.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -28,6 +29,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
   Widget build(BuildContext context) {
     var notificationProvider = ref.watch(ProviderList.notificationProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
+
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {},
@@ -60,95 +62,60 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ExtraNotifications(
-                    title: 'Unread',
-                    type: 'unread',
-                  ),
-                ),
+              showModalBottomSheet(
+                isScrollControlled: true,
+                enableDrag: true,
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.4),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+                context: context,
+                builder: (context) => const NotificationFilterSheet(),
               );
             },
             child: CircleAvatar(
               radius: 20,
               backgroundColor:
                   themeProvider.themeManager.primaryBackgroundSelectedColour,
-              child: Stack(
-                children: [
-                  Center(
-                    child: Icon(
-                      Icons.notifications_outlined,
-                      // color: greyColor,
-                      size: 20,
-                      color: themeProvider.themeManager.secondaryTextColor,
-                    ),
-                  ),
-
-                  //badge
-                  notificationProvider.totalUnread > 0
-                      ? Positioned(
-                          top: 10,
-                          right: 0,
-                          child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: themeProvider.themeManager.primaryColour,
-                            ),
-                          ),
-                        )
-                      : Container(),
-                ],
+              child: Center(
+                child: Icon(
+                  Icons.filter_list_outlined,
+                  size: 20,
+                  color: themeProvider.themeManager.secondaryTextColor,
+                ),
               ),
             ),
           ),
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ExtraNotifications(
-                    title: 'Snoozed',
-                    type: 'snoozed',
-                  ),
-                ),
+              showModalBottomSheet(
+                isScrollControlled: true,
+                enableDrag: true,
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.2),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+                context: context,
+                builder: (context) => NotificationMoreOptionsSheet(selected),
               );
             },
             child: CircleAvatar(
               radius: 20,
               backgroundColor:
                   themeProvider.themeManager.primaryBackgroundSelectedColour,
-              child: Icon(
-                Icons.access_time_outlined,
-                size: 20,
-                color: themeProvider.themeManager.secondaryTextColor,
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ExtraNotifications(
-                    title: 'Archived',
-                    type: 'archived',
-                  ),
+              child: Center(
+                child: Icon(
+                  Icons.more_vert_outlined,
+                  size: 20,
+                  color: themeProvider.themeManager.secondaryTextColor,
                 ),
-              );
-            },
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor:
-                  themeProvider.themeManager.primaryBackgroundSelectedColour,
-              child: Icon(
-                Icons.archive_outlined,
-                size: 20,
-                color: themeProvider.themeManager.secondaryTextColor,
               ),
             ),
           ),

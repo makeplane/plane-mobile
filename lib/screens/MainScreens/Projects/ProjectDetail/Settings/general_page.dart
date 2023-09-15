@@ -11,6 +11,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 import 'package:plane/provider/provider_list.dart';
@@ -55,6 +56,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       isEmoji = projectProvider.currentProject['emoji'] != null;
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
+      setState(() {
+        isProjectPublic = projectProvider.projectDetailModel!.network == 2;
+      });
+
       identifier.text = projectProvider.projectDetailModel!.identifier!;
       getRole();
     });
@@ -293,13 +298,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                   themeProvider.themeManager.tertiaryTextColor,
                             )
                           : null,
-                      onTap: () {
-                        CustomToast.showToast(context,
-                            message:
-                                'This operation cannot be performed using Plane Mobile',
-                            toastType: ToastType.defult);
-                      },
-                      readOnly: true,
+
+                      // readOnly: true,
                       controller: description,
                       maxLines: 4,
                       decoration: themeProvider.themeManager.textFieldDecoration
@@ -473,7 +473,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 children: [
                                   //const SizedBox(height: 50),
                                   selectionCard(
-                                      title: 'Secret',
+                                      title: 'Private',
                                       isSelected: !isProjectPublic,
                                       onTap: () {
                                         setState(() {
@@ -482,7 +482,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         Navigator.of(context).pop();
                                       }),
                                   //const SizedBox(height: 5),
-                                  const Divider(),
+                                  CustomDivider(themeProvider: themeProvider),
                                   //const SizedBox(height: 5),
                                   selectionCard(
                                       title: 'Public',
@@ -514,7 +514,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       child: Row(
                         children: [
                           CustomText(
-                            !isProjectPublic ? 'Secret' : 'Public',
+                            isProjectPublic ? 'Public' : 'Private',
                             type: FontStyle.Medium,
                             fontWeight: FontWeightt.Regular,
                             color: themeProvider.themeManager.primaryTextColor,
@@ -722,7 +722,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                     return;
                                   }
                                 } else {
-                                  projectProvider.updateProject(
+                                  await projectProvider.updateProject(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
                                           .selectedWorkspace!
@@ -739,6 +739,19 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                             .projectDetailModel!.coverImage
                                       },
                                       ref: ref);
+
+                                  if (projectProvider.updateProjectState ==
+                                      StateEnum.success) {
+                                    // ignore: use_build_context_synchronously
+                                    CustomToast.showToast(context,
+                                        message: 'Project updated successfully',
+                                        toastType: ToastType.success);
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    CustomToast.showToast(context,
+                                        message: 'Something went wrong',
+                                        toastType: ToastType.failure);
+                                  }
                                 }
                                 // await projectProvider.updateProject(
                                 //     projId: projectProvider.projectDetailModel!.id!,

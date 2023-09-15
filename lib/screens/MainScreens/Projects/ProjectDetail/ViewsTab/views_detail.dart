@@ -451,7 +451,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               size: 19,
                             ),
                             const CustomText(
-                              ' Views',
+                              ' Display',
                               type: FontStyle.Medium,
                             )
                           ],

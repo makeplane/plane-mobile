@@ -1008,7 +1008,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
             child: Row(
               children: [
                 const CustomText(
-                  'Views & Layouts',
+                  'Display & Layouts',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),

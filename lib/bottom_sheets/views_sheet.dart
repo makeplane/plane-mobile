@@ -1071,7 +1071,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
             child: Row(
               children: [
                 const CustomText(
-                  'Views',
+                  'Display',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),

@@ -561,7 +561,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                               size: 19,
                                                             ),
                                                             const CustomText(
-                                                              ' Views',
+                                                              ' Display',
                                                               type: FontStyle
                                                                   .Medium,
                                                             )
@@ -1029,7 +1029,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1040,7 +1040,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1057,7 +1057,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                         )
                                                 ],

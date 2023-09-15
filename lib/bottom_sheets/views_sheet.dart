@@ -12,10 +12,12 @@ import 'package:plane/widgets/custom_text.dart';
 
 class ViewsSheet extends ConsumerStatefulWidget {
   final Enum issueCategory;
+  final ProjectView projectView;
   final bool fromView;
   final String? cycleId;
   const ViewsSheet({
     required this.issueCategory,
+    required this.projectView,
     this.cycleId,
     this.fromView = false,
     super.key,
@@ -94,6 +96,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
   }
 
   bool showEmptyStates = true;
+  bool showSubIssues = true;
   @override
   void initState() {
     dynamic issueProvider;
@@ -136,6 +139,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     displayProperties[12]['selected'] =
         issueProvider.issues.displayProperties.startDate;
     showEmptyStates = issueProvider.showEmptyStates;
+    showSubIssues = issueProvider.issues.showSubIssues;
     super.initState();
   }
 
@@ -149,6 +153,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
+    print(widget.projectView);
     Widget customHorizontalLine() {
       return Container(
         color: themeProvider.themeManager.borderDisabledColor,
@@ -208,6 +213,35 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   activeColor:
                                       themeProvider.themeManager.primaryColour),
                               RadioListTile(
+                                  fillColor: groupBy == 'state_detail.group'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: CustomText(
+                                    'State Groups',
+                                    type: FontStyle.Small,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'state_detail.group',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'state_detail.group';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour),
+                              RadioListTile(
                                   fillColor: groupBy == 'priority'
                                       ? null
                                       : MaterialStateProperty.all<Color>(
@@ -255,6 +289,33 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                   onChanged: (newValue) {
                                     setState(() {
                                       groupBy = 'labels';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour),
+                              RadioListTile(
+                                  fillColor: groupBy == 'assignees'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  // dense: true,
+                                  groupValue: groupBy,
+                                  title: const CustomText(
+                                    'Assignees',
+                                    type: FontStyle.Small,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'assignees',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      groupBy = 'assignees';
                                     });
                                   },
                                   controlAffinity:
@@ -323,6 +384,38 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                           ListTileControlAffinity.leading,
                                       activeColor: themeProvider
                                           .themeManager.primaryColour),
+                              widget.projectView == ProjectView.list
+                                  ? RadioListTile(
+                                      fillColor: groupBy == 'none'
+                                          ? null
+                                          : MaterialStateProperty.all<Color>(
+                                              themeProvider.themeManager
+                                                  .borderSubtle01Color),
+                                      visualDensity: const VisualDensity(
+                                        horizontal:
+                                            VisualDensity.minimumDensity,
+                                        vertical: VisualDensity.minimumDensity,
+                                      ),
+                                      // dense: true,
+                                      groupValue: groupBy,
+                                      title: CustomText(
+                                        'None',
+                                        type: FontStyle.Small,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      value: 'none',
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          groupBy = 'none';
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      activeColor: themeProvider
+                                          .themeManager.primaryColour)
+                                  : Container(),
                             ],
                           ),
                         )
@@ -593,7 +686,54 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
               issueProvider.issues.projectView != ProjectView.spreadsheet
                   ? customHorizontalLine()
                   : Container(),
-
+              issueProvider.issues.projectView != ProjectView.spreadsheet
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          showSubIssues = !showSubIssues;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Wrap(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomText(
+                                  'Show sub-issues',
+                                  type: FontStyle.Small,
+                                ),
+                                Container(
+                                  width: 10,
+                                ),
+                                Container(
+                                  width: 30,
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: showSubIssues
+                                          ? themeProvider
+                                              .themeManager.textSuccessColor
+                                          : themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor),
+                                  child: Align(
+                                    alignment: showSubIssues
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: const CircleAvatar(
+                                      radius: 6,
+                                      backgroundColor: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(),
               issueProvider.issues.projectView != ProjectView.spreadsheet
                   ? Container(
                       height: 20,
@@ -606,8 +746,93 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     )
                   : Container(),
 
-              Container(height: 15),
+              Row(
+                children: [
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      String slug = ref
+                          .read(ProviderList.workspaceProvider)
+                          .selectedWorkspace!
+                          .workspaceSlug;
+                      String projID = ref
+                          .read(ProviderList.projectProvider)
+                          .currentProject["id"];
+                      issueProvider.getProjectView(reset: true).then((value) {
+                        if (widget.issueCategory == IssueCategory.cycleIssues) {
+                          cyclesProvider.filterCycleIssues(
+                            slug: slug,
+                            projectId: projID,
+                          );
+                        } else if (widget.issueCategory ==
+                            IssueCategory.moduleIssues) {
+                          modulesProvider.filterModuleIssues(
+                            slug: slug,
+                            projectId: projID,
+                          );
+                        } else {
+                          issueProvider.filterIssues(
+                              fromViews: false,
+                              slug: slug,
+                              projID: projID,
+                              issueCategory: IssueCategory.issues);
+                        }
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: const CustomText('Reset to default',
+                        type: FontStyle.Small,
+                        fontWeight: FontWeightt.Medium,
+                        textAlign: TextAlign.start),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      String slug = ref
+                          .read(ProviderList.workspaceProvider)
+                          .selectedWorkspace!
+                          .workspaceSlug;
+                      String projID = ref
+                          .read(ProviderList.projectProvider)
+                          .currentProject["id"];
+                      issueProvider.issues.orderBY = Issues.toOrderBY(orderBy);
+                      issueProvider.issues.groupBY = Issues.toGroupBY(groupBy);
+                      issueProvider.issues.issueType =
+                          Issues.toIssueType(issueType);
+                      issueProvider.updateProjectView(setDefault: true);
 
+                      if (widget.issueCategory == IssueCategory.cycleIssues) {
+                        cyclesProvider.filterCycleIssues(
+                          slug: slug,
+                          projectId: projID,
+                        );
+                      } else if (widget.issueCategory ==
+                          IssueCategory.moduleIssues) {
+                        modulesProvider.filterModuleIssues(
+                          slug: slug,
+                          projectId: projID,
+                        );
+                      } else {
+                        issueProvider.filterIssues(
+                            fromViews: false,
+                            slug: slug,
+                            projID: projID,
+                            issueCategory: IssueCategory.issues);
+                      }
+
+                      Navigator.pop(context);
+                    },
+                    child: CustomText('Set as default',
+                        type: FontStyle.Small,
+                        color: themeProvider.themeManager.primaryColour,
+                        fontWeight: FontWeightt.Medium,
+                        textAlign: TextAlign.start),
+                  ),
+                ],
+              ),
+              Container(height: 15),
               const CustomText('Display Properties',
                   type: FontStyle.Large,
                   fontWeight: FontWeightt.Semibold,
@@ -696,7 +921,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         groupBy == '' &&
                         issueType == '' &&
                         !isTagsEnabled() &&
-                        issueProvider.showEmptyStates == showEmptyStates) {
+                        issueProvider.showEmptyStates == showEmptyStates &&
+                        issueProvider.issues.showSubIssues == showSubIssues) {
                       CustomToast.showToast(context,
                           message: 'Please select atleast one filter');
 
@@ -724,7 +950,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueProvider.issues.orderBY !=
                             Issues.toOrderBY(orderBy) ||
                         issueProvider.issues.issueType !=
-                            Issues.toIssueType(issueType)) {
+                            Issues.toIssueType(issueType) ||
+                        issueProvider.showEmptyStates != showEmptyStates ||
+                        issueProvider.issues.showSubIssues != showSubIssues) {
                       //   print(orderBy);
                       //   print(' it is if');
                       setState(() {
@@ -734,6 +962,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             Issues.toGroupBY(groupBy);
                         issueProvider.issues.issueType =
                             Issues.toIssueType(issueType);
+                            issueProvider.showEmptyStates=showEmptyStates;
+                            issueProvider.issues.showSubIssues=showSubIssues;
                       });
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
                         cyclesProvider.filterCycleIssues(
@@ -757,7 +987,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               .currentProject["id"],
                         );
                       } else {
-                        log('filtering issues=============================${widget.fromView}');
+                        // log('filtering issues=============================${widget.fromView}');
                         issueProvider.filterIssues(
                             fromViews: widget.fromView,
                             slug: ref

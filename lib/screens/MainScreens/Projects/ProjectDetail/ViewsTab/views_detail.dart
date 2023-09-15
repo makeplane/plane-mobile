@@ -433,7 +433,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             )),
                             context: context,
                             builder: (ctx) {
-                              return const ViewsSheet(
+                              return ViewsSheet(
+                                 projectView: issuesProvider.issues.projectView,
                                 fromView: true,
                                 issueCategory: IssueCategory.views,
                               );

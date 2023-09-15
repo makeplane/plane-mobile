@@ -106,6 +106,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/global_search_icons/
+    - assets/svg_images/transfer.svg
     - assets/svg_images/logo.svg
     - assets/svg_images/dark_mode.svg
     - assets/svg_images/light_mode.svg

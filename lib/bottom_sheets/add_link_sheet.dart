@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
+import '../mixins/widget_state_mixin.dart';
+
 class AddLinkSheet extends ConsumerStatefulWidget {
-  final String issueId;
-  const AddLinkSheet({required this.issueId, super.key});
+  const AddLinkSheet({super.key});
 
   @override
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
 }
 
-class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
+class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetState {
   TextEditingController title = TextEditingController();
   TextEditingController url = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  getLoading(WidgetRef ref) {
+    return setWidgetState(
+        [ref.read(ProviderList.modulesProvider).moduleLinkState],
+        loadingType: LoadingType.wrap);
+  }
+
+  @override
+  Widget render(BuildContext context) {
     var themeProvider = ref.read(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
+    ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
     return Container(
+    
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
@@ -93,25 +103,10 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
           Button(
             text: 'Add Link',
             ontap: () {
-              if (title.text.isNotEmpty && url.text.isNotEmpty) {
-                issueProvider.addLink(
-                    projectId: ref
-                        .watch(ProviderList.projectProvider)
-                        .currentProject['id'],
-                    slug: ref
-                        .watch(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
-                        .workspaceSlug,
-                    issueId: widget.issueId,
-                    data: {
-                      'metadata': {},
-                      'title': title.text.trim(),
-                      'url': url.text.trim(),
-                    },
-                    method: CRUD.create,
-                    linkId: '');
-                Navigator.of(context).pop();
-              }
+              moduleProvider.handleLinks(data: {
+                'title': title.text,
+                'url': url.text,
+              }, method: HttpMethod.post, context: context);
             },
           )
         ],

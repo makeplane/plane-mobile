@@ -131,14 +131,11 @@ class NotificationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      log('getUnreadCount: ${response.data.toString()}');
       getCreatedCount = response.data['created_issues'];
       getAssignedCount = response.data['my_issues'];
       getWatchingCount = response.data['watching_issues'];
 
       totalUnread = getCreatedCount + getAssignedCount + getWatchingCount;
-
-      log('getUnreadCount: Done');
 
       notifyListeners();
     } catch (e) {

@@ -98,7 +98,7 @@ class WorkspaceProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      var response = await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: (APIs.joinWorkspace),
         hasBody: true,
@@ -110,7 +110,6 @@ class WorkspaceProvider extends ChangeNotifier {
       //   'WORKSPACE_ID': data
       // });
       getWorkspaces();
-      log(response.data.toString());
       notifyListeners();
       // return response.data;
     } catch (e) {
@@ -187,7 +186,6 @@ class WorkspaceProvider extends ChangeNotifier {
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'snoozed', getSnoozed: true);
       createWorkspaceState = StateEnum.success;
-      log(response.data.toString());
       notifyListeners();
       return response.statusCode!;
       // return response.data;
@@ -240,7 +238,7 @@ class WorkspaceProvider extends ChangeNotifier {
     try {
       log(APIs.inviteToWorkspace.replaceAll('\$SLUG', slug));
       log(role == null ? "ROLE NULL" : "ROLE NOT NULL");
-      var response = await DioConfig().dioServe(
+       await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.inviteToWorkspace.replaceAll('\$SLUG', slug),
         hasBody: true,
@@ -254,7 +252,6 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.post,
       );
       workspaceInvitationState = StateEnum.success;
-      log(response.data.toString());
       notifyListeners();
       return !urlAvailable;
     } on DioException catch (e) {
@@ -341,7 +338,6 @@ class WorkspaceProvider extends ChangeNotifier {
 
       getWorkspaceMembers();
       retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
-      log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
       workspaceInvitationState = StateEnum.success;
       notifyListeners();
       return selectedWorkspace;
@@ -373,18 +369,6 @@ class WorkspaceProvider extends ChangeNotifier {
       ref.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
 
       ref.read(ProviderList.issuesProvider).clearData();
-
-      // currentWorkspace = workspaces.where((element) {
-      //   if (element['id'] ==
-      //       ref!
-      //           .read(ProviderList.profileProvider)
-      //           .userProfile
-      //           .last_workspace_id) {
-      //     currentWorkspace = element;
-      //     return true;
-      //   }
-      //   return false;
-      // }).first;
       selectedWorkspace = WorkspaceModel.fromJson(
           workspaces.where((element) => element['id'] == id).first);
       ref.read(ProviderList.dashboardProvider).getDashboard();
@@ -392,15 +376,6 @@ class WorkspaceProvider extends ChangeNotifier {
       getWorkspaceMembers();
 
       tempLogo = selectedWorkspace!.workspaceLogo;
-
-      // ref!.read(ProviderList.projectProvider).getProjects(
-      //         slug: currentWorkspace['slug']);
-      // ref!.read(ProviderList.projectProvider).favouriteProjects(
-      //     index: 0,
-      //     slug: currentWorkspace['slug'],
-      //     method: HttpMethod.get,
-      //     projectID: "");
-      log(response.data.toString());
       retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
       notifyListeners();
       // return response.data;
@@ -430,7 +405,6 @@ class WorkspaceProvider extends ChangeNotifier {
       tempLogo = selectedWorkspace!.workspaceLogo;
       await retrieveWorkspaceIntegration(
           slug: selectedWorkspace!.workspaceSlug);
-      log('SELECTED WORKSPACE ${selectedWorkspace!.workspaceName}');
 
       notifyListeners();
       // log(response.data.toString());
@@ -453,8 +427,6 @@ class WorkspaceProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      //selectWorkspaceState = StateEnum.success;
-      log("Integration: slug = $slug");
       // response = jsonDecode(response.data);
       //selectedWorkspace = WorkspaceModel.fromJson(response.data);
       workspaceIntegrations = response.data;
@@ -506,9 +478,6 @@ class WorkspaceProvider extends ChangeNotifier {
           ref: ref);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
       tempLogo = selectedWorkspace!.workspaceLogo;
-
-      log('SELECTED WORKSPACE');
-      log(selectedWorkspace!.toString());
 
       notifyListeners();
       // log(response.data.toString());
@@ -589,14 +558,13 @@ class WorkspaceProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       getMembersState = StateEnum.success;
-      // log(response.data.toString());
       workspaceMembers.clear();
       workspaceMembers = response.data;
       for (var element in workspaceMembers) {
         if (element["member"]['id'] ==
             ref!.read(ProviderList.profileProvider).userProfile.id) {
           role = roleParser(role: element["role"]);
-          log('Role $role');
+          log('Wokspace-Role: $role');
           break;
         }
       }

@@ -65,6 +65,7 @@ class MyIssuesProvider extends ChangeNotifier {
     myIssueView = {};
     showEmptyStates = true;
     issues = Issues(
+        showSubIssues: true,
         issues: [],
         projectView: ProjectView.kanban,
         groupBY: GroupBY.state,
@@ -120,7 +121,6 @@ class MyIssuesProvider extends ChangeNotifier {
 
   Future getMyIssuesView() async {
     myIssuesViewState = StateEnum.loading;
-    log('Get My Issues View');
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -134,7 +134,6 @@ class MyIssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       myIssueView = response.data["view_props"];
-      log("project view=>${response.data["view_props"]}");
       issues.projectView = myIssueView["display_filters"]['layout'] == 'list'
           ? ProjectView.list
           : myIssueView["display_filters"]['layout'] == 'calendar'
@@ -207,14 +206,11 @@ class MyIssuesProvider extends ChangeNotifier {
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
-        // url: APIs.issueLabels
-        //     .replaceAll("\$SLUG", slug)
-        //     .replaceAll('\$PROJECTID', projID),
+
         url: '${APIs.baseApi}/api/workspaces/$slug/labels/',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('getLabels' + response.data.toString());
       labels = response.data;
       labelState = StateEnum.success;
 
@@ -361,6 +357,9 @@ class MyIssuesProvider extends ChangeNotifier {
         url = url;
       }
     }
+    if (issues.groupBY == GroupBY.none) {
+      url = url.replaceAll('&group_by=none', '');
+    }
     // dynamic temp;
     log('URL======>: $url');
     try {
@@ -370,20 +369,21 @@ class MyIssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
-      // log('filter myIssue issue success ${response.data.toString()}');
-
       issuesResponse = [];
       isISsuesEmpty = true;
       shrinkStates = [];
       issuesList = [];
-      for (var key in response.data.keys) {
-        //  log("KEY=$key");
-        if (response.data[key].isNotEmpty) {
-          isISsuesEmpty = false;
-        }
+      if (issues.groupBY == GroupBY.none) {
+        issuesResponse = response.data;
+        isISsuesEmpty = issuesResponse.isEmpty;
+      } else {
+        for (var key in response.data.keys) {
+          if (response.data[key].isNotEmpty) {
+            isISsuesEmpty = false;
+          }
 
-        issuesList.addAll(response.data[key]);
+          issuesList.addAll(response.data[key]);
+        }
       }
 
       // if (issues.groupBY == GroupBY.state) {
@@ -405,14 +405,18 @@ class MyIssuesProvider extends ChangeNotifier {
       //   shrinkStates = List.generate(stateOrdering.length, (index) => false);
       // } else {
       stateOrdering = [];
-      response.data.forEach((key, value) {
-        stateOrdering.add(key);
-      });
-      groupByResponse = response.data;
+      if (issues.groupBY == GroupBY.none) {
+        stateOrdering = ['All Issues'];
+        groupByResponse = {'All Issues': response.data};
+      } else {
+        response.data.forEach((key, value) {
+          stateOrdering.add(key);
+        });
+        groupByResponse = response.data;
+      }
+
       shrinkStates = List.generate(stateOrdering.length, (index) => false);
       // }
-
-      log('StateOrdering: $stateOrdering');
 
       myIssuesFilterState = StateEnum.success;
       notifyListeners();
@@ -430,6 +434,7 @@ class MyIssuesProvider extends ChangeNotifier {
     int count = 0;
     //   log(issues.groupBY.name);
     issues.issues = [];
+    issuesResponse = [];
     var projectIcons = {};
     var stateIcons = {
       'Backlog': SvgPicture.asset('assets/svg_images/circle.svg'),
@@ -438,24 +443,11 @@ class MyIssuesProvider extends ChangeNotifier {
       'Completed': SvgPicture.asset('assets/svg_images/done.svg'),
       'Cancelled': SvgPicture.asset('assets/svg_images/cancelled.svg'),
     };
-    // for (int i = 0; i < defaultStateGroups.length; i++) {
-    //   var state = defaultStateGroups[i];
-    //   state == 'backlog'
-    //       ? 'assets/svg_images/circle.svg'
-    //       : state == 'cancelled'
-    //           ? 'assets/svg_images/cancelled.svg'
-    //           : state == 'completed'
-    //               ? 'assets/svg_images/done.svg'
-    //               : state == 'started'
-    //                   ? 'assets/svg_images/in_progress.svg'
-    //                   : 'assets/svg_images/circle.svg';
-    // }
     for (int j = 0; j < stateOrdering.length; j++) {
       List<Widget> items = [];
       if (groupByResponse[stateOrdering[j]] == null) {
         continue;
       }
-      // log(states[stateOrdering[j]]["name"]);
       for (int i = 0;
           groupByResponse[stateOrdering[j]] != null &&
               i < groupByResponse[stateOrdering[j]]!.length;
@@ -485,8 +477,6 @@ class MyIssuesProvider extends ChangeNotifier {
           break;
         }
       }
-
-      // log(label.toString());
       if (myIssuesFilterState == StateEnum.success) {
         var title = issues.groupBY == GroupBY.priority
             ? stateOrdering[j]
@@ -548,9 +538,6 @@ class MyIssuesProvider extends ChangeNotifier {
     }
 
     for (var element in issues.issues) {
-      //  log(issues.groupBY.toString());
-      log(element.title.toString());
-
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
@@ -629,10 +616,12 @@ class MyIssuesProvider extends ChangeNotifier {
                                       .replaceAll('#', '0xff'))),
                               size: 22,
                             )
-                      : SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: stateIcons[element.title]);
+                      : issues.groupBY == GroupBY.state
+                          ? SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: stateIcons[element.title])
+                          : const SizedBox();
 
       element.header = SizedBox(
         // margin: const EdgeInsets.only(bottom: 10),

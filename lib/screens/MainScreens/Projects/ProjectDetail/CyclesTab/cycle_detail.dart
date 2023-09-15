@@ -16,6 +16,8 @@ import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/chart_model.dart';
 import 'package:plane/models/issues.dart';
+import 'package:plane/provider/issues_provider.dart';
+import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
@@ -31,6 +33,9 @@ import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../../../../bottom_sheets/add_link_sheet.dart';
+import '../../../../../bottom_sheets/select cycle.dart';
 
 class CycleDetail extends ConsumerStatefulWidget {
   const CycleDetail({
@@ -100,7 +105,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             : IssueCategory.cycleIssues,
         projID: widget.projId ??
             ref.read(ProviderList.projectProvider).currentProject['id']);
-
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }
@@ -297,26 +301,85 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Container(
-                  //   height: 1,
-                  //   //width: MediaQuery.of(context).size.width,
-                  //   color: themeProvider.themeManager.borderSubtle01Color,
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, top: 20),
-                    child: CustomText(
-                      widget.fromModule
-                          ? widget.moduleName!
-                          : widget.cycleName!,
-                      type: FontStyle.H5,
-                      fontWeight: FontWeightt.Semibold,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25, top: 20),
+                          child: CustomText(
+                            widget.fromModule
+                                ? widget.moduleName!
+                                : widget.cycleName!,
+                            type: FontStyle.H5,
+                            fontWeight: FontWeightt.Semibold,
+                          ),
+                        ),
+                      ),
+                      !widget.fromModule &&
+                              DateTime.parse(cyclesProvider
+                                      .cyclesDetailsData['end_date'])
+                                  .isBefore(DateTime.now()) &&
+                              (cyclesProvider.cyclesDetailsData[
+                                          'backlog_issues'] !=
+                                      0 &&
+                                  cyclesProvider.cyclesDetailsData[
+                                          'started_issues'] !=
+                                      0 &&
+                                  cyclesProvider.cyclesDetailsData[
+                                          'unstarted_issues'] !=
+                                      0)
+                          ? GestureDetector(
+                              onTap: () async {
+                                await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    enableDrag: true,
+                                    constraints: BoxConstraints(
+                                        maxHeight: height * 0.8,
+                                        minHeight: 250),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    )),
+                                    context: context,
+                                    builder: (ctx) {
+                                      return const SelectCycleSheet();
+                                    });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    top: 15, bottom: 5, right: 10),
+                                padding:
+                                    const EdgeInsets.only(right: 10, left: 5),
+                                decoration: BoxDecoration(
+                                    color: themeProvider
+                                        .themeManager.primaryColour,
+                                    borderRadius: BorderRadius.circular(4)),
+                                height: 40,
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/svg_images/transfer.svg',
+                                      height: 15,
+                                      width: 15,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const CustomText(
+                                      'Transfer Issues',
+                                      type: FontStyle.Small,
+                                      fontWeight: FontWeightt.Semibold,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Container()
+                    ],
                   ),
-                  // Container(
-                  //   height: 1,
-                  //   width: width,
-                  //   color: strokeColor,
-                  // ),
+
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
@@ -505,15 +568,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             Expanded(
                               child:
                                   ((widget.fromModule &&
-                                              (modulesProvider.moduleIssueState ==
-                                                      StateEnum.loading ||
-                                                  modulesProvider.moduleDetailState ==
-                                                      StateEnum.loading)) ||
-                                          (!widget.fromModule &&
-                                              (cyclesProvider.cyclesIssueState ==
-                                                      StateEnum.loading ||
-                                                  cyclesProvider.cyclesDetailState ==
-                                                      StateEnum.loading)))
+                                                  (modulesProvider.moduleIssueState ==
+                                                          StateEnum.loading ||
+                                                      modulesProvider.moduleDetailState ==
+                                                          StateEnum.loading)) ||
+                                              (!widget.fromModule &&
+                                                  (cyclesProvider.cyclesIssueState ==
+                                                          StateEnum.loading ||
+                                                      cyclesProvider.cyclesDetailState ==
+                                                          StateEnum
+                                                              .loading))) ||
+                                          issueProvider.projectViewState ==
+                                              StateEnum.loading
                                       ? Center(
                                           child: SizedBox(
                                               width: 30,
@@ -664,9 +730,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
-                                                      (widget.fromModule &&
-                                                          issueProvider.issues.projectView == ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -953,6 +1017,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                   context: context,
                                                   builder: (ctx) {
                                                     return ViewsSheet(
+                                                      projectView: issueProvider
+                                                          .issues.projectView,
                                                       issueCategory:
                                                           widget.fromModule
                                                               ? IssueCategory
@@ -1119,9 +1185,121 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           const SizedBox(height: 30),
           labelsPart(fromModule: widget.fromModule),
           const SizedBox(height: 30),
+          widget.fromModule ? links() : Container()
         ],
       );
     }
+  }
+
+  Widget links() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
+    IssuesProvider issuesProvider = ref.watch(ProviderList.issuesProvider);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+            'Links',
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Medium,
+            color: themeProvider.themeManager.primaryTextColor,
+          ),
+          GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.85),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: const AddLinkSheet(),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Icon(
+                Icons.add,
+                color: themeProvider.themeManager.primaryTextColor,
+              ))
+        ],
+      ),
+      const SizedBox(height: 10),
+      moduleProvider.moduleDetailsData['link_module'].isNotEmpty
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: getBorderColor(themeProvider),
+                ),
+              ),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount:
+                      moduleProvider.moduleDetailsData['link_module'].length,
+                  itemBuilder: (ctx, index) {
+                    return Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: Transform.rotate(
+                              angle: -20,
+                              child: Icon(
+                                Icons.link,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              moduleProvider.moduleDetailsData['link_module']
+                                          [index]['title'] !=
+                                      null
+                                  ? CustomText(
+                                      moduleProvider
+                                          .moduleDetailsData['link_module']
+                                              [index]['title']
+                                          .toString(),
+                                      type: FontStyle.Medium,
+                                    )
+                                  : Container(),
+                              CustomText(
+                                'by ${moduleProvider.moduleDetailsData['link_module'][index]['created_by_detail']['display_name']}',
+                                type: FontStyle.Small,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+            )
+          : Container()
+    ]);
   }
 
   Widget datePart() {

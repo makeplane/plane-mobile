@@ -71,7 +71,6 @@ class ThemeProvider extends ChangeNotifier {
       }
       theme = themeParser(theme: data['theme']['theme']);
     }
-    log(theme.toString());
     themeManager = ThemeManager(theme);
     CustomToast(manager: themeManager);
 

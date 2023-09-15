@@ -128,7 +128,7 @@ class WorkspaceProvider extends ChangeNotifier {
       {required String name,
       required String slug,
       required String size,
-      required WidgetRef ref,
+      required WidgetRef refs,
       required BuildContext context}) async {
     createWorkspaceState = StateEnum.loading;
     notifyListeners();
@@ -141,9 +141,9 @@ class WorkspaceProvider extends ChangeNotifier {
           httpMethod: HttpMethod.post,
           data: {"name": name, "slug": slug, "organization_size": size});
 
-      var projectProv = ref.read(ProviderList.projectProvider);
-      var profileProv = ref.read(ProviderList.profileProvider);
-      var myissuesProv = ref.read(ProviderList.myIssuesProvider);
+      var projectProv = ref!.read(ProviderList.projectProvider);
+      var profileProv = ref!.read(ProviderList.profileProvider);
+      var myissuesProv = ref!.read(ProviderList.myIssuesProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
       postHogService(
           eventName: 'CREATE_WORKSPACE',
@@ -152,37 +152,37 @@ class WorkspaceProvider extends ChangeNotifier {
             'WORKSPACE_NAME': response.data['name'],
             'WORKSPACE_SLUG': response.data['slug']
           },
-          ref: ref);
+          ref: refs);
       await profileProv.updateProfile(data: {
         "last_workspace_id": response.data['id'],
       });
       await getWorkspaces();
-      ref.read(ProviderList.dashboardProvider).getDashboard();
+      ref!.read(ProviderList.dashboardProvider).getDashboard();
       projectProv.projects = [];
       projectProv.getProjects(slug: slug);
       myissuesProv.getMyIssuesView().then((value) {
         myissuesProv.filterIssues(assigned: true);
       });
 
-      ref.read(ProviderList.notificationProvider).getUnreadCount();
-      ref.read(ProviderList.myIssuesProvider).getLabels();
+      ref!.read(ProviderList.notificationProvider).getUnreadCount();
+      ref!.read(ProviderList.myIssuesProvider).getLabels();
 
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'assigned');
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'created');
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'watching');
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'unread', getUnread: true);
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'archived', getArchived: true);
-      ref
+      ref!
           .read(ProviderList.notificationProvider)
           .getNotifications(type: 'snoozed', getSnoozed: true);
       createWorkspaceState = StateEnum.success;
@@ -190,6 +190,8 @@ class WorkspaceProvider extends ChangeNotifier {
       return response.statusCode!;
       // return response.data;
     } catch (e) {
+      log('Create Workspace Error ');
+
       if (e is DioException) {
         log(e.response!.data.toString());
         log(e.message.toString());

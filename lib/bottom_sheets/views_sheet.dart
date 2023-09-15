@@ -15,11 +15,13 @@ class ViewsSheet extends ConsumerStatefulWidget {
   final ProjectView projectView;
   final bool fromView;
   final String? cycleId;
+  final bool isArchived;
   const ViewsSheet({
     required this.issueCategory,
     required this.projectView,
     this.cycleId,
     this.fromView = false,
+    this.isArchived = false,
     super.key,
   });
 
@@ -801,7 +803,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       issueProvider.issues.groupBY = Issues.toGroupBY(groupBy);
                       issueProvider.issues.issueType =
                           Issues.toIssueType(issueType);
-                      issueProvider.updateProjectView(setDefault: true);
+                      issueProvider.updateProjectView(
+                          isArchive: widget.isArchived);
 
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
                         cyclesProvider.filterCycleIssues(
@@ -962,8 +965,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             Issues.toGroupBY(groupBy);
                         issueProvider.issues.issueType =
                             Issues.toIssueType(issueType);
-                            issueProvider.showEmptyStates=showEmptyStates;
-                            issueProvider.issues.showSubIssues=showSubIssues;
+                        issueProvider.showEmptyStates = showEmptyStates;
+                        issueProvider.issues.showSubIssues = showSubIssues;
                       });
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
                         cyclesProvider.filterCycleIssues(
@@ -989,15 +992,17 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       } else {
                         // log('filtering issues=============================${widget.fromView}');
                         issueProvider.filterIssues(
-                            fromViews: widget.fromView,
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projID: ref
-                                .read(ProviderList.projectProvider)
-                                .currentProject["id"],
-                            issueCategory: IssueCategory.issues);
+                          fromViews: widget.fromView,
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace!
+                              .workspaceSlug,
+                          projID: ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject["id"],
+                          issueCategory: IssueCategory.issues,
+                          isArchived: widget.isArchived,
+                        );
                       }
                     }
 

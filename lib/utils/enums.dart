@@ -28,7 +28,14 @@ enum IssueType { all, activeIssues, backlogIssues }
 
 enum CRUD { create, read, update, delete }
 
-enum IssueCategory { issues, cycleIssues, moduleIssues, myIssues, views }
+enum IssueCategory {
+  issues,
+  cycleIssues,
+  moduleIssues,
+  myIssues,
+  views,
+  archivedIssues,
+}
 
 enum IssueDetailCategory {
   parent,
@@ -72,4 +79,4 @@ enum THEME {
   systemPreferences
 }
 
-enum LoadingType { translucent, opaque , error, wrap,none}
+enum LoadingType { translucent, opaque, error, wrap, none }

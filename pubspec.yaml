@@ -177,6 +177,7 @@ flutter:
     - assets/svg_images/cycle_settings.svg
     - assets/svg_images/module_settings.svg
     - assets/svg_images/view_settings.svg
+    - assets/svg_images/issue_archive.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

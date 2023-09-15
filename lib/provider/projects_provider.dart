@@ -447,11 +447,14 @@ class ProjectsProvider extends ChangeNotifier {
       projectDetailModel!.projectLead = projectLead;
       int index = currentProject["index"];
       currentProject = projectDetailModel!.toJson();
+      log('CURRENT PROJECT');
+      log(currentProject.toString());
       currentProject["index"] = index;
       projects[index]["name"] = currentProject["name"];
       projects[index]["description"] = currentProject["description"];
       projects[index]["identifier"] = currentProject["identifier"];
       projects[index]["emoji"] = currentProject["emoji"];
+
       projects[index]["icon_prop"] = currentProject["icon_prop"] != null
           ? {
               'name': currentProject["icon_prop"]["name"],

@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
 import '../config/apis.dart';
@@ -58,7 +60,10 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     }
   }
 
-  Future createViews({required dynamic data, required WidgetRef ref}) async {
+  Future createViews(
+      {required dynamic data,
+      required WidgetRef ref,
+      required BuildContext context}) async {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     try {
@@ -79,6 +84,10 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       state = state.copyWith(
           views: [...state.views, response.data],
           viewsState: StateEnum.success);
+
+      // ignore: use_build_context_synchronously
+      CustomToast.showToast(context,
+          message: 'View created successfully', toastType: ToastType.success);
       postHogService(
           eventName: 'VIEW_CREATE',
           properties: {

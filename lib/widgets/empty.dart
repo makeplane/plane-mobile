@@ -131,6 +131,42 @@ class EmptyPlaceholder {
     );
   }
 
+  static Widget emptyArchives() {
+    return Container(
+      alignment: Alignment.center,
+      //  margin: const EdgeInsets.only(top: 150),
+      child: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/svg_images/issue_archive.svg",
+            width: 130,
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 35),
+            child: const CustomText(
+              'Archived Issues will be shown here',
+              type: FontStyle.H5,
+              fontWeight: FontWeightt.Semibold,
+            ),
+          ),
+          Container(
+            width: 300,
+            padding: const EdgeInsets.only(top: 10),
+            child: CustomText(
+              'All the issues that have been in the completed or canceled groups for the configured period of time can be viewed here.',
+              color: Colors.grey,
+              textAlign: TextAlign.center,
+              type: FontStyle.Small,
+              maxLines: 3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   static Widget emptyIssues(BuildContext context,
       {String? cycleId,
       String? moduleId,

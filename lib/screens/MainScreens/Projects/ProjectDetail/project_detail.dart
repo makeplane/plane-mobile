@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/filter_sheet.dart';
 import 'package:plane/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane/bottom_sheets/type_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/archived_issues.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -126,6 +129,23 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
         },
         text: ref.read(ProviderList.projectProvider).currentProject['name'],
         actions: [
+          (projectProvider.currentProject['archive_in'] > 0 &&
+                  (projectProvider.role == Role.admin ||
+                      projectProvider.role == Role.member) &&
+                  (issueProvider.statesState == StateEnum.success))
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => const ArchivedIssues(),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.archive_outlined,
+                    color: themeProvider.themeManager.placeholderTextColor,
+                  ))
+              : Container(),
           (issueProvider.statesState == StateEnum.success)
               ? IconButton(
                   onPressed: () {
@@ -869,6 +889,9 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
           issueProvider.orderByState == StateEnum.loading)) {
     issueProvider.initializeBoard(views: isViews);
   }
+
+  // log('Project Issues');
+  // log(issueProvider.issues.projectView.toString());
 
   return LoadingWidget(
     loading: issueProvider.issuePropertyState == StateEnum.loading ||

@@ -23,32 +23,39 @@ class ProjectDetailModel {
   String? createdBy;
   String? updatedBy;
   String? estimate;
+  int? closeIn;
+  int? archiveIn;
+  String? defaultState;
 
-  ProjectDetailModel(
-      {this.id,
-      this.workspace,
-      this.defaultAssignee,
-      this.projectLead,
-      this.isFavorite,
-      this.createdAt,
-      this.updatedAt,
-      this.name,
-      this.description,
-      this.descriptionText,
-      this.descriptionHtml,
-      this.network,
-      this.identifier,
-      this.emoji,
-      this.iconProp,
-      this.moduleView,
-      this.cycleView,
-      this.issueViewsView,
-      this.pageView,
-      this.inboxView,
-      this.coverImage,
-      this.createdBy,
-      this.updatedBy,
-      this.estimate});
+  ProjectDetailModel({
+    this.id,
+    this.workspace,
+    this.defaultAssignee,
+    this.projectLead,
+    this.isFavorite,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    this.description,
+    this.descriptionText,
+    this.descriptionHtml,
+    this.network,
+    this.identifier,
+    this.emoji,
+    this.iconProp,
+    this.moduleView,
+    this.cycleView,
+    this.issueViewsView,
+    this.pageView,
+    this.inboxView,
+    this.coverImage,
+    this.createdBy,
+    this.updatedBy,
+    this.closeIn,
+    this.defaultState,
+    this.estimate,
+    this.archiveIn,
+  });
 
   ProjectDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -77,6 +84,9 @@ class ProjectDetailModel {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
     estimate = json['estimate'];
+    closeIn = json['close_in'];
+    defaultState = json['default_state'];
+    archiveIn = json['archive_in'];
   }
 
   Map<String, dynamic> toJson() {
@@ -107,6 +117,9 @@ class ProjectDetailModel {
     data['created_by'] = createdBy;
     data['updated_by'] = updatedBy;
     data['estimate'] = estimate;
+    data['close_in'] = closeIn;
+    data['default_state'] = defaultState;
+    data['archive_in'] = archiveIn;
     return data;
   }
 
@@ -130,6 +143,9 @@ class ProjectDetailModel {
           : null,
       iconProp:
           map['icon_prop'] is Map<String, dynamic> ? map['icon_prop'] : null,
+      closeIn: map['close_in'] ?? 0,
+      defaultState: map['default_state'],
+      archiveIn: map['archive_in'] ?? 0,
     );
   }
 }

@@ -70,7 +70,7 @@ class NotificationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('getNotifications: ${response.data.toString()}');
+      log('getNotifications: ${response.data.toString()}');
       if (type == 'created') {
         created = response.data;
       } else if (type == 'assigned') {

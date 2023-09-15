@@ -37,6 +37,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/states/';
   static String orderByGroupByTypeIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
+  static String orderByGroupByTypeArchivedIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/archived-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String orderByGroupByIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY';
   static String projectMembers =

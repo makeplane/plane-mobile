@@ -32,8 +32,13 @@ class ColorManager {
   static Color getColorFromHexaDecimal(String? value) {
     Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
     String? colorData = value;
-    return (colorData == null || colorData[0] != '#')
+    return (colorData == null || !isValidHexaCode(colorData))
         ? colorToReturnOnApiError
         : Color(int.parse("FF${colorData.replaceAll('#', '')}", radix: 16));
+  }
+
+  static bool isValidHexaCode(String str) {
+    RegExp hexaCode = RegExp(r"^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
+    return hexaCode.hasMatch(str);
   }
 }

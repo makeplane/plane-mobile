@@ -172,7 +172,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                     alignment: Alignment.center,
                                     child: CustomText(
                                       projectProvider.projectMembers[index]
-                                              ['member']['first_name'][0]
+                                              ['member']['display_name'][0]
                                           .toString()
                                           .toUpperCase(),
                                       type: FontStyle.Small,
@@ -184,10 +184,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                   ),
                                   CustomText(
                                     projectProvider.projectMembers[index]
-                                            ['member']['first_name'] +
-                                        " " +
-                                        projectProvider.projectMembers[index]
-                                            ['member']['last_name'],
+                                        ['member']['display_name'],
                                     type: FontStyle.Small,
                                   ),
                                   const Spacer(),

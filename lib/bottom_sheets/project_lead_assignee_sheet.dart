@@ -165,7 +165,7 @@ class _ProjectLeadAssigneeSheetState
                                       child: Center(
                                         child: CustomText(
                                           projectProvider.projectMembers[index]
-                                                  ['member']['first_name'][0]
+                                                  ['member']['display_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           color: Colors.black,
@@ -185,7 +185,7 @@ class _ProjectLeadAssigneeSheetState
                               ),
                               Expanded(
                                 child: CustomText(
-                                  '${projectProvider.projectMembers[index]['member']['first_name']} ${projectProvider.projectMembers[index]['member']['last_name'] ?? ''}',
+                                  '${projectProvider.projectMembers[index]['member']['display_name']}',
                                   type: FontStyle.Medium,
                                   maxLines: 1,
                                   color: themeProvider

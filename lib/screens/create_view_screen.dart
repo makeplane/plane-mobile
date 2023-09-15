@@ -347,9 +347,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                           child: CustomText(
                                                                                         projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['first_name'][0].toString().toUpperCase(),
                                                                                         color: Colors.white,
+                                                                                        fontSize: 12,
                                                                                       )),
                                                                                     ),
-                                                                              text: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['first_name'] ?? 'aasdas',
+                                                                              text: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['display_name'] ?? '',
                                                                             ),
                                                                           )
                                                                         : filterKeys[index] == 'Labels:'
@@ -569,14 +570,20 @@ class _CreateViewState extends ConsumerState<CreateView> {
         children: [
           icon,
           const SizedBox(width: 5),
-          CustomText(
-            newText.isNotEmpty
-                ? newText.replaceFirst(newText[0], newText[0].toUpperCase())
-                : newText,
-            color: (themeProvider.isDarkThemeEnabled
-                ? Colors.grey.shade500
-                : greyColor),
-            fontSize: 15,
+          Container(
+            constraints: const BoxConstraints(
+              maxWidth: 150,
+            ),
+            child: CustomText(
+              newText.isNotEmpty
+                  ? newText.replaceFirst(newText[0], newText[0].toUpperCase())
+                  : newText,
+              maxLines: 1,
+              color: (themeProvider.isDarkThemeEnabled
+                  ? Colors.grey.shade500
+                  : greyColor),
+              fontSize: 15,
+            ),
           ),
           const SizedBox(
             width: 5,

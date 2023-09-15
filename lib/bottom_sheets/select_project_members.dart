@@ -125,10 +125,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                       selectedMembers[issuesProvider
                                           .members[index]['member']['id']] = {
                                         "name": issuesProvider.members[index]
-                                                ['member']['first_name'] +
-                                            " " +
-                                            issuesProvider.members[index]
-                                                ['member']['last_name'],
+                                            ['member']['display_name'],
                                         "id": issuesProvider.members[index]
                                             ['member']['id']
                                       };
@@ -187,16 +184,18 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                         Container(
                                           width: 10,
                                         ),
-                                        CustomText(
-                                          issuesProvider.members[index]
-                                                  ['member']['first_name'] +
-                                              " " +
-                                              issuesProvider.members[index]
-                                                  ['member']['last_name'],
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Regular,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
+                                        Container(
+                                          width: width * 0.7,
+                                          child: CustomText(
+                                            issuesProvider.members[index]
+                                                ['member']['display_name'],
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Regular,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                         const Spacer(),
                                         widget.createIssue

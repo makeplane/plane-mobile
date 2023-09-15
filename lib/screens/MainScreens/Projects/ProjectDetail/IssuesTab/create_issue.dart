@@ -118,6 +118,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
     if (widget.assignee != null) {
       prov.createIssuedata['members'] = widget.assignee;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      prov.setsState();
+    });
   }
 
   @override
@@ -850,7 +854,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             constraints:
                                                                 const BoxConstraints(
                                                                     maxWidth:
-                                                                        80,
+                                                                        130,
                                                                     minWidth:
                                                                         30),
                                                             child: Stack(
@@ -859,49 +863,87 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                       .center,
                                                               fit: StackFit
                                                                   .passthrough,
-                                                              children: (issuesProvider
-                                                                              .createIssuedata[
-                                                                          'members']
-                                                                      as Map)
-                                                                  .entries
-                                                                  .map((e) =>
-                                                                      Positioned(
-                                                                        right: (issuesProvider.createIssuedata['members'] as Map).values.toList().indexOf(e) *
-                                                                            00.0,
-                                                                        child:
-                                                                            Container(
-                                                                          height:
-                                                                              25,
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          width:
-                                                                              25,
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            shape:
-                                                                                BoxShape.circle,
-                                                                            color: Color.fromRGBO(
-                                                                                55,
-                                                                                65,
-                                                                                81,
-                                                                                1),
-                                                                            // image: DecorationImage(
-                                                                            //   image: NetworkImage(
-                                                                            //       e['profileUrl']),
-                                                                            //   fit: BoxFit.cover,
-                                                                            // ),
+                                                              children: issuesProvider
+                                                                          .createIssuedata[
+                                                                              'members']
+                                                                          .length ==
+                                                                      1
+                                                                  ? [
+                                                                      Row(
+                                                                        children: [
+                                                                          Container(
+                                                                            height:
+                                                                                25,
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            width:
+                                                                                25,
+                                                                            decoration:
+                                                                                const BoxDecoration(
+                                                                              shape: BoxShape.circle,
+                                                                              color: Color.fromRGBO(55, 65, 81, 1),
+                                                                              // image: DecorationImage(
+                                                                              //   image: NetworkImage(
+                                                                              //       e['profileUrl']),
+                                                                              //   fit: BoxFit.cover,
+                                                                              // ),
+                                                                            ),
+                                                                            child:
+                                                                                CustomText(
+                                                                              issuesProvider.createIssuedata['members'].values.first['name'][0].toString().toUpperCase(),
+                                                                              type: FontStyle.Small,
+                                                                              color: Colors.white,
+                                                                            ),
                                                                           ),
-                                                                          child:
-                                                                              CustomText(
-                                                                            e.value['name'][0].toString().toUpperCase(),
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            color:
-                                                                                Colors.white,
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                5,
                                                                           ),
-                                                                        ),
-                                                                      ))
-                                                                  .toList(),
+                                                                          Container(
+                                                                            constraints:
+                                                                                const BoxConstraints(
+                                                                              maxWidth: 100,
+                                                                            ),
+                                                                            child:
+                                                                                CustomText(
+                                                                              issuesProvider.createIssuedata['members'].values.first['name'],
+                                                                              type: FontStyle.Small,
+                                                                              maxLines: 1,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ]
+                                                                  : (issuesProvider
+                                                                              .createIssuedata['members']
+                                                                          as Map)
+                                                                      .entries
+                                                                      .map((e) =>
+                                                                          Positioned(
+                                                                            right:
+                                                                                (issuesProvider.createIssuedata['members'] as Map).values.toList().indexOf(e) * 00.0,
+                                                                            child:
+                                                                                Container(
+                                                                              height: 25,
+                                                                              alignment: Alignment.center,
+                                                                              width: 25,
+                                                                              decoration: const BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                color: Color.fromRGBO(55, 65, 81, 1),
+                                                                                // image: DecorationImage(
+                                                                                //   image: NetworkImage(
+                                                                                //       e['profileUrl']),
+                                                                                //   fit: BoxFit.cover,
+                                                                                // ),
+                                                                              ),
+                                                                              child: CustomText(
+                                                                                e.value['name'][0].toString().toUpperCase(),
+                                                                                type: FontStyle.Small,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          ))
+                                                                      .toList(),
                                                             ),
                                                           )
                                                         ],
@@ -914,7 +956,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                             .keyboard_arrow_down,
                                                         color: themeProvider
                                                             .themeManager
-                                                            .placeholderTextColor,
+                                                            .primaryTextColor,
                                                       ),
                                                     ],
                                                   )

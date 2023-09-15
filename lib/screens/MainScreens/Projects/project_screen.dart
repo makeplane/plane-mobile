@@ -302,7 +302,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                     ? Container()
                     : ListTile(
                         onTap: () {
-                          //   log(projectProvider.projects[index].toString());
                           if (projectProvider.currentProject !=
                               projectProvider.projects[index]) {
                             ref.read(ProviderList.issuesProvider).clearData();
@@ -334,15 +333,22 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                                 ? Icon(
                                     iconList[projectProvider.projects[index]
                                         ['icon_prop']['name']],
-                                    color: Color(
-                                      int.parse(
-                                        projectProvider.projects[index]
-                                                ['icon_prop']["color"]
-                                            .toString()
-                                            .replaceAll('#', '0xFF'),
-                                      ),
-                                    ),
-                                  )
+                                    color: projectProvider.projects[index]
+                                                ['icon_prop']["color"] !=
+                                            null
+                                        ? Color(
+                                            int.parse(
+                                              projectProvider.projects[index]
+                                                      ['icon_prop']["color"]
+                                                  .toString()
+                                                  .replaceAll('#', '0xFF'),
+                                            ),
+                                          )
+                                        : Color(
+                                            int.parse(
+                                              '#3A3A3A'.replaceAll('#', '0xFF'),
+                                            ),
+                                          ))
                                 : Text(
                                     int.tryParse(projectProvider.projects[index]
                                                     ['emoji']

@@ -733,7 +733,7 @@ class IssuesProvider extends ChangeNotifier {
                 ? []
                 : (createIssuedata["members"] as Map).keys.toList(),
             "cycle": null,
-            "description_html": createIssuedata['description_html'],
+            "description_html": createIssuedata['description_html'] ?? '',
             "estimate_point": null,
             "labels": createIssuedata["labels"] == null
                 ? []
@@ -746,9 +746,8 @@ class IssuesProvider extends ChangeNotifier {
                     .map((e) => e["id"])
                     .toList(),
             "name": createIssuedata['title'],
-            "priority": createIssuedata['priority']['name'] == 'None'
-                ? null
-                : createIssuedata['priority']['name'].toString().toLowerCase(),
+            "priority":
+                createIssuedata['priority']['name'].toString().toLowerCase(),
             "project": projID,
             "state": createIssuedata['state'],
             if (createIssuedata['module'] != null)

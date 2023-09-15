@@ -22,7 +22,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  static int currentIndex = 0;
   List navBarItems = [
     {'icon': 'assets/svg_images/home.svg', 'label': 'Home'},
     {'icon': 'assets/svg_images/projects.svg', 'label': 'Projects'},
@@ -40,6 +39,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var profileProvider = ref.watch(ProviderList.profileProvider);
+    var bottomNavProvider = ref.watch(ProviderList.bottomNavProvider);
     themeProvider.context = context;
     final screens = [
       DashBoardScreen(
@@ -54,7 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: SafeArea(
         child: profileProvider.getProfileState == StateEnum.success
             ? IndexedStack(
-                index: currentIndex,
+                index: bottomNavProvider.selectedIndex,
                 children: screens,
               )
             //screens[currentIndex]
@@ -95,16 +95,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   .read(ProviderList.dashboardProvider)
                                   .getDashboard();
                             }
-                            setState(() {
-                              currentIndex = i;
-                            });
+                            bottomNavProvider.setIndex(i);
                           },
                           child: Column(
                             children: [
                               Container(
                                 height: 7,
                                 width: 50,
-                                color: currentIndex == i
+                                color: bottomNavProvider.selectedIndex == i
                                     ? themeProvider.themeManager.primaryColour
                                     : Colors.transparent,
                               ),
@@ -115,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   // height: 20,
                                   // width: 20,
                                   colorFilter: ColorFilter.mode(
-                                      currentIndex == i
+                                      bottomNavProvider.selectedIndex == i
                                           ? themeProvider
                                               .themeManager.primaryColour
                                           : themeProvider.theme == THEME.custom
@@ -128,7 +126,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 e['label'],
                                 overrride: true,
                                 type: FontStyle.Small,
-                                color: currentIndex == i
+                                color: bottomNavProvider.selectedIndex == i
                                     ? themeProvider.themeManager.primaryColour
                                     : themeProvider.theme == THEME.custom
                                         ? customNavBarTextColor

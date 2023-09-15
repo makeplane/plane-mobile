@@ -1950,7 +1950,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               )),
                                     CustomText(
                                       detailData['distribution']['assignees']
-                                              [idx]['first_name'] ??
+                                              [idx]['display_name'] ??
                                           'No Assignees',
                                       color: themeProvider
                                           .themeManager.secondaryTextColor,
@@ -2546,11 +2546,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                   null &&
                               detailData[widget.fromModule
                                       ? 'lead_detail'
-                                      : 'owned_by']['first_name'] !=
+                                      : 'owned_by']['display_name'] !=
                                   null)
                           ? detailData[widget.fromModule
                                   ? 'lead_detail'
-                                  : 'owned_by']['first_name'] ??
+                                  : 'owned_by']['display_name'] ??
                               ''
                           : '',
                       type: FontStyle.Small,

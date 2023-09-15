@@ -90,7 +90,7 @@ class CustomText extends ConsumerWidget {
 
     return Text(
       text.toString(),
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
       textAlign: textAlign ?? TextAlign.start,
       overflow: overflow ?? TextOverflow.ellipsis,
       style: style.merge(style),

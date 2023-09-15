@@ -281,6 +281,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     var theme = profileProvider.userProfile.theme;
     theme!['theme'] = fromTHEME(theme: THEME.light);
 
+    ref.read(ProviderList.bottomNavProvider).setIndex(0);
+
     ref.read(ProviderList.themeProvider).changeTheme(
       data: {'theme': theme},
       context: context,

@@ -406,11 +406,11 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                             width: width * 0.3,
                             child: CustomText(
                               cyclesProvider.cyclesActiveData[index]['owned_by']
-                                      ['first_name'] ??
+                                      ['display_name'] ??
                                   '',
                               // color: themeProvider.secondaryTextColor,
                               type: FontStyle.Medium,
-                              maxLines: 2,
+                              maxLines: 1,
                             ),
                           ),
                         ],
@@ -689,13 +689,13 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                     cyclesProvider.cyclesActiveData[widget
                                                         .index]['distribution']
                                                     ['assignees'][idx]
-                                                ['first_name'] ==
+                                                ['display_name'] ==
                                             null
                                         ? ''
                                         : cyclesProvider
                                             .cyclesActiveData[widget.index]
                                                 ['distribution']['assignees']
-                                                [idx]['first_name'][0]
+                                                [idx]['display_name'][0]
                                             .toString()
                                             .toUpperCase(),
                                     color: Colors.white,
@@ -707,7 +707,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                       CustomText(
                         cyclesProvider.cyclesActiveData[widget.index]
                                     ['distribution']['assignees'][idx]
-                                ['first_name'] ??
+                                ['display_name'] ??
                             'No Assignees',
                         fontWeight: FontWeightt.Regular,
                         color: themeProvider.themeManager.secondaryTextColor,

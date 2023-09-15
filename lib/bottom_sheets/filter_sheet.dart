@@ -181,6 +181,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
       return Container(
         margin: const EdgeInsets.all(6),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        //set max width to 150
+        constraints: const BoxConstraints(maxWidth: 300),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             blurRadius: 0.6,
@@ -193,13 +195,18 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           children: [
             icon,
             const SizedBox(width: 5),
-            CustomText(
-              text.isNotEmpty
-                  ? text.replaceFirst(text[0], text[0].toUpperCase())
-                  : text,
-              color: selected
-                  ? Colors.white
-                  : themeProvider.themeManager.secondaryTextColor,
+            Container(
+              constraints: const BoxConstraints(maxWidth: 200),
+              child: CustomText(
+                text.isNotEmpty
+                    ? text.replaceFirst(text[0], text[0].toUpperCase())
+                    : text,
+                color: selected
+                    ? Colors.white
+                    : themeProvider.themeManager.secondaryTextColor,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             )
           ],
         ),
@@ -396,10 +403,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                                 type: FontStyle.overline,
                                               )),
                                             ),
-                                      text: e['member']['first_name'] != null &&
-                                              e['member']['first_name'] != ''
-                                          ? e['member']['first_name']
-                                          : '',
+                                      text: e['member']['display_name'] ?? '',
                                       selected: filters.assignees
                                           .contains(e['member']['id']),
                                       color: filters.assignees
@@ -462,10 +466,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                                 type: FontStyle.overline,
                                               )),
                                             ),
-                                      text: e['member']['first_name'] != null &&
-                                              e['member']['first_name'] != ''
-                                          ? e['member']['first_name']
-                                          : '',
+                                      text: e['member']['display_name'] ?? '',
                                       selected: filters.createdBy
                                           .contains(e['member']['id']),
                                       color: filters.createdBy

@@ -3,6 +3,7 @@ import 'package:plane/Authentication/google_sign_in.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/activity_provider.dart';
 import 'package:plane/provider/auth_provider.dart';
+import 'package:plane/provider/bottom_nav_provider.dart';
 import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/file_upload_provider.dart';
@@ -45,6 +46,8 @@ class ProviderList {
       ChangeNotifierProvider<IssueProvider>((ref) => IssueProvider(ref));
   static var searchIssueProvider =
       ChangeNotifierProvider<SearchIssueProvider>((_) => SearchIssueProvider());
+  static var bottomNavProvider =
+      ChangeNotifierProvider<BottomNavProvider>((_) => BottomNavProvider());
   static var cyclesProvider =
       ChangeNotifierProvider<CyclesProvider>((ref) => CyclesProvider(ref));
 

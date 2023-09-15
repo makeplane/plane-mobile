@@ -170,7 +170,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       children: [
         SizedBox(
           width:
-              MediaQuery.of(context).size.width * 0.65, //ToDo : make it better
+              MediaQuery.of(context).size.width * 0.85, //ToDo : make it better
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -178,7 +178,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
                 type: FontStyle.H5,
                 fontWeight: FontWeightt.Semibold,
-                maxLines: 2,
+                maxLines: 1,
               ),
               const SizedBox(height: 4),
               Row(
@@ -896,6 +896,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 color: themeProvider.themeManager.primaryColour,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 0,
                               ),
                               child: Center(
                                 child: CustomText(

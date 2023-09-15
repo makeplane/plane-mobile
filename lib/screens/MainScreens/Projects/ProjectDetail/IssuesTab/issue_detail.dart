@@ -25,12 +25,14 @@ class IssueDetail extends ConsumerStatefulWidget {
   String appBarTitle;
   final String? projID;
   final String? workspaceSlug;
+  final bool isArchive;
   IssueDetail(
       {required this.from,
       required this.appBarTitle,
       required this.ref,
       this.projID,
       this.workspaceSlug,
+      this.isArchive = false,
       required this.issueId,
       super.key});
 
@@ -59,9 +61,10 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         break;
       case PreviousScreen.projectDetail:
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          widget.ref
-              .read(ProviderList.issuesProvider)
-              .filterIssues(slug: workspaceSlug, projID: projID);
+          widget.ref.read(ProviderList.issuesProvider).filterIssues(
+              slug: workspaceSlug,
+              projID: projID,
+              isArchived: widget.isArchive);
         });
         break;
       case PreviousScreen.cycles:

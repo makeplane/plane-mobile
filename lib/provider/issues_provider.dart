@@ -181,7 +181,20 @@ class IssuesProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
-  List<BoardListsData> initializeBoard({bool views = false}) {
+  bool isFiltersEmpty() {
+    return issues.filters.assignees.isEmpty &&
+        issues.filters.createdBy.isEmpty &&
+        issues.filters.labels.isEmpty &&
+        issues.filters.priorities.isEmpty &&
+        issues.filters.states.isEmpty &&
+        issues.filters.targetDate.isEmpty &&
+        issues.filters.startDate.isEmpty &&
+        issues.filters.stateGroup.isEmpty &&
+        issues.filters.subscriber.isEmpty;
+  }
+
+  List<BoardListsData> initializeBoard(
+      {bool views = false, bool isArchive = false}) {
     var themeProvider = ref!.read(ProviderList.themeProvider);
     int count = 0;
     //   log(issues.groupBY.name);
@@ -202,6 +215,7 @@ class IssuesProvider extends ChangeNotifier {
         items.add(
           IssueCardWidget(
             from: views ? PreviousScreen.views : PreviousScreen.projectDetail,
+            isArchive: isArchive,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.issues,
@@ -234,7 +248,13 @@ class IssuesProvider extends ChangeNotifier {
           break;
         }
       }
-      // log(label.toString());
+
+      if (!userFound) {
+        userFound = true;
+        userName = 'None';
+      }
+
+      log(stateOrdering.toString());
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -1206,54 +1226,16 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future updateProjectView({bool setDefault = false}) async {
+  Future updateProjectView({
+    bool isArchive = false,
+  }) async {
     log(tempProjectView.toString());
-    Map<String, dynamic> view = {
-      "view_props": {
-        "calendarDateRange": "",
-        "collapsed": false,
-        "filterIssue": null,
-        "filters": {
-          // 'type': null,
-          // "priority": filterPriority,
-          if (issues.filters.priorities.isNotEmpty)
-            "priority": issues.filters.priorities,
-          if (issues.filters.states.isNotEmpty) "state": issues.filters.states,
-          if (issues.filters.assignees.isNotEmpty)
-            "assignees": issues.filters.assignees,
-          if (issues.filters.createdBy.isNotEmpty)
-            "created_by": issues.filters.createdBy,
-          if (issues.filters.labels.isNotEmpty) "labels": issues.filters.labels,
-          if (issues.filters.targetDate.isNotEmpty)
-            "target_date": issues.filters.targetDate,
-          if (issues.filters.startDate.isNotEmpty)
-            "start_date": issues.filters.startDate,
-          if (issues.filters.subscriber.isNotEmpty)
-            "subscriber": issues.filters.subscriber,
-          if (issues.filters.stateGroup.isNotEmpty)
-            "state_group": issues.filters.stateGroup,
-        },
-        "display_filters": {
-          "group_by": issues.groupBY == GroupBY.none
-              ? null
-              : Issues.fromGroupBY(issues.groupBY),
-          "order_by": Issues.fromOrderBY(issues.orderBY),
-          "type": Issues.fromIssueType(issues.issueType),
-          "show_empty_groups": showEmptyStates,
-          "layout": issues.projectView == ProjectView.kanban
-              ? 'kanban'
-              : issues.projectView == ProjectView.list
-                  ? 'list'
-                  : issues.projectView == ProjectView.calendar
-                      ? 'calendar'
-                      : 'spreadsheet',
-          "sub_issue": issues.showSubIssues,
-        },
-      }
-    };
-    if (setDefault) {
-      view['default_props'] = view['view_props'];
-    }
+    // dynamic filterPriority;
+    // if (issues.filters.priorities.isNotEmpty) {
+    //   filterPriority = issues.filters.priorities
+    //       .map((element) => element == 'none' ? null : element)
+    //       .toList();
+    // }
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1267,7 +1249,50 @@ class IssuesProvider extends ChangeNotifier {
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
         hasBody: true,
-        data: view,
+        data: {
+          "view_props": {
+            "calendarDateRange": "",
+            "collapsed": false,
+            "filterIssue": null,
+            "filters": {
+              // 'type': null,
+              // "priority": filterPriority,
+              if (issues.filters.priorities.isNotEmpty)
+                "priority": issues.filters.priorities,
+              if (issues.filters.states.isNotEmpty)
+                "state": issues.filters.states,
+              if (issues.filters.assignees.isNotEmpty)
+                "assignees": issues.filters.assignees,
+              if (issues.filters.createdBy.isNotEmpty)
+                "created_by": issues.filters.createdBy,
+              if (issues.filters.labels.isNotEmpty)
+                "labels": issues.filters.labels,
+              if (issues.filters.targetDate.isNotEmpty)
+                "target_date": issues.filters.targetDate,
+              if (issues.filters.startDate.isNotEmpty)
+                "start_date": issues.filters.startDate,
+              if (issues.filters.subscriber.isNotEmpty)
+                "subscriber": issues.filters.subscriber,
+              if (issues.filters.stateGroup.isNotEmpty)
+                "state_group": issues.filters.stateGroup,
+            },
+            "display_filters": {
+              "group_by": Issues.fromGroupBY(issues.groupBY),
+              "order_by": Issues.fromOrderBY(issues.orderBY),
+              "type": Issues.fromIssueType(issues.issueType),
+              "show_empty_groups": showEmptyStates,
+              if (!isArchive)
+                "layout": issues.projectView == ProjectView.kanban
+                    ? 'kanban'
+                    : issues.projectView == ProjectView.list
+                        ? 'list'
+                        : issues.projectView == ProjectView.calendar
+                            ? 'calendar'
+                            : 'spreadsheet',
+              "sub_issue": false,
+            },
+          }
+        },
         httpMethod: HttpMethod.post,
       );
       log('project view => ${response.data}');
@@ -1301,9 +1326,8 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      issueView =
-          reset ? response.data["default_props"] : response.data["view_props"];
-      log("project view=>${response.data["view_props"]}");
+      issueView = response.data["view_props"];
+      log("project view=>${response.data}");
       issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
           : issueView['issueView'] == 'calendar'
@@ -1349,6 +1373,7 @@ class IssuesProvider extends ChangeNotifier {
     required String slug,
     required String projID,
     bool fromViews = false,
+    bool isArchived = false,
     String? cycleId,
     String? moduleId,
     Enum issueCategory = IssueCategory.issues,
@@ -1387,7 +1412,9 @@ class IssuesProvider extends ChangeNotifier {
     }
 
     String url;
-    if (issueCategory == IssueCategory.issues && !fromViews) {
+    // log(issues.issueType.toString());
+    if (issueCategory == IssueCategory.issues && !fromViews && !isArchived) {
+      log('Updating temp GroupBy');
       tempGroupBy = issues.groupBY;
       tempFilters = issues.filters;
       tempOrderBy = issues.orderBY;
@@ -1399,7 +1426,9 @@ class IssuesProvider extends ChangeNotifier {
               ? APIs.orderByGroupByCycleIssues
               : issueCategory == IssueCategory.moduleIssues
                   ? APIs.orderByGroupByModuleIssues
-                  : APIs.orderByGroupByTypeIssues)
+                  : isArchived
+                      ? APIs.orderByGroupByTypeArchivedIssues
+                      : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
           .replaceAll(
@@ -1447,7 +1476,9 @@ class IssuesProvider extends ChangeNotifier {
               ? APIs.orderByGroupByCycleIssues
               : issueCategory == IssueCategory.moduleIssues
                   ? APIs.orderByGroupByModuleIssues
-                  : APIs.orderByGroupByTypeIssues)
+                  : isArchived
+                      ? APIs.orderByGroupByTypeArchivedIssues
+                      : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
           .replaceAll(
@@ -1492,10 +1523,9 @@ class IssuesProvider extends ChangeNotifier {
     if (issues.groupBY == GroupBY.none) {
       url = url.replaceAll('&group_by=none', '');
       stateOrdering = ['All Issues'];
-    } 
+    }
     log('URL: $url');
 
-    
     dynamic temp;
     try {
       //  log('====CAME TO CYCLES TRY');
@@ -1553,6 +1583,22 @@ class IssuesProvider extends ChangeNotifier {
           }
         }
       }
+
+      // if(issueCategory == IssueCategory.archivedIssues){
+      //   archivedIssueResponse = [];
+      //   isArchivedIssuesEmpty = true;
+      //   archivedIssuesList = [];
+
+      //   for (var key in response.data.keys) {
+      //     //  log("KEY=$key");
+      //     if (response.data[key].isNotEmpty) {
+      //       isArchivedIssuesEmpty = false;
+      //     }
+
+      //     archivedIssuesList.addAll(response.data[key]);
+      //   }
+
+      // }
 
       //log("shrink states=${shrinkStates.toString()}");
       if (issueCategory == IssueCategory.issues) {

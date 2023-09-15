@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/create_estimate.dart';
 import 'package:plane/bottom_sheets/project_invite_memebers_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/automations_page.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
@@ -38,6 +39,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     'Labels',
     'Integrations',
     'Estimates',
+    'Automations',
   ];
 
   var pageViewController = PageController(initialPage: 0);
@@ -321,7 +323,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                         StatesPage(),
                         LablesPage(),
                         IntegrationsWidget(),
-                        EstimatsPage()
+                        EstimatsPage(),
+                        AutomationsPage(),
                       ]),
                 ),
               ],

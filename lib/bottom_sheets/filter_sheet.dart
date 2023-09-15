@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
@@ -21,10 +23,12 @@ class FilterSheet extends ConsumerStatefulWidget {
       required this.issueCategory,
       this.filtersData,
       this.fromViews = false,
+      this.isArchived = false,
       this.fromCreateView = false});
   final Enum issueCategory;
   final bool fromCreateView;
   final bool fromViews;
+  final bool isArchived;
   dynamic filtersData;
   @override
   ConsumerState<FilterSheet> createState() => _FilterSheetState();
@@ -58,6 +62,18 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     stateGroup: [],
     subscriber: [],
   );
+
+  bool isFilterEmpty() {
+    return filters.priorities.isEmpty &&
+        filters.states.isEmpty &&
+        filters.assignees.isEmpty &&
+        filters.createdBy.isEmpty &&
+        filters.labels.isEmpty &&
+        filters.targetDate.isEmpty &&
+        filters.startDate.isEmpty &&
+        filters.stateGroup.isEmpty &&
+        filters.subscriber.isEmpty;
+  }
 
   List<DateTime?> _targetRangeDatePickerValueWithDefaultValue = [];
   List<DateTime?> _startRangeDatePickerValueWithDefaultValue = [];
@@ -147,6 +163,8 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
 
   @override
   void initState() {
+    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    log(issuesProvider.states.toString());
     if (!widget.fromCreateView) {
       if (widget.issueCategory == IssueCategory.myIssues) {
         filters = ref.read(ProviderList.myIssuesProvider).issues.filters;
@@ -294,53 +312,55 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   CustomExpansionTile(
                     title: 'State',
                     child: Wrap(
-                        children: (widget.issueCategory ==
-                                    IssueCategory.myIssues
-                                ? states
-                                : issuesProvider.states.values)
-                            .map((e) => GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (filters.states.contains(e['id'])) {
-                                        filters.states.remove(e['id']);
-                                      } else {
-                                        filters.states.add(e['id']);
-                                      }
-                                    });
-                                  },
-                                  child: expandedWidget(
-                                    icon: SvgPicture.asset(
-                                      e['name'] == 'Backlog'
-                                          ? 'assets/svg_images/circle.svg'
-                                          : e['name'] == 'Cancelled'
-                                              ? 'assets/svg_images/cancelled.svg'
-                                              : e['name'] == 'Todo' ||
-                                                      e['name'] == 'Started'
-                                                  ? 'assets/svg_images/in_progress.svg'
-                                                  : e['name'] == 'Done' ||
-                                                          e['name'] ==
-                                                              'Completed'
-                                                      ? 'assets/svg_images/done.svg'
-                                                      : 'assets/svg_images/circle.svg',
-                                      colorFilter: ColorFilter.mode(
-                                          filters.states.contains(e['id'])
-                                              ? (Colors.white)
-                                              : themeProvider.themeManager
-                                                  .secondaryTextColor,
-                                          BlendMode.srcIn),
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    text: e['name'],
-                                    color: filters.states.contains(e['id'])
-                                        ? themeProvider
-                                            .themeManager.primaryColour
-                                        : themeProvider.themeManager
-                                            .secondaryBackgroundDefaultColor,
-                                    selected: filters.states.contains(e['id']),
-                                  ),
-                                ))
-                            .toList()
+                        children:
+                            (widget.issueCategory == IssueCategory.myIssues
+                                    ? states
+                                    : issuesProvider.states.values)
+                                .map((e) {
+                      return (widget.isArchived &&
+                              (e['group'] == 'backlog' ||
+                                  e['group'] == 'unstarted' ||
+                                  e['group'] == 'started'))
+                          ? Container()
+                          : GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (filters.states.contains(e['id'])) {
+                                    filters.states.remove(e['id']);
+                                  } else {
+                                    filters.states.add(e['id']);
+                                  }
+                                });
+                              },
+                              child: expandedWidget(
+                                icon: SvgPicture.asset(
+                                  e['group'] == 'backlog'
+                                      ? 'assets/svg_images/circle.svg'
+                                      : e['group'] == 'cancelled'
+                                          ? 'assets/svg_images/cancelled.svg'
+                                          : e['group'] == 'started'
+                                              ? 'assets/svg_images/in_progress.svg'
+                                              : e['group'] == 'completed'
+                                                  ? 'assets/svg_images/done.svg'
+                                                  : 'assets/svg_images/circle.svg',
+                                  colorFilter: ColorFilter.mode(
+                                      filters.states.contains(e['id'])
+                                          ? (Colors.white)
+                                          : themeProvider
+                                              .themeManager.secondaryTextColor,
+                                      BlendMode.srcIn),
+                                  height: 20,
+                                  width: 20,
+                                ),
+                                text: e['name'],
+                                color: filters.states.contains(e['id'])
+                                    ? themeProvider.themeManager.primaryColour
+                                    : themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor,
+                                selected: filters.states.contains(e['id']),
+                              ),
+                            );
+                    }).toList()
                         // children: [
                         //   expandedWidget(
                         //       icon: Icons.dangerous_outlined, text: 'Backlog', selected: false),
@@ -1098,76 +1118,152 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           Positioned(
             bottom: 0,
             child: Container(
-              height: 50,
-              width: MediaQuery.sizeOf(context).width - 40,
-              margin: const EdgeInsets.only(bottom: 18),
-              child: Button(
-                text: widget.fromCreateView ? 'Add Filter' : 'Apply Filter',
-                ontap: () {
-                  log(filters.startDate.toString());
-                  if (widget.fromCreateView) {
-                    widget.filtersData["Filters"] = Filters.toJson(filters);
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: isFilterEmpty()
+                        ? null
+                        : () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CreateView(
+                                      filtersData: filters,
+                                      fromProjectIssues: true,
+                                    )));
+                            // Navigator.of(context).pop();
+                          },
+                    child: Container(
+                      // width: width * 0.42,
+                      width: MediaQuery.of(context).size.width * 0.42,
+                      height: 50,
+                      margin: const EdgeInsets.only(bottom: 18),
+                      child: Container(
+                          //blue border, light blue background, blue text
 
-                    Navigator.pop(context);
-                    return;
-                  }
-                  widget.issueCategory == IssueCategory.myIssues
-                      ? myIssuesProvider.issues.filters = filters
-                      : issuesProvider.issues.filters = filters;
-                  if (widget.issueCategory == IssueCategory.cycleIssues) {
-                    ref
-                        .watch(ProviderList.cyclesProvider)
-                        .filterCycleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        )
-                        .then((value) => ref
-                            .watch(ProviderList.cyclesProvider)
-                            .initializeBoard());
-                  } else if (widget.issueCategory ==
-                      IssueCategory.moduleIssues) {
-                    ref
-                        .watch(ProviderList.modulesProvider)
-                        .filterModuleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        )
-                        .then((value) => ref
-                            .watch(ProviderList.modulesProvider)
-                            .initializeBoard());
-                  } else if (widget.issueCategory == IssueCategory.myIssues) {
-                    ref
-                        .watch(ProviderList.myIssuesProvider)
-                        .updateMyIssueView();
-                    ref.watch(ProviderList.myIssuesProvider).filterIssues();
-                  } else {
-                    if (widget.issueCategory == IssueCategory.issues) {
-                      issuesProvider.updateProjectView();
-                    }
-                    issuesProvider.filterIssues(
-                      fromViews: widget.fromViews,
-                      slug: ref
-                          .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
-                          .workspaceSlug,
-                      projID: ref
-                          .read(ProviderList.projectProvider)
-                          .currentProject["id"],
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-                textColor: Colors.white,
+                          decoration: BoxDecoration(
+                            color: isFilterEmpty()
+                                ? themeProvider.themeManager.borderSubtle01Color
+                                    .withOpacity(0.6)
+                                : themeProvider.themeManager.primaryColour
+                                    .withOpacity(0.2),
+                            border: Border.all(
+                                color: isFilterEmpty()
+                                    ? themeProvider
+                                        .themeManager.placeholderTextColor
+                                    : themeProvider.themeManager.primaryColour),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Wrap(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: isFilterEmpty()
+                                      ? themeProvider
+                                          .themeManager.placeholderTextColor
+                                      : themeProvider
+                                          .themeManager.primaryColour,
+                                  size: 24,
+                                ),
+                                CustomText(
+                                  '  Save View',
+                                  color: isFilterEmpty()
+                                      ? themeProvider
+                                          .themeManager.placeholderTextColor
+                                      : themeProvider
+                                          .themeManager.primaryColour,
+                                  fontWeight: FontWeightt.Semibold,
+                                  type: FontStyle.Medium,
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    // width: width * 0.42,
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    margin: const EdgeInsets.only(bottom: 18),
+                    child: Button(
+                      text:
+                          widget.fromCreateView ? 'Add Filter' : 'Apply Filter',
+                      ontap: () {
+                        log(filters.startDate.toString());
+                        if (widget.fromCreateView) {
+                          widget.filtersData["Filters"] =
+                              Filters.toJson(filters);
+
+                          Navigator.pop(context);
+                          return;
+                        }
+                        widget.issueCategory == IssueCategory.myIssues
+                            ? myIssuesProvider.issues.filters = filters
+                            : issuesProvider.issues.filters = filters;
+                        if (widget.issueCategory == IssueCategory.cycleIssues) {
+                          ref
+                              .watch(ProviderList.cyclesProvider)
+                              .filterCycleIssues(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projectId: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject["id"],
+                              )
+                              .then((value) => ref
+                                  .watch(ProviderList.cyclesProvider)
+                                  .initializeBoard());
+                        } else if (widget.issueCategory ==
+                            IssueCategory.moduleIssues) {
+                          ref
+                              .watch(ProviderList.modulesProvider)
+                              .filterModuleIssues(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace!
+                                    .workspaceSlug,
+                                projectId: ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject["id"],
+                              )
+                              .then((value) => ref
+                                  .watch(ProviderList.modulesProvider)
+                                  .initializeBoard());
+                        } else if (widget.issueCategory ==
+                            IssueCategory.myIssues) {
+                          ref
+                              .watch(ProviderList.myIssuesProvider)
+                              .updateMyIssueView();
+                          ref
+                              .watch(ProviderList.myIssuesProvider)
+                              .filterIssues();
+                        } else {
+                          if (widget.issueCategory == IssueCategory.issues) {
+                            issuesProvider.updateProjectView(
+                              isArchive: widget.isArchived,
+                            );
+                          }
+                          issuesProvider.filterIssues(
+                            fromViews: widget.fromViews,
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace!
+                                .workspaceSlug,
+                            projID: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                            isArchived: widget.isArchived,
+                          );
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      textColor: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

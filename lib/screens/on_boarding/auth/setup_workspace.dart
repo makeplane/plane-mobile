@@ -10,6 +10,7 @@ import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_rich_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_button.dart';
@@ -337,7 +338,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                 slug: urlController.text.trim(),
                                                 size: prov.companySize,
                                                 context: context,
-                                                ref: ref);
+                                                refs: ref);
                                             if (prov.createWorkspaceState ==
                                                 StateEnum.success) {
                                               if (!widget.fromHomeScreen) {
@@ -350,13 +351,17 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                     "workspace_invite": false
                                                   }
                                                 });
-                                                Navigator.push(
-                                                  Const.globalKey
-                                                      .currentContext!,
+
+                                                Navigator.pushAndRemoveUntil(
+                                                  context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const InviteCOWorkers(),
+                                                        const InviteCOWorkers(
+                                                            // fromSignUp: true,
+                                                            ),
                                                   ),
+                                                  (Route<dynamic> route) =>
+                                                      false,
                                                 );
                                               } else {
                                                 Navigator.of(context).pop();
@@ -417,6 +422,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                     await ref
                                         .read(ProviderList.workspaceProvider)
                                         .getWorkspaces();
+                                    // Wrap Navigator with SchedulerBinding to wait for rendering state before navigating
+
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -427,41 +434,45 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       ),
                                       (Route<dynamic> route) => false,
                                     );
+
                                     // }
                                   },
                                 )
                               : Container(),
 
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.arrow_back,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor,
-                                    size: 18,
+                          widget.fromHomeScreen
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_back,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                          size: 18,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        CustomText(
+                                          'Go back',
+                                          type: FontStyle.Small,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                          fontWeight: FontWeightt.Semibold,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  CustomText(
-                                    'Go back',
-                                    type: FontStyle.Small,
-                                    color: themeProvider
-                                        .themeManager.placeholderTextColor,
-                                    fontWeight: FontWeightt.Semibold,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                )
+                              : Container(),
                         ],
                       ),
                     ),

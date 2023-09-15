@@ -206,7 +206,6 @@ class MyIssuesProvider extends ChangeNotifier {
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
-
         url: '${APIs.baseApi}/api/workspaces/$slug/labels/',
         hasBody: false,
         httpMethod: HttpMethod.get,

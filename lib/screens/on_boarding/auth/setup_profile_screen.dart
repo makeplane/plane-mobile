@@ -406,46 +406,46 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                         ],
                       ),
                     ),
-                    1 == 0
-                        ? Container()
-                        : Positioned(
-                            bottom: 0,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  // pageController.previousPage(
-                                  //     duration: const Duration(milliseconds: 250),
-                                  //     curve: Curves.easeInOut);
-                                  // setState(() {
-                                  //   currentPage--;
-                                  // });
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    CustomText(
-                                      'Go back',
-                                      type: FontStyle.Small,
-                                      fontWeight: FontWeightt.Semibold,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                    // 1 == 0
+                    //     ? Container()
+                    //     : Positioned(
+                    //         bottom: 0,
+                    //         child: SizedBox(
+                    //           width: MediaQuery.of(context).size.width,
+                    //           child: GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.pop(context);
+                    //               // pageController.previousPage(
+                    //               //     duration: const Duration(milliseconds: 250),
+                    //               //     curve: Curves.easeInOut);
+                    //               // setState(() {
+                    //               //   currentPage--;
+                    //               // });
+                    //             },
+                    //             child: Row(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               children: [
+                    //                 Icon(
+                    //                   Icons.arrow_back,
+                    //                   color: themeProvider
+                    //                       .themeManager.placeholderTextColor,
+                    //                   size: 18,
+                    //                 ),
+                    //                 const SizedBox(
+                    //                   width: 5,
+                    //                 ),
+                    //                 CustomText(
+                    //                   'Go back',
+                    //                   type: FontStyle.Small,
+                    //                   fontWeight: FontWeightt.Semibold,
+                    //                   color: themeProvider
+                    //                       .themeManager.placeholderTextColor,
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
                   ],
                 ),
               ),

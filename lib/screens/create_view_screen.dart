@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -16,7 +17,13 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class CreateView extends ConsumerStatefulWidget {
-  const CreateView({super.key});
+  final bool fromProjectIssues;
+  final Filters? filtersData;
+  const CreateView({
+    super.key,
+    this.fromProjectIssues = false,
+    this.filtersData,
+  });
 
   @override
   ConsumerState<CreateView> createState() => _CreateViewState();
@@ -66,12 +73,34 @@ class _CreateViewState extends ConsumerState<CreateView> {
       'text': 'low',
       'color': const Color.fromRGBO(34, 197, 94, 1)
     },
-    'null': {
+    'none': {
       'icon': Icons.do_disturb_alt_outlined,
       'text': 'none',
       'color': darkBackgroundColor
     }
   };
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.fromProjectIssues) {
+      var issuesProvider = ref.read(ProviderList.issuesProvider);
+      filtersData = {
+        'Filters': {
+          "assignees": widget.filtersData!.assignees,
+          "created_by": widget.filtersData!.createdBy,
+          "labels": widget.filtersData!.labels,
+          "priority": widget.filtersData!.priorities,
+          "state": widget.filtersData!.states,
+          "target_date": widget.filtersData!.targetDate,
+          "start_date": widget.filtersData!.startDate,
+        }
+      };
+
+      log(filtersData.toString());
+    }
+  }
+
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -190,9 +219,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                         .primaryBackgroundDefaultColor,
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : strokeColor,
+                                      color: themeProvider
+                                          .themeManager.borderStrong01Color,
                                     ),
                                   ),
                                   child: Row(
@@ -239,19 +267,15 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                       bottom: 10),
                                                   decoration: BoxDecoration(
                                                       color: themeProvider
-                                                              .isDarkThemeEnabled
-                                                          ? darkBackgroundColor
-                                                          : const Color.fromRGBO(
-                                                              250, 250, 250, 1),
+                                                          .themeManager
+                                                          .primaryBackgroundDefaultColor,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               4),
                                                       border: Border.all(
                                                           color: themeProvider
-                                                                  .isDarkThemeEnabled
-                                                              ? Colors
-                                                                  .transparent
-                                                              : strokeColor)),
+                                                              .themeManager
+                                                              .borderStrong01Color)),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -424,38 +448,45 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                 });
                                 await ref
                                     .read(ProviderList.viewsProvider.notifier)
-                                    .createViews(ref: ref, data: {
-                                  "name": title.text,
-                                  "description": description.text,
-                                  "query": {
-                                    "assignees":
-                                        filtersData["Filters"]!["assignees"],
-                                    "created_by":
-                                        filtersData["Filters"]!["created_by"],
-                                    "labels": filtersData["Filters"]!["labels"],
-                                    "priority":
-                                        filtersData["Filters"]!["priority"],
-                                    "state": filtersData["Filters"]!["state"],
-                                    "target_date":
-                                        filtersData["Filters"]!["target_date"],
-                                    "start_date":
-                                        filtersData["Filters"]!["start_date"],
-                                  },
-                                  "query_data": {
-                                    "assignees":
-                                        filtersData["Filters"]!["assignees"],
-                                    "created_by":
-                                        filtersData["Filters"]!["created_by"],
-                                    "labels": filtersData["Filters"]!["labels"],
-                                    "priority":
-                                        filtersData["Filters"]!["priority"],
-                                    "state": filtersData["Filters"]!["state"],
-                                    "target_date":
-                                        filtersData["Filters"]!["target_date"],
-                                    "start_date":
-                                        filtersData["Filters"]!["start_date"],
-                                  }
-                                });
+                                    .createViews(
+                                        ref: ref,
+                                        context: context,
+                                        data: {
+                                      "name": title.text,
+                                      "description": description.text,
+                                      "query": {
+                                        "assignees": filtersData["Filters"]![
+                                            "assignees"],
+                                        "created_by": filtersData["Filters"]![
+                                            "created_by"],
+                                        "labels":
+                                            filtersData["Filters"]!["labels"],
+                                        "priority":
+                                            filtersData["Filters"]!["priority"],
+                                        "state":
+                                            filtersData["Filters"]!["state"],
+                                        "target_date": filtersData["Filters"]![
+                                            "target_date"],
+                                        "start_date": filtersData["Filters"]![
+                                            "start_date"],
+                                      },
+                                      "query_data": {
+                                        "assignees": filtersData["Filters"]![
+                                            "assignees"],
+                                        "created_by": filtersData["Filters"]![
+                                            "created_by"],
+                                        "labels":
+                                            filtersData["Filters"]!["labels"],
+                                        "priority":
+                                            filtersData["Filters"]!["priority"],
+                                        "state":
+                                            filtersData["Filters"]!["state"],
+                                        "target_date": filtersData["Filters"]![
+                                            "target_date"],
+                                        "start_date": filtersData["Filters"]![
+                                            "start_date"],
+                                      }
+                                    });
                                 setState(() {
                                   loading = false;
                                 });
@@ -557,10 +588,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkThemeBorder
-                : Colors.grey.shade300),
+        border:
+            Border.all(color: themeProvider.themeManager.borderStrong01Color),
         // color: fill
         //     ? (color != null ? color.withOpacity(0.2) : Colors.white)
         //     : null
@@ -579,9 +608,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                   ? newText.replaceFirst(newText[0], newText[0].toUpperCase())
                   : newText,
               maxLines: 1,
-              color: (themeProvider.isDarkThemeEnabled
-                  ? Colors.grey.shade500
-                  : greyColor),
+              color: themeProvider.themeManager.primaryTextColor,
               fontSize: 15,
             ),
           ),

@@ -98,7 +98,10 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => IssueDetail(
-                                          ref: ref.read(ProviderList.workspaceProvider).ref!,
+                                          ref: ref
+                                              .read(ProviderList
+                                                  .workspaceProvider)
+                                              .ref!,
                                           from: PreviousScreen.notification,
                                           projID: widget.data[index]["project"],
                                           issueId: widget.data[index]['data']
@@ -237,73 +240,71 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                           child: Row(
                                                             children: [
                                                               Expanded(
-                                                                child:
-                                                                    CustomRichText(
-                                                                  // '${widget.data[index]['triggered_by_details']['first_name']} ${widget.data[index]['triggered_by_details']['last_name']}',
-
-                                                                  type: FontStyle
-                                                                      .Small,
-
-                                                                  widgets: [
-                                                                    TextSpan(
-                                                                      text:
-                                                                          '${widget.data[index]['triggered_by_details']['display_name']}',
-                                                                      style:
-                                                                          TextStyle(
+                                                                child: widget.data[index]['data']['issue_activity']
+                                                                            [
+                                                                            'new_value'] ==
+                                                                        'archive'
+                                                                    ? CustomText(
+                                                                        widget
+                                                                            .data[index]['title']
+                                                                            .toString(),
+                                                                        fontSize:
+                                                                            16,
                                                                         color: themeProvider
                                                                             .themeManager
                                                                             .primaryTextColor,
-                                                                        fontSize:
-                                                                            16,
+                                                                      )
+                                                                    : CustomRichText(
+                                                                        // '${widget.data[index]['triggered_by_details']['first_name']} ${widget.data[index]['triggered_by_details']['last_name']}',
+
+                                                                        type: FontStyle
+                                                                            .Small,
+
+                                                                        widgets: [
+                                                                          TextSpan(
+                                                                            text:
+                                                                                '${widget.data[index]['triggered_by_details']['display_name']}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text: widget.data[index]['data']['issue_activity']['field'] == 'description'
+                                                                                ? ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '').toString().replaceAll('to', '')} '
+                                                                                : ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '')} ',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.normal,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text: widget.data[index]['data']['issue_activity']['field'] == 'description'
+                                                                                ? ''
+                                                                                : widget.data[index]['data']['issue_activity']['field'] == 'None'
+                                                                                    ? 'and assigned it to you'
+                                                                                    : widget.data[index]['data']['issue_activity']['field'] == 'attachment'
+                                                                                        ? 'to the issue'
+                                                                                        : widget.data[index]['data']['issue_activity']['new_value'].toString(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: themeProvider.themeManager.primaryTextColor,
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                         fontWeight:
                                                                             FontWeight.bold,
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        maxLines:
+                                                                            2,
                                                                       ),
-                                                                    ),
-                                                                    TextSpan(
-                                                                      text: widget.data[index]['data']['issue_activity']['field'] ==
-                                                                              'description'
-                                                                          ? ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '').toString().replaceAll('to', '')} '
-                                                                          : ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '')} ',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .primaryTextColor,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      ),
-                                                                    ),
-                                                                    TextSpan(
-                                                                      text: widget.data[index]['data']['issue_activity']['field'] ==
-                                                                              'description'
-                                                                          ? ''
-                                                                          : widget.data[index]['data']['issue_activity']['field'] == 'None'
-                                                                              ? 'and assigned it to you'
-                                                                              : widget.data[index]['data']['issue_activity']['field'] == 'attachment'
-                                                                                  ? 'to the issue'
-                                                                                  : widget.data[index]['data']['issue_activity']['new_value'].toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .primaryTextColor,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  maxLines: 2,
-                                                                ),
                                                               ),
                                                               // Expanded(
                                                               //   child: CustomText(

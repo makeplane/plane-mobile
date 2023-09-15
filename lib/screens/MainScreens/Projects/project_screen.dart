@@ -30,12 +30,15 @@ class ProjectScreen extends ConsumerStatefulWidget {
 class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   int selected = 0;
   PageController controller = PageController();
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-
+    if (controller.hasClients) {
+      controller.jumpToPage(selected);
+    }
     log(projectProvider.projectState.toString());
     //   log(projectProvider.starredProjects.toString());
     return Scaffold(

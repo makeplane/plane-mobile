@@ -636,7 +636,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                   .keyboard_arrow_down,
 
                                                           color: const Color
-                                                                  .fromRGBO(
+                                                              .fromRGBO(
                                                               63, 118, 255, 1),
                                                         ),
                                                       ),
@@ -2057,7 +2057,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                               }
                             } else {
                               CustomToast.showToast(baseContext,
-                                  message: 'Soething went wrong ',
+                                  message: 'Something went wrong ',
                                   toastType: ToastType.failure);
                             }
                           },
@@ -2077,4 +2077,3 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   Color getBorderColor(ThemeProvider themeProvider) =>
       themeProvider.isDarkThemeEnabled ? darkThemeBorder : Colors.grey.shade200;
 }
-

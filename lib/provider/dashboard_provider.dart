@@ -13,8 +13,11 @@ class DashBoardProvider extends ChangeNotifier {
   Ref? ref;
   StateEnum getDashboardState = StateEnum.loading;
   Map dashboardData = {};
+  Map issuesClosedByMonth = {};
+  int selectedMonthForissuesClosedByMonthWidget = DateTime.now().month;
   bool hideGithubBlock = false;
   Future getDashboard() async {
+    getIssuesClosedByMonth(DateTime.now().month);
     getDashboardState = StateEnum.loading;
     try {
       var response = await DioConfig().dioServe(
@@ -37,6 +40,31 @@ class DashBoardProvider extends ChangeNotifier {
       }
       log(e.toString());
       getDashboardState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  Future getIssuesClosedByMonth(int month) async {
+    try {
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: '${APIs.dashboard}?month=$month'.replaceAll(
+            '\$SLUG',
+            ref!
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace!
+                .workspaceSlug),
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      issuesClosedByMonth = response.data;
+      selectedMonthForissuesClosedByMonthWidget = month;
+      notifyListeners();
+    } catch (e) {
+      if (e is DioException) {
+        log(e.response.toString());
+      }
+      log(e.toString());
       notifyListeners();
     }
   }

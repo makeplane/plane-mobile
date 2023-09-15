@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:plane/bottom_sheets/time_zone_selector_sheet.dart';
 import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/utils/timezone_manager.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 // import '../Provider/provider_list.dart';
@@ -100,7 +102,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
                                   ],
-                                  type: FontStyle.Small,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -109,6 +111,9 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                   validator: (val) {
                                     if (val!.isEmpty) {
                                       return "*required ";
+                                    }
+                                    if (val!.length >= 24) {
+                                      return "name should be smaller ";
                                     }
                                     return null;
                                   },
@@ -134,7 +139,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
                                   ],
-                                  type: FontStyle.Small,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -144,6 +149,10 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       if (val!.isEmpty) {
                                         return "*required ";
                                       }
+                                      if (val!.length >= 24) {
+                                        return "name should be smaller ";
+                                      }
+
                                       return null;
                                     },
                                     style: themeProvider
@@ -167,7 +176,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             color: themeProvider
                                                 .themeManager.textErrorColor))
                                   ],
-                                  type: FontStyle.Small,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -215,9 +224,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             prov.dropDownValue == null
                                                 ? 'Select Role'
                                                 : prov.dropDownValue!,
-                                            type: FontStyle.Small,
-                                            color: themeProvider.themeManager
-                                                .placeholderTextColor,
+                                            type: FontStyle.Medium,
                                           ),
                                         ),
                                         Container(
@@ -243,9 +250,79 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             .themeManager.textErrorColor,
                                       )
                                     : Container(),
-                                const SizedBox(
-                                  height: 40,
+                                const SizedBox(height: 20),
+                                Container(
+                                  child: CustomText('Time Zone',
+                                      type: FontStyle.Medium,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor),
                                 ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        constraints: BoxConstraints(
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.8,
+                                        ),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        builder: (context) {
+                                          return const TimeZoneSelectorSheet();
+                                        });
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      border: Border.all(
+                                          color: themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 16),
+                                          child: CustomText(
+                                            TimeZoneManager.timeZones
+                                                        .firstWhere((element) =>
+                                                            element['value'] ==
+                                                            prov.selectedTimeZone)[
+                                                    'label'] ??
+                                                '',
+                                            type: FontStyle.Small,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 16),
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 40),
                                 GestureDetector(
                                   onTap: () async {
                                     if (!formKey.currentState!.validate()) {
@@ -270,6 +347,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       'first_name': prov.firstName.text,
                                       'last_name': prov.lastName.text,
                                       'role': prov.dropDownValue,
+                                      "user_timezone":
+                                          prov.selectedTimeZone.toString(),
                                       'onboarding_step': {
                                         "workspace_join": false,
                                         "profile_complete": true,
@@ -320,7 +399,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                   child: const Button(
                                     text: 'Continue',
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

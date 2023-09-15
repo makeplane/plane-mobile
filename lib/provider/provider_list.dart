@@ -14,6 +14,7 @@ import 'package:plane/provider/notification_provider.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/search_issue_provider.dart';
+import 'package:plane/provider/whats_new_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/services/shared_preference_service.dart';
 
@@ -73,6 +74,10 @@ class ProviderList {
   static var memberProfileProvider =
       StateNotifierProvider<MemberProfileProvider, MemberProfileStateModel>(
           (ref) => MemberProfileProvider(ref));
+
+  static var whatsNewProvider =
+      StateNotifierProvider<WhatsNewNotifier, WhatsNew>(
+          (ref) => WhatsNewNotifier(WhatsNew(null)));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

@@ -18,6 +18,7 @@ class NotificationProvider extends ChangeNotifier {
   StateEnum getUnreadState = StateEnum.idle;
   StateEnum getArchivedState = StateEnum.idle;
   StateEnum getSnoozedState = StateEnum.idle;
+  StateEnum markAllAsReadState = StateEnum.idle;
 
   int getCreatedCount = 0;
   int getAssignedCount = 0;
@@ -171,6 +172,52 @@ class NotificationProvider extends ChangeNotifier {
         log(e.response.toString());
       }
       log(e.toString());
+    }
+  }
+
+  Future markAllAsRead(String type) async {
+    String slug = ref!
+        .read(ProviderList.workspaceProvider)
+        .selectedWorkspace!
+        .workspaceSlug;
+
+    // log('${APIs.notifications.replaceAll('\$SLUG', slug)}/mark-all-read/');
+    try {
+      type == 'created'
+          ? getCreatedState = StateEnum.loading
+          : type == 'assigned'
+              ? getAssignedState = StateEnum.loading
+              : getWatchingState = StateEnum.loading;
+      notifyListeners();
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: '${APIs.notifications.replaceAll('\$SLUG', slug)}mark-all-read/',
+        hasBody: true,
+        data: {
+          "archived": false,
+          "snoozed": false,
+          "type": type,
+        },
+        httpMethod: HttpMethod.post,
+      );
+
+      type == 'created'
+          ? getCreatedState = StateEnum.success
+          : type == 'assigned'
+              ? getAssignedState = StateEnum.success
+              : getWatchingState = StateEnum.success;
+      notifyListeners();
+    } catch (e) {
+      if (e is DioException) {
+        log(e.response.toString());
+      }
+      log(e.toString());
+      type == 'created'
+          ? getCreatedState = StateEnum.error
+          : type == 'assigned'
+              ? getAssignedState = StateEnum.error
+              : getWatchingState = StateEnum.error;
+      notifyListeners();
     }
   }
 

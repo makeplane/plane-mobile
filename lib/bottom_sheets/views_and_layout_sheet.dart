@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -333,6 +331,40 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                           ListTileControlAffinity.leading,
                                       activeColor: themeProvider
                                           .themeManager.primaryColour),
+
+                              myIssuesProvider.issues.projectView ==
+                                      ProjectView.list
+                                  ? RadioListTile(
+                                      fillColor: groupBy == 'none'
+                                          ? null
+                                          : MaterialStateProperty.all<Color>(
+                                              themeProvider.themeManager
+                                                  .borderSubtle01Color),
+                                      visualDensity: const VisualDensity(
+                                        horizontal:
+                                            VisualDensity.minimumDensity,
+                                        vertical: VisualDensity.minimumDensity,
+                                      ),
+                                      // dense: true,
+                                      groupValue: groupBy,
+                                      title: CustomText(
+                                        'None',
+                                        type: FontStyle.Small,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      value: 'none',
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          groupBy = 'none';
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      activeColor: themeProvider
+                                          .themeManager.primaryColour)
+                                  : Container(),
                             ],
                           ),
                         )
@@ -910,13 +942,12 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
 
                       return;
                     }
-                    if (widget.issueCategory == IssueCategory.myIssues) {
                       if (myIssuesProvider.issues.groupBY !=
                               Issues.toGroupBY(groupBy) ||
                           myIssuesProvider.issues.orderBY !=
                               Issues.toOrderBY(orderBy) ||
                           myIssuesProvider.issues.issueType !=
-                              Issues.toIssueType(issueType)) {
+                              Issues.toIssueType(issueType) ) {
                         setState(() {
                           myIssuesProvider.issues.orderBY =
                               Issues.toOrderBY(orderBy);
@@ -925,58 +956,9 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                           myIssuesProvider.issues.issueType =
                               Issues.toIssueType(issueType);
                         });
+                       
                         myIssuesProvider.filterIssues();
                       }
-                    } else if (issueProvider.issues.groupBY !=
-                            Issues.toGroupBY(groupBy) ||
-                        issueProvider.issues.orderBY !=
-                            Issues.toOrderBY(orderBy) ||
-                        issueProvider.issues.issueType !=
-                            Issues.toIssueType(issueType)) {
-                      //   print(orderBy);
-                      //   print(' it is if');
-                      setState(() {
-                        issueProvider.issues.orderBY =
-                            Issues.toOrderBY(orderBy);
-                        issueProvider.issues.groupBY =
-                            Issues.toGroupBY(groupBy);
-                        issueProvider.issues.issueType =
-                            Issues.toIssueType(issueType);
-                      });
-                      if (widget.issueCategory == IssueCategory.cycleIssues) {
-                        cyclesProvider.filterCycleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        );
-                      }
-                      if (widget.issueCategory == IssueCategory.moduleIssues) {
-                        modulesProvider.filterModuleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        );
-                      } else {
-                        issueProvider.filterIssues(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projID: ref
-                                .read(ProviderList.projectProvider)
-                                .currentProject["id"],
-                            issueCategory: widget.issueCategory);
-                      }
-                    }
-
                     DisplayProperties properties = DisplayProperties(
                       estimate:
                           projectProvider.currentProject['estimate'] == null
@@ -996,41 +978,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                       startDate: displayProperties[12]['selected'],
                     );
 
-                    if (widget.issueCategory == IssueCategory.myIssues) {
                       myIssuesProvider.issues.displayProperties = properties;
                       myIssuesProvider.showEmptyStates = showEmptyStates;
-                      myIssuesProvider.updateMyIssueView();
-                    } else {
-                      if (widget.issueCategory == IssueCategory.cycleIssues) {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        cyclesProvider.issues.displayProperties = properties;
-                        cyclesProvider.showEmptyStates = showEmptyStates;
-                      } else if (widget.issueCategory ==
-                          IssueCategory.moduleIssues) {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        modulesProvider.issues.displayProperties = properties;
-
-                        modulesProvider.showEmptyStates = showEmptyStates;
-                      } else {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        issueProvider.issues.displayProperties = properties;
-                        issueProvider.showEmptyStates = showEmptyStates;
-                      }
-                      // if (widget.issueCategory == IssueCategory.issues) {
-                      issueProvider.updateProjectView();
-                      // }
-                    }
 
                     if (selected == 0) {
+                      if (myIssuesProvider.issues.groupBY == GroupBY.none) {
+                        myIssuesProvider.issues.groupBY = GroupBY.state;
+                        myIssuesProvider.filterIssues();
+                      }
                       myIssuesProvider.issues.projectView = ProjectView.kanban;
                     } else if (selected == 1) {
                       myIssuesProvider.issues.projectView = ProjectView.list;
@@ -1038,7 +993,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                     myIssuesProvider.setState();
                     myIssuesProvider.updateMyIssueView();
 
-                    log(displayProperties.toString());
+                    // log(displayProperties.toString());
 
                     Navigator.of(context).pop();
                   },

@@ -66,7 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
     var themeProv = ref.read(ProviderList.themeProvider);
     if (Const.accessToken != null) {
-      log(Const.accessToken.toString());
+      // log(Const.accessToken.toString());
       var prov = ref.read(ProviderList.profileProvider);
       var workspaceProv = ref.read(ProviderList.workspaceProvider);
       var projectProv = ref.read(ProviderList.projectProvider);

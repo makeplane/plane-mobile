@@ -56,6 +56,7 @@ class Issues {
   ProjectView projectView;
   GroupBY groupBY = GroupBY.state;
   OrderBY orderBY = OrderBY.manual;
+  bool showSubIssues = true;
   IssueType issueType = IssueType.all;
   Filters filters = Filters(
     assignees: [],
@@ -76,11 +77,13 @@ class Issues {
       required this.groupBY,
       required this.orderBY,
       required this.issueType,
+      required this.showSubIssues,
       required this.displayProperties});
 
   static Issues initialize() {
     return Issues(
       issues: [],
+      showSubIssues: true,
       projectView: ProjectView.kanban,
       groupBY: GroupBY.state,
       orderBY: OrderBY.lastCreated,
@@ -153,14 +156,20 @@ class Issues {
     switch (groupBY) {
       case "state":
         return GroupBY.state;
+      case "state_detail.group":
+        return GroupBY.stateGroups;
       case "priority":
         return GroupBY.priority;
       case "labels":
         return GroupBY.labels;
+      case "assignees":
+        return GroupBY.assignees;
       case "created_by":
         return GroupBY.createdBY;
       case "project":
         return GroupBY.project;
+      case 'none':
+        return GroupBY.none;
       default:
         return GroupBY.state;
     }
@@ -170,14 +179,20 @@ class Issues {
     switch (groupBY) {
       case GroupBY.state:
         return "state";
+      case GroupBY.stateGroups:
+        return "state_detail.group";
       case GroupBY.priority:
         return "priority";
       case GroupBY.labels:
         return "labels";
+      case GroupBY.assignees:
+        return "assignees";
       case GroupBY.createdBY:
         return "created_by";
       case GroupBY.project:
         return "project";
+      case GroupBY.none:
+        return "none";
       default:
         return "state";
     }

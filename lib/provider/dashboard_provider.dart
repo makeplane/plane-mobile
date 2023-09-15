@@ -30,7 +30,6 @@ class DashBoardProvider extends ChangeNotifier {
       );
       dashboardData = response.data;
       getDashboardState = StateEnum.success;
-      //  log(response.data.toString());
       notifyListeners();
     } catch (e) {
       if (e is DioException) {

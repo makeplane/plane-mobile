@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -11,6 +13,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -29,6 +32,7 @@ class CyclesProvider with ChangeNotifier {
   StateEnum upcomingCyclesState = StateEnum.loading;
   StateEnum completedCyclesState = StateEnum.loading;
   StateEnum draftCyclesState = StateEnum.loading;
+  StateEnum transferIssuesState = StateEnum.loading;
   List<dynamic> cyclesAllData = [];
   List<dynamic> cycleFavoriteData = [];
   List<dynamic> cycleUpcomingFavoriteData = [];
@@ -260,7 +264,6 @@ class CyclesProvider with ChangeNotifier {
     required String cycleId,
     Map<String, dynamic>? data,
   }) async {
-
     try {
       if (!disableLoading) {
         cyclesDetailState = StateEnum.loading;
@@ -442,7 +445,9 @@ class CyclesProvider with ChangeNotifier {
         title: issues.groupBY == GroupBY.labels && labelFound
             ? label['name'][0].toString().toUpperCase() +
                 label['name'].toString().substring(1)
-            : userFound && issues.groupBY == GroupBY.createdBY
+            : userFound &&
+                    (issues.groupBY == GroupBY.createdBY ||
+                        issues.groupBY == GroupBY.assignees)
                 ? userName = userName[0].toString().toUpperCase() +
                     userName.toString().substring(1)
                 : title = title[0].toString().toUpperCase() +
@@ -493,7 +498,8 @@ class CyclesProvider with ChangeNotifier {
                               themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
-          : issues.groupBY == GroupBY.createdBY
+          : issues.groupBY == GroupBY.createdBY ||
+                  issues.groupBY == GroupBY.assignees
               ? Container(
                   height: 22,
                   alignment: Alignment.center,
@@ -521,7 +527,9 @@ class CyclesProvider with ChangeNotifier {
                           // color: Color(int.parse(element.title)),
                           ),
                     )
-                  : issuesProvider.stateIcons[element.id];
+                  : issues.groupBY == GroupBY.stateGroups
+                      ? issuesProvider.defaultStatedetails[element.id]['icon']
+                      : issuesProvider.stateIcons[element.id];
 
       element.header = SizedBox(
         // margin: const EdgeInsets.only(bottom: 10),
@@ -798,12 +806,15 @@ class CyclesProvider with ChangeNotifier {
 
       issuesResponse = [];
       isIssuesEmpty = true;
-      for (var key in filterIssues.keys) {
-        log("KEY=$key");
-        if (filterIssues[key].isNotEmpty) {
-          isIssuesEmpty = false;
-          break;
+      if (issues.groupBY != GroupBY.none) {
+        for (var key in filterIssues.keys) {
+          if (filterIssues[key].isNotEmpty) {
+            isIssuesEmpty = false;
+            break;
+          }
         }
+      } else {
+        isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
       if (issues.groupBY == GroupBY.state) {
         issuesProvider.states.forEach((key, value) {
@@ -814,8 +825,10 @@ class CyclesProvider with ChangeNotifier {
         });
       } else {
         stateOrdering = [];
+        shrinkStates = [];
         filterIssues.forEach((key, value) {
           stateOrdering.add(key);
+          shrinkStates.add(false);
         });
       }
 
@@ -839,5 +852,48 @@ class CyclesProvider with ChangeNotifier {
         issues.displayProperties.priority ||
         issues.displayProperties.linkCount ||
         issues.displayProperties.attachmentCount;
+  }
+
+  Future transferIssues(
+      {required String newCycleID, required BuildContext context}) async {
+    try {
+      transferIssuesState = StateEnum.loading;
+      notifyListeners();
+      var response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.transferIssues
+            .replaceAll(
+              '\$SLUG',
+              ref!
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace!
+                  .workspaceSlug,
+            )
+            .replaceAll(
+              '\$PROJECTID',
+              ref!.read(ProviderList.projectProvider).currentProject['id'],
+            )
+            .replaceAll(
+              '\$CYCLEID',
+              currentCycle['id'].toString(),
+            ),
+        hasBody: true,
+        data: {"new_cycle_id": newCycleID},
+        httpMethod: HttpMethod.post,
+      );
+      log(response.data.toString());
+      CustomToast.showToast(context,
+          message: 'Successfully transfered', toastType: ToastType.success);
+      transferIssuesState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log('cycle transfer Error  ===> ');
+      log(e.error.toString());
+      cyclesIssueState = StateEnum.error;
+      CustomToast.showToast(context,
+          message: 'Failed to transfer', toastType: ToastType.failure);
+      transferIssuesState = StateEnum.failed;
+      notifyListeners();
+    }
   }
 }

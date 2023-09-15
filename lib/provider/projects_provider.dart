@@ -336,7 +336,6 @@ class ProjectsProvider extends ChangeNotifier {
     createProjectState = StateEnum.loading;
     var workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
     notifyListeners();
-    log(slug);
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -407,7 +406,6 @@ class ProjectsProvider extends ChangeNotifier {
       );
 
       projectDetailModel = ProjectDetailModel.fromMap(response.data);
-      log("THIS IS THE PROJECT DETAIL : ${projectDetailModel!.issueViewsView}");
       features[1]['show'] = projectDetailModel!.cycleView ?? true;
       features[2]['show'] = projectDetailModel!.moduleView ?? true;
       features[3]['show'] = projectDetailModel!.issueViewsView ?? true;

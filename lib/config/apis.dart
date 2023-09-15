@@ -51,8 +51,12 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/';
   static String moduleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/';
+  static String moduleLinks =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-links/';
   static String cycleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/';
+  static String transferIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/transfer-issues/';
   static String issueAttachments =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/issue-attachments/';
   static String issuelinks =

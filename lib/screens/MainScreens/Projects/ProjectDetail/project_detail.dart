@@ -535,7 +535,11 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                             )),
                                                             context: context,
                                                             builder: (ctx) {
-                                                              return const ViewsSheet(
+                                                              return ViewsSheet(
+                                                                projectView:
+                                                                    issueProvider
+                                                                        .issues
+                                                                        .projectView,
                                                                 issueCategory:
                                                                     IssueCategory
                                                                         .issues,
@@ -857,7 +861,12 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
   var issueProvider = ref.watch(ProviderList.issuesProvider);
   var projectProvider = ref.watch(ProviderList.projectProvider);
   // log(issueProvider.issueState.name);
-  if (issueProvider.issues.projectView == ProjectView.list) {
+  if (issueProvider.issues.projectView == ProjectView.list &&
+      !(issueProvider.issuePropertyState == StateEnum.loading ||
+          issueProvider.issueState == StateEnum.loading ||
+          issueProvider.statesState == StateEnum.loading ||
+          issueProvider.projectViewState == StateEnum.loading ||
+          issueProvider.orderByState == StateEnum.loading)) {
     issueProvider.initializeBoard(views: isViews);
   }
 

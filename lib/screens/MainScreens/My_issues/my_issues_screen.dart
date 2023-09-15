@@ -448,11 +448,19 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                 child: Row(
                                                   children: [
                                                     state.leading ??
-                                                        Container(),
+                                                        Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          color: Colors.amber,
+                                                        ),
                                                     Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 10,
+                                                      padding: EdgeInsets.only(
+                                                        left: issueProvider
+                                                                    .issues
+                                                                    .groupBY ==
+                                                                GroupBY.none
+                                                            ? 0
+                                                            : 10,
                                                       ),
                                                       child: CustomText(
                                                         state.title!,

@@ -1,5 +1,7 @@
 // ignore_for_file: override_on_non_overriding_member, unnecessary_null_comparison
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -13,11 +15,17 @@ mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   LoadingType loadingType = LoadingType.none;
   late ThemeManager themeManager;
   double? _height;
+  int _count = 1;
 
   void setHeight() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var box = context.findRenderObject() as RenderBox;
       _height = box.size.height;
+      if (_count > 0) {
+        setState(() {
+          _count--;
+        });
+      }
     });
   }
 
@@ -68,23 +76,18 @@ mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
                             loadingType == LoadingType.wrap ? _height : null,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: themeManager.primaryBackgroundDefaultColor
-                              .withOpacity(0.3),
+                          color: themeManager.primaryBackgroundDefaultColor.withOpacity(0.3),
                         ),
                         alignment: Alignment.center,
-                        child: Wrap(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: LoadingIndicator(
-                                indicatorType: Indicator.lineSpinFadeLoader,
-                                colors: [themeManager.primaryTextColor],
-                                strokeWidth: 1.0,
-                                backgroundColor: Colors.transparent,
-                              ),
-                            ),
-                          ],
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.lineSpinFadeLoader,
+                            colors: [themeManager.primaryTextColor],
+                            strokeWidth: 1.0,
+                            backgroundColor: Colors.transparent,
+                          ),
                         ),
                       )
                     : const SizedBox(),

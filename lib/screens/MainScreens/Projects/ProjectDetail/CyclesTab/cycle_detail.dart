@@ -23,7 +23,6 @@ import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
-import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/color_manager.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/utils/constants.dart';
@@ -609,9 +608,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.myIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule &&
-                                                      issueProvider.issues.projectView ==
-                                                          ProjectView.list) ||
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
@@ -652,12 +649,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -1298,7 +1293,66 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     .themeManager.placeholderTextColor,
                               )
                             ],
-                          )
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.85),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                )),
+                                context: context,
+                                builder: (ctx) {
+                                  return SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      child: AddLinkSheet(
+                                        id: moduleProvider.moduleDetailsData[
+                                            'link_module'][index]['id'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.edit_outlined,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              moduleProvider.handleLinks(
+                                  linkID: moduleProvider
+                                          .moduleDetailsData['link_module']
+                                      [index]['id'],
+                                  data: {},
+                                  method: HttpMethod.delete,
+                                  context: context);
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
                         ],
                       ),
                     );

@@ -21,6 +21,7 @@ class ProjectsProvider extends ChangeNotifier {
   var projects = [];
   var starredProjects = [];
   var joinprojectState = StateEnum.empty;
+  var getProjectState = StateEnum.empty;
   var projectState = StateEnum.empty;
   var unsplashImageState = StateEnum.empty;
   var createProjectState = StateEnum.empty;
@@ -220,9 +221,11 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future getProjects({required String slug}) async {
-    projectState = StateEnum.loading;
-    notifyListeners();
+  Future getProjects({required String slug, bool loading = true}) async {
+    if (loading) {
+      getProjectState = StateEnum.loading;
+      notifyListeners();
+    }
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -236,12 +239,12 @@ class ProjectsProvider extends ChangeNotifier {
           memberCount++;
         }
       }
-      projectState = StateEnum.success;
+      getProjectState = StateEnum.success;
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
       log(e.error.toString());
-      projectState = StateEnum.error;
+      getProjectState = StateEnum.error;
       notifyListeners();
     }
   }
@@ -276,7 +279,7 @@ class ProjectsProvider extends ChangeNotifier {
       } else {
         // projects.add(starredProjects.removeAt(index)['project_detail']);
       }
-      await getProjects(slug: slug);
+      await getProjects(slug: slug, loading: false);
       projectState = StateEnum.success;
       notifyListeners();
       // log(response.data.toString());

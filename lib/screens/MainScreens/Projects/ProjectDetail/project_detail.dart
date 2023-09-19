@@ -1052,7 +1052,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -1063,7 +1063,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1080,7 +1080,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   bottom: 10),
                                                         )
                                                 ],
@@ -1164,7 +1164,7 @@ Widget cycles() {
 Widget view(WidgetRef ref) {
   var themeProvider = ref.read(ProviderList.themeProvider);
   return Container(
-    color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+    color: themeProvider.themeManager.primaryBackgroundDefaultColor,
     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,

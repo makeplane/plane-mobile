@@ -226,9 +226,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                               border: Border.all(color: Colors.grey.shade300),
                               borderRadius: BorderRadius.circular(4)),
                           child: DropdownButtonFormField(
-                              dropdownColor: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryBGC
-                                  : Colors.white,
+                              dropdownColor: themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -304,9 +303,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
                               .copyWith(
-                            fillColor: themeProvider.isDarkThemeEnabled
-                                ? darkBackgroundColor
-                                : lightBackgroundColor,
+                            fillColor: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
                             filled: true,
                           ),
                         ),
@@ -346,9 +344,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                           decoration: themeProvider
                               .themeManager.textFieldDecoration
                               .copyWith(
-                            fillColor: themeProvider.isDarkThemeEnabled
-                                ? darkBackgroundColor
-                                : lightBackgroundColor,
+                            fillColor: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
                             filled: true,
                           ),
                         ),
@@ -389,9 +386,8 @@ class _JiraImportState extends ConsumerState<JiraImport> {
                               border: Border.all(color: Colors.grey.shade300),
                               borderRadius: BorderRadius.circular(4)),
                           child: DropdownButtonFormField(
-                              dropdownColor: themeProvider.isDarkThemeEnabled
-                                  ? darkSecondaryBGC
-                                  : Colors.white,
+                              dropdownColor: themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                               ),

@@ -77,9 +77,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                   children: [
                     Container(
                       height: 1,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkThemeBorder
-                          : strokeColor,
+                      color: themeProvider.themeManager.borderStrong01Color,
                     ),
                     Container(
                         margin: const EdgeInsets.only(
@@ -120,25 +118,22 @@ class _CreateStateState extends ConsumerState<CreateState> {
                               fontWeight: FontWeight.w600),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryBGC
-                              : lightBackgroundColor,
+                          fillColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           filled: true,
                         ),
                       ),
@@ -167,14 +162,11 @@ class _CreateStateState extends ConsumerState<CreateState> {
                       padding: const EdgeInsets.only(left: 10),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : Colors.grey.shade300,
+                          color: themeProvider.themeManager.borderStrong01Color,
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -336,9 +328,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : Colors.grey.shade300,
+                                      color: themeProvider
+                                          .themeManager.borderStrong01Color,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(6),
@@ -347,18 +338,16 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : Colors.grey.shade300,
+                                      color: themeProvider
+                                          .themeManager.borderStrong01Color,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(6),
                                     bottomRight: Radius.circular(6),
                                   ),
                                 ),
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryBGC
-                                    : const Color.fromRGBO(250, 250, 250, 1),
+                                fillColor: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
                                 filled: true,
                               ),
                             ),
@@ -385,25 +374,22 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             .copyWith(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryBGC
-                              : lightBackgroundColor,
+                          fillColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           filled: true,
                         ),
                       ),

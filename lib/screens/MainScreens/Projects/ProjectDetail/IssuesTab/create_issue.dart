@@ -103,6 +103,17 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
               .workspaceSlug,
           projID: widget.projectId ??
               ref.read(ProviderList.projectProvider).currentProject['id']);
+    } else {
+      bool found = false;
+      for (var element in prov.states.keys) {
+        if (element == prov.createIssuedata['state']) {
+          found = true;
+        }
+      }
+
+      if (!found) {
+        prov.createIssuedata['state'] = prov.states.keys.first;
+      }
     }
 
     prov.createIssuedata['priority'] = {
@@ -192,7 +203,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
           //     : const Color.fromRGBO(248, 249, 250, 1),
           appBar: CustomAppBar(
             onPressed: () {
-              issuesProvider.createIssuedata = {};
               issuesProvider.createIssuedata = {};
               issuesProvider.statesData = tempStatesData;
               issuesProvider.states = tempStates;
@@ -640,7 +650,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                   .keyboard_arrow_down,
 
                                                           color: const Color
-                                                              .fromRGBO(
+                                                                  .fromRGBO(
                                                               63, 118, 255, 1),
                                                         ),
                                                       ),
@@ -2117,5 +2127,5 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
   }
 
   Color getBorderColor(ThemeProvider themeProvider) =>
-      themeProvider.isDarkThemeEnabled ? darkThemeBorder : Colors.grey.shade200;
+      themeProvider.themeManager.borderStrong01Color;
 }

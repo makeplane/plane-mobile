@@ -455,9 +455,10 @@ class CyclesProvider with ChangeNotifier {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? darkSecondaryTextColor
-                : lightSecondaryTextColor,
+            color: ref!
+                .read(ProviderList.themeProvider)
+                .themeManager
+                .secondaryTextColor,
           ),
         ),
 

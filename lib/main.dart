@@ -227,14 +227,12 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
         //dialog theme
         dialogTheme: DialogTheme(
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? const Color.fromRGBO(29, 30, 32, 1)
-              : Colors.white,
+          backgroundColor:
+              themeProvider.themeManager.primaryBackgroundDefaultColor,
         ),
 
         //expansion tile trailing icon color
-        unselectedWidgetColor:
-            themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
+        unselectedWidgetColor: themeProvider.themeManager.primaryTextColor,
         checkboxTheme: CheckboxThemeData(
           fillColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {

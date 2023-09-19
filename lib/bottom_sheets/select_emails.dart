@@ -61,9 +61,7 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                       },
                       child: Icon(
                         Icons.close,
-                        color: themeProv.isDarkThemeEnabled
-                            ? darkSecondaryTextColor
-                            : strokeColor,
+                        color: themeProv.themeManager.placeholderTextColor,
                       ),
                     )
                   ],

@@ -32,7 +32,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   @override
   void initState() {
     super.initState();
-    log('init state');
   }
 
   @override

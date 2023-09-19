@@ -29,7 +29,6 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/estimates/';
   static String favouriteModules =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-modules/';
-
   static String createProjects = '$baseApi/api/workspaces/\$SLUG/projects/';
   static String favouriteProjects =
       '$baseApi/api/workspaces/\$SLUG/user-favorite-projects/';
@@ -132,7 +131,6 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/github-repository-sync/';
   static String retrieveSlackIntegrations =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/project-slack-sync/';
-
   static String memberProfile =
       '$baseApi/api/workspaces/\$SLUG/user-profile/\$USERID/';
   static String leaveWorkspace =
@@ -140,4 +138,11 @@ class APIs {
   static String leaveProject =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/leave/';
   static String releaseNotes = '$baseApi/api/release-notes/';
+  static String userStats =
+      '$baseApi/api/workspaces/\$SLUG/user-stats/\$USERID/';
+  static String userActivity =
+      '$baseApi/api/workspaces/\$SLUG/user-activity/\$USERID/?per_page=15';
+
+  static String userIssues =
+      '$baseApi/api/workspaces/\$SLUG/user-issues/\$USERID/';
 }

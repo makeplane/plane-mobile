@@ -48,6 +48,16 @@ class ThemeManager {
   late ThemeData datePickerThemeData;
   late ThemeData timePickerThemeData;
 
+  Color toastDefaultColor = const Color.fromRGBO(236, 241, 255, 1);
+  Color toastSuccessColor = const Color.fromRGBO(240, 253, 244, 1);
+  Color toastWarningColor = const Color.fromRGBO(255, 251, 235, 1);
+  Color toastErrorColor = const Color.fromRGBO(254, 242, 242, 1);
+  Color toastDefaultBorderColor = const Color.fromRGBO(63, 118, 255, 1);
+  Color toastSuccessBorderColor = const Color.fromRGBO(34, 197, 94, 1);
+  Color toastWarningBorderColor = const Color.fromRGBO(245, 158, 11, 1);
+  Color toastErrorBorderColor = const Color.fromRGBO(220, 38, 38, 1);
+  // Color toastDefaultColor = Color.fromRGBO(236, 241, 255, 1);
+
   Color convertHexToSpecificShade({required int shade, required Color color}) {
     if (shade <= 100) {
       var decimalValue = (100 - shade) / 100;

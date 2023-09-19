@@ -79,6 +79,8 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                                   ref.read(ProviderList.workspaceProvider).ref!,
                               issueId: userProfileProvider
                                   .userSubscribedIssues[index].id!,
+                              projID: userProfileProvider
+                                  .userSubscribedIssues[index].projectDetail!.id,
                             ),
                           ),
                         );

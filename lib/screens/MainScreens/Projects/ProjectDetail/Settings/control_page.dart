@@ -23,12 +23,12 @@ class _ControlPageState extends ConsumerState<ControlPage> {
             (projectProvider.projectDetailModel!.projectLead == null
                 ? ''
                 : projectProvider
-                    .projectDetailModel!.projectLead!['first_name']);
+                    .projectDetailModel!.projectLead!['display_name']);
         projectProvider.assignee.text =
             projectProvider.projectDetailModel!.defaultAssignee == null
                 ? ''
                 : projectProvider
-                    .projectDetailModel!.defaultAssignee!['first_name'];
+                    .projectDetailModel!.defaultAssignee!['display_name'];
       },
     );
   }

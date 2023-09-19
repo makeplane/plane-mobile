@@ -136,7 +136,7 @@ class _ProjectLeadAssigneeSheetState
                                             null
                                         ? 'Select lead'
                                         : projectProvider.projectDetailModel!
-                                            .projectLead!['first_name'];
+                                            .projectLead!['display_name'];
                                     projectProvider.assignee.text =
                                         projectProvider.projectDetailModel!
                                                     .defaultAssignee ==
@@ -144,7 +144,7 @@ class _ProjectLeadAssigneeSheetState
                                             ? 'Select Assingnee'
                                             : projectProvider
                                                 .projectDetailModel!
-                                                .defaultAssignee!['first_name'];
+                                                .defaultAssignee!['display_name'];
                                   });
                                   Navigator.of(context).pop();
                                 });

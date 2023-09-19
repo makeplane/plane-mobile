@@ -83,6 +83,7 @@ class _UserAssignedIssuesPageState
                                   ref.read(ProviderList.workspaceProvider).ref!,
                               issueId:
                                   userProfileProvider.userAssignedIssues[index].id!,
+                              projID: userProfileProvider.userAssignedIssues[index].projectDetail!.id!,
                             ),
                           ),
                         );

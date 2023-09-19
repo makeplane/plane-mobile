@@ -585,16 +585,15 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                     themeProvider.themeManager.primaryTextColor,
                                 collapsedIconColor:
                                     themeProvider.themeManager.primaryTextColor,
-                                backgroundColor:
-                                    const Color.fromRGBO(255, 12, 12, 0.1),
-                                collapsedBackgroundColor:
-                                    const Color.fromRGBO(255, 12, 12, 0.1),
+                                backgroundColor: Colors.transparent,
+                                collapsedBackgroundColor: Colors.transparent,
                                 title: CustomText(
                                   'Danger Zone',
                                   textAlign: TextAlign.left,
                                   type: FontStyle.H5,
-                                  color:
-                                      themeProvider.themeManager.textErrorColor,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                  fontWeight: FontWeightt.Semibold,
                                 ),
                                 children: [
                                   CustomText(
@@ -607,8 +606,17 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                     color: themeProvider
                                         .themeManager.placeholderTextColor,
                                   ),
-                                  GestureDetector(
-                                    onTap: () async {
+                                  const SizedBox(height: 20,),
+                                  Button(
+                                    text: 'Delete Project',
+                                    color:
+                                        const Color.fromRGBO(254, 242, 242, 1),
+                                    textColor: themeProvider
+                                        .themeManager.textErrorColor,
+                                    filledButton: false,
+                                    borderColor: themeProvider
+                                        .themeManager.textErrorColor,
+                                    ontap: () {
                                       showModalBottomSheet(
                                         isScrollControlled: true,
                                         enableDrag: true,
@@ -644,29 +652,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         ),
                                       );
                                     },
-                                    child: Container(
-                                        height: 45,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        margin: const EdgeInsets.only(
-                                            top: 20, bottom: 15),
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromRGBO(
-                                              255, 12, 12, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: Center(
-                                            child: CustomText(
-                                          getRole() == Role.admin
-                                              ? 'Delete Project'
-                                              : 'Leave Project',
-                                          color: Colors.white,
-                                          type: FontStyle.Medium,
-                                          overrride: true,
-                                          fontWeight: FontWeightt.Bold,
-                                        ))),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
@@ -680,10 +666,6 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                             Button(
                               text: 'Update Project',
                               ontap: () async {
-                                // log(identifier.text +
-                                //     " " +
-                                //     projectProvider.projectDetailModel!.identifier!);
-
                                 if (identifier.text !=
                                     projectProvider
                                         .projectDetailModel!.identifier) {

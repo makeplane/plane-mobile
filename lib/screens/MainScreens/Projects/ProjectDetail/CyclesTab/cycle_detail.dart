@@ -23,7 +23,6 @@ import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
-import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/color_manager.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/utils/constants.dart';
@@ -245,6 +244,45 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         return true;
       },
       child: Scaffold(
+        floatingActionButton: !widget.fromModule &&
+                DateTime.parse(cyclesProvider.cyclesDetailsData['end_date'])
+                    .isBefore(DateTime.now()) &&
+                (cyclesProvider.cyclesDetailsData['backlog_issues'] != 0 &&
+                    cyclesProvider.cyclesDetailsData['started_issues'] != 0 &&
+                    cyclesProvider.cyclesDetailsData['unstarted_issues'] != 0)
+            ? FloatingActionButton(
+                backgroundColor: themeProvider.themeManager.primaryColour,
+                onPressed: () {
+                   showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    enableDrag: true,
+                                    constraints: BoxConstraints(
+                                        maxHeight: height * 0.8,
+                                        minHeight: 250),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    )),
+                                    context: context,
+                                    builder: (ctx) {
+                                      return const SelectCycleSheet();
+                                    });
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeManager.primaryColour,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Icon(
+                    Icons.error_outline_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : null,
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: CustomAppBar(
           centerTitle: true,
@@ -317,68 +355,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           ),
                         ),
                       ),
-                      !widget.fromModule &&
-                              DateTime.parse(cyclesProvider
-                                      .cyclesDetailsData['end_date'])
-                                  .isBefore(DateTime.now()) &&
-                              (cyclesProvider.cyclesDetailsData[
-                                          'backlog_issues'] !=
-                                      0 &&
-                                  cyclesProvider.cyclesDetailsData[
-                                          'started_issues'] !=
-                                      0 &&
-                                  cyclesProvider.cyclesDetailsData[
-                                          'unstarted_issues'] !=
-                                      0)
-                          ? GestureDetector(
-                              onTap: () async {
-                                await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    enableDrag: true,
-                                    constraints: BoxConstraints(
-                                        maxHeight: height * 0.8,
-                                        minHeight: 250),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
-                                    )),
-                                    context: context,
-                                    builder: (ctx) {
-                                      return const SelectCycleSheet();
-                                    });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                    top: 15, bottom: 5, right: 10),
-                                padding:
-                                    const EdgeInsets.only(right: 10, left: 5),
-                                decoration: BoxDecoration(
-                                    color: themeProvider
-                                        .themeManager.primaryColour,
-                                    borderRadius: BorderRadius.circular(4)),
-                                height: 40,
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/svg_images/transfer.svg',
-                                      height: 15,
-                                      width: 15,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const CustomText(
-                                      'Transfer Issues',
-                                      type: FontStyle.Small,
-                                      fontWeight: FontWeightt.Semibold,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container()
+                      
                     ],
                   ),
 
@@ -609,9 +586,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.myIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule &&
-                                                      issueProvider.issues.projectView ==
-                                                          ProjectView.list) ||
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
                                                           ProjectView.list))
@@ -652,12 +627,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [

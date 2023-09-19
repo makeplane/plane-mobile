@@ -8,6 +8,7 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
+import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 //import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
@@ -437,7 +438,7 @@ class MyIssuesProvider extends ChangeNotifier {
     var projectIcons = {};
     var stateIcons = {
       'Backlog': SvgPicture.asset('assets/svg_images/circle.svg'),
-      'Unstarted': SvgPicture.asset('assets/svg_images/circle.svg'),
+      'Unstarted': SvgPicture.asset('assets/svg_images/unstarted.svg'),
       'Started': SvgPicture.asset('assets/svg_images/in_progress.svg'),
       'Completed': SvgPicture.asset('assets/svg_images/done.svg'),
       'Cancelled': SvgPicture.asset('assets/svg_images/cancelled.svg'),
@@ -541,27 +542,32 @@ class MyIssuesProvider extends ChangeNotifier {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
-                  size: 18,
-                  color: themeProvider.themeManager.placeholderTextColor)
+                  size: 18, color: themeProvider.themeManager.primaryTextColor)
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.themeManager.placeholderTextColor,
+                      color: themeProvider.themeManager.primaryTextColor,
                       size: 18,
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
+                          color: themeProvider.themeManager.primaryTextColor,
                           size: 18,
                         )
-                      : Icon(
-                          Icons.signal_cellular_alt_1_bar,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                          size: 18,
-                        )
+                      : element.title == 'Low'
+                          ? Icon(
+                              Icons.signal_cellular_alt_1_bar,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.not_interested_outlined,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                              size: 18,
+                            )
           : issues.groupBY == GroupBY.createdBY
               ? Container(
                   height: 22,
@@ -616,7 +622,7 @@ class MyIssuesProvider extends ChangeNotifier {
                                       .replaceAll('#', '0xff'))),
                               size: 22,
                             )
-                      : issues.groupBY == GroupBY.state
+                      : issues.groupBY == GroupBY.stateGroups
                           ? SizedBox(
                               height: 22,
                               width: 22,
@@ -688,6 +694,8 @@ class MyIssuesProvider extends ChangeNotifier {
                         'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                     // createIssuedata['s'] = element.id;
                   }
+                  ProfileProvider profileProv =
+                      ref!.read(ProviderList.profileProvider);
 
                   ref!.read(ProviderList.projectProvider).currentProject =
                       ref!.read(ProviderList.projectProvider).projects[0];
@@ -701,6 +709,12 @@ class MyIssuesProvider extends ChangeNotifier {
                                     .read(ProviderList.projectProvider)
                                     .projects[0]['id'],
                                 fromMyIssues: true,
+                                assignee: {
+                                  profileProv.userProfile.id.toString(): {
+                                    'name': profileProv.userProfile.displayName,
+                                    'id': profileProv.userProfile.id
+                                  }
+                                },
                               )));
                 },
                 child: Icon(
@@ -798,7 +812,7 @@ class MyIssuesProvider extends ChangeNotifier {
     }
 
     try {
-      var response = await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.updateMyIssuesView.replaceAll(
             "\$SLUG",
@@ -861,7 +875,6 @@ class MyIssuesProvider extends ChangeNotifier {
         },
         httpMethod: HttpMethod.post,
       );
-      log('project view => ${response.data}');
       notifyListeners();
     } on DioException catch (e) {
       log("ERROR");

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -45,8 +43,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
     if (controller.hasClients) {
       controller.jumpToPage(selected);
     }
-    log(projectProvider.projectState.toString());
-    //   log(projectProvider.starredProjects.toString());
     return Scaffold(
         appBar: CustomAppBar(
           onPressed: () {},

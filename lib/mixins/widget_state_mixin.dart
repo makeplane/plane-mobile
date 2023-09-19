@@ -1,7 +1,5 @@
 // ignore_for_file: override_on_non_overriding_member, unnecessary_null_comparison
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';

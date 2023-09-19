@@ -184,7 +184,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                         Container(
                                           width: 10,
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: width * 0.7,
                                           child: CustomText(
                                             issuesProvider.members[index]

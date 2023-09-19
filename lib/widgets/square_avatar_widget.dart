@@ -36,7 +36,10 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                 border: Border.all(
                     color: themeProvider.themeManager.borderSubtle01Color,
                     width: 1),
-                color: Colors.transparent,
+                color: widget.details[0]['avatar'] != "" &&
+                        widget.details[0]['avatar'] != null
+                    ? Colors.transparent
+                    : const Color.fromRGBO(55, 65, 80, 1),
               ),
               child: widget.details[0]['avatar'] != "" &&
                       widget.details[0]['avatar'] != null
@@ -46,15 +49,17 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                         imageUrl: widget.details[0]['avatar'],
                         fit: BoxFit.cover,
                         errorWidget: (context, url, error) {
-                          return Center(
-                            child: CustomText(
-                              widget.details[0]['display_name'][0]
-                                  .toString()
-                                  .toUpperCase(),
-                              type: FontStyle.Small,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor,
-                              //  color: Colors.white,
+                          return Container(
+                            color: const Color.fromRGBO(55, 65, 80, 1),
+                            child: Center(
+                              child: CustomText(
+                                widget.details[0]['display_name'][0]
+                                    .toString()
+                                    .toUpperCase(),
+                                type: FontStyle.Small,
+                                color: Colors.white,
+                                //  color: Colors.white,
+                              ),
                             ),
                           );
                         },
@@ -65,7 +70,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             .toString()
                             .toUpperCase(),
                         type: FontStyle.Small,
-                        color: themeProvider.themeManager.placeholderTextColor,
+                        color: Colors.white,
                         //  color: Colors.white,
                       ),
                     )),
@@ -81,8 +86,10 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: themeProvider
-                            .themeManager.primaryBackgroundDefaultColor,
+                        color: widget.details[1]['avatar'] != "" &&
+                                widget.details[1]['avatar'] != null
+                            ? Colors.transparent
+                            : const Color.fromRGBO(55, 65, 80, 1),
                       ),
                       child: widget.details[1]['avatar'] != "" &&
                               widget.details[1]['avatar'] != null
@@ -92,16 +99,19 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                 imageUrl: widget.details[1]['avatar'],
                                 fit: BoxFit.cover,
                                 errorWidget: (context, url, error) {
-                                  return Center(
-                                    child: CustomText(
-                                      widget.details[1]['display_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
-                                      type: FontStyle.Small,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    ),
-                                  );
+                                  return Container(
+                            color: const Color.fromRGBO(55, 65, 80, 1),
+                            child: Center(
+                              child: CustomText(
+                                widget.details[1]['display_name'][0]
+                                    .toString()
+                                    .toUpperCase(),
+                                type: FontStyle.Small,
+                                color: Colors.white,
+                                //  color: Colors.white,
+                              ),
+                            ),
+                          );
                                 },
                               ))
                           : Center(
@@ -110,8 +120,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
+                                color: Colors.white,
                               ),
                             )),
                 )
@@ -128,8 +137,10 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: themeProvider
-                            .themeManager.primaryBackgroundDefaultColor,
+                        color: widget.details[2]['avatar'] != "" &&
+                                widget.details[2]['avatar'] != null
+                            ? Colors.transparent
+                            :const Color.fromRGBO(55, 65, 80, 1),
                       ),
                       child: widget.details[2]['avatar'] != "" &&
                               widget.details[2]['avatar'] != null
@@ -138,14 +149,17 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               child: CachedNetworkImage(
                                   imageUrl: widget.details[2]['avatar'],
                                   errorWidget: (context, url, error) {
-                                    return Center(
-                                      child: CustomText(
-                                        widget.details[2]['display_name'][0]
-                                            .toString()
-                                            .toUpperCase(),
-                                        type: FontStyle.Small,
-                                        color: themeProvider
-                                            .themeManager.placeholderTextColor,
+                                    return Container(
+                                      color: const Color.fromRGBO(55, 65, 80, 1),
+                                      child: Center(
+                                        child: CustomText(
+                                          widget.details[2]['display_name'][0]
+                                              .toString()
+                                              .toUpperCase(),
+                                          type: FontStyle.Small,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                        ),
                                       ),
                                     );
                                   },
@@ -156,8 +170,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
+                                color: Colors.white,
                               ),
                             )),
                 )

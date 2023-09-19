@@ -189,7 +189,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                           child: Wrap(
                             children: [
                               RadioListTile(
-                                  fillColor: groupBy == 'state'
+                                  fillColor: groupBy == 'state_detail.group'
                                       ? null
                                       : MaterialStateProperty.all<Color>(
                                           themeProvider.themeManager
@@ -201,14 +201,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                   // dense: true,
                                   groupValue: groupBy,
                                   title: const CustomText(
-                                    'State',
+                                    'State Groups',
                                     type: FontStyle.Small,
                                     textAlign: TextAlign.start,
                                   ),
-                                  value: 'state',
+                                  value: 'state_detail.group',
                                   onChanged: (newValue) {
                                     setState(() {
-                                      groupBy = 'state';
+                                      groupBy = 'state_detail.group';
                                     });
                                   },
                                   controlAffinity:
@@ -484,6 +484,35 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
+
+                          myIssuesProvider.issues.groupBY != GroupBY.priority
+                              ? RadioListTile(
+                                  fillColor: orderBy == 'priority'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  groupValue: orderBy,
+                                  title: const CustomText(
+                                    'Priority',
+                                    type: FontStyle.Small,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'priority',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      orderBy = 'priority';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour)
+                              : Container(),
                         ],
                       ),
                     )
@@ -813,7 +842,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                               }),
                           const SizedBox(width: 10),
                           CustomText(
-                            'Board View',
+                            'Kanban View',
                             type: FontStyle.H6,
                             color: themeProvider.themeManager.tertiaryTextColor,
                           ),
@@ -942,23 +971,23 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
 
                       return;
                     }
-                      if (myIssuesProvider.issues.groupBY !=
-                              Issues.toGroupBY(groupBy) ||
-                          myIssuesProvider.issues.orderBY !=
-                              Issues.toOrderBY(orderBy) ||
-                          myIssuesProvider.issues.issueType !=
-                              Issues.toIssueType(issueType) ) {
-                        setState(() {
-                          myIssuesProvider.issues.orderBY =
-                              Issues.toOrderBY(orderBy);
-                          myIssuesProvider.issues.groupBY =
-                              Issues.toGroupBY(groupBy);
-                          myIssuesProvider.issues.issueType =
-                              Issues.toIssueType(issueType);
-                        });
-                       
-                        myIssuesProvider.filterIssues();
-                      }
+                    if (myIssuesProvider.issues.groupBY !=
+                            Issues.toGroupBY(groupBy) ||
+                        myIssuesProvider.issues.orderBY !=
+                            Issues.toOrderBY(orderBy) ||
+                        myIssuesProvider.issues.issueType !=
+                            Issues.toIssueType(issueType)) {
+                      setState(() {
+                        myIssuesProvider.issues.orderBY =
+                            Issues.toOrderBY(orderBy);
+                        myIssuesProvider.issues.groupBY =
+                            Issues.toGroupBY(groupBy);
+                        myIssuesProvider.issues.issueType =
+                            Issues.toIssueType(issueType);
+                      });
+
+                      myIssuesProvider.filterIssues();
+                    }
                     DisplayProperties properties = DisplayProperties(
                       estimate:
                           projectProvider.currentProject['estimate'] == null
@@ -978,12 +1007,12 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                       startDate: displayProperties[12]['selected'],
                     );
 
-                      myIssuesProvider.issues.displayProperties = properties;
-                      myIssuesProvider.showEmptyStates = showEmptyStates;
+                    myIssuesProvider.issues.displayProperties = properties;
+                    myIssuesProvider.showEmptyStates = showEmptyStates;
 
                     if (selected == 0) {
                       if (myIssuesProvider.issues.groupBY == GroupBY.none) {
-                        myIssuesProvider.issues.groupBY = GroupBY.state;
+                        myIssuesProvider.issues.groupBY = GroupBY.stateGroups;
                         myIssuesProvider.filterIssues();
                       }
                       myIssuesProvider.issues.projectView = ProjectView.kanban;

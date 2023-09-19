@@ -205,7 +205,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                                   ? 'assets/svg_images/done.svg'
                                                   : states[j] == 'started'
                                                       ? 'assets/svg_images/in_progress.svg'
-                                                      : 'assets/svg_images/circle.svg',
+                                                      : 'assets/svg_images/unstarted.svg',
                                       colorFilter: ColorFilter.mode(
                                           getColorFromIssueProvider(
                                               issuesProvider, j, i),

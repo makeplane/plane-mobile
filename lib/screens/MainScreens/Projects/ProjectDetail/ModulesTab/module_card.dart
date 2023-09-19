@@ -82,9 +82,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   margin: const EdgeInsets.only(top: 10),
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 3, bottom: 3),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightSecondaryBackgroundColor,
+                  color: themeProvider
+                      .themeManager.secondaryBackgroundDefaultColor,
                   height: 28,
                   child: Row(
                     children: [

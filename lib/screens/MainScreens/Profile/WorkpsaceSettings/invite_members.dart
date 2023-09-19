@@ -78,9 +78,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                             padding: const EdgeInsets.only(left: 16, right: 16),
                             height: 1,
                             width: MediaQuery.of(context).size.width,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : Colors.grey[300],
+                            color:
+                                themeProvider.themeManager.borderStrong01Color,
                           ),
                           Container(
                               margin: const EdgeInsets.only(
@@ -131,9 +130,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                     left: 10,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : lightBackgroundColor,
+                                      color: themeProvider.themeManager
+                                          .primaryBackgroundDefaultColor,
                                       border: Border.all(color: greyColor),
                                       borderRadius: BorderRadius.circular(4)),
                                   child: DropdownButtonFormField(
@@ -143,29 +141,23 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                         }
                                         return null;
                                       },
-                                      dropdownColor:
-                                          themeProvider.isDarkThemeEnabled
-                                              ? darkSecondaryBGC
-                                              : lightSecondaryBackgroundColor,
+                                      dropdownColor: themeProvider.themeManager
+                                          .secondaryBackgroundDefaultColor,
                                       decoration: themeProvider
                                           .themeManager.textFieldDecoration
                                           .copyWith(
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
+                                              color: themeProvider.themeManager
+                                                  .borderStrong01Color,
                                               width: 1.0),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(8)),
                                         ),
                                         disabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: themeProvider
-                                                      .isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : const Color(0xFFE5E5E5),
+                                              color: themeProvider.themeManager
+                                                  .borderStrong01Color,
                                               width: 1.0),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(8)),

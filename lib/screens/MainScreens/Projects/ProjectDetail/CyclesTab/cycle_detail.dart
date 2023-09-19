@@ -232,7 +232,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.issues.filters = issueProvider.tempFilters;
 
         issueProvider.showEmptyStates =
-            issueProvider.issueView["show_empty_groups"];
+            issueProvider.issueView['display_filters']["show_empty_groups"];
 
         issueProvider.setsState();
         issueProvider.filterIssues(
@@ -253,21 +253,20 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             ? FloatingActionButton(
                 backgroundColor: themeProvider.themeManager.primaryColour,
                 onPressed: () {
-                   showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    enableDrag: true,
-                                    constraints: BoxConstraints(
-                                        maxHeight: height * 0.8,
-                                        minHeight: 250),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
-                                    )),
-                                    context: context,
-                                    builder: (ctx) {
-                                      return const SelectCycleSheet();
-                                    });
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: height * 0.8, minHeight: 250),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return const SelectCycleSheet();
+                      });
                 },
                 child: Container(
                   height: 50,
@@ -355,7 +354,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           ),
                         ),
                       ),
-                      
                     ],
                   ),
 
@@ -481,24 +479,23 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     //     ? primaryColor
                                     // : themeProvider.strokeColor,
                                     type: FontStyle.Large,
-                                    color: !themeProvider.isDarkThemeEnabled &&
-                                            (widget.fromModule
+                                    fontWeight: FontWeightt.Medium,
+                                    color: (widget.fromModule
+                                            ? modulesProvider
+                                                    .moduleDetailSelectedIndex ==
+                                                0
+                                            : cyclesProviderRead
+                                                    .cycleDetailSelectedIndex ==
+                                                0)
+                                        ? themeProvider
+                                            .themeManager.placeholderTextColor
+                                        : (widget.fromModule
                                                 ? modulesProvider
                                                         .moduleDetailSelectedIndex ==
                                                     0
                                                 : cyclesProviderRead
                                                         .cycleDetailSelectedIndex ==
                                                     0)
-                                        ? themeProvider
-                                            .themeManager.placeholderTextColor
-                                        : themeProvider.isDarkThemeEnabled &&
-                                                (widget.fromModule
-                                                    ? modulesProvider
-                                                            .moduleDetailSelectedIndex ==
-                                                        0
-                                                    : cyclesProviderRead
-                                                            .cycleDetailSelectedIndex ==
-                                                        0)
                                             ? themeProvider.themeManager
                                                 .placeholderTextColor
                                             : themeProvider

@@ -50,9 +50,7 @@ class _IntegrationsState extends ConsumerState<Integrations> {
               padding: const EdgeInsets.only(left: 16, right: 16),
               height: widget.fromSettings ? 0 : 1,
               width: MediaQuery.of(context).size.width,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderStrong01Color,
             ),
             GestureDetector(
               onTap: () {},

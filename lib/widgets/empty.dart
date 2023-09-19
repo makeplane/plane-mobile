@@ -216,6 +216,11 @@ class EmptyPlaceholder {
                 //     .initializeProject(ref: ref);
               }
 
+              ref
+                      .read(ProviderList.issuesProvider)
+                      .createIssuedata['prioriry'] =
+                  'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
+
               Navigator.push(
                   context,
                   MaterialPageRoute(

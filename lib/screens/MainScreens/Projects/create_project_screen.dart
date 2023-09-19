@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -242,56 +243,97 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                     ),
                                     Row(
                                       children: [
-                                        Radio(
-                                          activeColor: themeProvider
-                                              .themeManager.primaryColour,
-                                          visualDensity: const VisualDensity(
-                                            horizontal:
-                                                VisualDensity.minimumDensity,
-                                            vertical:
-                                                VisualDensity.minimumDensity,
-                                          ),
-                                          value: 2,
-                                          groupValue: selectedVal,
-                                          onChanged: (val) {
+                                        GestureDetector(
+                                          onTap: () {
                                             setState(() {
-                                              selectedVal = val as int;
+                                              selectedVal = 2;
                                             });
                                           },
-                                        ),
-                                        CustomText(
-                                          'Public',
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Medium,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
+                                          child: Row(
+                                            children: [
+                                              Radio(
+                                                activeColor: themeProvider
+                                                    .themeManager.primaryColour,
+                                                fillColor: selectedVal != 2
+                                                    ? MaterialStateProperty.all<
+                                                            Color>(
+                                                        themeProvider
+                                                            .themeManager
+                                                            .placeholderTextColor)
+                                                    : null,
+                                                visualDensity:
+                                                    const VisualDensity(
+                                                  horizontal: VisualDensity
+                                                      .minimumDensity,
+                                                  vertical: VisualDensity
+                                                      .minimumDensity,
+                                                ),
+                                                value: 2,
+                                                groupValue: selectedVal,
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    selectedVal = val as int;
+                                                  });
+                                                },
+                                              ),
+                                              CustomText(
+                                                'Public',
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Medium,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Radio(
-                                          activeColor: themeProvider
-                                              .themeManager.primaryColour,
-                                          visualDensity: const VisualDensity(
-                                            horizontal:
-                                                VisualDensity.minimumDensity,
-                                            vertical:
-                                                VisualDensity.minimumDensity,
-                                          ),
-                                          value: 0,
-                                          groupValue: selectedVal,
-                                          onChanged: (val) {
+                                        GestureDetector(
+                                          onTap: () {
                                             setState(() {
-                                              selectedVal = val as int;
+                                              selectedVal = 0;
                                             });
                                           },
-                                        ),
-                                        CustomText(
-                                          'Secret',
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Medium,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
+                                          child: Row(
+                                            children: [
+                                              Radio(
+                                                activeColor: themeProvider
+                                                    .themeManager.primaryColour,
+                                                fillColor: selectedVal != 0
+                                                    ? MaterialStateProperty.all<
+                                                            Color>(
+                                                        themeProvider
+                                                            .themeManager
+                                                            .placeholderTextColor)
+                                                    : null,
+                                                visualDensity:
+                                                    const VisualDensity(
+                                                  horizontal: VisualDensity
+                                                      .minimumDensity,
+                                                  vertical: VisualDensity
+                                                      .minimumDensity,
+                                                ),
+                                                value: 0,
+                                                groupValue: selectedVal,
+                                                onChanged: (val) {
+                                                  log(val.toString());
+                                                  setState(() {
+                                                    selectedVal = val as int;
+                                                  });
+                                                },
+                                              ),
+                                              CustomText(
+                                                'Secret',
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Medium,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

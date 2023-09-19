@@ -7,7 +7,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane/screens/MainScreens/Activity/activity.dart';
-import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
 import 'package:plane/screens/Theming/prefrences.dart';
 import 'package:plane/screens/integrations.dart';
 import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
@@ -374,9 +374,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => MemberProfile(
-                          userID: profileProvider.userProfile.id!)));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => UserProfileScreen(
+                        index: 0,
+                        userID: profileProvider.userProfile.id!,
+                        userName: profileProvider.userProfile.firstName!,
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),

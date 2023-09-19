@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Profile/member_profile.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/member_profile.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';

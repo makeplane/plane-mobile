@@ -70,7 +70,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
   @override
   Widget build(BuildContext context) {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    final issueProvider = ref.read(ProviderList.issueProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {

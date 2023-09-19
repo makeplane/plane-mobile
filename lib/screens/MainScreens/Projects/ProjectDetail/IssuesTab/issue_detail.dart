@@ -15,6 +15,10 @@ enum PreviousScreen {
   cycles,
   modules,
   views,
+  userProfile,
+  profileCreatedIssues,
+  profileSubscribedIssues,
+  profileAssingedIssues
 }
 
 // ignore: must_be_immutable

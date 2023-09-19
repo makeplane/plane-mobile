@@ -288,7 +288,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   if (val!.isEmpty) {
                                     return "*required ";
                                   }
-                                  if (val!.length >= 24) {
+                                  if (val.length >= 24) {
                                     return "name should be smaller ";
                                   }
 
@@ -325,7 +325,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   if (val!.isEmpty) {
                                     return "*required ";
                                   }
-                                  if (val!.length >= 24) {
+                                  if (val.length >= 24) {
                                     return "name should be smaller ";
                                   }
 

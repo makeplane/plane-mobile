@@ -269,7 +269,6 @@ class CyclesProvider with ChangeNotifier {
         cyclesDetailState = StateEnum.loading;
         notifyListeners();
       }
-
       var url =
           '${APIs.cycles.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$cycleId/';
       var response = await DioConfig().dioServe(
@@ -835,7 +834,7 @@ class CyclesProvider with ChangeNotifier {
 
       cyclesIssueState = StateEnum.success;
       notifyListeners();
-    } catch (e) {
+    }on DioException catch (e) {
       log(e.toString());
       cyclesIssueState = StateEnum.error;
       notifyListeners();

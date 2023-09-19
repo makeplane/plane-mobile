@@ -16,7 +16,6 @@ import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/chart_model.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
@@ -112,7 +111,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Future getModuleData() async {
     var modulesProvider = ref.read(ProviderList.modulesProvider);
     var issuesProvider = ref.read(ProviderList.issuesProvider);
-
+    
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
         keepPage: true,
@@ -151,9 +150,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Future getCycleData() async {
     var cyclesProvider = ref.read(ProviderList.cyclesProvider);
     var issuesProvider = ref.read(ProviderList.issuesProvider);
-
-    cyclesProvider.changeStateToLoading(cyclesProvider.cyclesDetailState);
-
+    cyclesProvider.cyclesDetailState =StateEnum.loading;
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
         keepPage: true,
@@ -168,6 +165,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             projectId: widget.projId ??
                 ref.read(ProviderList.projectProvider).currentProject['id'],
             method: CRUD.read,
+            disableLoading: true,
             cycleId: widget.cycleId!)
         .then((value) => getChartData(cyclesProvider
             .cyclesDetailsData['distribution']['completion_chart']));
@@ -244,7 +242,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         return true;
       },
       child: Scaffold(
-        floatingActionButton: !widget.fromModule &&
+        floatingActionButton: isLoading&& !widget.fromModule &&
                 DateTime.parse(cyclesProvider.cyclesDetailsData['end_date'])
                     .isBefore(DateTime.now()) &&
                 (cyclesProvider.cyclesDetailsData['backlog_issues'] != 0 &&
@@ -1170,7 +1168,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Widget links() {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
-    IssuesProvider issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1228,7 +1225,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   itemCount:
                       moduleProvider.moduleDetailsData['link_module'].length,
                   itemBuilder: (ctx, index) {
-                    return Container(
+                    return SizedBox(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -6,8 +6,6 @@ import 'package:plane/bottom_sheets/filter_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane/screens/create_view_screen.dart';
-import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';

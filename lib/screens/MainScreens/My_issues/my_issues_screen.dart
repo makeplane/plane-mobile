@@ -15,6 +15,8 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
+import '../../../provider/profile_provider.dart';
+
 class MyIssuesScreen extends ConsumerStatefulWidget {
   const MyIssuesScreen({super.key});
 
@@ -354,21 +356,25 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       ),
                     ),
                     Expanded(
-                      child: PageView(
-                        //disable swipe
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: controller,
-                        onPageChanged: (value) {
-                          setState(() {
-                            selected = value;
-                            myIssuesProvider.changePage(value);
-                          });
-                        },
-                        children: [
-                          issues(context, ref),
-                          issues(context, ref),
-                          issues(context, ref),
-                        ],
+                      child: Container(
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
+                        child: PageView(
+                          //disable swipe
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: controller,
+                          onPageChanged: (value) {
+                            setState(() {
+                              selected = value;
+                              myIssuesProvider.changePage(value);
+                            });
+                          },
+                          children: [
+                            issues(context, ref),
+                            issues(context, ref),
+                            issues(context, ref),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -511,6 +517,10 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                                                             // createIssuedata['s'] = element.id;
                                                           }
+                                                          ProfileProvider
+                                                              profileProv =
+                                                              ref.read(ProviderList
+                                                                  .profileProvider);
                                                           projectProvider
                                                                   .currentProject =
                                                               projectProvider
@@ -521,6 +531,17 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                               MaterialPageRoute(
                                                                   builder: (ctx) =>
                                                                       CreateIssue(
+                                                                        assignee: {
+                                                                          profileProv
+                                                                              .userProfile
+                                                                              .id
+                                                                              .toString(): {
+                                                                            'name':
+                                                                                profileProv.userProfile.displayName,
+                                                                            'id':
+                                                                                profileProv.userProfile.id
+                                                                          }
+                                                                        },
                                                                         projectId:
                                                                             projectProvider.projects[0]['id'],
                                                                         fromMyIssues:

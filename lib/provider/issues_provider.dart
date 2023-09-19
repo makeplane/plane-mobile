@@ -254,7 +254,6 @@ class IssuesProvider extends ChangeNotifier {
         userName = 'None';
       }
 
-      log(stateOrdering.toString());
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -300,8 +299,6 @@ class IssuesProvider extends ChangeNotifier {
     }
 
     for (var element in issues.issues) {
-      //  log(issues.groupBY.toString());
-
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
@@ -686,7 +683,7 @@ class IssuesProvider extends ChangeNotifier {
                           ? 'assets/svg_images/done.svg'
                           : state == 'started'
                               ? 'assets/svg_images/in_progress.svg'
-                              : 'assets/svg_images/circle.svg',
+                              : 'assets/svg_images/unstarted.svg',
               height: 22,
               width: 22,
               colorFilter: int.tryParse(
@@ -715,7 +712,6 @@ class IssuesProvider extends ChangeNotifier {
           stateOrdering.add(element['id']);
         }
       }
-      //  log(states.toString());
       statesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -1122,7 +1118,6 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issues.displayProperties;
         } else {
           issueProperty = response.data;
-          log('issueProperty ${issueProperty.toString()}');
           issues.displayProperties.assignee =
               issueProperty['properties']['assignee'];
           issues.displayProperties.dueDate =
@@ -1212,7 +1207,6 @@ class IssuesProvider extends ChangeNotifier {
       // log(response.data.toString());
       if (issueCategory == IssueCategory.cycleIssues) {
         cyclesProvider.issueProperty = response.data;
-        log('cycle issue property ${cyclesProvider.issueProperty.toString()}');
       } else if (issueCategory == IssueCategory.moduleIssues) {
         modulesProvider.issueProperty = response.data;
       } else {
@@ -1238,7 +1232,7 @@ class IssuesProvider extends ChangeNotifier {
     //       .toList();
     // }
     try {
-      var response = await DioConfig().dioServe(
+       await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectViews
             .replaceAll(
@@ -1296,7 +1290,6 @@ class IssuesProvider extends ChangeNotifier {
         },
         httpMethod: HttpMethod.post,
       );
-      log('project view => ${response.data}');
       projectViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -1328,7 +1321,6 @@ class IssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       issueView = response.data["view_props"];
-      log("project view=>${response.data}");
       issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
           : issueView['issueView'] == 'calendar'
@@ -1413,9 +1405,7 @@ class IssuesProvider extends ChangeNotifier {
     }
 
     String url;
-    // log(issues.issueType.toString());
     if (issueCategory == IssueCategory.issues && !fromViews && !isArchived) {
-      log('Updating temp GroupBy');
       tempGroupBy = issues.groupBY;
       tempFilters = issues.filters;
       tempOrderBy = issues.orderBY;
@@ -1579,7 +1569,6 @@ class IssuesProvider extends ChangeNotifier {
             if (response.data[key].isNotEmpty) {
               isISsuesEmpty = false;
             }
-
             issuesList.addAll(response.data[key]);
           }
         }
@@ -1635,7 +1624,6 @@ class IssuesProvider extends ChangeNotifier {
 
       if (issueCategory == IssueCategory.cycleIssues ||
           issueCategory == IssueCategory.moduleIssues) {
-        log(stateOrdering.toString());
         cyclesProvider.stateOrdering = stateOrdering;
         modulesProvider.stateOrdering = stateOrdering;
         return temp;

@@ -84,7 +84,6 @@ class _CreateViewState extends ConsumerState<CreateView> {
   void initState() {
     super.initState();
     if (widget.fromProjectIssues) {
-      var issuesProvider = ref.read(ProviderList.issuesProvider);
       filtersData = {
         'Filters': {
           "assignees": widget.filtersData!.assignees,

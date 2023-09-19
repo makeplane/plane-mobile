@@ -153,7 +153,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           }),
                       const SizedBox(width: 10),
                       const CustomText(
-                        'Board View',
+                        'Kanban View',
                         type: FontStyle.H6,
                         //color: themeProvider.themeManager.tertiaryTextColor,
                       ),

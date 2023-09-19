@@ -137,7 +137,6 @@ class ModuleProvider with ChangeNotifier {
 
       moduleState = StateEnum.success;
       notifyListeners();
-      log('Modules  ===> ${favModules.length.toString()}   ${modules.length.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
       moduleState = StateEnum.error;
@@ -509,8 +508,6 @@ class ModuleProvider with ChangeNotifier {
           break;
         }
       }
-      //log('RESPONSE : ' + filterIssues.toString());
-      // log('Modulesssssssssssssssssssssss ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -556,8 +553,6 @@ class ModuleProvider with ChangeNotifier {
     }
 
     for (var element in issues.issues) {
-      //  log(issues.groupBY.toString());
-
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(Icons.error_outline,
@@ -685,7 +680,6 @@ class ModuleProvider with ChangeNotifier {
         ),
       );
     }
-    //   log(issues.issues.toString());
     return issues.issues;
   }
 

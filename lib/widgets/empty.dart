@@ -154,8 +154,8 @@ class EmptyPlaceholder {
           Container(
             width: 300,
             padding: const EdgeInsets.only(top: 10),
-            child: CustomText(
-              'All the issues that have been in the completed or canceled groups for the configured period of time can be viewed here.',
+            child: const CustomText(
+              'All the issues that have been in the completed or cancelled groups for the configured period of time can be viewed here.',
               color: Colors.grey,
               textAlign: TextAlign.center,
               type: FontStyle.Small,

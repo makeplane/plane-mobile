@@ -83,8 +83,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
 
     // if (prov.states.isEmpty) {
     if (widget.fromMyIssues) {
+      prov.statesState = StateEnum.loading;
       prov
           .getStates(
+              showLoading: false,
               slug: ref
                   .read(ProviderList.workspaceProvider)
                   .selectedWorkspace!

@@ -70,7 +70,6 @@ class NotificationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      log('getNotifications: ${response.data.toString()}');
       if (type == 'created') {
         created = response.data;
       } else if (type == 'assigned') {
@@ -189,7 +188,7 @@ class NotificationProvider extends ChangeNotifier {
               ? getAssignedState = StateEnum.loading
               : getWatchingState = StateEnum.loading;
       notifyListeners();
-      var response = await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}mark-all-read/',
         hasBody: true,

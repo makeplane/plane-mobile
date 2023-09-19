@@ -8,7 +8,6 @@ import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/color_manager.dart';
-import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
@@ -44,11 +43,11 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   ];
 
   List states = [
-    {'id': 'backlog', 'name': 'Backlog'},
-    {'id': 'unstarted', 'name': 'Unstarted'},
-    {'id': 'started', 'name': 'Started'},
-    {'id': 'completed', 'name': 'Completed'},
-    {'id': 'cancelled', 'name': 'Cancelled'}
+    {'id': 'backlog', 'name': 'Backlog','color':'#5e6ad2'},
+    {'id': 'unstarted', 'name': 'Unstarted','color':'#eb5757'},
+    {'id': 'started', 'name': 'Started','color':'#26b5ce'},
+    {'id': 'completed', 'name': 'Completed','color':'#f2c94c'},
+    {'id': 'cancelled', 'name': 'Cancelled','color':'#4cb782'}
   ];
 
   Filters filters = Filters(
@@ -163,8 +162,6 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
 
   @override
   void initState() {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    log(issuesProvider.states.toString());
     if (!widget.fromCreateView) {
       if (widget.issueCategory == IssueCategory.myIssues) {
         filters = ref.read(ProviderList.myIssuesProvider).issues.filters;
@@ -317,10 +314,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     ? states
                                     : issuesProvider.states.values)
                                 .map((e) {
+                                  String key = widget.issueCategory == IssueCategory.myIssues
+                                    ?'id':'group';
                       return (widget.isArchived &&
-                              (e['group'] == 'backlog' ||
-                                  e['group'] == 'unstarted' ||
-                                  e['group'] == 'started'))
+                              (e[key] == 'backlog' ||
+                                  e[key] == 'unstarted' ||
+                                  e[key] == 'started'))
                           ? Container()
                           : GestureDetector(
                               onTap: () {
@@ -334,20 +333,19 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                               },
                               child: expandedWidget(
                                 icon: SvgPicture.asset(
-                                  e['group'] == 'backlog'
+                                  e[key] == 'backlog'
                                       ? 'assets/svg_images/circle.svg'
-                                      : e['group'] == 'cancelled'
+                                      : e[key] == 'cancelled'
                                           ? 'assets/svg_images/cancelled.svg'
-                                          : e['group'] == 'started'
+                                          : e[key] == 'started'
                                               ? 'assets/svg_images/in_progress.svg'
-                                              : e['group'] == 'completed'
+                                              : e[key] == 'completed'
                                                   ? 'assets/svg_images/done.svg'
-                                                  : 'assets/svg_images/circle.svg',
+                                                  : 'assets/svg_images/unstarted.svg',
                                   colorFilter: ColorFilter.mode(
                                       filters.states.contains(e['id'])
                                           ? (Colors.white)
-                                          : themeProvider
-                                              .themeManager.secondaryTextColor,
+                                          : ColorManager.getColorFromHexaDecimal(e['color']),
                                       BlendMode.srcIn),
                                   height: 20,
                                   width: 20,
@@ -1117,7 +1115,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           ),
           Positioned(
             bottom: 0,
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

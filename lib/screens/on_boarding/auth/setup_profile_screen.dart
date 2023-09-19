@@ -112,7 +112,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                     if (val!.isEmpty) {
                                       return "*required ";
                                     }
-                                    if (val!.length >= 24) {
+                                    if (val.length >= 24) {
                                       return "name should be smaller ";
                                     }
                                     return null;
@@ -149,7 +149,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       if (val!.isEmpty) {
                                         return "*required ";
                                       }
-                                      if (val!.length >= 24) {
+                                      if (val.length >= 24) {
                                         return "name should be smaller ";
                                       }
 
@@ -251,7 +251,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       )
                                     : Container(),
                                 const SizedBox(height: 20),
-                                Container(
+                                SizedBox(
                                   child: CustomText('Time Zone',
                                       type: FontStyle.Medium,
                                       color: themeProvider

@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/select_month_sheet.dart';
-import 'package:plane/bottom_sheets/whats_new_sheet.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,6 +54,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     'completed_issues_count',
     'issues_due_week_count'
   ];
+  final List<int> flexForUpcomingAndOverdueWidgets = [1, 2, 1];
+  final EdgeInsets paddingForIssueInUpcomingAndOverdueWidgets =
+      const EdgeInsets.only(right: 10);
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
@@ -445,19 +447,19 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               Row(
                 children: [
                   Expanded(
-                      flex: 2,
+                      flex: flexForUpcomingAndOverdueWidgets[0],
                       child: CustomText(
                         'Overdue',
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   Expanded(
-                      flex: 5,
+                      flex: flexForUpcomingAndOverdueWidgets[1],
                       child: CustomText(
                         'Issue',
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   Expanded(
-                    flex: 2,
+                    flex: flexForUpcomingAndOverdueWidgets[2],
                     child: CustomText(
                       'Due Date',
                       color: themeProvider.themeManager.placeholderTextColor,
@@ -476,17 +478,24 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: flexForUpcomingAndOverdueWidgets[0],
                           child: CustomText(
                             '${DateTimeManager.diffrenceInDays(startDate: overdueIssues[index]['target_date'], endDate: DateTime.now().toString()).abs()}d',
                             color: themeProvider.themeManager.textErrorColor,
                           ),
                         ),
                         Expanded(
-                            flex: 5,
-                            child: CustomText(overdueIssues[index]['name'])),
+                            flex: flexForUpcomingAndOverdueWidgets[1],
+                            child: Padding(
+                              padding:
+                                  paddingForIssueInUpcomingAndOverdueWidgets,
+                              child: CustomText(
+                                overdueIssues[index]['name'],
+                                maxLines: 1,
+                              ),
+                            )),
                         Expanded(
-                          flex: 2,
+                          flex: flexForUpcomingAndOverdueWidgets[2],
                           child: CustomText(DateFormat.MMMd().format(
                               DateTime.parse(
                                   overdueIssues[index]['target_date']))),
@@ -532,19 +541,19 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               Row(
                 children: [
                   Expanded(
-                      flex: 2,
+                      flex: flexForUpcomingAndOverdueWidgets[0],
                       child: CustomText(
                         'Time',
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   Expanded(
-                      flex: 5,
+                      flex: flexForUpcomingAndOverdueWidgets[1],
                       child: CustomText(
                         'Issue',
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   Expanded(
-                      flex: 2,
+                      flex: flexForUpcomingAndOverdueWidgets[2],
                       child: CustomText(
                         'Start Date',
                         color: themeProvider.themeManager.placeholderTextColor,
@@ -564,7 +573,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 2,
+                                flex: flexForUpcomingAndOverdueWidgets[0],
                                 child: CustomText(
                                   '${DateTimeManager.diffrenceInDays(startDate: upcomingIssues[index]['start_date'], endDate: DateTime.now().toString()).abs()}d',
                                   color: themeProvider
@@ -572,11 +581,18 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                 ),
                               ),
                               Expanded(
-                                  flex: 5,
+                                flex: flexForUpcomingAndOverdueWidgets[1],
+                                child: Padding(
+                                  padding:
+                                      paddingForIssueInUpcomingAndOverdueWidgets,
                                   child: CustomText(
-                                      upcomingIssues[index]['name'])),
+                                    upcomingIssues[index]['name'],
+                                    maxLines: 1,
+                                  ),
+                                ),
+                              ),
                               Expanded(
-                                flex: 2,
+                                flex: flexForUpcomingAndOverdueWidgets[2],
                                 child: CustomText(DateFormat.MMMd().format(
                                     DateTime.parse(
                                         upcomingIssues[index]['start_date']))),
@@ -682,6 +698,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
   Column issuesClosedByYouWidget(ThemeProvider themeProvider,
       DashBoardProvider dashboardProvider, issuesClosedOnMonth) {
+    const Color widgetPrimaryColor = Color.fromRGBO(250, 147, 252, 1);
     TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
     Map<int, int> issuesClosedPerMonthMap = {};
     List<IssuesClosedPerMonth>? data =
@@ -759,6 +776,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           padding:
               const EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
           height: 250,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
@@ -766,77 +784,89 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    height: 15,
-                    width: 15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: const Color.fromRGBO(250, 147, 252, 1),
+          child: issuesClosedOnMonth.isEmpty
+              ? const Center(
+                  child: CustomText(
+                  'No issues closed this month',
+                  fontWeight: FontWeightt.Semibold,
+                  type: FontStyle.Large,
+                  color: widgetPrimaryColor,
+                ))
+              : Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        Container(
+                          height: 15,
+                          width: 15,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: widgetPrimaryColor,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const CustomText('Completed issues')
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  const CustomText('Completed issues')
-                ],
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: SfCartesianChart(
-                  tooltipBehavior: tooltipBehavior,
-                  backgroundColor:
-                      themeProvider.themeManager.primaryBackgroundDefaultColor,
-                  borderColor: Colors.transparent,
-                  plotAreaBackgroundColor: Colors.transparent,
-                  plotAreaBorderColor: Colors.transparent,
-                  series: <ChartSeries>[
-                    LineSeries<IssuesClosedPerMonth, int>(
-                        name: 'Completed issues',
-                        markerSettings: const MarkerSettings(
-                            isVisible: true,
-                            width: 3,
-                            height: 3,
-                            borderWidth: 5),
-                        color: const Color.fromRGBO(250, 147, 252, 1),
-                        dataSource: data,
-                        xValueMapper: (datum, index) => datum.week,
-                        yValueMapper: (datum, index) => datum.issuesClosed,
-                        enableTooltip: true)
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: SfCartesianChart(
+                        tooltipBehavior: tooltipBehavior,
+                        backgroundColor: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
+                        borderColor: Colors.transparent,
+                        plotAreaBackgroundColor: Colors.transparent,
+                        plotAreaBorderColor: Colors.transparent,
+                        series: <ChartSeries>[
+                          LineSeries<IssuesClosedPerMonth, int>(
+                              name: 'Completed issues',
+                              markerSettings: const MarkerSettings(
+                                  isVisible: true,
+                                  width: 3,
+                                  height: 3,
+                                  borderWidth: 5),
+                              color: widgetPrimaryColor,
+                              dataSource: data,
+                              xValueMapper: (datum, index) => datum.week,
+                              yValueMapper: (datum, index) =>
+                                  datum.issuesClosed,
+                              enableTooltip: true)
+                        ],
+                        primaryXAxis: NumericAxis(
+                          majorTickLines: const MajorTickLines(width: 0),
+                          minorTickLines: const MinorTickLines(width: 0),
+                          minorGridLines: MinorGridLines(
+                              color: themeProvider
+                                  .themeManager.borderDisabledColor),
+                          majorGridLines: MajorGridLines(
+                              color: themeProvider
+                                  .themeManager.borderDisabledColor),
+                          axisLine: AxisLine(
+                              color: themeProvider
+                                  .themeManager.borderDisabledColor),
+                          labelFormat: 'Week {value}',
+                        ),
+                        primaryYAxis: NumericAxis(
+                            // maximumLabels: 2,
+                            interval: issuesClosedOnMonth.length < 2 ? 1 : null,
+                            numberFormat: NumberFormat(),
+                            majorTickLines: const MajorTickLines(width: 0),
+                            minorTickLines: const MinorTickLines(width: 0),
+                            minorGridLines: MinorGridLines(
+                                color: themeProvider
+                                    .themeManager.borderDisabledColor),
+                            majorGridLines: MajorGridLines(
+                                color: themeProvider
+                                    .themeManager.borderDisabledColor),
+                            axisLine: AxisLine(
+                                color: themeProvider
+                                    .themeManager.borderDisabledColor),
+                            anchorRangeToVisiblePoints: true),
+                      ),
+                    ),
                   ],
-                  primaryXAxis: NumericAxis(
-                    majorTickLines: const MajorTickLines(width: 0),
-                    minorTickLines: const MinorTickLines(width: 0),
-                    minorGridLines: MinorGridLines(
-                        color: themeProvider.themeManager.borderDisabledColor),
-                    majorGridLines: MajorGridLines(
-                        color: themeProvider.themeManager.borderDisabledColor),
-                    axisLine: AxisLine(
-                        color: themeProvider.themeManager.borderDisabledColor),
-                    labelFormat: 'Week {value}',
-                  ),
-                  primaryYAxis: NumericAxis(
-                      // maximumLabels: 2,
-                      interval: issuesClosedOnMonth.length < 2 ? 1 : null,
-                      numberFormat: NumberFormat(),
-                      majorTickLines: const MajorTickLines(width: 0),
-                      minorTickLines: const MinorTickLines(width: 0),
-                      minorGridLines: MinorGridLines(
-                          color:
-                              themeProvider.themeManager.borderDisabledColor),
-                      majorGridLines: MajorGridLines(
-                          color:
-                              themeProvider.themeManager.borderDisabledColor),
-                      axisLine: AxisLine(
-                          color:
-                              themeProvider.themeManager.borderDisabledColor),
-                      anchorRangeToVisiblePoints: true),
                 ),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -845,7 +875,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   Widget headerWidget() {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(bottom: 15),
@@ -882,37 +911,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 workspaceProvider.selectedWorkspace == null
                     ? Container()
                     : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
-                        ? CachedNetworkImage(
-                            height: 35,
-                            width: 35,
-                            fit: BoxFit.cover,
-                            imageUrl: workspaceProvider
-                                .selectedWorkspace!.workspaceLogo,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: themeProvider.themeManager.primaryColour,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 0,
-                              ),
-                              child: Center(
-                                child: CustomText(
-                                  workspaceProvider
-                                      .selectedWorkspace!.workspaceName[0]
-                                      .toUpperCase(),
-                                  type: FontStyle.Medium,
-                                  fontWeight: FontWeightt.Bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )
+                        ? SvgPicture.network(
+                            workspaceProvider.selectedWorkspace!.workspaceLogo)
                         : Container(
                             width: 35,
                             height: 35,
@@ -948,26 +948,27 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WhatsNewSheet(),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundColor: themeProvider
-                      .themeManager.primaryBackgroundSelectedColour,
-                  radius: 20,
-                  child: Icon(
-                    size: 20,
-                    Icons.info_outline,
-                    color: themeProvider.themeManager.secondaryTextColor,
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const WhatsNewSheet(),
+              //       ),
+              //     );
+              //   },
+              //   child: CircleAvatar(
+              //     backgroundColor: themeProvider
+              //         .themeManager.primaryBackgroundSelectedColour,
+              //     radius: 20,
+              //     child: Icon(
+              //       size: 20,
+              //       Icons.info_outline,
+              //       color: themeProvider.themeManager.secondaryTextColor,
+              //     ),
+              //   ),
+              // ),
+
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {

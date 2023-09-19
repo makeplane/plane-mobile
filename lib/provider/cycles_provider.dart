@@ -32,7 +32,7 @@ class CyclesProvider with ChangeNotifier {
   StateEnum upcomingCyclesState = StateEnum.loading;
   StateEnum completedCyclesState = StateEnum.loading;
   StateEnum draftCyclesState = StateEnum.loading;
-  StateEnum transferIssuesState = StateEnum.loading;
+  StateEnum transferIssuesState = StateEnum.empty;
   List<dynamic> cyclesAllData = [];
   List<dynamic> cycleFavoriteData = [];
   List<dynamic> cycleUpcomingFavoriteData = [];
@@ -375,7 +375,6 @@ class CyclesProvider with ChangeNotifier {
   }
 
   List<BoardListsData> initializeBoard() {
-    log("INITIALIZE BOARD");
     var themeProvider = ref!.read(ProviderList.themeProvider);
     var issuesProvider = ref!.read(ProviderList.issuesProvider);
     int count = 0;
@@ -390,7 +389,6 @@ class CyclesProvider with ChangeNotifier {
               i < filterIssues[stateOrdering[j]]!.length;
           i++) {
         issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
-        log(stateOrdering[j].toString());
         items.add(
           IssueCardWidget(
             from: PreviousScreen.cycles,
@@ -884,6 +882,7 @@ class CyclesProvider with ChangeNotifier {
       log(response.data.toString());
       CustomToast.showToast(context,
           message: 'Successfully transfered', toastType: ToastType.success);
+      Navigator.pop(context);
       transferIssuesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {

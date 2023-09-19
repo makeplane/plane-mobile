@@ -6,6 +6,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/widgets/custom_button.dart';
 
 import '../mixins/widget_state_mixin.dart';
 import '../utils/enums.dart';
@@ -20,6 +21,8 @@ class SelectCycleSheet extends ConsumerStatefulWidget {
 
 class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
     with WidgetState {
+  List<dynamic> cycles = [];
+  int? selected;
   @override
   void initState() {
     CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
@@ -30,7 +33,6 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
     super.initState();
   }
 
-  List<dynamic> cycles = [];
   @override
   LoadingType getLoading(WidgetRef ref) {
     return setWidgetState([
@@ -63,32 +65,67 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
                     ))
               ],
             ),
+            Container(
+              height: 10,
+            ),
             cycles.isNotEmpty
                 ? ListView.builder(
                     itemBuilder: (ctx, index) {
                       return GestureDetector(
-                          onTap: () async {
-                            await cyclesProvider.transferIssues(
-                                newCycleID: cycles[index]['id'],
-                                context: context);
-                            Navigator.of(context).pop();
-                            Navigator.pop(Const.globalKey.currentContext!);
-                          },
-                          child: Container(
-                              margin: const EdgeInsets.only(top: 5, bottom: 5),
-                              child: CustomText(cycles[index]['name'])));
+                        onTap: () {
+                          setState(() {
+                            selected = index;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                                height: 40,
+                                margin:
+                                    const EdgeInsets.only(top: 5, bottom: 5),
+                                child: CustomText(
+                                  cycles[index]['name'],
+                                  type: FontStyle.Medium,
+                                )),
+                            const Spacer(),
+                            selected == index
+                                ? Icon(
+                                    Icons.done,
+                                    color: themeProvider
+                                        .themeManager.textSuccessColor,
+                                   
+                                  )
+                                : const SizedBox()
+                          ],
+                        ),
+                      );
                     },
                     itemCount: cycles.length,
                     shrinkWrap: true,
                   )
                 : Container(
-                    margin: const EdgeInsets.only(top: 30, bottom: 30),
+                    margin: const EdgeInsets.only(top: 50, bottom: 50),
                     alignment: Alignment.center,
                     child: const CustomText(
-                      'No Cycles Found',
-                      type: FontStyle.Small,
+                      'You don’t have any current cycle. Please create one to transfer the issues. ',
+                      type: FontStyle.Medium,
+                      textAlign: TextAlign.center,
                     ),
+                  ),
+            cycles.isNotEmpty
+                ? Button(
+                    text: 'Tranfer Issues',
+                    ontap: () async {
+                      if (selected == null) {
+                        return;
+                      }
+                      await cyclesProvider.transferIssues(
+                          newCycleID: cycles[selected!]['id'],
+                          context: context);
+                      Navigator.of(Const.globalKey.currentContext!).pop();
+                    },
                   )
+                : const SizedBox()
           ],
         ));
   }

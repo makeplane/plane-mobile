@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Profile/User_profile/member_profile.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -225,9 +225,9 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               recognizer: TapGestureRecognizer()
                                                                                 ..onTap = () {
                                                                                   Navigator.of(context).push(MaterialPageRoute(
-                                                                                      builder: (_) => MemberProfile(
-                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"],
-                                                                                          )));
+                                                                                      builder: (_) => UserProfileScreen(
+                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"], index: index, userName: activityProvider.data[index]['actor_detail']['display_name'],
+                                                                                          ),),);
                                                                                 },
                                                                               style: TextStyle(
                                                                                 color: themeProvider.themeManager.primaryTextColor,
@@ -436,10 +436,15 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 '${activityProvider.data[index]['actor_detail']['display_name']} ',
                                                                             recognizer: TapGestureRecognizer()
                                                                               ..onTap = () {
-                                                                                Navigator.of(context).push(MaterialPageRoute(
-                                                                                    builder: (_) => MemberProfile(
-                                                                                          userID: activityProvider.data[index]["actor_detail"]["id"],
-                                                                                        )));
+                                                                                Navigator.of(context).push(
+                                                                                  MaterialPageRoute(
+                                                                                    builder: (_) => UserProfileScreen(
+                                                                                      userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                      index: index,
+                                                                                      userName: activityProvider.data[index]['actor_detail']['display_name'],
+                                                                                    ),
+                                                                                  ),
+                                                                                );
                                                                               },
                                                                             style:
                                                                                 TextStyle(
@@ -463,7 +468,6 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               ..onTap = () {
                                                                                 Navigator.of(context).push(MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                              
                                                                                           ref: ref.read(ProviderList.workspaceProvider).ref!,
                                                                                           from: PreviousScreen.activity,
                                                                                           projID: activityProvider.data[index]["project"],

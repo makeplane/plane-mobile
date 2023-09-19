@@ -16,6 +16,7 @@ class Button extends ConsumerStatefulWidget {
   final double? width;
   final Color? color;
   final Widget? widget;
+  final Color? borderColor;
   const Button(
       {required this.text,
       this.filledButton = true,
@@ -26,6 +27,7 @@ class Button extends ConsumerStatefulWidget {
       this.textColor,
       this.color,
       this.widget,
+      this.borderColor,
       super.key});
 
   @override
@@ -51,7 +53,7 @@ class _ButtonState extends ConsumerState<Button> {
                 : widget.removeStroke
                     ? const Border()
                     : Border.all(
-                        color: themeProvider.themeManager.borderSubtle01Color),
+                        color: widget.borderColor ?? themeProvider.themeManager.borderSubtle01Color),
             borderRadius: BorderRadius.circular(8),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)

@@ -10,6 +10,7 @@ import 'package:plane/bottom_sheets/workspace_logo.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
@@ -499,14 +500,14 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       iconColor: themeProvider.themeManager.primaryTextColor,
                       collapsedIconColor:
                           themeProvider.themeManager.primaryTextColor,
-                      backgroundColor: const Color.fromRGBO(255, 12, 12, 0.1),
-                      collapsedBackgroundColor:
-                          const Color.fromRGBO(255, 12, 12, 0.1),
-                      title: const CustomText(
+                      backgroundColor: Colors.transparent,
+                      collapsedBackgroundColor: Colors.transparent,
+                      title: CustomText(
                         'Danger Zone',
                         textAlign: TextAlign.left,
                         type: FontStyle.H5,
-                        color: Color.fromRGBO(255, 12, 12, 1),
+                        fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                       children: [
                         CustomText(
@@ -518,8 +519,12 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           textAlign: TextAlign.left,
                           color: Colors.grey,
                         ),
-                        GestureDetector(
-                          onTap: () async {
+                        const SizedBox(height: 20,),
+                        Button(
+                          text: getRole() == Role.admin
+                              ? 'Delete Workspace'
+                              : 'Leave Workspace',
+                          ontap: () async {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               enableDrag: true,
@@ -545,25 +550,12 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               ),
                             );
                           },
-                          child: Container(
-                              height: 45,
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.only(top: 20, bottom: 15),
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(255, 12, 12, 1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Center(
-                                  child: CustomText(
-                                getRole() == Role.admin
-                                    ? 'Delete Workspace'
-                                    : 'Leave Workspace',
-                                color: Colors.white,
-                                type: FontStyle.Medium,
-                                fontWeight: FontWeightt.Bold,
-                              ))),
-                        ),
+                          color: const Color.fromRGBO(254, 242, 242, 1),
+                          textColor: themeProvider.themeManager.textErrorColor,
+                          filledButton: false,
+                          borderColor:
+                              themeProvider.themeManager.textErrorColor,
+                        )
                       ],
                     ),
                   ),

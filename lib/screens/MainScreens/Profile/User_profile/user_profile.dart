@@ -159,8 +159,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                     userID: widget.userID,
                   ),
                   OverViewScreen(
-                    userId: workspaceProvider.workspaceMembers[widget.index]
-                        ['member']["id"],
+                    userId: widget.userID,
                   ),
                   UserAssignedIssuesPage(userName: widget.userName,),
                   CreatedIssuesPage(userName: widget.userName,),

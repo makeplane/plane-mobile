@@ -22,8 +22,30 @@ class CustomToast {
     _fToast.init(context);
     Widget toast = Card(
       borderOnForeground: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6),
+          side: BorderSide(
+              color: toastType == ToastType.defult
+                  ? themeManager!.toastDefaultBorderColor
+                  : toastType == ToastType.success
+                      ? themeManager!.toastSuccessBorderColor
+                      : toastType == ToastType.warning
+                          ? themeManager!.toastWarningBorderColor
+                          : toastType == ToastType.failure
+                              ? themeManager!.toastErrorBorderColor
+                              : themeManager!.toastDefaultBorderColor)),
       elevation: 20,
-      color: themeManager!.primaryToastBackgroundColor,
+      color:
+          // themeManager!.primaryToastBackgroundColor
+          toastType == ToastType.defult
+              ? themeManager!.toastDefaultColor :
+              toastType == ToastType.success
+              ? themeManager!.toastSuccessColor :
+              toastType == ToastType.warning
+              ? themeManager!.toastWarningColor :
+              toastType == ToastType.failure
+              ? themeManager!.toastErrorColor
+              : themeManager!.toastDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(
@@ -52,6 +74,7 @@ class CustomToast {
                 message,
                 type: FontStyle.Small,
                 fontWeight: FontWeightt.Medium,
+                color: Colors.black,
                 maxLines: 3,
                 overflow: TextOverflow.visible,
               ),

@@ -42,7 +42,6 @@ void main() async {
   // SharedPrefrenceServices.sharedPreferences!.clear();
   // Const.accessToken = null;
   // Const.refreshToken = null;
-  // ConnectionService().checkConnectivity();
   prefs = pref;
   sentryService();
   FlutterError.demangleStackTrace = (StackTrace stack) {

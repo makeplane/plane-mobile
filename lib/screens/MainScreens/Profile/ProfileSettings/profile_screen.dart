@@ -268,7 +268,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Button(
                 ontap: _onLogout,
                 text: 'Logout',
-                color: themeProvider.themeManager.textErrorColor,
+                color: const Color.fromRGBO(254, 242, 242, 1),
+                textColor: themeProvider.themeManager.textErrorColor,
+                filledButton: false,
+                borderColor: themeProvider.themeManager.textErrorColor,
               ),
             ],
           ),

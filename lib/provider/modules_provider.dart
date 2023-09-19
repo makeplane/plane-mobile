@@ -528,7 +528,8 @@ class ModuleProvider with ChangeNotifier {
         title: issues.groupBY == GroupBY.labels && labelFound
             ? label['name'][0].toString().toUpperCase() +
                 label['name'].toString().substring(1)
-            : userFound && (issues.groupBY == GroupBY.createdBY||
+            : userFound &&
+                    (issues.groupBY == GroupBY.createdBY ||
                         issues.groupBY == GroupBY.assignees)
                 ? userName = userName[0].toString().toUpperCase() +
                     userName.toString().substring(1)
@@ -580,8 +581,8 @@ class ModuleProvider with ChangeNotifier {
                               themeProvider.themeManager.placeholderTextColor,
                           size: 18,
                         )
-          : issues.groupBY == GroupBY.createdBY||
-                        issues.groupBY == GroupBY.assignees
+          : issues.groupBY == GroupBY.createdBY ||
+                  issues.groupBY == GroupBY.assignees
               ? Container(
                   height: 22,
                   alignment: Alignment.center,
@@ -792,7 +793,8 @@ class ModuleProvider with ChangeNotifier {
   Future handleLinks(
       {required Map<String, dynamic> data,
       required HttpMethod method,
-      required BuildContext context}) async {
+      required BuildContext context,
+      String? linkID}) async {
     moduleLinkState = StateEnum.loading;
 
     notifyListeners();
@@ -800,31 +802,44 @@ class ModuleProvider with ChangeNotifier {
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.moduleLinks
-            .replaceAll(
-              '\$SLUG',
-              ref!
-                  .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
-                  .workspaceSlug,
-            )
-            .replaceAll(
-              '\$PROJECTID',
-              ref!.read(ProviderList.projectProvider).currentProject['id'],
-            )
-            .replaceAll(
-              '\$MODULEID',
-              currentModule['id'].toString(),
-            ),
+                .replaceAll(
+                  '\$SLUG',
+                  ref!
+                      .read(ProviderList.workspaceProvider)
+                      .selectedWorkspace!
+                      .workspaceSlug,
+                )
+                .replaceAll(
+                  '\$PROJECTID',
+                  ref!.read(ProviderList.projectProvider).currentProject['id'],
+                )
+                .replaceAll(
+                  '\$MODULEID',
+                  currentModule['id'].toString(),
+                ) +
+            (method != HttpMethod.post ? '$linkID/' : ''),
         hasBody: true,
         data: data,
         httpMethod: method,
       );
-      log('Module Link ===> ${response.data.toString()}');
-      moduleDetailsData['link_module'].add(response.data);
+      if (method == HttpMethod.delete) {
+        moduleDetailsData['link_module']
+            .removeWhere((element) => element['id'] == linkID);
+      } else if (method == HttpMethod.put) {
+        int index = moduleDetailsData['link_module']
+            .indexWhere((element) => element['id'] == linkID);
+        moduleDetailsData['link_module'][index] = response.data;
+      } else {
+        moduleDetailsData['link_module'].add(response.data);
+      }
+
       moduleLinkState = StateEnum.success;
       CustomToast.showToast(context,
           message: 'Sucess', toastType: ToastType.success);
-      Navigator.pop(context);
+      if (method != HttpMethod.delete) {
+        Navigator.pop(context);
+      }
+
       notifyListeners();
     } on DioException catch (err) {
       log('Module Link Error');

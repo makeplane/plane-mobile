@@ -1271,7 +1271,66 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     .themeManager.placeholderTextColor,
                               )
                             ],
-                          )
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.85),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                )),
+                                context: context,
+                                builder: (ctx) {
+                                  return SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      child: AddLinkSheet(
+                                        id: moduleProvider.moduleDetailsData[
+                                            'link_module'][index]['id'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.edit_outlined,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              moduleProvider.handleLinks(
+                                  linkID: moduleProvider
+                                          .moduleDetailsData['link_module']
+                                      [index]['id'],
+                                  data: {},
+                                  method: HttpMethod.delete,
+                                  context: context);
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
                         ],
                       ),
                     );

@@ -9,8 +9,8 @@ import 'package:plane/widgets/custom_text.dart';
 import '../mixins/widget_state_mixin.dart';
 
 class AddLinkSheet extends ConsumerStatefulWidget {
-  const AddLinkSheet({super.key});
-
+  const AddLinkSheet({this.id, super.key});
+  final String? id;
   @override
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
 }
@@ -27,11 +27,22 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetState {
   }
 
   @override
+  initState() {
+    if (widget.id != null) {
+      var moduleProvider = ref.read(ProviderList.modulesProvider);
+      var link = moduleProvider.moduleDetailsData['link_module']
+          ?.firstWhere((element) => element['id'] == widget.id);
+      title.text = link['title'] ?? '';
+      url.text = link['url'] ?? '';
+    }
+    super.initState();
+  }
+
+  @override
   Widget render(BuildContext context) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
     return Container(
-    
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
@@ -101,12 +112,16 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetState {
             height: 30,
           ),
           Button(
-            text: 'Add Link',
+            text: widget.id != null ? 'Update Link' : 'Add Link',
             ontap: () {
-              moduleProvider.handleLinks(data: {
-                'title': title.text,
-                'url': url.text,
-              }, method: HttpMethod.post, context: context);
+              moduleProvider.handleLinks(
+                  data: {
+                    'title': title.text,
+                    'url': url.text,
+                  },
+                  linkID: widget.id,
+                  method: widget.id != null ? HttpMethod.put : HttpMethod.post,
+                  context: context);
             },
           )
         ],

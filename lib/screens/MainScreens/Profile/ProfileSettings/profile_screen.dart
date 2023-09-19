@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:plane/bottom_sheets/select_workspace.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -472,39 +473,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     ? Container(
                                         margin: const EdgeInsets.all(5),
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: CachedNetworkImage(
-                                            imageUrl: workspaceProvider
-                                                .selectedWorkspace!
-                                                .workspaceLogo,
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
-                                              decoration: BoxDecoration(
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryBackgroundDefaultColor,
-                                              ),
-                                              child: Center(
-                                                child: CustomText(
-                                                  workspaceProvider
-                                                      .selectedWorkspace!
-                                                      .workspaceName[0]
-                                                      .toUpperCase(),
-                                                  fontSize: 14,
-                                                  fontWeight:
-                                                      FontWeightt.Semibold,
-                                                  // color: const Color.fromRGBO(
-                                                  //     48, 0, 240, 1),
-                                                ),
-                                              ),
-                                            ),
-                                            width: 25,
-                                            height: 35,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: SvgPicture.network(
+                                                workspaceProvider
+                                                    .selectedWorkspace!
+                                                    .workspaceLogo)),
                                       )
                                     : Container(
                                         width: 25,

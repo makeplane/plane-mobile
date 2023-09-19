@@ -1,14 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:plane/provider/provider_list.dart';
 
 import '../mixins/widget_state_mixin.dart';
@@ -23,11 +21,6 @@ class SelectWorkspace extends ConsumerStatefulWidget {
 class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
     with WidgetState {
   double height = 0;
-  var colors = [
-    const Color.fromRGBO(48, 0, 240, 1),
-    const Color.fromRGBO(209, 88, 0, 1),
-    const Color.fromRGBO(167, 0, 209, 1),
-  ];
 
   @override
   getLoading(WidgetRef ref) {
@@ -148,8 +141,6 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                                 type: 'snoozed', getSnoozed: true);
                       },
                     );
-
-                    ///
                     Navigator.of(context).pop();
                   },
                   child: Column(
@@ -182,43 +173,12 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                                     ))
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
-                                    child: CachedNetworkImage(
+                                    child: SvgPicture.network(
+                                      prov.workspaces[index]['logo'].toString(),
                                       height: 35,
                                       width: 35,
                                       fit: BoxFit.fill,
-                                      imageUrl: prov.workspaces[index]['logo']
-                                          .toString(),
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Container(
-                                              height: 35,
-                                              width: 35,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                  color: colors[
-                                                      Random().nextInt(3)],
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: CustomText(
-                                                prov.workspaces[index]['name']
-                                                    .toString()
-                                                    .toUpperCase()[0],
-                                                type: FontStyle.Medium,
-                                                fontWeight:
-                                                    FontWeightt.Semibold,
-                                                // fontWeight: FontWeight.w400,
-                                                color: Colors.white,
-                                              )),
                                     ),
-
-                                    //     Image.network(
-                                    //   prov.workspaces[index]['logo']
-                                    //       .toString(),
-                                    //   width: 35,
-                                    //   height: 35,
-                                    //   fit: BoxFit.cover,
-                                    // ),
                                   ),
                             const SizedBox(
                               width: 10,

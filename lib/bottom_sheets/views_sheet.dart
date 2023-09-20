@@ -536,31 +536,34 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor:
                                   themeProvider.themeManager.primaryColour),
-                                  issueProvider.issues.groupBY!=GroupBY.priority?RadioListTile(
-                              fillColor: orderBy == 'priority'
-                                  ? null
-                                  : MaterialStateProperty.all<Color>(
-                                      themeProvider
-                                          .themeManager.borderSubtle01Color),
-                              visualDensity: const VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity,
-                              ),
-                              groupValue: orderBy,
-                              title: const CustomText(
-                                'Priority',
-                                type: FontStyle.Small,
-                                textAlign: TextAlign.start,
-                              ),
-                              value: 'priority',
-                              onChanged: (newValue) {
-                                setState(() {
-                                  orderBy = 'priority';
-                                });
-                              },
-                              controlAffinity: ListTileControlAffinity.leading,
-                              activeColor:
-                                  themeProvider.themeManager.primaryColour):Container(),
+                          issueProvider.issues.groupBY != GroupBY.priority
+                              ? RadioListTile(
+                                  fillColor: orderBy == 'priority'
+                                      ? null
+                                      : MaterialStateProperty.all<Color>(
+                                          themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                  visualDensity: const VisualDensity(
+                                    horizontal: VisualDensity.minimumDensity,
+                                    vertical: VisualDensity.minimumDensity,
+                                  ),
+                                  groupValue: orderBy,
+                                  title: const CustomText(
+                                    'Priority',
+                                    type: FontStyle.Small,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  value: 'priority',
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      orderBy = 'priority';
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor:
+                                      themeProvider.themeManager.primaryColour)
+                              : Container(),
                         ],
                       ),
                     )
@@ -779,7 +782,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     onTap: () {
                       String slug = ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug;
                       String projID = ref
                           .read(ProviderList.projectProvider)
@@ -818,7 +821,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     onTap: () {
                       String slug = ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug;
                       String projID = ref
                           .read(ProviderList.projectProvider)
@@ -996,7 +999,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         cyclesProvider.filterCycleIssues(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projectId: ref
                               .read(ProviderList.projectProvider)
@@ -1007,7 +1010,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         modulesProvider.filterModuleIssues(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projectId: ref
                               .read(ProviderList.projectProvider)
@@ -1019,7 +1022,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                           fromViews: widget.fromView,
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projID: ref
                               .read(ProviderList.projectProvider)

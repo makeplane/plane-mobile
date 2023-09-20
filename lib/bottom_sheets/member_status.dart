@@ -248,7 +248,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                     .updateProjectMember(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .watch(ProviderList.projectProvider)

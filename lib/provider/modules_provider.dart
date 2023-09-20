@@ -167,11 +167,9 @@ class ModuleProvider with ChangeNotifier {
       postHogService(
           eventName: 'MODULE_CREATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'PROJECT_ID': projectProvider.projectDetailModel!.id,
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'MODULE_ID': response.data['id']
@@ -215,11 +213,9 @@ class ModuleProvider with ChangeNotifier {
       postHogService(
           eventName: 'MODULE_UPDATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'PROJECT_ID': projectProvider.projectDetailModel!.id,
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'MODULE_ID': response.data['id']
@@ -801,7 +797,7 @@ class ModuleProvider with ChangeNotifier {
                   '\$SLUG',
                   ref!
                       .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
+                      .selectedWorkspace
                       .workspaceSlug,
                 )
                 .replaceAll(

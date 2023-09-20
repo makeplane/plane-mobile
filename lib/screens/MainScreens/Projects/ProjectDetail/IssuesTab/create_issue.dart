@@ -89,7 +89,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
               showLoading: false,
               slug: ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
               projID: widget.projectId ??
                   ref.read(ProviderList.projectProvider).currentProject['id'])
@@ -101,7 +101,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
       ref.read(ProviderList.estimatesProvider).getEstimates(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: widget.projectId ??
               ref.read(ProviderList.projectProvider).currentProject['id']);
@@ -310,7 +310,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projID: issuesProvider
                                                           .createIssueProjectData[
@@ -328,7 +328,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projID: issuesProvider
                                                           .createIssueProjectData[
@@ -427,7 +427,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                               webviewController,
                                                           title: 'Description',
                                                           url:
-                                                              '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                              '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                         )));
                                           },
                                           child: Container(
@@ -532,7 +532,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           initialUrlRequest:
                                                               URLRequest(
                                                                   url: Uri.parse(
-                                                                      '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=false'))),
+                                                                      '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=false'))),
                                                       descriptionLoading
                                                           ? Container(
                                                               alignment:
@@ -571,7 +571,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                               controller: webviewController,
                                                                               fromCreateIssue: true,
                                                                               title: 'Description',
-                                                                              url: '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug}/editor?editable=true',
+                                                                              url: '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                                             )));
                                                               },
                                                               child: Container(
@@ -1916,7 +1916,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                   //       await issueProvider.createIssue(
                                   //         slug: ref
                                   //             .read(ProviderList.workspaceProvider)
-                                  //             .selectedWorkspace!
+                                  //             .selectedWorkspace
                                   //             .workspaceSlug,
                                   //         projID: ref
                                   //             .read(ProviderList.projectProvider)
@@ -2003,7 +2003,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                             await issuesProvider.createIssue(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projID:
                                     issuesProvider.createIssueProjectData['id'],
@@ -2064,7 +2064,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projID: widget.projectId ??
                                               ref
@@ -2084,7 +2084,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projID: widget.projectId ??
                                               ref

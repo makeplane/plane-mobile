@@ -187,7 +187,7 @@ class NotificationProvider extends ChangeNotifier {
   Future markAllAsRead(String type) async {
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     // log('${APIs.notifications.replaceAll('\$SLUG', slug)}/mark-all-read/');

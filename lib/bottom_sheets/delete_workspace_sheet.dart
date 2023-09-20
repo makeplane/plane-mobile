@@ -239,13 +239,13 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                 .watch(ProviderList.profileProvider)
                                 .updateProfile(data: {
                               'last_workspace_id': workspaceProvider
-                                  .selectedWorkspace!.workspaceId,
+                                  .selectedWorkspace.workspaceId,
                             });
                             await ref
                                 .watch(ProviderList.projectProvider)
                                 .getProjects(
                                     slug: workspaceProvider
-                                        .selectedWorkspace!.workspaceSlug);
+                                        .selectedWorkspace.workspaceSlug);
                             CustomToast.showToast(
                               context,
                               message: 'Left workspace successfully',
@@ -278,13 +278,13 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                   .watch(ProviderList.profileProvider)
                                   .updateProfile(data: {
                                 'last_workspace_id': workspaceProvider
-                                    .selectedWorkspace!.workspaceId,
+                                    .selectedWorkspace.workspaceId,
                               });
                               await ref
                                   .watch(ProviderList.projectProvider)
                                   .getProjects(
                                       slug: workspaceProvider
-                                          .selectedWorkspace!.workspaceSlug);
+                                          .selectedWorkspace.workspaceSlug);
                               CustomToast.showToast(
                                 context,
                                 message: 'Workspace deleted successfully',

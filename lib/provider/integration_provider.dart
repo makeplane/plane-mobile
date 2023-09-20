@@ -56,7 +56,7 @@ class IntegrationProvider extends ChangeNotifier {
             '\$SLUG',
             ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug),
         hasBody: false,
         httpMethod: HttpMethod.get,

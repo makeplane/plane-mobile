@@ -37,7 +37,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
     ref.read(ProviderList.issuesProvider).getLabels(
         slug: ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug,
         projID: widget.createIssue
             ? ref.read(ProviderList.issuesProvider).createIssueProjectData['id']
@@ -348,7 +348,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                     .themeManager
                                                     .primaryBackgroundSelectedColour,
                                                 borderRadius: const BorderRadius
-                                                    .only(
+                                                        .only(
                                                     topLeft: Radius.circular(5),
                                                     bottomLeft:
                                                         Radius.circular(5))),
@@ -433,7 +433,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                 await issuesProvider.issueLabels(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projID: widget.createIssue
                                         ? ref

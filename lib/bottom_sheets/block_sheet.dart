@@ -145,7 +145,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
                             : HttpMethod.patch,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projectId: ref
                             .read(ProviderList.projectProvider)

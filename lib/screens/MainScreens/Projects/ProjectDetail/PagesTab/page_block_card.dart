@@ -131,7 +131,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projectId: ref
                                             .read(ProviderList.projectProvider)
@@ -156,7 +156,7 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
                               httpMethod: HttpMethod.delete,
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projectId: ref
                                   .read(ProviderList.projectProvider)

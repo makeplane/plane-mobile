@@ -34,7 +34,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
     super.initState();
     log(ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug
         .toString());
     log(ref.read(ProviderList.projectProvider).currentProject["id"]);
@@ -320,7 +320,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                   await cyclesProvider.dateCheck(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projectId: ref
                                     .read(ProviderList.projectProvider)
@@ -339,7 +339,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               await cyclesProvider.cyclesCrud(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projectId: ref
                                       .read(ProviderList.projectProvider)
@@ -365,7 +365,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               await cyclesProvider.cyclesCrud(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projectId: ref
                                       .read(ProviderList.projectProvider)
@@ -384,7 +384,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projectId: ref
                                             .read(ProviderList.projectProvider)

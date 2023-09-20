@@ -88,7 +88,7 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
                         .currentProject['id'],
                     slug: ref
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug,
                     ref: ref,
                     context: context);

@@ -71,7 +71,7 @@ class _IssueDetailMoudlesListState
                               ? modulesProvider.deleteModuleIssues(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -81,7 +81,7 @@ class _IssueDetailMoudlesListState
                               : modulesProvider.createModuleIssues(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -92,19 +92,19 @@ class _IssueDetailMoudlesListState
                                 ))
                           .then((value) async {
                         issueProvider.getIssueDetails(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projID: projectProvider.currentProject['id'],
                           issueID: widget.issueId,
                         );
                         modulesProvider.filterModuleIssues(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projectId: projectProvider.currentProject['id'],
                         );
                         issuesProvider.filterIssues(
                             slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             projID: projectProvider.currentProject['id']);
                       });
                       Navigator.of(context).pop();

@@ -394,7 +394,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                         ? estimateProvider.updateEstimates(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projID: ref
                                 .read(ProviderList.projectProvider)
@@ -405,7 +405,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                         : estimateProvider.createEstimates(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projID: ref
                                 .read(ProviderList.projectProvider)

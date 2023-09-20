@@ -73,7 +73,7 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                     await projectProvider.stateCrud(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .watch(ProviderList.projectProvider)
@@ -86,7 +86,7 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                     issuesProvider.getStates(
                       slug: ref
                           .watch(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projID: ref
                           .watch(ProviderList.projectProvider)

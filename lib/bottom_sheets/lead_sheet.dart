@@ -86,7 +86,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 .cycleDetailsCrud(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projectId: ref
                                   .read(ProviderList.projectProvider)
@@ -108,7 +108,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                             modulesProvider.updateModules(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projId: ref
                                     .read(ProviderList.projectProvider)

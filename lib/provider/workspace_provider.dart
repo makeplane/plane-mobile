@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/models/user_profile_model.dart';
 import 'package:plane/models/workspace_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
@@ -246,7 +245,7 @@ class WorkspaceProvider extends ChangeNotifier {
     try {
       log(APIs.inviteToWorkspace.replaceAll('\$SLUG', slug));
       log(role == null ? "ROLE NULL" : "ROLE NOT NULL");
-       await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.inviteToWorkspace.replaceAll('\$SLUG', slug),
         hasBody: true,
@@ -303,8 +302,8 @@ class WorkspaceProvider extends ChangeNotifier {
           return;
         }
         selectedWorkspace = WorkspaceModel.fromJson(workspaces[0]);
-        var slug = selectedWorkspace!.workspaceSlug;
-        log('AFTER DELETE WORKSPACE ${selectedWorkspace!.workspaceName} }');
+        var slug = selectedWorkspace.workspaceSlug;
+        log('AFTER DELETE WORKSPACE ${selectedWorkspace.workspaceName} }');
         ref!.read(ProviderList.dashboardProvider).getDashboard();
         projectProv.projects = [];
         projectProv.getProjects(slug: slug);
@@ -338,11 +337,11 @@ class WorkspaceProvider extends ChangeNotifier {
       }
 
       getWorkspaceMembers();
-      retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
+      retrieveWorkspaceIntegration(slug: selectedWorkspace.workspaceSlug);
       workspaceInvitationState = StateEnum.success;
       notifyListeners();
       return selectedWorkspace;
-   } else {
+    } else {
       log(response.fold((l) => l.toString(), (r) => r.error.toString()));
       workspaceInvitationState = StateEnum.error;
       notifyListeners();
@@ -350,7 +349,7 @@ class WorkspaceProvider extends ChangeNotifier {
   }
 
   Future<Either<WorkspaceModel, DioException>> selectWorkspace(
-      {required BuildContext context,required String id}) async {
+      {required BuildContext context, required String id}) async {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
     var profileProv = ref!.read(ProviderList.profileProvider);
@@ -369,7 +368,7 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       return Left(selectedWorkspace);
     } else {
-      DioException error =response.fold(
+      DioException error = response.fold(
           (l) => DioException(
               requestOptions: RequestOptions(),
               message: 'Something went wrong!'),
@@ -397,9 +396,8 @@ class WorkspaceProvider extends ChangeNotifier {
       log(response.data.toString());
       // response = jsonDecode(response.data);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
-      tempLogo = selectedWorkspace!.workspaceLogo;
-      await retrieveWorkspaceIntegration(
-          slug: selectedWorkspace!.workspaceSlug);
+      tempLogo = selectedWorkspace.workspaceLogo;
+      await retrieveWorkspaceIntegration(slug: selectedWorkspace.workspaceSlug);
 
       notifyListeners();
       // log(response.data.toString());
@@ -456,7 +454,7 @@ class WorkspaceProvider extends ChangeNotifier {
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll(
           '\$SLUG',
-          selectedWorkspace!.workspaceSlug,
+          selectedWorkspace.workspaceSlug,
         ),
         hasBody: true,
         data: data,
@@ -472,7 +470,7 @@ class WorkspaceProvider extends ChangeNotifier {
           },
           ref: ref);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
-      tempLogo = selectedWorkspace!.workspaceLogo;
+      tempLogo = selectedWorkspace.workspaceLogo;
 
       notifyListeners();
       // log(response.data.toString());
@@ -491,7 +489,7 @@ class WorkspaceProvider extends ChangeNotifier {
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll(
           '\$SLUG',
-          selectedWorkspace!.workspaceSlug,
+          selectedWorkspace.workspaceSlug,
         ),
         hasBody: false,
         httpMethod: HttpMethod.delete,
@@ -517,7 +515,7 @@ class WorkspaceProvider extends ChangeNotifier {
         hasAuth: true,
         url: APIs.leaveWorkspace.replaceFirst(
           '\$SLUG',
-          selectedWorkspace!.workspaceSlug,
+          selectedWorkspace.workspaceSlug,
         ),
         hasBody: false,
         httpMethod: HttpMethod.delete,
@@ -571,7 +569,7 @@ class WorkspaceProvider extends ChangeNotifier {
     try {
       var url = '${APIs.getWorkspaceMembers.replaceAll(
         '\$SLUG',
-        selectedWorkspace!.workspaceSlug,
+        selectedWorkspace.workspaceSlug,
       )}$userId/';
       await DioConfig().dioServe(
           hasAuth: true,
@@ -604,7 +602,7 @@ class WorkspaceProvider extends ChangeNotifier {
   //       hasAuth: true,
   //       url: APIs.inviteMembers.replaceAll(
   //         '\$SLUG',
-  //         selectedWorkspace!.workspaceSlug,
+  //         selectedWorkspace.workspaceSlug,
   //       ),
   //       hasBody: true,
   //       data: {"emails": emails},

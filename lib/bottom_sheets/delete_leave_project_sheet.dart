@@ -220,7 +220,7 @@ class _DeleteLeaveProjectSheetState
                               await projectProvider.leaveProject(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: projectProvider.currentProject['id'],
                                   index: 0);
@@ -244,7 +244,7 @@ class _DeleteLeaveProjectSheetState
                                 .deleteProject(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projId:
                                         projectProvider.currentProject['id'])
@@ -268,7 +268,7 @@ class _DeleteLeaveProjectSheetState
                             projectProvider.getProjects(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                             );
                           }

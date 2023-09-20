@@ -908,11 +908,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             },
             child: Row(
               children: [
-                workspaceProvider.selectedWorkspace == null
+                workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
                     ? Container()
-                    : workspaceProvider.selectedWorkspace!.workspaceLogo != ''
+                    : workspaceProvider.selectedWorkspace.workspaceLogo != ''
                         ? SvgPicture.network(
-                            workspaceProvider.selectedWorkspace!.workspaceLogo)
+                            workspaceProvider.selectedWorkspace.workspaceLogo)
                         : Container(
                             width: 35,
                             height: 35,
@@ -923,7 +923,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             child: Center(
                               child: CustomText(
                                 workspaceProvider
-                                    .selectedWorkspace!.workspaceName[0]
+                                    .selectedWorkspace.workspaceName[0]
                                     .toUpperCase(),
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
@@ -936,7 +936,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   width: 10,
                 ),
                 CustomText(
-                  workspaceProvider.selectedWorkspace!.workspaceName,
+                  workspaceProvider.selectedWorkspace.workspaceName,
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                 ),

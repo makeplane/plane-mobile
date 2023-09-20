@@ -122,7 +122,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           // log(prov.userProfile.last_workspace_id.toString());
           dashProv.getDashboard();
           projectProv.getProjects(
-              slug: workspaceProv.selectedWorkspace!.workspaceSlug);
+              slug: workspaceProv.selectedWorkspace.workspaceSlug);
 
           ref.read(ProviderList.myIssuesProvider).getLabels();
 

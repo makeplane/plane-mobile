@@ -115,7 +115,7 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
                 // await pageProvider.updateBlock(
                 //     userId:
                 //         ref.read(ProviderList.profileProvider).userProfile.id!,
-                //     slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
+                //     slug: workspaceProvider.selectedWorkspace.workspaceSlug,
                 //     projectId: projectProvider.currentProject['id'],
                 //     pageId: pageProvider.selectedPage['id'],
                 //     blockId: pageProvider.getSelectedPageBlock()['id'],

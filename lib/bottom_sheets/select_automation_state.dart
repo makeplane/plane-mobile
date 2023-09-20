@@ -67,7 +67,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                     projectProvider.updateProject(
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .read(ProviderList.projectProvider)

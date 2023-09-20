@@ -67,7 +67,7 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 ref.read(ProviderList.estimatesProvider).deleteEstimates(
                       slug: ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projID: ref
                           .read(ProviderList.projectProvider)

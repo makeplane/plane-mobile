@@ -30,7 +30,7 @@ class DashBoardProvider extends ChangeNotifier {
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug;
-          
+
       dashboardData = await dashboardService.getDashboardData(
           url: APIs.dashboard.replaceAll('\$SLUG', workspaceSlug));
       getDashboardState = StateEnum.success;
@@ -50,7 +50,7 @@ class DashBoardProvider extends ChangeNotifier {
             '\$SLUG',
             ref!
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug),
         hasBody: false,
         httpMethod: HttpMethod.get,

@@ -250,7 +250,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                         issuesProvider.issueLabels(
                             slug: ref
                                 .watch(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projID: ref
                                 .watch(ProviderList.projectProvider)

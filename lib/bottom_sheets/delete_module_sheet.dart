@@ -85,7 +85,7 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
                       await modulesProvider.deleteModule(
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .read(ProviderList.projectProvider)

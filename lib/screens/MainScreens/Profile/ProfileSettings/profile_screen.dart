@@ -471,7 +471,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             child: Row(
                               children: [
                                 workspaceProvider
-                                            .selectedWorkspace!.workspaceLogo !=
+                                            .selectedWorkspace.workspaceLogo !=
                                         ''
                                     ? Container(
                                         margin: const EdgeInsets.all(5),
@@ -480,7 +480,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                 BorderRadius.circular(5),
                                             child: SvgPicture.network(
                                                 workspaceProvider
-                                                    .selectedWorkspace!
+                                                    .selectedWorkspace
                                                     .workspaceLogo)),
                                       )
                                     : Container(
@@ -495,7 +495,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         ),
                                         child: Center(
                                           child: CustomText(
-                                            workspaceProvider.selectedWorkspace!
+                                            workspaceProvider.selectedWorkspace
                                                 .workspaceName[0]
                                                 .toUpperCase(),
                                             fontSize: 14,

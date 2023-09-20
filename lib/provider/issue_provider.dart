@@ -211,11 +211,9 @@ class IssueProvider with ChangeNotifier {
       postHogService(
           eventName: 'ISSUE_UPDATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'PROJECT_ID': projID,
             'PROJECT_NAME': projectProvider.projects
                 .firstWhere((element) => element['id'] == projID)['name'],

@@ -95,9 +95,9 @@ class ProjectsProvider extends ChangeNotifier {
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
     }
-    String workspaceSlug = ref!
+    String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
@@ -105,7 +105,7 @@ class ProjectsProvider extends ChangeNotifier {
       slug: workspaceSlug,
       projID: currentProject['id'],
     );
-    ref!.read(ProviderList.estimatesProvider).getEstimates(
+    ref.read(ProviderList.estimatesProvider).getEstimates(
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
@@ -131,7 +131,7 @@ class ProjectsProvider extends ChangeNotifier {
 
     getProjectDetails(slug: workspaceSlug, projId: currentProject['id']);
 
-    var cyclesProv = ref!.read(ProviderList.cyclesProvider);
+    var cyclesProv = ref.read(ProviderList.cyclesProvider);
     var projectID = currentProject['id'];
     cyclesProv.cyclesState = StateEnum.loading;
 
@@ -350,11 +350,9 @@ class ProjectsProvider extends ChangeNotifier {
       postHogService(
           eventName: 'CREATE_PROJECT',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
@@ -468,11 +466,9 @@ class ProjectsProvider extends ChangeNotifier {
       postHogService(
           eventName: 'UPDATE_PROJECT',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
@@ -627,11 +623,11 @@ class ProjectsProvider extends ChangeNotifier {
                   ? {}
                   : {
                       'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace!.workspaceId,
+                          workspaceProvider.selectedWorkspace.workspaceId,
                       'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
                       'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace!.workspaceName,
+                          workspaceProvider.selectedWorkspace.workspaceName,
                       'PROJECT_ID': projectProvider.projectDetailModel!.id,
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'STATE_ID':

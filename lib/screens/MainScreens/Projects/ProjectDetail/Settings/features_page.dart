@@ -115,7 +115,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                               projectsProvider.updateProject(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)

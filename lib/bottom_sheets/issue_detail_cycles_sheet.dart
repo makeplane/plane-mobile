@@ -80,7 +80,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                               ? cyclesProvider.deleteCycleIssue(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)
@@ -90,7 +90,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                               : cyclesProvider.createCycleIssues(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)
@@ -101,19 +101,19 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           .then((value) {
                         log('then called');
                         issueProvider.getIssueDetails(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projID: projectProvider.currentProject['id'],
                           issueID: widget.issueId,
                         );
                         cyclesProvider.filterCycleIssues(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projectId: projectProvider.currentProject['id'],
                         );
                         issuesProvider.filterIssues(
                             slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             projID: projectProvider.currentProject['id']);
                       });
                       Navigator.of(context).pop();

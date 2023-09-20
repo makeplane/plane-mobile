@@ -31,7 +31,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
       ref.read(ProviderList.issuesProvider).getProjectMembers(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: widget.createIssue
               ? ref
@@ -241,7 +241,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
             //                 issueProvider.upDateIssue(
             //                     slug: ref
             //                         .read(ProviderList.workspaceProvider)
-            //                         .selectedWorkspace!
+            //                         .selectedWorkspace
             //                         .workspaceSlug,
             //                     projID: ref
             //                         .read(ProviderList.projectProvider)
@@ -259,7 +259,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
             //                             slug: ref
             //                                 .read(
             //                                     ProviderList.workspaceProvider)
-            //                                 .selectedWorkspace!
+            //                                 .selectedWorkspace
             //                                 .workspaceSlug,
             //                             projID: ref
             //                                 .read(ProviderList.projectProvider)
@@ -272,7 +272,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
             //                                 slug: ref
             //                                     .read(ProviderList
             //                                         .workspaceProvider)
-            //                                     .selectedWorkspace!
+            //                                     .selectedWorkspace
             //                                     .workspaceSlug,
             //                                 projID: ref
             //                                     .read(ProviderList
@@ -333,7 +333,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                         issueProvider.upDateIssue(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projID: ref
                                 .read(ProviderList.projectProvider)
@@ -351,7 +351,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                         //         .getIssueDetails(
                         //             slug: ref
                         //                 .read(ProviderList.workspaceProvider)
-                        //                 .selectedWorkspace!
+                        //                 .selectedWorkspace
                         //                 .workspaceSlug,
                         //             projID: ref
                         //                 .read(ProviderList.projectProvider)
@@ -363,7 +363,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                         //       //     .getIssueActivity(
                         //       //       slug: ref
                         //       //           .read(ProviderList.workspaceProvider)
-                        //       //           .selectedWorkspace!
+                        //       //           .selectedWorkspace
                         //       //           .workspaceSlug,
                         //       //       projID: ref
                         //       //           .read(ProviderList.projectProvider)
@@ -376,7 +376,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                         //           .getMyIssues(
                         //             slug: ref
                         //                 .read(ProviderList.workspaceProvider)
-                        //                 .selectedWorkspace!
+                        //                 .selectedWorkspace
                         //                 .workspaceSlug,
                         //           );
                         //     });

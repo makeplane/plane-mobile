@@ -91,7 +91,7 @@ class _ProjectLeadAssigneeSheetState
                                 .updateProject(
                               slug: ref
                                   .watch(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projId: ref
                                   .read(ProviderList.projectProvider)
@@ -122,7 +122,7 @@ class _ProjectLeadAssigneeSheetState
                                     .getProjectDetails(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)
@@ -137,14 +137,14 @@ class _ProjectLeadAssigneeSheetState
                                         ? 'Select lead'
                                         : projectProvider.projectDetailModel!
                                             .projectLead!['display_name'];
-                                    projectProvider.assignee.text =
-                                        projectProvider.projectDetailModel!
-                                                    .defaultAssignee ==
-                                                null
-                                            ? 'Select Assingnee'
-                                            : projectProvider
+                                    projectProvider
+                                        .assignee.text = projectProvider
                                                 .projectDetailModel!
-                                                .defaultAssignee!['display_name'];
+                                                .defaultAssignee ==
+                                            null
+                                        ? 'Select Assingnee'
+                                        : projectProvider.projectDetailModel!
+                                            .defaultAssignee!['display_name'];
                                   });
                                   Navigator.of(context).pop();
                                 });

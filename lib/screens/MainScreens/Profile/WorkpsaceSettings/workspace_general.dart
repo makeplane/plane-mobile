@@ -31,25 +31,25 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _workspaceNameController.text = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceName;
 
       ref.read(ProviderList.workspaceProvider).changeCompanySize(
           size: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSize
               .toString());
 
       dropDownValue = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSize
           .toString();
 
       _workspaceUrlController.text = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceUrl;
     });
   }
@@ -64,12 +64,12 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     // imageUrl = ref
     //     .read(ProviderList.workspaceProvider)
-    //     .selectedWorkspace!
+    //     .selectedWorkspace
     //     .workspaceLogo;
     return WillPopScope(
       onWillPop: () async {
         workspaceProvider.changeLogo(
-            logo: workspaceProvider.selectedWorkspace!.workspaceLogo);
+            logo: workspaceProvider.selectedWorkspace.workspaceLogo);
         return true;
       },
       child: GestureDetector(
@@ -82,7 +82,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
           appBar: CustomAppBar(
             onPressed: () {
               workspaceProvider.changeLogo(
-                  logo: workspaceProvider.selectedWorkspace!.workspaceLogo);
+                  logo: workspaceProvider.selectedWorkspace.workspaceLogo);
               Navigator.of(context).pop();
             },
             text: 'Workspace General',
@@ -120,7 +120,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 ? SizedBox(
                                     child: CustomText(
                                       workspaceProvider
-                                          .selectedWorkspace!.workspaceName
+                                          .selectedWorkspace.workspaceName
                                           .toString()
                                           .toUpperCase()[0],
                                       type: FontStyle.Medium,
@@ -519,7 +519,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           textAlign: TextAlign.left,
                           color: Colors.grey,
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Button(
                           text: getRole() == Role.admin
                               ? 'Delete Workspace'
@@ -544,7 +546,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                         .bottom),
                                 child: DeleteOrLeaveWorkpace(
                                   workspaceName: workspaceProvider
-                                      .selectedWorkspace!.workspaceName,
+                                      .selectedWorkspace.workspaceName,
                                   role: getRole(),
                                 ),
                               ),

@@ -33,7 +33,7 @@ class _ActivityState extends ConsumerState<Activity> {
       ref.watch(ProviderList.activityProvider).getAcivity(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
           );
     });
@@ -224,10 +224,15 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               text: '${activityProvider.data[index]['actor_detail']['display_name']} ',
                                                                               recognizer: TapGestureRecognizer()
                                                                                 ..onTap = () {
-                                                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                                                  Navigator.of(context).push(
+                                                                                    MaterialPageRoute(
                                                                                       builder: (_) => UserProfileScreen(
-                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"], index: index, userName: activityProvider.data[index]['actor_detail']['display_name'],
-                                                                                          ),),);
+                                                                                        userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                        index: index,
+                                                                                        userName: activityProvider.data[index]['actor_detail']['display_name'],
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
                                                                                 },
                                                                               style: TextStyle(
                                                                                 color: themeProvider.themeManager.primaryTextColor,
@@ -541,7 +546,7 @@ class _ActivityState extends ConsumerState<Activity> {
                     ref.watch(ProviderList.activityProvider).getAcivity(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                         );
                   },

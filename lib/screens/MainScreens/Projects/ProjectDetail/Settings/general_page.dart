@@ -153,7 +153,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 projectProvider.updateProject(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projId:
                                         projectProvider.projectDetailModel!.id!,
@@ -169,7 +169,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 projectProvider.updateProject(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projId:
                                         projectProvider.projectDetailModel!.id!,
@@ -606,7 +606,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                     color: themeProvider
                                         .themeManager.placeholderTextColor,
                                   ),
-                                  const SizedBox(height: 20,),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
                                   Button(
                                     text: 'Delete Project',
                                     color:
@@ -636,12 +638,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                             DeleteLeaveProjectSheet(
                                           data: {
                                             'WORKSPACE_ID': workspaceProvider
-                                                .selectedWorkspace!.workspaceId,
+                                                .selectedWorkspace.workspaceId,
                                             'WORKSPACE_NAME': workspaceProvider
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceName,
                                             'WORKSPACE_SLUG': workspaceProvider
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             'PROJECT_ID': projectProvider
                                                 .projectDetailModel!.id,
@@ -674,7 +676,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           identifier: identifier.text);
                                   if (available) {
@@ -682,7 +684,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projId: projectProvider
                                             .projectDetailModel!.id!,
@@ -707,7 +709,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                   await projectProvider.updateProject(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
+                                          .selectedWorkspace
                                           .workspaceSlug,
                                       projId: projectProvider
                                           .projectDetailModel!.id!,
@@ -739,7 +741,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 //     projId: projectProvider.projectDetailModel!.id!,
                                 //     slug: ref
                                 //         .read(ProviderList.workspaceProvider)
-                                //         .selectedWorkspace!
+                                //         .selectedWorkspace
                                 //         .workspaceSlug,
                                 //     data: {
                                 //       'name': name.text,

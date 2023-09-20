@@ -49,7 +49,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                       projectProvider.updateProject(
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: projectProvider.currentProject['id'],
                         data: {'estimate': null},
@@ -125,7 +125,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projId: projectProvider
                                               .currentProject['id'],

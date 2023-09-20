@@ -129,7 +129,7 @@ class MyIssuesProvider extends ChangeNotifier {
             "\$SLUG",
             ref!
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug),
         hasBody: false,
         httpMethod: HttpMethod.get,
@@ -201,7 +201,7 @@ class MyIssuesProvider extends ChangeNotifier {
     // notifyListeners();
     var slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     try {
@@ -229,7 +229,7 @@ class MyIssuesProvider extends ChangeNotifier {
   }) async {
     var slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     myIssuesFilterState = StateEnum.loading;
@@ -756,7 +756,7 @@ class MyIssuesProvider extends ChangeNotifier {
                   "\$SLUG",
                   ref!
                       .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
+                      .selectedWorkspace
                       .workspaceSlug)
               .replaceAll('\$PROJECTID', issue['project'])
               .replaceAll('\$ISSUEID', issue['id']),
@@ -818,7 +818,7 @@ class MyIssuesProvider extends ChangeNotifier {
             "\$SLUG",
             ref!
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug),
         hasBody: true,
         data: {

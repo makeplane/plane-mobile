@@ -628,11 +628,11 @@ class IssuesProvider extends ChangeNotifier {
                   ? {}
                   : {
                       'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace!.workspaceId,
+                          workspaceProvider.selectedWorkspace.workspaceId,
                       'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
                       'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace!.workspaceName,
+                          workspaceProvider.selectedWorkspace.workspaceName,
                       'PROJECT_ID': projectProvider.projectDetailModel!.id,
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'LABEL_ID': response.data['id']
@@ -787,11 +787,9 @@ class IssuesProvider extends ChangeNotifier {
       postHogService(
           eventName: 'ISSUE_CREATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'PROJECT_ID': projID,
             'PROJECT_NAME': ref
                 .read(ProviderList.projectProvider)
@@ -805,7 +803,7 @@ class IssuesProvider extends ChangeNotifier {
         await ref.read(ProviderList.modulesProvider).createModuleIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: ref.read(ProviderList.projectProvider).currentProject["id"],
           issues: [response.data['id']],
@@ -819,7 +817,7 @@ class IssuesProvider extends ChangeNotifier {
         filterIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: ref.read(ProviderList.projectProvider).currentProject["id"],
           issueCategory: IssueCategory.moduleIssues,
@@ -829,7 +827,7 @@ class IssuesProvider extends ChangeNotifier {
         await ref.read(ProviderList.cyclesProvider).createCycleIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projId: ref.read(ProviderList.projectProvider).currentProject["id"],
           issues: [response.data['id']],
@@ -842,7 +840,7 @@ class IssuesProvider extends ChangeNotifier {
         filterIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: projID,
           issueCategory: IssueCategory.cycleIssues,
@@ -970,7 +968,7 @@ class IssuesProvider extends ChangeNotifier {
             "\$SLUG",
             ref!
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug)
         .replaceAll('\$PROJECTID',
             ref!.read(ProviderList.projectProvider).currentProject['id']));
@@ -982,7 +980,7 @@ class IssuesProvider extends ChangeNotifier {
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
@@ -998,7 +996,7 @@ class IssuesProvider extends ChangeNotifier {
                     "\$SLUG",
                     ref!
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug)
                 .replaceAll(
                     '\$PROJECTID',
@@ -1175,7 +1173,7 @@ class IssuesProvider extends ChangeNotifier {
                     "\$SLUG",
                     ref!
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug)
                 .replaceAll(
                     '\$PROJECTID',
@@ -1232,14 +1230,14 @@ class IssuesProvider extends ChangeNotifier {
     //       .toList();
     // }
     try {
-       await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectViews
             .replaceAll(
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
@@ -1313,7 +1311,7 @@ class IssuesProvider extends ChangeNotifier {
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),

@@ -140,7 +140,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                               pageId: pageProvider.pages[pageProvider
                                   .selectedFilter]![widget.index]['id'],
                               slug: workspaceProvider
-                                  .selectedWorkspace!.workspaceSlug,
+                                  .selectedWorkspace.workspaceSlug,
                               projectId: projectProvider.currentProject['id'],
                               data: {
                                 "access": pageProvider.pages[pageProvider
@@ -187,7 +187,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 pageId: pageProvider.pages[pageProvider
                                     .selectedFilter]![widget.index]['id'],
                                 slug: workspaceProvider
-                                    .selectedWorkspace!.workspaceSlug,
+                                    .selectedWorkspace.workspaceSlug,
                                 projectId: projectProvider.currentProject['id'],
                                 shouldItBeFavorite: false);
                           },
@@ -207,7 +207,7 @@ class _PageCardState extends ConsumerState<PageCard> {
                                 pageId: pageProvider.pages[pageProvider
                                     .selectedFilter]![widget.index]['id'],
                                 slug: workspaceProvider
-                                    .selectedWorkspace!.workspaceSlug,
+                                    .selectedWorkspace.workspaceSlug,
                                 projectId: projectProvider.currentProject['id'],
                                 shouldItBeFavorite: true);
                           },

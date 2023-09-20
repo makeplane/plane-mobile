@@ -120,11 +120,11 @@ class PageProvider with ChangeNotifier {
                   ? {}
                   : {
                       'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace!.workspaceId,
+                          workspaceProvider.selectedWorkspace.workspaceId,
                       'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace!.workspaceName,
+                          workspaceProvider.selectedWorkspace.workspaceName,
                       'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
                       'PROJECT_ID': projectProvider.projectDetailModel!.id,
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'PAGE_ID': pageID,
@@ -254,11 +254,9 @@ class PageProvider with ChangeNotifier {
       postHogService(
           eventName: 'PAGE_UPDATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': projectProvider.projectDetailModel!.id,
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'PAGE_ID': res.data['id']
@@ -353,11 +351,9 @@ class PageProvider with ChangeNotifier {
       postHogService(
           eventName: 'PAGE_CREATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': projectProvider.projectDetailModel!.id,
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'PAGE_ID': response.data['id']

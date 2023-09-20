@@ -58,7 +58,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
         prov.getGlobalData(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           input: input.text.trim(),
         );
@@ -852,7 +852,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 .getMyIssues(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                 );
                           },

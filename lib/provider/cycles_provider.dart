@@ -231,11 +231,11 @@ class CyclesProvider with ChangeNotifier {
                   ? {}
                   : {
                       'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace!.workspaceId,
+                          workspaceProvider.selectedWorkspace.workspaceId,
                       'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
                       'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace!.workspaceName,
+                          workspaceProvider.selectedWorkspace.workspaceName,
                       'PROJECT_ID': projectProvider.projectDetailModel!.id,
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'CYCLE_ID': response.data['id']
@@ -834,7 +834,7 @@ class CyclesProvider with ChangeNotifier {
 
       cyclesIssueState = StateEnum.success;
       notifyListeners();
-    }on DioException catch (e) {
+    } on DioException catch (e) {
       log(e.toString());
       cyclesIssueState = StateEnum.error;
       notifyListeners();
@@ -864,7 +864,7 @@ class CyclesProvider with ChangeNotifier {
               '\$SLUG',
               ref!
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
             )
             .replaceAll(

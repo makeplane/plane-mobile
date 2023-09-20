@@ -474,28 +474,43 @@ class CyclesProvider with ChangeNotifier {
 
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
-              ? Icon(Icons.error_outline,
+              ? Icon(
+                  Icons.error_outline,
                   size: 18,
-                  color: themeProvider.themeManager.placeholderTextColor)
+                  color: Color(int.parse("FF${"#EF4444".replaceAll('#', '')}",
+                      radix: 16)),
+                )
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.themeManager.placeholderTextColor,
                       size: 18,
+                      color: Color(int.parse(
+                          "FF${"#F59E0B".replaceAll('#', '')}",
+                          radix: 16)),
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
+                          color: Color(int.parse(
+                              "FF${"#F59E0B".replaceAll('#', '')}",
+                              radix: 16)),
                           size: 18,
                         )
-                      : Icon(
-                          Icons.signal_cellular_alt_1_bar,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                          size: 18,
-                        )
+                      : element.title == 'Low'
+                          ? Icon(
+                              Icons.signal_cellular_alt_1_bar,
+                              color: Color(int.parse(
+                                  "FF${"#22C55E".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.do_disturb_alt_outlined,
+                              color: Color(int.parse(
+                                  "FF${"#A3A3A3".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
           : issues.groupBY == GroupBY.createdBY ||
                   issues.groupBY == GroupBY.assignees
               ? Container(

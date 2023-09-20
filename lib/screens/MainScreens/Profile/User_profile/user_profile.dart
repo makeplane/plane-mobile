@@ -15,7 +15,10 @@ class UserProfileScreen extends ConsumerStatefulWidget {
   final String userID;
   final String userName;
   const UserProfileScreen(
-      {required this.index, required this.userID, required this.userName, super.key});
+      {required this.index,
+      required this.userID,
+      required this.userName,
+      super.key});
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -160,8 +163,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                   OverViewScreen(
                     userId: widget.userID,
                   ),
-                  UserAssignedIssuesPage(userName: widget.userName,),
-                  CreatedIssuesPage(userName: widget.userName,),
+                  UserAssignedIssuesPage(
+                    userName: widget.userName,
+                  ),
+                  CreatedIssuesPage(
+                    userName: widget.userName,
+                  ),
                   SubscribesIssuesPage(userName: widget.userName)
                 ],
               ),

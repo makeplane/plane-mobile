@@ -45,7 +45,7 @@ class ProjectsProvider extends ChangeNotifier {
   TextEditingController lead = TextEditingController();
   TextEditingController assignee = TextEditingController();
   int memberCount = 0;
-
+  List<int> loadingProjectIndex = [];
   List features = [
     {'title': 'Issues', 'width': 60, 'show': true},
     {'title': 'Cycles', 'width': 60, 'show': true},
@@ -68,6 +68,7 @@ class ProjectsProvider extends ChangeNotifier {
     leaveProjectState = StateEnum.empty;
     unsplashImages = [];
     currentProject = {};
+    loadingProjectIndex = [];
 
     coverUrl =
         "https://app.plane.so/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1575116464504-9e7652fddcb3%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwyODUyNTV8MHwxfHNlYXJjaHwxOHx8cGxhbmV8ZW58MHx8fHwxNjgxNDY4NTY5%26ixlib%3Drb-4.0.3%26q%3D80%26w%3D1080&w=1920&q=75";
@@ -255,6 +256,7 @@ class ProjectsProvider extends ChangeNotifier {
       required String projectID,
       required int index}) async {
     projectState = StateEnum.loading;
+    loadingProjectIndex.add(index);
     notifyListeners();
     try {
       log(APIs.favouriteProjects.replaceAll('\$SLUG', slug) + projectID);
@@ -281,11 +283,13 @@ class ProjectsProvider extends ChangeNotifier {
       }
       await getProjects(slug: slug, loading: false);
       projectState = StateEnum.success;
+      loadingProjectIndex.remove(index);
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
       log("ERROR=${e.response}");
       projectState = StateEnum.error;
+      loadingProjectIndex.remove(index);
       notifyListeners();
     }
   }

@@ -3,10 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/select_month_sheet.dart';
 import 'package:plane/utils/string_manager.dart';
+import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -795,8 +795,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               : Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Spacer(),
                         Container(
                           height: 15,
                           width: 15,
@@ -825,7 +825,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   isVisible: true,
                                   width: 3,
                                   height: 3,
-                                  borderWidth: 5),
+                                  borderWidth: 3),
                               color: widgetPrimaryColor,
                               dataSource: data,
                               xValueMapper: (datum, index) => datum.week,
@@ -908,11 +908,15 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             },
             child: Row(
               children: [
-                workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
+                !workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
                     ? Container()
                     : workspaceProvider.selectedWorkspace.workspaceLogo != ''
-                        ? SvgPicture.network(
-                            workspaceProvider.selectedWorkspace.workspaceLogo)
+                        ? WorkspaceLogoForDiffrentExtensions(
+                            imageUrl: workspaceProvider
+                                .selectedWorkspace!.workspaceLogo,
+                            themeProvider: themeProvider,
+                            workspaceName: workspaceProvider
+                                .selectedWorkspace!.workspaceName)
                         : Container(
                             width: 35,
                             height: 35,
@@ -948,27 +952,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => const WhatsNewSheet(),
-              //       ),
-              //     );
-              //   },
-              //   child: CircleAvatar(
-              //     backgroundColor: themeProvider
-              //         .themeManager.primaryBackgroundSelectedColour,
-              //     radius: 20,
-              //     child: Icon(
-              //       size: 20,
-              //       Icons.info_outline,
-              //       color: themeProvider.themeManager.secondaryTextColor,
-              //     ),
-              //   ),
-              // ),
-
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {

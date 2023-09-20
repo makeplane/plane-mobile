@@ -273,8 +273,8 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                                           ),
                                                                           TextSpan(
                                                                             text: widget.data[index]['data']['issue_activity']['field'] == 'description'
-                                                                                ? ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '').toString().replaceAll('to', '')} '
-                                                                                : ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '')} ',
+                                                                                ? ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '').toString().replaceAll('to', '')}'
+                                                                                : ' ${widget.data[index]['title'].replaceAll('${widget.data[index]['triggered_by_details']['email']}', '').replaceAll('${widget.data[index]['data']['issue_activity']['new_value']}', '')}',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: themeProvider.themeManager.primaryTextColor,

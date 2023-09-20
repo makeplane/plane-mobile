@@ -8,6 +8,7 @@ import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.
 import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/empty.dart';
@@ -259,7 +260,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   Widget unstarredProjects(
       ProjectsProvider projectProvider, ThemeProvider themeProvider) {
     return LoadingWidget(
-      loading: projectProvider.projectState == StateEnum.loading,
+      loading: false, //projectProvider.projectState == StateEnum.loading,
       widgetClass: checkUnstarredProject(projects: projectProvider.projects)
           ? RefreshIndicator(
               color: themeProvider.themeManager.primaryColour,
@@ -431,31 +432,58 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                             ],
                           ),
                           //clickable star icon
-                          trailing: IconButton(
-                            onPressed: () {
-                              projectProvider.favouriteProjects(
-                                  index: index,
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .workspaces
-                                      .where((element) =>
-                                          element['id'] ==
-                                          ref
-                                              .read(
-                                                  ProviderList.profileProvider)
-                                              .userProfile
-                                              .lastWorkspaceId)
-                                      .first['slug'],
-                                  method: HttpMethod.post,
-                                  projectID: projectProvider.projects[index]
-                                      ["id"]);
-                            },
-                            icon: Icon(
-                              Icons.star_border,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor,
-                            ),
-                          ),
+                          trailing: Container(
+                              margin: const EdgeInsets.only(right: 15),
+                              height: 25,
+                              width: 25,
+                              child: Center(
+                                child: projectProvider.loadingProjectIndex
+                                        .contains(index)
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(2),
+                                        child: CircularProgressIndicator(
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () async {
+                                          await projectProvider.favouriteProjects(
+                                              index: index,
+                                              slug: ref
+                                                  .read(ProviderList
+                                                      .workspaceProvider)
+                                                  .workspaces
+                                                  .where((element) =>
+                                                      element['id'] ==
+                                                      ref
+                                                          .read(ProviderList
+                                                              .profileProvider)
+                                                          .userProfile
+                                                          .lastWorkspaceId)
+                                                  .first['slug'],
+                                              method: HttpMethod.post,
+                                              projectID: projectProvider
+                                                  .projects[index]["id"]);
+
+                                          if (projectProvider.projectState !=
+                                              StateEnum.success) {
+                                            // ignore: use_build_context_synchronously
+                                            CustomToast.showToast(context,
+                                                message: "Something went wrong",
+                                                toastType: ToastType.failure);
+                                          }
+                                        },
+                                        icon: Icon(
+                                          Icons.star_border,
+                                          size: 25,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
+                                        ),
+                                      ),
+                              )),
                         );
                 },
               ),
@@ -467,7 +495,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   Widget starredProjects(
       ProjectsProvider projectProvider, ThemeProvider themeProvider) {
     return LoadingWidget(
-      loading: projectProvider.projectState == StateEnum.loading,
+      loading: false, //projectProvider.projectState == StateEnum.loading,
       widgetClass: checkStarredProjects(projects: projectProvider.projects)
           ? RefreshIndicator(
               color: themeProvider.themeManager.primaryColour,
@@ -626,28 +654,55 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                           ),
                           //clickable star icon
 
-                          trailing: IconButton(
-                            onPressed: () {
-                              projectProvider.favouriteProjects(
-                                  index: index,
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .workspaces
-                                      .where((element) =>
-                                          element['id'] ==
-                                          ref
-                                              .read(
-                                                  ProviderList.profileProvider)
-                                              .userProfile
-                                              .lastWorkspaceId)
-                                      .first['slug'],
-                                  method: HttpMethod.delete,
-                                  projectID: projectProvider.projects[index]
-                                      ["id"]);
-                            },
-                            icon: Icon(Icons.star,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor),
+                          trailing: Container(
+                            height: 25,
+                            width: 25,
+                            margin: const EdgeInsets.only(right: 15),
+                            child: Center(
+                              child: projectProvider.loadingProjectIndex
+                                      .contains(index)
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: CircularProgressIndicator(
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : IconButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: () async {
+                                        await projectProvider.favouriteProjects(
+                                            index: index,
+                                            slug: ref
+                                                .read(ProviderList
+                                                    .workspaceProvider)
+                                                .workspaces
+                                                .where((element) =>
+                                                    element['id'] ==
+                                                    ref
+                                                        .read(ProviderList
+                                                            .profileProvider)
+                                                        .userProfile
+                                                        .lastWorkspaceId)
+                                                .first['slug'],
+                                            method: HttpMethod.delete,
+                                            projectID: projectProvider
+                                                .projects[index]["id"]);
+                                        if (projectProvider.projectState !=
+                                            StateEnum.success) {
+                                          // ignore: use_build_context_synchronously
+                                          CustomToast.showToast(context,
+                                              message: "Something went wrong",
+                                              toastType: ToastType.failure);
+                                        }
+                                      },
+                                      icon: Icon(Icons.star,
+                                          size: 25,
+                                          color: themeProvider
+                                              .themeManager.tertiaryTextColor),
+                                    ),
+                            ),
                           ),
                         );
                 },

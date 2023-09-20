@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:plane/bottom_sheets/select_workspace.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -21,6 +20,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -476,16 +476,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     ? Container(
                                         margin: const EdgeInsets.all(5),
                                         child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: SvgPicture.network(
-                                                workspaceProvider
-                                                    .selectedWorkspace
-                                                    .workspaceLogo)),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: SizedBox(
+                                            width: 25,
+                                            height: 25,
+                                            child:
+                                                WorkspaceLogoForDiffrentExtensions(
+                                                    imageUrl: workspaceProvider
+                                                        .selectedWorkspace!
+                                                        .workspaceLogo,
+                                                    themeProvider:
+                                                        themeProvider,
+                                                    workspaceName:
+                                                        workspaceProvider
+                                                            .selectedWorkspace!
+                                                            .workspaceName
+                                                            .toString()),
+                                          ),
+                                        ),
                                       )
                                     : Container(
                                         width: 25,
-                                        height: 35,
+                                        height: 25,
                                         margin: const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           borderRadius:

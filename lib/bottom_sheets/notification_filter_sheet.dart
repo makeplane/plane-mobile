@@ -22,7 +22,7 @@ class _NotificationFilterSheetState
     var options = [
       {
         'icon': Icons.menu,
-        'text': 'Show Unraed',
+        'text': 'Show Unread',
         'onTap': () {
           Navigator.pop(context);
           Navigator.push(
@@ -45,8 +45,8 @@ class _NotificationFilterSheetState
             context,
             MaterialPageRoute(
               builder: (context) => const ExtraNotifications(
-                title: 'Unread',
-                type: 'unread',
+                title: 'Snoozed',
+                type: 'snoozed',
               ),
             ),
           );
@@ -70,7 +70,7 @@ class _NotificationFilterSheetState
       }
     ];
     return Container(
-      padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+      padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
       child: Column(
         children: [
           Row(
@@ -101,7 +101,7 @@ class _NotificationFilterSheetState
             itemBuilder: (context, index) => InkWell(
               onTap: options[index]['onTap'] as void Function(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(
                   children: [
                     Icon(

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
 import '../mixins/widget_state_mixin.dart';
 
@@ -171,15 +171,13 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                                       color: Colors.white,
                                       overrride: true,
                                     ))
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: SvgPicture.network(
-                                      prov.workspaces[index]['logo'].toString(),
-                                      height: 35,
-                                      width: 35,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
+                                : WorkspaceLogoForDiffrentExtensions(
+                                    imageUrl: prov.workspaces[index]['logo']
+                                        .toString(),
+                                    themeProvider: themeProvider,
+                                    workspaceName: prov.workspaces[index]
+                                            ['name']
+                                        .toString()),
                             const SizedBox(
                               width: 10,
                             ),

@@ -13,6 +13,7 @@ import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
 class WorkspaceGeneral extends ConsumerStatefulWidget {
   const WorkspaceGeneral({super.key});
@@ -132,12 +133,12 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                   )
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
-                                    child: Image.network(
-                                      height: 45,
-                                      width: 45,
-                                      workspaceProvider.tempLogo,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    child: WorkspaceLogoForDiffrentExtensions(
+                                        imageUrl: workspaceProvider.tempLogo,
+                                        themeProvider: themeProvider,
+                                        workspaceName: workspaceProvider
+                                            .selectedWorkspace!.workspaceName
+                                            .toString()),
                                   ),
                           ),
                         ),

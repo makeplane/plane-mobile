@@ -108,7 +108,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
           issuesProvider.getIssues(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
             projID: projectProvider.currentProject['id'],
           );
@@ -129,7 +129,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
           issuesProvider.filterIssues(
               slug: ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
               projID: projectProvider.currentProject['id']);
         }
@@ -143,7 +143,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 issuesProvider.getIssues(
                   slug: ref
                       .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
+                      .selectedWorkspace
                       .workspaceSlug,
                   projID: projectProvider.currentProject['id'],
                 );
@@ -165,7 +165,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 issuesProvider.filterIssues(
                     slug: ref
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug,
                     projID: projectProvider.currentProject['id']);
               }
@@ -434,7 +434,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                             context: context,
                             builder: (ctx) {
                               return ViewsSheet(
-                                 projectView: issuesProvider.issues.projectView,
+                                projectView: issuesProvider.issues.projectView,
                                 fromView: true,
                                 issueCategory: IssueCategory.views,
                               );

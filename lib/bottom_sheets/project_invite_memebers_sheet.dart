@@ -308,7 +308,7 @@ class _ProjectInviteMembersSheetState
                           await projectProvider.inviteToProject(
                             context: mainBuildContext,
                             slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             projId: projectProvider.currentProject['id'],
                             data: {
                               "members": [
@@ -326,11 +326,11 @@ class _ProjectInviteMembersSheetState
                                 eventName: 'PROJECT_MEMBER_INVITE',
                                 properties: {
                                   'WORKSPACE_ID': workspaceProvider
-                                      .selectedWorkspace!.workspaceId,
+                                      .selectedWorkspace.workspaceId,
                                   'WORKSPACE_SLUG': workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
+                                      .selectedWorkspace.workspaceSlug,
                                   'WORKSPACE_NAME': workspaceProvider
-                                      .selectedWorkspace!.workspaceName,
+                                      .selectedWorkspace.workspaceName,
                                   'PROJECT_ID':
                                       projectProvider.projectDetailModel!.id,
                                   'PROJECT_NAME':

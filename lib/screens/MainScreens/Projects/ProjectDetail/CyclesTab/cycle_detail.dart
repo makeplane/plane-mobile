@@ -34,7 +34,7 @@ import 'package:plane/widgets/empty.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../../bottom_sheets/add_link_sheet.dart';
-import '../../../../../bottom_sheets/select cycle.dart';
+import '../../../../../bottom_sheets/select_cycle_sheet.dart';
 
 class CycleDetail extends ConsumerStatefulWidget {
   const CycleDetail({
@@ -97,7 +97,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         moduleId: widget.moduleId,
         slug: ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug,
         issueCategory: widget.fromModule
             ? IssueCategory.moduleIssues
@@ -111,7 +111,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Future getModuleData() async {
     var modulesProvider = ref.read(ProviderList.modulesProvider);
     var issuesProvider = ref.read(ProviderList.issuesProvider);
-    
+
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
         keepPage: true,
@@ -121,7 +121,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .getModuleDetails(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
             projId: ref.read(ProviderList.projectProvider).currentProject['id'],
             moduleId: widget.moduleId!,
@@ -136,7 +136,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .filterModuleIssues(
       slug: ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug,
       projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
     )
@@ -150,7 +150,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Future getCycleData() async {
     var cyclesProvider = ref.read(ProviderList.cyclesProvider);
     var issuesProvider = ref.read(ProviderList.issuesProvider);
-    cyclesProvider.cyclesDetailState =StateEnum.loading;
+    cyclesProvider.cyclesDetailState = StateEnum.loading;
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
         keepPage: true,
@@ -160,7 +160,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .cycleDetailsCrud(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
             projectId: widget.projId ??
                 ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -179,7 +179,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       cycleID: widget.cycleId!,
       slug: ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug,
       projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
     )
@@ -215,7 +215,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.getIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: projectProvider.currentProject['id'],
         );
@@ -236,13 +236,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.filterIssues(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
             projID: projectProvider.currentProject['id']);
         return true;
       },
       child: Scaffold(
-        floatingActionButton: isLoading&& !widget.fromModule &&
+        floatingActionButton: isLoading &&
+                !widget.fromModule &&
                 DateTime.parse(cyclesProvider.cyclesDetailsData['end_date'])
                     .isBefore(DateTime.now()) &&
                 (cyclesProvider.cyclesDetailsData['backlog_issues'] != 0 &&
@@ -290,7 +291,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             issueProvider.getIssues(
               slug: ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
               projID: projectProvider.currentProject['id'],
             );
@@ -311,7 +312,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             issueProvider.filterIssues(
                 slug: ref
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug,
                 projID: projectProvider.currentProject['id']);
             Navigator.pop(context);
@@ -1444,7 +1445,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           : await cyclesProvider.dateCheck(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projectId: ref
                                   .read(ProviderList.projectProvider)
@@ -1481,7 +1482,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         disableLoading: true,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .read(ProviderList.projectProvider)
@@ -1496,7 +1497,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       disableLoading: true,
                       slug: ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projectId: ref
                           .read(ProviderList.projectProvider)
@@ -1587,7 +1588,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         : await cyclesProvider.dateCheck(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -1609,7 +1610,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             disableLoading: true,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projId: ref
                                 .read(ProviderList.projectProvider)
@@ -1626,7 +1627,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           disableLoading: true,
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projectId: ref
                               .read(ProviderList.projectProvider)
@@ -1883,7 +1884,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               await modulesProvider.filterModuleIssues(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projectId: ref
                                     .read(ProviderList.projectProvider)
@@ -1895,7 +1896,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               await cyclesProviderRead.filterCycleIssues(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projectId: ref
                                     .read(ProviderList.projectProvider)
@@ -2171,7 +2172,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             await modulesProvider.filterModuleIssues(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projectId: ref
                                   .read(ProviderList.projectProvider)
@@ -2183,7 +2184,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           await cyclesProviderRead.filterCycleIssues(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)

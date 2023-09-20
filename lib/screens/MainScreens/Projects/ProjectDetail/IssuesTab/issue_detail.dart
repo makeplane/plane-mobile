@@ -103,7 +103,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     workspaceSlug = widget.workspaceSlug ??
         ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug;
     projID = widget.projID ??
         ref.read(ProviderList.projectProvider).currentProject['id'];

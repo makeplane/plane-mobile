@@ -162,10 +162,13 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
 
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => UserProfileScreen(index: index, userID: workspaceProvider.workspaceMembers[index]['member']
-                        ["id"],
-                        userName: workspaceProvider.workspaceMembers[index]['member']['display_name'],)
-                ),
+                    builder: (_) => UserProfileScreen(
+                          index: index,
+                          userID: workspaceProvider.workspaceMembers[index]
+                              ['member']["id"],
+                          userName: workspaceProvider.workspaceMembers[index]
+                              ['member']['display_name'],
+                        )),
               );
             },
             leading: workspaceProvider.workspaceMembers[index]['member']
@@ -254,7 +257,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                       context: context,
                       builder: (BuildContext context) => DeleteOrLeaveWorkpace(
                         workspaceName:
-                            workspaceProvider.selectedWorkspace!.workspaceName,
+                            workspaceProvider.selectedWorkspace.workspaceName,
                         role: getRole(),
                       ),
                     );
@@ -559,12 +562,12 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       builder: (ctx) {
                         return DeleteLeaveProjectSheet(
                           data: {
-                            'WORKSPACE_ID': workspaceProvider
-                                .selectedWorkspace!.workspaceId,
+                            'WORKSPACE_ID':
+                                workspaceProvider.selectedWorkspace.workspaceId,
                             'WORKSPACE_NAME': workspaceProvider
-                                .selectedWorkspace!.workspaceName,
+                                .selectedWorkspace.workspaceName,
                             'WORKSPACE_SLUG': workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             'PROJECT_ID':
                                 projectsProvider.projectDetailModel!.id,
                             'PROJECT_NAME':

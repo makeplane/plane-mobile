@@ -360,13 +360,13 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                             .labels[index]["id"]
                                                     ? Container(
                                                         margin: const EdgeInsets
-                                                            .only(
+                                                                .only(
                                                             bottom: 15,
                                                             left: 15,
                                                             right: 15),
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10,
                                                                 top: 5,
                                                                 bottom: 5),
@@ -467,7 +467,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                 } else if (val ==
                                                                     'CONVERT') {
                                                                   issuesProvider.issueLabels(
-                                                                      slug: ref.watch(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug,
+                                                                      slug: ref.watch(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug,
                                                                       projID: ref.watch(ProviderList.projectProvider).currentProject['id'],
                                                                       method: CRUD.update,
                                                                       data: {
@@ -705,7 +705,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         slug: ref
                                             .watch(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projID: ref
                                             .watch(ProviderList.projectProvider)

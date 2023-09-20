@@ -31,7 +31,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
     issueProvider.filterIssues(
       slug: ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug,
       projID: ref.read(ProviderList.projectProvider).currentProject['id'],
       isArchived: true,
@@ -57,7 +57,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
         issueProvider.filterIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: ref.read(ProviderList.projectProvider).currentProject['id'],
           isArchived: false,
@@ -73,7 +73,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
             issueProvider.filterIssues(
               slug: ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
               projID:
                   ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -96,7 +96,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                   projectProvider.currentProject['id'],
                   ref
                       .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
+                      .selectedWorkspace
                       .workspaceSlug)
               : Container(
                   color: themeProvider

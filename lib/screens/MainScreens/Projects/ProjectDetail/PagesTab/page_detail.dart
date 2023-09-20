@@ -52,14 +52,14 @@ class _PageDetailState extends ConsumerState<PageDetail> {
         pageID: prov.pages[prov.selectedFilter]![widget.index]["id"],
         slug: ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug,
         projectId: ref.read(ProviderList.projectProvider).currentProject["id"],
         ref: ref);
     ref.read(ProviderList.issuesProvider).getLabels(
         slug: ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug,
         projID: ref.read(ProviderList.projectProvider).currentProject["id"]);
     for (var element in (prov.pages[prov.selectedFilter]![widget.index]
@@ -84,7 +84,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var page = pageProvider.pages[pageProvider.selectedFilter]![widget.index];
-    log('https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace!.workspaceSlug}/projects/${page['project']}/pages/${page['page']}/blocks');
+    log('https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace.workspaceSlug}/projects/${page['project']}/pages/${page['page']}/blocks');
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -100,7 +100,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               ['name'] = titleController.text;
           pageProvider.editPage(
               context: context,
-              slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
+              slug: workspaceProvider.selectedWorkspace.workspaceSlug,
               projectId: projectProvider.currentProject['id'],
               pageId: pageProvider
                   .pages[pageProvider.selectedFilter]![widget.index]['id'],
@@ -132,7 +132,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
               ['name'] = titleController.text;
           pageProvider.editPage(
               context: context,
-              slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
+              slug: workspaceProvider.selectedWorkspace.workspaceSlug,
               projectId: projectProvider.currentProject['id'],
               pageId: pageProvider
                   .pages[pageProvider.selectedFilter]![widget.index]['id'],
@@ -252,7 +252,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                     pageProvider.editPage(
                                         context: context,
                                         slug: workspaceProvider
-                                            .selectedWorkspace!.workspaceSlug,
+                                            .selectedWorkspace.workspaceSlug,
                                         projectId: projectProvider
                                             .currentProject['id'],
                                         pageId: pageProvider.pages[pageProvider
@@ -306,7 +306,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                           .selectedFilter]![
                                                   widget.index]['id'],
                                               slug: workspaceProvider
-                                                  .selectedWorkspace!
+                                                  .selectedWorkspace
                                                   .workspaceSlug,
                                               projectId: projectProvider
                                                   .currentProject['id'],
@@ -378,7 +378,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                         .selectedFilter]![
                                                 widget.index]['id'],
                                             slug: workspaceProvider
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projectId: projectProvider
                                                 .currentProject['id'],
@@ -404,7 +404,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                                         .selectedFilter]![
                                                 widget.index]['id'],
                                             slug: workspaceProvider
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projectId: projectProvider
                                                 .currentProject['id'],
@@ -624,7 +624,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                               .editPage(
                                   context: context,
                                   slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
+                                      .selectedWorkspace.workspaceSlug,
                                   projectId:
                                       projectProvider.currentProject['id'],
                                   pageId: pageProvider.pages[pageProvider
@@ -796,7 +796,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                           ),
                           initialUrlRequest: URLRequest(
                               url: Uri.parse(
-                                  'https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace!.workspaceSlug}/projects/${page['project']}/pages/${page['id']}/blocks')),
+                                  'https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace.workspaceSlug}/projects/${page['project']}/pages/${page['id']}/blocks')),
                         ),
                         isBlocksLoading
                             ? Container(

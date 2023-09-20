@@ -75,7 +75,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                         .currentProject['id'];
                     String worspaceSlug = ref
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug;
 
                     if (widget.issueCategory == IssueCategory.myIssues) {

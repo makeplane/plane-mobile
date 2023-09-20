@@ -44,7 +44,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
                 '\$SLUG',
                 ref
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref.read(ProviderList.projectProvider).currentProject["id"]),
@@ -74,7 +74,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
                   '\$SLUG',
                   ref
                       .read(ProviderList.workspaceProvider)
-                      .selectedWorkspace!
+                      .selectedWorkspace
                       .workspaceSlug)
               .replaceAll('\$PROJECTID',
                   ref.read(ProviderList.projectProvider).currentProject["id"]),
@@ -91,11 +91,9 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       postHogService(
           eventName: 'VIEW_CREATE',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': projectProvider.projectDetailModel!.id,
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'VIEW_ID': response.data['id']
@@ -117,7 +115,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
               '\$SLUG',
               ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug)
           .replaceAll('\$PROJECTID',
               ref.read(ProviderList.projectProvider).currentProject["id"]);
@@ -152,12 +150,12 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     state = state.copyWith(viewsState: StateEnum.loading);
 
     log(data.toString());
-    log("${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/");
+    log("${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/");
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
-            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
         hasBody: true,
         httpMethod: HttpMethod.patch,
         data: data,
@@ -186,7 +184,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       await DioConfig().dioServe(
         hasAuth: true,
         url:
-            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
         hasBody: false,
         httpMethod: HttpMethod.delete,
       );
@@ -208,7 +206,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       var response = await DioConfig().dioServe(
         hasAuth: true,
         url:
-            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace!.workspaceSlug).replaceAll('\$PROJECTID', projId)}$id/",
+            "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', projId)}$id/",
         hasBody: false,
         httpMethod: HttpMethod.get,
       );

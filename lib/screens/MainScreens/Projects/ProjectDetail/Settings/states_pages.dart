@@ -498,7 +498,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       await projectProvider.stateCrud(
                           slug: ref
                               .watch(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projId: ref
                               .watch(ProviderList.projectProvider)
@@ -516,7 +516,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       await issuesProvider.getStates(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projID: ref
                             .watch(ProviderList.projectProvider)
@@ -526,7 +526,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       issuesProvider.filterIssues(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projID: ref
                             .watch(ProviderList.projectProvider)

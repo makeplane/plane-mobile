@@ -16,8 +16,8 @@ import 'package:plane/utils/global_functions.dart';
 import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
-  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
-  final Ref ref;
+  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider>? this.ref);
+  final Ref? ref;
   var projects = [];
   var starredProjects = [];
   var joinprojectState = StateEnum.empty;
@@ -97,7 +97,7 @@ class ProjectsProvider extends ChangeNotifier {
     }
     String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
@@ -350,11 +350,9 @@ class ProjectsProvider extends ChangeNotifier {
       postHogService(
           eventName: 'CREATE_PROJECT',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
@@ -468,11 +466,9 @@ class ProjectsProvider extends ChangeNotifier {
       postHogService(
           eventName: 'UPDATE_PROJECT',
           properties: {
-            'WORKSPACE_ID': workspaceProvider.selectedWorkspace!.workspaceId,
-            'WORKSPACE_NAME':
-                workspaceProvider.selectedWorkspace!.workspaceName,
-            'WORKSPACE_SLUG':
-                workspaceProvider.selectedWorkspace!.workspaceSlug,
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
@@ -627,11 +623,11 @@ class ProjectsProvider extends ChangeNotifier {
                   ? {}
                   : {
                       'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace!.workspaceId,
+                          workspaceProvider.selectedWorkspace.workspaceId,
                       'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace!.workspaceSlug,
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
                       'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace!.workspaceName,
+                          workspaceProvider.selectedWorkspace.workspaceName,
                       'PROJECT_ID': projectProvider.projectDetailModel!.id,
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'STATE_ID':

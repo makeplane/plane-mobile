@@ -133,7 +133,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                 .upDateIssue(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     refs: ref,
                                     projID: ref
@@ -159,7 +159,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                   .getIssueDetails(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
+                                          .selectedWorkspace
                                           .workspaceSlug,
                                       projID: ref
                                           .read(ProviderList.projectProvider)
@@ -172,7 +172,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projID: ref
                                               .read(

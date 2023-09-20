@@ -40,7 +40,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
     ref.read(ProviderList.searchIssueProvider).getIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projectId: widget.createIssue
               ? ref
@@ -181,7 +181,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                 searchIssueProviderRead.getIssues(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projectId: ref
                                         .read(ProviderList.projectProvider)
@@ -237,7 +237,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                             slug: ref
                                                 .read(ProviderList
                                                     .workspaceProvider)
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projID: ref
                                                 .read(ProviderList
@@ -400,7 +400,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                 slug: ref
                                                     .watch(ProviderList
                                                         .workspaceProvider)
-                                                    .selectedWorkspace!
+                                                    .selectedWorkspace
                                                     .workspaceSlug,
                                                 projID: ref
                                                     .watch(ProviderList
@@ -416,7 +416,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                 slug: ref
                                                     .watch(ProviderList
                                                         .workspaceProvider)
-                                                    .selectedWorkspace!
+                                                    .selectedWorkspace
                                                     .workspaceSlug,
                                                 projectId: ref
                                                     .watch(ProviderList
@@ -427,7 +427,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                               slug: ref
                                                   .watch(ProviderList
                                                       .workspaceProvider)
-                                                  .selectedWorkspace!
+                                                  .selectedWorkspace
                                                   .workspaceSlug,
                                               projID: ref
                                                   .watch(ProviderList
@@ -447,7 +447,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                 slug: ref
                                                     .watch(ProviderList
                                                         .workspaceProvider)
-                                                    .selectedWorkspace!
+                                                    .selectedWorkspace
                                                     .workspaceSlug,
                                                 projId: ref
                                                     .watch(ProviderList
@@ -462,7 +462,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                 slug: ref
                                                     .read(ProviderList
                                                         .workspaceProvider)
-                                                    .selectedWorkspace!
+                                                    .selectedWorkspace
                                                     .workspaceSlug,
                                                 projectId: ref
                                                     .read(ProviderList
@@ -473,7 +473,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                               slug: ref
                                                   .read(ProviderList
                                                       .workspaceProvider)
-                                                  .selectedWorkspace!
+                                                  .selectedWorkspace
                                                   .workspaceSlug,
                                               projID: ref
                                                   .read(ProviderList
@@ -488,7 +488,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                             slug: ref
                                                 .watch(ProviderList
                                                     .workspaceProvider)
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projectId: ref
                                                 .watch(ProviderList
@@ -525,7 +525,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                           slug: ref
                                               .watch(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projID: ref
                                               .watch(

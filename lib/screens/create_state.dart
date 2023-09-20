@@ -406,7 +406,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             await issuesProvider.createState(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projID: ref
                                     .read(ProviderList.projectProvider)

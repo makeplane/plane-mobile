@@ -156,7 +156,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                 ontap: () async {
                   await pageProvider.editPage(
                       context: context,
-                      slug: workspaceProvider.selectedWorkspace!.workspaceSlug,
+                      slug: workspaceProvider.selectedWorkspace.workspaceSlug,
                       projectId: projectProvider.currentProject['id'],
                       pageId: pageProvider.pages[pageProvider.selectedFilter]![
                           widget.pageIndex]['id'],

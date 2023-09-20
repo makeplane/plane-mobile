@@ -313,7 +313,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                             log(data.toString());
 
                             await prov.getWorkspaces().then((value) async {
-                              log(prov.selectedWorkspace!.workspaceName
+                              log(prov.selectedWorkspace.workspaceName
                                   .toString());
 
                               prov.inviteToWorkspace(
@@ -339,8 +339,8 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                               ref
                                   .read(ProviderList.projectProvider)
                                   .getProjects(
-                                      slug: prov
-                                          .selectedWorkspace!.workspaceSlug);
+                                      slug:
+                                          prov.selectedWorkspace.workspaceSlug);
 
                               // ignore: use_build_context_synchronously
                               Navigator.pushAndRemoveUntil(
@@ -368,7 +368,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                             themeProvider.themeManager.placeholderTextColor,
                         ontap: () async {
                           await prov.getWorkspaces().then((value) async {
-                            log(prov.selectedWorkspace!.workspaceName
+                            log(prov.selectedWorkspace.workspaceName
                                 .toString());
 
                             await ref
@@ -386,7 +386,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                             });
 
                             ref.read(ProviderList.projectProvider).getProjects(
-                                slug: prov.selectedWorkspace!.workspaceSlug);
+                                slug: prov.selectedWorkspace.workspaceSlug);
 
                             // ignore: use_build_context_synchronously
                             Navigator.pushAndRemoveUntil(

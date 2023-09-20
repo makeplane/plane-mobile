@@ -113,7 +113,7 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                                 projectsProvider.updateProject(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projId: ref
                                         .read(ProviderList.projectProvider)
@@ -372,7 +372,7 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                                 projectsProvider.updateProject(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace!
+                                        .selectedWorkspace
                                         .workspaceSlug,
                                     projId: ref
                                         .read(ProviderList.projectProvider)

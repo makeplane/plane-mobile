@@ -281,7 +281,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                 projectProvider.currentProject['id'],
                 ref
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             : Container(
                 // color: themeProvider.backgroundColor,
@@ -904,7 +904,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
             projectProvider.currentProject['id'],
             ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug)
         : Container(
             color: themeProvider.themeManager.secondaryBackgroundDefaultColor,

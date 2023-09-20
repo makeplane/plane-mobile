@@ -88,7 +88,7 @@ class _AppState extends ConsumerState<App> {
         // log(prov.userProfile.last_workspace_id.toString());
         dashProv.getDashboard();
         projectProv.getProjects(
-          slug: workspaceProv.selectedWorkspace!.workspaceSlug,
+          slug: workspaceProv.selectedWorkspace.workspaceSlug,
         );
         ref.read(ProviderList.notificationProvider).getUnreadCount();
 

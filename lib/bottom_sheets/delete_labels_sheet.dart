@@ -66,7 +66,7 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
                     .issueLabels(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projID: ref
                             .watch(ProviderList.projectProvider)
@@ -79,7 +79,7 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
                   ref.read(ProviderList.issuesProvider).filterIssues(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projID: ref
                             .watch(ProviderList.projectProvider)

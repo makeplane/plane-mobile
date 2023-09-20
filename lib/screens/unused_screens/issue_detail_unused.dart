@@ -5,29 +5,29 @@
 // import 'package:flutter_svg/svg.dart';
 // import 'package:intl/intl.dart';
 // import 'package:loading_indicator/loading_indicator.dart';
-// import 'package:plane_startup/bottom_sheets/add_attachment_sheet.dart';
-// import 'package:plane_startup/bottom_sheets/add_link_sheet.dart';
-// import 'package:plane_startup/bottom_sheets/issue_detail_cycles_sheet.dart';
-// import 'package:plane_startup/bottom_sheets/issue_detail_modules_list.dart';
-// import 'package:plane_startup/bottom_sheets/issues_list_sheet.dart';
-// import 'package:plane_startup/bottom_sheets/select_estimate.dart';
-// import 'package:plane_startup/bottom_sheets/select_issue_labels.dart';
-// import 'package:plane_startup/bottom_sheets/select_priority.dart';
-// import 'package:plane_startup/bottom_sheets/select_project_members.dart';
-// import 'package:plane_startup/bottom_sheets/select_states.dart';
-// import 'package:plane_startup/provider/theme_provider.dart';
-// import 'package:plane_startup/utils/color_manager.dart';
-// import 'package:plane_startup/utils/custom_toast.dart';
-// import 'package:plane_startup/provider/provider_list.dart';
-// import 'package:plane_startup/utils/enums.dart';
+// import 'package:plane/bottom_sheets/add_attachment_sheet.dart';
+// import 'package:plane/bottom_sheets/add_link_sheet.dart';
+// import 'package:plane/bottom_sheets/issue_detail_cycles_sheet.dart';
+// import 'package:plane/bottom_sheets/issue_detail_modules_list.dart';
+// import 'package:plane/bottom_sheets/issues_list_sheet.dart';
+// import 'package:plane/bottom_sheets/select_estimate.dart';
+// import 'package:plane/bottom_sheets/select_issue_labels.dart';
+// import 'package:plane/bottom_sheets/select_priority.dart';
+// import 'package:plane/bottom_sheets/select_project_members.dart';
+// import 'package:plane/bottom_sheets/select_states.dart';
+// import 'package:plane/provider/theme_provider.dart';
+// import 'package:plane/utils/color_manager.dart';
+// import 'package:plane/utils/custom_toast.dart';
+// import 'package:plane/provider/provider_list.dart';
+// import 'package:plane/utils/enums.dart';
 
-// import 'package:plane_startup/utils/constants.dart';
-// import 'package:plane_startup/widgets/custom_app_bar.dart';
-// import 'package:plane_startup/widgets/custom_rich_text.dart';
-// import 'package:plane_startup/widgets/custom_text.dart';
+// import 'package:plane/utils/constants.dart';
+// import 'package:plane/widgets/custom_app_bar.dart';
+// import 'package:plane/widgets/custom_rich_text.dart';
+// import 'package:plane/widgets/custom_text.dart';
 
-// import 'package:plane_startup/widgets/profile_circle_avatar_widget.dart';
-// import 'package:plane_startup/widgets/simple_loading_widget.dart';
+// import 'package:plane/widgets/profile_circle_avatar_widget.dart';
+// import 'package:plane/widgets/simple_loading_widget.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 // // ignore: must_be_immutable
@@ -76,7 +76,7 @@
 //             slug: widget.workspaceSlug ??
 //                 ref
 //                     .read(ProviderList.workspaceProvider)
-//                     .selectedWorkspace!
+//                     .selectedWorkspace
 //                     .workspaceSlug,
 //             projID: widget.projID!,
 //           );
@@ -84,7 +84,7 @@
 //             slug: widget.workspaceSlug ??
 //                 ref
 //                     .read(ProviderList.workspaceProvider)
-//                     .selectedWorkspace!
+//                     .selectedWorkspace
 //                     .workspaceSlug,
 //             projID: widget.projID!,
 //           );
@@ -93,7 +93,7 @@
 //             slug: widget.workspaceSlug ??
 //                 ref
 //                     .read(ProviderList.workspaceProvider)
-//                     .selectedWorkspace!
+//                     .selectedWorkspace
 //                     .workspaceSlug,
 //             projID: widget.projID!,
 //           );
@@ -113,7 +113,7 @@
 //           slug: widget.workspaceSlug ??
 //               ref
 //                   .read(ProviderList.workspaceProvider)
-//                   .selectedWorkspace!
+//                   .selectedWorkspace
 //                   .workspaceSlug,
 //           projID: widget.projID ??
 //               ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -123,7 +123,7 @@
 //           slug: widget.workspaceSlug ??
 //               ref
 //                   .read(ProviderList.workspaceProvider)
-//                   .selectedWorkspace!
+//                   .selectedWorkspace
 //                   .workspaceSlug,
 //           projID: widget.projID ??
 //               ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -132,7 +132,7 @@
 //       await ref.read(ProviderList.issueProvider).getSubscriptionStatus(
 //           slug: ref
 //               .read(ProviderList.workspaceProvider)
-//               .selectedWorkspace!
+//               .selectedWorkspace
 //               .workspaceSlug,
 //           httpMethod: HttpMethod.get,
 //           projID: widget.projID ??
@@ -145,7 +145,7 @@
 //         slug: widget.workspaceSlug ??
 //             ref
 //                 .read(ProviderList.workspaceProvider)
-//                 .selectedWorkspace!
+//                 .selectedWorkspace
 //                 .workspaceSlug,
 //         projectId: widget.projID ??
 //             ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -163,7 +163,7 @@
 //     var issueProvider = ref.watch(ProviderList.issueProvider);
 //     var slug = ref
 //         .read(ProviderList.workspaceProvider)
-//         .selectedWorkspace!
+//         .selectedWorkspace
 //         .workspaceSlug;
 //     await cyclesProvider.cyclesCrud(
 //         slug: widget.workspaceSlug ?? slug,
@@ -200,7 +200,7 @@
 //     var issueProvider = ref.watch(ProviderList.issueProvider);
 //     var slug = ref
 //         .read(ProviderList.workspaceProvider)
-//         .selectedWorkspace!
+//         .selectedWorkspace
 //         .workspaceSlug;
 //     issueProvider.modulesList.clear();
 //     await ref.read(ProviderList.modulesProvider).getModules(
@@ -259,7 +259,7 @@
 //                               .getSubscriptionStatus(
 //                                 slug: ref
 //                                     .read(ProviderList.workspaceProvider)
-//                                     .selectedWorkspace!
+//                                     .selectedWorkspace
 //                                     .workspaceSlug,
 //                                 httpMethod:
 //                                     issueProvider.issueDetails['subscribed']
@@ -761,7 +761,7 @@
 //                                                             slug: ref
 //                                                                 .read(ProviderList
 //                                                                     .workspaceProvider)
-//                                                                 .selectedWorkspace!
+//                                                                 .selectedWorkspace
 //                                                                 .workspaceSlug,
 //                                                             issueId:
 //                                                                 widget.issueId,
@@ -1940,7 +1940,7 @@
 //                                                     slug: ref
 //                                                         .read(ProviderList
 //                                                             .workspaceProvider)
-//                                                         .selectedWorkspace!
+//                                                         .selectedWorkspace
 //                                                         .workspaceSlug,
 //                                                     projID: ref
 //                                                         .read(ProviderList
@@ -2023,7 +2023,7 @@
 //             issueProvider.upDateIssue(
 //                 slug: ref
 //                     .read(ProviderList.workspaceProvider)
-//                     .selectedWorkspace!
+//                     .selectedWorkspace
 //                     .workspaceSlug,
 //                 projID:
 //                     ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -2087,7 +2087,7 @@
 //                             issueProvider.upDateIssue(
 //                                 slug: ref
 //                                     .read(ProviderList.workspaceProvider)
-//                                     .selectedWorkspace!
+//                                     .selectedWorkspace
 //                                     .workspaceSlug,
 //                                 projID: ref
 //                                     .read(ProviderList.projectProvider)
@@ -2164,7 +2164,7 @@
 //             issueProvider.upDateIssue(
 //                 slug: ref
 //                     .read(ProviderList.workspaceProvider)
-//                     .selectedWorkspace!
+//                     .selectedWorkspace
 //                     .workspaceSlug,
 //                 projID:
 //                     ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -2228,7 +2228,7 @@
 //                             issueProvider.upDateIssue(
 //                                 slug: ref
 //                                     .read(ProviderList.workspaceProvider)
-//                                     .selectedWorkspace!
+//                                     .selectedWorkspace
 //                                     .workspaceSlug,
 //                                 projID: ref
 //                                     .read(ProviderList.projectProvider)
@@ -2345,7 +2345,7 @@
 //                             issueProvider.upDateIssue(
 //                               slug: ref
 //                                   .read(ProviderList.workspaceProvider)
-//                                   .selectedWorkspace!
+//                                   .selectedWorkspace
 //                                   .workspaceSlug,
 //                               projID: ref
 //                                   .read(ProviderList.projectProvider)
@@ -2439,7 +2439,7 @@
 //                                                 slug: ref
 //                                                     .read(ProviderList
 //                                                         .workspaceProvider)
-//                                                     .selectedWorkspace!
+//                                                     .selectedWorkspace
 //                                                     .workspaceSlug,
 //                                                 projectId: ref
 //                                                     .read(ProviderList
@@ -2455,7 +2455,7 @@
 //                                                 slug: ref
 //                                                     .read(ProviderList
 //                                                         .workspaceProvider)
-//                                                     .selectedWorkspace!
+//                                                     .selectedWorkspace
 //                                                     .workspaceSlug,
 //                                                 projectId: ref
 //                                                     .read(ProviderList
@@ -2644,7 +2644,7 @@
 //                                     issueProvider.upDateIssue(
 //                                       slug: ref
 //                                           .read(ProviderList.workspaceProvider)
-//                                           .selectedWorkspace!
+//                                           .selectedWorkspace
 //                                           .workspaceSlug,
 //                                       projID: ref
 //                                           .read(ProviderList.projectProvider)
@@ -2818,7 +2818,7 @@
 //                                     issueProvider.upDateIssue(
 //                                       slug: ref
 //                                           .read(ProviderList.workspaceProvider)
-//                                           .selectedWorkspace!
+//                                           .selectedWorkspace
 //                                           .workspaceSlug,
 //                                       projID: ref
 //                                           .read(ProviderList.projectProvider)
@@ -3145,7 +3145,7 @@
 //                               .currentProject['id'],
 //                           slug: ref
 //                               .read(ProviderList.workspaceProvider)
-//                               .selectedWorkspace!
+//                               .selectedWorkspace
 //                               .workspaceSlug,
 //                           issueId: widget.issueId,
 //                           attachmentId: issueProvider
@@ -3234,7 +3234,7 @@
 //                                   .currentProject['id'],
 //                               slug: ref
 //                                   .watch(ProviderList.workspaceProvider)
-//                                   .selectedWorkspace!
+//                                   .selectedWorkspace
 //                                   .workspaceSlug,
 //                               issueId: widget.issueId,
 //                               data: {},

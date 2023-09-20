@@ -517,7 +517,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                             await projectProvider.createProjects(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 context: mainContext,
                                 data: {

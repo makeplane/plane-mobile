@@ -256,7 +256,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
     await projectProvider.getProjects(
         slug: ref
             .read(ProviderList.workspaceProvider)
-            .selectedWorkspace!
+            .selectedWorkspace
             .workspaceSlug);
     // await projectProvider.initializeProject(ref: ref);
   }

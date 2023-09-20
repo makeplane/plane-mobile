@@ -91,7 +91,7 @@ class CreatePage extends ConsumerWidget {
                                   .currentProject['id'],
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               ref: ref);
                           // ignore: use_build_context_synchronously

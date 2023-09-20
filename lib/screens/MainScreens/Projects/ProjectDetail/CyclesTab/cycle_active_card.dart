@@ -245,7 +245,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                         method: CRUD.update,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projectId: ref
                             .read(ProviderList.projectProvider)

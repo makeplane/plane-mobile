@@ -199,7 +199,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                             .deleteProject(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projId:
                                     projectProviderRead.currentProject['id'])
@@ -219,19 +219,19 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                         projectProviderRead.getProjects(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                         );
                         projectProviderRead.getProjects(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                         );
                         projectProviderRead.favouriteProjects(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             method: HttpMethod.get,
                             projectID: "",

@@ -43,11 +43,11 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   ];
 
   List states = [
-    {'id': 'backlog', 'name': 'Backlog','color':'#5e6ad2'},
-    {'id': 'unstarted', 'name': 'Unstarted','color':'#eb5757'},
-    {'id': 'started', 'name': 'Started','color':'#26b5ce'},
-    {'id': 'completed', 'name': 'Completed','color':'#f2c94c'},
-    {'id': 'cancelled', 'name': 'Cancelled','color':'#4cb782'}
+    {'id': 'backlog', 'name': 'Backlog', 'color': '#5e6ad2'},
+    {'id': 'unstarted', 'name': 'Unstarted', 'color': '#eb5757'},
+    {'id': 'started', 'name': 'Started', 'color': '#26b5ce'},
+    {'id': 'completed', 'name': 'Completed', 'color': '#f2c94c'},
+    {'id': 'cancelled', 'name': 'Cancelled', 'color': '#4cb782'}
   ];
 
   Filters filters = Filters(
@@ -314,8 +314,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     ? states
                                     : issuesProvider.states.values)
                                 .map((e) {
-                                  String key = widget.issueCategory == IssueCategory.myIssues
-                                    ?'id':'group';
+                      String key =
+                          widget.issueCategory == IssueCategory.myIssues
+                              ? 'id'
+                              : 'group';
                       return (widget.isArchived &&
                               (e[key] == 'backlog' ||
                                   e[key] == 'unstarted' ||
@@ -345,7 +347,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                   colorFilter: ColorFilter.mode(
                                       filters.states.contains(e['id'])
                                           ? (Colors.white)
-                                          : ColorManager.getColorFromHexaDecimal(e['color']),
+                                          : ColorManager
+                                              .getColorFromHexaDecimal(
+                                                  e['color']),
                                       BlendMode.srcIn),
                                   height: 20,
                                   width: 20,
@@ -1205,7 +1209,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                               .filterCycleIssues(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projectId: ref
                                     .read(ProviderList.projectProvider)
@@ -1221,7 +1225,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                               .filterModuleIssues(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projectId: ref
                                     .read(ProviderList.projectProvider)
@@ -1248,7 +1252,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                             fromViews: widget.fromViews,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projID: ref
                                 .read(ProviderList.projectProvider)

@@ -376,7 +376,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                               : Container(),
 
                           const Spacer(),
-                          prov.selectedWorkspace != null &&
+                          prov.selectedWorkspace.workspaceId.isNotEmpty &&
                                   !widget.fromHomeScreen
                               ? Button(
                                   text: 'Skip',

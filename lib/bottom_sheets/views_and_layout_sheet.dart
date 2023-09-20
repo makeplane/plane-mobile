@@ -156,8 +156,6 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issueProvider = ref.watch(ProviderList.issuesProvider);
     var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     Widget customHorizontalLine() {
       return Container(

@@ -28,7 +28,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
               disableLoading: true,
               slug: ref
                   .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace!
+                  .selectedWorkspace
                   .workspaceSlug,
               projId:
                   ref.read(ProviderList.projectProvider).currentProject['id'],
@@ -68,7 +68,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                   disableLoading: true,
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)

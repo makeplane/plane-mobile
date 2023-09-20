@@ -633,7 +633,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               await modulesProvider.createNewModule(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)

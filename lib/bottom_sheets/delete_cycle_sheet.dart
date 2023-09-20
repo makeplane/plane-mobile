@@ -113,7 +113,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         await cyclesProvider.cycleDetailsCrud(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projectId: ref
                               .read(ProviderList.projectProvider)
@@ -125,7 +125,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ref: ref,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -137,7 +137,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ref: ref,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -149,7 +149,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ref: ref,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -161,7 +161,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ref: ref,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -173,7 +173,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ref: ref,
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             projectId: ref
                                 .read(ProviderList.projectProvider)
@@ -187,7 +187,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         await modulesProvider.deleteModule(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projId: ref
                               .read(ProviderList.projectProvider)
@@ -208,7 +208,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                         await pagesProvider.deletePage(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projectId: ref
                               .read(ProviderList.projectProvider)

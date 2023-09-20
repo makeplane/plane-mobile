@@ -96,7 +96,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                         issueProvider.upDateIssue(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             refs: ref,
                             projID: ref
@@ -111,7 +111,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               .getIssueDetails(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -123,7 +123,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                     .getIssueActivity(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
+                                          .selectedWorkspace
                                           .workspaceSlug,
                                       projID: ref
                                           .read(ProviderList.projectProvider)
@@ -234,7 +234,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               issueProvider.upDateIssue(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   refs: ref,
                                   projID: ref
@@ -256,7 +256,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projID: ref
                                             .read(ProviderList.projectProvider)
@@ -269,7 +269,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                             slug: ref
                                                 .read(ProviderList
                                                     .workspaceProvider)
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projID: ref
                                                 .read(ProviderList

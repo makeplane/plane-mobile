@@ -75,7 +75,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(

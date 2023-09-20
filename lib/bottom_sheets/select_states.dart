@@ -28,7 +28,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
       prov.getStates(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projID: ref
               .read(ProviderList.issuesProvider)
@@ -107,7 +107,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                             prov.getStates(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projID: ref
                                     .read(ProviderList.projectProvider)
@@ -155,7 +155,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                             await issueProvider.upDateIssue(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projID: ref
                                     .read(ProviderList.projectProvider)
@@ -169,7 +169,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                             await issuesProvider.filterIssues(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projID: ref
                                   .read(ProviderList.projectProvider)

@@ -182,7 +182,7 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
     try {
       var workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug;
       var response = await DioConfig().dioServe(
         url: APIs.memberProfile
@@ -191,19 +191,20 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      state.profileData['Username'] = response.data['user_data']['display_name'];
-        state.profileData['Joined on'] = DateFormat('MMM dd, yyyy')
-            .format(DateTime.parse(response.data['user_data']['date_joined']));
-        state.profileData['Timezone'] = response.data['user_data']['user_timezone'];
+      state.profileData['Username'] =
+          response.data['user_data']['display_name'];
+      state.profileData['Joined on'] = DateFormat('MMM dd, yyyy')
+          .format(DateTime.parse(response.data['user_data']['date_joined']));
+      state.profileData['Timezone'] =
+          response.data['user_data']['user_timezone'];
 
-        state.expanded =
-            List.generate(response.data['project_data'].length, (index) => false);
+      state.expanded =
+          List.generate(response.data['project_data'].length, (index) => false);
       state = state.copyWith(
           getMemberProfileState: StateEnum.success,
           memberProfile: response.data,
           profileData: state.profileData,
-          expanded: state.expanded
-          );
+          expanded: state.expanded);
       return state.memberProfile;
     } on DioException catch (err) {
       state = state.copyWith(getMemberProfileState: StateEnum.error);
@@ -218,7 +219,7 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
           getUserStatsState: StateEnum.loading);
       String workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug;
       var response = await DioConfig().dioServe(
         url: APIs.userStats
@@ -237,10 +238,12 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
 
   Future getUserActivity({required String userId}) async {
     try {
-      state = state.copyWith(getUserActivityState: StateEnum.loading, userActivity: UserActivityModel.userActivityEmpty());
+      state = state.copyWith(
+          getUserActivityState: StateEnum.loading,
+          userActivity: UserActivityModel.userActivityEmpty());
       String workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug;
       var response = await DioConfig().dioServe(
         url: APIs.userActivity
@@ -264,7 +267,7 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
         .copyWith(getCreatedIssuesState: StateEnum.loading, createdIssues: []);
     String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
     try {
       var response = await DioConfig().dioServe(
@@ -292,7 +295,7 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
         getUserAssingedIssuesState: StateEnum.loading, userAssignedIssues: []);
     String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
     try {
       var response = await DioConfig().dioServe(
@@ -321,7 +324,7 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
         userSubscribedIssues: []);
     String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
     try {
       var response = await DioConfig().dioServe(

@@ -378,7 +378,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projectId: ref
                                                       .read(ProviderList
@@ -674,7 +674,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     slug: ref
                                                         .read(ProviderList
                                                             .workspaceProvider)
-                                                        .selectedWorkspace!
+                                                        .selectedWorkspace
                                                         .workspaceSlug,
                                                     projectId: ref
                                                         .read(ProviderList
@@ -993,7 +993,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projectId: ref
                                                       .read(ProviderList
@@ -1259,7 +1259,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     slug: ref
                                                         .read(ProviderList
                                                             .workspaceProvider)
-                                                        .selectedWorkspace!
+                                                        .selectedWorkspace
                                                         .workspaceSlug,
                                                     projectId: ref
                                                         .read(ProviderList
@@ -1551,7 +1551,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projectId: ref
                                                       .read(ProviderList
@@ -1818,7 +1818,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                   slug: ref
                                                       .read(ProviderList
                                                           .workspaceProvider)
-                                                      .selectedWorkspace!
+                                                      .selectedWorkspace
                                                       .workspaceSlug,
                                                   projectId: ref
                                                       .read(ProviderList
@@ -2128,7 +2128,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     slug: ref
                                                         .read(ProviderList
                                                             .workspaceProvider)
-                                                        .selectedWorkspace!
+                                                        .selectedWorkspace
                                                         .workspaceSlug,
                                                     projectId: ref
                                                         .read(ProviderList
@@ -2412,7 +2412,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                         slug: ref
                                                             .read(ProviderList
                                                                 .workspaceProvider)
-                                                            .selectedWorkspace!
+                                                            .selectedWorkspace
                                                             .workspaceSlug,
                                                         projectId: ref
                                                                 .read(ProviderList
@@ -2434,7 +2434,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     slug: ref
                                                         .read(ProviderList
                                                             .workspaceProvider)
-                                                        .selectedWorkspace!
+                                                        .selectedWorkspace
                                                         .workspaceSlug,
                                                     projectId: ref
                                                         .read(ProviderList

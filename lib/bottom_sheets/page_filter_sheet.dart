@@ -23,7 +23,7 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
     ref.read(ProviderList.pageProvider).updatepageList(
           slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
           projectId:
               ref.read(ProviderList.projectProvider).currentProject['id'],

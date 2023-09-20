@@ -75,9 +75,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                   onTap: () async {
                     await prov
                         .selectWorkspace(
-                            id: prov.workspaces[index]["id"],
-                            context: context,
-                            ref: ref)
+                      id: prov.workspaces[index]["id"],
+                      context: context,
+                    )
                         .then(
                       (value) async {
                         ref.read(ProviderList.cyclesProvider).clearData();

@@ -423,7 +423,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                           !widget.isProject
                               ? await workspaceProvider.inviteToWorkspace(
                                   slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
+                                      .selectedWorkspace.workspaceSlug,
                                   email: emailController.text,
                                   role: workspaceProvider
                                               .invitingMembersRole.text ==
@@ -442,7 +442,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                               : await projectProvider.inviteToProject(
                                   context: context,
                                   slug: workspaceProvider
-                                      .selectedWorkspace!.workspaceSlug,
+                                      .selectedWorkspace.workspaceSlug,
                                   projId: projectProvider.currentProject['id'],
                                   data: {
                                     'email': emailController.text,

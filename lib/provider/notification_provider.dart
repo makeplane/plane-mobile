@@ -33,6 +33,16 @@ class NotificationProvider extends ChangeNotifier {
   List<dynamic> snoozed = [];
   DateTime? snoozedDate;
 
+  Future getAllNotifications() async {
+    getUnreadCount();
+    getNotifications(type: 'assigned');
+    getNotifications(type: 'created');
+    getNotifications(type: 'watching');
+    getNotifications(type: 'unread', getUnread: true);
+    getNotifications(type: 'archived', getArchived: true);
+    getNotifications(type: 'snoozed', getSnoozed: true);
+  }
+
   Future getNotifications({
     required String type,
     bool getUnread = false,
@@ -55,7 +65,7 @@ class NotificationProvider extends ChangeNotifier {
     notifyListeners();
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
     try {
       var response = await DioConfig().dioServe(
@@ -121,7 +131,7 @@ class NotificationProvider extends ChangeNotifier {
   Future getUnreadCount() async {
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     try {
@@ -149,7 +159,7 @@ class NotificationProvider extends ChangeNotifier {
   Future markAsRead(String notificationId) async {
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read');
@@ -224,7 +234,7 @@ class NotificationProvider extends ChangeNotifier {
       String notificationId, HttpMethod httpMethod) async {
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
@@ -259,7 +269,7 @@ class NotificationProvider extends ChangeNotifier {
     }
     String slug = ref!
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {

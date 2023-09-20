@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,17 +16,22 @@ import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
 
+import '../repository/workspace_service.dart';
+
 class WorkspaceProvider extends ChangeNotifier {
-  WorkspaceProvider(ChangeNotifierProviderRef<WorkspaceProvider> this.ref);
+  WorkspaceProvider(
+      {required ChangeNotifierProviderRef<WorkspaceProvider>? this.ref,
+      required this.workspaceService});
   Ref? ref;
+  WorkspaceService workspaceService;
   TextEditingController invitingMembersRole = TextEditingController();
   var workspaceInvitations = [];
   var workspaces = [];
   String companySize = '';
-  WorkspaceModel? selectedWorkspace;
   List<dynamic> workspaceIntegrations = [];
   dynamic githubIntegration;
   dynamic slackIntegration;
+  WorkspaceModel selectedWorkspace = WorkspaceModel.initialize();
   var urlAvailable = false;
   // var currentWorkspace = {};
   var workspaceMembers = [];
@@ -45,7 +51,7 @@ class WorkspaceProvider extends ChangeNotifier {
     workspaceInvitations = [];
     workspaces = [];
     workspaceIntegrations = [];
-    selectedWorkspace = null;
+    selectedWorkspace = WorkspaceModel.initialize();
     urlAvailable = false;
     // currentWorkspace = {};
     checkWorkspaceState = StateEnum.empty;
@@ -270,15 +276,9 @@ class WorkspaceProvider extends ChangeNotifier {
 
   Future getWorkspaces() async {
     workspaceInvitationState = StateEnum.loading;
-    try {
-      var response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.listWorkspaces,
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-
-      workspaces = response.data;
+    var response = await workspaceService.getWorkspaces();
+    if (response.isLeft()) {
+      workspaces = response.fold((l) => l, (r) => []);
 
       var isWorkspacePresent = workspaces.where((element) {
         if (element['id'] ==
@@ -286,12 +286,8 @@ class WorkspaceProvider extends ChangeNotifier {
                 .read(ProviderList.profileProvider)
                 .userProfile
                 .lastWorkspaceId) {
-          // currentWorkspace = element;
-
           selectedWorkspace = WorkspaceModel.fromJson(element);
-
-          tempLogo = selectedWorkspace!.workspaceLogo;
-
+          tempLogo = selectedWorkspace.workspaceLogo;
           return true;
         }
         return false;
@@ -301,7 +297,11 @@ class WorkspaceProvider extends ChangeNotifier {
       var myissuesProv = ref!.read(ProviderList.myIssuesProvider);
 
       if (isWorkspacePresent.isEmpty) {
-        // currentWorkspace = workspaces[0];
+        if (workspaces.isEmpty) {
+          workspaceInvitationState = StateEnum.error;
+          notifyListeners();
+          return;
+        }
         selectedWorkspace = WorkspaceModel.fromJson(workspaces[0]);
         var slug = selectedWorkspace!.workspaceSlug;
         log('AFTER DELETE WORKSPACE ${selectedWorkspace!.workspaceName} }');
@@ -334,7 +334,6 @@ class WorkspaceProvider extends ChangeNotifier {
             .read(ProviderList.notificationProvider)
             .getNotifications(type: 'snoozed', getSnoozed: true);
         createWorkspaceState = StateEnum.success;
-        log(response.data.toString());
         notifyListeners();
       }
 
@@ -343,50 +342,44 @@ class WorkspaceProvider extends ChangeNotifier {
       workspaceInvitationState = StateEnum.success;
       notifyListeners();
       return selectedWorkspace;
-    } catch (e) {
-      log(e.toString());
+   } else {
+      log(response.fold((l) => l.toString(), (r) => r.error.toString()));
       workspaceInvitationState = StateEnum.error;
       notifyListeners();
     }
   }
 
-  Future selectWorkspace(
-      {required String id,
-      required BuildContext context,
-      required WidgetRef ref}) async {
+  Future<Either<WorkspaceModel, DioException>> selectWorkspace(
+      {required BuildContext context,required String id}) async {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
-    try {
-      var response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.baseApi + APIs.profile,
-        hasBody: true,
-        data: {"last_workspace_id": id},
-        httpMethod: HttpMethod.patch,
-      );
-      selectWorkspaceState = StateEnum.success;
-      ref.read(ProviderList.profileProvider).userProfile =
-          UserProfile.fromMap(response.data);
-
-      ref.read(ProviderList.profileProvider).userProfile.lastWorkspaceId = id;
-
-      ref.read(ProviderList.issuesProvider).clearData();
+    var profileProv = ref!.read(ProviderList.profileProvider);
+    var response =
+        await profileProv.updateProfile(data: {"last_workspace_id": id});
+    if (response.isLeft()) {
+      ref!.read(ProviderList.issuesProvider).clearData();
       selectedWorkspace = WorkspaceModel.fromJson(
           workspaces.where((element) => element['id'] == id).first);
-      ref.read(ProviderList.dashboardProvider).getDashboard();
+      ref!.read(ProviderList.dashboardProvider).getDashboard();
       role = Role.none;
       getWorkspaceMembers();
-
-      tempLogo = selectedWorkspace!.workspaceLogo;
-      retrieveWorkspaceIntegration(slug: selectedWorkspace!.workspaceSlug);
+      tempLogo = selectedWorkspace.workspaceLogo;
+      retrieveWorkspaceIntegration(slug: selectedWorkspace.workspaceSlug);
+      selectWorkspaceState = StateEnum.success;
       notifyListeners();
-      // return response.data;
-    } on DioException catch (e) {
+      return Left(selectedWorkspace);
+    } else {
+      DioException error =response.fold(
+          (l) => DioException(
+              requestOptions: RequestOptions(),
+              message: 'Something went wrong!'),
+          (r) => r);
       CustomToast.showToast(context,
-          message: e.error.toString(), toastType: ToastType.failure);
-      log(e.toString());
+          message: error.message.toString(), toastType: ToastType.failure);
+      log(error.message.toString());
       selectWorkspaceState = StateEnum.error;
       notifyListeners();
+      return Right(error);
     }
   }
 
@@ -549,19 +542,13 @@ class WorkspaceProvider extends ChangeNotifier {
   Future getWorkspaceMembers() async {
     getMembersState = StateEnum.loading;
     notifyListeners();
-    try {
-      var response = await DioConfig().dioServe(
-        hasAuth: true,
+    var response = await workspaceService.getWorkspaceMembers(
         url: APIs.getWorkspaceMembers.replaceAll(
-          '\$SLUG',
-          selectedWorkspace!.workspaceSlug,
-        ),
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      getMembersState = StateEnum.success;
-      workspaceMembers.clear();
-      workspaceMembers = response.data;
+      '\$SLUG',
+      selectedWorkspace.workspaceSlug,
+    ));
+    if (response.isLeft()) {
+      workspaceMembers = response.fold((l) => l, (r) => []);
       for (var element in workspaceMembers) {
         if (element["member"]['id'] ==
             ref!.read(ProviderList.profileProvider).userProfile.id) {
@@ -570,12 +557,10 @@ class WorkspaceProvider extends ChangeNotifier {
           break;
         }
       }
-      // response = jsonDecode(response.data);
-
+      getMembersState = StateEnum.success;
       notifyListeners();
-      // log(response.data.toString());
-    } catch (e) {
-      log(e.toString());
+    } else {
+      log(response.fold((l) => l.toString(), (r) => r.error.toString()));
       getMembersState = StateEnum.error;
       notifyListeners();
     }

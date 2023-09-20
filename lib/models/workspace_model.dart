@@ -15,6 +15,23 @@ class WorkspaceModel {
     required this.workspaceUrl,
   });
 
+  static WorkspaceModel initialize(
+      {String? workspaceName,
+      String? workspaceSlug,
+      String? workspaceSize,
+      String? workspaceId,
+      String? workspaceLogo,
+      String? workspaceUrl}) {
+    return WorkspaceModel(
+      workspaceName: workspaceName ?? '',
+      workspaceSlug: workspaceSlug ?? '',
+      workspaceSize:  workspaceSize ?? '',
+      workspaceId: workspaceId ?? '',
+      workspaceLogo: workspaceLogo ?? '',
+      workspaceUrl: workspaceUrl ?? '',
+    );
+  }
+
   factory WorkspaceModel.fromJson(Map<String, dynamic> json) {
     return WorkspaceModel(
       workspaceName: json['name'],

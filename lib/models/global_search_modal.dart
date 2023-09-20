@@ -16,6 +16,17 @@ class GlobalSearchModal {
     required this.views,
     required this.pages
   });
+  factory GlobalSearchModal.initialize() {
+    return GlobalSearchModal(
+      workspaces: [],
+      projects: [],
+      issues: [],
+      cycles: [],
+      modules: [],
+      views: [],
+      pages: [],
+    );
+  }
 
   factory GlobalSearchModal.fromJson(Map<String, dynamic> json) {
     return GlobalSearchModal(

@@ -91,16 +91,16 @@ class UserProfile {
     required this.onboardingStep,
     required this.workspace,
   });
-  static UserProfile initialize() {
+  static UserProfile initialize({String? firstName, String? lastName,String?id, String?lastWorkspaceId}) {
     return UserProfile(
-        id: '',
+        id: id??'',
         lastLogin: '',
         username: '',
         displayName: '',
         mobileNumber: '',
         email: '',
-        firstName: '',
-        lastName: '',
+        firstName:firstName?? '',
+        lastName:lastName?? '',
         avatar: '',
         dateJoined: '',
         createdAt: '',
@@ -128,7 +128,7 @@ class UserProfile {
         lastLoginMedium: '',
         lastLoginUagent: '',
         tokenUpdatedAt: '',
-        lastWorkspaceId: '',
+        lastWorkspaceId:lastWorkspaceId?? '',
         myissuesprop: '',
         role: null,
         isBot: false,

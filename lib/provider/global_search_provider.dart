@@ -19,6 +19,12 @@ class SearchModal {
         data: data,
         globalSearchState: globalSearchState ?? this.globalSearchState);
   }
+
+  factory SearchModal.initialize() {
+    return SearchModal(
+        data: GlobalSearchModal.initialize(),
+        globalSearchState: StateEnum.empty);
+  }
 }
 
 class GlobalSearchProvider extends StateNotifier<SearchModal> {

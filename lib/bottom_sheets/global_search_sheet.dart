@@ -654,7 +654,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         Navigator.of(Const.globalKey.currentContext!).push(
                           MaterialPageRoute(
                             builder: (context) => IssueDetail(
-                              ref: ref.read(ProviderList.workspaceProvider).ref!,
+                              ref:
+                                  ref.read(ProviderList.workspaceProvider).ref!,
                               from: PreviousScreen.globalSearch,
                               appBarTitle:
                                   globalSearchProvider.data!.issues[index].name,
@@ -815,10 +816,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       onTap: () async {
                         await workspaceProv
                             .selectWorkspace(
-                                id: globalSearchProvider
-                                    .data!.workspaces[index].id,
-                                context: context,
-                                ref: ref)
+                          id: globalSearchProvider.data!.workspaces[index].id,
+                          context: context,
+                        )
                             .then(
                           (value) async {
                             ref.watch(ProviderList.cyclesProvider).clearData();

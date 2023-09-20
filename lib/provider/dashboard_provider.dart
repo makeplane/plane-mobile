@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,37 +7,36 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
+import '../repository/dashboard_service.dart';
+
 class DashBoardProvider extends ChangeNotifier {
-  DashBoardProvider(ChangeNotifierProviderRef<DashBoardProvider> this.ref);
+  DashBoardProvider(
+      {required ChangeNotifierProviderRef<DashBoardProvider>? this.ref,
+      required this.dashboardService});
   Ref? ref;
+  DashboardService dashboardService;
+
   StateEnum getDashboardState = StateEnum.loading;
   Map dashboardData = {};
   Map issuesClosedByMonth = {};
   int selectedMonthForissuesClosedByMonthWidget = DateTime.now().month;
   bool hideGithubBlock = false;
+
   Future getDashboard() async {
     getIssuesClosedByMonth(DateTime.now().month);
     getDashboardState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.dashboard.replaceAll(
-            '\$SLUG',
-            ref!
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
-                .workspaceSlug),
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      dashboardData = response.data;
+      var workspaceSlug = ref!
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+          
+      dashboardData = await dashboardService.getDashboardData(
+          url: APIs.dashboard.replaceAll('\$SLUG', workspaceSlug));
       getDashboardState = StateEnum.success;
       notifyListeners();
-    } catch (e) {
-      if (e is DioException) {
-        log(e.response.toString());
-      }
-      log(e.toString());
+    } on DioException catch (err) {
+      log(err.toString());
       getDashboardState = StateEnum.error;
       notifyListeners();
     }

@@ -16,8 +16,8 @@ import 'package:plane/utils/global_functions.dart';
 import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
-  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
-  final Ref ref;
+  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider>? this.ref);
+  final Ref? ref;
   var projects = [];
   var starredProjects = [];
   var joinprojectState = StateEnum.empty;
@@ -95,7 +95,7 @@ class ProjectsProvider extends ChangeNotifier {
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
     }
-    String workspaceSlug = ref
+    String workspaceSlug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace!
         .workspaceSlug;
@@ -105,7 +105,7 @@ class ProjectsProvider extends ChangeNotifier {
       slug: workspaceSlug,
       projID: currentProject['id'],
     );
-    ref.read(ProviderList.estimatesProvider).getEstimates(
+    ref!.read(ProviderList.estimatesProvider).getEstimates(
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
@@ -131,7 +131,7 @@ class ProjectsProvider extends ChangeNotifier {
 
     getProjectDetails(slug: workspaceSlug, projId: currentProject['id']);
 
-    var cyclesProv = ref.read(ProviderList.cyclesProvider);
+    var cyclesProv = ref!.read(ProviderList.cyclesProvider);
     var projectID = currentProject['id'];
     cyclesProv.cyclesState = StateEnum.loading;
 

@@ -35,11 +35,19 @@ class FilterSheet extends ConsumerStatefulWidget {
 
 class _FilterSheetState extends ConsumerState<FilterSheet> {
   List priorities = [
-    {'icon': Icons.error_outline_rounded, 'text': 'urgent'},
-    {'icon': Icons.signal_cellular_alt, 'text': 'high'},
-    {'icon': Icons.signal_cellular_alt_2_bar, 'text': 'medium'},
-    {'icon': Icons.signal_cellular_alt_1_bar, 'text': 'low'},
-    {'icon': Icons.do_disturb_alt_outlined, 'text': 'none'}
+    {'icon': Icons.error_outline_rounded, 'text': 'urgent', 'color': '#EF4444'},
+    {'icon': Icons.signal_cellular_alt, 'text': 'high', 'color': '#F59E0B'},
+    {
+      'icon': Icons.signal_cellular_alt_2_bar,
+      'text': 'medium',
+      'color': '#F59E0B'
+    },
+    {
+      'icon': Icons.signal_cellular_alt_1_bar,
+      'text': 'low',
+      'color': '#22C55E'
+    },
+    {'icon': Icons.do_disturb_alt_outlined, 'text': 'none', 'color': '#A3A3A3'}
   ];
 
   List states = [
@@ -286,11 +294,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                                     icon: Icon(
                                       e['icon'],
                                       size: 15,
-                                      color:
-                                          filters.priorities.contains(e['text'])
-                                              ? Colors.white
-                                              : themeProvider.themeManager
-                                                  .secondaryTextColor,
+                                      color: Color(int.parse(
+                                          "FF${e['color'].replaceAll('#', '')}",
+                                          radix: 16)),
                                     ),
                                     text: e['text'],
                                     color: filters.priorities

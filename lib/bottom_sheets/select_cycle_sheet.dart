@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,7 +93,6 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
                                     Icons.done,
                                     color: themeProvider
                                         .themeManager.textSuccessColor,
-                                   
                                   )
                                 : const SizedBox()
                           ],

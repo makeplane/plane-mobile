@@ -30,11 +30,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
   PageController controller = PageController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);

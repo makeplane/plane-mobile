@@ -32,15 +32,34 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
   final perPage = 18;
   bool isLoading = false;
   bool isSearched = false;
+  PageController pageController = PageController();
 
   @override
   void initState() {
     // if (ref.read(ProviderList.projectProvider).unsplashImages.isEmpty) {
     //    ref.read(ProviderList.projectProvider).getUnsplashImages();
     // }
-    getImages(true);
+
+    if (isEnableAuth()) {
+      getImages(true);
+    } else {
+      selected = 1;
+      pageController = PageController(initialPage: 1);
+    }
 
     super.initState();
+  }
+
+  bool isEnableAuth() {
+    bool enableAuth = false;
+    String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
+    int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
+    if (enableOAuthValue == 1) {
+      enableAuth = true;
+    } else {
+      enableAuth = false;
+    }
+    return enableAuth;
   }
 
   List images = [];
@@ -108,8 +127,6 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
     return false;
   }
 
-  PageController pageController = PageController();
-
   @override
   Widget build(BuildContext context) {
     var fileProvider = ref.watch(ProviderList.fileUploadProvider);
@@ -149,87 +166,96 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
               ],
             ),
           ),
-          Container(
-            //bottom border
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: lightGreeyColor,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      pageController.jumpToPage(0);
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: CustomText(
-                            'Unsplash',
-                            color: selected == 0
-                                ? themeProvider.themeManager.primaryColour
-                                : themeProvider
-                                    .themeManager.placeholderTextColor,
-                            type: FontStyle.H5,
-                            fontWeight: FontWeightt.Medium,
-                          ),
-                        ),
-                        selected == 0
-                            ? Container(
-                                height: 2,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Container(
-                                height: 2,
-                                color: lightGreeyColor,
-                              )
-                      ],
+          isEnableAuth()
+              ? Container(
+                  //bottom border
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: lightGreeyColor,
+                        width: 1,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      pageController.jumpToPage(1);
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: CustomText(
-                            'Upload',
-                            color: selected == 1
-                                ? themeProvider.themeManager.primaryColour
-                                : lightGreyTextColor,
-                            type: FontStyle.H5,
-                            fontWeight: FontWeightt.Medium,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            pageController.jumpToPage(0);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: CustomText(
+                                  'Unsplash',
+                                  color: selected == 0
+                                      ? themeProvider.themeManager.primaryColour
+                                      : themeProvider
+                                          .themeManager.placeholderTextColor,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                ),
+                              ),
+                              selected == 0
+                                  ? Container(
+                                      height: 2,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
+                                    )
+                                  : Container(
+                                      height: 2,
+                                      color: lightGreeyColor,
+                                    )
+                            ],
                           ),
                         ),
-                        selected == 1
-                            ? Container(
-                                height: 2,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Container(
-                                height: 2,
-                                color: lightGreeyColor,
-                              )
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            pageController.jumpToPage(1);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: CustomText(
+                                  'Upload',
+                                  color: selected == 1
+                                      ? themeProvider.themeManager.primaryColour
+                                      : lightGreyTextColor,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                ),
+                              ),
+                              selected == 1
+                                  ? Container(
+                                      height: 2,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
+                                    )
+                                  : Container(
+                                      height: 2,
+                                      color: lightGreeyColor,
+                                    )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                )
+              : Container(),
           Expanded(
             child: PageView(
               controller: pageController,
+              physics: !isEnableAuth()
+                  ? const NeverScrollableScrollPhysics()
+                  : const AlwaysScrollableScrollPhysics(),
               onPageChanged: (value) {
                 setState(() {
                   selected = value;

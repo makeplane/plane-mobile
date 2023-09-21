@@ -15,7 +15,7 @@ class AddLinkSheet extends ConsumerStatefulWidget {
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
 }
 
-class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetState {
+class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetStateMixin {
   TextEditingController title = TextEditingController();
   TextEditingController url = TextEditingController();
 

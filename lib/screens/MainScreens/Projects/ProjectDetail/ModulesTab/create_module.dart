@@ -145,8 +145,13 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                                       .themeManager.theme ==
                                                   THEME.darkHighContrast
                                           ? ThemeData.dark().copyWith(
+                                              dialogBackgroundColor: themeProvider
+                                                  .themeManager
+                                                  .tertiaryBackgroundDefaultColor,
                                               colorScheme: ColorScheme.dark(
                                                 primary: themeProvider
+                                                    .themeManager.primaryColour,
+                                                surface: themeProvider
                                                     .themeManager.primaryColour,
                                               ),
                                             )
@@ -233,9 +238,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                               themeProvider
                                                       .themeManager.theme ==
                                                   THEME.darkHighContrast
-                                          ? ThemeData.dark().copyWith(
+                                          ?  ThemeData.dark().copyWith(
+                                              dialogBackgroundColor: themeProvider
+                                                  .themeManager
+                                                  .tertiaryBackgroundDefaultColor,
                                               colorScheme: ColorScheme.dark(
                                                 primary: themeProvider
+                                                    .themeManager.primaryColour,
+                                                surface: themeProvider
                                                     .themeManager.primaryColour,
                                               ),
                                             )

@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Profile/User_profile/member_profile.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -155,7 +155,7 @@ class _EDITORState extends ConsumerState<EDITOR> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MemberProfile(
+                            builder: (context) => UserProfileScreen(
                               userID: msg.message.substring(5),
                             ),
                           ),

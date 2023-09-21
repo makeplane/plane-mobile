@@ -19,7 +19,7 @@ class SelectWorkspace extends ConsumerStatefulWidget {
 }
 
 class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
-    with WidgetState {
+    with WidgetStateMixin {
   double height = 0;
 
   @override

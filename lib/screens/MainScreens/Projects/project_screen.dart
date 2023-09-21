@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/global_search_sheet.dart';
 import 'package:plane/provider/projects_provider.dart';
@@ -26,18 +27,22 @@ class ProjectScreen extends ConsumerStatefulWidget {
 }
 
 @override
-class _ProjectScreenState extends ConsumerState<ProjectScreen> {
+class _ProjectScreenState extends ConsumerState<ProjectScreen>
+    with TickerProviderStateMixin {
   int selected = 0;
-  PageController controller = PageController();
+  late TabController controller;
+
+  @override
+  void initState() {
+    controller = TabController(length: 3, vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    if (controller.hasClients) {
-      controller.jumpToPage(selected);
-    }
     return Scaffold(
         appBar: CustomAppBar(
           onPressed: () {},
@@ -108,134 +113,47 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
                       )
                     : Column(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: themeProvider
-                                      .themeManager.borderSubtle01Color,
-                                  width: 1,
-                                ),
+                          TabBar(
+                      
+                              controller: controller,
+                              indicatorColor:
+                                  themeProvider.themeManager.primaryColour,
+                              indicatorWeight: 6,
+                              unselectedLabelStyle: GoogleFonts.inter(
+                                letterSpacing:
+                                    -(fontSIZE[FontStyle.Medium]! * 0.02),
+                                height: lineHeight[FontStyle.Medium],
+                                fontSize: fontSIZE[FontStyle.Medium],
+                                color: themeProvider.themeManager.placeholderTextColor
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      controller.jumpToPage(0);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: CustomText(
-                                            'Projects',
-                                            color: selected == 0
-                                                ? themeProvider
-                                                    .themeManager.primaryColour
-                                                : themeProvider.themeManager
-                                                    .placeholderTextColor,
-                                            type: FontStyle.Medium,
-                                            overrride: true,
-                                          ),
-                                        ),
-                                        selected == 0
-                                            ? Container(
-                                                height: 6,
-                                                color: themeProvider
-                                                    .themeManager.primaryColour,
-                                              )
-                                            : Container(
-                                                height: 6,
-                                              )
-                                      ],
-                                    ),
-                                  ),
+                              labelStyle: GoogleFonts.inter(
+                                letterSpacing:
+                                    -(fontSIZE[FontStyle.Medium]! * 0.02),
+                                height: lineHeight[FontStyle.Medium],
+                                fontSize: fontSIZE[FontStyle.Medium],
+                                fontWeight: FontWeight.w500,
+                                color: themeProvider.themeManager.primaryColour
+                              ),
+                              unselectedLabelColor: themeProvider.themeManager.placeholderTextColor,
+                              labelColor: themeProvider.themeManager.primaryColour,
+                              tabs: const [
+                                Tab(
+                                  text: 'Projects',
                                 ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      controller.jumpToPage(1);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: CustomText(
-                                            overrride: true,
-                                            'Favorites',
-                                            color: selected == 1
-                                                ? themeProvider
-                                                    .themeManager.primaryColour
-                                                : themeProvider.themeManager
-                                                    .placeholderTextColor,
-                                            type: FontStyle.Medium,
-                                          ),
-                                        ),
-                                        selected == 1
-                                            ? Container(
-                                                height: 6,
-                                                color: themeProvider
-                                                    .themeManager.primaryColour,
-                                              )
-                                            : Container(
-                                                height: 6,
-                                              )
-                                      ],
-                                    ),
-                                  ),
+                                Tab(
+                                  text: 'Favorites',
                                 ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      controller.jumpToPage(2);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: CustomText(
-                                            overrride: true,
-                                            'Unjoined',
-                                            color: selected == 2
-                                                ? themeProvider
-                                                    .themeManager.primaryColour
-                                                : themeProvider.themeManager
-                                                    .placeholderTextColor,
-                                            type: FontStyle.Medium,
-                                          ),
-                                        ),
-                                        selected == 2
-                                            ? Container(
-                                                height: 6,
-                                                color: themeProvider
-                                                    .themeManager.primaryColour,
-                                              )
-                                            : Container(
-                                                height: 6,
-                                              ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                                Tab(
+                                  text: 'Unjoined',
+                                ),
+                              ]),
+                              Container(height: 1,width: double.infinity,color: themeProvider.themeManager.borderSubtle01Color,),
                           Expanded(
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: PageView(
+                              child: TabBarView(
                                 controller: controller,
-                                onPageChanged: (value) {
-                                  setState(() {
-                                    selected = value;
-                                  });
-                                },
                                 children: [
                                   unstarredProjects(
                                       projectProvider, themeProvider),

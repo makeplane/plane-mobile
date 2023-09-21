@@ -381,9 +381,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => UserProfileScreen(
-                        index: 0,
                         userID: profileProvider.userProfile.id!,
-                        userName: profileProvider.userProfile.firstName!,
                       ),
                     ),
                   );
@@ -484,13 +482,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                             child:
                                                 WorkspaceLogoForDiffrentExtensions(
                                                     imageUrl: workspaceProvider
-                                                        .selectedWorkspace!
+                                                        .selectedWorkspace
                                                         .workspaceLogo,
                                                     themeProvider:
                                                         themeProvider,
                                                     workspaceName:
                                                         workspaceProvider
-                                                            .selectedWorkspace!
+                                                            .selectedWorkspace
                                                             .workspaceName
                                                             .toString()),
                                           ),

@@ -46,7 +46,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log(e.toString());
-      sendCodeState = StateEnum.failed;
+      sendCodeState = StateEnum.error;
       notifyListeners();
     }
   }
@@ -182,7 +182,7 @@ class AuthProvider extends ChangeNotifier {
           Const.accessToken = null;
           Const.userId = null;
           SharedPrefrenceServices.sharedPreferences!.clear();
-          validateCodeState = StateEnum.failed;
+          validateCodeState = StateEnum.error;
           notifyListeners();
           if (context != null) {
             CustomToast.showToastWithColors(context,
@@ -199,13 +199,13 @@ class AuthProvider extends ChangeNotifier {
       if (e is DioException) {
         var errorResponse = e.error;
         message = errorResponse;
-        log(e.error.toString());
+        log(message.toString());
         // CustomToast.showSimpleToast(
         //   message.toString(),
         // );
 
         if (context != null) {
-          CustomToast.showToastWithColors(context, message.toString(),
+          CustomToast.showToastWithColors(context, e.response!.data['error'].toString(),
               toastType: ToastType.failure);
         }
       } else {

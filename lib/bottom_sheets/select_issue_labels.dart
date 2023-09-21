@@ -227,7 +227,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                           height: 1,
                                           // margin: const EdgeInsets.only(bottom: 5),
                                           color: themeProvider
-                                              .themeManager.borderSubtle01Color)
+                                              .themeManager.borderDisabledColor)
                                     ],
                                   ),
                                 ),
@@ -348,7 +348,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                     .themeManager
                                                     .primaryBackgroundSelectedColour,
                                                 borderRadius: const BorderRadius
-                                                        .only(
+                                                    .only(
                                                     topLeft: Radius.circular(5),
                                                     bottomLeft:
                                                         Radius.circular(5))),

@@ -26,7 +26,11 @@ class SearchIssueProvider with ChangeNotifier {
         ? 'parent'
         : type == IssueDetailCategory.subIssue
             ? 'sub_issue'
-            : 'blocker_blocked_by';
+            : type == IssueDetailCategory.addCycleIssue
+                ? 'cycle'
+                : type == IssueDetailCategory.addModuleIssue
+                    ? 'module'
+                    : 'blocker_blocked_by';
     String url = '';
     if (input != '') {
       url = issueId.isEmpty

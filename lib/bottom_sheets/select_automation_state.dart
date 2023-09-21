@@ -109,12 +109,10 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
               );
             },
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return Container(
                 height: 1,
                 width: double.infinity,
-                child: Container(
-                  color: themeProvider.themeManager.borderSubtle01Color,
-                ),
+                color: themeProvider.themeManager.borderSubtle01Color,
               );
             },
           )

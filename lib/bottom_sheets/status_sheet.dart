@@ -81,7 +81,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
           Container(
             height: 1,
             width: double.infinity,
-            color: themeProvider.themeManager.borderSubtle01Color,
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           InkWell(
             onTap: () {
@@ -123,7 +123,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
           Container(
             height: 1,
             width: double.infinity,
-            color: themeProvider.themeManager.borderSubtle01Color,
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           InkWell(
             onTap: () {
@@ -165,7 +165,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
           Container(
             height: 1,
             width: double.infinity,
-            color: themeProvider.themeManager.borderSubtle01Color,
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           InkWell(
             onTap: () {
@@ -207,7 +207,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
           Container(
             height: 1,
             width: double.infinity,
-            color: themeProvider.themeManager.borderSubtle01Color,
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           InkWell(
             onTap: () {
@@ -249,7 +249,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
           Container(
             height: 1,
             width: double.infinity,
-            color: themeProvider.themeManager.borderSubtle01Color,
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           InkWell(
             onTap: () {

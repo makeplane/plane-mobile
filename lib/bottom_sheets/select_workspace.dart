@@ -205,7 +205,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                         ),
                       ),
                       Container(
-                        height: 2,
+                        height: 1,
                         margin: const EdgeInsets.only(bottom: 15),
                         color: themeProvider.themeManager.borderDisabledColor,
                       )

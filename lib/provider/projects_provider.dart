@@ -256,7 +256,9 @@ class ProjectsProvider extends ChangeNotifier {
       required String projectID,
       required int index}) async {
     projectState = StateEnum.loading;
-    loadingProjectIndex.add(index);
+    if (!loadingProjectIndex.contains(index)) {
+      loadingProjectIndex.add(index);
+    }
     notifyListeners();
     try {
       log(APIs.favouriteProjects.replaceAll('\$SLUG', slug) + projectID);
@@ -274,7 +276,11 @@ class ProjectsProvider extends ChangeNotifier {
         httpMethod: method,
       );
       if (method == HttpMethod.post) {
-        projects.removeAt(index);
+        // projects.removeAt(index);
+
+        // When all projects are added to favorites at the same time, last element will have index
+        // out of range error becuase the project is removed and the last index wont be available untill
+        // getProjects method called
         starredProjects.add(response.data);
       } else if (method == HttpMethod.get) {
         starredProjects = response.data;

@@ -43,42 +43,49 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      log('update project');
-                      projectProvider.updateProject(
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace
-                            .workspaceSlug,
-                        projId: projectProvider.currentProject['id'],
-                        data: {'estimate': null},
-                        ref: ref
-                      ).then((_) {
-                        projectProvider.currentProject['estimate'] = null;
-                        projectProvider.setState();
-                      });
-                    },
-                    child: Container(
-                      // height: 33,
-                      margin: const EdgeInsets.only(right: 16, top: 16),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 7),
-                      decoration: BoxDecoration(
-                        color: themeProvider
-                            .themeManager.secondaryBackgroundDefaultColor,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: themeProvider.themeManager.borderSubtle01Color,
+                  (projectProvider.currentProject['estimate'] == null ||
+                          projectProvider.role != Role.admin)
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            log('update project');
+                            projectProvider
+                                .updateProject(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace
+                                        .workspaceSlug,
+                                    projId:
+                                        projectProvider.currentProject['id'],
+                                    data: {'estimate': null},
+                                    ref: ref)
+                                .then((_) {
+                              projectProvider.currentProject['estimate'] = null;
+                              projectProvider.setState();
+                            });
+                          },
+                          child: Container(
+                            // height: 33,
+                            margin: const EdgeInsets.only(right: 16, top: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 7),
+                            decoration: BoxDecoration(
+                              color: themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
+                              ),
+                            ),
+                            child: CustomText(
+                              'Disable Estimate',
+                              type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: CustomText(
-                        'Disable Estimate',
-                        type: FontStyle.Medium,
-                        color: themeProvider.themeManager.primaryTextColor,
-                      ),
-                    ),
-                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: estimatesProvider.estimates.length,
@@ -122,20 +129,27 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                     GestureDetector(
                                       onTap: () {
                                         log('update project');
-                                        projectProvider.updateProject(
-                                          slug: ref
-                                              .read(ProviderList
-                                                  .workspaceProvider)
-                                              .selectedWorkspace
-                                              .workspaceSlug,
-                                          projId: projectProvider
-                                              .currentProject['id'],
-                                          data: {
-                                            'estimate': estimatesProvider
-                                                .estimates[index]['id']
-                                          },
-                                          ref: ref
-                                        ).then((_) {
+                                        if (projectProvider
+                                                .currentProject['estimate'] ==
+                                            estimatesProvider.estimates[index]
+                                                ['id']) {
+                                          return;
+                                        }
+                                        projectProvider
+                                            .updateProject(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace
+                                                    .workspaceSlug,
+                                                projId: projectProvider
+                                                    .currentProject['id'],
+                                                data: {
+                                                  'estimate': estimatesProvider
+                                                      .estimates[index]['id']
+                                                },
+                                                ref: ref)
+                                            .then((_) {
                                           projectProvider
                                                   .currentProject['estimate'] =
                                               estimatesProvider.estimates[index]
@@ -185,86 +199,111 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                     ),
 
                                     //delete estimate
-                                    IconButton(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 300),
-                                          enableDrag: true,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                    projectProvider.role != Role.admin
+                                        ? Container()
+                                        : IconButton(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            constraints: const BoxConstraints(),
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxHeight: 300),
+                                                enableDrag: true,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child: DeleteEstimateSheet(
+                                                      estimateName:
+                                                          estimatesProvider
+                                                                  .estimates[
+                                                              index]['name'],
+                                                      estimateId:
+                                                          estimatesProvider
+                                                                  .estimates[
+                                                              index]['id'],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: SvgPicture.asset(
+                                              'assets/svg_images/delete_icon.svg',
+                                              height: 20,
+                                              width: 20,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .textErrorColor,
+                                                  BlendMode.srcIn),
                                             ),
                                           ),
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: DeleteEstimateSheet(
-                                                estimateName: estimatesProvider
-                                                    .estimates[index]['name'],
-                                                estimateId: estimatesProvider
-                                                    .estimates[index]['id'],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: SvgPicture.asset(
-                                        'assets/svg_images/delete_icon.svg',
-                                        height: 20,
-                                        width: 20,
-                                        colorFilter: ColorFilter.mode(
-                                            themeProvider
-                                                .themeManager.textErrorColor,
-                                            BlendMode.srcIn),
-                                      ),
-                                    ),
 
-                                    IconButton(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          enableDrag: true,
-                                          isScrollControlled: true,
-                                          constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8,
-                                          ),
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
-                                            ),
-                                          ),
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: CreateEstimate(
-                                                estimatedata: estimatesProvider
-                                                    .estimates[index],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: const Icon(Icons.edit_outlined),
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
-                                    ),
+                                    (projectProvider.role == Role.admin ||
+                                            projectProvider.role == Role.member)
+                                        ? IconButton(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            constraints: const BoxConstraints(),
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                enableDrag: true,
+                                                isScrollControlled: true,
+                                                constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.8,
+                                                ),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child: CreateEstimate(
+                                                      estimatedata:
+                                                          estimatesProvider
+                                                              .estimates[index],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon:
+                                                const Icon(Icons.edit_outlined),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
+                                          )
+                                        : Container(),
                                   ],
                                 ),
                               ],

@@ -54,7 +54,7 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 height: 20,
               ),
               CustomText(
-                'Are you sure you want to delete extimate - ${widget.estimateName}? The estimate will be removed from all the issues.',
+                'Are you sure you want to delete estimate - ${widget.estimateName}? The estimate will be removed from all the issues.',
                 type: FontStyle.H5,
                 fontSize: 20,
               )

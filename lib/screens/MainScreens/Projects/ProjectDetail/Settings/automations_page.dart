@@ -288,19 +288,23 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                                           .themeManager.primaryTextColor,
                                     )
                                   : null,
-                              prefix: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 10.0,
+                              prefixIcon: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 12,
                                 ),
                                 child: SvgPicture.asset(
                                   'assets/svg_images/cancelled.svg',
                                   colorFilter: ColorFilter.mode(
-                                      Color(int.parse(
-                                          "FF${stateColor.replaceAll('#', '')}",
-                                          radix: 16)),
+                                      stateColor[0] != '#'
+                                          ? Color(
+                                              int.parse("FF3A3A3A", radix: 16))
+                                          : Color(int.parse(
+                                              "FF${stateColor.replaceAll('#', '')}",
+                                              radix: 16)),
                                       BlendMode.srcIn),
-                                  height: 22,
-                                  width: 22,
+                                  height: 20,
+                                  width: 20,
                                 ),
                               ),
                             ),

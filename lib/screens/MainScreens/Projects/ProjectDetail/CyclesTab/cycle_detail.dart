@@ -1854,145 +1854,92 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     ...List.generate(
                       detailData['distribution']['assignees'].length,
                       (idx) {
-                        return InkWell(
-                          onTap: () async {
-                            {
-                              setState(
-                                () {
-                                  if (issuesProvider.issues.filters.assignees
-                                      .contains(detailData['distribution']
-                                          ['assignees'][idx]['assignee_id'])) {
-                                    issuesProvider.issues.filters.assignees
-                                        .remove(detailData['distribution']
-                                            ['assignees'][idx]['assignee_id']);
-                                  } else {
-                                    issuesProvider.issues.filters.assignees.add(
-                                        detailData['distribution']['assignees']
-                                            [idx]['assignee_id']);
-                                  }
-                                },
-                              );
-                            }
-                            pageController!.animateTo(
-                              0,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                            if (fromModule) {
-                              modulesProvider.changeTabIndex(0);
-
-                              await modulesProvider.filterModuleIssues(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
-                              );
-                              modulesProvider.initializeBoard();
-                            } else {
-                              cyclesProviderRead.changeTabIndex(0);
-                              await cyclesProviderRead.filterCycleIssues(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
-                              );
-                              cyclesProviderRead.initializeBoard();
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            margin: const EdgeInsets.symmetric(vertical: 2),
-                            decoration: BoxDecoration(
-                              color:
-                                  // themeProvider.isDarkThemeEnabled
-                                  //     ?
-                                  (issuesProvider.issues.filters.assignees
-                                          .contains(detailData['distribution']
-                                              ['assignees'][idx]['assignee_id'])
-                                      ? themeProvider.themeManager
-                                          .secondaryBackgroundDefaultColor
-                                      : themeProvider.themeManager
-                                          .primaryBackgroundDefaultColor),
-                              // : (issuesProvider
-                              //         .issues.filters.assignees
-                              //         .contains(
-                              //             detailData['distribution']
-                              //                     ['assignees'][idx]
-                              //                 ['assignee_id'])
-                              //     ? lightGreeyColor
-                              //     : lightBackgroundColor),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['avatar'] !=
-                                                    null &&
-                                                detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['avatar'] !=
-                                                    ''
-                                            ? CircleAvatar(
-                                                radius: 10,
-                                                backgroundImage: NetworkImage(
-                                                    detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['avatar']),
-                                              )
-                                            : CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor: themeProvider
-                                                    .themeManager
-                                                    .tertiaryBackgroundDefaultColor,
-                                                child: Center(
-                                                  child: CustomText(
-                                                    detailData['distribution'][
-                                                                        'assignees']
-                                                                    [idx][
-                                                                'first_name'] !=
-                                                            null
-                                                        ? detailData['distribution']
-                                                                        [
-                                                                        'assignees']
-                                                                    [idx][
-                                                                'first_name'][0]
-                                                            .toString()
-                                                            .toUpperCase()
-                                                        : '',
-                                                    type: FontStyle.Small,
-                                                  ),
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 2),
+                          decoration: BoxDecoration(
+                            color:
+                                // themeProvider.isDarkThemeEnabled
+                                //     ?
+                                (issuesProvider.issues.filters.assignees
+                                        .contains(detailData['distribution']
+                                            ['assignees'][idx]['assignee_id'])
+                                    ? themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor
+                                    : themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor),
+                            // : (issuesProvider
+                            //         .issues.filters.assignees
+                            //         .contains(
+                            //             detailData['distribution']
+                            //                     ['assignees'][idx]
+                            //                 ['assignee_id'])
+                            //     ? lightGreeyColor
+                            //     : lightBackgroundColor),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar'] !=
+                                                  null &&
+                                              detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar'] !=
+                                                  ''
+                                          ? CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage: NetworkImage(
+                                                  detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar']),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: themeProvider
+                                                  .themeManager
+                                                  .tertiaryBackgroundDefaultColor,
+                                              child: Center(
+                                                child: CustomText(
+                                                  detailData['distribution'][
+                                                                      'assignees']
+                                                                  [idx]
+                                                              ['first_name'] !=
+                                                          null
+                                                      ? detailData['distribution']
+                                                                      [
+                                                                      'assignees']
+                                                                  [idx]
+                                                              ['first_name'][0]
+                                                          .toString()
+                                                          .toUpperCase()
+                                                      : '',
+                                                  type: FontStyle.Small,
                                                 ),
-                                              )),
-                                    CustomText(
-                                      detailData['distribution']['assignees']
-                                              [idx]['display_name'] ??
-                                          'No Assignees',
-                                      color: themeProvider
-                                          .themeManager.secondaryTextColor,
-                                    ),
-                                  ],
-                                ),
-                                CompletionPercentage(
-                                    value: detailData['distribution']
-                                        ['assignees'][idx]['completed_issues'],
-                                    totalValue: detailData['distribution']
-                                        ['assignees'][idx]['total_issues'])
-                              ],
-                            ),
+                                              ),
+                                            )),
+                                  CustomText(
+                                    detailData['distribution']['assignees'][idx]
+                                            ['display_name'] ??
+                                        'No Assignees',
+                                    color: themeProvider
+                                        .themeManager.secondaryTextColor,
+                                  ),
+                                ],
+                              ),
+                              CompletionPercentage(
+                                  value: detailData['distribution']['assignees']
+                                      [idx]['completed_issues'],
+                                  totalValue: detailData['distribution']
+                                      ['assignees'][idx]['total_issues'])
+                            ],
                           ),
                         );
                       },
@@ -2148,129 +2095,85 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     primary: false,
                     itemCount: detailData['distribution']['labels'].length,
                     itemBuilder: (context, index) {
-                      log('index $index');
-                      return InkWell(
-                        onTap: () async {
-                          setState(() {
-                            if (issuesProvider.issues.filters.labels.contains(
-                                detailData['distribution']['labels'][index]
-                                    ['label_id'])) {
-                              issuesProvider.issues.filters.labels.remove(
+                      // log('index $index');
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 8),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
+                        decoration: BoxDecoration(
+                          color: issuesProvider.issues.filters.labels.contains(
                                   detailData['distribution']['labels'][index]
-                                      ['label_id']);
-                            } else {
-                              issuesProvider.issues.filters.labels.add(
+                                      ['label_id'])
+                              ? themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor
+                              : themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  size: 20,
+                                  color: detailData['distribution']['labels']
+                                                  [index]['color'] ==
+                                              '' ||
+                                          detailData['distribution']['labels']
+                                                  [index]['color'] ==
+                                              null
+                                      ? themeProvider
+                                          .themeManager.placeholderTextColor
+                                      : ColorManager.getColorFromHexaDecimal(
+                                          detailData['distribution']['labels']
+                                                  [index]['color']
+                                              .toString()),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                CustomText(
                                   detailData['distribution']['labels'][index]
-                                      ['label_id']);
-                            }
-                          });
-                          pageController!.animateTo(0,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut);
-                          if (fromModule) {
-                            modulesProvider.changeTabIndex(0);
-                            await modulesProvider.filterModuleIssues(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace
-                                  .workspaceSlug,
-                              projectId: ref
-                                  .read(ProviderList.projectProvider)
-                                  .currentProject["id"],
-                            );
-                            modulesProvider.initializeBoard();
-                          }
-                          cyclesProviderRead.changeTabIndex(0);
-                          await cyclesProviderRead.filterCycleIssues(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace
-                                .workspaceSlug,
-                            projectId: ref
-                                .read(ProviderList.projectProvider)
-                                .currentProject["id"],
-                          );
-                          cyclesProviderRead.initializeBoard();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 8),
-                          margin: const EdgeInsets.symmetric(vertical: 2),
-                          decoration: BoxDecoration(
-                            color: issuesProvider.issues.filters.labels
-                                    .contains(detailData['distribution']
-                                        ['labels'][index]['label_id'])
-                                ? themeProvider.themeManager
-                                    .secondaryBackgroundDefaultColor
-                                : themeProvider
-                                    .themeManager.primaryBackgroundDefaultColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 20,
-                                    color: detailData['distribution']['labels']
-                                                    [index]['color'] ==
-                                                '' ||
-                                            detailData['distribution']['labels']
-                                                    [index]['color'] ==
-                                                null
-                                        ? themeProvider
-                                            .themeManager.placeholderTextColor
-                                        : ColorManager.getColorFromHexaDecimal(
-                                            detailData['distribution']['labels']
-                                                    [index]['color']
-                                                .toString()),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  CustomText(
-                                    detailData['distribution']['labels'][index]
-                                            ['label_name'] ??
-                                        'No Label',
-                                    maxLines: 2,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  CompletionPercentage(
-                                      value: detailData['distribution']
-                                          ['labels'][index]['completed_issues'],
-                                      totalValue: detailData['distribution']
-                                          ['labels'][index]['total_issues'])
-                                  //   CircularPercentIndicator(
-                                  //       radius: 10,
-                                  //       lineWidth: 2,
-                                  //       progressColor: primaryColor,
-                                  //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
-                                  //               detailData['distribution']
-                                  //                               ['labels']
-                                  //                           [index][
-                                  //                       'completed_issues'] ==
-                                  //                   null
-                                  //           ? 1.0
-                                  //           : convertToRatio(
-                                  //               detailData['distribution']
-                                  //                           ['labels']
-                                  //                       [index][
-                                  //                   'completed_issues'],
-                                  //               detailData['distribution']
-                                  //                       ['labels'][index]
-                                  //                   ['total_issues'])),
-                                  //   const SizedBox(width: 5),
-                                  //   CustomText(
-                                  //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
-                                ],
-                              )
-                            ],
-                          ),
+                                          ['label_name'] ??
+                                      'No Label',
+                                  maxLines: 2,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                CompletionPercentage(
+                                    value: detailData['distribution']['labels']
+                                        [index]['completed_issues'],
+                                    totalValue: detailData['distribution']
+                                        ['labels'][index]['total_issues'])
+                                //   CircularPercentIndicator(
+                                //       radius: 10,
+                                //       lineWidth: 2,
+                                //       progressColor: primaryColor,
+                                //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
+                                //               detailData['distribution']
+                                //                               ['labels']
+                                //                           [index][
+                                //                       'completed_issues'] ==
+                                //                   null
+                                //           ? 1.0
+                                //           : convertToRatio(
+                                //               detailData['distribution']
+                                //                           ['labels']
+                                //                       [index][
+                                //                   'completed_issues'],
+                                //               detailData['distribution']
+                                //                       ['labels'][index]
+                                //                   ['total_issues'])),
+                                //   const SizedBox(width: 5),
+                                //   CustomText(
+                                //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
+                              ],
+                            )
+                          ],
                         ),
                       );
                     }),

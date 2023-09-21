@@ -329,181 +329,183 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 width: double.infinity,
               ),
               Expanded(child: issues(context, ref, isViews: true)),
-              Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: themeProvider
-                        .themeManager.primaryBackgroundDefaultColor,
-                    boxShadow:
-                        themeProvider.themeManager.shadowBottomControlButtons),
-                child: Row(
-                  children: [
-                    projectProvider.role == Role.admin
-                        ? Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const CreateIssue(),
-                                  ),
-                                );
-                              },
-                              child: SizedBox.expand(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                      size: 20,
+              SafeArea(
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
+                      boxShadow:
+                          themeProvider.themeManager.shadowBottomControlButtons),
+                  child: Row(
+                    children: [
+                      projectProvider.role == Role.admin
+                          ? Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const CreateIssue(),
                                     ),
-                                    const CustomText(
-                                      ' Issue',
-                                      type: FontStyle.Medium,
-                                    )
-                                  ],
+                                  );
+                                },
+                                child: SizedBox.expand(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                        size: 20,
+                                      ),
+                                      const CustomText(
+                                        ' Issue',
+                                        type: FontStyle.Medium,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                    Container(
-                      height: 50,
-                      width: 0.5,
-                      color: themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    Expanded(
-                        child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints:
-                                BoxConstraints(maxHeight: height * 0.5),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            )),
-                            context: context,
-                            builder: (ctx) {
-                              return const TypeSheet(
-                                issueCategory: IssueCategory.views,
-                              );
-                            });
-                      },
-                      child: SizedBox.expand(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.menu,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                              size: 19,
-                            ),
-                            const CustomText(
-                              ' Layout',
-                              type: FontStyle.Medium,
                             )
-                          ],
-                        ),
+                          : Container(),
+                      Container(
+                        height: 50,
+                        width: 0.5,
+                        color: themeProvider.themeManager.borderSubtle01Color,
                       ),
-                    )),
-                    Container(
-                      height: 50,
-                      width: 0.5,
-                      color: themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    Expanded(
-                        child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.9),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            )),
-                            context: context,
-                            builder: (ctx) {
-                              return ViewsSheet(
-                                projectView: issuesProvider.issues.projectView,
-                                fromView: true,
-                                issueCategory: IssueCategory.views,
-                              );
-                            });
-                      },
-                      child: SizedBox.expand(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.wysiwyg_outlined,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                              size: 19,
-                            ),
-                            const CustomText(
-                              ' Display',
-                              type: FontStyle.Medium,
-                            )
-                          ],
+                      Expanded(
+                          child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              constraints:
+                                  BoxConstraints(maxHeight: height * 0.5),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              )),
+                              context: context,
+                              builder: (ctx) {
+                                return const TypeSheet(
+                                  issueCategory: IssueCategory.views,
+                                );
+                              });
+                        },
+                        child: SizedBox.expand(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.menu,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                                size: 19,
+                              ),
+                              const CustomText(
+                                ' Layout',
+                                type: FontStyle.Medium,
+                              )
+                            ],
+                          ),
                         ),
+                      )),
+                      Container(
+                        height: 50,
+                        width: 0.5,
+                        color: themeProvider.themeManager.borderSubtle01Color,
                       ),
-                    )),
-                    Container(
-                      height: 50,
-                      width: 0.5,
-                      color: themeProvider.themeManager.borderSubtle01Color,
-                    ),
-                    Expanded(
-                        child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.85),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            )),
-                            context: context,
-                            builder: (ctx) {
-                              return FilterSheet(
-                                fromViews: true,
-                                issueCategory: IssueCategory.views,
-                              );
-                            });
-                      },
-                      child: SizedBox.expand(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.filter_list_outlined,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                              size: 19,
-                            ),
-                            const CustomText(
-                              ' Filters',
-                              type: FontStyle.Medium,
-                            )
-                          ],
+                      Expanded(
+                          child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.9),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              )),
+                              context: context,
+                              builder: (ctx) {
+                                return ViewsSheet(
+                                  projectView: issuesProvider.issues.projectView,
+                                  fromView: true,
+                                  issueCategory: IssueCategory.views,
+                                );
+                              });
+                        },
+                        child: SizedBox.expand(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.wysiwyg_outlined,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                                size: 19,
+                              ),
+                              const CustomText(
+                                ' Display',
+                                type: FontStyle.Medium,
+                              )
+                            ],
+                          ),
                         ),
+                      )),
+                      Container(
+                        height: 50,
+                        width: 0.5,
+                        color: themeProvider.themeManager.borderSubtle01Color,
                       ),
-                    )),
-                  ],
+                      Expanded(
+                          child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              enableDrag: true,
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.85),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              )),
+                              context: context,
+                              builder: (ctx) {
+                                return FilterSheet(
+                                  fromViews: true,
+                                  issueCategory: IssueCategory.views,
+                                );
+                              });
+                        },
+                        child: SizedBox.expand(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.filter_list_outlined,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                                size: 19,
+                              ),
+                              const CustomText(
+                                ' Filters',
+                                type: FontStyle.Medium,
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                    ],
+                  ),
                 ),
               )
             ],

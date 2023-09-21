@@ -93,7 +93,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
           ],
         ),
         body: projectProvider.getProjectState == StateEnum.error
-            ? errorState(context: context)
+            ? errorState(
+                context: context,
+                ontap: () {
+                  refresh();
+                },
+              )
             : LoadingWidget(
                 loading: projectProvider.getProjectState == StateEnum.loading,
                 widgetClass: projectProvider.projects.isEmpty &&
@@ -255,6 +260,9 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen> {
             .selectedWorkspace
             .workspaceSlug);
     // await projectProvider.initializeProject(ref: ref);
+    setState(() {
+      selected = 0;
+    });
   }
 
   Widget unstarredProjects(

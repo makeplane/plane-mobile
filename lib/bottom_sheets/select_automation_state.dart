@@ -86,9 +86,13 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                       SvgPicture.asset(
                         'assets/svg_images/cancelled.svg',
                         colorFilter: ColorFilter.mode(
-                            Color(int.parse(
-                                "FF${issuesProvider.statesData['cancelled'][index]['color'].replaceAll('#', '')}",
-                                radix: 16)),
+                            issuesProvider.statesData['cancelled'][index]
+                                        ['color'][0] !=
+                                    '#'
+                                ? Color(int.parse("FF3A3A3A", radix: 16))
+                                : Color(int.parse(
+                                    "FF${issuesProvider.statesData['cancelled'][index]['color'].replaceAll('#', '')}",
+                                    radix: 16)),
                             BlendMode.srcIn),
                         height: 22,
                         width: 22,

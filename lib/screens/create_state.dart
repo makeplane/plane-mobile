@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/color_manager.dart';
@@ -240,7 +241,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                     colorController.text = e
                                         .toString()
                                         .toUpperCase()
-                                        .replaceAll("#", "");
+                                        .replaceAll('#', '');
                                   });
                                 },
                                 child: Container(
@@ -271,11 +272,11 @@ class _CreateStateState extends ConsumerState<CreateState> {
                         children: [
                           Container(
                             width: 55,
-                            height: 55,
+                            height: 50,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 color: ColorManager.getColorFromHexaDecimal(
-                                    colorController.text.toString()),
+                                    "#${colorController.text.toString()}"),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     bottomLeft: Radius.circular(8))),
@@ -294,13 +295,14 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 }
                                 return null;
                               },
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9a-zA-Z]")),
+                              ],
                               controller: colorController,
                               maxLength: 6,
                               onChanged: (val) {
-                                colorController.text = val.toUpperCase();
-                                colorController.selection =
-                                    TextSelection.fromPosition(TextPosition(
-                                        offset: colorController.text.length));
+                                setState(() {});
                               },
                               decoration: themeProvider
                                   .themeManager.textFieldDecoration

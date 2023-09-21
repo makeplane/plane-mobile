@@ -26,7 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     {'icon': 'assets/svg_images/home.svg', 'label': 'Home'},
     {'icon': 'assets/svg_images/projects.svg', 'label': 'Projects'},
     {'icon': 'assets/svg_images/issues.svg', 'label': 'My Issues'},
-    {'icon': 'assets/svg_images/notification.svg', 'label': 'Updates'},
+    {'icon': 'assets/svg_images/notification.svg', 'label': 'Notifications'},
     {'icon': 'assets/svg_images/settings.svg', 'label': 'Settings'},
   ];
 
@@ -125,14 +125,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               CustomText(
                                 e['label'],
                                 overrride: true,
-                                type: FontStyle.Small,
+                                // type: FontStyle.Small,
                                 color: bottomNavProvider.selectedIndex == i
                                     ? themeProvider.themeManager.primaryColour
                                     : themeProvider.theme == THEME.custom
                                         ? customNavBarTextColor
                                         : (themeProvider
                                             .themeManager.placeholderTextColor),
-                                fontWeight: FontWeightt.Medium,
+                                fontWeight: bottomNavProvider.selectedIndex == i ? FontWeightt.Bold : FontWeightt.Medium,
+                                fontSize: 11,
+                                letterSpacing: 0.2,
                               ),
                               const SizedBox(height: 5),
                             ],

@@ -53,6 +53,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                             .workspaceSlug,
                         projId: projectProvider.currentProject['id'],
                         data: {'estimate': null},
+                        ref: ref
                       ).then((_) {
                         projectProvider.currentProject['estimate'] = null;
                         projectProvider.setState();
@@ -133,6 +134,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                             'estimate': estimatesProvider
                                                 .estimates[index]['id']
                                           },
+                                          ref: ref
                                         ).then((_) {
                                           projectProvider
                                                   .currentProject['estimate'] =

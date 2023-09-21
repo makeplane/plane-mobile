@@ -279,6 +279,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                       primary: false,
                       itemCount: memberprofileProvider
                           .memberProfile['project_data'].length,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemBuilder: (ctx, index) {
                         int assignedIssues =
                             memberprofileProvider.memberProfile['project_data']
@@ -309,8 +310,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                 });
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(top: 15),
                                 child: Row(
                                   children: [
                                     SizedBox(
@@ -326,8 +326,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                           .memberProfile[
                                                       'project_data'][index]
                                                   ['icon_prop']['name']],
-                                              color: themeProvider
-                                                  .themeManager
+                                              color: themeProvider.themeManager
                                                   .primaryTextColor,
                                             )
                                           : CustomText(
@@ -353,9 +352,8 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                       width: 10,
                                     ),
                                     SizedBox(
-                                      width:
-                                          MediaQuery.sizeOf(context).width -
-                                              180,
+                                      width: MediaQuery.sizeOf(context).width -
+                                          180,
                                       child: CustomText(
                                         memberprofileProvider
                                                 .memberProfile['project_data']
@@ -376,12 +374,10 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                                 color: assignedIssues == 0
-                                                    ? themeProvider
-                                                        .themeManager
+                                                    ? themeProvider.themeManager
                                                         .successBackgroundColor
                                                     : percentage <= 35
-                                                        ? const Color
-                                                            .fromRGBO(
+                                                        ? const Color.fromRGBO(
                                                             254, 226, 226, 1)
                                                         : percentage <= 70
                                                             ? themeProvider
@@ -427,15 +423,15 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                 ? Column(
                                     children: [
                                       memberprofileProvider.memberProfile['project_data']
-                                                      [index][memberprofileProvider
-                                                          .projectData[0]
-                                                      ['key']] ==
+                                                          [index][
+                                                      memberprofileProvider
+                                                              .projectData[0]
+                                                          ['key']] ==
                                                   0 &&
                                               memberprofileProvider.memberProfile[
                                                           'project_data'][index]
                                                       [memberprofileProvider
-                                                              .projectData[1]
-                                                          ['key']] ==
+                                                          .projectData[1]['key']] ==
                                                   0
                                           ? Container()
                                           : Padding(
@@ -449,26 +445,26 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                                 .memberProfile[
                                                             'project_data'][index]
                                                         [memberprofileProvider
-                                                                .projectData[
-                                                            0]['key']],
+                                                                .projectData[0]
+                                                            ['key']],
                                                     memberprofileProvider
                                                                 .memberProfile[
                                                             'project_data'][index]
                                                         [memberprofileProvider
-                                                                .projectData[
-                                                            1]['key']],
+                                                                .projectData[1]
+                                                            ['key']],
                                                     memberprofileProvider
                                                                 .memberProfile[
                                                             'project_data'][index]
                                                         [memberprofileProvider
-                                                                .projectData[
-                                                            2]['key']],
+                                                                .projectData[2]
+                                                            ['key']],
                                                     memberprofileProvider
                                                                 .memberProfile[
                                                             'project_data'][index]
                                                         [memberprofileProvider
-                                                                .projectData[
-                                                            3]['key']],
+                                                                .projectData[3]
+                                                            ['key']],
                                                   ],
                                                       itemColors: [
                                                     memberprofileProvider
@@ -507,16 +503,17 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                                     height: 12,
                                                     width: 12,
                                                     decoration: BoxDecoration(
-                                                        color: memberprofileProvider
-                                                                .projectData[
-                                                            i]['color'],
+                                                        color:
+                                                            memberprofileProvider
+                                                                    .projectData[
+                                                                i]['color'],
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(4)),
                                                   ),
                                                   Container(
-                                                    margin: const EdgeInsets
-                                                        .only(),
+                                                    margin:
+                                                        const EdgeInsets.only(),
                                                     child: CustomText(
                                                       memberprofileProvider
                                                               .projectData[i]
@@ -552,7 +549,9 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                                     ],
                                   )
                                 : Container(),
-                                const SizedBox(height: 15,),
+                            const SizedBox(
+                              height: 15,
+                            ),
                             index ==
                                     memberprofileProvider
                                             .memberProfile['project_data']

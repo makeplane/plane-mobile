@@ -164,7 +164,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                       'network': isProjectPublic ? 2 : 0,
                                       'emoji': selectedEmoji,
                                       'icon_prop': null
-                                    });
+                                    },
+                                    ref: ref
+                                  );
                               } else {
                                 projectProvider.updateProject(
                                     slug: ref
@@ -183,7 +185,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         'name': selectedEmoji,
                                         'color': selectedColor,
                                       }
-                                    });
+                                    },
+                                    ref: ref
+                                  );
                               }
                             });
                           }

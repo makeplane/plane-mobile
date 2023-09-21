@@ -433,9 +433,9 @@ class ProjectsProvider extends ChangeNotifier {
       {required String slug,
       required String projId,
       required Map data,
-      WidgetRef? ref}) async {
+      required WidgetRef ref}) async {
     updateProjectState = StateEnum.loading;
-    var workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     notifyListeners();
     log("${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/");
     try {

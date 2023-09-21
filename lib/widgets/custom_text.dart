@@ -70,6 +70,7 @@ class CustomText extends ConsumerWidget {
     this.overflow,
     this.textAlign = TextAlign.start,
     this.type = FontStyle.Medium,
+    this.letterSpacing = 0.0,
     final Key? key,
   }) : super(key: key);
   final String text;
@@ -82,11 +83,16 @@ class CustomText extends ConsumerWidget {
   final FontStyle? type;
   final TextOverflow? overflow;
   final bool? overrride;
+  final double? letterSpacing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    var style = getStyle(type, themeProvider);
+    var style = getStyle(
+      type,
+      themeProvider,
+      letterSpacing
+    );
 
     return Text(
       text.toString(),
@@ -97,19 +103,11 @@ class CustomText extends ConsumerWidget {
     );
   }
 
-  TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider) {
+  TextStyle getStyle(
+      FontStyle? type, ThemeProvider themeProvider, double? letterSpacing) {
     // log(customTextColor.toString());
     return GoogleFonts.inter(
-        letterSpacing: (type != null)
-            // (type == FontStyle.H1 ||
-            //     type == FontStyle.H2 ||
-            //     type == FontStyle.H3 ||
-            //     type == FontStyle.H4 ||
-            //     type == FontStyle.H5 ||
-            //     type == FontStyle.H6
-            //     ))
-            ? -(fontSIZE[type]! * 0.02)
-            : 0,
+        letterSpacing: letterSpacing ?? 0.0,
         height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:

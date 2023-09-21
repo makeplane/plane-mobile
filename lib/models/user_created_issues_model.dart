@@ -263,13 +263,20 @@ class Description {
     this.content,
   });
 
-  factory Description.fromJson(Map<String, dynamic> json) {
-    return Description(
-      type: json['type'],
-      content: (json['content'] as List<dynamic>)
-          .map((content) => Content.fromJson(content))
-          .toList(),
-    );
+  factory Description.fromJson(Map<String, dynamic>? json) {
+    if (json != null) {
+      return Description(
+        type: json['type'],
+        content: json['content'] != null ? (json['content'] as List<dynamic>)
+            .map((content) => Content.fromJson(content))
+            .toList() : [],
+      );
+    } else {
+      return Description(
+        type: json!['type'],
+        content: [],
+      );
+    }
   }
 }
 

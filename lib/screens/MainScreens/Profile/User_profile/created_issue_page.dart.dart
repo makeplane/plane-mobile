@@ -91,6 +91,9 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                 color: themeProvider
                                     .themeManager.borderSubtle01Color),
                             borderRadius: BorderRadius.circular(5),
+                            color: userProfileProvider
+                                          .createdIssues![index].priority ==
+                                      'urgent' ? Colors.red : null
                           ),
                           margin: const EdgeInsets.only(right: 15),
                           height: 30,
@@ -109,7 +112,7 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                       'urgent'
                                   ? const Icon(
                                       Icons.error_outline_rounded,
-                                      color: Colors.orange,
+                                      color: Colors.white,
                                       size: 18,
                                     )
                                   : userProfileProvider
@@ -117,7 +120,7 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                           'high'
                                       ? const Icon(
                                           Icons.signal_cellular_alt,
-                                          color: Colors.orange,
+                                          color: Color.fromRGBO(249, 115, 23,1),
                                           size: 18,
                                         )
                                       : userProfileProvider
@@ -126,12 +129,12 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                               'medium'
                                           ? const Icon(
                                               Icons.signal_cellular_alt_2_bar,
-                                              color: Colors.orange,
+                                              color: Color.fromRGBO(234, 179, 9,1),
                                               size: 18,
                                             )
                                           : const Icon(
                                               Icons.signal_cellular_alt_1_bar,
-                                              color: Colors.orange,
+                                              color: Color.fromRGBO(34, 197, 94,1),
                                               size: 18,
                                             ),
                         ),

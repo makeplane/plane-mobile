@@ -168,7 +168,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             Row(
               children: [
                 CustomText(
-                  'Profile',
+                  'Settings',
                   type: FontStyle.H4,
                   fontWeight: FontWeightt.Semibold,
                   color: themeProvider.themeManager.primaryTextColor,

@@ -10,8 +10,7 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
 class CreatedIssuesPage extends ConsumerStatefulWidget {
-  final String userName;
-  const CreatedIssuesPage({required this.userName, super.key});
+  const CreatedIssuesPage({super.key});
 
   @override
   ConsumerState<CreatedIssuesPage> createState() => _CreatedIssuesPageState();
@@ -38,10 +37,10 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                   SizedBox(
                     width: width * 0.7,
                     child: CustomText(
-                      'Issues created by ${widget.userName} will appear here',
+                      'Issues created by ${userProfileProvider.memberProfile['user_data']['display_name'].toString()} will appear here',
                       textAlign: TextAlign.center,
                       type: FontStyle.Small,
-                      maxLines: 2,
+                      maxLines: 15,
                     ),
                   ),
                 ],

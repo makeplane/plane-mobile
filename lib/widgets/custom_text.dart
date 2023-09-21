@@ -70,7 +70,7 @@ class CustomText extends ConsumerWidget {
     this.overflow,
     this.textAlign = TextAlign.start,
     this.type = FontStyle.Medium,
-    this.letterSpacing = 0.0,
+    this.letterSpacing,
     final Key? key,
   }) : super(key: key);
   final String text;

@@ -14,14 +14,14 @@ import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';
 import 'setup_workspace.dart';
 
-class SignIn extends ConsumerStatefulWidget {
-  const SignIn({super.key});
+class SignInSelfHosted extends ConsumerStatefulWidget {
+  const SignInSelfHosted({super.key});
 
   @override
-  ConsumerState<SignIn> createState() => _SignInState();
+  ConsumerState<SignInSelfHosted> createState() => _SignInSelfHostedState();
 }
 
-class _SignInState extends ConsumerState<SignIn> {
+class _SignInSelfHostedState extends ConsumerState<SignInSelfHosted> {
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
 
   TextEditingController email = TextEditingController();

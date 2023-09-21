@@ -20,7 +20,7 @@ class SelectCycleSheet extends ConsumerStatefulWidget {
 }
 
 class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
-    with WidgetState {
+    with WidgetStateMixin {
   List<dynamic> cycles = [];
   int? selected;
   @override

@@ -1748,18 +1748,31 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           child: InkWell(
                                             onTap: () async {
                                               showModalBottomSheet(
-                                                isScrollControlled: false,
+                                                isScrollControlled: true,
+                                                enableDrag: true,
+                                                constraints: BoxConstraints(
+                                                    maxHeight:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.85),
                                                 backgroundColor:
                                                     Colors.transparent,
                                                 context: context,
-                                                builder: (ctx) =>
-                                                    const IssuesListSheet(
-                                                  // parent: true,
-                                                  type: IssueDetailCategory
-                                                      .parent,
-                                                  issueId: '',
-                                                  createIssue: true,
-                                                  // blocking: false,
+                                                builder: (ctx) => Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom:
+                                                          MediaQuery.of(ctx)
+                                                              .viewInsets
+                                                              .bottom),
+                                                  child: const IssuesListSheet(
+                                                    // parent: true,
+                                                    type: IssueDetailCategory
+                                                        .parent,
+                                                    issueId: '',
+                                                    createIssue: true,
+                                                    // blocking: false,
+                                                  ),
                                                 ),
                                               );
                                             },

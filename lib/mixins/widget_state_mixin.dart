@@ -9,8 +9,9 @@ import 'package:plane/widgets/error_state.dart';
 import '../provider/provider_list.dart';
 import '../utils/enums.dart';
 
-mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
+mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   LoadingType loadingType = LoadingType.none;
+  bool errorAllowed = true;
   late ThemeManager themeManager;
   double? _height;
   int _count = 1;
@@ -32,11 +33,13 @@ mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   }
 
   LoadingType setWidgetState(List<StateEnum> states,
-      {LoadingType loadingType = LoadingType.translucent}) {
+      {LoadingType loadingType = LoadingType.translucent,
+      bool allowError = true}) {
+    errorAllowed = allowError;
     for (var state in states) {
       if (state == StateEnum.loading) {
         return loadingType;
-      } else if (state == StateEnum.error) {
+      } else if (state == StateEnum.error || state == StateEnum.failed) {
         return LoadingType.error;
       }
     }
@@ -48,6 +51,9 @@ mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     themeManager = ref.read(ProviderList.themeProvider).themeManager;
     loadingType = getLoading(ref);
     setHeight();
+    if(loadingType==LoadingType.error && !errorAllowed){
+      loadingType = LoadingType.none;
+    }
     return loadingType == LoadingType.error
         ? errorState(context: context)
         : loadingType == LoadingType.opaque
@@ -74,7 +80,8 @@ mixin WidgetState<T extends ConsumerStatefulWidget> on ConsumerState<T> {
                             loadingType == LoadingType.wrap ? _height : null,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: themeManager.primaryBackgroundDefaultColor.withOpacity(0.3),
+                          color: themeManager.primaryBackgroundDefaultColor
+                              .withOpacity(0.3),
                         ),
                         alignment: Alignment.center,
                         child: SizedBox(

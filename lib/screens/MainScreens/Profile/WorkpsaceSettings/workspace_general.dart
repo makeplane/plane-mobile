@@ -137,7 +137,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                         imageUrl: workspaceProvider.tempLogo,
                                         themeProvider: themeProvider,
                                         workspaceName: workspaceProvider
-                                            .selectedWorkspace!.workspaceName
+                                            .selectedWorkspace.workspaceName
                                             .toString()),
                                   ),
                           ),

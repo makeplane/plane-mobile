@@ -163,11 +163,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (_) => UserProfileScreen(
-                          index: index,
                           userID: workspaceProvider.workspaceMembers[index]
                               ['member']["id"],
-                          userName: workspaceProvider.workspaceMembers[index]
-                              ['member']['display_name'],
                         )),
               );
             },

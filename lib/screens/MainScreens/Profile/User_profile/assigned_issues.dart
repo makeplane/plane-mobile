@@ -11,8 +11,7 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
 class UserAssignedIssuesPage extends ConsumerStatefulWidget {
-  final String userName;
-  const UserAssignedIssuesPage({required this.userName, super.key});
+  const UserAssignedIssuesPage({super.key});
 
   @override
   ConsumerState<UserAssignedIssuesPage> createState() =>
@@ -56,7 +55,7 @@ class _UserAssignedIssuesPageState
                       SizedBox(
                         width: width * 0.7,
                         child: CustomText(
-                          'Issues assigned to ${widget.userName} will appear here',
+                          'Issues assigned to ${userProfileProvider.memberProfile['user_data']['userName'].toString()} will appear here',
                           textAlign: TextAlign.center,
                           type: FontStyle.Small,
                           maxLines: 2,

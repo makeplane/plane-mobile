@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
@@ -53,6 +54,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
         );
   }
 
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var searchIssueProvider = ref.watch(ProviderList.searchIssueProvider);
@@ -102,7 +104,6 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                 topLeft: Radius.circular(30),
               ),
             ),
-            constraints: BoxConstraints(maxHeight: height * 0.7),
             child: searchIssueProvider.searchIssuesState == StateEnum.loading
                 ? Center(
                     child: SizedBox(
@@ -116,7 +117,8 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                       ),
                     ),
                   )
-                : searchIssueProvider.issues.isEmpty
+                : searchIssueProvider.issues.isEmpty &&
+                        _searchController.text.isEmpty
                     ? Column(
                         children: [
                           Row(
@@ -143,7 +145,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                           const Spacer(),
                         ],
                       )
-                    : Column(
+                    : Wrap(
                         children: [
                           Row(
                             children: [
@@ -166,8 +168,9 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                   ))
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          Container(height: 15),
                           TextField(
+                            controller: _searchController,
                             decoration: themeProvider
                                 .themeManager.textFieldDecoration
                                 .copyWith(
@@ -191,34 +194,21 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                     type: widget.type,
                                     issueId: widget.issueId),
                           ),
-                          const SizedBox(
+                          Container(
                             height: 20,
                           ),
-                          Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: searchIssueProvider.issues.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      if (widget.type ==
-                                          IssueDetailCategory.parent) {
-                                        if (widget.createIssue) {
-                                          if (issuesProvider
-                                                  .createIssueParent ==
-                                              searchIssueProvider.issues[index]
-                                                      ['project__identifier'] +
-                                                  '-' +
-                                                  searchIssueProvider
-                                                      .issues[index]
-                                                          ['sequence_id']
-                                                      .toString()) {
-                                            issuesProvider.createIssueParent =
-                                                '';
-                                            issuesProvider.createIssueParentId =
-                                                '';
-                                          } else {
-                                            issuesProvider.createIssueParent =
+                          searchIssueProvider.issues.isNotEmpty
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: searchIssueProvider.issues.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        if (widget.type ==
+                                            IssueDetailCategory.parent) {
+                                          if (widget.createIssue) {
+                                            if (issuesProvider
+                                                    .createIssueParent ==
                                                 searchIssueProvider
                                                             .issues[index][
                                                         'project__identifier'] +
@@ -226,163 +216,200 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                     searchIssueProvider
                                                         .issues[index]
                                                             ['sequence_id']
-                                                        .toString();
-                                            issuesProvider.createIssueParentId =
+                                                        .toString()) {
+                                              issuesProvider.createIssueParent =
+                                                  '';
+                                              issuesProvider
+                                                  .createIssueParentId = '';
+                                            } else {
+                                              issuesProvider.createIssueParent =
+                                                  searchIssueProvider
+                                                              .issues[index][
+                                                          'project__identifier'] +
+                                                      '-' +
+                                                      searchIssueProvider
+                                                          .issues[index]
+                                                              ['sequence_id']
+                                                          .toString();
+                                              issuesProvider
+                                                      .createIssueParentId =
+                                                  searchIssueProvider
+                                                      .issues[index]['id'];
+                                            }
+                                            issuesProvider.setsState();
+                                          } else {
+                                            issueProvider.upDateIssue(
+                                              slug: ref
+                                                  .read(ProviderList
+                                                      .workspaceProvider)
+                                                  .selectedWorkspace
+                                                  .workspaceSlug,
+                                              projID: ref
+                                                  .read(ProviderList
+                                                      .projectProvider)
+                                                  .currentProject['id'],
+                                              issueID: widget.createIssue
+                                                  ? ''
+                                                  : widget.issueId,
+                                              data: {
+                                                "parent": searchIssueProvider
+                                                    .issues[index]['id']
+                                              },
+                                              refs: ref,
+                                            );
+                                          }
+                                          Navigator.of(context).pop();
+                                        }
+                                        if (widget.type ==
+                                            IssueDetailCategory
+                                                .addModuleIssue) {
+                                          if (modulesProvider.selectedIssues
+                                              .contains(searchIssueProvider
+                                                  .issues[index]['id'])) {
+                                            modulesProvider.selectedIssues
+                                                .remove(searchIssueProvider
+                                                    .issues[index]['id']);
+                                          } else {
+                                            modulesProvider.selectedIssues.add(
                                                 searchIssueProvider
-                                                    .issues[index]['id'];
+                                                    .issues[index]['id']);
+                                          }
+                                          modulesProvider.setState();
+                                        }
+                                        if (widget.type ==
+                                            IssueDetailCategory.addCycleIssue) {
+                                          if (cyclesProvider.selectedIssues
+                                              .contains(searchIssueProvider
+                                                  .issues[index]['id'])) {
+                                            cyclesProvider.selectedIssues
+                                                .remove(searchIssueProvider
+                                                    .issues[index]['id']);
+                                          } else {
+                                            cyclesProvider.selectedIssues.add(
+                                                searchIssueProvider
+                                                    .issues[index]['id']);
+                                          }
+                                          cyclesProvider.setState();
+                                        }
+                                        if (widget.type ==
+                                            IssueDetailCategory.subIssue) {
+                                          if (issuesProvider.subIssuesIds
+                                              .contains(searchIssueProvider
+                                                  .issues[index]['id'])) {
+                                            issuesProvider.subIssuesIds.remove(
+                                                searchIssueProvider
+                                                    .issues[index]['id']);
+                                          } else {
+                                            issuesProvider.subIssuesIds.add(
+                                                searchIssueProvider
+                                                    .issues[index]['id']);
                                           }
                                           issuesProvider.setsState();
                                         } else {
-                                          issueProvider.upDateIssue(
-                                            slug: ref
-                                                .read(ProviderList
-                                                    .workspaceProvider)
-                                                .selectedWorkspace
-                                                .workspaceSlug,
-                                            projID: ref
-                                                .read(ProviderList
-                                                    .projectProvider)
-                                                .currentProject['id'],
-                                            issueID: widget.createIssue
-                                                ? ''
-                                                : widget.issueId,
-                                            data: {
-                                              "parent": searchIssueProvider
-                                                  .issues[index]['id']
-                                            },
-                                            refs: ref,
-                                          );
-                                        }
-                                        Navigator.of(context).pop();
-                                      }
-                                      if (widget.type ==
-                                          IssueDetailCategory.addModuleIssue) {
-                                        if (modulesProvider.selectedIssues
-                                            .contains(searchIssueProvider
-                                                .issues[index]['id'])) {
-                                          modulesProvider.selectedIssues.remove(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        } else {
-                                          modulesProvider.selectedIssues.add(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        }
-                                        modulesProvider.setState();
-                                      }
-                                      if (widget.type ==
-                                          IssueDetailCategory.addCycleIssue) {
-                                        if (cyclesProvider.selectedIssues
-                                            .contains(searchIssueProvider
-                                                .issues[index]['id'])) {
-                                          cyclesProvider.selectedIssues.remove(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        } else {
-                                          cyclesProvider.selectedIssues.add(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        }
-                                        cyclesProvider.setState();
-                                      }
-                                      if (widget.type ==
-                                          IssueDetailCategory.subIssue) {
-                                        if (issuesProvider.subIssuesIds
-                                            .contains(searchIssueProvider
-                                                .issues[index]['id'])) {
-                                          issuesProvider.subIssuesIds.remove(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        } else {
-                                          issuesProvider.subIssuesIds.add(
-                                              searchIssueProvider.issues[index]
-                                                  ['id']);
-                                        }
-                                        issuesProvider.setsState();
-                                      } else {
-                                        if (widget.type ==
-                                            IssueDetailCategory.blocking) {
-                                          if (issuesProvider.blockingIssuesIds
-                                              .contains(searchIssueProvider
-                                                  .issues[index]['id'])) {
-                                            issuesProvider.blockingIssuesIds
-                                                .remove(searchIssueProvider
-                                                    .issues[index]['id']);
+                                          if (widget.type ==
+                                              IssueDetailCategory.blocking) {
+                                            if (issuesProvider.blockingIssuesIds
+                                                .contains(searchIssueProvider
+                                                    .issues[index]['id'])) {
+                                              issuesProvider.blockingIssuesIds
+                                                  .remove(searchIssueProvider
+                                                      .issues[index]['id']);
+                                            } else {
+                                              issuesProvider.blockingIssuesIds
+                                                  .add(searchIssueProvider
+                                                      .issues[index]['id']);
+                                            }
                                           } else {
-                                            issuesProvider.blockingIssuesIds
-                                                .add(searchIssueProvider
-                                                    .issues[index]['id']);
+                                            if (issuesProvider
+                                                .blockedByIssuesIds
+                                                .contains(searchIssueProvider
+                                                    .issues[index]['id'])) {
+                                              issuesProvider.blockedByIssuesIds
+                                                  .remove(searchIssueProvider
+                                                      .issues[index]['id']);
+                                            } else {
+                                              issuesProvider.blockedByIssuesIds
+                                                  .add(searchIssueProvider
+                                                      .issues[index]['id']);
+                                            }
                                           }
-                                        } else {
-                                          if (issuesProvider.blockedByIssuesIds
-                                              .contains(searchIssueProvider
-                                                  .issues[index]['id'])) {
-                                            issuesProvider.blockedByIssuesIds
-                                                .remove(searchIssueProvider
-                                                    .issues[index]['id']);
-                                          } else {
-                                            issuesProvider.blockedByIssuesIds
-                                                .add(searchIssueProvider
-                                                    .issues[index]['id']);
-                                          }
+                                          issuesProvider.setsState();
                                         }
-                                        issuesProvider.setsState();
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          widget.type !=
-                                                  IssueDetailCategory.parent
-                                              ? checkBoxWidget(
-                                                  widget.type, index)
-                                              : Container(),
-                                          widget.type !=
-                                                  IssueDetailCategory.parent
-                                              ? const SizedBox(
-                                                  width: 5,
-                                                )
-                                              : Container(),
-                                          CustomText(
-                                            searchIssueProvider.issues[index]
-                                                    ['project__identifier'] +
-                                                '-' +
-                                                searchIssueProvider
-                                                    .issues[index]
-                                                        ['sequence_id']
-                                                    .toString() +
-                                                ' ',
-                                            type: FontStyle.Medium,
-                                            fontWeight: FontWeightt.Regular,
-                                            color: themeProvider
-                                                .themeManager.primaryTextColor,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          SizedBox(
-                                            width: width * 0.6,
-                                            child: CustomText(
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            widget.type !=
+                                                    IssueDetailCategory.parent
+                                                ? checkBoxWidget(
+                                                    widget.type, index)
+                                                : Container(),
+                                            widget.type !=
+                                                    IssueDetailCategory.parent
+                                                ? const SizedBox(
+                                                    width: 5,
+                                                  )
+                                                : Container(),
+                                            CustomText(
                                               searchIssueProvider.issues[index]
-                                                      ['name'] ??
-                                                  '',
+                                                      ['project__identifier'] +
+                                                  '-' +
+                                                  searchIssueProvider
+                                                      .issues[index]
+                                                          ['sequence_id']
+                                                      .toString() +
+                                                  ' ',
                                               type: FontStyle.Medium,
-                                              overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeightt.Regular,
                                               color: themeProvider.themeManager
                                                   .primaryTextColor,
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.6,
+                                              child: CustomText(
+                                                searchIssueProvider
+                                                            .issues[index]
+                                                        ['name'] ??
+                                                    '',
+                                                type: FontStyle.Medium,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontWeight: FontWeightt.Regular,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })
+                              : Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 50,),
+                                    Center(
+                                      child: SvgPicture.asset(
+                                        "assets/svg_images/view_card.svg",
+                                        height: 80,
+                                        width: 80,
                                       ),
                                     ),
-                                  );
-                                }),
-                          ),
+                                    const SizedBox(height: 10,),
+                                    const CustomText(
+                                      'No issues found.',
+                                      type: FontStyle.Medium,
+                                    ),
+                                    const SizedBox(height: 50,),
+                                  ],
+                                ),
                           widget.type != IssueDetailCategory.parent
                               ? Padding(
                                   padding:

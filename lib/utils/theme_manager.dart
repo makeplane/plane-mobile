@@ -381,7 +381,7 @@ class ThemeManager {
                 onSurface: lightPrimaryTextColor))
         : theme == THEME.dark
             ? ThemeData.light().copyWith(
-                dialogBackgroundColor: darkPrimaryBackgroundDefaultColor,
+                dialogBackgroundColor: tertiaryBackgroundDefaultColor,
                 colorScheme: const ColorScheme.light(
                     brightness: Brightness.dark,
                     primary: primaryColor, // primary

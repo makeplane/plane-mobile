@@ -63,7 +63,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     var profileProvider = ref.watch(ProviderList.profileProvider);
     var projectProvider = ref.watch(ProviderList.projectProvider);
     var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
-
     List? overdueIssues = dashboardProvider.dashboardData['overdue_issues'];
     List? upcomingIssues = dashboardProvider.dashboardData['upcoming_issues'];
     List? stateDistribution =
@@ -89,7 +88,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 : Container(),
             const SizedBox(height: 20),
             projectProvider.projects.isEmpty &&
-                    projectProvider.projectState != StateEnum.loading
+                    projectProvider.getProjectState == StateEnum.success
                 ? createProjectWidget(themeProvider, context)
                 : Container(),
             projectProvider.projects.isNotEmpty
@@ -913,10 +912,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     : workspaceProvider.selectedWorkspace.workspaceLogo != ''
                         ? WorkspaceLogoForDiffrentExtensions(
                             imageUrl: workspaceProvider
-                                .selectedWorkspace!.workspaceLogo,
+                                .selectedWorkspace.workspaceLogo,
                             themeProvider: themeProvider,
                             workspaceName: workspaceProvider
-                                .selectedWorkspace!.workspaceName)
+                                .selectedWorkspace.workspaceName)
                         : Container(
                             width: 35,
                             height: 35,

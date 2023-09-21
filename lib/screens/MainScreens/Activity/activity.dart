@@ -227,12 +227,8 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                   Navigator.of(context).push(
                                                                                     MaterialPageRoute(
                                                                                       builder: (_) => UserProfileScreen(
-                                                                                        userID: activityProvider.data[index]["actor_detail"]["id"],
-                                                                                        index: index,
-                                                                                        userName: activityProvider.data[index]['actor_detail']['display_name'],
-                                                                                      ),
-                                                                                    ),
-                                                                                  );
+                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                          ),),);
                                                                                 },
                                                                               style: TextStyle(
                                                                                 color: themeProvider.themeManager.primaryTextColor,
@@ -445,8 +441,6 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                   MaterialPageRoute(
                                                                                     builder: (_) => UserProfileScreen(
                                                                                       userID: activityProvider.data[index]["actor_detail"]["id"],
-                                                                                      index: index,
-                                                                                      userName: activityProvider.data[index]['actor_detail']['display_name'],
                                                                                     ),
                                                                                   ),
                                                                                 );

@@ -13,7 +13,7 @@ import 'package:plane/widgets/loading_widget.dart';
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';
 import 'setup_workspace.dart';
-import 'signIn.dart';
+import 'sign_in_selfhosted.dart';
 
 class SignUp extends ConsumerStatefulWidget {
   const SignUp({super.key});
@@ -270,7 +270,8 @@ class _SignUpState extends ConsumerState<SignUp> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const SignIn(),
+                                    builder: (context) =>
+                                        const SignInSelfHosted(),
                                   ),
                                 );
                               },

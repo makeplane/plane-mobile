@@ -11,8 +11,7 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
 class SubscribesIssuesPage extends ConsumerStatefulWidget {
-  final String userName;
-  const SubscribesIssuesPage({required this.userName, super.key});
+  const SubscribesIssuesPage({super.key});
 
   @override
   ConsumerState<SubscribesIssuesPage> createState() =>
@@ -52,7 +51,7 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                       SizedBox(
                         width: width * 0.7,
                         child: CustomText(
-                          'Issues subscribed by ${widget.userName} will appear here',
+                          'Issues subscribed by ${userProfileProvider.memberProfile['user_data']['display_name'].toString()} will appear here',
                           textAlign: TextAlign.center,
                           type: FontStyle.Small,
                           maxLines: 2,
@@ -80,7 +79,9 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                               issueId: userProfileProvider
                                   .userSubscribedIssues[index].id!,
                               projID: userProfileProvider
-                                  .userSubscribedIssues[index].projectDetail!.id,
+                                  .userSubscribedIssues[index]
+                                  .projectDetail!
+                                  .id,
                             ),
                           ),
                         );

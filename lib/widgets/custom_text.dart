@@ -107,7 +107,7 @@ class CustomText extends ConsumerWidget {
       FontStyle? type, ThemeProvider themeProvider, double? letterSpacing) {
     // log(customTextColor.toString());
     return GoogleFonts.inter(
-        letterSpacing: letterSpacing ?? 0.0,
+        letterSpacing: letterSpacing ?? ((type != null) ? -(fontSIZE[type]! * 0.02) : 0),
         height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:

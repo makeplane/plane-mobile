@@ -113,6 +113,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                         ),
                       ),
                       labelColor: themeProvider.themeManager.primaryColour,
+                      unselectedLabelColor: themeProvider.themeManager.secondaryTextColor,
                       indicatorWeight: 9,
                       splashFactory: NoSplash.splashFactory,
                       onTap: (index) {
@@ -128,10 +129,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                               child: CustomText(
                                 tabs[tabs.indexOf(e)],
                                 type: FontStyle.Medium,
-                                color: tabs.indexOf(e) == currentIndex
-                                    ? themeProvider.themeManager.primaryColour
-                                    : themeProvider
-                                        .themeManager.secondaryTextColor,
                                 overrride: true,
                               ),
                             ),

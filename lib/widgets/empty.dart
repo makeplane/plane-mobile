@@ -867,7 +867,7 @@ class EmptyPlaceholder {
                 padding: const EdgeInsets.only(top: 35),
                 child: CustomText(
                   'No Favorites yet',
-                  type: FontStyle.H5,
+                  type: FontStyle.Medium,
                   fontWeight: FontWeightt.Semibold,
                   color: themeProvider.themeManager.primaryTextColor,
                 ),
@@ -943,7 +943,7 @@ class EmptyPlaceholder {
                 padding: const EdgeInsets.only(top: 35),
                 child: CustomText(
                   'No Projects to Join',
-                  type: FontStyle.H5,
+                  type: FontStyle.Medium,
                   fontWeight: FontWeightt.Semibold,
                   color: themeProvider.themeManager.primaryTextColor,
                 ),

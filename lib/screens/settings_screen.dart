@@ -118,6 +118,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                               // indicatorColor: primaryColor,
                               labelColor:
                                   themeProvider.themeManager.primaryColour,
+                                  unselectedLabelColor: themeProvider.themeManager.secondaryTextColor,
                               indicatorWeight: 9,
                               splashFactory: NoSplash.splashFactory,
                               onTap: (index) {
@@ -133,11 +134,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                                       child: CustomText(
                                         tabs[tabs.indexOf(e)],
                                         type: FontStyle.Medium,
-                                        color: tabs.indexOf(e) == selectedIndex
-                                            ? themeProvider
-                                                .themeManager.primaryColour
-                                            : themeProvider.themeManager
-                                                .secondaryTextColor,
                                         overrride: true,
                                       ),
                                     ),
@@ -247,7 +243,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                   width: double.infinity,
                   // color: themeProvider.secondaryBackgroundColor,
                 ),
-
                 // SizedBox(
                 //   //padding: const EdgeInsets.symmetric(horizontal: 20),
                 //   // color: themeProvider.backgroundColor,

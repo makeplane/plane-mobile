@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/company_size_sheet.dart';
 import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
@@ -553,7 +554,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               ),
                             );
                           },
-                          color: const Color.fromRGBO(254, 242, 242, 1),
+                          color: (themeProvider.theme == THEME.dark || themeProvider.theme == THEME.darkHighContrast || (themeProvider.theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark)) ? const Color.fromRGBO(95, 21, 21, 1) : const Color.fromRGBO(254, 242, 242, 1),
                           textColor: themeProvider.themeManager.textErrorColor,
                           filledButton: false,
                           borderColor:

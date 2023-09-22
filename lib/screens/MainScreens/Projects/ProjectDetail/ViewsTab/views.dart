@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/bottom_sheets/delete_cycle_sheet.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -174,6 +175,7 @@ class _ViewsState extends ConsumerState<Views> {
                                     ),
                         ),
                       ),
+                      const SizedBox(width: 10,),
                       GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
@@ -200,9 +202,10 @@ class _ViewsState extends ConsumerState<Views> {
                           );
                         },
                         child: Icon(
-                          Icons.more_vert,
+                          LucideIcons.trash2,
                           color:
-                              themeProvider.themeManager.placeholderTextColor,
+                              themeProvider.themeManager.textErrorColor,
+                          size: 20,
                         ),
                       ),
                       const SizedBox(width: 8),

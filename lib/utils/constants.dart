@@ -227,6 +227,20 @@ const darkSucessBackground = Color.fromRGBO(34, 197, 94, 0.15);
 const lightShadowColorXS = Color.fromRGBO(0, 0, 0, 0.16);
 const darkShadowColorXS = Color.fromRGBO(0, 0, 0, 0.2);
 
+const Color toastDefaultColorlight = Color.fromRGBO(236, 241, 255, 1);
+const Color toastSuccessColorlight = Color.fromRGBO(240, 253, 244, 1);
+const Color toastWarningColorlight = Color.fromRGBO(255, 251, 235, 1);
+const Color toastErrorCololight = Color.fromRGBO(254, 242, 242, 1);
+const Color toastDefaultBorderColor = Color.fromRGBO(63, 118, 255, 1);
+const Color toastSuccessBorderColor = Color.fromRGBO(34, 197, 94, 1);
+const Color toastWarningBorderColor = Color.fromRGBO(245, 158, 11, 1);
+const Color toastErrorBorderColor = Color.fromRGBO(220, 38, 38, 1);
+
+const Color toastDefaultColorDark = Color.fromRGBO(16, 28, 60, 1);
+const Color toastSuccessColorDark = Color.fromRGBO(10, 51, 27, 1);
+const Color toastkWarningColorDark = Color.fromRGBO(72, 31, 7, 1);
+const Color toastErrorColorDark = Color.fromRGBO(95, 21, 21, 1);
+
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
       fontFamily: 'SF Pro Display',

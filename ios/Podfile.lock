@@ -1,9 +1,9 @@
 PODS:
-  - AppAuth (1.6.1):
-    - AppAuth/Core (= 1.6.1)
-    - AppAuth/ExternalUserAgent (= 1.6.1)
-  - AppAuth/Core (1.6.1)
-  - AppAuth/ExternalUserAgent (1.6.1):
+  - AppAuth (1.6.2):
+    - AppAuth/Core (= 1.6.2)
+    - AppAuth/ExternalUserAgent (= 1.6.2)
+  - AppAuth/Core (1.6.2)
+  - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
   - connectivity_plus (0.0.1):
     - Flutter
@@ -75,6 +75,8 @@ PODS:
   - GTMSessionFetcher/Core (2.3.0)
   - image_picker_ios (0.0.1):
     - Flutter
+  - integration_test (0.0.1):
+    - Flutter
   - OrderedSet (5.0.0)
   - package_info_plus (0.4.5):
     - Flutter
@@ -86,16 +88,16 @@ PODS:
     - Flutter
     - PostHog (~> 2.0)
   - ReachabilitySwift (5.0.0)
-  - SDWebImage (5.15.5):
-    - SDWebImage/Core (= 5.15.5)
-  - SDWebImage/Core (5.15.5)
-  - Sentry/HybridSDK (8.9.1):
-    - SentryPrivate (= 8.9.1)
+  - SDWebImage (5.18.1):
+    - SDWebImage/Core (= 5.18.1)
+  - SDWebImage/Core (5.18.1)
+  - Sentry/HybridSDK (8.11.0):
+    - SentryPrivate (= 8.11.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.9.1)
-  - SentryPrivate (8.9.1)
+    - Sentry/HybridSDK (= 8.11.0)
+  - SentryPrivate (8.11.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -118,6 +120,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - posthog_flutter (from `.symlinks/plugins/posthog_flutter/ios`)
@@ -165,6 +168,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -181,7 +186,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
+  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   connectivity_plus: 07c49e96d7fc92bc9920617b83238c4d178b446a
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
@@ -198,16 +203,17 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  integration_test: 13825b8a9334a850581300559b8839134b124670
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PostHog: f9e5c13ceea86bb5314218c85d16125b797eb332
   posthog_flutter: 080dc6e4638a25095095965517ca84ce85581ef0
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDWebImage: fd7e1a22f00303e058058278639bf6196ee431fe
-  Sentry: e3203780941722a1fcfee99e351de14244c7f806
-  sentry_flutter: 8f0ffd53088e6a4d50c095852c5cad9e4405025c
-  SentryPrivate: 5e3683390f66611fc7c6215e27645873adb55d13
+  SDWebImage: ebdbcebc7933a45226d9313bd0118bc052ad458b
+  Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
+  sentry_flutter: b2feefdad5b0f06602347172bc7257e8e9da5562
+  SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
@@ -216,4 +222,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

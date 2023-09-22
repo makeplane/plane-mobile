@@ -132,7 +132,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         ? customNavBarTextColor
                                         : (themeProvider
                                             .themeManager.placeholderTextColor),
-                                fontWeight: bottomNavProvider.selectedIndex == i ? FontWeightt.Bold : FontWeightt.Medium,
+                                fontWeight: bottomNavProvider.selectedIndex == i
+                                    ? FontWeightt.Bold
+                                    : FontWeightt.Medium,
                                 fontSize: 11,
                                 letterSpacing: 0.2,
                               ),

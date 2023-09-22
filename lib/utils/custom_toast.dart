@@ -74,7 +74,7 @@ class CustomToast {
                 message,
                 type: FontStyle.Small,
                 fontWeight: FontWeightt.Medium,
-                color: Colors.black,
+                color: (themeManager!.theme == THEME.dark || themeManager!.theme == THEME.darkHighContrast) ? Colors.white : Colors.black,
                 maxLines: 3,
                 overflow: TextOverflow.visible,
               ),

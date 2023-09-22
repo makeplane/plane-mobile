@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/bottom_sheets/delete_cycle_sheet.dart';
 import 'package:plane/utils/string_manager.dart';
 import '/utils/enums.dart';
@@ -223,36 +224,40 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                         .themeManager.placeholderTextColor),
                               ),
                       ),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height *
-                                          0.50),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            enableDrag: true,
+                            constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.50),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
                               ),
-                              context: context,
-                              builder: (ctx) {
-                                return DeleteCycleSheet(
-                                  id: modulesProvider.modules[widget.index]
-                                      ['id'],
-                                  name: modulesProvider.modules[widget.index]
-                                      ['name'],
-                                  type: 'Module',
-                                );
-                              },
-                            );
-                          },
-                          child: Icon(Icons.more_vert,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor)),
+                            ),
+                            context: context,
+                            builder: (ctx) {
+                              return DeleteCycleSheet(
+                                id: modulesProvider.modules[widget.index]['id'],
+                                name: modulesProvider.modules[widget.index]
+                                    ['name'],
+                                type: 'Module',
+                              );
+                            },
+                          );
+                        },
+                        child: Icon(
+                          LucideIcons.trash2,
+                          color: themeProvider.themeManager.textErrorColor,
+                          size: 20,
+                        ),
+                      ),
                     ],
                   )
                 ],

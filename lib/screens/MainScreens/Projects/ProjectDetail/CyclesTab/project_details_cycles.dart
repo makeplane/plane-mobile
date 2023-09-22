@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_active_card.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane/utils/enums.dart';
@@ -269,7 +270,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -285,7 +286,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -570,7 +571,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                           null
                                                   ? Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -586,7 +587,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                     )
                                                   : Container(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 10,
                                                           vertical: 5),
                                                       decoration: BoxDecoration(
@@ -732,10 +733,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 },
                                               );
                                             },
-                                            child: Icon(Icons.more_vert,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor),
+                                            child: Icon(
+                                              LucideIcons.trash2,
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor,
+                                              size: 20,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -1317,10 +1320,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 },
                                               );
                                             },
-                                            child: Icon(Icons.more_vert,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor),
+                                            child: Icon(
+                                              LucideIcons.trash2,
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor,
+                                              size: 20,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -1876,10 +1881,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 },
                                               );
                                             },
-                                            child: Icon(Icons.more_vert,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor),
+                                            child: Icon(
+                                              LucideIcons.trash2,
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor,
+                                              size: 20,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -2500,10 +2507,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                                 },
                                               );
                                             },
-                                            child: Icon(Icons.more_vert,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .placeholderTextColor),
+                                            child: Icon(
+                                              LucideIcons.trash2,
+                                              color: themeProvider
+                                                  .themeManager.textErrorColor,
+                                              size: 20,
+                                            ),
                                           ),
                                         ],
                                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
@@ -41,6 +42,15 @@ class ThemeManager {
   late Color primaryToastBackgroundColor;
   late Color successBackgroundColor;
 
+  late Color toastDefaultColor;
+  late Color toastSuccessColor;
+  late Color toastWarningColor;
+  late Color toastErrorColor;
+  late Color toastDefaultBorderColor = const Color.fromRGBO(63, 118, 255, 1);
+  late Color toastSuccessBorderColor = const Color.fromRGBO(34, 197, 94, 1);
+  late Color toastWarningBorderColor = const Color.fromRGBO(245, 158, 11, 1);
+  late Color toastErrorBorderColor = const Color.fromRGBO(220, 38, 38, 1);
+
   late Color shadowColorXS;
   late List<BoxShadow> shadowXXS;
   late List<BoxShadow> shadowBottomControlButtons;
@@ -48,14 +58,6 @@ class ThemeManager {
   late ThemeData datePickerThemeData;
   late ThemeData timePickerThemeData;
 
-  Color toastDefaultColor = const Color.fromRGBO(236, 241, 255, 1);
-  Color toastSuccessColor = const Color.fromRGBO(240, 253, 244, 1);
-  Color toastWarningColor = const Color.fromRGBO(255, 251, 235, 1);
-  Color toastErrorColor = const Color.fromRGBO(254, 242, 242, 1);
-  Color toastDefaultBorderColor = const Color.fromRGBO(63, 118, 255, 1);
-  Color toastSuccessBorderColor = const Color.fromRGBO(34, 197, 94, 1);
-  Color toastWarningBorderColor = const Color.fromRGBO(245, 158, 11, 1);
-  Color toastErrorBorderColor = const Color.fromRGBO(220, 38, 38, 1);
   // Color toastDefaultColor = Color.fromRGBO(236, 241, 255, 1);
 
   Color convertHexToSpecificShade({required int shade, required Color color}) {
@@ -138,6 +140,29 @@ class ThemeManager {
                     ? lightBorderDisabledColor
                     : convertHexToSpecificShade(
                         shade: 150, color: customBackgroundColor);
+    toastDefaultColor =
+        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark))
+            ? toastDefaultColorDark
+            : toastDefaultColorlight;
+
+    toastSuccessColor =
+        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark))
+            ? toastSuccessColorDark
+            : toastSuccessColorlight;
+
+    toastWarningColor =
+        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark))
+            ? toastkWarningColorDark
+            : toastWarningColorlight;
+
+    toastErrorColor =
+        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark))
+            ? toastErrorColorDark 
+            : toastErrorCololight;
 
     textFieldTextStyle = GoogleFonts.inter(
         fontSize: 14,

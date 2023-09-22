@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/select_workspace.dart';
 import 'package:plane/provider/profile_provider.dart';
@@ -268,7 +269,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Button(
                 ontap: _onLogout,
                 text: 'Logout',
-                color: const Color.fromRGBO(254, 242, 242, 1),
+                color: (themeProvider.theme == THEME.dark || themeProvider.theme == THEME.darkHighContrast || (themeProvider.theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark)) ? const Color.fromRGBO(95, 21, 21, 1) : const Color.fromRGBO(254, 242, 242, 1),
                 textColor: themeProvider.themeManager.textErrorColor,
                 filledButton: false,
                 borderColor: themeProvider.themeManager.textErrorColor,

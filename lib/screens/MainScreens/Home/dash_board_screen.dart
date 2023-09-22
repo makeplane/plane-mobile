@@ -819,6 +819,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         plotAreaBorderColor: Colors.transparent,
                         series: <ChartSeries>[
                           LineSeries<IssuesClosedPerMonth, int>(
+                              width: 1,
                               name: 'Completed issues',
                               markerSettings: const MarkerSettings(
                                   isVisible: true,

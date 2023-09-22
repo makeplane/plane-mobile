@@ -148,7 +148,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                             height: 1,
                             margin: const EdgeInsets.only(top: 10, bottom: 5),
                             color:
-                                themeProvider.themeManager.borderSubtle01Color)
+                                themeProvider.themeManager.borderDisabledColor)
                       ],
                     ),
                   ),

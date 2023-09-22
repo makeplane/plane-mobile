@@ -270,6 +270,10 @@ class EmptyPlaceholder {
               ? GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.85,
+                        minHeight: MediaQuery.of(context).size.height * 0.5,
+                      ),
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       context: context,

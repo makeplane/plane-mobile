@@ -145,14 +145,21 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                           const Spacer(),
                         ],
                       )
-                    : Wrap(
+                    : Column(
                         children: [
                           Row(
                             children: [
                               CustomText(
                                 widget.type == IssueDetailCategory.parent
                                     ? 'Add parent'
-                                    : 'Add sub issues',
+                                    : widget.type ==
+                                            IssueDetailCategory.addCycleIssue
+                                        ? 'Add cycle issues'
+                                        : widget.type ==
+                                                IssueDetailCategory
+                                                    .addModuleIssue
+                                            ? 'Add module issues'
+                                            : 'Add sub issues',
                                 type: FontStyle.H4,
                                 fontWeight: FontWeightt.Semibold,
                                 color:
@@ -198,31 +205,185 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                             height: 20,
                           ),
                           searchIssueProvider.issues.isNotEmpty
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: searchIssueProvider.issues.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        if (widget.type ==
-                                            IssueDetailCategory.parent) {
-                                          if (widget.createIssue) {
-                                            if (issuesProvider
-                                                    .createIssueParent ==
-                                                searchIssueProvider
-                                                            .issues[index][
-                                                        'project__identifier'] +
-                                                    '-' +
+                              ? Expanded(
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          searchIssueProvider.issues.length,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            if (widget.type ==
+                                                IssueDetailCategory.parent) {
+                                              if (widget.createIssue) {
+                                                if (issuesProvider
+                                                        .createIssueParent ==
                                                     searchIssueProvider
-                                                        .issues[index]
-                                                            ['sequence_id']
-                                                        .toString()) {
-                                              issuesProvider.createIssueParent =
-                                                  '';
-                                              issuesProvider
-                                                  .createIssueParentId = '';
+                                                                .issues[index][
+                                                            'project__identifier'] +
+                                                        '-' +
+                                                        searchIssueProvider
+                                                            .issues[index]
+                                                                ['sequence_id']
+                                                            .toString()) {
+                                                  issuesProvider
+                                                      .createIssueParent = '';
+                                                  issuesProvider
+                                                      .createIssueParentId = '';
+                                                } else {
+                                                  issuesProvider
+                                                          .createIssueParent =
+                                                      searchIssueProvider
+                                                                  .issues[index]
+                                                              [
+                                                              'project__identifier'] +
+                                                          '-' +
+                                                          searchIssueProvider
+                                                              .issues[index][
+                                                                  'sequence_id']
+                                                              .toString();
+                                                  issuesProvider
+                                                          .createIssueParentId =
+                                                      searchIssueProvider
+                                                          .issues[index]['id'];
+                                                }
+                                                issuesProvider.setsState();
+                                              } else {
+                                                issueProvider.upDateIssue(
+                                                  slug: ref
+                                                      .read(ProviderList
+                                                          .workspaceProvider)
+                                                      .selectedWorkspace
+                                                      .workspaceSlug,
+                                                  projID: ref
+                                                      .read(ProviderList
+                                                          .projectProvider)
+                                                      .currentProject['id'],
+                                                  issueID: widget.createIssue
+                                                      ? ''
+                                                      : widget.issueId,
+                                                  data: {
+                                                    "parent":
+                                                        searchIssueProvider
+                                                            .issues[index]['id']
+                                                  },
+                                                  refs: ref,
+                                                );
+                                              }
+                                              Navigator.of(context).pop();
+                                            }
+                                            if (widget.type ==
+                                                IssueDetailCategory
+                                                    .addModuleIssue) {
+                                              if (modulesProvider.selectedIssues
+                                                  .contains(searchIssueProvider
+                                                      .issues[index]['id'])) {
+                                                modulesProvider.selectedIssues
+                                                    .remove(searchIssueProvider
+                                                        .issues[index]['id']);
+                                              } else {
+                                                modulesProvider.selectedIssues
+                                                    .add(searchIssueProvider
+                                                        .issues[index]['id']);
+                                              }
+                                              modulesProvider.setState();
+                                            }
+                                            if (widget.type ==
+                                                IssueDetailCategory
+                                                    .addCycleIssue) {
+                                              if (cyclesProvider.selectedIssues
+                                                  .contains(searchIssueProvider
+                                                      .issues[index]['id'])) {
+                                                cyclesProvider.selectedIssues
+                                                    .remove(searchIssueProvider
+                                                        .issues[index]['id']);
+                                              } else {
+                                                cyclesProvider.selectedIssues
+                                                    .add(searchIssueProvider
+                                                        .issues[index]['id']);
+                                              }
+                                              cyclesProvider.setState();
+                                            }
+                                            if (widget.type ==
+                                                IssueDetailCategory.subIssue) {
+                                              if (issuesProvider.subIssuesIds
+                                                  .contains(searchIssueProvider
+                                                      .issues[index]['id'])) {
+                                                issuesProvider.subIssuesIds
+                                                    .remove(searchIssueProvider
+                                                        .issues[index]['id']);
+                                              } else {
+                                                issuesProvider.subIssuesIds.add(
+                                                    searchIssueProvider
+                                                        .issues[index]['id']);
+                                              }
+                                              issuesProvider.setsState();
                                             } else {
-                                              issuesProvider.createIssueParent =
+                                              if (widget.type ==
+                                                  IssueDetailCategory
+                                                      .blocking) {
+                                                if (issuesProvider
+                                                    .blockingIssuesIds
+                                                    .contains(
+                                                        searchIssueProvider
+                                                                .issues[index]
+                                                            ['id'])) {
+                                                  issuesProvider
+                                                      .blockingIssuesIds
+                                                      .remove(
+                                                          searchIssueProvider
+                                                                  .issues[index]
+                                                              ['id']);
+                                                } else {
+                                                  issuesProvider
+                                                      .blockingIssuesIds
+                                                      .add(searchIssueProvider
+                                                          .issues[index]['id']);
+                                                }
+                                              } else {
+                                                if (issuesProvider
+                                                    .blockedByIssuesIds
+                                                    .contains(
+                                                        searchIssueProvider
+                                                                .issues[index]
+                                                            ['id'])) {
+                                                  issuesProvider
+                                                      .blockedByIssuesIds
+                                                      .remove(
+                                                          searchIssueProvider
+                                                                  .issues[index]
+                                                              ['id']);
+                                                } else {
+                                                  issuesProvider
+                                                      .blockedByIssuesIds
+                                                      .add(searchIssueProvider
+                                                          .issues[index]['id']);
+                                                }
+                                              }
+                                              issuesProvider.setsState();
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                widget.type !=
+                                                        IssueDetailCategory
+                                                            .parent
+                                                    ? checkBoxWidget(
+                                                        widget.type, index)
+                                                    : Container(),
+                                                widget.type !=
+                                                        IssueDetailCategory
+                                                            .parent
+                                                    ? const SizedBox(
+                                                        width: 5,
+                                                      )
+                                                    : Container(),
+                                                CustomText(
                                                   searchIssueProvider
                                                               .issues[index][
                                                           'project__identifier'] +
@@ -230,171 +391,47 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                       searchIssueProvider
                                                           .issues[index]
                                                               ['sequence_id']
-                                                          .toString();
-                                              issuesProvider
-                                                      .createIssueParentId =
-                                                  searchIssueProvider
-                                                      .issues[index]['id'];
-                                            }
-                                            issuesProvider.setsState();
-                                          } else {
-                                            issueProvider.upDateIssue(
-                                              slug: ref
-                                                  .read(ProviderList
-                                                      .workspaceProvider)
-                                                  .selectedWorkspace
-                                                  .workspaceSlug,
-                                              projID: ref
-                                                  .read(ProviderList
-                                                      .projectProvider)
-                                                  .currentProject['id'],
-                                              issueID: widget.createIssue
-                                                  ? ''
-                                                  : widget.issueId,
-                                              data: {
-                                                "parent": searchIssueProvider
-                                                    .issues[index]['id']
-                                              },
-                                              refs: ref,
-                                            );
-                                          }
-                                          Navigator.of(context).pop();
-                                        }
-                                        if (widget.type ==
-                                            IssueDetailCategory
-                                                .addModuleIssue) {
-                                          if (modulesProvider.selectedIssues
-                                              .contains(searchIssueProvider
-                                                  .issues[index]['id'])) {
-                                            modulesProvider.selectedIssues
-                                                .remove(searchIssueProvider
-                                                    .issues[index]['id']);
-                                          } else {
-                                            modulesProvider.selectedIssues.add(
-                                                searchIssueProvider
-                                                    .issues[index]['id']);
-                                          }
-                                          modulesProvider.setState();
-                                        }
-                                        if (widget.type ==
-                                            IssueDetailCategory.addCycleIssue) {
-                                          if (cyclesProvider.selectedIssues
-                                              .contains(searchIssueProvider
-                                                  .issues[index]['id'])) {
-                                            cyclesProvider.selectedIssues
-                                                .remove(searchIssueProvider
-                                                    .issues[index]['id']);
-                                          } else {
-                                            cyclesProvider.selectedIssues.add(
-                                                searchIssueProvider
-                                                    .issues[index]['id']);
-                                          }
-                                          cyclesProvider.setState();
-                                        }
-                                        if (widget.type ==
-                                            IssueDetailCategory.subIssue) {
-                                          if (issuesProvider.subIssuesIds
-                                              .contains(searchIssueProvider
-                                                  .issues[index]['id'])) {
-                                            issuesProvider.subIssuesIds.remove(
-                                                searchIssueProvider
-                                                    .issues[index]['id']);
-                                          } else {
-                                            issuesProvider.subIssuesIds.add(
-                                                searchIssueProvider
-                                                    .issues[index]['id']);
-                                          }
-                                          issuesProvider.setsState();
-                                        } else {
-                                          if (widget.type ==
-                                              IssueDetailCategory.blocking) {
-                                            if (issuesProvider.blockingIssuesIds
-                                                .contains(searchIssueProvider
-                                                    .issues[index]['id'])) {
-                                              issuesProvider.blockingIssuesIds
-                                                  .remove(searchIssueProvider
-                                                      .issues[index]['id']);
-                                            } else {
-                                              issuesProvider.blockingIssuesIds
-                                                  .add(searchIssueProvider
-                                                      .issues[index]['id']);
-                                            }
-                                          } else {
-                                            if (issuesProvider
-                                                .blockedByIssuesIds
-                                                .contains(searchIssueProvider
-                                                    .issues[index]['id'])) {
-                                              issuesProvider.blockedByIssuesIds
-                                                  .remove(searchIssueProvider
-                                                      .issues[index]['id']);
-                                            } else {
-                                              issuesProvider.blockedByIssuesIds
-                                                  .add(searchIssueProvider
-                                                      .issues[index]['id']);
-                                            }
-                                          }
-                                          issuesProvider.setsState();
-                                        }
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            widget.type !=
-                                                    IssueDetailCategory.parent
-                                                ? checkBoxWidget(
-                                                    widget.type, index)
-                                                : Container(),
-                                            widget.type !=
-                                                    IssueDetailCategory.parent
-                                                ? const SizedBox(
-                                                    width: 5,
-                                                  )
-                                                : Container(),
-                                            CustomText(
-                                              searchIssueProvider.issues[index]
-                                                      ['project__identifier'] +
-                                                  '-' +
-                                                  searchIssueProvider
-                                                      .issues[index]
-                                                          ['sequence_id']
-                                                      .toString() +
-                                                  ' ',
-                                              type: FontStyle.Medium,
-                                              fontWeight: FontWeightt.Regular,
-                                              color: themeProvider.themeManager
-                                                  .primaryTextColor,
+                                                          .toString() +
+                                                      ' ',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight:
+                                                      FontWeightt.Regular,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryTextColor,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                SizedBox(
+                                                  width: width * 0.6,
+                                                  child: CustomText(
+                                                    searchIssueProvider
+                                                                .issues[index]
+                                                            ['name'] ??
+                                                        '',
+                                                    type: FontStyle.Medium,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    fontWeight:
+                                                        FontWeightt.Regular,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .primaryTextColor,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                              width: width * 0.6,
-                                              child: CustomText(
-                                                searchIssueProvider
-                                                            .issues[index]
-                                                        ['name'] ??
-                                                    '',
-                                                type: FontStyle.Medium,
-                                                overflow: TextOverflow.ellipsis,
-                                                fontWeight: FontWeightt.Regular,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryTextColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  })
+                                          ),
+                                        );
+                                      }),
+                                )
                               : Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const SizedBox(height: 50,),
+                                    const SizedBox(
+                                      height: 50,
+                                    ),
                                     Center(
                                       child: SvgPicture.asset(
                                         "assets/svg_images/view_card.svg",
@@ -402,12 +439,16 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                         width: 80,
                                       ),
                                     ),
-                                    const SizedBox(height: 10,),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     const CustomText(
                                       'No issues found.',
                                       type: FontStyle.Medium,
                                     ),
-                                    const SizedBox(height: 50,),
+                                    const SizedBox(
+                                      height: 50,
+                                    ),
                                   ],
                                 ),
                           widget.type != IssueDetailCategory.parent

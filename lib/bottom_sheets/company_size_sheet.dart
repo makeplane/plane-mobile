@@ -76,12 +76,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           SizedBox(
             height: 50,
@@ -118,12 +116,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           SizedBox(
             height: 50,
@@ -160,12 +156,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           SizedBox(
             height: 50,
@@ -202,12 +196,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           SizedBox(
             height: 50,
@@ -244,12 +236,10 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             height: 1,
             width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
+            color: themeProvider.themeManager.borderDisabledColor,
           ),
           SizedBox(
             height: 50,

@@ -139,7 +139,7 @@ class _IssueDetailMoudlesListState
                             height: 1,
                             margin: const EdgeInsets.only(bottom: 5, top: 10),
                             color:
-                                themeProvider.themeManager.borderSubtle01Color)
+                                themeProvider.themeManager.borderDisabledColor)
                       ],
                     ),
                   ),

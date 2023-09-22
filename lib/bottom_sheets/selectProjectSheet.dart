@@ -121,7 +121,7 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                                           width: width,
                                           height: 1,
                                           color: themeProvider.themeManager
-                                              .borderSubtle01Color),
+                                              .borderDisabledColor),
                                     ],
                                   ),
                                 ),

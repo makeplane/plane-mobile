@@ -33,26 +33,20 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
   void initState() {
     super.initState();
     generateEmojis();
-    colorController.text = colorHex[0].toString().replaceAll('#', '');
+    colorController.text = colorsForLabel[0].toString().replaceAll('#', '');
   }
 
   final TextEditingController colorController = TextEditingController();
   String selectedColor = '#3A3A3A';
 
-  List<String> colorHex = [
-    //12 random colors,
-    '#FF6B00',
-    '#FF9E9E',
-    '#F7AE59',
-    '#D687FF',
-    '#3F76FF',
-    '#F565F5',
-    '#F47F21',
-    '#FF00500',
-    '#00FF00',
-    '#0000FF',
-    '#FFFF00',
-    '#00FFFF',
+  List<String> topColors = [
+    "#ff6b00",
+    "#8cc1ff",
+    "#fcbe1d",
+    "#18904f",
+    "#adf672",
+    "#05c3ff",
+    "#000000",
   ];
 
   @override
@@ -112,111 +106,25 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#FF6B00';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFFFF6B00')),
-                                borderRadius: BorderRadius.circular(25),
+                          ...topColors.map((e) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedColor = e;
+                                });
+                              },
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                  color: Color(int.parse(
+                                      "FF${e.toString().toUpperCase().replaceAll("#", "")}",
+                                      radix: 16)),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
                               ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#FF9E9E';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFFFF9E9E')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#F7AE59';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFFF7AE59')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#D687FF';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFFD687FF')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#3F76FF';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFF3F76FF')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#F5F5F5';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFFF5F5F5')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = '#000000';
-                              });
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Color(int.parse('0xFF000000')),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
+                            );
+                          }).toList(),
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -234,10 +142,8 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                                   colors: [
                                     Colors.yellow,
                                     Colors.red,
-                                    Colors.blue,
                                     Colors.green,
-                                    Colors.pink,
-                                    Colors.purple,
+                                    Colors.blue,
                                   ],
                                 ),
                                 borderRadius: BorderRadius.circular(25),
@@ -305,7 +211,7 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                                           alignment: WrapAlignment.start,
                                           runAlignment: WrapAlignment.start,
                                           spacing: 5,
-                                          children: colorHex
+                                          children: colorsForLabel
                                               .map(
                                                 (e) => GestureDetector(
                                                   onTap: () {
@@ -356,7 +262,7 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                                           children: [
                                             Container(
                                               width: 55,
-                                              height: 60,
+                                              height: 50,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                   color: int.tryParse("FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}", radix: 16) == null ||
@@ -364,13 +270,12 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                                                               .trim()
                                                               .isEmpty
                                                       ? Color(int.parse(
-                                                          colorHex[0]
+                                                          colorsForLabel[0]
                                                               .toUpperCase()
                                                               .replaceAll(
                                                                   "#", "FF"),
                                                           radix: 16))
-                                                      : Color(int.parse(
-                                                          "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
+                                                      : Color(int.parse("FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
                                                           radix: 16)),
                                                   borderRadius: const BorderRadius.only(
                                                       topLeft: Radius.circular(8),

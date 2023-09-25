@@ -1363,7 +1363,10 @@ class IssuesProvider extends ChangeNotifier {
           Issues.toOrderBY(issueView["display_filters"]["order_by"]);
       issues.issueType =
           Issues.toIssueType(issueView["display_filters"]["type"]);
-      issues.filters.priorities = issueView["filters"]["priority"] ?? [];
+      issues.filters.priorities = (issueView["filters"]["priority"] == 'none'
+              ? []
+              : issueView["filters"]["priority"]) ??
+          [];
       issues.filters.states = issueView["filters"]["state"] ?? [];
       issues.filters.assignees = issueView["filters"]["assignees"] ?? [];
       issues.filters.createdBy = issueView["filters"]["created_by"] ?? [];

@@ -39,59 +39,26 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(width: 35, child: cycleCardIcon(themeProvider)),
-            cycleCardName(),
+            SizedBox(width: 35, child: cycleIcon(themeProvider)),
+            cycleNameText(),
             const Spacer(),
-            cycleCardFavoriting(cyclesProvider, themeProvider),
+            favoritingButton(cyclesProvider, themeProvider),
             const SizedBox(width: 10),
-            cycleCardDeleting(context, themeProvider),
+            deleteButton(context, themeProvider),
           ],
         ),
         const SizedBox(height: 10),
         Row(
           children: [
             const SizedBox(width: 35),
-            cycleCardType(themeProvider),
+            cycleType(themeProvider),
           ],
         ),
       ],
     );
-
-    // Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     Row(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         cycleCardIcon(themeProvider),
-    //         const SizedBox(width: 10),
-    //         Column(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: [
-    //             cycleCardName(),
-    //             const SizedBox(
-    //               height: 14,
-    //             ),
-    //             cycleCardType(themeProvider),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //     Row(
-    //       children: [
-    //         cycleCardFavoriting(cyclesProvider, themeProvider),
-    //         const SizedBox(
-    //           width: 10,
-    //         ),
-    //         cycleCardDeleting(context, themeProvider),
-    //       ],
-    //     ),
-    //   ],
-    // );
   }
 
-  InkWell cycleCardDeleting(BuildContext context, ThemeProvider themeProvider) {
+  InkWell deleteButton(BuildContext context, ThemeProvider themeProvider) {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
@@ -123,7 +90,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     );
   }
 
-  SizedBox cycleCardFavoriting(
+  SizedBox favoritingButton(
       CyclesProvider cyclesProvider, ThemeProvider themeProvider) {
     return SizedBox(
       child: cyclesProvider.loadingCycleId.contains(cycleId)
@@ -195,7 +162,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     );
   }
 
-  SizedBox cycleCardName() {
+  SizedBox cycleNameText() {
     return SizedBox(
       width: width * 0.6,
       child: CustomText(
@@ -207,7 +174,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     );
   }
 
-  SizedBox cycleCardType(ThemeProvider themeProvider) {
+  SizedBox cycleType(ThemeProvider themeProvider) {
     return SizedBox(
       child: startDate == null || endDate == null
           ? Container(
@@ -251,7 +218,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     );
   }
 
-  SvgPicture cycleCardIcon(ThemeProvider themeProvider) {
+  SvgPicture cycleIcon(ThemeProvider themeProvider) {
     return SvgPicture.asset(
       'assets/svg_images/cycles_icon.svg',
       height: 25,

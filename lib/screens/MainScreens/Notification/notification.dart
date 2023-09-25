@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/bottom_sheets/notification_filter_sheet.dart';
 import 'package:plane/bottom_sheets/notification_more_options_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -16,13 +19,14 @@ class NotifiactionScreen extends ConsumerStatefulWidget {
       _NotifiactionScreenState();
 }
 
-class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
-  PageController controller = PageController();
-  int selected = 0;
+class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
+    with TickerProviderStateMixin {
+  late TabController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -92,6 +96,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
           const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
+              log(controller.index.toString());
               showModalBottomSheet(
                 isScrollControlled: true,
                 enableDrag: true,
@@ -103,7 +108,8 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
                   topRight: Radius.circular(30),
                 )),
                 context: context,
-                builder: (context) => NotificationMoreOptionsSheet(selected),
+                builder: (context) =>
+                    NotificationMoreOptionsSheet(controller.index),
               );
             },
             child: CircleAvatar(
@@ -124,191 +130,38 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            //bottom border
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: themeProvider.themeManager.borderSubtle01Color,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      controller.jumpToPage(0);
-                    },
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: CustomText(
-                                'My Issues',
-                                color: selected == 0
-                                    ? themeProvider.themeManager.primaryColour
-                                    : themeProvider
-                                        .themeManager.placeholderTextColor,
-                                type: FontStyle.Medium,
-                                overrride: true,
-                              ),
-                            ),
-                            notificationProvider.getAssignedCount == 0
-                                ? Container()
-                                : Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: CustomText(
-                                      notificationProvider.getAssignedCount
-                                          .toString(),
-                                      color: Colors.white,
-                                      type: FontStyle.Small,
-                                    ),
-                                  )
-                          ],
-                        ),
-                        selected == 0
-                            ? Container(
-                                height: 6,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Container(
-                                height: 6,
-                              )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      controller.jumpToPage(1);
-                    },
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: CustomText(
-                                overrride: true,
-                                'Created',
-                                color: selected == 1
-                                    ? themeProvider.themeManager.primaryColour
-                                    : themeProvider
-                                        .themeManager.placeholderTextColor,
-                                type: FontStyle.Medium,
-                              ),
-                            ),
-                            notificationProvider.getCreatedCount == 0
-                                ? Container()
-                                : Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: CustomText(
-                                      notificationProvider.getCreatedCount
-                                          .toString(),
-                                      color: Colors.white,
-                                      type: FontStyle.Small,
-                                    ),
-                                  )
-                          ],
-                        ),
-                        selected == 1
-                            ? Container(
-                                height: 6,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Container(
-                                height: 6,
-                              )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      controller.jumpToPage(2);
-                    },
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: CustomText(
-                                overrride: true,
-                                'Subscribed',
-                                color: selected == 2
-                                    ? themeProvider.themeManager.primaryColour
-                                    : themeProvider
-                                        .themeManager.placeholderTextColor,
-                                type: FontStyle.Medium,
-                              ),
-                            ),
-                            notificationProvider.getWatchingCount == 0
-                                ? Container()
-                                : Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: CustomText(
-                                      notificationProvider.getWatchingCount
-                                          .toString(),
-                                      color: Colors.white,
-                                      type: FontStyle.Small,
-                                    ),
-                                  )
-                          ],
-                        ),
-                        selected == 2
-                            ? Container(
-                                height: 6,
-                                color: themeProvider.themeManager.primaryColour,
-                              )
-                            : Container(
-                                height: 6,
-                              ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: PageView(
+          TabBar(
               controller: controller,
-              onPageChanged: (value) {
-                setState(() {
-                  selected = value;
-                });
-              },
+              indicatorColor: themeProvider.themeManager.primaryColour,
+              indicatorWeight: 6,
+              unselectedLabelStyle: GoogleFonts.inter(
+                  letterSpacing: -(fontSIZE[FontStyle.Medium]! * 0.02),
+                  height: lineHeight[FontStyle.Medium],
+                  fontSize: fontSIZE[FontStyle.Medium],
+                  color: themeProvider.themeManager.placeholderTextColor),
+              labelStyle: GoogleFonts.inter(
+                  letterSpacing: -(fontSIZE[FontStyle.Medium]! * 0.02),
+                  height: lineHeight[FontStyle.Medium],
+                  fontSize: fontSIZE[FontStyle.Medium],
+                  fontWeight: FontWeight.w500,
+                  color: themeProvider.themeManager.primaryColour),
+              unselectedLabelColor:
+                  themeProvider.themeManager.placeholderTextColor,
+              labelColor: themeProvider.themeManager.primaryColour,
+              tabs: const [
+                Tab(
+                  text: 'My Issues',
+                ),
+                Tab(
+                  text: 'Created',
+                ),
+                Tab(
+                  text: 'Subscribed',
+                ),
+              ]),
+          Expanded(
+            child: TabBarView(
+              controller: controller,
               children: [
                 NotificationsList(
                   type: 'assigned',

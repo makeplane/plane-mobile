@@ -26,18 +26,17 @@ class _CreateStateState extends ConsumerState<CreateState> {
   TextEditingController description = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List lables = [
-    '#B71F1F',
-    '#08AB22',
-    '#BC009E',
-    '#F15700',
-    '#290CDE',
-    '#B1700D',
-    '#08BECA',
-    '#6500CA',
-    '#E98787',
-    '#ADC57C',
-    '#75A0C8',
-    '#E96B6B'
+    "#FF6900",
+    "#FCB900",
+    "#7BDCB5",
+    "#00D084",
+    "#8ED1FC",
+    "#0693E3",
+    "#ABB8C3",
+    "#EB144C",
+    "#F78DA7",
+    "#9900EF",
+
     // {'lable': 'Lable 1', 'color': Colors.orange},
     // {'lable': 'Lable 2', 'color': Colors.purple},
     // {'lable': 'Lable 3', 'color': Colors.blue},
@@ -177,7 +176,6 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             border: InputBorder.none,
                           ),
                           alignment: Alignment.centerLeft,
-                          focusColor: Colors.amber,
                           items: const [
                             DropdownMenuItem<String>(
                               value: 'Backlog',
@@ -202,6 +200,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                               child: CustomText('Unstarted'),
                             ),
                           ],
+                          dropdownColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           onChanged: (value) {
                             selectedState = value!;
                           },

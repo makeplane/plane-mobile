@@ -214,7 +214,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                 } else {
                                   showModalBottomSheet(
                                     constraints:
-                                        const BoxConstraints(maxHeight: 310),
+                                        const BoxConstraints(maxHeight: 345),
                                     enableDrag: true,
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(

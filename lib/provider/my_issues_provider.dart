@@ -719,12 +719,12 @@ class MyIssuesProvider extends ChangeNotifier {
                                     .read(ProviderList.projectProvider)
                                     .projects[0]['id'],
                                 fromMyIssues: true,
-                                assignee: {
+                                assignee: pageIndex==0?{
                                   profileProv.userProfile.id.toString(): {
                                     'name': profileProv.userProfile.displayName,
                                     'id': profileProv.userProfile.id
                                   }
-                                },
+                                }:null,
                               )));
                 },
                 child: Icon(

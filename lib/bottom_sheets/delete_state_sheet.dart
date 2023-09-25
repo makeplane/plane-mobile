@@ -39,7 +39,7 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                   children: [
                     const CustomText(
                       'Delete State',
-                      type: FontStyle.H6,
+                      type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
@@ -53,21 +53,25 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 CustomText(
                   'Are you sure you want to delete state- ${widget.stateName}? All of the data related to the state will be permanently removed. This action cannot be undone.',
+                  type: FontStyle.H5,
                   maxLines: 5,
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 0,
                 ),
               ],
             ),
             Column(
               children: [
                 Button(
-                  color: Colors.redAccent,
+                  color: const Color.fromRGBO(254, 242, 242, 1),
+                  textColor: themeProvider.themeManager.textErrorColor,
+                  filledButton: false,
+                  borderColor: themeProvider.themeManager.textErrorColor,
                   text: 'Delete',
                   ontap: () async {
                     await projectProvider.stateCrud(

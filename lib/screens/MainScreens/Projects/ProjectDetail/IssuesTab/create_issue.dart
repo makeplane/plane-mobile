@@ -861,7 +861,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           Container(
                                                             alignment: Alignment
                                                                 .center,
-                                                            // color: Colors.amber,
                                                             height: 30,
                                                             constraints:
                                                                 const BoxConstraints(
@@ -881,7 +880,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                                           .length ==
                                                                       1
                                                                   ? [
-                                                                      Row(
+                                                                      Wrap(
                                                                         children: [
                                                                           Container(
                                                                             height:
@@ -960,9 +959,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                                           )
                                                         ],
                                                       ),
-                                                      const SizedBox(
-                                                        width: 5,
-                                                      ),
+                                                      
                                                       Icon(
                                                         Icons
                                                             .keyboard_arrow_down,
@@ -1443,9 +1440,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           ),
                                         )
                                       : Container(),
-                                  const SizedBox(height: 8),
                                   expanded
                                       ? Container(
+                                        margin: const EdgeInsets.only(top: 8),
                                           height: 45,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -1587,9 +1584,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           ),
                                         )
                                       : Container(),
-                                  const SizedBox(height: 8),
                                   expanded
                                       ? Container(
+                                        margin: const EdgeInsets.only(top: 8),
                                           height: 45,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -1731,9 +1728,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           ),
                                         )
                                       : Container(),
-                                  const SizedBox(height: 8),
                                   expanded
                                       ? Container(
+                                         margin: const EdgeInsets.only(top: 8),
                                           height: 45,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -1863,9 +1860,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                           ),
                                         )
                                       : Container(),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -1873,6 +1867,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue> {
                                       });
                                     },
                                     child: Container(
+                                      margin: const EdgeInsets.only(top: 8),
                                       height: 45,
                                       width: double.infinity,
                                       decoration: BoxDecoration(

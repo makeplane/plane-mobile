@@ -139,13 +139,6 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Row(
               children: [
-                // const Text(
-                //   'Views',
-                //   style: TextStyle(
-                //     fontSize: 24,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
                 CustomText(
                   'Choose Cover Image',
                   type: FontStyle.H4,
@@ -173,7 +166,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                     border: Border(
                       bottom: BorderSide(
                         color: lightGreeyColor,
-                        width: 1,
+                        width: 2,
                       ),
                     ),
                   ),
@@ -201,12 +194,12 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               ),
                               selected == 0
                                   ? Container(
-                                      height: 2,
+                                      height: 6,
                                       color: themeProvider
                                           .themeManager.primaryColour,
                                     )
                                   : Container(
-                                      height: 2,
+                                      height: 0,
                                       color: lightGreeyColor,
                                     )
                             ],
@@ -234,12 +227,12 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               ),
                               selected == 1
                                   ? Container(
-                                      height: 2,
+                                      height: 6,
                                       color: themeProvider
                                           .themeManager.primaryColour,
                                     )
                                   : Container(
-                                      height: 2,
+                                      height: 0,
                                       color: lightGreeyColor,
                                     )
                             ],

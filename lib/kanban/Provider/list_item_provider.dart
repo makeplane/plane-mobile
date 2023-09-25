@@ -66,7 +66,6 @@ class ListItemProvider extends ChangeNotifier {
 
     item.actualSize ??= box.size;
 
-    // log("EXECUTED");
     item.width = box.size.width;
     item.height = box.size.height;
 

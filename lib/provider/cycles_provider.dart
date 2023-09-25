@@ -56,6 +56,7 @@ class CyclesProvider with ChangeNotifier {
   int cycleDetailSelectedIndex = 0;
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
   List stateOrdering = [];
+  List<String> loadingCycleId = [];
   setState() {
     notifyListeners();
   }
@@ -323,8 +324,9 @@ class CyclesProvider with ChangeNotifier {
     try {
       if (!disableLoading) {
         cyclesState = StateEnum.loading;
-        notifyListeners();
       }
+      loadingCycleId.add(cycleId);
+      notifyListeners();
 
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -365,10 +367,12 @@ class CyclesProvider with ChangeNotifier {
           ref: ref,
           cycleId: cycleId);
       cyclesState = StateEnum.success;
+      loadingCycleId.remove(cycleId);
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());
       cyclesState = StateEnum.error;
+      loadingCycleId.remove(cycleId);
       notifyListeners();
     }
   }

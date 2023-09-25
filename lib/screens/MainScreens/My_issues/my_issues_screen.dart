@@ -531,7 +531,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                               MaterialPageRoute(
                                                                   builder: (ctx) =>
                                                                       CreateIssue(
-                                                                        assignee: {
+                                                                        assignee: issueProvider.pageIndex==0?{
                                                                           profileProv
                                                                               .userProfile
                                                                               .id
@@ -541,7 +541,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                             'id':
                                                                                 profileProv.userProfile.id
                                                                           }
-                                                                        },
+                                                                        }:null,
                                                                         projectId:
                                                                             projectProvider.projects[0]['id'],
                                                                         fromMyIssues:

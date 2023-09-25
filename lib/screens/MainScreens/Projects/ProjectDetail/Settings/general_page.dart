@@ -166,8 +166,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                       'emoji': selectedEmoji,
                                       'icon_prop': null
                                     },
-                                    ref: ref
-                                  );
+                                    ref: ref);
                               } else {
                                 projectProvider.updateProject(
                                     slug: ref
@@ -187,8 +186,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         'color': selectedColor,
                                       }
                                     },
-                                    ref: ref
-                                  );
+                                    ref: ref);
                               }
                             });
                           }
@@ -389,15 +387,22 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                                     .coverImage;
                                       });
                                     },
-                                    child: CircleAvatar(
-                                        backgroundColor: themeProvider
-                                            .themeManager
-                                            .primaryBackgroundDefaultColor,
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                        decoration: BoxDecoration(
+                                            color: themeProvider
+                                                .themeManager
+                                                .primaryBackgroundDefaultColor,
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                        ),
                                         child: Center(
                                           child: Icon(
                                             Icons.edit,
                                             color: themeProvider
-                                                .themeManager.primaryTextColor,
+                                                .themeManager.tertiaryTextColor,
+                                            size: 20,
                                           ),
                                         ))))
                             : Container(),
@@ -407,22 +412,6 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      // Text(
-                      //   'Identifier',
-                      //   style: TextStyle(
-                      //     fontSize: 15,
-                      //     fontWeight: FontWeight.w400,
-                      //     color: themeProvider.secondaryTextColor,
-                      //   ),
-                      // ),
-                      // const Text(
-                      //   ' *',
-                      //   style: TextStyle(
-                      //     fontSize: 15,
-                      //     fontWeight: FontWeight.w400,
-                      //     color: Colors.red,
-                      //   ),
-                      // ),
                       CustomText(
                         'Identifier',
                         type: FontStyle.Small,
@@ -453,6 +442,21 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       decoration:
                           themeProvider.themeManager.textFieldDecoration),
                   const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      CustomText(
+                        'Network',
+                        type: FontStyle.Small,
+                        color: themeProvider.themeManager.tertiaryTextColor,
+                      ),
+                      CustomText(
+                        '*',
+                        type: FontStyle.Small,
+                        color: themeProvider.themeManager.textErrorColor,
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 5),
                   GestureDetector(
                     onTap: () {
                       if (checkUser()) {
@@ -471,12 +475,28 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           builder: (ctx) {
                             return Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 50),
+                                  horizontal: 20, vertical: 25),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  //const SizedBox(height: 50),
+                                  Row(
+                                    children: [
+                                      const Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Icon(
+                                          Icons.close,
+                                          color: themeProvider
+                                              .themeManager.placeholderTextColor,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5)
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
                                   selectionCard(
                                       title: 'Private',
                                       isSelected: !isProjectPublic,
@@ -498,7 +518,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         });
                                         Navigator.of(context).pop();
                                       }),
-                                  //const SizedBox(height: 50),
+                                  const SizedBox(height: 20),
                                 ],
                               ),
                             );

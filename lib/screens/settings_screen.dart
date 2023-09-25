@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/create_estimate.dart';
@@ -53,7 +51,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     tabController = TabController(length: tabs.length, vsync: this);
 
     tabController!.addListener(() {
-      log('executed');
       setState(() {
         selectedIndex = tabController!.index;
         // tabController!.animateTo(selectedIndex);

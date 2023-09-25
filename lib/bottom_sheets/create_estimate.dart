@@ -78,11 +78,11 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                     //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 20,
+                        height: 25,
                       ),
                       const CustomRichText(
                         widgets: [
-                          TextSpan(text: 'Title'),
+                          TextSpan(text: 'Name'),
                           TextSpan(
                             text: '*',
                             style: TextStyle(
@@ -112,12 +112,6 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                       const CustomRichText(
                         widgets: [
                           TextSpan(text: 'Description'),
-                          // TextSpan(
-                          //   text: '*',
-                          //   style: TextStyle(
-                          //     color: Colors.red,
-                          //   ),
-                          // ),
                         ],
                         type: FontStyle.Small,
                       ),
@@ -128,6 +122,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                         controller: descriptionController,
                         decoration:
                             themeProvider.themeManager.textFieldDecoration,
+                        maxLines: 6,
                       ),
                       Container(
                         height: 20,
@@ -427,10 +422,9 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                widget.estimatedata != null ? 'Edit Estimate' : 'Add Estimate',
-                type: FontStyle.H6,
+                widget.estimatedata != null ? 'Edit Estimate' : 'Create Estimate',
+                type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
-                fontSize: 22,
               ),
               IconButton(
                 onPressed: () {

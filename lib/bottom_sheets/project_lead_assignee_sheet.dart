@@ -54,7 +54,7 @@ class _ProjectLeadAssigneeSheetState
                     children: [
                       CustomText(
                         'Select ${widget.title}',
-                        type: FontStyle.H6,
+                        type: FontStyle.H4,
                         fontWeight: FontWeightt.Semibold,
                         color: themeProvider.themeManager.primaryTextColor,
                       ),

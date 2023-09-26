@@ -1028,61 +1028,54 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             ],
           ),
         ),
-        SingleChildScrollView(
-          controller: scrollController4,
-          child: Column(
-            children: [
-              Container(
-                // height: 450,
-                margin: const EdgeInsets.only(top: 50),
-                width: 100,
-                child: ListView.builder(
-                    // controller: scrollController4,
-                    // primary: false,
-                    itemCount: issuesProvider.issuesList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 60,
-                        //right border
-                        decoration: BoxDecoration(
-                          color: themeProvider
-                              .themeManager.secondaryBackgroundDefaultColor,
-                          border: Border(
-                            right: BorderSide(
-                              color: themeProvider
-                                  .themeManager.borderSubtle01Color,
-                              width: 1,
-                            ),
-                          ),
+        Container(
+          // height: 450,
+          margin: const EdgeInsets.only(top: 50),
+          width: 100,
+          child: ListView.builder(
+              // controller: scrollController4,
+              primary: false,
+              physics: const NeverScrollableScrollPhysics(),
+              controller: scrollController4,
+              itemCount: issuesProvider.issuesList.length,
+              // shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 60,
+                  //right border
+                  decoration: BoxDecoration(
+                    color: themeProvider
+                        .themeManager.secondaryBackgroundDefaultColor,
+                    border: Border(
+                      right: BorderSide(
+                        color: themeProvider.themeManager.borderSubtle01Color,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    width: 100,
+                    //bottom border
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: themeProvider.themeManager.borderSubtle01Color,
+                          width: 1,
                         ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: 100,
-                          //bottom border
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color,
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Center(
-                            child: CustomText(
-                              '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
-                              type: FontStyle.Small,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
+                      ),
+                    ),
+                    child: Center(
+                      child: CustomText(
+                        '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
+                        type: FontStyle.Small,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                );
+              }),
         ),
         Container(
           height: 50,

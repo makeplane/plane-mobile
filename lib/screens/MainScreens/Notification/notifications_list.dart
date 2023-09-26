@@ -209,19 +209,40 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                                           .tertiaryBackgroundDefaultColor,
                                                       radius: 15,
                                                       child: Center(
-                                                        child: CustomText(
-                                                          widget.data[index][
-                                                                  'triggered_by_details']
-                                                                  ['first_name']
-                                                                  [0]
-                                                              .toString()
-                                                              .toUpperCase(),
-                                                          // color: Colors.black,
-                                                          type: FontStyle.Small,
+                                                        child: widget.data[index]
+                                                                            [
+                                                                            'data']
+                                                                        [
+                                                                        'issue_activity']
+                                                                    [
+                                                                    'new_value'] ==
+                                                                'archive'
+                                                            ? Icon(
+                                                                Icons
+                                                                    .archive_outlined,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .secondaryTextColor,
+                                                                size: 18,
+                                                              )
+                                                            : CustomText(
+                                                                widget
+                                                                    .data[index]
+                                                                        [
+                                                                        'triggered_by_details']
+                                                                        [
+                                                                        'first_name']
+                                                                        [0]
+                                                                    .toString()
+                                                                    .toUpperCase(),
+                                                                // color: Colors.black,
+                                                                type: FontStyle
+                                                                    .Small,
 
-                                                          fontWeight:
-                                                              FontWeightt.Bold,
-                                                        ),
+                                                                fontWeight:
+                                                                    FontWeightt
+                                                                        .Bold,
+                                                              ),
                                                       ),
                                                     ),
                                                   ),

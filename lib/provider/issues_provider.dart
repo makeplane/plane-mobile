@@ -1349,11 +1349,12 @@ class IssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       issueView = response.data["view_props"];
+      log(issueView.toString());
       issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
-          : issueView['issueView'] == 'calendar'
+          : issueView['display_filters']['layout'] == 'calendar'
               ? ProjectView.calendar
-              : issueView['issueView'] == 'spreadsheet'
+              : issueView['display_filters']['layout'] == 'spreadsheet'
                   ? ProjectView.spreadsheet
                   : ProjectView.kanban;
       issues.showSubIssues = issueView['display_filters']['sub_issue'] ?? true;

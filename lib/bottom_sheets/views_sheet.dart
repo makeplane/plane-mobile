@@ -851,7 +851,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             projID: projID,
                             issueCategory: IssueCategory.issues);
                       }
-
+                      CustomToast.showToast(context,
+                          message: 'Display properties are set as defaults',
+                          toastType: ToastType.success);
                       Navigator.pop(context);
                     },
                     child: CustomText('Set as default',

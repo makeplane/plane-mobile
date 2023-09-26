@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/delete_leave_project_sheet.dart';
 import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Profile/User_profile/member_profile.dart';
 import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -168,48 +166,15 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         )),
               );
             },
-            leading: workspaceProvider.workspaceMembers[index]['member']
-                            ['avatar'] ==
-                        null ||
-                    workspaceProvider.workspaceMembers[index]['member']
-                            ['avatar'] ==
-                        ""
-                ? MemeberLogoAlternativeWidget(
-                    workspaceProvider.workspaceMembers[index]['member']
-                            ['first_name'][0]
-                        .toString()
-                        .toUpperCase(),
-                    ColorManager.getColorWithIndex(index))
-                // CircleAvatar(
-                //     radius: 20,
-                //     backgroundColor: strokeColor,
-                //     child: Center(
-                //       child: CustomText(
-                //         workspaceProvider.workspaceMembers[index]['member']
-                //                 ['first_name'][0]
-                //             .toString()
-                //             .toUpperCase(),
-                //         color: Colors.black,
-                //         type: FontStyle.Medium,
-                //         fontWeight: FontWeightt.Semibold,
-                //       ),
-                //     ),
-                //   )
-                : MemberLogoWidget(
-                    imageUrl: workspaceProvider.workspaceMembers[index]
-                        ['member']['avatar'],
-                    colorForErrorWidget: ColorManager.getColorWithIndex(index),
-                    memberNameFirstLetterForErrorWidget: workspaceProvider
-                        .workspaceMembers[index]['member']['first_name'][0]
-                        .toString()
-                        .toUpperCase()),
-            /*
-                CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(workspaceProvider
-                        .workspaceMembers[index]['member']['avatar']),
-                  ),
-                  */
+            leading: MemberLogoWidget(
+              colorForErrorWidget: ColorManager.getColorWithIndex(index),
+              imageUrl: workspaceProvider.workspaceMembers[index]['member']
+                  ['avatar'],
+              memberNameFirstLetterForErrorWidget: workspaceProvider
+                  .workspaceMembers[index]['member']['first_name'][0]
+                  .toString()
+                  .toUpperCase(),
+            ),
             title: CustomText(
               '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
               type: FontStyle.H6,
@@ -295,7 +260,6 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 constraints: const BoxConstraints(maxWidth: 87),
                 child: Row(
-                  // crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     const Spacer(),
                     SizedBox(
@@ -333,17 +297,6 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                               .workspaceMembers[index]['role']
                                       ? Colors.black
                                       : greyColor,
-                          // themeProvider.isDarkThemeEnabled
-                          //     ? fromRole(role: workspaceProvider.role) >=
-                          //             workspaceProvider.workspaceMembers[index]
-                          //                 ['role']
-                          //         ? Colors.white
-                          //         : darkSecondaryTextColor
-                          //     : fromRole(role: workspaceProvider.role) >=
-                          //             workspaceProvider.workspaceMembers[index]
-                          //                 ['role']
-                          //         ? Colors.black
-                          //         : greyColor,
                           fontSize: 15,
                         ),
                       ),
@@ -357,20 +310,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                     workspaceProvider.workspaceMembers[index]
                                         ['role']
                                 ? themeProvider.themeManager.primaryTextColor
-                                : Colors.transparent
-
-                        // themeProvider.isDarkThemeEnabled
-                        //     ? fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.white
-                        //         : darkSecondaryTextColor
-                        //     : fromRole(role: workspaceProvider.role) >=
-                        //             workspaceProvider.workspaceMembers[index]
-                        //                 ['role']
-                        //         ? Colors.black
-                        //         : greyColor,
-                        )
+                                : Colors.transparent)
                   ],
                 ),
               ),
@@ -443,12 +383,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
             thickness: 1,
             indent: 0,
             endIndent: 0,
-            color: themeProvider.themeManager.borderSubtle01Color
-            // themeProvider.isDarkThemeEnabled
-            //     ? darkThemeBorder
-            //     : const Color.fromRGBO(
-            //         238, 238, 238, 1),
-            ),
+            color: themeProvider.themeManager.borderSubtle01Color),
       ),
       itemBuilder: (context, index) {
         return ListTile(
@@ -459,10 +394,13 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
               return;
             }
 
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => MemberProfile(
-                    userID: projectsProvider.projectMembers[index]['member']
-                        ["id"])));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) => UserProfileScreen(
+                        userID: projectsProvider.projectMembers[index]['member']
+                            ["id"],
+                      )),
+            );
           },
           leading: projectsProvider.projectMembers[index]['member']['avatar'] ==
                       null ||
@@ -474,25 +412,6 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       .toString()
                       .toUpperCase(),
                   ColorManager.getColorWithIndex(index))
-              // Container(
-              //     height: 45,
-              //     width: 45,
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(5),
-              //       color: ColorManager.getColorWithIndex(index),
-              //     ),
-              //     child: Center(
-              //       child: CustomText(
-              //         projectsProvider.projectMembers[index]['member']
-              //                 ['first_name'][0]
-              //             .toString()
-              //             .toUpperCase(),
-              //         color: Colors.white,
-              //         type: FontStyle.Medium,
-              //         fontWeight: FontWeightt.Semibold,
-              //       ),
-              //     ),
-              //   )
               : MemberLogoWidget(
                   imageUrl: projectsProvider.projectMembers[index]['member']
                       ['avatar'],
@@ -501,25 +420,6 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       .projectMembers[index]['member']['first_name'][0]
                       .toString()
                       .toUpperCase()),
-          /*
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: CachedNetworkImage(
-                    imageUrl: projectsProvider.projectMembers[index]['member']
-                        ['avatar'],
-                    errorWidget: (context, url, error) =>
-                        MemeberLogoAlternativeWidget(
-                            projectsProvider.projectMembers[index]['member']
-                                    ['first_name'][0]
-                                .toString()
-                                .toUpperCase(),
-                            ColorManager.getColorWithIndex(index)),
-                    height: 45,
-                    width: 45,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                */
           title: CustomText(
             '${projectsProvider.projectMembers[index]['member']['first_name']} ${projectsProvider.projectMembers[index]['member']['last_name'] ?? ''}',
             type: FontStyle.H6,
@@ -579,7 +479,6 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       toastType: ToastType.warning);
                 }
               } else {
-                // if (projectsProvider.role == Role.admin) {
                 showModalBottomSheet(
                   isScrollControlled: true,
                   enableDrag: true,
@@ -609,7 +508,6 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
             child: Container(
               constraints: const BoxConstraints(maxWidth: 84),
               child: Row(
-                // crossAxisAlignment: WrapCrossAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Spacer(),

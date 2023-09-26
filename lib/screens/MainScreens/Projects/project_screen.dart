@@ -108,34 +108,33 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                 loading: projectProvider.getProjectState == StateEnum.loading,
                 widgetClass: projectProvider.projects.isEmpty &&
                         projectProvider.starredProjects.isEmpty
-                    ? Center(
-                        child: EmptyPlaceholder.emptyProject(context, ref),
-                      )
+                    ? EmptyPlaceholder.emptyProject(context, refresh, ref)
                     : Column(
                         children: [
                           TabBar(
-                      
                               controller: controller,
                               indicatorColor:
                                   themeProvider.themeManager.primaryColour,
                               indicatorWeight: 6,
                               unselectedLabelStyle: GoogleFonts.inter(
-                                letterSpacing:
-                                    -(fontSIZE[FontStyle.Medium]! * 0.02),
-                                height: lineHeight[FontStyle.Medium],
-                                fontSize: fontSIZE[FontStyle.Medium],
-                                color: themeProvider.themeManager.placeholderTextColor
-                              ),
+                                  letterSpacing:
+                                      -(fontSIZE[FontStyle.Medium]! * 0.02),
+                                  height: lineHeight[FontStyle.Medium],
+                                  fontSize: fontSIZE[FontStyle.Medium],
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor),
                               labelStyle: GoogleFonts.inter(
-                                letterSpacing:
-                                    -(fontSIZE[FontStyle.Medium]! * 0.02),
-                                height: lineHeight[FontStyle.Medium],
-                                fontSize: fontSIZE[FontStyle.Medium],
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.themeManager.primaryColour
-                              ),
-                              unselectedLabelColor: themeProvider.themeManager.placeholderTextColor,
-                              labelColor: themeProvider.themeManager.primaryColour,
+                                  letterSpacing:
+                                      -(fontSIZE[FontStyle.Medium]! * 0.02),
+                                  height: lineHeight[FontStyle.Medium],
+                                  fontSize: fontSIZE[FontStyle.Medium],
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      themeProvider.themeManager.primaryColour),
+                              unselectedLabelColor: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              labelColor:
+                                  themeProvider.themeManager.primaryColour,
                               tabs: const [
                                 Tab(
                                   text: 'Projects',
@@ -147,7 +146,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                   text: 'Unjoined',
                                 ),
                               ]),
-                              Container(height: 1,width: double.infinity,color: themeProvider.themeManager.borderSubtle01Color,),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color:
+                                themeProvider.themeManager.borderSubtle01Color,
+                          ),
                           Expanded(
                             child: Padding(
                               padding:
@@ -177,7 +181,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
             .read(ProviderList.workspaceProvider)
             .selectedWorkspace
             .workspaceSlug);
-    // await projectProvider.initializeProject(ref: ref);
     setState(() {
       selected = 0;
     });
@@ -287,14 +290,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           ),
                           title: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            // child: Text(
-                            //   allProject[index].title,
-                            //   style: TextStyle(
-                            //     color: themeProvider.primaryTextColor,
-                            //     fontSize: 18,
-                            //     fontWeight: FontWeightt.Medium,
-                            //   ),
-                            // ),
                             child: CustomText(
                               projectProvider.projects[index]['name'],
                               // color: themeProvider.primaryTextColor,
@@ -309,14 +304,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           ),
                           subtitle: Row(
                             children: [
-                              // Text(
-                              //   allProject[index].subtitle,
-                              //   style: TextStyle(
-                              //     color: themeProvider.strokeColor,
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeightt.Medium,
-                              //   ),
-                              // ),
                               CustomText(
                                 projectProvider.projects[index]['is_member']
                                     ? 'Member'
@@ -335,14 +322,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                     .themeManager.borderSubtle01Color,
                               ),
                               const SizedBox(width: 10),
-                              // Text(
-                              //   allProject[index].date,
-                              //   style: TextStyle(
-                              //     color: themeProvider.strokeColor,
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeightt.Medium,
-                              //   ),
-                              // ),
                               CustomText(
                                 DateFormat('d MMMM').format(DateTime.parse(
                                     projectProvider.projects[index]
@@ -352,8 +331,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                 fontWeight: FontWeightt.Medium,
                                 color: themeProvider
                                     .themeManager.placeholderTextColor,
-
-                                // fontSize: 16,
                               ),
                             ],
                           ),
@@ -524,14 +501,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           ),
                           title: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            // child: Text(
-                            //   allProject[index].title,
-                            //   style: TextStyle(
-                            //     color: themeProvider.primaryTextColor,
-                            //     fontSize: 18,
-                            //     fontWeight: FontWeightt.Medium,
-                            //   ),
-                            // ),
                             child: CustomText(
                               projectProvider.projects[index]['name'],
                               // color: themeProvider.primaryTextColor,
@@ -546,14 +515,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           ),
                           subtitle: Row(
                             children: [
-                              // Text(
-                              //   allProject[index].subtitle,
-                              //   style: TextStyle(
-                              //     color: themeProvider.strokeColor,
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeightt.Medium,
-                              //   ),
-                              // ),
                               CustomText(
                                 projectProvider.projects[index]['is_member']
                                     ? 'Member'
@@ -572,25 +533,14 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                     .themeManager.borderSubtle01Color,
                               ),
                               const SizedBox(width: 10),
-                              // Text(
-                              //   allProject[index].date,
-                              //   style: TextStyle(
-                              //     color: themeProvider.strokeColor,
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeightt.Medium,
-                              //   ),
-                              // ),
                               CustomText(
                                 DateFormat('d MMMM').format(DateTime.parse(
                                     projectProvider.projects[index]
                                         ['created_at'])),
-                                // color: themeProvider.strokeColor,
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Medium,
                                 color: themeProvider
                                     .themeManager.placeholderTextColor,
-
-                                // fontSize: 16,
                               ),
                             ],
                           ),
@@ -735,13 +685,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                               thickness: 1,
                               indent: 0,
                               endIndent: 0,
-                              color:
-                                  themeProvider.themeManager.borderSubtle01Color
-                              // themeProvider.isDarkThemeEnabled
-                              //     ? darkThemeBorder
-                              //     : const Color.fromRGBO(
-                              //         238, 238, 238, 1),
-                              ),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color),
                         );
                 },
                 itemCount: projectProvider.projects.length,
@@ -811,14 +756,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           ),
                           title: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            // child: Text(
-                            //   starredProject[index].title,
-                            //   style: TextStyle(
-                            //     color: themeProvider.primaryTextColor,
-                            //     fontSize: 18,
-                            //     fontWeight: FontWeightt.Medium,
-                            //   ),
-                            // ),
                             child: CustomText(
                               projectProvider.projects[index]['name'],
                               color:
@@ -859,14 +796,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                     .themeManager.placeholderTextColor,
                                 // fontSize: 16,
                               ),
-                              // Text(
-                              //   starredProject[index].date,
-                              //   style: TextStyle(
-                              //     color: themeProvider.strokeColor,
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeightt.Medium,
-                              //   ),
-                              // ),
                             ],
                           ),
                           //clickable star icon
@@ -969,7 +898,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                       ? Container()
                       : ListTile(
                           onTap: () {
-                            //   log(projectProvider.projects[index].toString());
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
                               ref.read(ProviderList.issuesProvider).clearData();
@@ -1044,7 +972,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                 projectProvider.projects[index]['is_member']
                                     ? 'Member'
                                     : 'Not a Member',
-                                // color: themeProvider.strokeColor,
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Medium,
                                 color: themeProvider
@@ -1067,8 +994,6 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                 fontWeight: FontWeightt.Medium,
                                 color: themeProvider
                                     .themeManager.placeholderTextColor,
-
-                                // fontSize: 16,
                               ),
                             ],
                           ),

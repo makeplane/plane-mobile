@@ -21,6 +21,8 @@ class CycleWidget extends ConsumerStatefulWidget {
 
 class _CycleWidgetState extends ConsumerState<CycleWidget> {
   int cycleNaveBarSelectedIndex = 0;
+  EdgeInsets favouriteTextPadding =
+      const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20);
 
   @override
   void initState() {
@@ -154,44 +156,122 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 15),
                   cyclesProvider.cycleFavoriteData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => cyclesProvider
-                                  .cycleFavoriteData[index]['is_favorite']
-                              ? CustomDivider(
-                                  themeProvider: themeProvider,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 15),
-                                )
-                              : Container(),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: cyclesProvider.cycleFavoriteData.length,
-                          itemBuilder: (context, index) {
-                            return cyclesProvider.cycleFavoriteData[index]
-                                    ['is_favorite']
-                                ? InkWell(
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cyclesAllData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'Favourite',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    ),
+                                  )
+                                : Container(
+                                    height: 20,
+                                  ),
+                            ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  cyclesProvider.cycleFavoriteData[index]
+                                          ['is_favorite']
+                                      ? CustomDivider(
+                                          themeProvider: themeProvider,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 15),
+                                        )
+                                      : Container(),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              itemCount:
+                                  cyclesProvider.cycleFavoriteData.length,
+                              itemBuilder: (context, index) {
+                                return cyclesProvider.cycleFavoriteData[index]
+                                        ['is_favorite']
+                                    ? InkWell(
+                                        onTap: () {
+                                          cyclesProvider.currentCycle =
+                                              cyclesProvider
+                                                  .cycleFavoriteData[index];
+                                          cyclesProviderRead.setState();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => CycleDetail(
+                                                cycleId: cyclesProvider
+                                                        .cycleFavoriteData[
+                                                    index]['id'],
+                                                cycleName: cyclesProvider
+                                                        .cycleFavoriteData[
+                                                    index]['name'],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                              .cycleFavoriteData[index],
+                                        ),
+                                      )
+                                    : Container();
+                              },
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
+                  cyclesProvider.cyclesAllData.isNotEmpty &&
+                          cyclesProvider.cycleFavoriteData.isNotEmpty
+                      ? const SizedBox(height: 20)
+                      : const SizedBox.shrink(),
+                  cyclesProvider.cyclesAllData.isNotEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cycleFavoriteData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'All Cycles',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    ),
+                                  )
+                                : Container(
+                                    height: 20,
+                                  ),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(themeProvider: themeProvider),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount: cyclesProvider.cyclesAllData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
                                     onTap: () {
                                       cyclesProvider.currentCycle =
-                                          cyclesProvider
-                                              .cycleFavoriteData[index];
-                                      cyclesProviderRead.setState();
+                                          cyclesProvider.cyclesAllData[index];
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => CycleDetail(
                                             cycleId: cyclesProvider
-                                                .cycleFavoriteData[index]['id'],
+                                                .cyclesAllData[index]['id'],
                                             cycleName: cyclesProvider
-                                                    .cycleFavoriteData[index]
-                                                ['name'],
+                                                .cyclesAllData[index]['name'],
                                           ),
                                         ),
                                       );
                                     },
-                                    child: Column(
+                                    child: (Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
@@ -199,61 +279,14 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                       children: [
                                         CycleCardWidget(
                                           cycleData: cyclesProvider
-                                              .cycleFavoriteData[index],
+                                              .cyclesAllData[index],
                                         ),
                                       ],
-                                    ),
-                                  )
-                                : Container();
-                          },
+                                    )),
+                                  );
+                                }),
+                          ],
                         )
-                      : const SizedBox.shrink(),
-                  cyclesProvider.cycleFavoriteData.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(
-                            themeProvider: themeProvider,
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  cyclesProvider.cyclesAllData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) =>
-                              CustomDivider(themeProvider: themeProvider),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: cyclesProvider.cyclesAllData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                cyclesProvider.currentCycle =
-                                    cyclesProvider.cyclesAllData[index];
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CycleDetail(
-                                      cycleId: cyclesProvider
-                                          .cyclesAllData[index]['id'],
-                                      cycleName: cyclesProvider
-                                          .cyclesAllData[index]['name'],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: (Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CycleCardWidget(
-                                    cycleData:
-                                        cyclesProvider.cyclesAllData[index],
-                                  ),
-                                ],
-                              )),
-                            );
-                          })
                       : const SizedBox.shrink(),
                   const SizedBox(height: 50),
                 ],
@@ -302,89 +335,126 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  // const SizedBox(height: 15),
                   cyclesProvider.cycleCompletedFavoriteData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount:
-                              cyclesProvider.cycleCompletedFavoriteData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  cyclesProviderRead.currentCycle =
-                                      cyclesProvider
-                                          .cycleCompletedFavoriteData[index];
-                                  cyclesProviderRead.setState();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CycleDetail(
-                                        cycleId: cyclesProvider
-                                                .cycleCompletedFavoriteData[
-                                            index]['id'],
-                                        cycleName: cyclesProvider
-                                                .cycleCompletedFavoriteData[
-                                            index]['name'],
-                                      ),
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cyclesCompletedData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'Favourite',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  );
-                                },
-                                child: CycleCardWidget(
-                                    cycleData: cyclesProvider
-                                        .cycleCompletedFavoriteData[index]));
-                          })
-                      : const SizedBox.shrink(),
-                  cyclesProvider.cycleCompletedFavoriteData.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(
-                            themeProvider: themeProvider,
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                          ),
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount: cyclesProvider
+                                    .cycleCompletedFavoriteData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        cyclesProviderRead.currentCycle =
+                                            cyclesProvider
+                                                    .cycleCompletedFavoriteData[
+                                                index];
+                                        cyclesProviderRead.setState();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CycleDetail(
+                                              cycleId: cyclesProvider
+                                                      .cycleCompletedFavoriteData[
+                                                  index]['id'],
+                                              cycleName: cyclesProvider
+                                                      .cycleCompletedFavoriteData[
+                                                  index]['name'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                                  .cycleCompletedFavoriteData[
+                                              index]));
+                                }),
+                          ],
                         )
                       : const SizedBox.shrink(),
+                  cyclesProvider.cyclesCompletedData.isNotEmpty &&
+                          cyclesProvider.cycleCompletedFavoriteData.isNotEmpty
+                      ? Container(height: 20)
+                      : Container(),
                   cyclesProvider.cyclesCompletedData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: cyclesProvider.cyclesCompletedData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  cyclesProviderRead.currentCycle =
-                                      cyclesProvider.cyclesCompletedData[index];
-                                  cyclesProviderRead.setState();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CycleDetail(
-                                        cycleId: cyclesProvider
-                                            .cyclesCompletedData[index]['id'],
-                                        cycleName: cyclesProvider
-                                            .cyclesCompletedData[index]['name'],
-                                      ),
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cycleCompletedFavoriteData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'All Cycles',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  );
-                                },
-                                child: CycleCardWidget(
-                                    cycleData: cyclesProvider
-                                        .cyclesCompletedData[index]));
-                          })
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount:
+                                    cyclesProvider.cyclesCompletedData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        cyclesProviderRead.currentCycle =
+                                            cyclesProvider
+                                                .cyclesCompletedData[index];
+                                        cyclesProviderRead.setState();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CycleDetail(
+                                              cycleId: cyclesProvider
+                                                      .cyclesCompletedData[
+                                                  index]['id'],
+                                              cycleName: cyclesProvider
+                                                      .cyclesCompletedData[
+                                                  index]['name'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                              .cyclesCompletedData[index]));
+                                }),
+                          ],
+                        )
                       : const SizedBox.shrink(),
                   const SizedBox(height: 50),
                 ],
@@ -407,87 +477,125 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 15),
                   cyclesProvider.cycleUpcomingFavoriteData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount:
-                              cyclesProvider.cycleUpcomingFavoriteData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  cyclesProviderRead.currentCycle =
-                                      cyclesProvider
-                                          .cycleUpcomingFavoriteData[index];
-                                  cyclesProviderRead.setState();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CycleDetail(
-                                        cycleId: cyclesProvider
-                                                .cycleUpcomingFavoriteData[
-                                            index]['id'],
-                                        cycleName: cyclesProvider
-                                                .cycleUpcomingFavoriteData[
-                                            index]['name'],
-                                      ),
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cyclesUpcomingData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'Favourite',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  );
-                                },
-                                child: CycleCardWidget(
-                                    cycleData: cyclesProvider
-                                        .cycleUpcomingFavoriteData[index]));
-                          })
-                      : const SizedBox.shrink(),
-                  cyclesProvider.cycleUpcomingFavoriteData.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(
-                            themeProvider: themeProvider,
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                          ),
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount: cyclesProvider
+                                    .cycleUpcomingFavoriteData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        cyclesProviderRead.currentCycle =
+                                            cyclesProvider
+                                                    .cycleUpcomingFavoriteData[
+                                                index];
+                                        cyclesProviderRead.setState();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CycleDetail(
+                                              cycleId: cyclesProvider
+                                                      .cycleUpcomingFavoriteData[
+                                                  index]['id'],
+                                              cycleName: cyclesProvider
+                                                      .cycleUpcomingFavoriteData[
+                                                  index]['name'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                                  .cycleUpcomingFavoriteData[
+                                              index]));
+                                }),
+                          ],
                         )
                       : const SizedBox.shrink(),
+                  cyclesProvider.cyclesUpcomingData.isNotEmpty &&
+                          cyclesProvider.cycleUpcomingFavoriteData.isNotEmpty
+                      ? Container(height: 20)
+                      : Container(),
                   cyclesProvider.cyclesUpcomingData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: cyclesProvider.cyclesUpcomingData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  cyclesProviderRead.currentCycle =
-                                      cyclesProvider.cyclesUpcomingData[index];
-                                  cyclesProviderRead.setState();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CycleDetail(
-                                        cycleId: cyclesProvider
-                                            .cyclesUpcomingData[index]['id'],
-                                        cycleName: cyclesProvider
-                                            .cyclesUpcomingData[index]['name'],
-                                      ),
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cycleUpcomingFavoriteData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'All Cycles',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  );
-                                },
-                                child: CycleCardWidget(
-                                    cycleData: cyclesProvider
-                                        .cyclesUpcomingData[index]));
-                          })
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount:
+                                    cyclesProvider.cyclesUpcomingData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        cyclesProviderRead.currentCycle =
+                                            cyclesProvider
+                                                .cyclesUpcomingData[index];
+                                        cyclesProviderRead.setState();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CycleDetail(
+                                              cycleId: cyclesProvider
+                                                      .cyclesUpcomingData[index]
+                                                  ['id'],
+                                              cycleName: cyclesProvider
+                                                      .cyclesUpcomingData[index]
+                                                  ['name'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                              .cyclesUpcomingData[index]));
+                                }),
+                          ],
+                        )
                       : const SizedBox.shrink(),
                   const SizedBox(height: 50),
                 ],
@@ -509,86 +617,123 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 15),
                   cyclesProvider.cycleDraftFavoriteData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount:
-                              cyclesProvider.cycleDraftFavoriteData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                cyclesProviderRead.currentCycle = cyclesProvider
-                                    .cycleDraftFavoriteData[index];
-                                cyclesProviderRead.setState();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CycleDetail(
-                                      cycleId: cyclesProvider
-                                          .cycleDraftFavoriteData[index]['id'],
-                                      cycleName: cyclesProvider
-                                              .cycleDraftFavoriteData[index]
-                                          ['name'],
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cyclesDraftData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'Favourite',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  ),
-                                );
-                              },
-                              child: CycleCardWidget(
-                                  cycleData: cyclesProvider
-                                      .cycleDraftFavoriteData[index]),
-                            );
-                          })
-                      : const SizedBox.shrink(),
-                  cyclesProvider.cycleDraftFavoriteData.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(
-                            themeProvider: themeProvider,
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                          ),
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount: cyclesProvider
+                                    .cycleDraftFavoriteData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      cyclesProviderRead.currentCycle =
+                                          cyclesProvider
+                                              .cycleDraftFavoriteData[index];
+                                      cyclesProviderRead.setState();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CycleDetail(
+                                            cycleId: cyclesProvider
+                                                    .cycleDraftFavoriteData[
+                                                index]['id'],
+                                            cycleName: cyclesProvider
+                                                    .cycleDraftFavoriteData[
+                                                index]['name'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: CycleCardWidget(
+                                        cycleData: cyclesProvider
+                                            .cycleDraftFavoriteData[index]),
+                                  );
+                                }),
+                          ],
                         )
                       : const SizedBox.shrink(),
+                  cyclesProvider.cyclesDraftData.isNotEmpty &&
+                          cyclesProvider.cycleDraftFavoriteData.isNotEmpty
+                      ? Container(height: 20)
+                      : Container(),
                   cyclesProvider.cyclesDraftData.isNotEmpty
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => CustomDivider(
-                                themeProvider: themeProvider,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                              ),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: cyclesProvider.cyclesDraftData.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  cyclesProviderRead.currentCycle =
-                                      cyclesProvider.cyclesDraftData[index];
-                                  cyclesProviderRead.setState();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CycleDetail(
-                                        cycleId: cyclesProvider
-                                            .cyclesDraftData[index]['id'],
-                                        cycleName: cyclesProvider
-                                            .cyclesDraftData[index]['name'],
-                                      ),
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            cyclesProvider.cycleDraftFavoriteData.isNotEmpty
+                                ? Padding(
+                                    padding: favouriteTextPadding,
+                                    child: CustomText(
+                                      'All Cycles',
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Medium,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
                                     ),
-                                  );
-                                },
-                                child: CycleCardWidget(
-                                    cycleData:
-                                        cyclesProvider.cyclesDraftData[index]));
-                          })
+                                  )
+                                : Container(height: 20),
+                            ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount:
+                                    cyclesProvider.cyclesDraftData.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        cyclesProviderRead.currentCycle =
+                                            cyclesProvider
+                                                .cyclesDraftData[index];
+                                        cyclesProviderRead.setState();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CycleDetail(
+                                              cycleId: cyclesProvider
+                                                  .cyclesDraftData[index]['id'],
+                                              cycleName: cyclesProvider
+                                                      .cyclesDraftData[index]
+                                                  ['name'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CycleCardWidget(
+                                          cycleData: cyclesProvider
+                                              .cyclesDraftData[index]));
+                                }),
+                          ],
+                        )
                       : const SizedBox.shrink(),
                   const SizedBox(height: 50),
                 ],

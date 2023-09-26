@@ -57,6 +57,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   final List<int> flexForUpcomingAndOverdueWidgets = [1, 2, 1];
   final EdgeInsets paddingForIssueInUpcomingAndOverdueWidgets =
       const EdgeInsets.only(right: 10);
+
+  Future<void> refresh() async {
+    ref.read(ProviderList.dashboardProvider).getDashboard();
+    ref.read(ProviderList.workspaceProvider).getWorkspaces();
+  }
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
@@ -73,63 +79,70 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 15),
-        child: ListView(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: headerWidget(),
-            ),
-            const SizedBox(height: 20),
-            greetingAndDateTimeWidget(context, profileProvider, themeProvider),
-            const SizedBox(height: 20),
-            dashboardProvider.hideGithubBlock == false
-                ? starUsOnGitHubWidget(
-                    themeProvider, context, dashboardProvider)
-                : Container(),
-            const SizedBox(height: 20),
-            projectProvider.projects.isEmpty &&
-                    projectProvider.getProjectState == StateEnum.success
-                ? createProjectWidget(themeProvider, context)
-                : Container(),
-            projectProvider.projects.isNotEmpty
-                ? quichInfoWidget(context, themeProvider, dashboardProvider)
-                : Container(),
-            const SizedBox(height: 20),
-            // overdueIssues.isEmpty || overdueIssues.isNull
-            overdueIssues == null || overdueIssues.isEmpty
-                ? Container()
-                : Column(
-                    children: [
-                      overDueIssuesWidget(themeProvider, overdueIssues),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-            upcomingIssues == null || upcomingIssues.isEmpty
-                ? Container()
-                : Column(
-                    children: [
-                      upcomingIssuesWidget(themeProvider, upcomingIssues),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-            stateDistribution == null || stateDistribution.isEmpty
-                ? Container()
-                : Column(
-                    children: [
-                      issuesByStatesWidget(themeProvider, stateDistribution),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-            issuesCompleted == null
-                ? Container()
-                : Column(
-                    children: [
-                      issuesClosedByYouWidget(
-                          themeProvider, dashboardProvider, issuesCompleted),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-          ],
+        child: RefreshIndicator(
+          color: themeProvider.themeManager.primaryColour,
+          backgroundColor:
+              themeProvider.themeManager.primaryBackgroundDefaultColor,
+          onRefresh: refresh,
+          child: ListView(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: headerWidget(),
+              ),
+              const SizedBox(height: 20),
+              greetingAndDateTimeWidget(
+                  context, profileProvider, themeProvider),
+              const SizedBox(height: 20),
+              dashboardProvider.hideGithubBlock == false
+                  ? starUsOnGitHubWidget(
+                      themeProvider, context, dashboardProvider)
+                  : Container(),
+              const SizedBox(height: 20),
+              projectProvider.projects.isEmpty &&
+                      projectProvider.getProjectState == StateEnum.success
+                  ? createProjectWidget(themeProvider, context)
+                  : Container(),
+              projectProvider.projects.isNotEmpty
+                  ? quichInfoWidget(context, themeProvider, dashboardProvider)
+                  : Container(),
+              const SizedBox(height: 20),
+              // overdueIssues.isEmpty || overdueIssues.isNull
+              overdueIssues == null || overdueIssues.isEmpty
+                  ? Container()
+                  : Column(
+                      children: [
+                        overDueIssuesWidget(themeProvider, overdueIssues),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+              upcomingIssues == null || upcomingIssues.isEmpty
+                  ? Container()
+                  : Column(
+                      children: [
+                        upcomingIssuesWidget(themeProvider, upcomingIssues),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+              stateDistribution == null || stateDistribution.isEmpty
+                  ? Container()
+                  : Column(
+                      children: [
+                        issuesByStatesWidget(themeProvider, stateDistribution),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+              issuesCompleted == null
+                  ? Container()
+                  : Column(
+                      children: [
+                        issuesClosedByYouWidget(
+                            themeProvider, dashboardProvider, issuesCompleted),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );

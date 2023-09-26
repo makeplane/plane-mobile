@@ -21,7 +21,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -97,7 +96,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -134,7 +132,6 @@ class EmptyPlaceholder {
   static Widget emptyArchives() {
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -177,9 +174,7 @@ class EmptyPlaceholder {
     var themeProvider = ref!.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Column(
-        // direction: Axis.vertical,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -211,9 +206,6 @@ class EmptyPlaceholder {
                 ref.watch(ProviderList.projectProvider).currentProject =
                     ref.watch(ProviderList.projectProvider).projects[0];
                 ref.watch(ProviderList.projectProvider).setState();
-                // await ref
-                //     .read(ProviderList.projectProvider)
-                //     .initializeProject(ref: ref);
               }
 
               ref
@@ -330,9 +322,7 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Column(
-        // direction: Axis.vertical,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -367,7 +357,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -441,7 +430,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -479,7 +467,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -678,7 +665,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -770,76 +756,85 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyProject(BuildContext context, WidgetRef ref) {
+  static Widget emptyProject(
+      BuildContext context, Future<void> Function() onRefresh, WidgetRef ref) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    return Container(
-      alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
-      child: Wrap(
-        direction: Axis.vertical,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          SvgPicture.asset(
-            "assets/svg_images/empty_project.svg",
-            width: 130,
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: 35),
-            child: CustomText(
-              'No projects yet',
-              type: FontStyle.H5,
-              fontWeight: FontWeightt.Semibold,
-              color: themeProvider.themeManager.primaryTextColor,
-            ),
-          ),
-          Container(
-            width: 300,
-            padding: const EdgeInsets.only(top: 10),
-            child: CustomText(
-              'Get started by creating your first project.',
-              color: themeProvider.themeManager.placeholderTextColor,
-              textAlign: TextAlign.center,
-              type: FontStyle.Small,
-              maxLines: 3,
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateProject()));
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              margin: const EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: themeProvider.themeManager.primaryColour,
+    return RefreshIndicator(
+      color: themeProvider.themeManager.primaryColour,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+      onRefresh: onRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height - 200,
+          child: Wrap(
+            direction: Axis.vertical,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "assets/svg_images/empty_project.svg",
+                width: 130,
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomText('Add Project',
-                      type: FontStyle.Small,
-                      overrride: true,
-                      fontWeight: FontWeightt.Medium,
-                      color: Colors.white)
-                ],
+              Container(
+                padding: const EdgeInsets.only(top: 35),
+                child: CustomText(
+                  'No projects yet',
+                  type: FontStyle.H5,
+                  fontWeight: FontWeightt.Semibold,
+                  color: themeProvider.themeManager.primaryTextColor,
+                ),
               ),
-            ),
-          )
-        ],
+              Container(
+                width: 300,
+                padding: const EdgeInsets.only(top: 10),
+                child: CustomText(
+                  'Get started by creating your first project.',
+                  color: themeProvider.themeManager.placeholderTextColor,
+                  textAlign: TextAlign.center,
+                  type: FontStyle.Small,
+                  maxLines: 3,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateProject()));
+                },
+                child: Container(
+                  height: 40,
+                  width: 150,
+                  margin: const EdgeInsets.only(top: 30),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: themeProvider.themeManager.primaryColour,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      CustomText('Add Project',
+                          type: FontStyle.Small,
+                          overrride: true,
+                          fontWeight: FontWeightt.Medium,
+                          color: Colors.white)
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -929,10 +924,7 @@ class EmptyPlaceholder {
           // color: Colors.black,
           alignment: Alignment.center,
           height: MediaQuery.of(context).size.height - 200,
-          //  margin: const EdgeInsets.only(top: 150),
           child: Column(
-            // direction: Axis.vertical,
-            // crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               const Spacer(),
               SvgPicture.asset(
@@ -960,7 +952,6 @@ class EmptyPlaceholder {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
-      //  margin: const EdgeInsets.only(top: 150),
       child: Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,

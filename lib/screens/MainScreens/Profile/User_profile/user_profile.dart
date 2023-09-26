@@ -12,8 +12,7 @@ import 'package:plane/widgets/custom_text.dart';
 
 class UserProfileScreen extends ConsumerStatefulWidget {
   final String userID;
-  const UserProfileScreen(
-      {required this.userID, super.key});
+  const UserProfileScreen({required this.userID, super.key});
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -79,7 +78,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
         appBar: AppBar(
             backgroundColor:
                 themeProvider.themeManager.secondaryBackgroundDefaultColor,
-            title: const CustomText('Profile'),
+            title: const CustomText(
+              'Profile',
+              fontWeight: FontWeightt.Semibold,
+              type: FontStyle.H6,
+            ),
+            centerTitle: true,
             elevation: 0.1,
             automaticallyImplyLeading: true,
             leading: InkWell(
@@ -113,7 +117,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                         ),
                       ),
                       labelColor: themeProvider.themeManager.primaryColour,
-                      unselectedLabelColor: themeProvider.themeManager.secondaryTextColor,
+                      unselectedLabelColor:
+                          themeProvider.themeManager.secondaryTextColor,
                       indicatorWeight: 9,
                       splashFactory: NoSplash.splashFactory,
                       onTap: (index) {

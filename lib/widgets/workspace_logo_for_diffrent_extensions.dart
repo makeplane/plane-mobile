@@ -11,10 +11,14 @@ class WorkspaceLogoForDiffrentExtensions extends StatefulWidget {
       {required this.imageUrl,
       required this.themeProvider,
       required this.workspaceName,
+      this.height = 35,
+      this.width = 35,
       super.key});
   final String? imageUrl;
   final String workspaceName;
   final ThemeProvider themeProvider;
+  final double? height;
+  final double? width;
   @override
   State<WorkspaceLogoForDiffrentExtensions> createState() =>
       _WorkspaceLogoForDiffrentExtensionsState();
@@ -57,16 +61,16 @@ class _WorkspaceLogoForDiffrentExtensionsState
   SvgPicture svgImage(String imageUrl) {
     return SvgPicture.network(
       imageUrl,
-      width: 35,
-      height: 35,
+      width: widget.height,
+      height: widget.width,
     );
   }
 
   CachedNetworkImage networkImage(
       String imageUrl, ThemeProvider themeProvider, String workspaceName) {
     return CachedNetworkImage(
-      height: 35,
-      width: 35,
+      width: widget.height,
+      height: widget.width,
       fit: BoxFit.cover,
       imageUrl: imageUrl,
       placeholder: (context, url) => const CircularProgressIndicator(),
@@ -96,8 +100,8 @@ class _WorkspaceLogoForDiffrentExtensionsState
   Container imageAlternative(
       ThemeProvider themeProvider, String workspaceName) {
     return Container(
-      width: 35,
-      height: 35,
+      width: widget.height,
+      height: widget.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: themeProvider.themeManager.primaryColour,

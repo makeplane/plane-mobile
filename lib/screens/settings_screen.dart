@@ -103,19 +103,16 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                           data: ThemeData(highlightColor: Colors.transparent),
                           child: TabBar(
                               controller: tabController,
+                              indicatorPadding: const EdgeInsets.only(top: 33),
                               indicator: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: themeProvider
-                                        .themeManager.primaryColour,
-                                    width: 6,
-                                  ),
-                                ),
-                              ),
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                  borderRadius: BorderRadius.circular(6)),
                               // indicatorColor: primaryColor,
                               labelColor:
                                   themeProvider.themeManager.primaryColour,
-                                  unselectedLabelColor: themeProvider.themeManager.secondaryTextColor,
+                              unselectedLabelColor:
+                                  themeProvider.themeManager.secondaryTextColor,
                               indicatorWeight: 9,
                               splashFactory: NoSplash.splashFactory,
                               onTap: (index) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane/bottom_sheets/type_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
@@ -353,6 +353,10 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                                           height: 6,
                                                           decoration:
                                                               BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
                                                             color: themeProvider
                                                                 .themeManager
                                                                 .primaryColour,

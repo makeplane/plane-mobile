@@ -10,7 +10,7 @@ import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
-import '../../../../../bottom_sheets/filter_sheet.dart';
+import '../../../../../bottom_sheets/filters/filter_sheet.dart';
 import '../../../../../bottom_sheets/type_sheet.dart';
 import '../../../../../bottom_sheets/views_sheet.dart';
 import '../../../../../utils/constants.dart';

@@ -194,10 +194,12 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               ),
                               selected == 0
                                   ? Container(
-                                      height: 6,
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                    )
+                                      height: 2,
+                                      decoration: BoxDecoration(
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
+                                          borderRadius:
+                                              BorderRadius.circular(10)))
                                   : Container(
                                       height: 0,
                                       color: lightGreeyColor,
@@ -227,9 +229,12 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               ),
                               selected == 1
                                   ? Container(
-                                      height: 6,
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
+                                      height: 2,
+                                      decoration: BoxDecoration(
+                                          color: themeProvider
+                                              .themeManager.primaryColour,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                     )
                                   : Container(
                                       height: 0,

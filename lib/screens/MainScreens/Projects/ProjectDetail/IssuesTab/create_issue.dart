@@ -27,8 +27,6 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/widgets/loading_widget.dart';
-
 class CreateIssue extends ConsumerStatefulWidget {
   final String? moduleId;
   final String? cycleId;

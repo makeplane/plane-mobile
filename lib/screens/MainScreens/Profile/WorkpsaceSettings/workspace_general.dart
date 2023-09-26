@@ -135,6 +135,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: WorkspaceLogoForDiffrentExtensions(
+                                        height: 45,
+                                        width: 45,
                                         imageUrl: workspaceProvider.tempLogo,
                                         themeProvider: themeProvider,
                                         workspaceName: workspaceProvider
@@ -554,7 +556,18 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               ),
                             );
                           },
-                          color: (themeProvider.theme == THEME.dark || themeProvider.theme == THEME.darkHighContrast || (themeProvider.theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark)) ? const Color.fromRGBO(95, 21, 21, 1) : const Color.fromRGBO(254, 242, 242, 1),
+                          color: (themeProvider.theme == THEME.dark ||
+                                  themeProvider.theme ==
+                                      THEME.darkHighContrast ||
+                                  (themeProvider.theme ==
+                                          THEME.systemPreferences &&
+                                      SchedulerBinding
+                                              .instance
+                                              .platformDispatcher
+                                              .platformBrightness ==
+                                          Brightness.dark))
+                              ? const Color.fromRGBO(95, 21, 21, 1)
+                              : const Color.fromRGBO(254, 242, 242, 1),
                           textColor: themeProvider.themeManager.textErrorColor,
                           filledButton: false,
                           borderColor:

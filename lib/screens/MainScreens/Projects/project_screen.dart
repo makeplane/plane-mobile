@@ -116,6 +116,11 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                               indicatorColor:
                                   themeProvider.themeManager.primaryColour,
                               indicatorWeight: 6,
+                              indicatorPadding: const EdgeInsets.only(top: 46),
+                              indicator: BoxDecoration(
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                  borderRadius: BorderRadius.circular(6)),
                               unselectedLabelStyle: GoogleFonts.inter(
                                   letterSpacing:
                                       -(fontSIZE[FontStyle.Medium]! * 0.02),

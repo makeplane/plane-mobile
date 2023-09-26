@@ -38,6 +38,19 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     });
   }
 
+  // If no projects are available on the workspace, empty project screen will be visible. This is executed on to pull to refresh
+  Future refresh() async {
+    var projectProvider = ref.read(ProviderList.projectProvider);
+    await projectProvider.getProjects(
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace
+            .workspaceSlug);
+    setState(() {
+      selected = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
@@ -218,7 +231,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
             ],
           ),
           body: projectProvider.projects.isEmpty
-              ? EmptyPlaceholder.emptyProject(context, ref)
+              ? EmptyPlaceholder.emptyProject(context, refresh, ref)
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -531,17 +544,15 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                               MaterialPageRoute(
                                                                   builder: (ctx) =>
                                                                       CreateIssue(
-                                                                        assignee: issueProvider.pageIndex==0?{
-                                                                          profileProv
-                                                                              .userProfile
-                                                                              .id
-                                                                              .toString(): {
-                                                                            'name':
-                                                                                profileProv.userProfile.displayName,
-                                                                            'id':
-                                                                                profileProv.userProfile.id
-                                                                          }
-                                                                        }:null,
+                                                                        assignee: issueProvider.pageIndex ==
+                                                                                0
+                                                                            ? {
+                                                                                profileProv.userProfile.id.toString(): {
+                                                                                  'name': profileProv.userProfile.displayName,
+                                                                                  'id': profileProv.userProfile.id
+                                                                                }
+                                                                              }
+                                                                            : null,
                                                                         projectId:
                                                                             projectProvider.projects[0]['id'],
                                                                         fromMyIssues:

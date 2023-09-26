@@ -7,6 +7,7 @@ import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -249,12 +250,9 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
           series: <ChartSeries>[
             ColumnSeries<Map<String, dynamic>, String>(
               dataSource: userProfileProvider.issuesByPriority,
-              
               xValueMapper: (Map<String, dynamic> priority, _) =>
-                  priority['priority'].toString().replaceAll(
-                        priority['priority'][0],
-                        priority['priority'][0].toString().toUpperCase(),
-                      ),
+                  StringManager.capitalizeFirstLetter(
+                      priority['priority'].toString()),
               yValueMapper: (Map<String, dynamic> priority, _) =>
                   priority['priority_count'],
               pointColorMapper: (Map<String, dynamic> priority, _) =>

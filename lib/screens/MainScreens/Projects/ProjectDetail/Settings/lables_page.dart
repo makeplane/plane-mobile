@@ -33,7 +33,6 @@ class _LablesPageState extends ConsumerState<LablesPage> {
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ProviderList.themeProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    // log(ref.read(ProviderList.projectProvider).currentProject["id"]);
     return LoadingWidget(
       loading: issuesProvider.labelState == StateEnum.loading,
       widgetClass: Container(
@@ -77,7 +76,6 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                         issuesProvider
                                                                 .labels[index]
                                                             ['color']),
-                                                //
                                               )
                                             : SvgPicture.asset(
                                                 "assets/svg_images/label_group.svg",
@@ -352,258 +350,264 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                               ),
                               Column(
                                   children: expanded.contains(index)
-                                      ? issuesProvider.labels
-                                          .map(
-                                            (e) =>
-                                                e["parent"] ==
-                                                        issuesProvider
-                                                            .labels[index]["id"]
-                                                    ? Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
+                                      ? issuesProvider.labels.map(
+                                          (e) {
+                                            return e["parent"] ==
+                                                    issuesProvider.labels[index]
+                                                        ["id"]
+                                                ? Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
                                                             bottom: 15,
                                                             left: 15,
                                                             right: 15),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10,
-                                                                top: 5,
-                                                                bottom: 5),
-                                                        decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            top: 5,
+                                                            bottom: 5),
+                                                    decoration: BoxDecoration(
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .primaryBackgroundDefaultColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        border: Border.all(
                                                             color: themeProvider
                                                                 .themeManager
-                                                                .primaryBackgroundDefaultColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: themeProvider
-                                                                    .themeManager
-                                                                    .borderSubtle01Color)),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                                .borderSubtle01Color)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
                                                           children: [
-                                                            Row(
-                                                              children: [
-                                                                CircleAvatar(
-                                                                  radius: 6,
-                                                                  backgroundColor:
-                                                                      Color(int
-                                                                          .parse(
-                                                                              '0xFF${e['color'].toString().toUpperCase().replaceAll('#', '')}')),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                CustomText(
-                                                                  e['name'],
-                                                                  type: FontStyle
-                                                                      .Medium,
-                                                                  maxLines: 3,
-                                                                ),
-                                                              ],
+                                                            CircleAvatar(
+                                                              radius: 6,
+                                                              backgroundColor: ColorManager
+                                                                  .getColorFromHexaDecimal(
+                                                                      e['color']
+                                                                          .toString()),
                                                             ),
-                                                            PopupMenuButton(
-                                                              icon: Icon(
-                                                                Icons.more_vert,
-                                                                color: themeProvider
-                                                                    .themeManager
-                                                                    .placeholderTextColor,
-                                                              ),
-                                                              color: themeProvider
-                                                                  .themeManager
-                                                                  .tertiaryBackgroundDefaultColor,
-                                                              onSelected:
-                                                                  (val) {
-                                                                if (val ==
-                                                                    'EDIT') {
-                                                                  showModalBottomSheet(
-                                                                    enableDrag:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    constraints:
-                                                                        BoxConstraints(
-                                                                      maxHeight:
-                                                                          MediaQuery.of(context).size.height *
-                                                                              0.8,
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            CustomText(
+                                                              e['name'],
+                                                              type: FontStyle
+                                                                  .Medium,
+                                                              maxLines: 3,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        PopupMenuButton(
+                                                          icon: Icon(
+                                                            Icons.more_vert,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .placeholderTextColor,
+                                                          ),
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .tertiaryBackgroundDefaultColor,
+                                                          onSelected: (val) {
+                                                            if (val == 'EDIT') {
+                                                              showModalBottomSheet(
+                                                                enableDrag:
+                                                                    true,
+                                                                isScrollControlled:
+                                                                    true,
+                                                                constraints:
+                                                                    BoxConstraints(
+                                                                  maxHeight: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.8,
+                                                                ),
+                                                                shape:
+                                                                    const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                  ),
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        bottom: MediaQuery.of(context)
+                                                                            .viewInsets
+                                                                            .bottom),
+                                                                    child:
+                                                                        CreateLabel(
+                                                                      label: e[
+                                                                          'name'],
+                                                                      labelColor:
+                                                                          e['color'],
+                                                                      labelId: e[
+                                                                          'id'],
+                                                                      method: CRUD
+                                                                          .update,
                                                                     ),
-                                                                    shape:
-                                                                        const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(20),
-                                                                        topRight:
-                                                                            Radius.circular(20),
-                                                                      ),
-                                                                    ),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                                        child:
-                                                                            CreateLabel(
-                                                                          label:
-                                                                              e['name'],
-                                                                          labelColor:
-                                                                              e['color'],
-                                                                          labelId:
-                                                                              e['id'],
-                                                                          method:
-                                                                              CRUD.update,
-                                                                        ),
-                                                                      );
-                                                                    },
                                                                   );
-                                                                } else if (val ==
-                                                                    'CONVERT') {
-                                                                  issuesProvider.issueLabels(
-                                                                      slug: ref.watch(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug,
-                                                                      projID: ref.watch(ProviderList.projectProvider).currentProject['id'],
-                                                                      method: CRUD.update,
+                                                                },
+                                                              );
+                                                            } else if (val ==
+                                                                'CONVERT') {
+                                                              issuesProvider
+                                                                  .issueLabels(
+                                                                      slug: ref
+                                                                          .watch(ProviderList
+                                                                              .workspaceProvider)
+                                                                          .selectedWorkspace
+                                                                          .workspaceSlug,
+                                                                      projID: ref
+                                                                              .watch(ProviderList
+                                                                                  .projectProvider)
+                                                                              .currentProject[
+                                                                          'id'],
+                                                                      method: CRUD
+                                                                          .update,
                                                                       data: {
                                                                         "parent":
                                                                             null,
                                                                       },
-                                                                      labelId: e["id"],
+                                                                      labelId: e[
+                                                                          "id"],
                                                                       ref: ref);
-                                                                } else {
-                                                                  showModalBottomSheet(
-                                                                    constraints:
-                                                                        const BoxConstraints(
-                                                                            maxHeight:
-                                                                                300),
-                                                                    enableDrag:
-                                                                        true,
-                                                                    shape:
-                                                                        const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(20),
-                                                                        topRight:
-                                                                            Radius.circular(20),
-                                                                      ),
+                                                            } else {
+                                                              showModalBottomSheet(
+                                                                constraints:
+                                                                    const BoxConstraints(
+                                                                        maxHeight:
+                                                                            300),
+                                                                enableDrag:
+                                                                    true,
+                                                                shape:
+                                                                    const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                  ),
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        bottom: MediaQuery.of(context)
+                                                                            .viewInsets
+                                                                            .bottom),
+                                                                    child:
+                                                                        DeleteLabelSheet(
+                                                                      labelName:
+                                                                          e['name'],
+                                                                      labelId: e[
+                                                                          'id'],
                                                                     ),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                                        child:
-                                                                            DeleteLabelSheet(
-                                                                          labelName:
-                                                                              e['name'],
-                                                                          labelId:
-                                                                              e['id'],
-                                                                        ),
-                                                                      );
-                                                                    },
                                                                   );
-                                                                }
-                                                              },
-                                                              itemBuilder:
-                                                                  (ctx) => [
-                                                                PopupMenuItem(
-                                                                  value:
-                                                                      'CONVERT',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .close,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Remove from group',
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      )
-                                                                    ],
+                                                                },
+                                                              );
+                                                            }
+                                                          },
+                                                          itemBuilder: (ctx) =>
+                                                              [
+                                                            PopupMenuItem(
+                                                              value: 'CONVERT',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.close,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
                                                                   ),
-                                                                ),
-                                                                PopupMenuItem(
-                                                                  value: 'EDIT',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .edit,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Edit Label',
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      )
-                                                                    ],
+                                                                  const SizedBox(
+                                                                    width: 10,
                                                                   ),
-                                                                ),
-                                                                PopupMenuItem(
-                                                                  value:
-                                                                      'DELETE',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Delete Label',
-                                                                        color: themeProvider
-                                                                            .themeManager
-                                                                            .secondaryTextColor,
-                                                                      )
-                                                                    ],
+                                                                  CustomText(
+                                                                    'Remove from group',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              value: 'EDIT',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.edit,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  CustomText(
+                                                                    'Edit Label',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              value: 'DELETE',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  CustomText(
+                                                                    'Delete Label',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
-                                                      )
-                                                    : Container(),
-                                          )
-                                          .toList()
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container();
+                                          },
+                                        ).toList()
                                       : [])
                             ],
                           ),
@@ -721,11 +725,9 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                     Navigator.pop(context);
                                   },
                                   child: Container(
-                                    //height: 40,
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 10,
                                     ),
-
                                     child: Column(
                                       children: [
                                         Row(
@@ -753,7 +755,6 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         const SizedBox(height: 20),
                                         Container(
                                           height: 1,
-                                          // margin: const EdgeInsets.only(bottom: 5),
                                           color: themeProvider
                                               .themeManager.borderSubtle01Color,
                                         )
@@ -771,8 +772,6 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                   alignment: Alignment.center,
                   color: themeProvider
                       .themeManager.secondaryBackgroundDefaultColor,
-                  // height: 25,
-                  // width: 25,
                   child: Center(
                     child: SizedBox(
                       height: 25,

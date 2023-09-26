@@ -1125,74 +1125,84 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           ),
           Positioned(
             bottom: 0,
+            left: 0,
+            right: 0,
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: widget.fromCreateView
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: isFilterEmpty()
-                        ? null
-                        : () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CreateView(
-                                      filtersData: filters,
-                                      fromProjectIssues: true,
-                                    )));
-                            // Navigator.of(context).pop();
-                          },
-                    child: Container(
-                      // width: width * 0.42,
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      height: 50,
-                      margin: const EdgeInsets.only(bottom: 18),
-                      child: Container(
-                          //blue border, light blue background, blue text
+                  widget.fromCreateView
+                      ? Container()
+                      : InkWell(
+                          onTap: isFilterEmpty()
+                              ? null
+                              : () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CreateView(
+                                            filtersData: filters,
+                                            fromProjectIssues: true,
+                                          )));
+                                  // Navigator.of(context).pop();
+                                },
+                          child: Container(
+                            // width: width * 0.42,
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            height: 50,
+                            margin: const EdgeInsets.only(bottom: 18),
+                            child: Container(
+                                //blue border, light blue background, blue text
 
-                          decoration: BoxDecoration(
-                            color: isFilterEmpty()
-                                ? themeProvider.themeManager.borderSubtle01Color
-                                    .withOpacity(0.6)
-                                : themeProvider.themeManager.primaryColour
-                                    .withOpacity(0.2),
-                            border: Border.all(
-                                color: isFilterEmpty()
-                                    ? themeProvider
-                                        .themeManager.placeholderTextColor
-                                    : themeProvider.themeManager.primaryColour),
-                            borderRadius: BorderRadius.circular(5),
+                                decoration: BoxDecoration(
+                                  color: isFilterEmpty()
+                                      ? themeProvider
+                                          .themeManager.borderSubtle01Color
+                                          .withOpacity(0.6)
+                                      : themeProvider.themeManager.primaryColour
+                                          .withOpacity(0.2),
+                                  border: Border.all(
+                                      color: isFilterEmpty()
+                                          ? themeProvider
+                                              .themeManager.placeholderTextColor
+                                          : themeProvider
+                                              .themeManager.primaryColour),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Wrap(
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: isFilterEmpty()
+                                            ? themeProvider.themeManager
+                                                .placeholderTextColor
+                                            : themeProvider
+                                                .themeManager.primaryColour,
+                                        size: 24,
+                                      ),
+                                      CustomText(
+                                        '  Save View',
+                                        color: isFilterEmpty()
+                                            ? themeProvider.themeManager
+                                                .placeholderTextColor
+                                            : themeProvider
+                                                .themeManager.primaryColour,
+                                        fontWeight: FontWeightt.Semibold,
+                                        type: FontStyle.Medium,
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ),
-                          child: Center(
-                            child: Wrap(
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: isFilterEmpty()
-                                      ? themeProvider
-                                          .themeManager.placeholderTextColor
-                                      : themeProvider
-                                          .themeManager.primaryColour,
-                                  size: 24,
-                                ),
-                                CustomText(
-                                  '  Save View',
-                                  color: isFilterEmpty()
-                                      ? themeProvider
-                                          .themeManager.placeholderTextColor
-                                      : themeProvider
-                                          .themeManager.primaryColour,
-                                  fontWeight: FontWeightt.Semibold,
-                                  type: FontStyle.Medium,
-                                ),
-                              ],
-                            ),
-                          )),
-                    ),
-                  ),
+                        ),
                   Container(
                     height: 50,
                     // width: width * 0.42,
-                    width: MediaQuery.of(context).size.width * 0.42,
+                    width: widget.fromCreateView
+                        ? MediaQuery.of(context).size.width * 0.87
+                        : MediaQuery.of(context).size.width * 0.42,
                     margin: const EdgeInsets.only(bottom: 18),
                     child: Button(
                       text:

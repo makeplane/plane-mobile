@@ -98,22 +98,42 @@ class _ProjectLeadAssigneeSheetState
                                   .currentProject['id'],
                               ref: ref,
                               data: widget.title == 'Lead '
-                                  ? {
-                                      'project_lead':
+                                  ? widget.leadId ==
                                           projectProvider.projectMembers[index]
+                                              ['member']['id']
+                                      ? {
+                                          'project_lead': null,
+                                          'default_assignee':
+                                              widget.assigneId != ''
+                                                  ? widget.assigneId
+                                                  : null,
+                                        }
+                                      : {
+                                          'project_lead': projectProvider
+                                                  .projectMembers[index]
                                               ['member']['id'],
-                                      'default_assignee': widget.assigneId != ''
-                                          ? widget.assigneId
-                                          : null,
-                                    }
-                                  : {
-                                      'project_lead': widget.leadId != ''
-                                          ? widget.leadId
-                                          : null,
-                                      'default_assignee':
+                                          'default_assignee':
+                                              widget.assigneId != ''
+                                                  ? widget.assigneId
+                                                  : null,
+                                        }
+                                  : widget.assigneId ==
                                           projectProvider.projectMembers[index]
+                                              ['member']['id']
+                                      ? {
+                                          'project_lead': widget.leadId != ''
+                                              ? widget.leadId
+                                              : null,
+                                          'default_assignee': null,
+                                        }
+                                      : {
+                                          'project_lead': widget.leadId != ''
+                                              ? widget.leadId
+                                              : null,
+                                          'default_assignee': projectProvider
+                                                  .projectMembers[index]
                                               ['member']['id'],
-                                    },
+                                        },
                             )
                                 .then((value) {
                               if (projectProvider.updateProjectState ==
@@ -134,7 +154,7 @@ class _ProjectLeadAssigneeSheetState
                                                 .projectDetailModel!
                                                 .projectLead ==
                                             null
-                                        ? 'Select lead'
+                                        ? ''
                                         : projectProvider.projectDetailModel!
                                             .projectLead!['display_name'];
                                     projectProvider
@@ -142,7 +162,7 @@ class _ProjectLeadAssigneeSheetState
                                                 .projectDetailModel!
                                                 .defaultAssignee ==
                                             null
-                                        ? 'Select Assingnee'
+                                        ? ''
                                         : projectProvider.projectDetailModel!
                                             .defaultAssignee!['display_name'];
                                   });
@@ -203,7 +223,7 @@ class _ProjectLeadAssigneeSheetState
                                   ? Icon(
                                       Icons.check,
                                       color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                          .themeManager.textSuccessColor,
                                     )
                                   : Container()
                             ],
@@ -252,8 +272,11 @@ class _ProjectLeadAssigneeSheetState
                   ? Container(
                       height: height,
                       alignment: Alignment.center,
-                      color: themeProvider
-                          .themeManager.primaryBackgroundDefaultColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
+                      ),
                       // height: 25,
                       // width: 25,
                       child: Center(

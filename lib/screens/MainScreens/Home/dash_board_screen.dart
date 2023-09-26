@@ -62,6 +62,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     ref.read(ProviderList.dashboardProvider).getDashboard();
     ref.read(ProviderList.workspaceProvider).getWorkspaces();
   }
+  ScrollController parentScrollController = ScrollController();
+  ScrollController upComingScrollController = ScrollController();
+  ScrollController overDueScrollController = ScrollController();
+
+  Offset globalPosition = const Offset(0, 0);
+  ScrollPhysics physics = const ClampingScrollPhysics();
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +91,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               themeProvider.themeManager.primaryBackgroundDefaultColor,
           onRefresh: refresh,
           child: ListView(
+            controller: parentScrollController,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -444,9 +451,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          height:
-              (overdueIssues.length.toDouble() * sizeToMultiplayForEachIssue) +
-                  constantValueToAdd,
+          // height:
+          //     (overdueIssues.length.toDouble() * sizeToMultiplayForEachIssue) +
+          //         constantValueToAdd,
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
@@ -480,23 +487,48 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 ],
               ),
               const SizedBox(height: 5),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: overdueIssues.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => SizedBox(
-                    height: sizeToMultiplayForEachIssue.toDouble(),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: flexForUpcomingAndOverdueWidgets[0],
-                          child: CustomText(
-                            '${DateTimeManager.diffrenceInDays(startDate: overdueIssues[index]['target_date'], endDate: DateTime.now().toString()).abs()}d',
-                            color: themeProvider.themeManager.textErrorColor,
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onVerticalDragUpdate: (details) {
+                  if (overDueScrollController.offset >=
+                      overDueScrollController.position.maxScrollExtent) {
+                    overDueScrollController.jumpTo(
+                        overDueScrollController.offset -
+                            (details.delta.dy - (details.delta.dy - 1)));
+                    parentScrollController.jumpTo(
+                        parentScrollController.offset - details.delta.dy);
+                  } else {
+                    overDueScrollController.jumpTo(
+                        overDueScrollController.offset - details.delta.dy);
+                  }
+                  if (overDueScrollController.offset <=
+                      overDueScrollController.position.minScrollExtent) {
+                    parentScrollController.jumpTo(
+                        parentScrollController.offset - details.delta.dy);
+                    overDueScrollController.jumpTo(
+                        overDueScrollController.offset + details.delta.dy);
+                  }
+                },
+                child: Container(
+                  constraints: const BoxConstraints(maxHeight: 200),
+                  child: ListView.builder(
+                    controller: overDueScrollController,
+                    itemCount: overdueIssues.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => SizedBox(
+                      height: sizeToMultiplayForEachIssue.toDouble(),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: flexForUpcomingAndOverdueWidgets[0],
+                            child: CustomText(
+                              '${DateTimeManager.diffrenceInDays(startDate: overdueIssues[index]['target_date'], endDate: DateTime.now().toString()).abs()}d',
+                              color: themeProvider.themeManager.textErrorColor,
+                            ),
                           ),
-                        ),
-                        Expanded(
+                          Expanded(
                             flex: flexForUpcomingAndOverdueWidgets[1],
                             child: Padding(
                               padding:
@@ -505,14 +537,20 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                 overdueIssues[index]['name'],
                                 maxLines: 1,
                               ),
-                            )),
-                        Expanded(
-                          flex: flexForUpcomingAndOverdueWidgets[2],
-                          child: CustomText(DateFormat.MMMd().format(
-                              DateTime.parse(
-                                  overdueIssues[index]['target_date']))),
-                        ),
-                      ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: flexForUpcomingAndOverdueWidgets[2],
+                            child: CustomText(
+                              DateFormat.MMMd().format(
+                                DateTime.parse(
+                                  overdueIssues[index]['target_date'],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -538,9 +576,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          height:
-              (upcomingIssues.length.toDouble() * sizeToMultiplayForEachIssue) +
-                  constantValueToAdd,
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
@@ -565,53 +600,85 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   Expanded(
-                      flex: flexForUpcomingAndOverdueWidgets[2],
-                      child: CustomText(
-                        'Start Date',
-                        color: themeProvider.themeManager.placeholderTextColor,
-                      )),
+                    flex: flexForUpcomingAndOverdueWidgets[2],
+                    child: CustomText(
+                      'Start Date',
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 5),
-              Expanded(
-                child: ListView.builder(
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onVerticalDragUpdate: (details) {
+                  if (upComingScrollController.offset >=
+                      upComingScrollController.position.maxScrollExtent) {
+                    upComingScrollController.jumpTo(
+                        upComingScrollController.offset -
+                            (details.delta.dy - (details.delta.dy - 1)));
+                    parentScrollController.jumpTo(
+                        parentScrollController.offset - details.delta.dy);
+                  } else {
+                    upComingScrollController.jumpTo(
+                        upComingScrollController.offset - details.delta.dy);
+                  }
+                  if (upComingScrollController.offset <=
+                      upComingScrollController.position.minScrollExtent) {
+                    parentScrollController.jumpTo(
+                        parentScrollController.offset - details.delta.dy);
+                    upComingScrollController.jumpTo(
+                        upComingScrollController.offset + details.delta.dy);
+                  }
+                },
+                child: Container(
+                  constraints: const BoxConstraints(maxHeight: 200),
+                  child: ListView.builder(
+                    controller: upComingScrollController,
+                    // primary: allowScroll,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: upcomingIssues.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) =>
                         // CustomText(upcomingIssues[index]['name']
                         SizedBox(
-                          height: sizeToMultiplayForEachIssue.toDouble(),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: flexForUpcomingAndOverdueWidgets[0],
-                                child: CustomText(
-                                  '${DateTimeManager.diffrenceInDays(startDate: upcomingIssues[index]['start_date'], endDate: DateTime.now().toString()).abs()}d',
-                                  color: themeProvider
-                                      .themeManager.textSuccessColor,
-                                ),
-                              ),
-                              Expanded(
-                                flex: flexForUpcomingAndOverdueWidgets[1],
-                                child: Padding(
-                                  padding:
-                                      paddingForIssueInUpcomingAndOverdueWidgets,
-                                  child: CustomText(
-                                    upcomingIssues[index]['name'],
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: flexForUpcomingAndOverdueWidgets[2],
-                                child: CustomText(DateFormat.MMMd().format(
-                                    DateTime.parse(
-                                        upcomingIssues[index]['start_date']))),
-                              ),
-                            ],
+                      height: sizeToMultiplayForEachIssue.toDouble(),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: flexForUpcomingAndOverdueWidgets[0],
+                            child: CustomText(
+                              '${DateTimeManager.diffrenceInDays(startDate: upcomingIssues[index]['start_date'], endDate: DateTime.now().toString()).abs()}d',
+                              color:
+                                  themeProvider.themeManager.textSuccessColor,
+                            ),
                           ),
-                        )),
+                          Expanded(
+                            flex: flexForUpcomingAndOverdueWidgets[1],
+                            child: Padding(
+                              padding:
+                                  paddingForIssueInUpcomingAndOverdueWidgets,
+                              child: CustomText(
+                                upcomingIssues[index]['name'],
+                                maxLines: 1,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: flexForUpcomingAndOverdueWidgets[2],
+                            child: CustomText(
+                              DateFormat.MMMd().format(
+                                DateTime.parse(
+                                  upcomingIssues[index]['start_date'],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

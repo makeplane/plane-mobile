@@ -13,6 +13,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/upgrader.dart';
 import 'app.dart';
 import 'config/const.dart';
 import 'utils/enums.dart';
@@ -305,7 +306,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
       navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
-      home: Const.accessToken == null ? const OnBoardingScreen() : const App(),
+      home: UpgradeAlert(
+        child: Const.accessToken == null ? const OnBoardingScreen() : const App(),
+      ),
     );
   }
 

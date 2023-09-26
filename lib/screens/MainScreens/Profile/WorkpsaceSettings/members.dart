@@ -396,10 +396,11 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
 
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (_) => UserProfileScreen(
-                        userID: projectsProvider.projectMembers[index]['member']
-                            ["id"],
-                      )),
+                builder: (_) => UserProfileScreen(
+                  userID: projectsProvider.projectMembers[index]['member']
+                      ["id"],
+                ),
+              ),
             );
           },
           leading: projectsProvider.projectMembers[index]['member']['avatar'] ==

@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/assignee_sheet.dart';
-import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/lead_sheet.dart';
 import 'package:plane/bottom_sheets/type_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
@@ -1816,7 +1816,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   Widget assigneesPart({bool fromModule = false}) {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
     var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
@@ -2060,7 +2059,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   Widget labelsPart({bool fromModule = false}) {
     var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
     var modulesProvider = ref.watch(ProviderList.modulesProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);

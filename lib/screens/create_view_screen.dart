@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';

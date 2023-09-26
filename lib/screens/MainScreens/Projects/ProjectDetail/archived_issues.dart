@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';

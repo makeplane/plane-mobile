@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/bottom_sheets/filter_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/global_search_sheet.dart';
 import 'package:plane/bottom_sheets/views_and_layout_sheet.dart';
 import 'package:plane/kanban/custom/board.dart';
@@ -276,9 +276,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 0
                                       ? Container(
+                                          decoration: BoxDecoration(
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           height: 6,
-                                          color: themeProvider
-                                              .themeManager.primaryColour,
                                         )
                                       : Container(
                                           height: 6,
@@ -315,9 +318,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 1
                                       ? Container(
+                                          decoration: BoxDecoration(
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           height: 6,
-                                          color: themeProvider
-                                              .themeManager.primaryColour,
                                         )
                                       : Container(
                                           height: 6,
@@ -354,9 +360,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   ),
                                   selected == 2
                                       ? Container(
+                                          decoration: BoxDecoration(
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           height: 6,
-                                          color: themeProvider
-                                              .themeManager.primaryColour,
                                         )
                                       : Container(
                                           height: 6,

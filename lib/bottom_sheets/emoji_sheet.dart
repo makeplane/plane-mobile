@@ -459,106 +459,103 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 0,
-                ),
-                Container(
-                  //bottom border
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: themeProvider.themeManager.borderDisabledColor,
-                        width: 1,
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            selected = 0;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: CustomText(
+                                    'Emojis',
+                                    color: selected == 0
+                                        ? themeProvider
+                                            .themeManager.primaryColour
+                                        : themeProvider
+                                            .themeManager.placeholderTextColor,
+                                    type: FontStyle.H5,
+                                    overrride: true,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            selected == 0
+                                ? Container(
+                                    height: 2,
+                                    decoration: BoxDecoration(
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  )
+                                : Container(
+                                    height: 4,
+                                  )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              selected = 0;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    child: CustomText(
-                                      'Emojis',
-                                      color: selected == 0
-                                          ? themeProvider
-                                              .themeManager.primaryColour
-                                          : themeProvider.themeManager
-                                              .placeholderTextColor,
-                                      type: FontStyle.H5,
-                                      overrride: true,
-                                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            selected = 1;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: CustomText(
+                                    overrride: true,
+                                    'Icons',
+                                    color: selected == 1
+                                        ? themeProvider
+                                            .themeManager.primaryColour
+                                        : themeProvider
+                                            .themeManager.placeholderTextColor,
+                                    type: FontStyle.H5,
                                   ),
-                                ],
-                              ),
-                              selected == 0
-                                  ? Container(
-                                      height: 4,
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                    )
-                                  : Container(
-                                      height: 4,
-                                    )
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                            selected == 1
+                                ? Container(
+                                    height: 2,
+                                    decoration: BoxDecoration(
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  )
+                                : Container(
+                                    height: 4,
+                                  )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              selected = 1;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    child: CustomText(
-                                      overrride: true,
-                                      'Icons',
-                                      color: selected == 1
-                                          ? themeProvider
-                                              .themeManager.primaryColour
-                                          : themeProvider.themeManager
-                                              .placeholderTextColor,
-                                      type: FontStyle.H5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              selected == 1
-                                  ? Container(
-                                      height: 4,
-                                      color: themeProvider
-                                          .themeManager.primaryColour,
-                                    )
-                                  : Container(
-                                      height: 4,
-                                    )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                Container(
+                  height: 1,
+                  width: double.infinity,
+                  color: themeProvider.themeManager.borderDisabledColor,
+                )
               ],
             ),
           ),

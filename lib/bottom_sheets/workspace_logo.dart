@@ -1,11 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -20,74 +18,42 @@ class WorkspaceLogo extends ConsumerStatefulWidget {
   ConsumerState<WorkspaceLogo> createState() => _WorkspaceLogoState();
 }
 
-class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
+class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
+    with WidgetStateMixin {
   File? coverImage;
   final searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  LoadingType getLoading(WidgetRef ref) {
+    return setWidgetState([
+      ref.read(ProviderList.fileUploadProvider).fileUploadState,
+      ref.read(ProviderList.workspaceProvider).updateWorkspaceState
+    ], allowError: false, loadingType: LoadingType.wrap);
+  }
+
+  @override
+  Widget render(BuildContext context) {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     var fileProvider = ref.watch(ProviderList.fileUploadProvider);
     var themeProvider = ref.watch(ProviderList.themeProvider);
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            //color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        //color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 10,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () async {
-                      var file = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (file != null) {
-                        setState(() {
-                          coverImage = File(file.path);
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.file_upload_outlined,
-                            color:
-                                themeProvider.themeManager.placeholderTextColor,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const CustomText(
-                            'Upload',
-                            type: FontStyle.Small,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              coverImage != null
-                  ? GestureDetector(
+          coverImage == null
+              ? Expanded(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
                       onTap: () async {
                         var file = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
@@ -98,81 +64,81 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                         }
                       },
                       child: Container(
-                        height: 250,
-                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        width: 120,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: Image.file(coverImage!).image,
-                          ),
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_upload_outlined,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const CustomText(
+                              'Upload',
+                              type: FontStyle.Small,
+                              color: Colors.black,
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  : const SizedBox(),
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
+                    ),
                   ),
-                  Button(
-                    text: 'UPLOAD',
-                    ontap: () async {
-                      int sizeOfImage =
-                          coverImage!.readAsBytesSync().lengthInBytes;
-
-                      if (sizeOfImage > 5000000) {
-                        CustomToast.showToast(context,
-                            message: 'file exceeding 5MB',
-                            toastType: ToastType.warning);
-                        return;
-                      }
-                      var url = await fileProvider.uploadFile(
-                        coverImage!,
-                        coverImage!.path.split('.').last,
-                      );
-                      if (url != null) {
-                        workspaceProvider.changeLogo(logo: url);
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        fileProvider.fileUploadState == StateEnum.loading
-            ? Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color:
-                      themeProvider.themeManager.primaryBackgroundDefaultColor,
-                  //color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                ),
-                alignment: Alignment.center,
-
-                // height: 25,
-                // width: 25,
-                child: Wrap(
-                  children: [
-                    SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: LoadingIndicator(
-                        indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [themeProvider.themeManager.primaryTextColor],
-                        strokeWidth: 1.0,
-                        backgroundColor: Colors.transparent,
+                )
+              : GestureDetector(
+                  onTap: () async {
+                    var file = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (file != null) {
+                      setState(() {
+                        coverImage = File(file.path);
+                      });
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    height: 250,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: Image.file(coverImage!).image,
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              )
-            : const SizedBox(),
-      ],
+          Button(
+            text: 'UPLOAD',
+            ontap: () async {
+              int sizeOfImage = coverImage!.readAsBytesSync().lengthInBytes;
+
+              if (sizeOfImage > 5000000) {
+                CustomToast.showToast(context,
+                    message: 'file exceeding 5MB',
+                    toastType: ToastType.warning);
+                return;
+              }
+              var url = await fileProvider.uploadFile(
+                coverImage!,
+                coverImage!.path.split('.').last,
+              );
+              if (url != null) {
+                workspaceProvider.updateWorkspace(data: {
+                  'logo': url,
+                }, ref: ref);
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

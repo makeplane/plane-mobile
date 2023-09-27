@@ -34,7 +34,8 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    modulesProvider.favModules.isNotEmpty
+                    modulesProvider.favModules.isNotEmpty &&
+                            modulesProvider.modules.isNotEmpty
                         ? CustomText(
                             'Favourite',
                             type: FontStyle.Medium,
@@ -52,10 +53,6 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: modulesProvider.favModules.length,
                               itemBuilder: (context, index) {
-                                // return ModuleCard(
-                                //   index: index,
-                                //   isFav: true,
-                                // );
                                 return SimpleModuleCard(
                                   index: index,
                                   isFav: true,
@@ -80,16 +77,11 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
                     Container(
                         color: themeProvider
                             .themeManager.primaryBackgroundDefaultColor,
-                        // padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: modulesProvider.modules.length,
                           itemBuilder: (context, index) {
-                            // return ModuleCard(
-                            //   index: index,
-                            //   isFav: false,
-                            // );
                             return SimpleModuleCard(
                               index: index,
                               isFav: false,

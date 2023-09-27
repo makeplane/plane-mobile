@@ -304,17 +304,18 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     .toList(),
                               ),
                               SizedBox(
-                                height: 50,
+                                height: 80,
                                 child: Row(
                                   children: [
                                     Expanded(
                                       child: TextFormField(
+                                        maxLength: 6,
                                         onChanged: (value) {
                                           setState(() {});
                                         },
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.allow(
-                                              RegExp("[0-9a-zA-Z]")),
+                                              RegExp("[0-9a-fA-F]")),
                                         ],
                                         controller: colorController,
                                         decoration: themeProvider
@@ -429,7 +430,15 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                           child: Button(
                             text: 'Save Label',
                             ontap: () async {
-                              if (labelContrtoller.text.isNotEmpty) {
+                              if (labelContrtoller.text.isEmpty) {
+                                CustomToast.showToast(context,
+                                    message: 'Label is empty',
+                                    toastType: ToastType.failure);
+                              } else if (colorController.text.length != 6) {
+                                CustomToast.showToast(context,
+                                    message: 'Color is not valid',
+                                    toastType: ToastType.failure);
+                              } else {
                                 await issuesProvider.issueLabels(
                                     slug: ref
                                         .read(ProviderList.workspaceProvider)
@@ -453,11 +462,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   colorController.clear();
                                   labelContrtoller.clear();
                                 });
-                                // Navigator.of(context).pop();
-                              } else {
-                                CustomToast.showToast(context,
-                                    message: 'Label is empty',
-                                    toastType: ToastType.warning);
                               }
                             },
                           ),

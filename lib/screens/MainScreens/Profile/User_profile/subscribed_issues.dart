@@ -28,14 +28,16 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
       margin: const EdgeInsets.only(top: 5),
       child: userProfileProvider.getUserSubscribedIssuesState ==
               StateEnum.loading
-          ? SizedBox(
-              width: 30,
-              height: 30,
-              child: LoadingIndicator(
-                indicatorType: Indicator.lineSpinFadeLoader,
-                colors: [themeProvider.themeManager.primaryTextColor],
-                strokeWidth: 1.0,
-                backgroundColor: Colors.transparent,
+          ? Center(
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.lineSpinFadeLoader,
+                  colors: [themeProvider.themeManager.primaryTextColor],
+                  strokeWidth: 1.0,
+                  backgroundColor: Colors.transparent,
+                ),
               ),
             )
           : userProfileProvider.userSubscribedIssues.isEmpty
@@ -117,8 +119,9 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                                   color: userProfileProvider
                                               .userSubscribedIssues[index]
                                               .priority ==
-                                          'urgent' ? Colors.red : null
-                              ),
+                                          'urgent'
+                                      ? Colors.red
+                                      : null),
                               margin: const EdgeInsets.only(right: 15),
                               height: 30,
                               width: 30,
@@ -147,7 +150,8 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                                               'high'
                                           ? const Icon(
                                               Icons.signal_cellular_alt,
-                                              color: Color.fromRGBO(249, 115, 23,1),
+                                              color: Color.fromRGBO(
+                                                  249, 115, 23, 1),
                                               size: 18,
                                             )
                                           : userProfileProvider
@@ -158,13 +162,15 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                                               ? const Icon(
                                                   Icons
                                                       .signal_cellular_alt_2_bar,
-                                                  color: Color.fromRGBO(234, 179, 9,1),
+                                                  color: Color.fromRGBO(
+                                                      234, 179, 9, 1),
                                                   size: 18,
                                                 )
                                               : const Icon(
                                                   Icons
                                                       .signal_cellular_alt_1_bar,
-                                                  color: Color.fromRGBO(34, 197, 94,1),
+                                                  color: Color.fromRGBO(
+                                                      34, 197, 94, 1),
                                                   size: 18,
                                                 ),
                             ),

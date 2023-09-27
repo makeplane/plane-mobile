@@ -82,10 +82,14 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
           },
         );
       },
-      child: Icon(
-        LucideIcons.trash2,
-        color: themeProvider.themeManager.textErrorColor,
-        size: 20,
+      child: Container(
+        height: 25,
+        alignment: Alignment.center,
+        child: Icon(
+          LucideIcons.trash2,
+          color: themeProvider.themeManager.textErrorColor,
+          size: 20,
+        ),
       ),
     );
   }

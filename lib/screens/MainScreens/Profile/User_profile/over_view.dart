@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -35,9 +36,16 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
       child: Container(
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: userProfileProvider.getUserStatsState == StateEnum.loading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
+            ? Center(
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.lineSpinFadeLoader,
+                    colors: [themeProvider.themeManager.primaryTextColor],
+                    strokeWidth: 1.0,
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
               )
             : Container(
@@ -228,7 +236,6 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget issueByPriorityWidget() {
-    // var themeProvider = ref.watch(ProviderList.themeProvider);
     var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

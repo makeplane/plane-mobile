@@ -54,7 +54,7 @@ class _ViewsState extends ConsumerState<Views> {
                                   .themeManager.placeholderTextColor,
                             ),
                           )
-                        : Container(),
+                        : Container(height: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

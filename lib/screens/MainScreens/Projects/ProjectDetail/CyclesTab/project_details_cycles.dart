@@ -248,7 +248,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                   ),
                             ListView.separated(
                                 separatorBuilder: (context, index) =>
-                                    CustomDivider(themeProvider: themeProvider),
+                                    CustomDivider(
+                                      themeProvider: themeProvider,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                    ),
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 padding:

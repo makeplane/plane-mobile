@@ -30,27 +30,12 @@ class CreateLabel extends ConsumerStatefulWidget {
 class _CreateLabelState extends ConsumerState<CreateLabel> {
   TextEditingController lableController = TextEditingController();
   var colorController = TextEditingController();
-  //String lable = '';
-  // List colors = [
-  //   '#FF6900',
-  //   '#FCB900',
-  //   '#7BDCB5',
-  //   '#00D084',
-  //   '#8ED1FC',
-  //   '#0693E3',
-  //   '#ABB8C3',
-  //   '#EB144C',
-  //   '#F78DA7',
-  //   '#9900EF'
-  // ];
   bool showColoredBox = false;
 
   @override
   void initState() {
     super.initState();
     lableController.text = widget.label ?? '';
-    // lable = widget.labelColor ??
-    //     colorsForLabel[Random().nextInt(colorsForLabel.length)];
     colorController.text =
         colorsForLabel[Random().nextInt(colorsForLabel.length)]
             .replaceAll('#', '');
@@ -72,11 +57,8 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             child: SingleChildScrollView(
               child: Wrap(
-                //  crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Wrap(
-                    //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +97,6 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                 prefixIconConstraints: const BoxConstraints(
                                     minWidth: 0, minHeight: 0),
                                 prefixIcon: Container(
-                                  // padding: EdgeInsets.all(5),
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 7, vertical: 5),
                                   height: 25,
@@ -138,8 +119,6 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                         setState(() {
                                           colorController.text =
                                               e.toString().replaceAll('#', '');
-                                          // .toUpperCase()
-                                          // .replaceAll("#", "");
                                         });
                                       },
                                       child: Container(
@@ -166,14 +145,15 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                   .toList(),
                             ),
                             SizedBox(
-                              height: 50,
+                              height: 80,
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: TextFormField(
+                                      maxLength: 6,
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.allow(
-                                            RegExp("[0-9a-zA-Z]")),
+                                            RegExp("[0-9a-fA-F]")),
                                       ],
                                       controller: colorController,
                                       onChanged: (value) {
@@ -245,6 +225,10 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                       if (lableController.text.trim() == '') {
                         CustomToast.showToast(context,
                             message: "Label is empty",
+                            toastType: ToastType.failure);
+                      } else if (colorController.text.length != 6) {
+                        CustomToast.showToast(context,
+                            message: "Color is not valid",
                             toastType: ToastType.failure);
                       } else {
                         issuesProvider.issueLabels(

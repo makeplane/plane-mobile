@@ -11,6 +11,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensiones.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -383,13 +384,13 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                   setState(() {});
                                                                                 },
                                                                                 child: filterWidget(
-                                                                                    color: Color(int.parse("0xFF${issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().replaceAll("#", "")}")),
+                                                                                    color: issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().toColor(),
                                                                                     icon: Container(
                                                                                       height: 15,
                                                                                       width: 15,
                                                                                       decoration: BoxDecoration(
                                                                                         borderRadius: BorderRadius.circular(20),
-                                                                                        color: Color(int.parse("0xFF${issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().replaceAll("#", "")}")),
+                                                                                        color: issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().toColor(),
                                                                                       ),
                                                                                     ),
                                                                                     text: issuesProvider.labels.where((element) => element["id"] == e).first["name"]),

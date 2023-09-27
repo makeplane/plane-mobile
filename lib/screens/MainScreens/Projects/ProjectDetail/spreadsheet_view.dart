@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensiones.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
@@ -477,13 +478,12 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: Color(int.parse(
-                                          issuesProvider.issuesList[index]
-                                                  ['label_details'][idx]
-                                                  ['color']
-                                              .replaceAll('#', '0xFF'))),
-                                    ),
+                                        radius: 5,
+                                        backgroundColor: issuesProvider
+                                            .issuesList[index]['label_details']
+                                                [idx]['color']
+                                            .toString()
+                                            .toColor()),
                                     const SizedBox(
                                       width: 5,
                                     ),

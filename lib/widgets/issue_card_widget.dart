@@ -7,6 +7,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensiones.dart';
 
 import 'package:plane/widgets/square_avatar_widget.dart';
 
@@ -238,56 +239,60 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   children: [
                     provider.issues.displayProperties.priority
                         ? Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
-                                  'urgent'?Colors.red:null ,
-                      border: Border.all(
-                          color:
-                              themeProvider.themeManager.borderSubtle01Color),
-                      borderRadius: BorderRadius.circular(5)),
-                  margin: const EdgeInsets.only(right: 15),
-                  height: 30,
-                  width: 30,
-                  child: provider.issuesResponse[widget.cardIndex]
-                              ['priority'] ==
-                          null || provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
-                                  'none'
-                      ? Icon(
-                          Icons.do_disturb_alt_outlined,
-                          size: 18,
-                          color: themeProvider.themeManager.tertiaryTextColor,
-                        )
-                      : provider.issuesResponse[widget.cardIndex]['priority'] ==
-                              'urgent'
-                          ? const Icon(
-                              Icons.error_outline_rounded,
-                              color: Colors.white,
-                              size: 18,
-                            )
-                          : provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
-                                  'high'
-                              ? const Icon(
-                                  Icons.signal_cellular_alt,
-                                  color: Color.fromRGBO(249, 115, 23,1),
-                                  size: 18,
-                                )
-                              : provider.issuesResponse[widget.cardIndex]
-                                          ['priority'] ==
-                                      'medium'
-                                  ? const Icon(
-                                      Icons.signal_cellular_alt_2_bar,
-                                      color: Color.fromRGBO(234, 179, 9,1),
-                                      size: 18,
-                                    )
-                                  : const Icon(
-                                      Icons.signal_cellular_alt_1_bar,
-                                      color: Color.fromRGBO(34, 197, 94,1),
-                                      size: 18,
-                                    ))
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: provider.issuesResponse[widget.cardIndex]
+                                            ['priority'] ==
+                                        'urgent'
+                                    ? Colors.red
+                                    : null,
+                                border: Border.all(
+                                    color: themeProvider
+                                        .themeManager.borderSubtle01Color),
+                                borderRadius: BorderRadius.circular(5)),
+                            margin: const EdgeInsets.only(right: 15),
+                            height: 30,
+                            width: 30,
+                            child: provider.issuesResponse[widget.cardIndex]['priority'] == null ||
+                                    provider.issuesResponse[widget.cardIndex]
+                                            ['priority'] ==
+                                        'none'
+                                ? Icon(
+                                    Icons.do_disturb_alt_outlined,
+                                    size: 18,
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor,
+                                  )
+                                : provider.issuesResponse[widget.cardIndex]
+                                            ['priority'] ==
+                                        'urgent'
+                                    ? const Icon(
+                                        Icons.error_outline_rounded,
+                                        color: Colors.white,
+                                        size: 18,
+                                      )
+                                    : provider.issuesResponse[widget.cardIndex]
+                                                ['priority'] ==
+                                            'high'
+                                        ? const Icon(
+                                            Icons.signal_cellular_alt,
+                                            color:
+                                                Color.fromRGBO(249, 115, 23, 1),
+                                            size: 18,
+                                          )
+                                        : provider.issuesResponse[widget.cardIndex]['priority'] == 'medium'
+                                            ? const Icon(
+                                                Icons.signal_cellular_alt_2_bar,
+                                                color: Color.fromRGBO(
+                                                    234, 179, 9, 1),
+                                                size: 18,
+                                              )
+                                            : const Icon(
+                                                Icons.signal_cellular_alt_1_bar,
+                                                color: Color.fromRGBO(
+                                                    34, 197, 94, 1),
+                                                size: 18,
+                                              ))
                         : const SizedBox(
                             width: 0,
                           ),
@@ -472,14 +477,13 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                             children: [
                                               CircleAvatar(
                                                 radius: 5,
-                                                backgroundColor: Color(
-                                                    int.parse(provider
-                                                        .issuesResponse[
-                                                            widget.cardIndex]
-                                                            ['label_details']
-                                                            [idx]['color']
-                                                        .replaceAll(
-                                                            '#', '0xFF'))),
+                                                backgroundColor: provider
+                                                    .issuesResponse[
+                                                        widget.cardIndex]
+                                                        ['label_details'][idx]
+                                                        ['color']
+                                                    .toString()
+                                                    .toColor(),
                                               ),
                                               const SizedBox(
                                                 width: 5,
@@ -833,9 +837,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               ? Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
-                                  'urgent'?Colors.red:null ,
+                      color: provider.issuesResponse[widget.cardIndex]
+                                  ['priority'] ==
+                              'urgent'
+                          ? Colors.red
+                          : null,
                       border: Border.all(
                           color:
                               themeProvider.themeManager.borderSubtle01Color),
@@ -843,11 +849,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   margin: const EdgeInsets.only(right: 15),
                   height: 30,
                   width: 30,
-                  child: provider.issuesResponse[widget.cardIndex]
-                              ['priority'] ==
-                          null || provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
-                                  'none'
+                  child: provider.issuesResponse[widget.cardIndex]['priority'] ==
+                              null ||
+                          provider.issuesResponse[widget.cardIndex]['priority'] ==
+                              'none'
                       ? Icon(
                           Icons.do_disturb_alt_outlined,
                           size: 18,
@@ -860,12 +865,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                               color: Colors.white,
                               size: 18,
                             )
-                          : provider.issuesResponse[widget.cardIndex]
-                                      ['priority'] ==
+                          : provider.issuesResponse[widget.cardIndex]['priority'] ==
                                   'high'
                               ? const Icon(
                                   Icons.signal_cellular_alt,
-                                  color: Color.fromRGBO(249, 115, 23,1),
+                                  color: Color.fromRGBO(249, 115, 23, 1),
                                   size: 18,
                                 )
                               : provider.issuesResponse[widget.cardIndex]
@@ -873,12 +877,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                       'medium'
                                   ? const Icon(
                                       Icons.signal_cellular_alt_2_bar,
-                                      color: Color.fromRGBO(234, 179, 9,1),
+                                      color: Color.fromRGBO(234, 179, 9, 1),
                                       size: 18,
                                     )
                                   : const Icon(
                                       Icons.signal_cellular_alt_1_bar,
-                                      color: Color.fromRGBO(34, 197, 94,1),
+                                      color: Color.fromRGBO(34, 197, 94, 1),
                                       size: 18,
                                     ))
               : const SizedBox(),

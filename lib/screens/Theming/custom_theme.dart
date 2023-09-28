@@ -236,6 +236,12 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                           if (!formkey.currentState!.validate()) {
                             return;
                           }
+                          var theme = profileProvider.userProfile.theme;
+
+                          theme!['theme'] = fromTHEME(theme: THEME.custom);
+
+                          // themeProvider.changeTheme(
+                          //     data: {'theme': theme}, context: context);
                           themeProvider.changeTheme(data: {
                             'theme': {
                               'primary': fields['Accent Color']!.text,

@@ -39,9 +39,11 @@ class _ProfileCircleAvatarsWidgetState
                     backgroundColor: darkSecondaryBGC,
                     child: Center(
                         child: CustomText(
-                      widget.details[0]['first_name'][0]
-                          .toString()
-                          .toUpperCase(),
+                      widget.details[0]['display_name'] != null
+                          ? widget.details[0]['display_name'][0]
+                              .toString()
+                              .toUpperCase()
+                          : "",
                       color: Colors.white,
                     )),
                   ),

@@ -349,11 +349,32 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
 
   void getIssuesCountByState() {
     List<Map<String, dynamic>> issues = state.issuesCountByState;
+
+    log('Issues count by state: ${issues.toString()}}');
+
+    Map<String, int> stateCount = {
+      'backlog': 0,
+      'unstarted': 0,
+      'started': 0,
+      'completed': 0,
+      'cancelled': 0
+    };
+
     for (var element1 in state.userStats.stateDistribution!) {
+      stateCount[element1['state_group']] =
+          stateCount[element1['state_group']] != null
+              ? stateCount[element1['state_group']]! + 1
+              : 0;
       for (var element2 in issues) {
         if (element1['state_group'] == element2['state_group']) {
           element2['count'] = element1['state_count'];
         }
+      }
+    }
+
+    for (var element in issues) {
+      if (stateCount[element['state_group']] == 0) {
+        element['count'] = 0;
       }
     }
     state = state.copyWith(issuesCountByState: issues);

@@ -74,7 +74,7 @@ class _ProjectInviteMembersSheetState
                         children: [
                           const CustomText(
                             'Invite Members',
-                            type: FontStyle.H6,
+                            type: FontStyle.H4,
                             fontWeight: FontWeightt.Semibold,
                           ),
                           const Spacer(),

@@ -35,23 +35,25 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../../bottom_sheets/add_link_sheet.dart';
 import '../../../../../bottom_sheets/select_cycle_sheet.dart';
+import '../IssuesTab/issue_detail.dart';
 
 class CycleDetail extends ConsumerStatefulWidget {
-  const CycleDetail({
-    super.key,
-    this.cycleId,
-    this.cycleName,
-    this.moduleId,
-    this.moduleName,
-    this.fromModule = false,
-    this.projId,
-  });
+  const CycleDetail(
+      {super.key,
+      this.cycleId,
+      this.cycleName,
+      this.moduleId,
+      this.moduleName,
+      this.fromModule = false,
+      this.projId,
+      this.from});
   final String? cycleName;
   final String? cycleId;
   final String? moduleName;
   final String? moduleId;
   final String? projId;
   final bool fromModule;
+  final PreviousScreen? from;
 
   @override
   ConsumerState<CycleDetail> createState() => _CycleDetailState();
@@ -181,7 +183,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug,
-      projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
+      projectId: widget.projId ??
+          ref.read(ProviderList.projectProvider).currentProject['id'],
     )
         .then((value) {
       if (issuesProvider.issues.projectView == ProjectView.list) {
@@ -209,9 +212,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         : cyclesProvider.cyclesState == StateEnum.loading;
 
     return WillPopScope(
-      onWillPop: () async {
+      onWillPop: () async{
         // await issueProvider.getProjectView();
         // issueProvider.issuesList = tempIssuesList;
+        if (widget.from == PreviousScreen.myIssues) return true;
         issueProvider.getIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
@@ -287,6 +291,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           //elevation: false,
 
           onPressed: () {
+            if (widget.from==PreviousScreen.myIssues){
+              Navigator.pop(context);
+              return;
+            } 
             // issueProvider.issuesList = tempIssuesList;
             issueProvider.getIssues(
               slug: ref
@@ -304,7 +312,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             issueProvider.issues.issueType = issueProvider.tempIssueType;
 
             issueProvider.issues.filters = issueProvider.tempFilters;
-
             issueProvider.showEmptyStates =
                 issueProvider.issueView['display_filters']["show_empty_groups"];
 
@@ -542,7 +549,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           children: [
                             Expanded(
                               child:
-                                  ((widget.fromModule && (modulesProvider.moduleIssueState == StateEnum.loading || modulesProvider.moduleDetailState == StateEnum.loading)) ||
+                                  ((widget.fromModule &&
+                                                  (modulesProvider.moduleIssueState ==
+                                                          StateEnum.loading ||
+                                                      modulesProvider.moduleDetailState ==
+                                                          StateEnum.loading)) ||
                                               (!widget.fromModule &&
                                                   (cyclesProvider.cyclesIssueState ==
                                                           StateEnum.loading ||
@@ -619,12 +630,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -703,10 +712,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
-                                                      (widget.fromModule &&
-                                                          issueProvider.issues.projectView ==
-                                                              ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(

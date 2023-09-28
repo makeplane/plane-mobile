@@ -108,18 +108,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                     data: ThemeData(highlightColor: Colors.transparent),
                     child: TabBar(
                       controller: tabController,
+                      indicatorWeight: 6,
+                      indicatorPadding: const EdgeInsets.only(top: 31),
                       indicator: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: themeProvider.themeManager.primaryColour,
-                            width: 6,
-                          ),
-                        ),
-                      ),
+                          color: themeProvider.themeManager.primaryColour,
+                          borderRadius: BorderRadius.circular(6)),
                       labelColor: themeProvider.themeManager.primaryColour,
                       unselectedLabelColor:
                           themeProvider.themeManager.secondaryTextColor,
-                      indicatorWeight: 9,
                       splashFactory: NoSplash.splashFactory,
                       onTap: (index) {
                         setState(() {

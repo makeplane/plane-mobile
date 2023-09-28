@@ -230,7 +230,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
               const SizedBox(width: 10),
             ],
           ),
-          body: projectProvider.projects.isEmpty
+          body: projectProvider.projects.isEmpty && projectProvider.getProjectState==StateEnum.success
               ? EmptyPlaceholder.emptyProject(context, refresh, ref)
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

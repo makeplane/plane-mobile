@@ -89,6 +89,7 @@ class _UserAssignedIssuesPageState
                       },
                       child: Container(
                         decoration: BoxDecoration(
+                          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                             border: Border(
                                 top: BorderSide(
                                     color: themeProvider

@@ -17,17 +17,21 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'dart:developer';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+
 class EDITOR extends ConsumerStatefulWidget {
   const EDITOR(
       {required this.url,
       required this.title,
       this.fromCreateIssue = false,
       this.controller,
+      this.from,
       super.key});
   final InAppWebViewController? controller;
   final String url;
   final String title;
   final bool fromCreateIssue;
+  final PreviousScreen? from;
   @override
   ConsumerState<EDITOR> createState() => _EDITORState();
 }
@@ -117,11 +121,14 @@ class _EDITORState extends ConsumerState<EDITOR> {
                         Navigator.pop(context);
                       } else if (msg.message.startsWith("cycle")) {
                         Map data = json.decode(msg.message.substring(5));
-
+                        ref
+                            .read(ProviderList.projectProvider)
+                            .currentProject['id'] = data['cycle_id'];
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CycleDetail(
+                              from: widget.from,
                               cycleId: data['cycle_id'],
                               projId: data['project_id'],
                               cycleName: 'abcd',

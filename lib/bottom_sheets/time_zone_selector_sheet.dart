@@ -40,7 +40,7 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
             children: [
               CustomText(
                 'Time Zone',
-                type: FontStyle.H6,
+                type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
                 color: themeProvider.themeManager.primaryTextColor,
               ),

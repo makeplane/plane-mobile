@@ -102,7 +102,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: CustomText(
                           name,
-                          type: FontStyle.H6,
+                          type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.ellipsis,

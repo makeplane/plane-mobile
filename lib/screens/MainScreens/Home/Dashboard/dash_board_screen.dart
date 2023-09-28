@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/select_month_sheet.dart';
+import 'package:plane/screens/MainScreens/Home/Dashboard/activity_graph_wdiget.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,7 +24,7 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/time_manager.dart';
 import 'package:plane/widgets/custom_text.dart';
 
-import '../../on_boarding/auth/setup_workspace.dart';
+import '../../../on_boarding/auth/setup_workspace.dart';
 
 class DashBoardScreen extends ConsumerStatefulWidget {
   final bool fromSignUp;
@@ -114,6 +115,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               projectProvider.projects.isNotEmpty
                   ? quichInfoWidget(context, themeProvider, dashboardProvider)
                   : Container(),
+              const SizedBox(height: 20),
+              const ActivityGraphWidget(),
               const SizedBox(height: 20),
               // overdueIssues.isEmpty || overdueIssues.isNull
               overdueIssues == null || overdueIssues.isEmpty

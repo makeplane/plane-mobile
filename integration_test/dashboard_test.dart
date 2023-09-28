@@ -12,7 +12,7 @@ import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/workspace_provider.dart';
-import 'package:plane/screens/MainScreens/Home/dash_board_screen.dart';
+import 'package:plane/screens/MainScreens/Home/Dashboard/dash_board_screen.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
 
 import 'package:plane/utils/enums.dart';

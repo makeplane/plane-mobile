@@ -10,7 +10,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/error_state.dart';
 
-import 'MainScreens/Home/dash_board_screen.dart';
+import 'MainScreens/Home/Dashboard/dash_board_screen.dart';
 import 'MainScreens/Projects/project_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

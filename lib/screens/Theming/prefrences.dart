@@ -115,20 +115,33 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                               )
                             : GestureDetector(
                                 onTap: () {
-                                  var theme = profileProvider.userProfile.theme;
+                                  // var theme = profileProvider.userProfile.theme;
 
-                                  theme!['theme'] =
-                                      fromTHEME(theme: THEME.custom);
-                                  log(theme.toString());
-                                  themeProvider.changeTheme(
-                                      data: {'theme': theme}, context: context);
-                                  setState(() {
-                                    selectedTheme = index + 4;
-                                  });
+                                  // theme!['theme'] =
+                                  //     fromTHEME(theme: THEME.custom);
+                                  // log(theme.toString());
+                                  // themeProvider.changeTheme(
+                                  //     data: {'theme': theme}, context: context);
+                                  // setState(() {
+                                  //   selectedTheme = index + 4;
+                                  // });
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const CustomTheme()));
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const CustomTheme()))
+                                      .then((value) {
+                                    setState(() {
+                                      selectedTheme = profileProvider
+                                                  .userProfile
+                                                  .theme!['theme'] ==
+                                              'system'
+                                          ? 4
+                                          : getSelectedTheme(themeParser(
+                                              theme: profileProvider.userProfile
+                                                  .theme!['theme']));
+                                    });
+                                  });
                                 },
                                 child: Container(
                                     margin: EdgeInsets.only(

@@ -77,7 +77,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.1.7
   flutter_lints: ^2.0.0
-  flutter_native_splash: ^2.2.19
+  flutter_native_splash: ^2.3.2
   flutter_test:
     sdk: flutter
   integration_test:
@@ -85,9 +85,12 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#3F76FF"
-  image: assets/images/plane_logo.png
+  image: assets/images/splash_logo.png
   android: true
   ios: true
+
+  android_12:
+    image: assets/images/splash_logo.png
 
   flutter_launcher_icons: ^0.13.1
 

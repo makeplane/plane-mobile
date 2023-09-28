@@ -236,6 +236,7 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget issueByPriorityWidget() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,38 +245,50 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
         const SizedBox(
           height: 20,
         ),
-        SfCartesianChart(
-          margin: EdgeInsets.zero,
-          borderWidth: 0,
-          primaryXAxis: CategoryAxis(
-            isVisible: true,
-            majorGridLines: const MajorGridLines(
-              width: 0,
-              color: Colors.red,
-            ),
-          ),
-          series: <ChartSeries>[
-            ColumnSeries<Map<String, dynamic>, String>(
-              dataSource: userProfileProvider.issuesByPriority,
-              xValueMapper: (Map<String, dynamic> priority, _) =>
-                  StringManager.capitalizeFirstLetter(
-                      priority['priority'].toString()),
-              yValueMapper: (Map<String, dynamic> priority, _) =>
-                  priority['priority_count'],
-              pointColorMapper: (Map<String, dynamic> priority, _) =>
-                  priority['color'],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              width: userProfileProvider.issuesByPriority.length == 1
-                  ? 0.2
-                  : userProfileProvider.issuesByPriority.length == 2
-                      ? 0.3
-                      : 0.5,
-            ),
-          ],
-        )
+        userProfileProvider.issuesByPriority.isEmpty
+            ? Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color)),
+                height: 200,
+                width: width,
+                child: const Center(
+                  child: CustomText('No issues by priority'),
+                ),
+              )
+            : SfCartesianChart(
+                margin: EdgeInsets.zero,
+                borderWidth: 0,
+                primaryXAxis: CategoryAxis(
+                  isVisible: true,
+                  majorGridLines: const MajorGridLines(
+                    width: 0,
+                    color: Colors.red,
+                  ),
+                ),
+                series: <ChartSeries>[
+                  ColumnSeries<Map<String, dynamic>, String>(
+                    dataSource: userProfileProvider.issuesByPriority,
+                    xValueMapper: (Map<String, dynamic> priority, _) =>
+                        StringManager.capitalizeFirstLetter(
+                            priority['priority'].toString()),
+                    yValueMapper: (Map<String, dynamic> priority, _) =>
+                        priority['priority_count'],
+                    pointColorMapper: (Map<String, dynamic> priority, _) =>
+                        priority['color'],
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    width: userProfileProvider.issuesByPriority.length == 1
+                        ? 0.2
+                        : userProfileProvider.issuesByPriority.length == 2
+                            ? 0.3
+                            : 0.5,
+                  ),
+                ],
+              )
       ],
     );
   }
@@ -319,8 +332,11 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                           data['state_group'],
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false),
-                      innerRadius: '35',
-                      radius: '60',
+                      radius: '100%',
+                      innerRadius: '70%',
+                      strokeWidth: 3,
+                      strokeColor: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                     )
                   ],
                 ),

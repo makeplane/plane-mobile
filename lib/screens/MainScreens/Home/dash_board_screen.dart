@@ -62,6 +62,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     ref.read(ProviderList.dashboardProvider).getDashboard();
     ref.read(ProviderList.workspaceProvider).getWorkspaces();
   }
+
   ScrollController parentScrollController = ScrollController();
   ScrollController upComingScrollController = ScrollController();
   ScrollController overDueScrollController = ScrollController();
@@ -727,14 +728,18 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     tooltipBehavior: tooltipBehavior,
                     series: <CircularSeries>[
                       DoughnutSeries<IssuesByState, String>(
-                          radius: '100%',
-                          innerRadius: '70%',
-                          dataSource: data,
-                          xValueMapper: (datum, index) => datum.state,
-                          yValueMapper: (datum, index) => datum.issues,
-                          pointColorMapper: (datum, index) =>
-                              IssuesByState.getColorForState(datum.state),
-                          enableTooltip: true)
+                        radius: '100%',
+                        innerRadius: '70%',
+                        dataSource: data,
+                        strokeWidth: 3,
+                        strokeColor: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
+                        xValueMapper: (datum, index) => datum.state,
+                        yValueMapper: (datum, index) => datum.issues,
+                        pointColorMapper: (datum, index) =>
+                            IssuesByState.getColorForState(datum.state),
+                        enableTooltip: true,
+                      )
                     ],
                   ),
                 ),

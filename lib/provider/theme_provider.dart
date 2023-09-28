@@ -1,13 +1,13 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/config/plane_keys.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/shared_preference_service.dart';
 import '../utils/enums.dart';
 import '../utils/theme_manager.dart';
 
@@ -15,7 +15,6 @@ class ThemeProvider extends ChangeNotifier {
   ThemeProvider(ChangeNotifierProviderRef<ThemeProvider> this.ref);
   Ref ref;
   BuildContext? context;
-  late SharedPreferences prefs;
   bool isDarkThemeEnabled = false;
   THEME theme = THEME.light;
   ThemeManager themeManager = ThemeManager(THEME.light);
@@ -85,102 +84,57 @@ class ThemeProvider extends ChangeNotifier {
       });
     }
 
-    setUiOverlayStyle(data['theme']['theme']);
-    await prefs.setString('selected-theme', fromTHEME(theme: theme));
+    AppTheme.setUiOverlayStyle(
+        theme: themeParser(theme: data['theme']['theme']),
+        themeManager: themeManager);
+    await SharedPrefrenceServices.instance
+        .setString(PlaneKeys.SELECTED_THEME, fromTHEME(theme: theme));
     notifyListeners();
   }
 
-  void setUiOverlayStyle(String theme) {
-    switch (theme) {
-      case 'light':
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white,
-          systemNavigationBarIconBrightness: Brightness.dark,
-          systemNavigationBarDividerColor: Colors.white,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        ));
-        break;
-      case 'dark':
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black,
-          systemNavigationBarDividerColor: Colors.black,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-        ));
-        break;
-      case 'light-contrast':
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white,
-          systemNavigationBarDividerColor: Colors.white,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        ));
-        break;
-      case 'dark-contrast':
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black,
-          systemNavigationBarDividerColor: Colors.black,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-        ));
-        break;
-      case 'custom':
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          systemNavigationBarColor: themeManager.primaryBackgroundDefaultColor,
-          systemNavigationBarDividerColor:
-              themeManager.primaryBackgroundDefaultColor,
-        ));
-        break;
-      case 'system':
-        if (SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark) {
-          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.black,
-            systemNavigationBarDividerColor: Colors.black,
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-          ));
-        } else {
-          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.white,
-            systemNavigationBarDividerColor: Colors.white,
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-          ));
-        }
-        break;
-    }
-  }
-
   Future<void> getTheme() async {
-    if (!prefs.containsKey('selected-theme')) {
-      await prefs.setString('selected-theme', 'light');
+    SharedPreferences sharedPreferences = SharedPrefrenceServices.instance;
+    if (!sharedPreferences.containsKey(PlaneKeys.SELECTED_THEME)) {
+      await sharedPreferences.setString(
+          PlaneKeys.SELECTED_THEME, PlaneKeys.LIGHT_THEME);
     } else {
-      theme = themeParser(theme: prefs.getString('selected-theme')!);
+      theme = themeParser(
+          theme: sharedPreferences.getString(PlaneKeys.SELECTED_THEME)!);
     }
 
     if (theme == THEME.custom) {
-      if (!prefs.containsKey('primary')) {
+      if (!sharedPreferences.containsKey('primary')) {
         theme = THEME.light;
       } else {
         customAccentColor = Color(int.parse(
-            prefs.getString('primary').toString().replaceFirst('#', 'FF'),
+            sharedPreferences
+                .getString('primary')
+                .toString()
+                .replaceFirst('#', 'FF'),
             radix: 16));
         customBackgroundColor = Color(int.parse(
-            prefs.getString('background').toString().replaceFirst('#', 'FF'),
+            sharedPreferences
+                .getString('background')
+                .toString()
+                .replaceFirst('#', 'FF'),
             radix: 16));
         customTextColor = Color(int.parse(
-            prefs.getString('text').toString().replaceFirst('#', 'FF'),
+            sharedPreferences
+                .getString('text')
+                .toString()
+                .replaceFirst('#', 'FF'),
             radix: 16));
         customNavBarColor = Color(int.parse(
-            prefs
+            sharedPreferences
                 .getString('sidebarBackground')
                 .toString()
                 .replaceFirst('#', 'FF'),
             radix: 16));
         customNavBarTextColor = Color(int.parse(
-            prefs.getString('sidebarText').toString().replaceFirst('#', 'FF'),
+            sharedPreferences
+                .getString('sidebarText')
+                .toString()
+                .replaceFirst('#', 'FF'),
             radix: 16));
       }
     }

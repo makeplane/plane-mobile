@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/config/plane_keys.dart';
 import 'package:plane/utils/enums.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -370,17 +371,17 @@ int fromRole({required Role role}) {
 
 THEME themeParser({required String theme}) {
   switch (theme) {
-    case "light":
+    case PlaneKeys.LIGHT_THEME:
       return THEME.light;
-    case "dark":
+    case PlaneKeys.DARK_THEME:
       return THEME.dark;
-    case "light-contrast":
+    case PlaneKeys.LIGHT_CONTRAST_THEME:
       return THEME.lightHighContrast;
-    case "dark-contrast":
+    case PlaneKeys.DARK_CONTRAST_THEME:
       return THEME.darkHighContrast;
-    case "custom":
+    case PlaneKeys.CUSTOM_THEME:
       return THEME.custom;
-    case "system":
+    case PlaneKeys.SYSTEM_THEME:
       return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
               Brightness.dark
           ? THEME.dark
@@ -393,19 +394,19 @@ THEME themeParser({required String theme}) {
 String fromTHEME({required THEME theme}) {
   switch (theme) {
     case THEME.light:
-      return "light";
+      return PlaneKeys.LIGHT_THEME;
     case THEME.dark:
-      return "dark";
+      return PlaneKeys.DARK_THEME;
     case THEME.lightHighContrast:
-      return "light-contrast";
+      return PlaneKeys.LIGHT_CONTRAST_THEME;
     case THEME.darkHighContrast:
-      return "dark-contrast";
+      return PlaneKeys.DARK_CONTRAST_THEME;
     case THEME.custom:
-      return "custom";
+      return PlaneKeys.CUSTOM_THEME;
     case THEME.systemPreferences:
-      return "system";
+      return PlaneKeys.SYSTEM_THEME;
     default:
-      return "light";
+      return PlaneKeys.LIGHT_THEME;
   }
 }
 

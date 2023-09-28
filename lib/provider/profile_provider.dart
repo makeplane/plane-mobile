@@ -82,7 +82,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void saveCustomTheme(data) {
-    var prefs = SharedPrefrenceServices.sharedPreferences!;
+    var prefs = SharedPrefrenceServices.instance;
     prefs.setString('background', data['background']);
     prefs.setString('primary', data['primary']);
     prefs.setString('text', data['text']);
@@ -90,11 +90,12 @@ class ProfileProvider extends ChangeNotifier {
     prefs.setString('sidebarBackground', data['sidebarBackground']);
   }
 
-  Future<Either<UserProfile,DioException>> updateProfile({required Map data}) async {
+  Future<Either<UserProfile, DioException>> updateProfile(
+      {required Map data}) async {
     updateProfileState = StateEnum.loading;
     notifyListeners();
     var response = await profileService.updateProfile(data: data);
-    if(response.isLeft()) {
+    if (response.isLeft()) {
       userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
       updateProfileState = StateEnum.success;
       notifyListeners();

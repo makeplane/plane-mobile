@@ -3,47 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/config/plane_keys.dart';
+import 'package:plane/provider/dashboard_provider.dart';
+import 'package:plane/provider/notification_provider.dart';
+import 'package:plane/provider/profile_provider.dart';
+import 'package:plane/provider/projects_provider.dart';
+import 'package:plane/provider/whats_new_provider.dart';
+import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
-
 import 'package:plane/services/shared_preference_service.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/provider/provider_list.dart';
-
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import 'app.dart';
 import 'config/const.dart';
+import 'provider/theme_provider.dart';
 import 'utils/enums.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
-late SharedPreferences prefs;
+import 'utils/app_theme.dart';
+
 late String selectedTheme;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // transparent status bar
-    //status bar icons' color
+    statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
   await SharedPrefrenceServices.init();
-  Const.userId =
-      SharedPrefrenceServices.sharedPreferences!.getString("user_id");
-  Const.accessToken =
-      SharedPrefrenceServices.sharedPreferences!.getString("access_token");
-  Const.refreshToken =
-      SharedPrefrenceServices.sharedPreferences!.getString("refresh_token");
-  // print(Const.refreshToken);
-  var pref = await SharedPreferences.getInstance();
-  // SharedPrefrenceServices.sharedPreferences!.clear();
-  // Const.accessToken = null;
-  // Const.refreshToken = null;
-  prefs = pref;
+  SharedPrefrenceServices.getTokens();
+  SharedPrefrenceServices.getUserID();
+
   sentryService();
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
@@ -63,56 +58,67 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-
-    var themeProv = ref.read(ProviderList.themeProvider);
+    final ThemeProvider themeProv = ref.read(ProviderList.themeProvider);
     if (Const.accessToken != null) {
-      // log(Const.accessToken.toString());
-      var prov = ref.read(ProviderList.profileProvider);
-      var workspaceProv = ref.read(ProviderList.workspaceProvider);
-      var projectProv = ref.read(ProviderList.projectProvider);
-      var whatsNewProv = ref.read(ProviderList.whatsNewProvider.notifier);
+      final ProfileProvider profileProvider =
+          ref.read(ProviderList.profileProvider);
+      final WorkspaceProvider workspaceProv =
+          ref.read(ProviderList.workspaceProvider);
+      final ProjectsProvider projectProv =
+          ref.read(ProviderList.projectProvider);
+      final WhatsNewNotifier whatsNewProv =
+          ref.read(ProviderList.whatsNewProvider.notifier);
+      final DashBoardProvider dashProv =
+          ref.read(ProviderList.dashboardProvider);
+      final NotificationProvider notificationProvider =
+          ref.read(ProviderList.notificationProvider);
 
-      var dashProv = ref.read(ProviderList.dashboardProvider);
       whatsNewProv.getWhatsNew();
-      prov.getProfile().then((value) {
-        // log(prov.userProfile.workspace.toString());
-
-        if (prov.userProfile.isOnboarded == false) return;
+      profileProvider.getProfile().then((value) {
+        if (profileProvider.userProfile.isOnboarded == false) return;
 
         workspaceProv.getWorkspaces().then((value) async {
           if (workspaceProv.workspaces.isEmpty) {
             return;
           }
-          var theme = prov.userProfile.theme;
+          var theme = profileProvider.userProfile.theme;
 
-          if (prov.userProfile.theme != null) {
-            if (prov.userProfile.theme!['theme'] == 'dark') {
+          if (profileProvider.userProfile.theme != null) {
+            if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.DARK_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.dark);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (prov.userProfile.theme!['theme'] == 'light') {
+            } else if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.LIGHT_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.light);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (prov.userProfile.theme!['theme'] == 'system') {
+            } else if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.SYSTEM_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
+            } else if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.DARK_CONTRAST_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
+            } else if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.LIGHT_CONTRAST_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (prov.userProfile.theme!['theme'] == 'custom') {
+            } else if (profileProvider.userProfile.theme!['theme'] ==
+                PlaneKeys.CUSTOM_THEME) {
               theme!['theme'] = fromTHEME(theme: THEME.custom);
               themeProv.changeTheme(data: {'theme': theme}, context: null);
             } else {
               themeProv.changeTheme(data: {
                 'theme': {
-                  'primary': prov.userProfile.theme!['primary'],
-                  'background': prov.userProfile.theme!['background'],
-                  'text': prov.userProfile.theme!['text'],
-                  'sidebarText': prov.userProfile.theme!['sidebarText'],
+                  'primary': profileProvider.userProfile.theme!['primary'],
+                  'background':
+                      profileProvider.userProfile.theme!['background'],
+                  'text': profileProvider.userProfile.theme!['text'],
+                  'sidebarText':
+                      profileProvider.userProfile.theme!['sidebarText'],
                   'sidebarBackground':
-                      prov.userProfile.theme!['sidebarBackground'],
+                      profileProvider.userProfile.theme!['sidebarBackground'],
                   'theme': 'custom',
                 }
               }, context: null);
@@ -120,7 +126,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           }
 
           workspaceProv.getWorkspaceMembers();
-          // log(prov.userProfile.last_workspace_id.toString());
           dashProv.getDashboard();
           projectProv.getProjects(
               slug: workspaceProv.selectedWorkspace.workspaceSlug);
@@ -136,31 +141,21 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                 .filterIssues(assigned: true);
           });
 
-          ref.read(ProviderList.notificationProvider).getUnreadCount();
+          notificationProvider.getUnreadCount();
 
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'assigned');
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'created');
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'watching');
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'unread', getUnread: true);
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'archived', getArchived: true);
-          ref
-              .read(ProviderList.notificationProvider)
-              .getNotifications(type: 'snoozed', getSnoozed: true);
+          notificationProvider.getNotifications(type: 'assigned');
+          notificationProvider.getNotifications(type: 'created');
+          notificationProvider.getNotifications(type: 'watching');
+          notificationProvider.getNotifications(
+              type: 'unread', getUnread: true);
+          notificationProvider.getNotifications(
+              type: 'archived', getArchived: true);
+          notificationProvider.getNotifications(
+              type: 'snoozed', getSnoozed: true);
         });
       });
     }
 
-    themeProv.prefs = prefs;
     themeProv.getTheme();
     super.initState();
   }
@@ -171,7 +166,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     var profileProvider = ref.read(ProviderList.profileProvider);
 
     if (profileProvider.userProfile.theme != null &&
-        profileProvider.userProfile.theme!['theme'] == 'system') {
+        profileProvider.userProfile.theme!['theme'] == PlaneKeys.SYSTEM_THEME) {
       var theme = profileProvider.userProfile.theme;
 
       theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
@@ -185,129 +180,20 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // transparent status bar
-      //status bar icons' color
-      statusBarIconBrightness: themeProvider.theme == THEME.dark ||
-              themeProvider.theme == THEME.darkHighContrast
-          ? Brightness.light
-          : Brightness.dark,
-    ));
-    themeProvider.setUiOverlayStyle(fromTHEME(theme: themeProvider.theme));
+    AppTheme.setUiOverlayStyle(
+        theme: themeProvider.theme, themeManager: themeProvider.themeManager);
 
-    // themeProvider.getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Plane',
-      theme: ThemeData(
-        // theme the entire app with list of colors
-
-        textTheme: TextTheme(
-          titleMedium: TextStyle(
-            color: themeProvider.themeManager.primaryTextColor,
-          ),
-        ),
-
-        // cursor color
-
-        textSelectionTheme: TextSelectionThemeData(
-            cursorColor: primaryColor,
-            selectionColor: primaryColor.withOpacity(0.2),
-            selectionHandleColor: primaryColor),
-
-        primaryColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
-
-        scaffoldBackgroundColor:
-            themeProvider.themeManager.primaryBackgroundDefaultColor,
-        //bottom sheet theme
-        bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor:
-              themeProvider.themeManager.primaryBackgroundDefaultColor,
-        ),
-
-        //dialog theme
-        dialogTheme: DialogTheme(
-          backgroundColor:
-              themeProvider.themeManager.primaryBackgroundDefaultColor,
-        ),
-
-        //expansion tile trailing icon color
-        unselectedWidgetColor: themeProvider.themeManager.primaryTextColor,
-        checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return null;
-            }
-            if (states.contains(MaterialState.selected)) {
-              return primaryColor;
-            }
-            return null;
-          }),
-        ),
-        radioTheme: RadioThemeData(
-          fillColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return null;
-            }
-            if (states.contains(MaterialState.selected)) {
-              return primaryColor;
-            }
-            return null;
-          }),
-        ),
-
-        switchTheme: SwitchThemeData(
-          thumbColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return null;
-            }
-            if (states.contains(MaterialState.selected)) {
-              return primaryColor;
-            }
-            return null;
-          }),
-          trackColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return null;
-            }
-            if (states.contains(MaterialState.selected)) {
-              return primaryColor;
-            }
-            return null;
-          }),
-        ),
-        colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: const MaterialColor(
-          //white color
-          0xFFFFFFFF,
-          <int, Color>{
-            50: Color(0xFFFFFFFF),
-            100: Color(0xFFFFFFFF),
-            200: Color(0xFFFFFFFF),
-            300: Color(0xFFFFFFFF),
-            400: Color(0xFFFFFFFF),
-            500: Color(0xFFFFFFFF),
-            600: Color(0xFFFFFFFF),
-            700: Color(0xFFFFFFFF),
-            800: Color(0xFFFFFFFF),
-            900: Color(0xFFFFFFFF),
-          },
-        )).copyWith(
-          background: themeProvider.themeManager.primaryBackgroundDefaultColor,
-        ),
-
-        //expansion tile expansion icon color when expanded not accent color
-      ),
+      title: PlaneKeys.APP_NAME,
+      theme: AppTheme.getAppThemeData(themeProvider.themeManager),
       themeMode:
           themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorKey: Const.globalKey,
       navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
       home: UpgradeAlert(
-        child: Const.accessToken == null ? const OnBoardingScreen() : const App(),
+        child:
+            Const.accessToken == null ? const OnBoardingScreen() : const App(),
       ),
     );
   }

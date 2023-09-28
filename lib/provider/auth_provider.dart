@@ -63,16 +63,12 @@ class AuthProvider extends ChangeNotifier {
           hasBody: true,
           httpMethod: HttpMethod.post,
           data: {"key": key, "token": token});
-      Const.accessToken = response.data["access_token"];
-      Const.userId = response.data["user"]['id'];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("user_id", response.data["user"]['id']);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("access_token", response.data["access_token"]);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("refresh_token", response.data["refresh_token"]);
-      // await ref.read(ProviderList.profileProvider).getProfile();
-      // .userProfile = UserProfile.fromMap(response.data);
+
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+
       validateCodeState = StateEnum.success;
       await ref
           .read(ProviderList.profileProvider)
@@ -181,7 +177,7 @@ class AuthProvider extends ChangeNotifier {
         } else {
           Const.accessToken = null;
           Const.userId = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
+          SharedPrefrenceServices.instance.clear();
           validateCodeState = StateEnum.error;
           notifyListeners();
           if (context != null) {
@@ -205,7 +201,8 @@ class AuthProvider extends ChangeNotifier {
         // );
 
         if (context != null) {
-          CustomToast.showToastWithColors(context, e.response!.data['error'].toString(),
+          CustomToast.showToastWithColors(
+              context, e.response!.data['error'].toString(),
               toastType: ToastType.failure);
         }
       } else {
@@ -229,14 +226,10 @@ class AuthProvider extends ChangeNotifier {
         httpMethod: HttpMethod.post,
         data: data,
       );
-      Const.accessToken = response.data["access_token"];
-      Const.userId = response.data["user"]['id'];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("user_id", response.data["user"]['id']);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("access_token", response.data["access_token"]);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("refresh_token", response.data["refresh_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       googleAuthState = StateEnum.success;
       notifyListeners();
       await ref
@@ -346,7 +339,7 @@ class AuthProvider extends ChangeNotifier {
         } else {
           Const.accessToken = null;
           Const.userId = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
+          SharedPrefrenceServices.instance.clear();
           GoogleSignInApi.logout();
           validateCodeState = StateEnum.failed;
           notifyListeners();
@@ -387,14 +380,10 @@ class AuthProvider extends ChangeNotifier {
           'medium': 'email',
         },
       );
-      Const.accessToken = response.data["access_token"];
-      Const.userId = response.data["user"]['id'];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("user_id", response.data["user"]['id']);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("access_token", response.data["access_token"]);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("refresh_token", response.data["refresh_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       signInState = StateEnum.success;
       notifyListeners();
       await ref
@@ -503,7 +492,7 @@ class AuthProvider extends ChangeNotifier {
         } else {
           Const.accessToken = null;
           Const.userId = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
+          SharedPrefrenceServices.instance.clear();
 
           notifyListeners();
           if (context != null) {
@@ -571,14 +560,10 @@ class AuthProvider extends ChangeNotifier {
         },
       );
       log('signUp response: ${response.data}');
-      Const.accessToken = response.data["access_token"];
-      Const.userId = response.data["user"]['id'];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("user_id", response.data["user"]['id']);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("access_token", response.data["access_token"]);
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("refresh_token", response.data["refresh_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       signUpState = StateEnum.success;
       notifyListeners();
       await ref
@@ -693,7 +678,7 @@ class AuthProvider extends ChangeNotifier {
         } else {
           Const.accessToken = null;
           Const.userId = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
+          SharedPrefrenceServices.instance.clear();
 
           notifyListeners();
           if (context != null) {

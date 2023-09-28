@@ -34,7 +34,7 @@ import 'views_provider.dart';
 class ProviderList {
   static final authProvider =
       ChangeNotifierProvider<AuthProvider>((ref) => AuthProvider(ref));
-  static var  profileProvider = ChangeNotifierProvider<ProfileProvider>(
+  static var profileProvider = ChangeNotifierProvider<ProfileProvider>(
       (_) => ProfileProvider(profileService: ProfileService(DioConfig())));
   static var workspaceProvider = ChangeNotifierProvider<WorkspaceProvider>(
       (ref) => WorkspaceProvider(
@@ -98,7 +98,7 @@ class ProviderList {
 
     ref.read(workspaceProvider).clear();
     GoogleSignInApi.logout();
-    SharedPrefrenceServices.sharedPreferences!.clear();
+    SharedPrefrenceServices.instance.clear();
     Const.accessToken = null;
     Const.userId = null;
   }

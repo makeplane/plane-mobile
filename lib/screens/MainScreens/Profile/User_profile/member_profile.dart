@@ -16,6 +16,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../bottom_sheets/project_select_cover_image.dart';
 import '../../../../provider/profile_provider.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/app_theme.dart';
 
 class MemberProfile extends ConsumerStatefulWidget {
   const MemberProfile({required this.userID, super.key});
@@ -29,7 +30,8 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var themeProv = ref.read(ProviderList.themeProvider);
-      themeProv.setUiOverlayStyle(fromTHEME(theme: themeProv.theme));
+      AppTheme.setUiOverlayStyle(
+          theme: themeProv.theme, themeManager: themeProv.themeManager);
     });
     super.initState();
   }

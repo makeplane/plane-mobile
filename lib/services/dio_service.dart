@@ -57,7 +57,7 @@ class DioConfig {
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         ConnectionService().checkConnectivity();
         if (error.response?.statusCode == 401) {
-          await SharedPrefrenceServices.sharedPreferences!.clear();
+          await SharedPrefrenceServices.instance.clear();
           Const.accessToken = '';
           Const.userId = null;
           Navigator.push(Const.globalKey.currentContext!,

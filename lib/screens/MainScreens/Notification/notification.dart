@@ -163,6 +163,10 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
                   text: 'Subscribed',
                 ),
               ]),
+          Container(
+            color: themeProvider.themeManager.borderSubtle01Color,
+            height: 1,
+          ),
           Expanded(
             child: TabBarView(
               controller: controller,

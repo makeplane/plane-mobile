@@ -234,10 +234,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       children: [
         Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(6),
               color:
                   themeProvider.themeManager.secondaryBackgroundDefaultColor),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -276,48 +276,103 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: themeProvider.theme == THEME.custom
-                            ? themeProvider
-                                .themeManager.tertiaryBackgroundDefaultColor
-                            : themeProvider.themeManager.primaryTextColor,
-                        elevation: 0),
-                    onPressed: () async {
-                      //redirect to github using url launcher.
-                      try {
-                        final url = Uri.parse(
-                            'https://github.com/makeplane/plane-mobile');
+                  Container(
+                      height: 40,
+                      width: 150,
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () async {
+                          //redirect to github using url launcher.
+                          try {
+                            final url = Uri.parse(
+                                'https://github.com/makeplane/plane-mobile');
 
-                        await launchUrl(url);
-                        postHogService(
-                            eventName: 'STAR_US_ON_GITHIB',
-                            properties: {},
-                            ref: ref);
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            backgroundColor: Colors.redAccent,
-                            content: Text('Something went wrong !',
-                                style: TextStyle(color: Colors.white)),
+                            await launchUrl(url);
+                            postHogService(
+                                eventName: 'STAR_US_ON_GITHIB',
+                                properties: {},
+                                ref: ref);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.redAccent,
+                                content: Text('Something went wrong !',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 150,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: themeProvider.theme == THEME.custom
+                                ? themeProvider
+                                    .themeManager.tertiaryBackgroundDefaultColor
+                                : themeProvider.themeManager.primaryTextColor,
                           ),
-                        );
-                      }
-                    },
-                    child: CustomText(
-                      'Star us on GitHub',
-                      type: FontStyle.Small,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.theme == THEME.dark ||
-                              themeProvider.themeManager.theme ==
-                                  THEME.darkHighContrast
-                          ? Colors.black
-                          : themeProvider.theme == THEME.custom
-                              ? themeProvider
-                                  .themeManager.secondaryBackgroundDefaultColor
-                              : Colors.white,
-                    ),
-                  ),
+                          child: CustomText(
+                            'Star us on GitHub',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            color: themeProvider.themeManager.theme ==
+                                        THEME.dark ||
+                                    themeProvider.themeManager.theme ==
+                                        THEME.darkHighContrast
+                                ? Colors.black
+                                : themeProvider.theme == THEME.custom
+                                    ? themeProvider.themeManager
+                                        .secondaryBackgroundDefaultColor
+                                    : Colors.white,
+                          ),
+                        ),
+                      )
+
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //       backgroundColor: themeProvider.theme == THEME.custom
+                      //           ? themeProvider
+                      //               .themeManager.tertiaryBackgroundDefaultColor
+                      //           : themeProvider.themeManager.primaryTextColor,
+                      //       elevation: 0),
+                      //   onPressed: () async {
+                      //     //redirect to github using url launcher.
+                      //     try {
+                      //       var url = Uri.parse(
+                      //           'https://github.com/makeplane/plane-mobile');
+
+                      //       await launchUrl(url);
+                      //       postHogService(
+                      //           eventName: 'STAR_US_ON_GITHIB',
+                      //           properties: {},
+                      //           ref: ref);
+                      //     } catch (e) {
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         const SnackBar(
+                      //           backgroundColor: Colors.redAccent,
+                      //           content: Text('Something went wrong !',
+                      //               style: TextStyle(color: Colors.white)),
+                      //         ),
+                      //       );
+                      //     }
+                      //   },
+                      //   child: CustomText(
+                      //     'Star us on GitHub',
+                      //     type: FontStyle.Small,
+                      //     fontWeight: FontWeightt.Medium,
+                      //     color: themeProvider.themeManager.theme == THEME.dark ||
+                      //             themeProvider.themeManager.theme ==
+                      //                 THEME.darkHighContrast
+                      //         ? Colors.black
+                      //         : themeProvider.theme == THEME.custom
+                      //             ? themeProvider.themeManager
+                      //                 .secondaryBackgroundDefaultColor
+                      //             : Colors.white,
+                      //   ),
+                      // ),
+                      ),
                 ],
               )
             ],
@@ -344,8 +399,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     return Container(
       decoration: BoxDecoration(
           color: const Color.fromRGBO(63, 118, 255, 0.05),
-          borderRadius: BorderRadius.circular(10)),
-      padding: const EdgeInsets.all(15),
+          borderRadius: BorderRadius.circular(6)),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -373,7 +428,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               width: 150,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(4),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const CustomText(
@@ -407,7 +462,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           decoration: BoxDecoration(
             border: Border.all(
                 color: themeProvider.themeManager.borderSubtle01Color),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(6),
           ),
           child: FittedBox(
             alignment: Alignment.centerLeft,
@@ -457,12 +512,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          // height:
-          //     (overdueIssues.length.toDouble() * sizeToMultiplayForEachIssue) +
-          //         constantValueToAdd,
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(6),
             border: Border.all(
               color: themeProvider.themeManager.borderSubtle01Color,
             ),
@@ -585,7 +637,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(6),
             border: Border.all(
               color: themeProvider.themeManager.borderSubtle01Color,
             ),
@@ -722,7 +774,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             height: 200,
             decoration: BoxDecoration(
               color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: themeProvider.themeManager.borderSubtle01Color,
               ),
@@ -870,7 +922,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           width: double.infinity,
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(6),
             border: Border.all(
               color: themeProvider.themeManager.borderSubtle01Color,
             ),

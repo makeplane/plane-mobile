@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/member_status.dart';
@@ -65,7 +64,6 @@ class _ProjectInviteMembersSheetState
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
@@ -73,7 +71,7 @@ class _ProjectInviteMembersSheetState
                       child: Row(
                         children: [
                           const CustomText(
-                            'Invite Members',
+                            'Add Member',
                             type: FontStyle.H4,
                             fontWeight: FontWeightt.Semibold,
                           ),
@@ -141,8 +139,6 @@ class _ProjectInviteMembersSheetState
                                       context,
                                       message:
                                           'You are the only member of this workspace. Please add more members to workspace first.',
-
-                                      //toastType: ToastType.warning
                                     );
                                   },
                             child: Container(
@@ -171,9 +167,9 @@ class _ProjectInviteMembersSheetState
                                     ),
                                     const Spacer(),
                                     Icon(
-                                      Icons.arrow_drop_down,
+                                      Icons.keyboard_arrow_down,
                                       color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const SizedBox(
                                       width: 5,
@@ -214,8 +210,6 @@ class _ProjectInviteMembersSheetState
                               await showModalBottomSheet(
                                   isScrollControlled: true,
                                   enableDrag: true,
-                                  // constraints: BoxConstraints(
-                                  //     maxHeight: height * 0.55),
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -235,12 +229,15 @@ class _ProjectInviteMembersSheetState
                                       isInviteMembers: true,
                                     );
                                   });
-                              log(selectedRole.toString());
                             },
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
                                 controller:
                                     workspaceProvider.invitingMembersRole,
                                 decoration: themeProvider
@@ -305,7 +302,6 @@ class _ProjectInviteMembersSheetState
                             });
                             return;
                           }
-                          // log( projectProvider.currentProject["id"]);
                           await projectProvider.inviteToProject(
                             context: mainBuildContext,
                             slug: workspaceProvider
@@ -315,12 +311,12 @@ class _ProjectInviteMembersSheetState
                               "members": [
                                 {
                                   'member_id': selectedEmail['id'],
-                                  'role': selectedRole['role']
+                                  'role': getRoleIndex(workspaceProvider
+                                      .invitingMembersRole.text)
                                 }
                               ]
                             },
                           );
-
                           if (projectProvider.projectInvitationState ==
                               StateEnum.success) {
                             postHogService(
@@ -341,19 +337,15 @@ class _ProjectInviteMembersSheetState
                                 ref: ref);
                             //show success snackbar
 
-                            if (projectProvider.projectInvitationState ==
-                                StateEnum.success) {
-                              //show success snackbar
-                              CustomToast.showToast(mainBuildContext,
-                                  message: 'Invitation sent successfully',
-                                  toastType: ToastType.success);
-                              Navigator.pop(mainBuildContext);
-                            } else {
-                              CustomToast.showToast(mainBuildContext,
-                                  message: 'Something went wrong',
-                                  toastType: ToastType.failure);
-                            }
-                          } else {}
+                            CustomToast.showToast(mainBuildContext,
+                                message: 'Member added successfully',
+                                toastType: ToastType.success);
+                            Navigator.pop(mainBuildContext);
+                          } else {
+                            CustomToast.showToast(mainBuildContext,
+                                message: 'Something went wrong',
+                                toastType: ToastType.failure);
+                          }
                         },
                         text: 'Invite',
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -27,60 +28,100 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
     'November',
     'December',
   ];
+  int indexOfTickedItem = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    indexOfTickedItem = ref
+            .read(ProviderList.dashboardProvider)
+            .selectedMonthForissuesClosedByMonthWidget -
+        1; // Month start from 1. but in list view index its start from 0
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final BuildContext currentContext = context;
     return Container(
-      padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
+      padding: const EdgeInsets.only(top: 25),
       decoration: BoxDecoration(
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const CustomText(
-                'Select Month',
-                type: FontStyle.H4,
-                fontWeight: FontWeightt.Semibold,
+      child: Material(
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                children: [
+                  const CustomText(
+                    'Select Month',
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
+                  )
+                ],
               ),
-              const Spacer(),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+            ),
+            const SizedBox(height: 15),
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) =>
+                    CustomDivider(themeProvider: themeProvider),
+                itemCount: monthList.length,
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () async {
+                    indexOfTickedItem = index;
+                    await dashboardProvider.getIssuesClosedByMonth(index + 1);
+                    if (dashboardProvider.getIssuesClosedThisMonthState ==
+                        StateEnum.error) {
+                      // ignore: use_build_context_synchronously
+                      CustomToast.showToast(context,
+                          message: 'Something went wrong!',
+                          toastType: ToastType.failure);
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(currentContext);
+                    }
                   },
-                  icon: Icon(
-                    Icons.close,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ))
-            ],
-          ),
-          const SizedBox(height: 15),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, index) =>
-                  CustomDivider(themeProvider: themeProvider),
-              itemCount: monthList.length,
-              itemBuilder: (context, index) => InkWell(
-                onTap: () async {
-                  await dashboardProvider.getIssuesClosedByMonth(index + 1);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5),
-                  child: CustomText(
-                    monthList[index],
-                    type: FontStyle.H6,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 15, bottom: 15, left: 25, right: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          monthList[index],
+                          type: FontStyle.H6,
+                        ),
+                        index == indexOfTickedItem
+                            ? const Icon(
+                                Icons.done,
+                                color: Color.fromRGBO(9, 169, 83, 1),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

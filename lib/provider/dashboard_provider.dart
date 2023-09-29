@@ -17,6 +17,7 @@ class DashBoardProvider extends ChangeNotifier {
   DashboardService dashboardService;
 
   StateEnum getDashboardState = StateEnum.loading;
+  StateEnum getIssuesClosedThisMonthState = StateEnum.loading;
   Map dashboardData = {};
   Map issuesClosedByMonth = {};
   int selectedMonthForissuesClosedByMonthWidget = DateTime.now().month;
@@ -44,6 +45,8 @@ class DashBoardProvider extends ChangeNotifier {
 
   Future getIssuesClosedByMonth(int month) async {
     try {
+      getIssuesClosedThisMonthState = StateEnum.loading;
+      notifyListeners();
       final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.dashboard}?month=$month'.replaceAll(
@@ -57,12 +60,14 @@ class DashBoardProvider extends ChangeNotifier {
       );
       issuesClosedByMonth = response.data;
       selectedMonthForissuesClosedByMonthWidget = month;
+      getIssuesClosedThisMonthState = StateEnum.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
         log(e.response.toString());
       }
       log(e.toString());
+      getIssuesClosedThisMonthState = StateEnum.error;
       notifyListeners();
     }
   }

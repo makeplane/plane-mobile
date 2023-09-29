@@ -8,6 +8,7 @@ import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/list_extensions.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -304,93 +305,107 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
           height: 20,
         ),
         Container(
+          height: 200,
+          width: width,
           decoration: BoxDecoration(
             border: Border.all(
                 color: themeProvider.themeManager.borderSubtle01Color),
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 120,
-                height: 140,
-                child: SfCircularChart(
-                  margin: EdgeInsets.zero,
-                  series: <CircularSeries>[
-                    DoughnutSeries<Map<String, dynamic>, String>(
-                      dataSource: userProfileProvider.issuesCountByState,
-                      xValueMapper: (Map<String, dynamic> data, _) =>
-                          data['state'],
-                      yValueMapper: (Map<String, dynamic> data, _) =>
-                          data['count'],
-                      pointColorMapper: (Map<String, dynamic> data, _) =>
-                          data['color'],
-                      dataLabelMapper: (Map<String, dynamic> data, _) =>
-                          data['state_group'],
-                      dataLabelSettings:
-                          const DataLabelSettings(isVisible: false),
-                      radius: '100%',
-                      innerRadius: '70%',
-                      strokeWidth: 3,
-                      strokeColor: themeProvider
-                          .themeManager.primaryBackgroundDefaultColor,
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  primary: false,
-                  shrinkWrap: true,
-                  itemCount: userProfileProvider.issuesCountByState.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 10,
-                                width: 10,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  color: userProfileProvider
-                                      .issuesCountByState[index]['color'],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              CustomText(
-                                userProfileProvider.issuesCountByState[index]
-                                    ['state'],
-                                type: FontStyle.Small,
-                              )
-                            ],
-                          ),
-                          CustomText(
-                            userProfileProvider.issuesCountByState[index]
-                                    ['count']
-                                .toString(),
-                            type: FontStyle.Small,
-                          ),
-                        ],
+          child: userProfileProvider.userStats.stateDistribution.isNullOrEmpty()
+              ? const Center(
+                  child: CustomText('No issues by State'),
+                )
+              : Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        height: 140,
+                        child: SfCircularChart(
+                          margin: EdgeInsets.zero,
+                          series: <CircularSeries>[
+                            DoughnutSeries<Map<String, dynamic>, String>(
+                              dataSource:
+                                  userProfileProvider.issuesCountByState,
+                              xValueMapper: (Map<String, dynamic> data, _) =>
+                                  data['state'],
+                              yValueMapper: (Map<String, dynamic> data, _) =>
+                                  data['count'],
+                              pointColorMapper:
+                                  (Map<String, dynamic> data, _) =>
+                                      data['color'],
+                              dataLabelMapper: (Map<String, dynamic> data, _) =>
+                                  data['state_group'],
+                              dataLabelSettings:
+                                  const DataLabelSettings(isVisible: false),
+                              radius: '100%',
+                              innerRadius: '70%',
+                              strokeWidth: 3,
+                              strokeColor: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                            )
+                          ],
+                        ),
                       ),
-                    );
-                  },
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          primary: false,
+                          shrinkWrap: true,
+                          itemCount:
+                              userProfileProvider.issuesCountByState.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 10,
+                                        width: 10,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: userProfileProvider
+                                                  .issuesCountByState[index]
+                                              ['color'],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      CustomText(
+                                        userProfileProvider
+                                            .issuesCountByState[index]['state'],
+                                        type: FontStyle.Small,
+                                      )
+                                    ],
+                                  ),
+                                  CustomText(
+                                    userProfileProvider
+                                        .issuesCountByState[index]['count']
+                                        .toString(),
+                                    type: FontStyle.Small,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ],
-          ),
         ),
       ],
     );

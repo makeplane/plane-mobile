@@ -7,7 +7,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensiones.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 
 import 'package:plane/widgets/square_avatar_widget.dart';
 

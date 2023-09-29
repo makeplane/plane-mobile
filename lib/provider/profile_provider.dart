@@ -62,11 +62,12 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getProfile() async {
+  Future<Either<UserProfile, DioException>> getProfile() async {
     getProfileState = StateEnum.loading;
     final response = await profileService.getProfile();
     if (response.isLeft()) {
-      userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
+      userProfile = response.fold(
+          (userProfile) => userProfile, (error) => UserProfile.initialize());
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
       getProfileState = StateEnum.success;
@@ -74,10 +75,14 @@ class ProfileProvider extends ChangeNotifier {
       TimeZoneManager.findLabelFromTimeZonesList(selectedTimeZone) ??
           'UTC, GMT';
       notifyListeners();
+      return Left(userProfile);
     } else {
       log(response.fold((l) => l.toString(), (r) => r.toString()));
       getProfileState = StateEnum.error;
       notifyListeners();
+      return Right(response.fold(
+          (userProfile) => DioException(requestOptions: RequestOptions()),
+          (error) => error));
     }
   }
 

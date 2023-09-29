@@ -4,15 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/plane_keys.dart';
-import 'package:plane/provider/dashboard_provider.dart';
-import 'package:plane/provider/notification_provider.dart';
-import 'package:plane/provider/profile_provider.dart';
-import 'package:plane/provider/projects_provider.dart';
-import 'package:plane/provider/whats_new_provider.dart';
-import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane/services/shared_preference_service.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/startup/dependency_resolver.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
@@ -59,103 +54,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     final ThemeProvider themeProv = ref.read(ProviderList.themeProvider);
-    if (Const.accessToken != null) {
-      final ProfileProvider profileProvider =
-          ref.read(ProviderList.profileProvider);
-      final WorkspaceProvider workspaceProv =
-          ref.read(ProviderList.workspaceProvider);
-      final ProjectsProvider projectProv =
-          ref.read(ProviderList.projectProvider);
-      final WhatsNewNotifier whatsNewProv =
-          ref.read(ProviderList.whatsNewProvider.notifier);
-      final DashBoardProvider dashProv =
-          ref.read(ProviderList.dashboardProvider);
-      final NotificationProvider notificationProvider =
-          ref.read(ProviderList.notificationProvider);
-
-      whatsNewProv.getWhatsNew();
-      profileProvider.getProfile().then((value) {
-        if (profileProvider.userProfile.isOnboarded == false) return;
-
-        workspaceProv.getWorkspaces().then((value) async {
-          if (workspaceProv.workspaces.isEmpty) {
-            return;
-          }
-          final theme = profileProvider.userProfile.theme;
-
-          if (profileProvider.userProfile.theme != null) {
-            if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.DARK_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.dark);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.LIGHT_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.light);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.SYSTEM_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.DARK_CONTRAST_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.LIGHT_CONTRAST_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else if (profileProvider.userProfile.theme!['theme'] ==
-                PlaneKeys.CUSTOM_THEME) {
-              theme!['theme'] = fromTHEME(theme: THEME.custom);
-              themeProv.changeTheme(data: {'theme': theme}, context: null);
-            } else {
-              themeProv.changeTheme(data: {
-                'theme': {
-                  'primary': profileProvider.userProfile.theme!['primary'],
-                  'background':
-                      profileProvider.userProfile.theme!['background'],
-                  'text': profileProvider.userProfile.theme!['text'],
-                  'sidebarText':
-                      profileProvider.userProfile.theme!['sidebarText'],
-                  'sidebarBackground':
-                      profileProvider.userProfile.theme!['sidebarBackground'],
-                  'theme': 'custom',
-                }
-              }, context: null);
-            }
-          }
-
-          workspaceProv.getWorkspaceMembers();
-          dashProv.getDashboard();
-          projectProv.getProjects(
-              slug: workspaceProv.selectedWorkspace.workspaceSlug);
-
-          ref.read(ProviderList.myIssuesProvider).getLabels();
-
-          await ref
-              .read(ProviderList.myIssuesProvider)
-              .getMyIssuesView()
-              .then((value) {
-            ref
-                .read(ProviderList.myIssuesProvider)
-                .filterIssues(assigned: true);
-          });
-
-          notificationProvider.getUnreadCount();
-
-          notificationProvider.getNotifications(type: 'assigned');
-          notificationProvider.getNotifications(type: 'created');
-          notificationProvider.getNotifications(type: 'watching');
-          notificationProvider.getNotifications(
-              type: 'unread', getUnread: true);
-          notificationProvider.getNotifications(
-              type: 'archived', getArchived: true);
-          notificationProvider.getNotifications(
-              type: 'snoozed', getSnoozed: true);
-        });
-      });
-    }
-
+    DependencyResolver.resolve(ref: ref);
     themeProv.getTheme();
     super.initState();
   }
@@ -176,7 +75,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     super.didChangePlatformBrightness();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);

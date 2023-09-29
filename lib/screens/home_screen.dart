@@ -14,8 +14,8 @@ import 'MainScreens/Home/Dashboard/dash_board_screen.dart';
 import 'MainScreens/Projects/project_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  final bool fromSignUp;
   const HomeScreen({required this.fromSignUp, super.key});
+  final bool fromSignUp;
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -37,9 +37,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var bottomNavProvider = ref.watch(ProviderList.bottomNavProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final bottomNavProvider = ref.watch(ProviderList.bottomNavProvider);
     themeProvider.context = context;
     final screens = [
       DashBoardScreen(

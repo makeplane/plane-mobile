@@ -22,8 +22,8 @@ class _UserAssignedIssuesPageState
     extends ConsumerState<UserAssignedIssuesPage> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Container(
       height: height,
       width: width,
@@ -80,16 +80,18 @@ class _UserAssignedIssuesPageState
                                   .toString(),
                               ref:
                                   ref.read(ProviderList.workspaceProvider).ref!,
-                              issueId:
-                                  userProfileProvider.userAssignedIssues[index].id!,
-                              projID: userProfileProvider.userAssignedIssues[index].projectDetail!.id!,
+                              issueId: userProfileProvider
+                                  .userAssignedIssues[index].id!,
+                              projID: userProfileProvider
+                                  .userAssignedIssues[index].projectDetail!.id!,
                             ),
                           ),
                         );
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                            color: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
                             border: Border(
                                 top: BorderSide(
                                     color: themeProvider
@@ -117,8 +119,8 @@ class _UserAssignedIssuesPageState
                                               .userAssignedIssues[index]
                                               .priority ==
                                           'urgent'
-                                          ?Colors.red: null
-                                ),
+                                      ? Colors.red
+                                      : null),
                               margin: const EdgeInsets.only(right: 15),
                               height: 30,
                               width: 30,
@@ -146,7 +148,8 @@ class _UserAssignedIssuesPageState
                                               'high'
                                           ? const Icon(
                                               Icons.signal_cellular_alt,
-                                              color:Color.fromRGBO(249, 115, 23,1),
+                                              color: Color.fromRGBO(
+                                                  249, 115, 23, 1),
                                               size: 18,
                                             )
                                           : userProfileProvider
@@ -156,13 +159,15 @@ class _UserAssignedIssuesPageState
                                               ? const Icon(
                                                   Icons
                                                       .signal_cellular_alt_2_bar,
-                                                  color: Color.fromRGBO(234, 179, 9,1),
+                                                  color: Color.fromRGBO(
+                                                      234, 179, 9, 1),
                                                   size: 18,
                                                 )
                                               : const Icon(
                                                   Icons
                                                       .signal_cellular_alt_1_bar,
-                                                  color: Color.fromRGBO(34, 197, 94,1),
+                                                  color: Color.fromRGBO(
+                                                      34, 197, 94, 1),
                                                   size: 18,
                                                 ),
                             ),

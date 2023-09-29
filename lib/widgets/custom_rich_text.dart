@@ -32,8 +32,8 @@ class CustomRichText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var style = getStyle(type, themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final style = getStyle(type, themeProvider);
 
     return RichText(
       text: TextSpan(children: widgets, style: style.merge(style)),

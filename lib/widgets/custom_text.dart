@@ -34,7 +34,7 @@ Map<FontStyle, double> lineHeight = {
   FontStyle.XSmall: 1.66,
   FontStyle.overline: 1
 };
-var fontWEIGHT = {
+Map fontWEIGHT = {
   FontWeightt.Regular: FontWeight.w400,
   FontWeightt.Medium: FontWeight.w500,
   FontWeightt.Semibold: FontWeight.w600,
@@ -87,12 +87,8 @@ class CustomText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var style = getStyle(
-      type,
-      themeProvider,
-      letterSpacing
-    );
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final style = getStyle(type, themeProvider, letterSpacing);
 
     return Text(
       text.toString(),
@@ -107,7 +103,8 @@ class CustomText extends ConsumerWidget {
       FontStyle? type, ThemeProvider themeProvider, double? letterSpacing) {
     // log(customTextColor.toString());
     return GoogleFonts.inter(
-        letterSpacing: letterSpacing ?? ((type != null) ? -(fontSIZE[type]! * 0.02) : 0),
+        letterSpacing:
+            letterSpacing ?? ((type != null) ? -(fontSIZE[type]! * 0.02) : 0),
         height: type != null ? lineHeight[type] : null,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:

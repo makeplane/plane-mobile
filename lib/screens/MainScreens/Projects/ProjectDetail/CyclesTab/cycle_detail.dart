@@ -69,7 +69,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   @override
   void initState() {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     tempIssuesList = issuesProvider.issuesList;
     issuesProvider.tempProjectView = issuesProvider.issues.projectView;
     issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
@@ -111,8 +111,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Future getModuleData() async {
-    var modulesProvider = ref.read(ProviderList.modulesProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final modulesProvider = ref.read(ProviderList.modulesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
 
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
@@ -150,8 +150,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Future getCycleData() async {
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     cyclesProvider.cyclesDetailState = StateEnum.loading;
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
@@ -201,18 +201,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
-    bool isLoading = widget.fromModule
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final bool isLoading = widget.fromModule
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
 
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         // await issueProvider.getProjectView();
         // issueProvider.issuesList = tempIssuesList;
         if (widget.from == PreviousScreen.myIssues) return true;
@@ -291,10 +291,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           //elevation: false,
 
           onPressed: () {
-            if (widget.from==PreviousScreen.myIssues){
+            if (widget.from == PreviousScreen.myIssues) {
               Navigator.pop(context);
               return;
-            } 
+            }
             // issueProvider.issuesList = tempIssuesList;
             issueProvider.getIssues(
               slug: ref
@@ -1133,9 +1133,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget activeCycleDetails({bool fromModule = false}) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
 
     if (widget.fromModule
         ? modulesProvider.moduleDetailState == StateEnum.loading
@@ -1174,8 +1174,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget links() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final ModuleProvider moduleProvider =
+        ref.watch(ProviderList.modulesProvider);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1343,10 +1344,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget datePart() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var detailData = widget.fromModule
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
@@ -1434,7 +1435,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           children: [
             GestureDetector(
               onTap: () async {
-                var date = await showDatePicker(
+                final date = await showDatePicker(
                   builder: (context, child) => Theme(
                     data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
@@ -1445,7 +1446,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   lastDate: DateTime(2025),
                 );
                 if (date != null) {
-                  bool dateNotConflicted = dueDate == null
+                  final bool dateNotConflicted = dueDate == null
                       ? true
                       : widget.fromModule
                           ? true
@@ -1571,7 +1572,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             const SizedBox(width: 5),
             GestureDetector(
               onTap: () async {
-                var date = await showDatePicker(
+                final date = await showDatePicker(
                   builder: (context, child) => Theme(
                     data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
@@ -1590,7 +1591,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     return;
                   }
                   if (date.isAfter(startDate!)) {
-                    bool dateNotConflicted = widget.fromModule
+                    final bool dateNotConflicted = widget.fromModule
                         ? true
                         : await cyclesProvider.dateCheck(
                             slug: ref
@@ -1706,7 +1707,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget detailsPart() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
         Align(
@@ -1735,7 +1736,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget progressPart() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
         Align(
@@ -1821,12 +1822,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget assigneesPart({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
@@ -1958,18 +1959,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget statesPart() {
-    List states = [
+    final List states = [
       "Backlog",
       "Unstarted",
       "Started",
       "Cancelled",
       "Completed",
     ];
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
@@ -2064,12 +2065,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget labelsPart({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
     return Column(
@@ -2192,9 +2193,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget stateWidget({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       height: 45,
       width: double.infinity,
@@ -2237,8 +2238,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget membersWidget() {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       height: 45,
       width: double.infinity,
@@ -2367,10 +2368,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget assigneeWidget() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var detailData = widget.fromModule
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
@@ -2504,18 +2505,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   String dateFormating(String date) {
-    DateTime formatedDate = DateTime.parse(date);
-    String finalDate = DateFormat('dd MMM').format(formatedDate);
+    final DateTime formatedDate = DateTime.parse(date);
+    final String finalDate = DateFormat('dd MMM').format(formatedDate);
     return finalDate;
   }
 
   String checkDate({required String startDate, required String endDate}) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if ((startDate.isEmpty) || (endDate.isEmpty)) {
       return 'Draft';
     } else {
       if (DateTime.parse(startDate).isAfter(now)) {
-        Duration difference =
+        final Duration difference =
             DateTime.parse(startDate.split('+').first).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
@@ -2525,7 +2526,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       }
       if (DateTime.parse(startDate).isBefore(now) &&
           DateTime.parse(endDate).isAfter(now)) {
-        Duration difference = DateTime.parse(endDate).difference(now);
+        final Duration difference = DateTime.parse(endDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -2541,8 +2542,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       themeProvider.themeManager.borderSubtle01Color;
 
   String checkTimeDifferenc(String dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(DateTime.parse(dateTime));
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(DateTime.parse(dateTime));
     String? format;
 
     if (difference.inDays > 0) {

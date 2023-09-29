@@ -60,7 +60,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
   @override
   void initState() {
     super.initState();
-    int ind = months.indexOf(DateFormat("MMMM").format(DateTime.now()));
+    final int ind = months.indexOf(DateFormat("MMMM").format(DateTime.now()));
     log(ind.toString());
     _pageController = ScrollController(
       initialScrollOffset: ind * 310,
@@ -90,7 +90,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     super.dispose();
   }
 
-  getDates(DateTime date, bool isNextYear) {
+  void getDates(DateTime date, bool isNextYear) {
     month = date.month;
     if (isNextYear) {
       for (int i = 0; i < months.length; i++) {
@@ -103,7 +103,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
         month = (i == 0) ? month : month + 1;
       }
     } else {
-      List temp = [];
+      final List temp = [];
       for (int i = 0; i < months.length; i++) {
         temp.add({
           'firstDayOfMonth':
@@ -126,7 +126,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
 
     return Scaffold(
       body: Column(
@@ -282,11 +282,11 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
 // ignore: must_be_immutable
 class DayDetail extends ConsumerStatefulWidget {
-  DateTime selectedDay;
   DayDetail({
     super.key,
     required this.selectedDay,
   });
+  DateTime selectedDay;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DayDetailState();
@@ -297,8 +297,8 @@ class _DayDetailState extends ConsumerState<DayDetail> {
   @override
   Widget build(BuildContext context) {
     log(widget.selectedDay.toString());
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: CustomAppBar(
         icon: Icons.arrow_back,
@@ -498,7 +498,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => IssueDetail(
-                                ref: ref.read(ProviderList.workspaceProvider).ref!,
+                                ref: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .ref!,
                                 from: PreviousScreen.projectDetail,
                                 appBarTitle:
                                     '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',

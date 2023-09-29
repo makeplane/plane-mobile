@@ -25,7 +25,7 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
   int? selected;
   @override
   void initState() {
-    CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
     cycles = List.from(cyclesProvider.cyclesAllData);
     cycles.removeWhere((element) =>
         DateTime.parse(element['end_date']).isBefore(DateTime.now()));
@@ -42,8 +42,9 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
 
   @override
   Widget render(BuildContext context) {
-    CyclesProvider cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    ThemeProvider themeProvider = ref.watch(ProviderList.themeProvider);
+    final CyclesProvider cyclesProvider =
+        ref.watch(ProviderList.cyclesProvider);
+    final ThemeProvider themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Wrap(

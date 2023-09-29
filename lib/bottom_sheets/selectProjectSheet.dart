@@ -17,9 +17,9 @@ class SelectProject extends ConsumerStatefulWidget {
 class _SelectProjectState extends ConsumerState<SelectProject> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

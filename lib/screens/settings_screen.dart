@@ -40,7 +40,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     'Automations',
   ];
 
-  var pageViewController = PageController(initialPage: 0);
+  final pageViewController = PageController(initialPage: 0);
 
   int selectedIndex = 0;
   TabController? tabController;
@@ -60,9 +60,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
 
   @override
   Widget build(BuildContext context) {
-    var projectprovider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectprovider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -325,11 +325,11 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
   }
 
   bool hasAccess() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    List members = projectProvider.projectMembers;
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final List members = projectProvider.projectMembers;
     bool hasAccess = false;
-    for (var element in members) {
+    for (final element in members) {
       if ((element['member']['id'] == profileProvider.userProfile.id) &&
           (element['role'] == 20 || element['role'] == 15)) {
         hasAccess = true;

@@ -19,11 +19,11 @@ import 'package:plane/widgets/member_logo_alternative_widget.dart';
 import 'package:plane/widgets/member_logo_widget.dart';
 
 class Members extends ConsumerStatefulWidget {
-  final bool fromWorkspace;
   const Members({
     super.key,
     required this.fromWorkspace,
   });
+  final bool fromWorkspace;
 
   @override
   ConsumerState<Members> createState() => _MembersState();
@@ -34,15 +34,15 @@ class _MembersState extends ConsumerState<Members> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+      final workspaceProvider = ref.read(ProviderList.workspaceProvider);
       workspaceProvider.getWorkspaceMembers();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     log(workspaceProvider.role.name);
     return Scaffold(
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -92,11 +92,11 @@ class _MembersState extends ConsumerState<Members> {
 }
 
 class MembersListWidget extends ConsumerStatefulWidget {
-  final bool fromWorkspace;
   const MembersListWidget({
     super.key,
     required this.fromWorkspace,
   });
+  final bool fromWorkspace;
 
   @override
   ConsumerState<MembersListWidget> createState() => _MembersListWidgetState();
@@ -105,8 +105,8 @@ class MembersListWidget extends ConsumerStatefulWidget {
 class _MembersListWidgetState extends ConsumerState<MembersListWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectsProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectsProvider = ref.watch(ProviderList.projectProvider);
 
     return LoadingWidget(
       loading: projectsProvider.updateProjectMemberState == StateEnum.loading,
@@ -132,9 +132,9 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
 
     return ListView.separated(
         itemCount: workspaceProvider.workspaceMembers.length,
@@ -320,10 +320,10 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
   }
 
   bool checkIfWorkspaceAdmin() {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool isAdmin = false;
-    for (var element in workspaceProvider.workspaceMembers) {
+    for (final element in workspaceProvider.workspaceMembers) {
       if (element['member']['id'] == profileProvider.userProfile.id &&
           element['role'] == 20) {
         isAdmin = true;
@@ -333,11 +333,11 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
   }
 
   Role getRole() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     int? userRole;
-    List members = projectProvider.projectMembers;
-    for (var element in members) {
+    final List members = projectProvider.projectMembers;
+    for (final element in members) {
       if (element['member']['id'] == profileProvider.userProfile.id) {
         userRole = element['role'];
       }
@@ -369,10 +369,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   Role? role;
   @override
   Widget build(BuildContext context) {
-    var projectsProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectsProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
 
     return ListView.separated(
       itemCount: projectsProvider.projectMembers.length,
@@ -569,10 +569,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   }
 
   bool checkIfProjectAdmin() {
-    var projectsProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectsProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool isAdmin = false;
-    for (var element in projectsProvider.projectMembers) {
+    for (final element in projectsProvider.projectMembers) {
       if (element['member']['id'] == profileProvider.userProfile.id &&
           element['role'] == 20) {
         isAdmin = true;
@@ -582,11 +582,11 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
   }
 
   Role getRole() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     int? userRole;
-    List members = projectProvider.projectMembers;
-    for (var element in members) {
+    final List members = projectProvider.projectMembers;
+    for (final element in members) {
       if (element['member']['id'] == profileProvider.userProfile.id) {
         userRole = element['role'];
       }

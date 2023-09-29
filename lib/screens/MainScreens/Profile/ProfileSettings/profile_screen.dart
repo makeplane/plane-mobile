@@ -156,8 +156,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
 
     return Material(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -220,7 +220,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showLogoutModelBottomBar() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -269,7 +269,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Button(
                 ontap: _onLogout,
                 text: 'Logout',
-                color: (themeProvider.theme == THEME.dark || themeProvider.theme == THEME.darkHighContrast || (themeProvider.theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark)) ? const Color.fromRGBO(95, 21, 21, 1) : const Color.fromRGBO(254, 242, 242, 1),
+                color: (themeProvider.theme == THEME.dark ||
+                        themeProvider.theme == THEME.darkHighContrast ||
+                        (themeProvider.theme == THEME.systemPreferences &&
+                            SchedulerBinding.instance.platformDispatcher
+                                    .platformBrightness ==
+                                Brightness.dark))
+                    ? const Color.fromRGBO(95, 21, 21, 1)
+                    : const Color.fromRGBO(254, 242, 242, 1),
                 textColor: themeProvider.themeManager.textErrorColor,
                 filledButton: false,
                 borderColor: themeProvider.themeManager.textErrorColor,
@@ -282,8 +289,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _onLogout() {
-    var profileProvider = ref.read(ProviderList.profileProvider);
-    var theme = profileProvider.userProfile.theme;
+    final profileProvider = ref.read(ProviderList.profileProvider);
+    final theme = profileProvider.userProfile.theme;
     theme!['theme'] = fromTHEME(theme: THEME.light);
 
     ref.read(ProviderList.bottomNavProvider).setIndex(0);
@@ -408,7 +415,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget menuItems(ThemeProvider themeProvider) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return ListView.builder(
       primary: false,
       shrinkWrap: true,
@@ -604,13 +611,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   bool checkUserAccess() {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool hasAccess = false;
     if (workspaceProvider.getMembersState == StateEnum.error) {
       return hasAccess;
     } else {
-      for (var element in workspaceProvider.workspaceMembers) {
+      for (final element in workspaceProvider.workspaceMembers) {
         if ((element['member']['id'] == profileProvider.userProfile.id) &&
             (element['role'] == 20 || element['role'] == 15)) {
           hasAccess = true;

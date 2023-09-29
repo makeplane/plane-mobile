@@ -9,11 +9,10 @@ import 'package:plane/widgets/custom_text.dart';
 import '../widgets/custom_button.dart';
 
 class SelectProjectMembers extends ConsumerStatefulWidget {
-  final bool createIssue;
-  final String? issueId;
-
   const SelectProjectMembers(
       {this.issueId, required this.createIssue, super.key});
+  final bool createIssue;
+  final String? issueId;
 
   @override
   ConsumerState<SelectProjectMembers> createState() =>
@@ -21,7 +20,7 @@ class SelectProjectMembers extends ConsumerStatefulWidget {
 }
 
 class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
-  var selectedMembers = {};
+  Map selectedMembers = {};
   List<String> issueDetailSelectedMembers = [];
 
   @override
@@ -45,7 +44,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
     super.initState();
   }
 
-  getIssueMembers() {
+  void getIssueMembers() {
     final issueProvider = ref.read(ProviderList.issueProvider);
     for (int i = 0;
         i < issueProvider.issueDetails['assignee_details'].length;
@@ -57,9 +56,9 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
 
   @override
   Widget build(BuildContext context) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
         issuesProvider.createIssuedata['members'] =
@@ -401,7 +400,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
   }
 
   Widget createIsseuSelectedMembersWidget(int idx) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return selectedMembers[issuesProvider.members[idx]['member']['id']] != null
         ? const Icon(
             Icons.done,
@@ -411,7 +410,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
   }
 
   Widget issueDetailSelectedMembersWidget(int idx) {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     return issueDetailSelectedMembers
             .contains(issuesProvider.members[idx]['member']['id'])
         ? const Icon(

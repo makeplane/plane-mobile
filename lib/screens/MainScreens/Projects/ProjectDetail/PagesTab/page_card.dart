@@ -43,10 +43,10 @@ class _PageCardState extends ConsumerState<PageCard> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
 
     checkAccess();
 
@@ -266,11 +266,11 @@ class _PageCardState extends ConsumerState<PageCard> {
   }
 
   bool checkAccess() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool hasAccess = false;
 
-    for (var element in projectProvider.projectMembers) {
+    for (final element in projectProvider.projectMembers) {
       if (element['member']['id'] == profileProvider.userProfile.id &&
           (element['role'] == 20 || element['role'] == 15)) {
         hasAccess = true;

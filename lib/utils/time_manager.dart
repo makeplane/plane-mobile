@@ -16,9 +16,9 @@ class DateTimeManager {
 
   static int diffrenceInDays(
       {required String startDate, required String endDate}) {
-    DateTime now = DateTime.now().copyWith(hour: 0, minute: 0);
+    final DateTime now = DateTime.now().copyWith(hour: 0, minute: 0);
 
-    Duration difference = DateTime.parse(startDate).difference(now);
+    final Duration difference = DateTime.parse(startDate).difference(now);
     int valueToReturn = difference.inDays;
     valueToReturn = valueToReturn < 0 ? valueToReturn - 1 : valueToReturn + 1;
     return valueToReturn;
@@ -32,7 +32,7 @@ class DateTimeManager {
     return DateTime.parse(date).day;
   }
 
-  static getMonthFromNumber(int value) {
+  static String getMonthFromNumber(int value) {
     return monthList[value];
   }
 }

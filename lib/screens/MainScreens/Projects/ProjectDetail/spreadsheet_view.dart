@@ -12,8 +12,8 @@ import 'package:plane/widgets/square_avatar_widget.dart';
 import 'IssuesTab/issue_detail.dart';
 
 class SpreadSheetView extends ConsumerStatefulWidget {
-  final IssueCategory issueCategory;
   const SpreadSheetView({super.key, required this.issueCategory});
+  final IssueCategory issueCategory;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -41,7 +41,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     double width = 481;
     Widget headingText(String text, double width) {
       return Container(
@@ -71,9 +71,9 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
       );
     }
 
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
 
     widget.issueCategory == IssueCategory.issues
         ? issuesProvider.issues.displayProperties.state
@@ -738,8 +738,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   String stateName = '';
-                  for (var keys in issuesProvider.statesData.keys) {
-                    for (var state in issuesProvider.statesData[keys]) {
+                  for (final keys in issuesProvider.statesData.keys) {
+                    for (final state in issuesProvider.statesData[keys]) {
                       if (state['id'] ==
                           issuesProvider.issuesList[index]['state']) {
                         stateName = state['name'];

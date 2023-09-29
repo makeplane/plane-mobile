@@ -40,7 +40,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
 
   // If no projects are available on the workspace, empty project screen will be visible. This is executed on to pull to refresh
   Future refresh() async {
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     await projectProvider.getProjects(
         slug: ref
             .read(ProviderList.workspaceProvider)
@@ -53,10 +53,10 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return SafeArea(
       child: Scaffold(
           appBar: CustomAppBar(
@@ -230,7 +230,8 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
               const SizedBox(width: 10),
             ],
           ),
-          body: projectProvider.projects.isEmpty && projectProvider.getProjectState==StateEnum.success
+          body: projectProvider.projects.isEmpty &&
+                  projectProvider.getProjectState == StateEnum.success
               ? EmptyPlaceholder.emptyProject(context, refresh, ref)
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -405,9 +406,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
   }
 
   Widget issues(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.myIssuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.myIssuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueState.name);
     if (issueProvider.issues.projectView == ProjectView.list) {
       issueProvider.initializeBoard();
@@ -539,7 +540,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                                                             // createIssuedata['s'] = element.id;
                                                           }
-                                                          ProfileProvider
+                                                          final ProfileProvider
                                                               profileProv =
                                                               ref.read(ProviderList
                                                                   .profileProvider);

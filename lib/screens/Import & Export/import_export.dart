@@ -18,7 +18,7 @@ class ImportEport extends ConsumerStatefulWidget {
 class _ImportEportState extends ConsumerState<ImportEport> {
   @override
   void initState() {
-    var prov = ref.read(ProviderList.integrationProvider);
+    final prov = ref.read(ProviderList.integrationProvider);
     if (prov.integrations.isEmpty) {
       ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
     }
@@ -28,8 +28,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var integrationProvider = ref.watch(ProviderList.integrationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final integrationProvider = ref.watch(ProviderList.integrationProvider);
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: CustomAppBar(
@@ -382,7 +382,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
   }
 
   Future<void> _launchUrl() async {
-    String url = 'https://docs.plane.so/importers/github';
+    const String url = 'https://docs.plane.so/importers/github';
     if (!await launchUrl(Uri.parse(url))) {
       throw Exception('Could not launch $url');
     }

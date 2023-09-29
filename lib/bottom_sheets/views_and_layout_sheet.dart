@@ -82,7 +82,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
   ];
 
   bool isTagsEnabled() {
-    for (var i = 0; i < displayProperties.length; i++) {
+    for (int i = 0; i < displayProperties.length; i++) {
       if (displayProperties[i]['selected']) {
         return true;
       }
@@ -90,7 +90,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
     return false;
   }
 
-  var selected = 0;
+  int selected = 0;
 
   bool showEmptyStates = true;
   @override
@@ -138,7 +138,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
 
     ///////////////////////////////////////////// type sheet
 
-    dynamic prov = widget.issueCategory == IssueCategory.myIssues
+    final dynamic prov = widget.issueCategory == IssueCategory.myIssues
         ? ref.read(ProviderList.myIssuesProvider)
         : ref.read(ProviderList.issuesProvider);
     selected = prov.issues.projectView == ProjectView.kanban
@@ -158,10 +158,10 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
   int selectedTab = 0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     Widget customHorizontalLine() {
       return Container(
         color: themeProvider.themeManager.borderDisabledColor,
@@ -1139,7 +1139,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
 
             myIssuesProvider.filterIssues();
           }
-          DisplayProperties properties = DisplayProperties(
+          final DisplayProperties properties = DisplayProperties(
             estimate: projectProvider.currentProject['estimate'] == null
                 ? false
                 : displayProperties[9]['selected'],

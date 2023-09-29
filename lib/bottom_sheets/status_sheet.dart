@@ -15,8 +15,8 @@ class StatusSheet extends ConsumerStatefulWidget {
 class _StatusSheetState extends ConsumerState<StatusSheet> {
   @override
   Widget build(BuildContext context) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(

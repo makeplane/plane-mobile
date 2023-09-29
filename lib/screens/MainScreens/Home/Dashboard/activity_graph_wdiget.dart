@@ -50,9 +50,9 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var dashBoardProvider = ref.watch(ProviderList.dashboardProvider);
-    List activityRangeColors = [
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final dashBoardProvider = ref.watch(ProviderList.dashboardProvider);
+    final List activityRangeColors = [
       themeProvider.themeManager.tertiaryBackgroundDefaultColor,
       themeProvider.themeManager.primaryColour.withOpacity(0.2),
       themeProvider.themeManager.primaryColour.withOpacity(0.4),
@@ -217,22 +217,23 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
   }
 
   List<MonthData> getMonthsData(int count) {
-    List<MonthData> monthsData = [];
+    final List<MonthData> monthsData = [];
 
     DateTime currentDate = DateTime.now();
     for (int i = 0; i < count; i++) {
       // Get the first day of the current month
-      DateTime firstDayOfMonth =
+      final DateTime firstDayOfMonth =
           DateTime(currentDate.year, currentDate.month, 1);
 
-      List<String> days = [];
+      final List<String> days = [];
       for (int day = 1; day <= currentDate.day; day++) {
-        DateTime date = DateTime(currentDate.year, currentDate.month, day);
+        final DateTime date =
+            DateTime(currentDate.year, currentDate.month, day);
 
-        String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+        final String formattedDate = DateFormat('yyyy-MM-dd').format(date);
         // String dayOfWeek = DateFormat('EEEE').format(date);
         if (i == (count - 1) && day == 1) {
-          int weekDay = date.weekday;
+          final int weekDay = date.weekday;
           // print('THIS IS WEEKDAY: $weekDay');
           for (int emptyDays = 0; emptyDays < weekDay; emptyDays++) {
             days.add('Empty');
@@ -241,7 +242,7 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
         days.add(formattedDate);
       }
 
-      String formattedMonth = DateFormat('MMMM yyyy').format(currentDate);
+      final String formattedMonth = DateFormat('MMMM yyyy').format(currentDate);
       monthsData.add(MonthData(formattedMonth, days));
 
       // Move to the previous month
@@ -252,8 +253,8 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
   }
 
   void allMonthsData() {
-    for (var element in monthsData!) {
-      for (var element in element.days) {
+    for (final element in monthsData!) {
+      for (final element in element.days) {
         setState(() {
           data.add(element);
         });
@@ -262,10 +263,10 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
   }
 
   Color getColor(String date) {
-    var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     Color color = themeProvider.themeManager.tertiaryBackgroundDefaultColor;
-    for (var element in dashboardProvider.dashboardData['issue_activities']) {
+    for (final element in dashboardProvider.dashboardData['issue_activities']) {
       if (element['created_date'] == date) {
         if (element['activity_count'] <= 3) {
           // setState(() {

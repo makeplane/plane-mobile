@@ -27,16 +27,16 @@ class MyIssuesProvider extends ChangeNotifier {
   StateEnum myIssuesViewState = StateEnum.empty;
   StateEnum myIssuesFilterState = StateEnum.empty;
   StateEnum labelState = StateEnum.empty;
-  var groupByResponse = {};
+  Map groupByResponse = {};
   List<dynamic> data = [];
-  var labels = [];
-  var issuesResponse = [];
-  var createIssuedata = {};
+  List labels = [];
+  List issuesResponse = [];
+  Map createIssuedata = {};
   bool isISsuesEmpty = true;
-  var issuesList = [];
-  var shrinkStates = [];
+  List issuesList = [];
+  List shrinkStates = [];
   List stateOrdering = [];
-  var myIssueView = {};
+  Map myIssueView = {};
   int pageIndex = 0;
 
   Issues issues = Issues.initialize();
@@ -53,11 +53,11 @@ class MyIssuesProvider extends ChangeNotifier {
     return true;
   }
 
-  setState() {
+  void setState() {
     notifyListeners();
   }
 
-  changePage(value) {
+  void changePage(int value) {
     pageIndex = value;
     filterIssues();
   }
@@ -100,7 +100,7 @@ class MyIssuesProvider extends ChangeNotifier {
     getMyIssuesState = StateEnum.loading;
     // notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.myIssues.replaceFirst('\$SLUG', slug),
         hasBody: false,
@@ -123,7 +123,7 @@ class MyIssuesProvider extends ChangeNotifier {
   Future getMyIssuesView() async {
     myIssuesViewState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.myIssuesView.replaceAll(
             "\$SLUG",
@@ -199,13 +199,13 @@ class MyIssuesProvider extends ChangeNotifier {
   Future getLabels() async {
     labelState = StateEnum.loading;
     // notifyListeners();
-    var slug = ref!
+    final slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.baseApi}/api/workspaces/$slug/labels/',
         hasBody: false,
@@ -227,7 +227,7 @@ class MyIssuesProvider extends ChangeNotifier {
     bool created = false,
     bool assigned = false,
   }) async {
-    var slug = ref!
+    final slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
@@ -262,7 +262,7 @@ class MyIssuesProvider extends ChangeNotifier {
       getLabels();
     }
     String url;
-    var groupBy = issues.groupBY == GroupBY.state
+    final groupBy = issues.groupBY == GroupBY.state
         ? 'state_detail.group'
         : Issues.fromGroupBY(issues.groupBY);
     if (issues.issueType != IssueType.all) {
@@ -363,7 +363,7 @@ class MyIssuesProvider extends ChangeNotifier {
     // dynamic temp;
     log('URL======>: $url');
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -377,7 +377,7 @@ class MyIssuesProvider extends ChangeNotifier {
         issuesResponse = response.data;
         isISsuesEmpty = issuesResponse.isEmpty;
       } else {
-        for (var key in response.data.keys) {
+        for (final key in response.data.keys) {
           if (response.data[key].isNotEmpty) {
             isISsuesEmpty = false;
           }
@@ -390,7 +390,7 @@ class MyIssuesProvider extends ChangeNotifier {
       //   groupByResponse = {};
 
       //   if (issues.filters.states.isNotEmpty) {
-      //     for (var element in issues.filters.states) {
+      //     for (final element in issues.filters.states) {
       //       if (response.data[element] == null) {
       //         groupByResponse[element] = [];
       //       } else {
@@ -398,7 +398,7 @@ class MyIssuesProvider extends ChangeNotifier {
       //       }
       //     }
       //   } else {
-      //     for (var element in stateOrdering) {
+      //     for (final element in stateOrdering) {
       //       groupByResponse[element] = response.data[element] ?? [];
       //     }
       //   }
@@ -429,14 +429,14 @@ class MyIssuesProvider extends ChangeNotifier {
   }
 
   List<BoardListsData> initializeBoard() {
-    var themeProvider = ref!.read(ProviderList.themeProvider);
-    var projectProvider = ref!.read(ProviderList.projectProvider);
+    final themeProvider = ref!.read(ProviderList.themeProvider);
+    final projectProvider = ref!.read(ProviderList.projectProvider);
     int count = 0;
     //   log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
-    var projectIcons = {};
-    var stateIcons = {
+    final projectIcons = {};
+    final stateIcons = {
       'Backlog': SvgPicture.asset('assets/svg_images/circle.svg'),
       'Unstarted': SvgPicture.asset('assets/svg_images/unstarted.svg'),
       'Started': SvgPicture.asset('assets/svg_images/in_progress.svg'),
@@ -444,7 +444,7 @@ class MyIssuesProvider extends ChangeNotifier {
       'Cancelled': SvgPicture.asset('assets/svg_images/cancelled.svg'),
     };
     for (int j = 0; j < stateOrdering.length; j++) {
-      List<Widget> items = [];
+      final List<Widget> items = [];
       if (groupByResponse[stateOrdering[j]] == null) {
         continue;
       }
@@ -486,7 +486,7 @@ class MyIssuesProvider extends ChangeNotifier {
                 : stateOrdering[j];
 
         if (issues.groupBY == GroupBY.project) {
-          int index = projectProvider.projects
+          final int index = projectProvider.projects
               .indexWhere((element) => element['name'] == title);
           if (projectProvider.projects[index]['emoji'] != null) {
             //convert title to lowercase
@@ -538,7 +538,7 @@ class MyIssuesProvider extends ChangeNotifier {
       }
     }
 
-    for (var element in issues.issues) {
+    for (final element in issues.issues) {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(
@@ -704,7 +704,7 @@ class MyIssuesProvider extends ChangeNotifier {
                         'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                     // createIssuedata['s'] = element.id;
                   }
-                  ProfileProvider profileProv =
+                  final ProfileProvider profileProv =
                       ref!.read(ProviderList.profileProvider);
 
                   ref!.read(ProviderList.projectProvider).currentProject =
@@ -719,12 +719,15 @@ class MyIssuesProvider extends ChangeNotifier {
                                     .read(ProviderList.projectProvider)
                                     .projects[0]['id'],
                                 fromMyIssues: true,
-                                assignee: pageIndex==0?{
-                                  profileProv.userProfile.id.toString(): {
-                                    'name': profileProv.userProfile.displayName,
-                                    'id': profileProv.userProfile.id
-                                  }
-                                }:null,
+                                assignee: pageIndex == 0
+                                    ? {
+                                        profileProv.userProfile.id.toString(): {
+                                          'name': profileProv
+                                              .userProfile.displayName,
+                                          'id': profileProv.userProfile.id
+                                        }
+                                      }
+                                    : null,
                               )));
                 },
                 child: Icon(
@@ -758,7 +761,7 @@ class MyIssuesProvider extends ChangeNotifier {
           newCardIndex,
           groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
       notifyListeners();
-      var issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
+      final issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
       await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
@@ -814,13 +817,6 @@ class MyIssuesProvider extends ChangeNotifier {
   }
 
   Future updateMyIssueView() async {
-    dynamic filterPriority;
-    if (issues.filters.priorities.isNotEmpty) {
-      filterPriority = issues.filters.priorities
-          .map((element) => element == 'none' ? null : element)
-          .toList();
-    }
-
     try {
       await DioConfig().dioServe(
         hasAuth: true,
@@ -838,7 +834,7 @@ class MyIssuesProvider extends ChangeNotifier {
             // "filterIssue": null,
             "filters": {
               'type': null,
-              "priority": filterPriority,
+              "priority": issues.filters.priorities,
               if (issues.filters.stateGroup.isNotEmpty)
                 "state_group": issues.filters.states,
               if (issues.filters.assignees.isNotEmpty)

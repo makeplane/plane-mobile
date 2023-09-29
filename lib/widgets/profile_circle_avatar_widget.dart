@@ -4,8 +4,8 @@ import 'package:plane/utils/constants.dart';
 import 'custom_text.dart';
 
 class ProfileCircleAvatarsWidget extends StatefulWidget {
-  final List details;
   const ProfileCircleAvatarsWidget({required this.details, super.key});
+  final List details;
 
   @override
   State<ProfileCircleAvatarsWidget> createState() =>

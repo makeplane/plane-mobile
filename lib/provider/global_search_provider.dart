@@ -8,22 +8,20 @@ import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class SearchModal {
+  SearchModal({required this.globalSearchState, required this.data});
+  factory SearchModal.initialize() {
+    return SearchModal(
+        data: GlobalSearchModal.initialize(),
+        globalSearchState: StateEnum.empty);
+  }
   StateEnum globalSearchState = StateEnum.loading;
   GlobalSearchModal? data;
-
-  SearchModal({required this.globalSearchState, required this.data});
 
   SearchModal copyWith(
       {StateEnum? globalSearchState, GlobalSearchModal? data}) {
     return SearchModal(
         data: data,
         globalSearchState: globalSearchState ?? this.globalSearchState);
-  }
-
-  factory SearchModal.initialize() {
-    return SearchModal(
-        data: GlobalSearchModal.initialize(),
-        globalSearchState: StateEnum.empty);
   }
 }
 
@@ -34,11 +32,11 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
   Ref ref;
 
   Future getGlobalData({required String slug, String? input}) async {
-    var url =
+    final url =
         '${APIs.globalSearch.replaceFirst('\$SLUG', slug)}?search=$input&workspace_search=true';
     log("REQUEST URL: $url");
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -59,7 +57,7 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
     }
   }
 
-  clear() {
+  void clear() {
     state = state.copyWith(data: null);
   }
 }

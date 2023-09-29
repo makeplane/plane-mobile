@@ -1,26 +1,22 @@
 part of './filter_sheet.dart';
 
 class _FilterState {
-  final bool fromCreateView;
-  final bool fromViews;
-  final bool isArchived;
-  final dynamic filtersData;
-  final IssueCategory issueCategory;
-  final WidgetRef ref;
-
   _FilterState({
     required this.fromCreateView,
     required this.fromViews,
     required this.isArchived,
     required this.filtersData,
     required this.issueCategory,
+    required this.setState,
     required this.ref,
   }) {
     if (!fromCreateView) {
       if (issueCategory == IssueCategory.myIssues) {
-        filters = ref.read(ProviderList.myIssuesProvider).issues.filters;
+        filters = Filters.fromJson(Filters.toJson(
+            ref.read(ProviderList.myIssuesProvider).issues.filters));
       } else {
-        filters = ref.read(ProviderList.issuesProvider).issues.filters;
+        filters = Filters.fromJson(Filters.toJson(
+            ref.read(ProviderList.issuesProvider).issues.filters));
       }
     } else {
       filters = Filters.fromJson(filtersData["Filters"]);
@@ -33,6 +29,13 @@ class _FilterState {
       targetDatesEnabled();
     }
   }
+  final bool fromCreateView;
+  final bool fromViews;
+  final bool isArchived;
+  final dynamic filtersData;
+  final IssueCategory issueCategory;
+  final WidgetRef ref;
+  final VoidCallback setState;
 
   List priorities = [
     {'icon': Icons.error_outline_rounded, 'text': 'urgent', 'color': '#EF4444'},
@@ -96,7 +99,7 @@ class _FilterState {
   bool startTwoMonths = false;
   bool startCustomDate = false;
 
-  targetDatesEnabled() {
+  void targetDatesEnabled() {
     targetLastWeek = filters.targetDate.contains(
             '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
         filters.targetDate
@@ -132,7 +135,7 @@ class _FilterState {
     }
   }
 
-  startDatesEnabled() {
+  void startDatesEnabled() {
     startLastWeek = filters.startDate.contains(
             '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after') &&
         filters.startDate
@@ -169,13 +172,15 @@ class _FilterState {
   }
 
   void _applyFilters(BuildContext context) {
-    MyIssuesProvider myIssuesProvider = ref.read(ProviderList.myIssuesProvider);
-    IssuesProvider issuesProvider = ref.read(ProviderList.issuesProvider);
-    CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    ModuleProvider modulesProvider = ref.read(ProviderList.modulesProvider);
-    String projID =
+    final MyIssuesProvider myIssuesProvider =
+        ref.read(ProviderList.myIssuesProvider);
+    final IssuesProvider issuesProvider = ref.read(ProviderList.issuesProvider);
+    final CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final ModuleProvider modulesProvider =
+        ref.read(ProviderList.modulesProvider);
+    final String projID =
         ref.read(ProviderList.projectProvider).currentProject["id"] ?? '';
-    String slug = ref
+    final String slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;

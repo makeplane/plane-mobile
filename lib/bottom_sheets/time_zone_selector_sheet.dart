@@ -25,8 +25,8 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       padding: const EdgeInsets.only(

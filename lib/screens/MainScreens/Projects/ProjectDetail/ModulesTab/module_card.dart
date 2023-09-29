@@ -11,13 +11,13 @@ import '/utils/enums.dart';
 
 // ignore: must_be_immutable
 class ModuleCard extends ConsumerStatefulWidget {
-  bool isFav;
-  int index;
   ModuleCard({
     super.key,
     required this.index,
     required this.isFav,
   });
+  bool isFav;
+  int index;
 
   @override
   ConsumerState<ModuleCard> createState() => _ModuleCardState();
@@ -26,8 +26,8 @@ class ModuleCard extends ConsumerStatefulWidget {
 class _ModuleCardState extends ConsumerState<ModuleCard> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     return GestureDetector(
       onTap: () {
         modulesProvider.currentModule = widget.isFav
@@ -116,7 +116,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       ? IconButton(
                           visualDensity: VisualDensity.compact,
                           onPressed: () async {
-                            String moduleID =
+                            final String moduleID =
                                 modulesProvider.favModules[widget.index]['id'];
                             modulesProvider.modules
                                 .add(modulesProvider.favModules[widget.index]);
@@ -140,7 +140,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                           ))
                       : IconButton(
                           onPressed: () async {
-                            String moduleId =
+                            final String moduleId =
                                 modulesProvider.modules[widget.index]['id'];
                             modulesProvider.favModules
                                 .add(modulesProvider.modules[widget.index]);

@@ -19,13 +19,13 @@ class ForgotPassword extends ConsumerStatefulWidget {
 }
 
 class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
-  var email = TextEditingController();
+  final email = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(

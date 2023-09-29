@@ -24,16 +24,16 @@ class WorkspaceProvider extends ChangeNotifier {
   Ref? ref;
   WorkspaceService workspaceService;
   TextEditingController invitingMembersRole = TextEditingController();
-  var workspaceInvitations = [];
-  var workspaces = [];
+  List workspaceInvitations = [];
+  List workspaces = [];
   String companySize = '';
   List<dynamic> workspaceIntegrations = [];
   dynamic githubIntegration;
   dynamic slackIntegration;
   WorkspaceModel selectedWorkspace = WorkspaceModel.initialize();
-  var urlAvailable = false;
-  // var currentWorkspace = {};
-  var workspaceMembers = [];
+  bool urlAvailable = false;
+  // final currentWorkspace = {};
+  List workspaceMembers = [];
   String tempLogo = '';
   WorkspaceModel? workspace;
   StateEnum workspaceInvitationState = StateEnum.empty;
@@ -80,7 +80,7 @@ class WorkspaceProvider extends ChangeNotifier {
     workspaceInvitationState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.baseApi + APIs.listWorkspaceInvitaion,
         hasBody: false,
@@ -98,7 +98,7 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
-  Future joinWorkspaces({required data}) async {
+  Future joinWorkspaces({required List data}) async {
     joinWorkspaceState = StateEnum.loading;
     notifyListeners();
 
@@ -139,16 +139,16 @@ class WorkspaceProvider extends ChangeNotifier {
     notifyListeners();
     // return;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.createWorkspace,
           hasBody: true,
           httpMethod: HttpMethod.post,
           data: {"name": name, "slug": slug, "organization_size": size});
 
-      var projectProv = ref!.read(ProviderList.projectProvider);
-      var profileProv = ref!.read(ProviderList.profileProvider);
-      var myissuesProv = ref!.read(ProviderList.myIssuesProvider);
+      final projectProv = ref!.read(ProviderList.projectProvider);
+      final profileProv = ref!.read(ProviderList.profileProvider);
+      final myissuesProv = ref!.read(ProviderList.myIssuesProvider);
       profileProv.userProfile.lastWorkspaceId = response.data['id'];
       postHogService(
           eventName: 'CREATE_WORKSPACE',
@@ -214,7 +214,7 @@ class WorkspaceProvider extends ChangeNotifier {
     checkWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.workspaceSlugCheck.replaceFirst('SLUG', slug),
         hasBody: false,
@@ -239,7 +239,12 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
-  Future inviteToWorkspace({required String slug, required email, role}) async {
+  Future inviteToWorkspace(
+      // ignore: type_annotate_public_apis
+      {required String slug,
+      // ignore: type_annotate_public_apis
+      required email,
+      String? role}) async {
     workspaceInvitationState = StateEnum.loading;
     notifyListeners();
     try {
@@ -275,11 +280,11 @@ class WorkspaceProvider extends ChangeNotifier {
 
   Future getWorkspaces() async {
     workspaceInvitationState = StateEnum.loading;
-    var response = await workspaceService.getWorkspaces();
+    final response = await workspaceService.getWorkspaces();
     if (response.isLeft()) {
       workspaces = response.fold((l) => l, (r) => []);
 
-      var isWorkspacePresent = workspaces.where((element) {
+      final isWorkspacePresent = workspaces.where((element) {
         if (element['id'] ==
             ref!
                 .read(ProviderList.profileProvider)
@@ -292,8 +297,8 @@ class WorkspaceProvider extends ChangeNotifier {
         return false;
       });
 
-      var projectProv = ref!.read(ProviderList.projectProvider);
-      var myissuesProv = ref!.read(ProviderList.myIssuesProvider);
+      final projectProv = ref!.read(ProviderList.projectProvider);
+      final myissuesProv = ref!.read(ProviderList.myIssuesProvider);
 
       if (isWorkspacePresent.isEmpty) {
         if (workspaces.isEmpty) {
@@ -302,7 +307,7 @@ class WorkspaceProvider extends ChangeNotifier {
           return;
         }
         selectedWorkspace = WorkspaceModel.fromJson(workspaces[0]);
-        var slug = selectedWorkspace.workspaceSlug;
+        final slug = selectedWorkspace.workspaceSlug;
         log('AFTER DELETE WORKSPACE ${selectedWorkspace.workspaceName} }');
         ref!.read(ProviderList.dashboardProvider).getDashboard();
         projectProv.projects = [];
@@ -352,8 +357,8 @@ class WorkspaceProvider extends ChangeNotifier {
       {required BuildContext context, required String id}) async {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
-    var profileProv = ref!.read(ProviderList.profileProvider);
-    var response =
+    final profileProv = ref!.read(ProviderList.profileProvider);
+    final response =
         await profileProv.updateProfile(data: {"last_workspace_id": id});
     if (response.isLeft()) {
       ref!.read(ProviderList.issuesProvider).clearData();
@@ -368,7 +373,7 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       return Left(selectedWorkspace);
     } else {
-      DioException error = response.fold(
+      final DioException error = response.fold(
           (l) => DioException(
               requestOptions: RequestOptions(),
               message: 'Something went wrong!'),
@@ -386,7 +391,7 @@ class WorkspaceProvider extends ChangeNotifier {
     selectWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll('\$SLUG', slug),
         hasBody: false,
@@ -414,7 +419,7 @@ class WorkspaceProvider extends ChangeNotifier {
     slackIntegration = null;
     //notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveWorkspaceIntegrations.replaceAll('\$SLUG', slug),
         hasBody: false,
@@ -425,7 +430,7 @@ class WorkspaceProvider extends ChangeNotifier {
       workspaceIntegrations = response.data;
 
       if (workspaceIntegrations.isNotEmpty) {
-        for (var i = 0; i < workspaceIntegrations.length; i++) {
+        for (int i = 0; i < workspaceIntegrations.length; i++) {
           if (workspaceIntegrations[i]["integration_detail"]["provider"] ==
               "slack") {
             slackIntegration = workspaceIntegrations[i];
@@ -446,11 +451,11 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
-  Future updateWorkspace({required data, required WidgetRef ref}) async {
+  Future updateWorkspace({required Map data, required WidgetRef ref}) async {
     updateWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveWorkspace.replaceAll(
           '\$SLUG',
@@ -540,14 +545,14 @@ class WorkspaceProvider extends ChangeNotifier {
   Future getWorkspaceMembers() async {
     getMembersState = StateEnum.loading;
     notifyListeners();
-    var response = await workspaceService.getWorkspaceMembers(
+    final response = await workspaceService.getWorkspaceMembers(
         url: APIs.getWorkspaceMembers.replaceAll(
       '\$SLUG',
       selectedWorkspace.workspaceSlug,
     ));
     if (response.isLeft()) {
       workspaceMembers = response.fold((l) => l, (r) => []);
-      for (var element in workspaceMembers) {
+      for (final element in workspaceMembers) {
         if (element["member"]['id'] ==
             ref!.read(ProviderList.profileProvider).userProfile.id) {
           role = roleParser(role: element["role"]);
@@ -567,7 +572,7 @@ class WorkspaceProvider extends ChangeNotifier {
   Future updateWorkspaceMember(
       {required String userId, required Map data, required CRUD method}) async {
     try {
-      var url = '${APIs.getWorkspaceMembers.replaceAll(
+      final url = '${APIs.getWorkspaceMembers.replaceAll(
         '\$SLUG',
         selectedWorkspace.workspaceSlug,
       )}$userId/';
@@ -598,7 +603,7 @@ class WorkspaceProvider extends ChangeNotifier {
   //   selectWorkspaceState = AuthStateEnum.loading;
   //   notifyListeners();
   //   try {
-  //     var response = await DioConfig().dioServe(
+  //     final response = await DioConfig().dioServe(
   //       hasAuth: true,
   //       url: APIs.inviteMembers.replaceAll(
   //         '\$SLUG',

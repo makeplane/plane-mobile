@@ -3,7 +3,8 @@ part of '../filter_sheet.dart';
 
 Widget _clearFilterButton(
     {required _FilterState state, required WidgetRef ref}) {
-  ThemeManager themeManager = ref.read(ProviderList.themeProvider).themeManager;
+  final ThemeManager themeManager =
+      ref.read(ProviderList.themeProvider).themeManager;
   return GestureDetector(
     onTap: () {
       state.filters = Filters(
@@ -22,7 +23,7 @@ Widget _clearFilterButton(
     child: Container(
         height: 35,
         width: 175,
-        padding: const EdgeInsets.only(left: 20,right: 20,bottom: 2),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 2),
         margin: const EdgeInsets.only(bottom: 20, top: 10),
         decoration: BoxDecoration(
           border: Border.all(
@@ -54,7 +55,7 @@ Widget _clearFilterButton(
 }
 
 Widget _saveView({required _FilterState state, required WidgetRef ref}) {
-  var themeProvider = ref.read(ProviderList.themeProvider);
+  final themeProvider = ref.read(ProviderList.themeProvider);
   return InkWell(
     onTap: state.isFilterEmpty()
         ? null
@@ -106,11 +107,15 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
   );
 }
 
-Widget _applyFilterButton(
-    {required _FilterState state, required BuildContext context}) {
+Widget _applyFilterButton({
+  required _FilterState state,
+  required BuildContext context,
+}) {
   return Container(
     height: 50,
-    width: MediaQuery.of(context).size.width * 0.42,
+    width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues
+        ? MediaQuery.of(context).size.width * 0.9
+        : MediaQuery.of(context).size.width * 0.42,
     margin: const EdgeInsets.only(bottom: 18),
     child: Button(
       text: state.fromCreateView ? 'Add Filter' : 'Apply Filter',

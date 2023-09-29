@@ -27,12 +27,8 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
+
 class CreateIssue extends ConsumerStatefulWidget {
-  final String? moduleId;
-  final String? cycleId;
-  final String? projectId;
-  final bool fromMyIssues;
-  final Map<String, dynamic>? assignee;
   const CreateIssue({
     super.key,
     this.moduleId,
@@ -41,6 +37,11 @@ class CreateIssue extends ConsumerStatefulWidget {
     this.assignee,
     this.fromMyIssues = false,
   });
+  final String? moduleId;
+  final String? cycleId;
+  final String? projectId;
+  final bool fromMyIssues;
+  final Map<String, dynamic>? assignee;
 
   @override
   ConsumerState<CreateIssue> createState() => _CreateIssueState();
@@ -50,21 +51,21 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     with WidgetStateMixin {
   // NotificationsServices notificationsServices = NotificationsServices();
 
-  var tempStatesData = {};
-  var tempStates = {};
+  Map tempStatesData = {};
+  Map tempStates = {};
   List tempStateOrdering = [];
-  var tempStatesIcons = {};
-  var tempLabels = [];
-  var tempIssues = [];
-  var tempAssignees = [];
+  Map tempStatesIcons = {};
+  List tempLabels = [];
+  List tempIssues = [];
+  List tempAssignees = [];
   bool descriptionExpanded = false;
   double descriptionHeight = 0;
   bool descriptionLoading = false;
   InAppWebViewController? webviewController;
 
-  initCreateIssue() {
-    var prov = ref.read(ProviderList.issuesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+  void initCreateIssue() {
+    final prov = ref.read(ProviderList.issuesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     ref.read(ProviderList.issueProvider).initCookies();
     prov.createIssueProjectData['name'] = widget.projectId != null
         ? projectProvider.projects
@@ -72,7 +73,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
         : ref.read(ProviderList.projectProvider).currentProject['name'];
     prov.createIssueProjectData['id'] = widget.projectId ??
         ref.read(ProviderList.projectProvider).currentProject['id'];
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     tempStatesData = prov.statesData;
     tempStates = prov.states;
     tempStateOrdering = prov.stateOrdering;
@@ -107,7 +108,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
               ref.read(ProviderList.projectProvider).currentProject['id']);
     } else {
       bool found = false;
-      for (var element in prov.states.keys) {
+      for (final element in prov.states.keys) {
         if (element == prov.createIssuedata['state']) {
           found = true;
         }
@@ -138,7 +139,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   }
 
   @override
-  getLoading(WidgetRef ref) {
+  LoadingType getLoading(WidgetRef ref) {
     return setWidgetState([
       ref.read(ProviderList.issuesProvider).createIssueState,
       ref.read(ProviderList.issuesProvider).statesState,
@@ -156,12 +157,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController title = TextEditingController();
-  var expanded = false;
+  bool expanded = false;
   bool createMoreIssues = false;
 
   // @override
   // void dispose() {
-  //   var issuesProvider = ref.read(ProviderList.issuesProvider);
+  //   final issuesProvider = ref.read(ProviderList.issuesProvider);
   //   issuesProvider.createIssueParent = '';
   //   issuesProvider.createIssueParentId = '';
   //   issuesProvider.setsState();
@@ -173,12 +174,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
 
   @override
   Widget render(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    //var issueProvider = ref.watch(ProviderList.issueProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    BuildContext baseContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    //final issueProvider = ref.watch(ProviderList.issueProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final BuildContext baseContext = context;
     if (issuesProvider.createIssuedata['state'] == null &&
         issuesProvider.states.isNotEmpty) {
       issuesProvider.createIssuedata['state'] =
@@ -1466,7 +1467,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           onTap: () async {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
-                                            var date = await showDatePicker(
+                                            final date = await showDatePicker(
                                               builder: (context, child) =>
                                                   Theme(
                                                 data: themeProvider.themeManager
@@ -1608,7 +1609,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           onTap: () async {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
-                                            var date = await showDatePicker(
+                                            final date = await showDatePicker(
                                               builder: (context, child) =>
                                                   Theme(
                                                 data: themeProvider.themeManager
@@ -2049,7 +2050,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                       ref
                                           .read(ProviderList.projectProvider)
                                           .currentProject['id'];
-                              var themeProvider =
+                              final themeProvider =
                                   ref.read(ProviderList.themeProvider);
                               tempStatesData = issuesProvider.statesData;
                               tempStates = issuesProvider.states;

@@ -40,9 +40,9 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Scaffold(
         appBar: CustomAppBar(
           onPressed: () {},
@@ -180,7 +180,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
   }
 
   Future refresh() async {
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     await projectProvider.getProjects(
         slug: ref
             .read(ProviderList.workspaceProvider)
@@ -1022,7 +1022,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
 
   bool checkStarredProjects({List? projects}) {
     bool hasItems = false;
-    for (var element in projects!) {
+    for (final element in projects!) {
       if (element['is_favorite'] == true && element['is_member']) {
         setState(() {
           hasItems = true;
@@ -1039,7 +1039,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
 
   bool checkUnstarredProject({List? projects}) {
     bool hasItems = false;
-    for (var element in projects!) {
+    for (final element in projects!) {
       if (element['is_favorite'] == false && element['is_member']) {
         setState(() {
           hasItems = true;
@@ -1056,7 +1056,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
 
   bool checkAllJoinedProject({List? projects}) {
     bool hasItems = false;
-    for (var element in projects!) {
+    for (final element in projects!) {
       if (element['is_member']) {
         setState(() {
           hasItems = true;
@@ -1073,7 +1073,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
 
   bool checkUnJoinedProject({List? projects}) {
     bool hasItems = false;
-    for (var element in projects!) {
+    for (final element in projects!) {
       if (element['is_member'] == false) {
         setState(() {
           hasItems = true;

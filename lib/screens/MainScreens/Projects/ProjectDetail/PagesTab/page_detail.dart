@@ -44,7 +44,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
   late InAppWebViewController controller;
   @override
   void initState() {
-    var prov = ref.read(ProviderList.pageProvider);
+    final prov = ref.read(ProviderList.pageProvider);
     prov.handleBlocks(
         context: context,
         blockID: "",
@@ -62,7 +62,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             .selectedWorkspace
             .workspaceSlug,
         projID: ref.read(ProviderList.projectProvider).currentProject["id"]);
-    for (var element in (prov.pages[prov.selectedFilter]![widget.index]
+    for (final element in (prov.pages[prov.selectedFilter]![widget.index]
         ['label_details'] as List)) {
       prov.selectedLabels.add(element['id']);
     }
@@ -79,11 +79,11 @@ class _PageDetailState extends ConsumerState<PageDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var page = pageProvider.pages[pageProvider.selectedFilter]![widget.index];
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final page = pageProvider.pages[pageProvider.selectedFilter]![widget.index];
     log('https://0bba-2401-4900-1c32-1549-3421-5545-6e4f-e949.ngrok-free.app/${workspaceProvider.selectedWorkspace.workspaceSlug}/projects/${page['project']}/pages/${page['page']}/blocks');
     return Scaffold(
       appBar: CustomAppBar(
@@ -848,11 +848,11 @@ class _PageDetailState extends ConsumerState<PageDetail> {
   }
 
   bool checkAccess() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool hasAccess = false;
 
-    for (var element in projectProvider.projectMembers) {
+    for (final element in projectProvider.projectMembers) {
       if (element['member']['id'] == profileProvider.userProfile.id &&
           (element['role'] == 20 || element['role'] == 15)) {
         hasAccess = true;

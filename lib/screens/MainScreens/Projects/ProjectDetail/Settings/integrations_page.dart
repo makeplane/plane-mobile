@@ -14,8 +14,8 @@ class IntegrationsWidget extends ConsumerStatefulWidget {
 class _IntegrationsWidgetState extends ConsumerState<IntegrationsWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var integrationProvider = ref.watch(ProviderList.integrationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final integrationProvider = ref.watch(ProviderList.integrationProvider);
     return Container(
         //padding: const EdgeInsets.all(15),
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,

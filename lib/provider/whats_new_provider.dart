@@ -13,15 +13,15 @@ class WhatsNew {
 class WhatsNewNotifier extends StateNotifier<WhatsNew> {
   WhatsNewNotifier(super.state);
 
-  getWhatsNew() async {
+  void getWhatsNew() async {
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.releaseNotes,
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      List<dynamic>? newData = response.data;
+      final List<dynamic>? newData = response.data;
       state = WhatsNew(newData);
     } catch (e) {
       log(e.toString());

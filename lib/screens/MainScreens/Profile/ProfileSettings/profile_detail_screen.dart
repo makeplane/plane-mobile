@@ -52,7 +52,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   @override
   void initState() {
     super.initState();
-    var profileProvier = ref.read(ProviderList.profileProvider);
+    final profileProvier = ref.read(ProviderList.profileProvider);
     firstNameController.text = profileProvier.userProfile.firstName!;
     lastNameController.text = profileProvier.userProfile.lastName!;
     displayNameController.text = profileProvier.userProfile.displayName!;
@@ -65,10 +65,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    BuildContext screenContext = context;
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
+    final BuildContext screenContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
     log('${profileProvider.userProfile.avatar} photo');
     log('profile : ${profileProvider.userProfile} ');
     return GestureDetector(
@@ -703,7 +703,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
+      final int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
         CustomToast.showToast(context,
             message: 'File size should be less than 5MB',

@@ -38,7 +38,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   String selectedColor = '#3A3A3A';
   Role? role;
 
-  generateEmojis() {
+  void generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
       setState(() {
         emojisWidgets.add(emojis[i]);
@@ -53,7 +53,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
     generateEmojis();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var projectProvider = ref.watch(ProviderList.projectProvider);
+      final projectProvider = ref.watch(ProviderList.projectProvider);
       isEmoji = projectProvider.currentProject['emoji'] != null;
       name.text = projectProvider.projectDetailModel!.name!;
       description.text = projectProvider.projectDetailModel!.description!;
@@ -78,9 +78,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   bool updating = false;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     // projectProvider.projectDetailModel!.network == 1
     //     ? isProjectPublic = false
     //     : isProjectPublic = true;
@@ -355,7 +355,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 right: 15,
                                 child: GestureDetector(
                                     onTap: () async {
-                                      Map<String, dynamic> url = {};
+                                      final Map<String, dynamic> url = {};
 
                                       await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -388,14 +388,13 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                       });
                                     },
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                        height: 30,
+                                        width: 30,
                                         decoration: BoxDecoration(
-                                            color: themeProvider
-                                                .themeManager
-                                                .primaryBackgroundDefaultColor,
-                                            borderRadius:
-                                                BorderRadius.circular(6),
+                                          color: themeProvider.themeManager
+                                              .primaryBackgroundDefaultColor,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
                                         ),
                                         child: Center(
                                           child: Icon(
@@ -489,8 +488,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         },
                                         child: Icon(
                                           Icons.close,
-                                          color: themeProvider
-                                              .themeManager.placeholderTextColor,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor,
                                         ),
                                       ),
                                       const SizedBox(width: 5)
@@ -636,7 +635,19 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                   ),
                                   Button(
                                     text: 'Delete Project',
-                                    color: (themeProvider.theme == THEME.dark || themeProvider.theme == THEME.darkHighContrast || (themeProvider.theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark)) ? const Color.fromRGBO(95, 21, 21, 1) : const Color.fromRGBO(254, 242, 242, 1),
+                                    color: (themeProvider.theme == THEME.dark ||
+                                            themeProvider.theme ==
+                                                THEME.darkHighContrast ||
+                                            (themeProvider.theme ==
+                                                    THEME.systemPreferences &&
+                                                SchedulerBinding
+                                                        .instance
+                                                        .platformDispatcher
+                                                        .platformBrightness ==
+                                                    Brightness.dark))
+                                        ? const Color.fromRGBO(95, 21, 21, 1)
+                                        : const Color.fromRGBO(
+                                            254, 242, 242, 1),
                                     textColor: themeProvider
                                         .themeManager.textErrorColor,
                                     filledButton: false,
@@ -695,7 +706,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 if (identifier.text !=
                                     projectProvider
                                         .projectDetailModel!.identifier) {
-                                  var available = await projectProvider
+                                  final available = await projectProvider
                                       .checkIdentifierAvailability(
                                           slug: ref
                                               .read(ProviderList
@@ -832,11 +843,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   }
 
   bool checkUser() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    List members = projectProvider.projectMembers;
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final List members = projectProvider.projectMembers;
     bool hasAccess = false;
-    for (var element in members) {
+    for (final element in members) {
       if ((element['member']['id'] == profileProvider.userProfile.id) &&
           (element['role'] == 20)) {
         hasAccess = true;
@@ -882,11 +893,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   }
 
   Role getRole() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     int? userRole;
-    List members = projectProvider.projectMembers;
-    for (var element in members) {
+    final List members = projectProvider.projectMembers;
+    for (final element in members) {
       if (element['member']['id'] == profileProvider.userProfile.id) {
         userRole = element['role'];
       }

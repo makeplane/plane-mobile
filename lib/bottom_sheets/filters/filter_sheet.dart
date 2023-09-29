@@ -61,16 +61,17 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         isArchived: widget.isArchived,
         filtersData: widget.filtersData,
         issueCategory: widget.issueCategory,
+        setState: () {
+          setState(() {});
+        },
         ref: ref);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    ProjectsProvider projectProvider = ref.watch(ProviderList.projectProvider);
-    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -140,7 +141,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _saveView(state: state, ref: ref),
+                  widget.fromCreateView ||
+                          widget.issueCategory == IssueCategory.myIssues
+                      ? Container()
+                      : _saveView(state: state, ref: ref),
                   _applyFilterButton(
                     state: state,
                     context: context,

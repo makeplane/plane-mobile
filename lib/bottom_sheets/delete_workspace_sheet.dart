@@ -9,10 +9,10 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class DeleteOrLeaveWorkpace extends ConsumerStatefulWidget {
-  final String workspaceName;
-  final Role role;
   const DeleteOrLeaveWorkpace(
       {required this.workspaceName, required this.role, super.key});
+  final String workspaceName;
+  final Role role;
 
   @override
   ConsumerState<DeleteOrLeaveWorkpace> createState() =>
@@ -24,8 +24,8 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -226,7 +226,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                       onTap: () async {
                         if (widget.role == Role.guest ||
                             widget.role == Role.viewer) {
-                          var isSuccessfullyLeft = await workspaceProvider
+                          final isSuccessfullyLeft = await workspaceProvider
                               .leaveWorkspace(context, ref);
                           if (isSuccessfullyLeft) {
                             postHogService(
@@ -265,7 +265,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                             //       toastType: ToastType.failure);
                             //   return;
                             // }
-                            var isSuccesfullyDeleted =
+                            final isSuccesfullyDeleted =
                                 await workspaceProvider.deleteWorkspace();
                             if (isSuccesfullyDeleted) {
                               postHogService(

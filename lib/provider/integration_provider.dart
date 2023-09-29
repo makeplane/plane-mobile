@@ -14,14 +14,14 @@ class IntegrationProvider extends ChangeNotifier {
   StateEnum getIntegrationState = StateEnum.empty;
   StateEnum getInstalledIntegrationState = StateEnum.empty;
 
-  var integrations = {};
+  final integrations = {};
   dynamic githubIntegration;
   dynamic slackIntegration;
 
   Future getAllAvailableIntegrations() async {
     getIntegrationState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.integrations,
         hasBody: false,
@@ -50,7 +50,7 @@ class IntegrationProvider extends ChangeNotifier {
   Future getInstalledIntegrations() async {
     getInstalledIntegrationState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.wokspaceIntegrations.replaceAll(
             '\$SLUG',
@@ -61,11 +61,11 @@ class IntegrationProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      var installed = [];
+      final installed = [];
       response.data.forEach((element) {
         installed.add(element['integration_detail']['provider']);
       });
-      for (var element in installed) {
+      for (final element in installed) {
         integrations[element]["installed"] = true;
       }
       getInstalledIntegrationState = StateEnum.success;
@@ -89,7 +89,7 @@ class IntegrationProvider extends ChangeNotifier {
     githubIntegration = null;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveGithubIntegrations
             .replaceAll('\$SLUG', slug)
@@ -115,7 +115,7 @@ class IntegrationProvider extends ChangeNotifier {
     slackIntegration = null;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.retrieveSlackIntegrations
             .replaceAll('\$SLUG', slug)

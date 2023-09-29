@@ -10,6 +10,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
+// ignore: must_be_immutable
 class CycleCardWidget extends ConsumerStatefulWidget {
   CycleCardWidget({required this.cycleData, super.key});
   Map<String, dynamic> cycleData;
@@ -32,8 +33,8 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     isFavorite = widget.cycleData['is_favorite'];
     startDate = widget.cycleData['start_date'];
     endDate = widget.cycleData['end_date'];
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     return Column(
       children: [
         Row(
@@ -246,12 +247,12 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
   }
 
   String checkDate({String? startDate, String? endDate}) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if ((startDate == null) || (endDate == null)) {
       return 'Draft';
     } else {
       if (DateTime.parse(startDate).isAfter(now)) {
-        Duration difference = DateTime.parse(startDate).difference(now);
+        final Duration difference = DateTime.parse(startDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -260,7 +261,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
       }
       if (DateTime.parse(startDate).isBefore(now) &&
           DateTime.parse(endDate).isAfter(now)) {
-        Duration difference = DateTime.parse(endDate).difference(now);
+        final Duration difference = DateTime.parse(endDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {

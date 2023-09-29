@@ -8,10 +8,9 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectEstimate extends ConsumerStatefulWidget {
+  const SelectEstimate({this.issueId, required this.createIssue, super.key});
   final bool createIssue;
   final String? issueId;
-
-  const SelectEstimate({this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectEstimate> createState() => _SelectEstimateState();
@@ -24,9 +23,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   @override
   void initState() {
     super.initState();
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var estimatesProvider = ref.read(ProviderList.estimatesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final estimatesProvider = ref.read(ProviderList.estimatesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     if (widget.createIssue) {
       selectedEstimate = estimatesProvider.estimates.firstWhere((element) {
         return element['id'] ==
@@ -42,14 +41,14 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         if (widget.createIssue) {
           if (selectedEstimate == -1) {
             prov.createIssuedata['estimate_point'] = null;
@@ -370,7 +369,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                   ),
                   IconButton(
                       onPressed: () {
-                        var prov = ref.read(ProviderList.issuesProvider);
+                        final prov = ref.read(ProviderList.issuesProvider);
                         if (widget.createIssue) {
                           if (selectedEstimate == -1) {
                             prov.createIssuedata['estimate_point'] = null;
@@ -404,9 +403,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   }
 
   Widget createIssueSelectedPriority(int idx) {
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     if (selectedEstimate == -1) return const SizedBox();
     return estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
@@ -428,9 +427,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   }
 
   Widget issueDetailSelectedPriority(int idx) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueDetails['estimate_point'].toString());
     return issueProvider.issueDetails['estimate_point'] ==
             estimatesProvider.estimates.firstWhere((element) {

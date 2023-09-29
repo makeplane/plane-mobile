@@ -25,10 +25,10 @@ class SelectCoverImage extends ConsumerStatefulWidget {
 }
 
 class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
-  var selected = 0;
+  int selected = 0;
   File? coverImage;
   final searchController = TextEditingController();
-  var page = 1;
+  int page = 1;
   final perPage = 18;
   bool isLoading = false;
   bool isSearched = false;
@@ -52,8 +52,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
 
   bool isEnableAuth() {
     bool enableAuth = false;
-    String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
-    int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
+    final String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
+    final int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
     if (enableOAuthValue == 1) {
       enableAuth = true;
     } else {
@@ -63,7 +63,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
   }
 
   List images = [];
-  var dio = Dio();
+  final dio = Dio();
   final unspalshApi = dotenv.env['UNSPLASH_API'];
 
   Future getImages(bool isFirstReq) async {
@@ -83,17 +83,17 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
     //unfocus keyboard
 
     try {
-      var url = searchController.text.isEmpty
+      final url = searchController.text.isEmpty
           ? 'https://api.unsplash.com/photos/?client_id=$unspalshApi&page=$page&per_page=$perPage'
           : 'https://api.unsplash.com/search/photos/?client_id=$unspalshApi&query=${searchController.text}&page=$page&per_page=$perPage ';
       log(url);
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: url,
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      //var res = jsonDecode(response.toString());
+      //final res = jsonDecode(response.toString());
       // log(response.toString());
 
       searchController.text.isEmpty
@@ -129,8 +129,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
 
   @override
   Widget build(BuildContext context) {
-    var fileProvider = ref.watch(ProviderList.fileUploadProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final fileProvider = ref.watch(ProviderList.fileUploadProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return NotificationListener<ScrollNotification>(
       onNotification: onNotification,
       child: Column(
@@ -372,7 +372,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () async {
-                                  var file = await ImagePicker()
+                                  final file = await ImagePicker()
                                       .pickImage(source: ImageSource.gallery);
 
                                   if (file != null) {
@@ -412,7 +412,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                     coverImage != null
                         ? GestureDetector(
                             onTap: () async {
-                              var file = await ImagePicker()
+                              final file = await ImagePicker()
                                   .pickImage(source: ImageSource.gallery);
                               if (file != null) {
                                 setState(() {
@@ -446,7 +446,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 child: Button(
                                   text: 'UPLOAD',
                                   ontap: () async {
-                                    int sizeOfImage = coverImage!
+                                    final int sizeOfImage = coverImage!
                                         .readAsBytesSync()
                                         .lengthInBytes;
 
@@ -458,7 +458,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                       return;
                                     }
 
-                                    var url = await fileProvider.uploadFile(
+                                    final url = await fileProvider.uploadFile(
                                       coverImage!,
                                       coverImage!.path.split('.').last,
                                     );

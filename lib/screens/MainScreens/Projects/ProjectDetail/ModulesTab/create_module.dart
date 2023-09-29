@@ -35,9 +35,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return WillPopScope(
       onWillPop: () async {
         modulesProvider.createModule = {};
@@ -137,7 +137,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               GestureDetector(
                                 onTap: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
-                                  var date = await showDatePicker(
+                                  final date = await showDatePicker(
                                     builder: (context, child) => Theme(
                                       data: themeProvider.themeManager.theme ==
                                                   THEME.dark ||
@@ -231,14 +231,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                               GestureDetector(
                                 onTap: () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
-                                  var date = await showDatePicker(
+                                  final date = await showDatePicker(
                                     builder: (context, child) => Theme(
                                       data: themeProvider.themeManager.theme ==
                                                   THEME.dark ||
                                               themeProvider
                                                       .themeManager.theme ==
                                                   THEME.darkHighContrast
-                                          ?  ThemeData.dark().copyWith(
+                                          ? ThemeData.dark().copyWith(
                                               dialogBackgroundColor: themeProvider
                                                   .themeManager
                                                   .tertiaryBackgroundDefaultColor,

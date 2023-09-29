@@ -27,20 +27,20 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   final TextEditingController emojiController = TextEditingController();
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
 
-  // var showEMOJI = false;
+  // final showEMOJI = false;
   bool isEmoji = true;
   String selectedColor = "#3A3A3A";
   List<String> emojisWidgets = [];
   String selectedEmoji = (emojis[855]);
   IconData? selectedIcon;
-  var emoji = emojis[855];
-  var selectedVal = 2;
+  final emoji = emojis[855];
+  int selectedVal = 2;
   File? coverImage;
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController identifier = TextEditingController();
 
-  generateEmojis() {
+  void generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
       setState(() {
         emojisWidgets.add(emojis[i]);
@@ -65,9 +65,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    BuildContext mainContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final BuildContext mainContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -127,7 +127,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                     right: 15,
                                     child: GestureDetector(
                                         onTap: () async {
-                                          Map<String, dynamic> url = {};
+                                          final Map<String, dynamic> url = {};
                                           await showModalBottomSheet(
                                               isScrollControlled: true,
                                               enableDrag: true,

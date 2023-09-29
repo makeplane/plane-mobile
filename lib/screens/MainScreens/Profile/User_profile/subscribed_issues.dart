@@ -21,8 +21,8 @@ class SubscribesIssuesPage extends ConsumerStatefulWidget {
 class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Container(
       color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       margin: const EdgeInsets.only(top: 5),

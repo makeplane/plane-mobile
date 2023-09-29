@@ -8,6 +8,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -18,20 +19,20 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class CreateView extends ConsumerStatefulWidget {
-  final bool fromProjectIssues;
-  final Filters? filtersData;
   const CreateView({
     super.key,
     this.fromProjectIssues = false,
     this.filtersData,
   });
+  final bool fromProjectIssues;
+  final Filters? filtersData;
 
   @override
   ConsumerState<CreateView> createState() => _CreateViewState();
 }
 
 class _CreateViewState extends ConsumerState<CreateView> {
-  var filtersData = {
+  Map filtersData = {
     'Filters': {
       "assignees": [],
       "created_by": [],
@@ -44,7 +45,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
 
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
-  var filterKeys = [
+  final filterKeys = [
     'Assignees:',
     'Created By:',
     'Labels:',
@@ -104,10 +105,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final viewsProvider = ref.watch(ProviderList.viewsProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -336,9 +337,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                         },
                                                                         child:
                                                                             filterWidget(
-                                                                          color: Color(int.parse(
-                                                                              "FF${issuesProvider.states[e]['color'].toString().replaceAll('#', '')}",
-                                                                              radix: 16)),
+                                                                          color:
+                                                                              ColorManager.getColorFromHexaDecimal(issuesProvider.states[e]['color']),
                                                                           icon: SizedBox(
                                                                               height: 15,
                                                                               width: 15,
@@ -566,16 +566,16 @@ class _CreateViewState extends ConsumerState<CreateView> {
     bool fill = true,
     Color? color,
   }) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     String newText = "";
     if (text.contains(';')) {
       String first = text.split(';')[0];
-      String second = text.split(';')[1];
+      final String second = text.split(';')[1];
 
       //convert yyyy-mm-dd to Aug 12, 2021 using intl package
       if (first.contains('-')) {
-        var date = DateTime.parse(first);
-        var format = DateFormat('MMM dd, yyyy');
+        final date = DateTime.parse(first);
+        final format = DateFormat('MMM dd, yyyy');
         first = format.format(date);
       }
 

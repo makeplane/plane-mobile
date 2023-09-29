@@ -18,13 +18,12 @@ class __PriorityFilterState extends ConsumerState<_PriorityFilter> {
           children: widget.state.priorities
               .map((e) => GestureDetector(
                   onTap: () {
-                    setState(() {
-                      if (widget.state.filters.priorities.contains(e['text'])) {
-                        widget.state.filters.priorities.remove(e['text']);
-                      } else {
-                        widget.state.filters.priorities.add(e['text']);
-                      }
-                    });
+                    if (widget.state.filters.priorities.contains(e['text'])) {
+                      widget.state.filters.priorities.remove(e['text']);
+                    } else {
+                      widget.state.filters.priorities.add(e['text']);
+                    }
+                    widget.state.setState();
                   },
                   child: RectangularChip(
                       ref: ref,

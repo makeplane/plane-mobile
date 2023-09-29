@@ -63,12 +63,12 @@ class NotificationProvider extends ChangeNotifier {
                             ? getSnoozedState = StateEnum.loading
                             : null;
     notifyListeners();
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: getUnread
             ? '${APIs.notifications.replaceAll('\$SLUG', slug)}?read=false'
@@ -129,13 +129,13 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   Future getUnreadCount() async {
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}unread',
         hasBody: false,
@@ -157,14 +157,14 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   Future markAsRead(String notificationId) async {
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read');
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read/',
@@ -185,7 +185,7 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   Future markAllAsRead(String type) async {
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
@@ -232,14 +232,14 @@ class NotificationProvider extends ChangeNotifier {
 
   Future archiveNotification(
       String notificationId, HttpMethod httpMethod) async {
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/archive/',
@@ -267,13 +267,13 @@ class NotificationProvider extends ChangeNotifier {
     if (snoozedDate == null) {
       return;
     }
-    String slug = ref!
+    final String slug = ref!
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/',
         hasBody: true,

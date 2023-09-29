@@ -21,14 +21,13 @@ class __CreatedByFilterState extends ConsumerState<_CreatedByFilter> {
             .map(
               (e) => GestureDetector(
                 onTap: () {
-                  setState(() {
-                    if (widget.state.filters.createdBy
-                        .contains(e['member']['id'])) {
-                      widget.state.filters.createdBy.remove(e['member']['id']);
-                    } else {
-                      widget.state.filters.createdBy.add(e['member']['id']);
-                    }
-                  });
+                  if (widget.state.filters.createdBy
+                      .contains(e['member']['id'])) {
+                    widget.state.filters.createdBy.remove(e['member']['id']);
+                  } else {
+                    widget.state.filters.createdBy.add(e['member']['id']);
+                  }
+                  widget.state.setState();
                 },
                 child: RectangularChip(
                   ref: ref,

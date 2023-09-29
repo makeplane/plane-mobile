@@ -7,16 +7,6 @@ import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class Button extends ConsumerStatefulWidget {
-  final String text;
-  final bool filledButton;
-  final bool disable;
-  final bool removeStroke;
-  final VoidCallback? ontap;
-  final Color? textColor;
-  final double? width;
-  final Color? color;
-  final Widget? widget;
-  final Color? borderColor;
   const Button(
       {required this.text,
       this.filledButton = true,
@@ -29,6 +19,16 @@ class Button extends ConsumerStatefulWidget {
       this.widget,
       this.borderColor,
       super.key});
+  final String text;
+  final bool filledButton;
+  final bool disable;
+  final bool removeStroke;
+  final VoidCallback? ontap;
+  final Color? textColor;
+  final double? width;
+  final Color? color;
+  final Widget? widget;
+  final Color? borderColor;
 
   @override
   ConsumerState<Button> createState() => _ButtonState();
@@ -37,7 +37,7 @@ class Button extends ConsumerStatefulWidget {
 class _ButtonState extends ConsumerState<Button> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -53,7 +53,8 @@ class _ButtonState extends ConsumerState<Button> {
                 : widget.removeStroke
                     ? const Border()
                     : Border.all(
-                        color: widget.borderColor ?? themeProvider.themeManager.borderSubtle01Color),
+                        color: widget.borderColor ??
+                            themeProvider.themeManager.borderSubtle01Color),
             borderRadius: BorderRadius.circular(8),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)

@@ -29,8 +29,8 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
   ];
   @override
   Widget build(BuildContext context) {
-    var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
       decoration: BoxDecoration(

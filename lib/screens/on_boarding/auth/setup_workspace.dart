@@ -22,8 +22,8 @@ class SetupWorkspace extends ConsumerStatefulWidget {
 }
 
 class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
-  var newWorkSpace = true;
-  var dropdownEmpty = false;
+  final newWorkSpace = true;
+  bool dropdownEmpty = false;
   final pageController = PageController();
   int currentPage = 0;
   final formKey = GlobalKey<FormState>();
@@ -34,7 +34,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
   TextEditingController nameController = TextEditingController();
   @override
   void initState() {
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
 
     workspaceProvider.companySize = '';
 
@@ -43,10 +43,10 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
 
   @override
   Widget build(BuildContext context) {
-    var prov = ref.watch(ProviderList.workspaceProvider);
-    var themeProv = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final prov = ref.watch(ProviderList.workspaceProvider);
+    final themeProv = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

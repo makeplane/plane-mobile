@@ -42,7 +42,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   List cards = [];
   @override
   void initState() {
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     ProviderList.clear(ref: ref);
     cards = [
       SizedBox(
@@ -575,7 +575,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -704,8 +704,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 
   bool isEnableAuth() {
     bool enableAuth = false;
-    String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
-    int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
+    final String enableOAuth = dotenv.env['ENABLE_O_AUTH'] ?? '';
+    final int enableOAuthValue = int.tryParse(enableOAuth) ?? 0;
     if (enableOAuthValue == 1) {
       enableAuth = true;
     } else {

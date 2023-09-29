@@ -20,8 +20,9 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
                   ? widget.state.states
                   : issuesProvider.states.values)
               .map((e) {
-        String key =
-            widget.state.issueCategory == IssueCategory.myIssues ? 'id' : 'group';
+        final String key = widget.state.issueCategory == IssueCategory.myIssues
+            ? 'id'
+            : 'group';
         return (widget.state.isArchived &&
                 (e[key] == 'backlog' ||
                     e[key] == 'unstarted' ||
@@ -29,13 +30,12 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
             ? Container()
             : GestureDetector(
                 onTap: () {
-                  setState(() {
-                    if (widget.state.filters.states.contains(e['id'])) {
-                      widget.state.filters.states.remove(e['id']);
-                    } else {
-                      widget.state.filters.states.add(e['id']);
-                    }
-                  });
+                  if (widget.state.filters.states.contains(e['id'])) {
+                    widget.state.filters.states.remove(e['id']);
+                  } else {
+                    widget.state.filters.states.add(e['id']);
+                  }
+                  widget.state.setState();
                 },
                 child: RectangularChip(
                   ref: ref,

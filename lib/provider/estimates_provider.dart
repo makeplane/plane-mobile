@@ -8,13 +8,13 @@ import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class EstimatesProvider with ChangeNotifier {
-  var estimates = [];
+  List estimates = [];
   StateEnum estimateState = StateEnum.idle;
 
   Future getEstimates({required String slug, required String projID}) async {
     try {
       estimateState = StateEnum.loading;
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.listEstimates
             .replaceAll("\$SLUG", slug)
@@ -36,7 +36,7 @@ class EstimatesProvider with ChangeNotifier {
   }
 
   Future createEstimates(
-      {required String slug, required String projID, required body}) async {
+      {required String slug, required String projID, required Map body}) async {
     try {
       estimateState = StateEnum.loading;
       await DioConfig().dioServe(
@@ -62,7 +62,7 @@ class EstimatesProvider with ChangeNotifier {
       {required String slug,
       required String projID,
       required String estimateID,
-      required body}) async {
+      required Map body}) async {
     try {
       log('${APIs.listEstimates.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID)}$estimateID/');
       estimateState = StateEnum.loading;

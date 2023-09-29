@@ -52,8 +52,8 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectsProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectsProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
@@ -144,8 +144,9 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                                           .features[index + 1]['show'],
                                   });
 
-                              String prefix = cardData[index]['event_name'];
-                              String suffix =
+                              final String prefix =
+                                  cardData[index]['event_name'];
+                              final String suffix =
                                   projectsProvider.features[index + 1]['show']
                                       ? 'ON'
                                       : 'OFF';

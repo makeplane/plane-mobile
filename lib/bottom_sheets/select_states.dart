@@ -10,20 +10,19 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectStates extends ConsumerStatefulWidget {
+  const SelectStates({required this.createIssue, this.issueId, super.key});
   final bool createIssue;
   final String? issueId;
-
-  const SelectStates({required this.createIssue, this.issueId, super.key});
 
   @override
   ConsumerState<SelectStates> createState() => _SelectStatesState();
 }
 
 class _SelectStatesState extends ConsumerState<SelectStates> {
-  var selectedState = '';
+  String selectedState = '';
   @override
   void initState() {
-    var prov = ref.read(ProviderList.issuesProvider);
+    final prov = ref.read(ProviderList.issuesProvider);
     if (prov.states.isEmpty) {
       prov.getStates(
           slug: ref
@@ -49,8 +48,9 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
 
   Color getColorFromIssueProvider(
       IssuesProvider issuesProvider, int index, int idx) {
-    Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
-    String? colorData = issuesProvider.statesData[states[index]][idx]['color'];
+    const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
+    final String? colorData =
+        issuesProvider.statesData[states[index]][idx]['color'];
 
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
@@ -61,12 +61,12 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
   List states = ['backlog', 'unstarted', 'started', 'completed', 'cancelled'];
   @override
   Widget build(BuildContext context) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         //   if (selectedState.isNotEmpty) {
         prov.createIssuedata['state'] = selectedState;
 
@@ -99,7 +99,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                       ),
                       IconButton(
                           onPressed: () {
-                            var prov = ref.read(ProviderList.issuesProvider);
+                            final prov = ref.read(ProviderList.issuesProvider);
                             //   if (selectedState.isNotEmpty) {
                             prov.createIssuedata['state'] = selectedState;
                             // print('state');
@@ -311,7 +311,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
   }
 
   Widget createIssueStateSelectionWidget(int i, int j) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return selectedState == issuesProvider.statesData[states[j]][i]['id']
         ? const Icon(
             Icons.done,
@@ -321,8 +321,8 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
   }
 
   Widget issueDetailStateSelectionWidget(int i, int j) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return issueProvider.issueDetails['state_detail']['id'] ==
             issuesProvider.statesData[states[j]][i]['id']
         ? const Icon(

@@ -22,7 +22,7 @@ class _GotoPlaneWebNotifierSheetState
     extends ConsumerState<GotoPlaneWebNotifierSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -50,7 +50,7 @@ class _GotoPlaneWebNotifierSheetState
   }
 
   Future<void> _launchUrl() async {
-    String url = 'https://app.plane.so';
+    const String url = 'https://app.plane.so';
     if (!await launchUrl(Uri.parse(url))) {
       throw Exception('Could not launch $url');
     }

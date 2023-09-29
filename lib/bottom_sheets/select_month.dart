@@ -9,8 +9,8 @@ import 'package:plane/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class SelectMonthSheet extends ConsumerStatefulWidget {
-  final bool isCloseIn;
   const SelectMonthSheet({super.key, required this.isCloseIn});
+  final bool isCloseIn;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -75,8 +75,8 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Padding(
       padding: EdgeInsets.only(
           top: 23,

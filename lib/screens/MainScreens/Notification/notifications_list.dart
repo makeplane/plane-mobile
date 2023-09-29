@@ -15,9 +15,9 @@ import 'package:plane/widgets/loading_widget.dart';
 import '../Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class NotificationsList extends ConsumerStatefulWidget {
+  const NotificationsList({super.key, required this.data, required this.type});
   final List<dynamic> data;
   final String type;
-  const NotificationsList({super.key, required this.data, required this.type});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -26,8 +26,8 @@ class NotificationsList extends ConsumerStatefulWidget {
 
 class _NotificationsListState extends ConsumerState<NotificationsList> {
   String checkTimeDifferenc(String dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(DateTime.parse(dateTime));
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(DateTime.parse(dateTime));
     String? format;
 
     if (difference.inDays > 0) {
@@ -46,8 +46,8 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
   @override
   Widget build(BuildContext context) {
     // log('Notification List Build ${widget.data.toString()}');
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var notificationProvider = ref.watch(ProviderList.notificationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final notificationProvider = ref.watch(ProviderList.notificationProvider);
     return LoadingWidget(
       loading: widget.type == 'created'
           ? notificationProvider.getCreatedState == StateEnum.loading
@@ -83,7 +83,7 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                               itemCount: widget.data.length,
                               itemBuilder: (context, index) {
                                 bool isUnread = false;
-                                for (var element
+                                for (final element
                                     in notificationProvider.unread) {
                                   if (element['id'] ==
                                       widget.data[index]['id']) {

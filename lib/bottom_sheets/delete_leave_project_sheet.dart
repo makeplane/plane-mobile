@@ -9,10 +9,10 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class DeleteLeaveProjectSheet extends ConsumerStatefulWidget {
-  final Map<String, dynamic> data;
-  final Role? role;
   const DeleteLeaveProjectSheet(
       {required this.data, required this.role, super.key});
+  final Map<String, dynamic> data;
+  final Role? role;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -26,8 +26,8 @@ class _DeleteLeaveProjectSheetState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -216,7 +216,7 @@ class _DeleteLeaveProjectSheetState
                         if (widget.role == Role.guest ||
                             widget.role == Role.viewer ||
                             widget.role == Role.member) {
-                          var leftSuccessfully =
+                          final leftSuccessfully =
                               await projectProvider.leaveProject(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)

@@ -9,12 +9,12 @@ import '../config/apis.dart';
 import '../utils/enums.dart';
 
 class ProfileService {
-  DioConfig dio;
   ProfileService(this.dio);
+  DioConfig dio;
 
   Future<Either<UserProfile, DioException>> getProfile() async {
     try {
-      var response = await dio.dioServe(
+      final response = await dio.dioServe(
         hasAuth: true,
         url: '${APIs.baseApi}${APIs.profile}',
         hasBody: false,
@@ -30,7 +30,7 @@ class ProfileService {
   Future<Either<UserProfile, DioException>> updateProfile(
       {required Map data}) async {
     try {
-      var response = await dio.dioServe(
+      final response = await dio.dioServe(
           hasAuth: true,
           url: APIs.baseApi + APIs.profile,
           hasBody: true,

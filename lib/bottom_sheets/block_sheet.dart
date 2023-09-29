@@ -28,7 +28,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
 
   @override
   void initState() {
-    var pageProvider = ref.read(ProviderList.pageProvider);
+    final pageProvider = ref.read(ProviderList.pageProvider);
     if (widget.operation == CRUD.update) {
       titleController.text = pageProvider.blocks[widget.blockIndex!]['name'];
 
@@ -47,10 +47,10 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
   double height = 0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(

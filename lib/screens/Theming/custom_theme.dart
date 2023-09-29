@@ -20,7 +20,7 @@ class CustomTheme extends ConsumerStatefulWidget {
 }
 
 class _CustomThemeState extends ConsumerState<CustomTheme> {
-  var fields = {
+  final fields = {
     'Accent Color': TextEditingController(),
     'Background Color': TextEditingController(),
     'Text Color': TextEditingController(),
@@ -47,7 +47,7 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
 
   @override
   void initState() {
-    var profileProvider = ref.read(ProviderList.profileProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     // if (profileProvider.userProfile.theme == null ||
     //     profileProvider.userProfile.theme!.isEmpty) {
     fields['Accent Color']!.text =
@@ -64,11 +64,11 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
     super.initState();
   }
 
-  var formkey = GlobalKey<FormState>();
+  final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -236,7 +236,7 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                           if (!formkey.currentState!.validate()) {
                             return;
                           }
-                          var theme = profileProvider.userProfile.theme;
+                          final theme = profileProvider.userProfile.theme;
 
                           theme!['theme'] = fromTHEME(theme: THEME.custom);
 

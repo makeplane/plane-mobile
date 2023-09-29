@@ -15,24 +15,24 @@ class SelectEmails extends ConsumerStatefulWidget {
 }
 
 class _SelectEmailsState extends ConsumerState<SelectEmails> {
-  var emails = [];
+  List emails = [];
   @override
   void initState() {
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     workspaceProvider.invitingMembersRole.text = 'Viewer';
-    for (var element in workspaceProvider.workspaceMembers) {
+    for (final element in workspaceProvider.workspaceMembers) {
       emails.add(
           {"email": element['member']['email'], "id": element["member"]["id"]});
     }
     super.initState();
   }
 
-  var selectedEmail = -1;
+  int selectedEmail = -1;
 
   @override
   Widget build(BuildContext context) {
-    var themeProv = ref.watch(ProviderList.themeProvider);
-    var profProv = ref.watch(ProviderList.profileProvider);
+    final themeProv = ref.watch(ProviderList.themeProvider);
+    final profProv = ref.watch(ProviderList.profileProvider);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(

@@ -54,7 +54,7 @@ class IssueProvider with ChangeNotifier {
     cyclesList = [];
   }
 
-  setState() {
+  void setState() {
     notifyListeners();
   }
 
@@ -65,8 +65,8 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
-      var issuesProvider = ref.read(ProviderList.issuesProvider);
-      var response = await DioConfig().dioServe(
+      final issuesProvider = ref.read(ProviderList.issuesProvider);
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.issueDetails
             .replaceAll("\$SLUG", slug)
@@ -136,7 +136,7 @@ class IssueProvider with ChangeNotifier {
       required String issueID}) async {
     try {
       issueActivityState = StateEnum.loading;
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}history/',
@@ -162,7 +162,7 @@ class IssueProvider with ChangeNotifier {
     try {
       subscriptionState = StateEnum.loading;
       notifyListeners();
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}subscribe/',
@@ -193,8 +193,8 @@ class IssueProvider with ChangeNotifier {
       required Map data,
       required WidgetRef refs,
       BuildContext? buildContext}) async {
-    var workspaceProvider = refs.watch(ProviderList.workspaceProvider);
-    var projectProvider = refs.watch(ProviderList.projectProvider);
+    final workspaceProvider = refs.watch(ProviderList.workspaceProvider);
+    final projectProvider = refs.watch(ProviderList.projectProvider);
     try {
       updateIssueState = StateEnum.loading;
       notifyListeners();
@@ -294,10 +294,10 @@ class IssueProvider with ChangeNotifier {
       attachmentState = StateEnum.loading;
       notifyListeners();
       log(File(filePath).toString());
-      String fileName = filePath.split('/').last;
-      String type = filePath.split('.').last;
+      final String fileName = filePath.split('/').last;
+      final String type = filePath.split('.').last;
 
-      FormData formData = FormData.fromMap({
+      final FormData formData = FormData.fromMap({
         "asset": await MultipartFile.fromFile(filePath,
             filename: fileName, contentType: MediaType('', type)),
         "attributes": json.encode(
@@ -365,7 +365,7 @@ class IssueProvider with ChangeNotifier {
     try {
       addLinkState = StateEnum.loading;
       notifyListeners();
-      var url = linkId == ''
+      final url = linkId == ''
           ? APIs.issuelinks
               .replaceAll("\$SLUG", slug)
               .replaceAll('\$PROJECTID', projectId)
@@ -416,11 +416,11 @@ class IssueProvider with ChangeNotifier {
     try {
       //updateIssueState = StateEnum.loading;
       notifyListeners();
-      var url = APIs.subIssues
+      final url = APIs.subIssues
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -455,7 +455,7 @@ class IssueProvider with ChangeNotifier {
 
   Future setCookies({required String key, required String value}) async {
     if (value.isEmpty) return;
-    Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+    final Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
     final cookieManager = CookieManager.instance();
     await cookieManager.setCookie(
       url: baseWebUrl,
@@ -474,7 +474,7 @@ class IssueProvider with ChangeNotifier {
       cookiesState = StateEnum.loading;
       final cookieManager = CookieManager.instance();
       cookieManager.deleteAllCookies();
-      Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+      final Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
       if (data.isNotEmpty) {
         await cookieManager.setCookie(
           url: baseWebUrl,
@@ -512,7 +512,7 @@ class IssueProvider with ChangeNotifier {
       BuildContext? buildContext}) async {
     try {
       notifyListeners();
-      var url = APIs.issueDetails
+      final url = APIs.issueDetails
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
@@ -547,7 +547,7 @@ class IssueProvider with ChangeNotifier {
     try {
       addSubIssueState = StateEnum.loading;
       notifyListeners();
-      var url = APIs.subIssues
+      final url = APIs.subIssues
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
@@ -578,7 +578,7 @@ class IssueProvider with ChangeNotifier {
     }
   }
 
-  clearData() {
+  void clearData() {
     issueDetailState = StateEnum.loading;
     issueActivityState = StateEnum.loading;
     updateIssueState = StateEnum.empty;

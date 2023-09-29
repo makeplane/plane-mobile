@@ -14,8 +14,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OverViewScreen extends ConsumerStatefulWidget {
-  final String userId;
   const OverViewScreen({required this.userId, super.key});
+  final String userId;
 
   @override
   ConsumerState<OverViewScreen> createState() => _OverViewScreenState();
@@ -29,8 +29,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Material(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Container(
@@ -82,8 +82,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget overViewWidget() {
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -167,8 +167,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget workloadWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -236,8 +236,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget issueByPriorityWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -294,8 +294,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget issuesByStateWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -397,8 +397,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   Widget recentActivityWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -428,7 +428,7 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                           userProfileProvider
                                   .userActivity.results![index].verb ==
                               'created')) {
-                    var url = userProfileProvider
+                    final url = userProfileProvider
                             .userActivity.results![index].newValue ??
                         userProfileProvider
                             .userActivity.results![index].oldValue;
@@ -616,8 +616,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
   }
 
   String checkTimeDifferenc(String dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(DateTime.parse(dateTime));
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(DateTime.parse(dateTime));
     String? format;
 
     if (difference.inDays > 0) {

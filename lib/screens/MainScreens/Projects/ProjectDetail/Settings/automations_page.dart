@@ -27,13 +27,13 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectsProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectsProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     // log(projectsProvider.currentProject.toString());
     // log(projectsProvider.currentProject['close_in'].toString());
     // log(projectsProvider.currentProject['default_state'].toString());
-    String stateColor = issuesProvider.statesData['cancelled'].firstWhere(
+    final String stateColor = issuesProvider.statesData['cancelled'].firstWhere(
         (element) =>
             element['id'] == projectsProvider.currentProject['default_state'],
         orElse: () => {'color': '#000000'})['color'];
@@ -101,7 +101,7 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                       InkWell(
                         onTap: (projectsProvider.role == Role.admin)
                             ? () {
-                                int value =
+                                final int value =
                                     projectsProvider.currentProject['close_in'];
                                 projectsProvider.currentProject['close_in'] > 0
                                     ? projectsProvider
@@ -363,7 +363,7 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                       InkWell(
                         onTap: (projectsProvider.role == Role.admin)
                             ? () {
-                                int value = projectsProvider
+                                final int value = projectsProvider
                                     .currentProject['archive_in'];
                                 projectsProvider.currentProject['archive_in'] >
                                         0

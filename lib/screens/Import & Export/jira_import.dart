@@ -15,10 +15,10 @@ class JiraImport extends ConsumerStatefulWidget {
 }
 
 class _JiraImportState extends ConsumerState<JiraImport> {
-  var selected = 0;
+  int selected = 0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       //backgroundColor: Colors.white,
       appBar: CustomAppBar(

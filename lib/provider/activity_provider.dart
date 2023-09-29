@@ -10,7 +10,7 @@ class ActivityProvider extends ChangeNotifier {
   StateEnum getActivityState = StateEnum.loading;
   List<dynamic> data = [];
 
-  clear() {
+  void clear() {
     data = [];
     getActivityState = StateEnum.loading;
     notifyListeners();
@@ -20,12 +20,12 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getAcivity({
+  void getAcivity({
     required String slug,
   }) async {
     getActivityState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.activity.replaceAll('\$SLUG', slug),
         hasBody: false,
@@ -33,13 +33,11 @@ class ActivityProvider extends ChangeNotifier {
       );
       data = response.data['results'];
       getActivityState = StateEnum.success;
-      log(response.data.toString());
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
         log(e.response.toString());
       }
-      log(e.toString());
       getActivityState = StateEnum.error;
       notifyListeners();
     }

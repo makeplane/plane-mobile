@@ -24,8 +24,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(

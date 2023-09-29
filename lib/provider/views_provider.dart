@@ -10,14 +10,13 @@ import 'package:plane/utils/global_functions.dart';
 import '../config/apis.dart';
 
 class ViewsModel {
-  StateEnum viewsState = StateEnum.empty;
-  var views = [];
-  var viewDetail = {};
-
   ViewsModel(
       {required this.views,
       required this.viewsState,
       required this.viewDetail});
+  StateEnum viewsState = StateEnum.empty;
+  List views = [];
+  Map viewDetail = {};
 
   ViewsModel copyWith({StateEnum? viewsState, List? views, Map? viewDetail}) {
     return ViewsModel(
@@ -37,7 +36,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     state = state.copyWith(viewsState: StateEnum.loading);
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.views
             .replaceAll(
@@ -64,10 +63,10 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       {required dynamic data,
       required WidgetRef ref,
       required BuildContext context}) async {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.views
               .replaceAll(
@@ -152,7 +151,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     log(data.toString());
     log("${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/");
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', ref.read(ProviderList.projectProvider).currentProject['id'])}$id/",
@@ -203,7 +202,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     state = state.copyWith(viewsState: StateEnum.loading);
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             "${APIs.views.replaceAll('\$SLUG', ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug).replaceAll('\$PROJECTID', projId)}$id/",

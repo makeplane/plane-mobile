@@ -34,57 +34,63 @@ import 'views_provider.dart';
 class ProviderList {
   static final authProvider =
       ChangeNotifierProvider<AuthProvider>((ref) => AuthProvider(ref));
-  static var profileProvider = ChangeNotifierProvider<ProfileProvider>(
-      (_) => ProfileProvider(profileService: ProfileService(DioConfig())));
-  static var workspaceProvider = ChangeNotifierProvider<WorkspaceProvider>(
-      (ref) => WorkspaceProvider(
+  static ChangeNotifierProvider<ProfileProvider> profileProvider =
+      ChangeNotifierProvider<ProfileProvider>(
+          (_) => ProfileProvider(profileService: ProfileService(DioConfig())));
+  static ChangeNotifierProvider<WorkspaceProvider> workspaceProvider =
+      ChangeNotifierProvider<WorkspaceProvider>((ref) => WorkspaceProvider(
           ref: ref, workspaceService: WorkspaceService(DioConfig())));
-  static var themeProvider =
+  static ChangeNotifierProvider<ThemeProvider> themeProvider =
       ChangeNotifierProvider<ThemeProvider>((ref) => ThemeProvider(ref));
-  static var projectProvider =
+  static ChangeNotifierProvider<ProjectsProvider> projectProvider =
       ChangeNotifierProvider<ProjectsProvider>((ref) => ProjectsProvider(ref));
-  static var fileUploadProvider = ChangeNotifierProvider<FileUploadProvider>(
-      (ref) => FileUploadProvider(ref));
-  static var issuesProvider =
+  static ChangeNotifierProvider<FileUploadProvider> fileUploadProvider =
+      ChangeNotifierProvider<FileUploadProvider>(
+          (ref) => FileUploadProvider(ref));
+  static ChangeNotifierProvider<IssuesProvider> issuesProvider =
       ChangeNotifierProvider<IssuesProvider>((ref) => IssuesProvider(ref));
-  static var issueProvider =
+  static ChangeNotifierProvider<IssueProvider> issueProvider =
       ChangeNotifierProvider<IssueProvider>((ref) => IssueProvider(ref));
-  static var searchIssueProvider =
+  static ChangeNotifierProvider<SearchIssueProvider> searchIssueProvider =
       ChangeNotifierProvider<SearchIssueProvider>((_) => SearchIssueProvider());
-  static var bottomNavProvider =
+  static ChangeNotifierProvider<BottomNavProvider> bottomNavProvider =
       ChangeNotifierProvider<BottomNavProvider>((_) => BottomNavProvider());
-  static var cyclesProvider =
+  static ChangeNotifierProvider<CyclesProvider> cyclesProvider =
       ChangeNotifierProvider<CyclesProvider>((ref) => CyclesProvider(ref));
 
-  static var modulesProvider =
+  static ChangeNotifierProvider<ModuleProvider> modulesProvider =
       ChangeNotifierProvider<ModuleProvider>((ref) => ModuleProvider(ref));
-  static var estimatesProvider =
+  static ChangeNotifierProvider<EstimatesProvider> estimatesProvider =
       ChangeNotifierProvider<EstimatesProvider>((_) => EstimatesProvider());
-  static var myIssuesProvider =
+  static ChangeNotifierProvider<MyIssuesProvider> myIssuesProvider =
       ChangeNotifierProvider<MyIssuesProvider>((ref) => MyIssuesProvider(ref));
-  static var activityProvider =
+  static ChangeNotifierProvider<ActivityProvider> activityProvider =
       ChangeNotifierProvider<ActivityProvider>((_) => ActivityProvider());
-  static var dashboardProvider = ChangeNotifierProvider<DashBoardProvider>(
-      (ref) => DashBoardProvider(
+  static ChangeNotifierProvider<DashBoardProvider> dashboardProvider =
+      ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(
           ref: ref, dashboardService: DashboardService(DioConfig())));
-  static var integrationProvider = ChangeNotifierProvider<IntegrationProvider>(
-      (ref) => IntegrationProvider(ref));
-  static var viewsProvider = StateNotifierProvider<ViewsNotifier, ViewsModel>(
-      (ref) => ViewsNotifier(ref));
-  static var globalSearchProvider =
+  static ChangeNotifierProvider<IntegrationProvider> integrationProvider =
+      ChangeNotifierProvider<IntegrationProvider>(
+          (ref) => IntegrationProvider(ref));
+  static StateNotifierProvider<ViewsNotifier, ViewsModel> viewsProvider =
+      StateNotifierProvider<ViewsNotifier, ViewsModel>(
+          (ref) => ViewsNotifier(ref));
+  static StateNotifierProvider<GlobalSearchProvider, SearchModal>
+      globalSearchProvider =
       StateNotifierProvider<GlobalSearchProvider, SearchModal>(
           (ref) => GlobalSearchProvider(ref));
-  static var pageProvider =
+  static ChangeNotifierProvider<PageProvider> pageProvider =
       ChangeNotifierProvider<PageProvider>((ref) => PageProvider());
 
-  static var notificationProvider =
+  static ChangeNotifierProvider<NotificationProvider> notificationProvider =
       ChangeNotifierProvider<NotificationProvider>(
           (ref) => NotificationProvider(ref));
-  static var memberProfileProvider =
+  static StateNotifierProvider<MemberProfileProvider, MemberProfileStateModel>
+      memberProfileProvider =
       StateNotifierProvider<MemberProfileProvider, MemberProfileStateModel>(
           (ref) => MemberProfileProvider(ref));
 
-  static var whatsNewProvider =
+  static StateNotifierProvider<WhatsNewNotifier, WhatsNew> whatsNewProvider =
       StateNotifierProvider<WhatsNewNotifier, WhatsNew>(
           (ref) => WhatsNewNotifier(WhatsNew(null)));
 

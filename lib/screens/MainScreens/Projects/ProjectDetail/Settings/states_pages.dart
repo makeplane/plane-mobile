@@ -34,8 +34,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
@@ -259,8 +259,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
 
   Color getColorFromIssueProvider(
       IssuesProvider issuesProvider, int index, int idx) {
-    Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
-    String? colorData = issuesProvider.statesData[states[index]][idx]['color'];
+    const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
+    final String? colorData =
+        issuesProvider.statesData[states[index]][idx]['color'];
 
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
@@ -270,12 +271,6 @@ class _StatesPageState extends ConsumerState<StatesPage> {
 
 // ignore: must_be_immutable
 class AddUpdateState extends ConsumerStatefulWidget {
-  final String stateKey;
-  final CRUD method;
-  final String stateId;
-  final String name;
-  int groupIndex;
-  final String color;
   AddUpdateState(
       {required this.stateKey,
       required this.method,
@@ -284,6 +279,12 @@ class AddUpdateState extends ConsumerStatefulWidget {
       required this.name,
       required this.color,
       super.key});
+  final String stateKey;
+  final CRUD method;
+  final String stateId;
+  final String name;
+  int groupIndex;
+  final String color;
 
   @override
   ConsumerState<AddUpdateState> createState() => _AddUpdateStateState();
@@ -306,11 +307,11 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   double height = 0.0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(

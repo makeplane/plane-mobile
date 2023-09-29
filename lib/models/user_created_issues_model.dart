@@ -1,43 +1,4 @@
 class CreatedIssuesModel {
-  String? id;
-  WorkspaceDetail? workspaceDetail;
-  ProjectDetail? projectDetail;
-  StateDetail? stateDetail;
-  List<dynamic>?
-      labelDetails; // You can change the type if you have more specific label details
-  List<AssigneeDetail>? assigneeDetails;
-  List<dynamic>? assigneesList;
-  int? subIssuesCount;
-  int? attachmentCount;
-  int? linkCount;
-  List<dynamic>?
-      issueReactions; // You can change the type if you have more specific issue reactions
-  String? createdAt;
-  String? updatedAt;
-  dynamic
-      estimatePoint; // Change the type if estimate points have a specific data type
-  String? name;
-  Description? description;
-  String? descriptionHtml;
-  String? descriptionStripped;
-  dynamic priority; // Change the type if priorities have a specific data type
-  String? startDate; // Change the type if start dates have a specific data type
-  String? targetDate;
-  int? sequenceId;
-  double? sortOrder;
-  String?
-      completedAt; // Change the type if completed dates have a specific data type
-  String?
-      archivedAt; // Change the type if archived dates have a specific data type
-  String? createdBy;
-  String? updatedBy;
-  String? project;
-  String? workspace;
-  dynamic parent; // Change the type if parent issues have a specific data type
-  String? state;
-  List<dynamic>?
-      labels; // You can change the type if labels have a specific data type
-
   CreatedIssuesModel({
     this.id,
     this.workspaceDetail,
@@ -148,13 +109,47 @@ class CreatedIssuesModel {
       labels: [],
     );
   }
+  String? id;
+  WorkspaceDetail? workspaceDetail;
+  ProjectDetail? projectDetail;
+  StateDetail? stateDetail;
+  List<dynamic>?
+      labelDetails; // You can change the type if you have more specific label details
+  List<AssigneeDetail>? assigneeDetails;
+  List<dynamic>? assigneesList;
+  int? subIssuesCount;
+  int? attachmentCount;
+  int? linkCount;
+  List<dynamic>?
+      issueReactions; // You can change the type if you have more specific issue reactions
+  String? createdAt;
+  String? updatedAt;
+  dynamic
+      estimatePoint; // Change the type if estimate points have a specific data type
+  String? name;
+  Description? description;
+  String? descriptionHtml;
+  String? descriptionStripped;
+  dynamic priority; // Change the type if priorities have a specific data type
+  String? startDate; // Change the type if start dates have a specific data type
+  String? targetDate;
+  int? sequenceId;
+  double? sortOrder;
+  String?
+      completedAt; // Change the type if completed dates have a specific data type
+  String?
+      archivedAt; // Change the type if archived dates have a specific data type
+  String? createdBy;
+  String? updatedBy;
+  String? project;
+  String? workspace;
+  dynamic parent; // Change the type if parent issues have a specific data type
+  String? state;
+  List<dynamic>?
+      labels; // You can change the type if labels have a specific data type
 }
 
 class WorkspaceDetail {
-  String? name;
-  String? slug;
-  String? id;
-
   WorkspaceDetail({
     this.name,
     this.slug,
@@ -168,17 +163,12 @@ class WorkspaceDetail {
       id: json['id'],
     );
   }
+  String? name;
+  String? slug;
+  String? id;
 }
 
 class ProjectDetail {
-  String? id;
-  String? identifier;
-  String? name;
-  String? coverImage;
-  dynamic iconProp;
-  String? emoji;
-  String? description;
-
   ProjectDetail({
     this.id,
     this.identifier,
@@ -200,14 +190,16 @@ class ProjectDetail {
       description: json['description'],
     );
   }
+  String? id;
+  String? identifier;
+  String? name;
+  String? coverImage;
+  dynamic iconProp;
+  String? emoji;
+  String? description;
 }
 
 class StateDetail {
-  String? id;
-  String? name;
-  String? color;
-  String? group;
-
   StateDetail({
     this.id,
     this.name,
@@ -223,16 +215,13 @@ class StateDetail {
       group: json['group'],
     );
   }
+  String? id;
+  String? name;
+  String? color;
+  String? group;
 }
 
 class AssigneeDetail {
-  String? id;
-  String? firstName;
-  String? lastName;
-  dynamic avatar;
-  bool? isBot;
-  String? displayName;
-
   AssigneeDetail({
     this.id,
     this.firstName,
@@ -252,12 +241,15 @@ class AssigneeDetail {
       displayName: json['display_name'],
     );
   }
+  String? id;
+  String? firstName;
+  String? lastName;
+  dynamic avatar;
+  bool? isBot;
+  String? displayName;
 }
 
 class Description {
-  String? type;
-  List<Content>? content;
-
   Description({
     this.type,
     this.content,
@@ -267,9 +259,11 @@ class Description {
     if (json != null) {
       return Description(
         type: json['type'],
-        content: json['content'] != null ? (json['content'] as List<dynamic>)
-            .map((content) => Content.fromJson(content))
-            .toList() : [],
+        content: json['content'] != null
+            ? (json['content'] as List<dynamic>)
+                .map((content) => Content.fromJson(content))
+                .toList()
+            : [],
       );
     } else {
       return Description(
@@ -278,12 +272,11 @@ class Description {
       );
     }
   }
+  String? type;
+  List<Content>? content;
 }
 
 class Content {
-  String? text;
-  String? type;
-
   Content({
     this.text,
     this.type,
@@ -295,4 +288,6 @@ class Content {
       type: json['type'],
     );
   }
+  String? text;
+  String? type;
 }

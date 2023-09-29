@@ -41,8 +41,8 @@ class _ActivityState extends ConsumerState<Activity> {
 
   @override
   Widget build(BuildContext context) {
-    var activityProvider = ref.watch(ProviderList.activityProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final activityProvider = ref.watch(ProviderList.activityProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       // backgroundColor: themeProvider.isDarkThemeEnabled
       //     ? darkSecondaryBackgroundColor
@@ -227,8 +227,10 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                   Navigator.of(context).push(
                                                                                     MaterialPageRoute(
                                                                                       builder: (_) => UserProfileScreen(
-                                                                                            userID: activityProvider.data[index]["actor_detail"]["id"],
-                                                                                          ),),);
+                                                                                        userID: activityProvider.data[index]["actor_detail"]["id"],
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
                                                                                 },
                                                                               style: TextStyle(
                                                                                 color: themeProvider.themeManager.primaryTextColor,
@@ -549,8 +551,8 @@ class _ActivityState extends ConsumerState<Activity> {
   }
 
   String checkTimeDifferenc(String dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(DateTime.parse(dateTime));
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(DateTime.parse(dateTime));
     String? format;
 
     if (difference.inDays > 0) {

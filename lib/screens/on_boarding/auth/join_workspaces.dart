@@ -16,8 +16,8 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 
 class JoinWorkspaces extends ConsumerStatefulWidget {
-  final bool fromOnboard;
   const JoinWorkspaces({required this.fromOnboard, super.key});
+  final bool fromOnboard;
 
   @override
   ConsumerState<JoinWorkspaces> createState() => _JoinWorkspacesState();
@@ -36,9 +36,9 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
 
   @override
   Widget build(BuildContext context) {
-    var prov = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final prov = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: !widget.fromOnboard
           ? CustomAppBar(
@@ -225,13 +225,13 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                   //     ? Container()
                   //     : Button(
                   //         ontap: () async {
-                  //           var data = [];
-                  //           for (var element in selectedWorkspaces) {
+                  //           final data = [];
+                  //           for (final element in selectedWorkspaces) {
                   //             data.add(
                   //                 prov.workspaceInvitations[element]['id']);
                   //           }
                   //           await prov.joinWorkspaces(data: data);
-                  //           for (var element in selectedWorkspaces) {
+                  //           for (final element in selectedWorkspaces) {
                   //             prov.workspaceInvitations.removeAt(element);
                   //           }
                   //           selectedWorkspaces.clear();

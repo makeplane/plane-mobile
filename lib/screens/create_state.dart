@@ -20,7 +20,7 @@ class CreateState extends ConsumerStatefulWidget {
 }
 
 class _CreateStateState extends ConsumerState<CreateState> {
-  var selectedState = 'Backlog';
+  String selectedState = 'Backlog';
   TextEditingController colorController = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -50,8 +50,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {

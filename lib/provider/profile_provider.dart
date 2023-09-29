@@ -64,7 +64,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future getProfile() async {
     getProfileState = StateEnum.loading;
-    var response = await profileService.getProfile();
+    final response = await profileService.getProfile();
     if (response.isLeft()) {
       userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
       firstName.text = userProfile.firstName!;
@@ -81,8 +81,8 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  void saveCustomTheme(data) {
-    var prefs = SharedPrefrenceServices.instance;
+  void saveCustomTheme(Map data) {
+    final prefs = SharedPrefrenceServices.instance;
     prefs.setString('background', data['background']);
     prefs.setString('primary', data['primary']);
     prefs.setString('text', data['text']);
@@ -94,7 +94,7 @@ class ProfileProvider extends ChangeNotifier {
       {required Map data}) async {
     updateProfileState = StateEnum.loading;
     notifyListeners();
-    var response = await profileService.updateProfile(data: data);
+    final response = await profileService.updateProfile(data: data);
     if (response.isLeft()) {
       userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
       updateProfileState = StateEnum.success;
@@ -126,7 +126,7 @@ class ProfileProvider extends ChangeNotifier {
     updateProfileState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: "${APIs.fileUpload}${userProfile.avatar!.split('/').last}/",
         hasBody: false,

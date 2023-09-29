@@ -6,14 +6,14 @@ import 'package:plane/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class IssueDetailMoudlesList extends ConsumerStatefulWidget {
-  final String moduleId;
-  final String issueId;
-  final String moduleIssueId;
   const IssueDetailMoudlesList(
       {required this.moduleId,
       required this.issueId,
       required this.moduleIssueId,
       super.key});
+  final String moduleId;
+  final String issueId;
+  final String moduleIssueId;
 
   @override
   ConsumerState<IssueDetailMoudlesList> createState() =>
@@ -24,12 +24,12 @@ class _IssueDetailMoudlesListState
     extends ConsumerState<IssueDetailMoudlesList> {
   @override
   Widget build(BuildContext context) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     return Container(
       decoration: BoxDecoration(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,

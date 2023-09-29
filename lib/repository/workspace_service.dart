@@ -8,12 +8,12 @@ import '../config/apis.dart';
 import '../utils/enums.dart';
 
 class WorkspaceService {
-  DioConfig dio;
   WorkspaceService(this.dio);
+  DioConfig dio;
 
   Future<Either<List<dynamic>, DioException>> getWorkspaces() async {
     try {
-      var response = await dio.dioServe(
+      final response = await dio.dioServe(
         hasAuth: true,
         url: APIs.listWorkspaces,
         hasBody: false,
@@ -29,7 +29,7 @@ class WorkspaceService {
   Future<Either<List, DioException>> getWorkspaceMembers(
       {required String url}) async {
     try {
-      var response = await dio.dioServe(
+      final response = await dio.dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,

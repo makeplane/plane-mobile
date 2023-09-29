@@ -15,22 +15,23 @@ class AddLinkSheet extends ConsumerStatefulWidget {
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
 }
 
-class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetStateMixin {
+class _AddLinkSheetState extends ConsumerState<AddLinkSheet>
+    with WidgetStateMixin {
   TextEditingController title = TextEditingController();
   TextEditingController url = TextEditingController();
 
   @override
-  getLoading(WidgetRef ref) {
+  LoadingType getLoading(WidgetRef ref) {
     return setWidgetState(
         [ref.read(ProviderList.modulesProvider).moduleLinkState],
         loadingType: LoadingType.wrap);
   }
 
   @override
-  initState() {
+  void initState() {
     if (widget.id != null) {
-      var moduleProvider = ref.read(ProviderList.modulesProvider);
-      var link = moduleProvider.moduleDetailsData['link_module']
+      final moduleProvider = ref.read(ProviderList.modulesProvider);
+      final link = moduleProvider.moduleDetailsData['link_module']
           ?.firstWhere((element) => element['id'] == widget.id);
       title.text = link['title'] ?? '';
       url.text = link['url'] ?? '';
@@ -40,8 +41,9 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> with WidgetStateMix
 
   @override
   Widget render(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    ModuleProvider moduleProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final ModuleProvider moduleProvider =
+        ref.watch(ProviderList.modulesProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(

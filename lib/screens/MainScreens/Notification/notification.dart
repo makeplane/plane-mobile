@@ -31,8 +31,8 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
 
   @override
   Widget build(BuildContext context) {
-    var notificationProvider = ref.watch(ProviderList.notificationProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final notificationProvider = ref.watch(ProviderList.notificationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Scaffold(
       appBar: CustomAppBar(

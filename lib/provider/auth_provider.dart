@@ -32,7 +32,7 @@ class AuthProvider extends ChangeNotifier {
     }
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.baseApi + APIs.generateMagicLink,
         hasBody: true,
@@ -51,13 +51,15 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future validateMagicCode(
-      {required String key, required token, BuildContext? context}) async {
+  Future<void> validateMagicCode(
+      {required String key,
+      required String token,
+      BuildContext? context}) async {
     validateCodeState = StateEnum.loading;
     notifyListeners();
     try {
       log({"key": key, "token": token}.toString());
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: false,
           url: APIs.baseApi + APIs.magicValidate,
           hasBody: true,
@@ -74,8 +76,8 @@ class AuthProvider extends ChangeNotifier {
           .read(ProviderList.profileProvider)
           .getProfile()
           .then((value) async {
-        var prov = ref.read(ProviderList.profileProvider);
-        var themeProv = ref.read(ProviderList.themeProvider);
+        final prov = ref.read(ProviderList.profileProvider);
+        final themeProv = ref.read(ProviderList.themeProvider);
         if (ref.read(ProviderList.profileProvider).getProfileState ==
             StateEnum.success) {
           await ref
@@ -90,7 +92,7 @@ class AuthProvider extends ChangeNotifier {
                     null) {
               return;
             }
-            var theme = prov.userProfile.theme;
+            final theme = prov.userProfile.theme;
 
             if (prov.userProfile.theme != null) {
               if (prov.userProfile.theme!['theme'] == 'dark') {
@@ -193,7 +195,7 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       Object? message;
       if (e is DioException) {
-        var errorResponse = e.error;
+        final errorResponse = e.error;
         message = errorResponse;
         log(message.toString());
         // CustomToast.showSimpleToast(
@@ -219,7 +221,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       googleAuthState = StateEnum.loading;
       notifyListeners();
-      Response response = await DioConfig().dioServe(
+      final Response response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.googleAuth,
         hasBody: true,
@@ -236,8 +238,8 @@ class AuthProvider extends ChangeNotifier {
           .read(ProviderList.profileProvider)
           .getProfile()
           .then((value) async {
-        var prov = ref.read(ProviderList.profileProvider);
-        var themeProv = ref.read(ProviderList.themeProvider);
+        final prov = ref.read(ProviderList.profileProvider);
+        final themeProv = ref.read(ProviderList.themeProvider);
         if (ref.read(ProviderList.profileProvider).getProfileState ==
             StateEnum.success) {
           await ref
@@ -252,7 +254,7 @@ class AuthProvider extends ChangeNotifier {
                     null) {
               return;
             }
-            var theme = prov.userProfile.theme;
+            final theme = prov.userProfile.theme;
 
             if (prov.userProfile.theme != null) {
               if (prov.userProfile.theme!['theme'] == 'dark') {
@@ -369,7 +371,7 @@ class AuthProvider extends ChangeNotifier {
     signInState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.signIn,
         hasBody: true,
@@ -390,8 +392,8 @@ class AuthProvider extends ChangeNotifier {
           .read(ProviderList.profileProvider)
           .getProfile()
           .then((value) async {
-        var prov = ref.read(ProviderList.profileProvider);
-        var themeProv = ref.read(ProviderList.themeProvider);
+        final prov = ref.read(ProviderList.profileProvider);
+        final themeProv = ref.read(ProviderList.themeProvider);
         if (ref.read(ProviderList.profileProvider).getProfileState ==
             StateEnum.success) {
           await ref
@@ -412,7 +414,7 @@ class AuthProvider extends ChangeNotifier {
                 .lastWorkspaceId
                 .toString());
 
-            var theme = prov.userProfile.theme;
+            final theme = prov.userProfile.theme;
 
             if (prov.userProfile.theme != null) {
               if (prov.userProfile.theme!['theme'] == 'dark') {
@@ -525,7 +527,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     log(email);
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.sendForgotPassCode,
         hasBody: true,
@@ -549,7 +551,7 @@ class AuthProvider extends ChangeNotifier {
     signUpState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.signUp,
         hasBody: true,
@@ -589,9 +591,9 @@ class AuthProvider extends ChangeNotifier {
                     null) {
               return;
             }
-            var prov = ref.read(ProviderList.profileProvider);
-            var themeProv = ref.read(ProviderList.themeProvider);
-            var theme = prov.userProfile.theme;
+            final prov = ref.read(ProviderList.profileProvider);
+            final themeProv = ref.read(ProviderList.themeProvider);
+            final theme = prov.userProfile.theme;
 
             if (prov.userProfile.theme != null) {
               if (prov.userProfile.theme!['theme'] == 'dark') {
@@ -717,7 +719,7 @@ class AuthProvider extends ChangeNotifier {
     resetPassState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: false,
           url: APIs.resetPassword
               .replaceAll('\$UID', token)

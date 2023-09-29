@@ -8,10 +8,10 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class DeleteLabelSheet extends ConsumerStatefulWidget {
-  final String labelName;
-  final String labelId;
   const DeleteLabelSheet(
       {required this.labelName, required this.labelId, super.key});
+  final String labelName;
+  final String labelId;
 
   @override
   ConsumerState<DeleteLabelSheet> createState() => _DeleteLabelSheetState();
@@ -20,7 +20,7 @@ class DeleteLabelSheet extends ConsumerStatefulWidget {
 class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
   @override
   Widget build(BuildContext context) {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Column(

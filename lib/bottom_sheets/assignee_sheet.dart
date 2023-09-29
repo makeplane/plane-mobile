@@ -7,8 +7,8 @@ import 'package:plane/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class AssigneeSheet extends ConsumerStatefulWidget {
-  final bool fromModuleDetail;
   const AssigneeSheet({super.key, this.fromModuleDetail = false});
+  final bool fromModuleDetail;
 
   @override
   ConsumerState<AssigneeSheet> createState() => _AssigneeSheetState();
@@ -17,9 +17,9 @@ class AssigneeSheet extends ConsumerStatefulWidget {
 class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var modulesProvider = ref.read(ProviderList.modulesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final modulesProvider = ref.read(ProviderList.modulesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
 
     return WillPopScope(
       onWillPop: () async {
@@ -217,8 +217,8 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
   }
 
   Widget createIsseuSelectedMembersWidget(int idx) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return (widget.fromModuleDetail
             ? (modulesProvider.currentModule['members'] != null &&
                 modulesProvider.currentModule['members'].contains(

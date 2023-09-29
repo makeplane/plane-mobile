@@ -34,10 +34,10 @@ class ViewsDetail extends ConsumerStatefulWidget {
 }
 
 class _ViewsDetailState extends ConsumerState<ViewsDetail> {
-  var filtersData = {};
-  var issuesData = {};
+  Map filtersData = {};
+  Map issuesData = {};
   int countFilters() {
-    // var prov = ref.read(ProviderList.viewsProvider);
+    // final prov = ref.read(ProviderList.viewsProvider);
     int count = 0;
     viewData["query_data"].forEach((key, value) {
       if (value != null && value.isNotEmpty) count++;
@@ -45,17 +45,17 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     return count;
   }
 
-  var viewData = {};
+  Map viewData = {};
 
   @override
   void initState() {
-    var issuesProv = ref.read(ProviderList.issuesProvider);
-    var viewsProv = ref.read(ProviderList.viewsProvider);
+    final issuesProv = ref.read(ProviderList.issuesProvider);
+    final viewsProv = ref.read(ProviderList.viewsProvider);
     issuesProv.orderByState = StateEnum.loading;
     filtersData = Filters.toJson(issuesProv.issues.filters);
     issuesData = json.decode(json.encode(issuesProv.groupByResponse));
 
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
 
     // tempIssuesList = issuesProvider.issuesList;
     issuesProvider.tempProjectView = issuesProvider.issues.projectView;
@@ -74,7 +74,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     if (widget.fromGlobalSearch) {
       viewData = viewsProv.viewDetail;
 
-      var projectProvider = ref.read(ProviderList.projectProvider);
+      final projectProvider = ref.read(ProviderList.projectProvider);
 
       projectProvider.currentProject = projectProvider.projects
           .firstWhere((element) => element['id'] == widget.projId);
@@ -94,10 +94,10 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var viewsProv = ref.watch(ProviderList.viewsProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final viewsProv = ref.watch(ProviderList.viewsProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     // viewData = viewsProv.viewDetail;
 
@@ -336,8 +336,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                   decoration: BoxDecoration(
                       color: themeProvider
                           .themeManager.primaryBackgroundDefaultColor,
-                      boxShadow:
-                          themeProvider.themeManager.shadowBottomControlButtons),
+                      boxShadow: themeProvider
+                          .themeManager.shadowBottomControlButtons),
                   child: Row(
                     children: [
                       projectProvider.role == Role.admin
@@ -435,7 +435,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               context: context,
                               builder: (ctx) {
                                 return ViewsSheet(
-                                  projectView: issuesProvider.issues.projectView,
+                                  projectView:
+                                      issuesProvider.issues.projectView,
                                   fromView: true,
                                   issueCategory: IssueCategory.views,
                                 );
@@ -472,7 +473,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               enableDrag: true,
                               constraints: BoxConstraints(
                                   maxHeight:
-                                      MediaQuery.of(context).size.height * 0.85),
+                                      MediaQuery.of(context).size.height *
+                                          0.85),
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),

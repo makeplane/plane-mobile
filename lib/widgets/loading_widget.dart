@@ -7,14 +7,14 @@ import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class LoadingWidget extends ConsumerStatefulWidget {
-  final Widget widgetClass;
-  final bool loading;
-  final bool allowBorderRadius;
   const LoadingWidget(
       {required this.widgetClass,
       required this.loading,
       this.allowBorderRadius = false,
       super.key});
+  final Widget widgetClass;
+  final bool loading;
+  final bool allowBorderRadius;
 
   @override
   ConsumerState<LoadingWidget> createState() => _LoadingWidgetState();
@@ -23,7 +23,7 @@ class LoadingWidget extends ConsumerStatefulWidget {
 class _LoadingWidgetState extends ConsumerState<LoadingWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Stack(
       children: [
         widget.loading ? const SizedBox() : widget.widgetClass,

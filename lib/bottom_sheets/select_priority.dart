@@ -6,11 +6,10 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssuePriority extends ConsumerStatefulWidget {
-  final bool createIssue;
-  final String? issueId;
-
   const SelectIssuePriority(
       {this.issueId, required this.createIssue, super.key});
+  final bool createIssue;
+  final String? issueId;
 
   @override
   ConsumerState<SelectIssuePriority> createState() =>
@@ -51,7 +50,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     //     ref.read(ProviderList.issuesProvider).createIssuedata['priority']
     //         ['name']);
 
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
 
     for (int i = 0; i < priorities.length; i++) {
       //change color of all icon according to theme
@@ -64,11 +63,11 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         prov.createIssuedata['priority'] = priorities[selectedPriority];
         prov.setsState();
         return true;
@@ -95,7 +94,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                     ),
                     IconButton(
                         onPressed: () {
-                          var prov = ref.read(ProviderList.issuesProvider);
+                          final prov = ref.read(ProviderList.issuesProvider);
                           prov.createIssuedata['priority'] =
                               priorities[selectedPriority];
                           prov.setsState();
@@ -119,7 +118,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                             setState(() {
                               selectedPriority = index;
                             });
-                            var prov = ref.read(ProviderList.issuesProvider);
+                            final prov = ref.read(ProviderList.issuesProvider);
                             prov.createIssuedata['priority'] =
                                 priorities[selectedPriority];
                             prov.setsState();
@@ -254,7 +253,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
   }
 
   Widget issueDetailSelectedPriority(int idx) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
     String? nameOfThisPriority = priorities[idx]['name'].toString().replaceAll(
         priorities[idx]['name'].toString()[0],
         priorities[idx]['name'].toString()[0].toLowerCase());

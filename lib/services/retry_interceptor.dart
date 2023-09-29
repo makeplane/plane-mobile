@@ -61,7 +61,7 @@ class RetryInterceptor extends Interceptor {
   @override
   Future onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.requestOptions.disableRetry) return super.onError(err, handler);
-    var attempt = err.requestOptions._attempt + 1;
+    final attempt = err.requestOptions._attempt + 1;
     final shouldRetry =
         attempt <= retries && await _retryEvaluator(err, attempt);
 

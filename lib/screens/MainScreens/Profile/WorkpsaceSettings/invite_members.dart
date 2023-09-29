@@ -14,8 +14,8 @@ import 'package:plane/widgets/submit_button.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class InviteMembers extends ConsumerStatefulWidget {
-  final bool isProject;
   const InviteMembers({super.key, required this.isProject});
+  final bool isProject;
 
   @override
   ConsumerState<InviteMembers> createState() => _InviteMembersState();
@@ -31,19 +31,19 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
   @override
   void initState() {
     super.initState();
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     workspaceProvider.invitingMembersRole.text = 'Member';
-    for (var element in workspaceProvider.workspaceMembers) {
+    for (final element in workspaceProvider.workspaceMembers) {
       emailList.add(element['member']['email']);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    BuildContext mainBuildContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final BuildContext mainBuildContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -415,7 +415,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                       ),
                       child: SubmitButton(
                         onPressed: () async {
-                          bool isCorrect = formKey.currentState!.validate();
+                          final bool isCorrect =
+                              formKey.currentState!.validate();
                           if (!isCorrect) {
                             return;
                           }
@@ -494,7 +495,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
   }
 
   int getRoleIndex(String value) {
-    List<Map<String, int>> options = [
+    final List<Map<String, int>> options = [
       {'Admin': 20},
       {'Member': 15},
       {'Viewer': 10},
@@ -502,7 +503,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
       {'Remove User': 0}
     ];
 
-    for (Map<String, int> item in options) {
+    for (final Map<String, int> item in options) {
       if (item.containsKey(value)) {
         return item[value]!;
       }

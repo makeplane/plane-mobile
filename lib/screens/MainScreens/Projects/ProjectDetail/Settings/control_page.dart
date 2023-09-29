@@ -18,7 +18,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
-        var projectProvider = ref.read(ProviderList.projectProvider);
+        final projectProvider = ref.read(ProviderList.projectProvider);
         projectProvider.lead.text =
             (projectProvider.projectDetailModel!.projectLead == null
                 ? ''
@@ -35,8 +35,8 @@ class _ControlPageState extends ConsumerState<ControlPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(

@@ -33,8 +33,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
     log(pageProvider.selectedFilter.name);
     return Container(
       padding: const EdgeInsets.only(top: 25, left: 20, right: 20),

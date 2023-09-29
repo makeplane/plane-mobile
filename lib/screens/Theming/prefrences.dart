@@ -19,7 +19,7 @@ class PrefrencesScreen extends ConsumerStatefulWidget {
 }
 
 class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
-  getSelectedTheme(THEME theme) {
+  int getSelectedTheme(THEME theme) {
     switch (theme) {
       case THEME.light:
         return 0;
@@ -42,7 +42,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
 
   @override
   void initState() {
-    var profileProvider = ref.read(ProviderList.profileProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     if (profileProvider.userProfile.theme == null ||
         profileProvider.userProfile.theme!.isEmpty) {
       selectedTheme = 0;
@@ -57,8 +57,8 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var profileProvider = ref.read(ProviderList.profileProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     return Scaffold(
       appBar: CustomAppBar(
           textColor: themeProvider.themeManager.primaryTextColor,
@@ -77,7 +77,8 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                         child: index == 0
                             ? GestureDetector(
                                 onTap: () {
-                                  var theme = profileProvider.userProfile.theme;
+                                  final theme =
+                                      profileProvider.userProfile.theme;
 
                                   theme!['theme'] =
                                       fromTHEME(theme: THEME.systemPreferences);
@@ -115,7 +116,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                               )
                             : GestureDetector(
                                 onTap: () {
-                                  // var theme = profileProvider.userProfile.theme;
+                                  // final theme = profileProvider.userProfile.theme;
 
                                   // theme!['theme'] =
                                   //     fromTHEME(theme: THEME.custom);
@@ -183,7 +184,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                     (index) => Expanded(
                         child: GestureDetector(
                       onTap: () {
-                        var theme = profileProvider.userProfile.theme;
+                        final theme = profileProvider.userProfile.theme;
                         theme!['theme'] = fromTHEME(
                             theme: index == 0 ? THEME.light : THEME.dark);
                         themeProvider.changeTheme(
@@ -236,7 +237,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
                     (index) => Expanded(
                         child: GestureDetector(
                       onTap: () {
-                        var theme = profileProvider.userProfile.theme;
+                        final theme = profileProvider.userProfile.theme;
                         theme!['theme'] = fromTHEME(
                             theme: index == 0
                                 ? THEME.lightHighContrast
@@ -296,7 +297,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
           //           (index) => Expanded(
           //               child: GestureDetector(
           //             onTap: () {
-          //               var theme = profileProvider.userProfile.theme;
+          //               final theme = profileProvider.userProfile.theme;
           //               theme!['theme'] = fromTHEME(
           //                   theme: index == 0 ? THEME.light : THEME.dark);
           //               themeProvider.changeTheme(
@@ -349,7 +350,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
           //           (index) => Expanded(
           //               child: GestureDetector(
           //             onTap: () {
-          //               var theme = profileProvider.userProfile.theme;
+          //               final theme = profileProvider.userProfile.theme;
           //               theme!['theme'] = fromTHEME(
           //                   theme: index == 0
           //                       ? THEME.lightHighContrast
@@ -407,7 +408,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
           //               child: index == 1
           //                   ? GestureDetector(
           //                       onTap: () {
-          //                         var theme = profileProvider.userProfile.theme;
+          //                         final theme = profileProvider.userProfile.theme;
 
           //                         theme!['theme'] =
           //                             fromTHEME(theme: THEME.systemPreferences);
@@ -445,7 +446,7 @@ class _PrefrencesScreenState extends ConsumerState<PrefrencesScreen> {
           //                     )
           //                   : GestureDetector(
           //                       onTap: () {
-          //                         var theme = profileProvider.userProfile.theme;
+          //                         final theme = profileProvider.userProfile.theme;
 
           //                         theme!['theme'] =
           //                             fromTHEME(theme: THEME.custom);

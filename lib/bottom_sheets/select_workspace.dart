@@ -23,7 +23,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
   double height = 0;
 
   @override
-  getLoading(WidgetRef ref) {
+  LoadingType getLoading(WidgetRef ref) {
     return setWidgetState([
       ref.read(ProviderList.workspaceProvider).selectWorkspaceState,
       ref.read(ProviderList.myIssuesProvider).myIssuesViewState
@@ -32,9 +32,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
 
   @override
   Widget render(BuildContext context) {
-    var prov = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final prov = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(

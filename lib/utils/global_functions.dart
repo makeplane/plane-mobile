@@ -27,7 +27,7 @@ void postHogService(
       dotenv.env['POSTHOG_API'] != '' &&
       dotenv.env['ENABLE_TRACK_EVENTS'] == '1' &&
       dotenv.env['ENABLE_TRACK_EVENTS'] != null) {
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     properties.addAll(
       {
         'USER_ID': profileProvider.userProfile.id,

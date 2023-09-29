@@ -34,7 +34,7 @@ class CustomProgressBar extends StatelessWidget {
   ];
 
   Color _getColor(int colorIndex) {
-    Color ifColorNotAvaiable = Colors.red;
+    const Color ifColorNotAvaiable = Colors.red;
     return itemColors.length <= colorIndex
         ? ifColorNotAvaiable
         : itemColors[colorIndex];

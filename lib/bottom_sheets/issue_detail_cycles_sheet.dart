@@ -8,14 +8,14 @@ import 'package:plane/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class IssueDetailCyclesList extends ConsumerStatefulWidget {
-  final String cycleId;
-  final String issueId;
-  final String cycleIssueId;
   const IssueDetailCyclesList(
       {required this.cycleId,
       required this.issueId,
       required this.cycleIssueId,
       super.key});
+  final String cycleId;
+  final String issueId;
+  final String cycleIssueId;
 
   @override
   ConsumerState<IssueDetailCyclesList> createState() =>
@@ -31,12 +31,12 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
 
     return Container(
       decoration: BoxDecoration(

@@ -18,8 +18,8 @@ class _NotificationFilterSheetState
     extends ConsumerState<NotificationFilterSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var options = [
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final options = [
       {
         'icon': Icons.menu,
         'text': 'Show Unread',

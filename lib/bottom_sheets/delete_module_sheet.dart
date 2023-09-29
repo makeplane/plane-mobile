@@ -11,8 +11,8 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteModules extends ConsumerStatefulWidget {
-  final String moduleId;
   const DeleteModules({super.key, required this.moduleId});
+  final String moduleId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DeleteModulesState();
@@ -21,8 +21,8 @@ class DeleteModules extends ConsumerStatefulWidget {
 class _DeleteModulesState extends ConsumerState<DeleteModules> {
   @override
   Widget build(BuildContext context) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Wrap(
       children: [
         Container(
@@ -73,7 +73,7 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
                     color: Colors.redAccent,
                     text: 'Delete',
                     ontap: () async {
-                      var projProv = ref.read(ProviderList.projectProvider);
+                      final projProv = ref.read(ProviderList.projectProvider);
                       if (projProv.role != Role.admin &&
                           projProv.role != Role.member) {
                         Navigator.of(context).pop();

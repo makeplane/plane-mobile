@@ -47,9 +47,9 @@ class PageProvider with ChangeNotifier {
 
   Future filterPageList(
       {required PageFilters pageFilter,
-      required slug,
-      required projectId,
-      required userId}) async {
+      required String slug,
+      required String projectId,
+      required String userId}) async {
     selectedFilter = pageFilter;
     await updatepageList(
       slug: slug,
@@ -67,8 +67,8 @@ class PageProvider with ChangeNotifier {
       required WidgetRef ref,
       BuildContext? context,
       required String projectId}) async {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     try {
       if (httpMethod != HttpMethod.get || httpMethod == HttpMethod.delete) {
         if (httpMethod == HttpMethod.delete) {
@@ -79,7 +79,7 @@ class PageProvider with ChangeNotifier {
       } else {
         blockState = StateEnum.loading;
       }
-      var res = await DioConfig().dioServe(
+      final res = await DioConfig().dioServe(
           httpMethod: httpMethod,
           hasAuth: true,
           hasBody: httpMethod == HttpMethod.get ? false : true,
@@ -170,7 +170,7 @@ class PageProvider with ChangeNotifier {
               .replaceAll("\$SLUG", slug)
               .replaceAll("\$PROJECTID", projectId) +
           getQuery(selectedFilter));
-      Response response = await DioConfig().dioServe(
+      final Response response = await DioConfig().dioServe(
           httpMethod: HttpMethod.get,
           url: APIs.getPages
                   .replaceAll("\$SLUG", slug)
@@ -241,10 +241,10 @@ class PageProvider with ChangeNotifier {
       bool? fromDispose = false}) async {
     blockSheetState = StateEnum.loading;
     notifyListeners();
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     try {
-      var res = await DioConfig().dioServe(
+      final res = await DioConfig().dioServe(
           httpMethod: HttpMethod.patch,
           hasAuth: true,
           hasBody: true,
@@ -262,7 +262,7 @@ class PageProvider with ChangeNotifier {
             'PAGE_ID': res.data['id']
           },
           ref: ref);
-      int index = pages[selectedFilter]!
+      final int index = pages[selectedFilter]!
           .indexWhere((element) => element["id"] == pageId);
       pagesListState = StateEnum.success;
       res.data["is_favorite"] = pages[selectedFilter]![index]["is_favorite"];
@@ -299,7 +299,7 @@ class PageProvider with ChangeNotifier {
     try {
       blockState = StateEnum.loading;
       notifyListeners();
-      var res = await DioConfig().dioServe(
+      final res = await DioConfig().dioServe(
           httpMethod: HttpMethod.post,
           hasAuth: true,
           hasBody: true,
@@ -338,10 +338,10 @@ class PageProvider with ChangeNotifier {
       required WidgetRef ref}) async {
     pagesListState = StateEnum.loading;
     setState();
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           httpMethod: HttpMethod.post,
           url: APIs.createPage
               .replaceAll("\$SLUG", slug)

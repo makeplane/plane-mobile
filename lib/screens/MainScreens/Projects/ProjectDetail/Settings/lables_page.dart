@@ -22,8 +22,8 @@ class LablesPage extends ConsumerStatefulWidget {
 class _LablesPageState extends ConsumerState<LablesPage> {
   List expanded = [];
   bool isChildAvailable(String id) {
-    var issuesProv = ref.read(ProviderList.issuesProvider);
-    for (var element in issuesProv.labels) {
+    final issuesProv = ref.read(ProviderList.issuesProvider);
+    for (final element in issuesProv.labels) {
       if (element["parent"] == id) return true;
     }
     return false;
@@ -31,8 +31,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return LoadingWidget(
       loading: issuesProvider.labelState == StateEnum.loading,
       widgetClass: Container(
@@ -44,7 +44,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 itemCount: issuesProvider.labels.length,
                 itemBuilder: (context, index) {
-                  var isChildAvail =
+                  final isChildAvail =
                       isChildAvailable(issuesProvider.labels[index]["id"]);
                   return issuesProvider.labels[index]["parent"] == null
                       ? Container(
@@ -630,17 +630,17 @@ class SingleLabelSelect extends ConsumerStatefulWidget {
 class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
   double height = 0.0;
   bool isChildAvailable(String id) {
-    var issuesProv = ref.read(ProviderList.issuesProvider);
-    for (var element in issuesProv.labels) {
+    final issuesProv = ref.read(ProviderList.issuesProvider);
+    for (final element in issuesProv.labels) {
       if (element["parent"] == id) return true;
     }
     return false;
   }
 
   bool isLabelsAvailable({int index = 0, bool iterate = false}) {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     if (iterate) {
-      for (var element in issuesProvider.labels) {
+      for (final element in issuesProvider.labels) {
         if (!(element["id"] == widget.labelID ||
             element["parent"] == widget.labelID ||
             element["parent"] != null ||
@@ -659,7 +659,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(

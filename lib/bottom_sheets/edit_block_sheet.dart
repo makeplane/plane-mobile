@@ -31,8 +31,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var pageProvider = ref.watch(ProviderList.pageProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
       loading: pageProvider.pagesListState == StateEnum.loading ||
           pageProvider.blockState == StateEnum.loading,

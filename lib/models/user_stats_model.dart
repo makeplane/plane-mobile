@@ -1,14 +1,4 @@
 class UserStatsModel {
-  List<Map<String, dynamic>>? stateDistribution;
-  List<Map<String, dynamic>>? priorityDistribution;
-  int? createdIssues;
-  int? assignedIssues;
-  int? completedIssues;
-  int? pendingIssues;
-  int? subscribedIssues;
-  List<Map<String, dynamic>>? presentCycles;
-  List<Map<String, dynamic>>? upcomingCycles;
-
   UserStatsModel({
     this.stateDistribution,
     this.priorityDistribution,
@@ -36,6 +26,15 @@ class UserStatsModel {
       upcomingCycles: List<Map<String, dynamic>>.from(json['upcoming_cycles']),
     );
   }
+  List<Map<String, dynamic>>? stateDistribution;
+  List<Map<String, dynamic>>? priorityDistribution;
+  int? createdIssues;
+  int? assignedIssues;
+  int? completedIssues;
+  int? pendingIssues;
+  int? subscribedIssues;
+  List<Map<String, dynamic>>? presentCycles;
+  List<Map<String, dynamic>>? upcomingCycles;
 
   Map<String, dynamic> toJson() {
     return {
@@ -52,6 +51,15 @@ class UserStatsModel {
   }
 
   UserStatsModel emptyData() {
-    return UserStatsModel(stateDistribution: [], priorityDistribution: [], createdIssues: 0, assignedIssues: 0, completedIssues: 0, pendingIssues: 0, subscribedIssues: 0, presentCycles: [], upcomingCycles: []);
+    return UserStatsModel(
+        stateDistribution: [],
+        priorityDistribution: [],
+        createdIssues: 0,
+        assignedIssues: 0,
+        completedIssues: 0,
+        pendingIssues: 0,
+        subscribedIssues: 0,
+        presentCycles: [],
+        upcomingCycles: []);
   }
 }

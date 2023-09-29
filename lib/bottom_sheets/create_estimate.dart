@@ -7,9 +7,8 @@ import '../widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class CreateEstimate extends ConsumerStatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final estimatedata;
   const CreateEstimate({super.key, this.estimatedata});
+  final Map? estimatedata;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CreateEstimateState();
@@ -32,14 +31,14 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
     super.initState();
     // log('data ${widget.estimatedata}');
     if (widget.estimatedata != null) {
-      titleController.text = widget.estimatedata['name'];
-      descriptionController.text = widget.estimatedata['description'];
-      point_1.text = widget.estimatedata['points'][0]['value'];
-      point_2.text = widget.estimatedata['points'][1]['value'];
-      point_3.text = widget.estimatedata['points'][2]['value'];
-      point_4.text = widget.estimatedata['points'][3]['value'];
-      point_5.text = widget.estimatedata['points'][4]['value'];
-      point_6.text = widget.estimatedata['points'][5]['value'];
+      titleController.text = widget.estimatedata!['name'];
+      descriptionController.text = widget.estimatedata!['description'];
+      point_1.text = widget.estimatedata!['points'][0]['value'];
+      point_2.text = widget.estimatedata!['points'][1]['value'];
+      point_3.text = widget.estimatedata!['points'][2]['value'];
+      point_4.text = widget.estimatedata!['points'][3]['value'];
+      point_5.text = widget.estimatedata!['points'][4]['value'];
+      point_6.text = widget.estimatedata!['points'][5]['value'];
     }
   }
 
@@ -313,7 +312,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                       return;
                     }
 
-                    var data = widget.estimatedata != null
+                    final data = widget.estimatedata != null
                         ? {
                             'estimate': {
                               'name': titleController.text,
@@ -323,32 +322,32 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                               {
                                 'key': 0,
                                 'value': point_1.text,
-                                'id': widget.estimatedata['points'][0]['id'],
+                                'id': widget.estimatedata!['points'][0]['id'],
                               },
                               {
                                 'key': 1,
                                 'value': point_2.text,
-                                'id': widget.estimatedata['points'][1]['id'],
+                                'id': widget.estimatedata!['points'][1]['id'],
                               },
                               {
                                 'key': 2,
                                 'value': point_3.text,
-                                'id': widget.estimatedata['points'][2]['id'],
+                                'id': widget.estimatedata!['points'][2]['id'],
                               },
                               {
                                 'key': 3,
                                 'value': point_4.text,
-                                'id': widget.estimatedata['points'][3]['id'],
+                                'id': widget.estimatedata!['points'][3]['id'],
                               },
                               {
                                 'key': 4,
                                 'value': point_5.text,
-                                'id': widget.estimatedata['points'][4]['id'],
+                                'id': widget.estimatedata!['points'][4]['id'],
                               },
                               {
                                 'key': 5,
                                 'value': point_6.text,
-                                'id': widget.estimatedata['points'][5]['id'],
+                                'id': widget.estimatedata!['points'][5]['id'],
                               },
                             ],
                           }
@@ -395,7 +394,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                                 .read(ProviderList.projectProvider)
                                 .currentProject['id'],
                             body: data,
-                            estimateID: widget.estimatedata['id'],
+                            estimateID: widget.estimatedata!['id'],
                           )
                         : estimateProvider.createEstimates(
                             slug: ref
@@ -422,7 +421,9 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                widget.estimatedata != null ? 'Edit Estimate' : 'Create Estimate',
+                widget.estimatedata != null
+                    ? 'Edit Estimate'
+                    : 'Create Estimate',
                 type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
               ),

@@ -59,8 +59,8 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var notificationProvider = ref.watch(ProviderList.notificationProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final notificationProvider = ref.watch(ProviderList.notificationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(
@@ -215,7 +215,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
             child: InkWell(
               onTap: () async {
                 //show date time picker
-                var date = await showDatePicker(
+                DateTime? date = await showDatePicker(
                   builder: (context, child) => Theme(
                     data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
@@ -226,7 +226,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
                   lastDate: DateTime(2025),
                 );
 
-                // var time = await showTimePicker(
+                // final time = await showTimePicker(
                 //   builder: (context, child) => Theme(
                 //     data: themeProvider.themeManager.timePickerThemeData,
                 //     child: child!,

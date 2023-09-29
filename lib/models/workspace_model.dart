@@ -1,11 +1,4 @@
 class WorkspaceModel {
-  String workspaceName;
-  String workspaceSlug;
-  String workspaceSize;
-  String workspaceId;
-  String workspaceLogo;
-  String workspaceUrl;
-
   WorkspaceModel({
     required this.workspaceName,
     required this.workspaceSlug,
@@ -14,6 +7,23 @@ class WorkspaceModel {
     required this.workspaceLogo,
     required this.workspaceUrl,
   });
+  factory WorkspaceModel.fromJson(Map<String, dynamic> json) {
+    return WorkspaceModel(
+      workspaceName: json['name'],
+      workspaceSlug: json['slug'],
+      workspaceSize: json['organization_size'],
+      workspaceId: json['id'],
+      workspaceLogo: json['logo'] ?? '',
+      // workspaceUrl: json['url'],
+      workspaceUrl: 'https://takeoff.plane.so/${json['slug']}',
+    );
+  }
+  String workspaceName;
+  String workspaceSlug;
+  String workspaceSize;
+  String workspaceId;
+  String workspaceLogo;
+  String workspaceUrl;
 
   static WorkspaceModel initialize(
       {String? workspaceName,
@@ -25,22 +35,10 @@ class WorkspaceModel {
     return WorkspaceModel(
       workspaceName: workspaceName ?? '',
       workspaceSlug: workspaceSlug ?? '',
-      workspaceSize:  workspaceSize ?? '',
+      workspaceSize: workspaceSize ?? '',
       workspaceId: workspaceId ?? '',
       workspaceLogo: workspaceLogo ?? '',
       workspaceUrl: workspaceUrl ?? '',
-    );
-  }
-
-  factory WorkspaceModel.fromJson(Map<String, dynamic> json) {
-    return WorkspaceModel(
-      workspaceName: json['name'],
-      workspaceSlug: json['slug'],
-      workspaceSize: json['organization_size'],
-      workspaceId: json['id'],
-      workspaceLogo: json['logo'] ?? '',
-      // workspaceUrl: json['url'],
-      workspaceUrl: 'https://takeoff.plane.so/${json['slug']}',
     );
   }
 

@@ -26,7 +26,7 @@ class DashBoardProvider extends ChangeNotifier {
     getIssuesClosedByMonth(DateTime.now().month);
     getDashboardState = StateEnum.loading;
     try {
-      var workspaceSlug = ref!
+      final workspaceSlug = ref!
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug;
@@ -44,7 +44,7 @@ class DashBoardProvider extends ChangeNotifier {
 
   Future getIssuesClosedByMonth(int month) async {
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.dashboard}?month=$month'.replaceAll(
             '\$SLUG',

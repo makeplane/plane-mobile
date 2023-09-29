@@ -16,7 +16,7 @@ class BillingPlans extends ConsumerStatefulWidget {
 class _BillingPlansState extends ConsumerState<BillingPlans> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       // backgroundColor: themeProvider.isDarkThemeEnabled
       //     ? darkSecondaryBackgroundColor

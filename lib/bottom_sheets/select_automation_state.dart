@@ -17,9 +17,9 @@ class SelectAutomationState extends ConsumerStatefulWidget {
 class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(

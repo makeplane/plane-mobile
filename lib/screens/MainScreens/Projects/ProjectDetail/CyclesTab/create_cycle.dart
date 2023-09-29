@@ -42,9 +42,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    BuildContext mainBuildContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final BuildContext mainBuildContext = context;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -167,7 +167,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                           GestureDetector(
                             onTap: () async {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              var date = await showDatePicker(
+                              final date = await showDatePicker(
                                 builder: (context, child) => Theme(
                                   data: themeProvider
                                       .themeManager.datePickerThemeData,
@@ -236,7 +236,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                           GestureDetector(
                             onTap: () async {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              var date = await showDatePicker(
+                              final date = await showDatePicker(
                                 builder: (context, child) => Theme(
                                   data: themeProvider
                                       .themeManager.datePickerThemeData,

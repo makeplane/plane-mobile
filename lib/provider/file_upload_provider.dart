@@ -19,16 +19,16 @@ class FileUploadProvider extends ChangeNotifier {
   Future<String?> uploadFile(File pickedFile, String fileType) async {
     fileUploadState = StateEnum.loading;
     notifyListeners();
-    var type = pickedFile.path.split('.').last;
+    final type = pickedFile.path.split('.').last;
 
-    var dio = Dio();
-    var formData = FormData.fromMap({
+    final dio = Dio();
+    final formData = FormData.fromMap({
       "asset": await MultipartFile.fromFile(pickedFile.path,
           filename: 'fileName.$type', contentType: MediaType(fileType, type)),
       "attributes": jsonEncode("{}")
     });
-    var token = Const.accessToken;
-    var response = await dio
+    final token = Const.accessToken;
+    final response = await dio
         .post(APIs.fileUpload,
             data: formData,
             onSendProgress: (sent, total) {},

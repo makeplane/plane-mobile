@@ -18,7 +18,7 @@ import 'custom_text.dart';
 
 class EmptyPlaceholder {
   static Widget emptyCycles(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -93,7 +93,7 @@ class EmptyPlaceholder {
   static Widget emptySubIssues(
     WidgetRef ref,
   ) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -171,7 +171,7 @@ class EmptyPlaceholder {
       Map<String, dynamic>? assignee,
       WidgetRef? ref,
       IssueCategory? type}) {
-    var themeProvider = ref!.watch(ProviderList.themeProvider);
+    final themeProvider = ref!.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -319,7 +319,7 @@ class EmptyPlaceholder {
   static Widget emptySubscribedIssue(
     WidgetRef ref,
   ) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -354,7 +354,7 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyModules(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -427,7 +427,7 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyNotification(WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -464,7 +464,7 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyPages(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -535,7 +535,7 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyView(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -662,7 +662,7 @@ class EmptyPlaceholder {
 
   static Widget joinProject(
       BuildContext context, WidgetRef ref, String projectId, String slug) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -695,7 +695,7 @@ class EmptyPlaceholder {
           ),
           GestureDetector(
             onTap: () {
-              var issueProvider = ref.read(ProviderList.issuesProvider);
+              final issueProvider = ref.read(ProviderList.issuesProvider);
               issueProvider
                   .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
@@ -758,7 +758,7 @@ class EmptyPlaceholder {
 
   static Widget emptyProject(
       BuildContext context, Future<void> Function() onRefresh, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return RefreshIndicator(
       color: themeProvider.themeManager.primaryColour,
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -841,7 +841,7 @@ class EmptyPlaceholder {
 
   static Widget emptyFavoriteProject(
       BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return RefreshIndicator(
       color: themeProvider.themeManager.primaryColour,
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -877,7 +877,7 @@ class EmptyPlaceholder {
 
   static Widget emptyUnstaredProject(
       BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return RefreshIndicator(
       color: themeProvider.themeManager.primaryColour,
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -913,7 +913,7 @@ class EmptyPlaceholder {
 
   static Widget emptyUnjoinedProject(
       BuildContext context, WidgetRef ref, Future<void> Function() onRefresh) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return RefreshIndicator(
       color: themeProvider.themeManager.primaryColour,
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -949,7 +949,7 @@ class EmptyPlaceholder {
   }
 
   static Widget emptyLabels(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(

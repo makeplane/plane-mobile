@@ -54,10 +54,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
 
   @override
   Widget render(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var authProvider = ref.watch(ProviderList.authProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -345,13 +345,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                               (route) => false,
                                             );
                                           } else {
-                                            String firstName = ref
+                                            final String firstName = ref
                                                 .read(ProviderList
                                                     .profileProvider)
                                                 .userProfile
                                                 .firstName!;
 
-                                            List workspaces = ref
+                                            final List workspaces = ref
                                                 .read(ProviderList
                                                     .workspaceProvider)
                                                 .workspaces;
@@ -451,7 +451,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                       ontap: () async {
                                         // await GoogleSignInApi.logout();
                                         try {
-                                          var user =
+                                          final user =
                                               await GoogleSignInApi.logIn();
                                           if (user == null) {
                                             // CustomToast.showToast(context,
@@ -460,7 +460,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                             //     toastType: ToastType.failure);
                                             return;
                                           }
-                                          GoogleSignInAuthentication
+                                          final GoogleSignInAuthentication
                                               googleAuth =
                                               await user.authentication;
                                           ref
@@ -478,7 +478,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                     StateEnum.success) {
                                               if (profileProvider
                                                   .userProfile.isOnboarded!) {
-                                                Navigator.push(
+                                                Navigator.pushAndRemoveUntil(
                                                   context,
                                                   (MaterialPageRoute(
                                                     builder: (context) =>
@@ -486,6 +486,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                       fromSignUp: false,
                                                     ),
                                                   )),
+                                                  (route) => false,
                                                 );
                                               } else {
                                                 Navigator.push(

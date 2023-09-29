@@ -40,7 +40,7 @@ class ThemeProvider extends ChangeNotifier {
     required BuildContext? context,
     bool fromLogout = false,
   }) async {
-    var profileProvider = ref.read(ProviderList.profileProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     if (data['theme']['theme'] == 'custom' &&
         ((profileProvider.userProfile.theme == null ||
                 profileProvider.userProfile.theme!.length <= 1) &&
@@ -74,7 +74,7 @@ class ThemeProvider extends ChangeNotifier {
     CustomToast(manager: themeManager);
 
     if (!fromLogout) {
-      var profileProv = ref.read(ProviderList.profileProvider);
+      final profileProv = ref.read(ProviderList.profileProvider);
       profileProv.updateProfile(data: data).then((value) {
         if (profileProv.updateProfileState == StateEnum.success &&
             context != null) {
@@ -93,7 +93,8 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<void> getTheme() async {
-    SharedPreferences sharedPreferences = SharedPrefrenceServices.instance;
+    final SharedPreferences sharedPreferences =
+        SharedPrefrenceServices.instance;
     if (!sharedPreferences.containsKey(PlaneKeys.SELECTED_THEME)) {
       await sharedPreferences.setString(
           PlaneKeys.SELECTED_THEME, PlaneKeys.LIGHT_THEME);

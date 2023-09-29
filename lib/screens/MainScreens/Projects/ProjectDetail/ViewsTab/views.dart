@@ -19,7 +19,7 @@ class Views extends ConsumerStatefulWidget {
 
 class _ViewsState extends ConsumerState<Views> {
   int countFilters(int index) {
-    var prov = ref.read(ProviderList.viewsProvider);
+    final prov = ref.read(ProviderList.viewsProvider);
     int count = 0;
     prov.views[index]["query_data"].forEach((key, value) {
       if (value != null && value.isNotEmpty) count++;
@@ -32,8 +32,8 @@ class _ViewsState extends ConsumerState<Views> {
 
   @override
   Widget build(BuildContext context) {
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final viewsProvider = ref.watch(ProviderList.viewsProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
       loading: viewsProvider.viewsState == StateEnum.loading,
       widgetClass: viewsProvider.views.isEmpty
@@ -110,7 +110,7 @@ class _ViewsState extends ConsumerState<Views> {
     if (views == null) {
       return false;
     } else {
-      for (var item in views) {
+      for (final item in views) {
         if (item["is_favorite"] == true) {
           return true;
         }
@@ -123,7 +123,7 @@ class _ViewsState extends ConsumerState<Views> {
     if (views == null) {
       return false;
     } else {
-      for (var item in views) {
+      for (final item in views) {
         if (item["is_favorite"] == false) {
           return true;
         }
@@ -133,8 +133,8 @@ class _ViewsState extends ConsumerState<Views> {
   }
 
   Widget viewCard(int index) {
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final viewsProvider = ref.watch(ProviderList.viewsProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () {
         Navigator.push(

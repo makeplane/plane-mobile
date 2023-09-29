@@ -36,19 +36,19 @@ class _ProjectInviteMembersSheetState
   @override
   void initState() {
     super.initState();
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     workspaceProvider.invitingMembersRole.text = 'Viewer';
-    for (var element in workspaceProvider.workspaceMembers) {
+    for (final element in workspaceProvider.workspaceMembers) {
       emailList.add(element['member']['email']);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    BuildContext mainBuildContext = context;
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final BuildContext mainBuildContext = context;
     return LoadingWidget(
       loading: projectProvider.projectInvitationState == StateEnum.loading,
       widgetClass: GestureDetector(
@@ -297,7 +297,8 @@ class _ProjectInviteMembersSheetState
                       ),
                       child: SubmitButton(
                         onPressed: () async {
-                          bool isCorrect = formKey.currentState!.validate();
+                          final bool isCorrect =
+                              formKey.currentState!.validate();
                           if (!isCorrect || selectedEmail['email'] == null) {
                             setState(() {
                               isEmailEmpty = true;
@@ -368,7 +369,7 @@ class _ProjectInviteMembersSheetState
   }
 
   int getRoleIndex(String value) {
-    List<Map<String, int>> options = [
+    final List<Map<String, int>> options = [
       {'Admin': 20},
       {'Member': 15},
       {'Viewer': 10},
@@ -376,7 +377,7 @@ class _ProjectInviteMembersSheetState
       {'Remove User': 0}
     ];
 
-    for (Map<String, int> item in options) {
+    for (final Map<String, int> item in options) {
       if (item.containsKey(value)) {
         return item[value]!;
       }

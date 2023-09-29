@@ -45,7 +45,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     final prov = ref.watch(ProviderList.profileProvider);
     final workspaceProv = ref.watch(ProviderList.workspaceProvider);
     // log(dropDownValue.toString());

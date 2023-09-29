@@ -6,7 +6,11 @@ import '../utils/enums.dart';
 
 class CustomExpansionTile extends ConsumerStatefulWidget {
   const CustomExpansionTile(
-      {super.key,this.textColor,this.type, required this.title, required this.child});
+      {super.key,
+      this.textColor,
+      this.type,
+      required this.title,
+      required this.child});
 
   final String title;
   final Widget child;
@@ -14,7 +18,8 @@ class CustomExpansionTile extends ConsumerStatefulWidget {
   final Color? textColor;
 
   @override
-  ConsumerState<CustomExpansionTile> createState() => _CustomExpansionTileState();
+  ConsumerState<CustomExpansionTile> createState() =>
+      _CustomExpansionTileState();
 }
 
 class _CustomExpansionTileState extends ConsumerState<CustomExpansionTile> {
@@ -23,7 +28,7 @@ class _CustomExpansionTileState extends ConsumerState<CustomExpansionTile> {
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ListTileTheme(
@@ -46,7 +51,7 @@ class _CustomExpansionTileState extends ConsumerState<CustomExpansionTile> {
                     ? _iconAngleWhenExpanded
                     : _iconAngleWhenCollapsed),
                 transformAlignment: Alignment.center,
-                child:  Icon(
+                child: Icon(
                   Icons.arrow_forward_ios,
                   size: 15,
                   color: themeProvider.themeManager.tertiaryTextColor,
@@ -55,8 +60,9 @@ class _CustomExpansionTileState extends ConsumerState<CustomExpansionTile> {
               const SizedBox(width: 10),
               CustomText(
                 widget.title,
-                type:widget.type?? FontStyle.H6,
-                color:widget.textColor?? themeProvider.themeManager.tertiaryTextColor,
+                type: widget.type ?? FontStyle.H6,
+                color: widget.textColor ??
+                    themeProvider.themeManager.tertiaryTextColor,
               ),
             ],
           ),

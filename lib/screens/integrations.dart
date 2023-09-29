@@ -17,7 +17,7 @@ class Integrations extends ConsumerStatefulWidget {
 class _IntegrationsState extends ConsumerState<Integrations> {
   // @override
   // void initState() {
-  //   var prov = ref.read(ProviderList.integrationProvider);
+  //   final prov = ref.read(ProviderList.integrationProvider);
   //   if (prov.integrations.isEmpty) {
   //     ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
   //   }
@@ -27,8 +27,8 @@ class _IntegrationsState extends ConsumerState<Integrations> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Scaffold(
       appBar: widget.fromSettings
           ? null

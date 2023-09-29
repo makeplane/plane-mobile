@@ -11,8 +11,8 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class UserProfileScreen extends ConsumerStatefulWidget {
-  final String userID;
   const UserProfileScreen({required this.userID, super.key});
+  final String userID;
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -20,7 +20,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
 
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
     with TickerProviderStateMixin {
-  var pageViewController = PageController(initialPage: 0);
+  final pageViewController = PageController(initialPage: 0);
 
   TabController? tabController;
 
@@ -33,7 +33,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
     tabController = TabController(length: tabs.length, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
-        var memberprofileProvider =
+        final memberprofileProvider =
             ref.read(ProviderList.memberProfileProvider.notifier);
         memberprofileProvider.getMemberProfile(userID: widget.userID);
         memberprofileProvider.getUserStats(userId: widget.userID).then((value) {
@@ -71,7 +71,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(

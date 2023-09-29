@@ -58,9 +58,10 @@ class _EDITORState extends ConsumerState<EDITOR> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    IssuesProvider issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final IssuesProvider issuesProvider =
+        ref.watch(ProviderList.issuesProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -109,8 +110,8 @@ class _EDITORState extends ConsumerState<EDITOR> {
                     onConsoleMessage: (controller, msg) async {
                       log(msg.message);
                       if (msg.message.startsWith("submitted")) {
-                        Map data = json.decode(msg.message.substring(10));
-                        String descriptionHtml = data['data_html'];
+                        final Map data = json.decode(msg.message.substring(10));
+                        final String descriptionHtml = data['data_html'];
 
                         issuesProvider.createIssuedata['description_html'] =
                             descriptionHtml;
@@ -120,7 +121,7 @@ class _EDITORState extends ConsumerState<EDITOR> {
                         issuesProvider.setsState();
                         Navigator.pop(context);
                       } else if (msg.message.startsWith("cycle")) {
-                        Map data = json.decode(msg.message.substring(5));
+                        final Map data = json.decode(msg.message.substring(5));
                         ref
                             .read(ProviderList.projectProvider)
                             .currentProject['id'] = data['cycle_id'];
@@ -136,7 +137,7 @@ class _EDITORState extends ConsumerState<EDITOR> {
                           ),
                         );
                       } else if (msg.message.startsWith("module")) {
-                        Map data = json.decode(msg.message.substring(6));
+                        final Map data = json.decode(msg.message.substring(6));
 
                         Navigator.push(
                           context,
@@ -149,7 +150,7 @@ class _EDITORState extends ConsumerState<EDITOR> {
                           ),
                         );
                       } else if (msg.message.startsWith("toast")) {
-                        Map data = json.decode(msg.message.substring(5));
+                        final Map data = json.decode(msg.message.substring(5));
 
                         CustomToast.showToast(context,
                             message: data['message'],

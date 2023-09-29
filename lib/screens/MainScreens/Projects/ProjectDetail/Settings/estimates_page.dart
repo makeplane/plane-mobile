@@ -28,9 +28,9 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
 
     return LoadingWidget(
       loading: (projectProvider.updateProjectState == StateEnum.loading ||
@@ -365,7 +365,7 @@ class EmptyEstimatesWidget extends ConsumerStatefulWidget {
 class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

@@ -39,22 +39,22 @@ class ProjectDetail extends ConsumerStatefulWidget {
 }
 
 class _ProjectDetailState extends ConsumerState<ProjectDetail> {
-  // var tabs = [
+  // final tabs = [
   //   {'title': 'Issues', 'width': 60},
   //   {'title': 'Cycles', 'width': 60},
   //   {'title': 'Modules', 'width': 75},
   //   {'title': 'Views', 'width': 60},
   //   {'title': 'Pages', 'width': 50},
   // ];
-  var controller = PageController(initialPage: 0);
+  final controller = PageController(initialPage: 0);
 
-  var selected = 0;
-  var pages = [];
+  int selected = 0;
+  List pages = [];
   int numberOfTabs = 0;
 
   @override
   void initState() {
-    var issueProvider = ref.read(ProviderList.issuesProvider);
+    final issueProvider = ref.read(ProviderList.issuesProvider);
     issueProvider.orderByState = StateEnum.loading;
     issueProvider.statesState = StateEnum.restricted;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -76,8 +76,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
     super.initState();
   }
 
-  setPages() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+  void setPages() {
+    final projectProvider = ref.watch(ProviderList.projectProvider);
 
     pages = [
       {
@@ -107,13 +107,13 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var cycleProvider = ref.watch(ProviderList.cyclesProvider);
-    var moduleProvider = ref.watch(ProviderList.modulesProvider);
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final cycleProvider = ref.watch(ProviderList.cyclesProvider);
+    final moduleProvider = ref.watch(ProviderList.modulesProvider);
+    final viewsProvider = ref.watch(ProviderList.viewsProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
 
     setPages();
 
@@ -879,9 +879,9 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
 }
 
 Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
-  var themeProvider = ref.watch(ProviderList.themeProvider);
-  var issueProvider = ref.watch(ProviderList.issuesProvider);
-  var projectProvider = ref.watch(ProviderList.projectProvider);
+  final themeProvider = ref.watch(ProviderList.themeProvider);
+  final issueProvider = ref.watch(ProviderList.issuesProvider);
+  final projectProvider = ref.watch(ProviderList.projectProvider);
   // log(issueProvider.issueState.name);
   if (issueProvider.issues.projectView == ProjectView.list &&
       !(issueProvider.issuePropertyState == StateEnum.loading ||
@@ -1164,7 +1164,7 @@ Widget cycles() {
 }
 
 Widget view(WidgetRef ref) {
-  var themeProvider = ref.read(ProviderList.themeProvider);
+  final themeProvider = ref.read(ProviderList.themeProvider);
   return Container(
     color: themeProvider.themeManager.primaryBackgroundDefaultColor,
     padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
@@ -1183,10 +1183,10 @@ Widget view(WidgetRef ref) {
   );
 }
 
-  // bool checkVisbility(int index) {
-  //   var featuresProvider = ref.watch(ProviderList.featuresProvider);
-  //   if(featuresProvider.features[index]['title'] == featuresProvider.features[index]){
-  //     return true;
-  //   }
-  //   return false;
-  // }
+// bool checkVisbility(int index) {
+//   final featuresProvider = ref.watch(ProviderList.featuresProvider);
+//   if(featuresProvider.features[index]['title'] == featuresProvider.features[index]){
+//     return true;
+//   }
+//   return false;
+// }

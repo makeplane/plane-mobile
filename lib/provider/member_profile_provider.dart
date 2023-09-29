@@ -16,24 +16,6 @@ import '../services/dio_service.dart';
 import 'provider_list.dart';
 
 class MemberProfileStateModel {
-  Map<String, dynamic> memberProfile;
-  UserStatsModel userStats;
-  UserActivityModel userActivity;
-  List<CreatedIssuesModel>? createdIssues;
-  List<UserAssingedIssuesModel> userAssignedIssues;
-  List<UserSubscribedIssuesModel> userSubscribedIssues;
-  StateEnum getMemberProfileState;
-  StateEnum getUserStatsState;
-  StateEnum getUserActivityState;
-  StateEnum getCreatedIssuesState;
-  StateEnum getUserAssingedIssuesState;
-  StateEnum getUserSubscribedIssuesState;
-  List<Map<String, dynamic>> issuesCountByState;
-  List<Map<String, dynamic>> issuesByPriority;
-  Map profileData;
-  List projectData;
-  List<bool> expanded;
-
   MemberProfileStateModel(
       {required this.memberProfile,
       required this.getMemberProfileState,
@@ -52,6 +34,23 @@ class MemberProfileStateModel {
       required this.profileData,
       required this.projectData,
       required this.expanded});
+  Map<String, dynamic> memberProfile;
+  UserStatsModel userStats;
+  UserActivityModel userActivity;
+  List<CreatedIssuesModel>? createdIssues;
+  List<UserAssingedIssuesModel> userAssignedIssues;
+  List<UserSubscribedIssuesModel> userSubscribedIssues;
+  StateEnum getMemberProfileState;
+  StateEnum getUserStatsState;
+  StateEnum getUserActivityState;
+  StateEnum getCreatedIssuesState;
+  StateEnum getUserAssingedIssuesState;
+  StateEnum getUserSubscribedIssuesState;
+  List<Map<String, dynamic>> issuesCountByState;
+  List<Map<String, dynamic>> issuesByPriority;
+  Map profileData;
+  List projectData;
+  List<bool> expanded;
 
   MemberProfileStateModel copyWith(
       {Map<String, dynamic>? memberProfile,
@@ -180,11 +179,11 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
   Future getMemberProfile({required String userID}) async {
     state.getMemberProfileState = StateEnum.loading;
     try {
-      var workspaceSlug = ref
+      final workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug;
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url: APIs.memberProfile
             .replaceAll('\$SLUG', workspaceSlug)
             .replaceAll('\$USERID', userID),
@@ -217,11 +216,11 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       state = state.copyWith(
           userStats: UserStatsModel().emptyData(),
           getUserStatsState: StateEnum.loading);
-      String workspaceSlug = ref
+      final String workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug;
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url: APIs.userStats
             .replaceAll('\$SLUG', workspaceSlug)
             .replaceAll('\$USERID', userId),
@@ -241,11 +240,11 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       state = state.copyWith(
           getUserActivityState: StateEnum.loading,
           userActivity: UserActivityModel.userActivityEmpty());
-      String workspaceSlug = ref
+      final String workspaceSlug = ref
           .read(ProviderList.workspaceProvider)
           .selectedWorkspace
           .workspaceSlug;
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url: APIs.userActivity
             .replaceAll('\$SLUG', workspaceSlug)
             .replaceAll('\$USERID', userId),
@@ -265,19 +264,19 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       {required String userId, required String createdByUserId}) async {
     state = state
         .copyWith(getCreatedIssuesState: StateEnum.loading, createdIssues: []);
-    String workspaceSlug = ref
+    final String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url:
             '${APIs.userIssues.replaceAll('\$SLUG', workspaceSlug).replaceAll('\$USERID', userId)}?created_by=$createdByUserId&order_by=-created_at',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
 
-      for (var element in (response.data as List)) {
+      for (final element in (response.data as List)) {
         state.createdIssues!.add(CreatedIssuesModel.fromJson(element));
       }
       state = state.copyWith(
@@ -293,19 +292,19 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       {required String userId, required String assignedUserId}) async {
     state = state.copyWith(
         getUserAssingedIssuesState: StateEnum.loading, userAssignedIssues: []);
-    String workspaceSlug = ref
+    final String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url:
             '${APIs.userIssues.replaceAll('\$SLUG', workspaceSlug).replaceAll('\$USERID', userId)}?assignees=$assignedUserId&order_by=-created_at',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
 
-      for (var element in (response.data as List)) {
+      for (final element in (response.data as List)) {
         state.userAssignedIssues.add(UserAssingedIssuesModel.fromJson(element));
       }
       state = state.copyWith(
@@ -322,19 +321,19 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
     state = state.copyWith(
         getUserSubscribedIssuesState: StateEnum.loading,
         userSubscribedIssues: []);
-    String workspaceSlug = ref
+    final String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         url:
             '${APIs.userIssues.replaceAll('\$SLUG', workspaceSlug).replaceAll('\$USERID', userId)}?subscriber=$subscribedByUserId&order_by=-created_at',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
 
-      for (var element in (response.data as List)) {
+      for (final element in (response.data as List)) {
         state.userSubscribedIssues
             .add(UserSubscribedIssuesModel.fromJson(element));
       }
@@ -348,11 +347,11 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
   }
 
   void getIssuesCountByState() {
-    List<Map<String, dynamic>> issues = state.issuesCountByState;
+    final List<Map<String, dynamic>> issues = state.issuesCountByState;
 
     log('Issues count by state: ${issues.toString()}}');
 
-    Map<String, int> stateCount = {
+    final Map<String, int> stateCount = {
       'backlog': 0,
       'unstarted': 0,
       'started': 0,
@@ -360,19 +359,19 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       'cancelled': 0
     };
 
-    for (var element1 in state.userStats.stateDistribution!) {
+    for (final element1 in state.userStats.stateDistribution!) {
       stateCount[element1['state_group']] =
           stateCount[element1['state_group']] != null
               ? stateCount[element1['state_group']]! + 1
               : 0;
-      for (var element2 in issues) {
+      for (final element2 in issues) {
         if (element1['state_group'] == element2['state_group']) {
           element2['count'] = element1['state_count'];
         }
       }
     }
 
-    for (var element in issues) {
+    for (final element in issues) {
       if (stateCount[element['state_group']] == 0) {
         element['count'] = 0;
       }

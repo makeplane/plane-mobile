@@ -10,8 +10,8 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class DeleteProjectSheet extends ConsumerStatefulWidget {
-  final Map<String, dynamic> data;
   const DeleteProjectSheet({required this.data, super.key});
+  final Map<String, dynamic> data;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,8 +24,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProviderRead = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProviderRead = ref.watch(ProviderList.projectProvider);
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

@@ -15,8 +15,8 @@ class CompanySize extends ConsumerStatefulWidget {
 class _CompanySizeState extends ConsumerState<CompanySize> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Column(

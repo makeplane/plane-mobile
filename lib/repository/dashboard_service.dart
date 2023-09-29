@@ -4,12 +4,12 @@ import 'package:plane/services/dio_service.dart';
 import '../utils/enums.dart';
 
 class DashboardService {
-  final DioConfig dio;
   DashboardService(this.dio);
+  final DioConfig dio;
 
   Future<Map<String, dynamic>> getDashboardData({required String url}) async {
     try {
-      var res = await dio.dioServe(
+      final res = await dio.dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,

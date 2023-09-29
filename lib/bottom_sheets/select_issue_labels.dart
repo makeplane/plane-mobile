@@ -15,23 +15,22 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssueLabels extends ConsumerStatefulWidget {
+  const SelectIssueLabels({this.issueId, required this.createIssue, super.key});
   final bool createIssue;
   final String? issueId;
-
-  const SelectIssueLabels({this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssueLabels> createState() => _SelectIssueLabelsState();
 }
 
 class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
-  var labelContrtoller = TextEditingController();
-  var colorController = TextEditingController();
+  final labelContrtoller = TextEditingController();
+  final colorController = TextEditingController();
 
-  var selectedLabels = [];
+  final selectedLabels = [];
   List issueDetailsLabels = [];
-  var createNew = false;
-  var showColorPallette = true;
+  bool createNew = false;
+  final showColorPallette = true;
   @override
   void initState() {
     ref.read(ProviderList.issuesProvider).getLabels(
@@ -57,7 +56,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
     super.initState();
   }
 
-  getIssueLabels() {
+  void getIssueLabels() {
     final issueProvider = ref.read(ProviderList.issueProvider);
     for (int i = 0;
         i < issueProvider.issueDetails['label_details'].length;
@@ -73,7 +72,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         prov.createIssuedata['labels'] = selectedLabels.isEmpty
             ? null
             : selectedLabels
@@ -112,7 +111,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                       ),
                       IconButton(
                         onPressed: () {
-                          var prov = ref.read(ProviderList.issuesProvider);
+                          final prov = ref.read(ProviderList.issuesProvider);
                           prov.createIssuedata['labels'] =
                               selectedLabels.isEmpty
                                   ? null
@@ -152,7 +151,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       } else {
                                         selectedLabels.add(index);
                                       }
-                                      var prov =
+                                      final prov =
                                           ref.read(ProviderList.issuesProvider);
                                       prov.createIssuedata['labels'] =
                                           selectedLabels.isEmpty
@@ -349,7 +348,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                     .themeManager
                                                     .primaryBackgroundSelectedColour,
                                                 borderRadius: const BorderRadius
-                                                    .only(
+                                                        .only(
                                                     topLeft: Radius.circular(5),
                                                     bottomLeft:
                                                         Radius.circular(5))),

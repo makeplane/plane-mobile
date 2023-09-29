@@ -50,7 +50,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       }
       log(timer.tick.toString());
 
-      var prov = ref.read(ProviderList.globalSearchProvider.notifier);
+      final prov = ref.read(ProviderList.globalSearchProvider.notifier);
       if (input.text.isEmpty) {
         prov.clear();
       } else {
@@ -77,9 +77,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var globalSearchProviderRead =
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final globalSearchProviderRead =
         ref.read(ProviderList.globalSearchProvider.notifier);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -262,8 +262,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget createWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    List items = [
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final List items = [
       {
         'title': 'New Issue',
         'screen': () async {
@@ -415,9 +415,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget workspaceWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProv = ref.watch(ProviderList.workspaceProvider);
-    List items = [
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProv = ref.watch(ProviderList.workspaceProvider);
+    final List items = [
       {
         'title': 'General',
         'screen': () => {
@@ -529,9 +529,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget helpWidget() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    List items = [
+    final List items = [
       {
         'title': 'Open Plane documentation',
         'url': 'https://docs.plane.so/',
@@ -614,8 +614,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget issuesList() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -699,9 +699,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget projectsListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -780,12 +780,12 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget workspaceListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var globalSearchProviderRead =
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final globalSearchProviderRead =
         ref.read(ProviderList.globalSearchProvider.notifier);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProv = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProv = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -894,9 +894,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget cyclesListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -991,9 +991,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget modulesListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -1081,8 +1081,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget viewsListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -1164,8 +1164,8 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   }
 
   Widget pagesListWidget() {
-    var globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {

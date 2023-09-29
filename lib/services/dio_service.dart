@@ -14,7 +14,7 @@ import 'package:retry/retry.dart';
 
 class DioConfig {
   // Static Dio created to directly access Dio client
-  static var dio = Dio();
+  static Dio dio = Dio();
   static Dio getDio({
     dynamic data,
     bool hasAuth = true,
@@ -64,10 +64,10 @@ class DioConfig {
               MaterialPageRoute(builder: (ctx) => const OnBoardingScreen()));
         }
         // Retrieve the error response data
-        var errorResponse = error.response?.data;
+        final errorResponse = error.response?.data;
 
         // Create a new DioError instance with the error response data
-        DioException newError = DioException(
+        final DioException newError = DioException(
           response: error.response,
           requestOptions: error.requestOptions,
           error: errorResponse,

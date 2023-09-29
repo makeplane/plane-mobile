@@ -7,11 +7,11 @@ import 'package:plane/widgets/custom_text.dart';
 enum ToastType { defult, success, failure, warning }
 
 class CustomToast {
-  static final FToast _fToast = FToast();
-  static ThemeManager? themeManager;
   CustomToast({required ThemeManager manager}) {
     themeManager = manager;
   }
+  static final FToast _fToast = FToast();
+  static ThemeManager? themeManager;
 
   static void showToast(
     BuildContext context, {
@@ -20,7 +20,7 @@ class CustomToast {
     ToastType toastType = ToastType.defult,
   }) {
     _fToast.init(context);
-    Widget toast = Card(
+    final Widget toast = Card(
       borderOnForeground: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
@@ -38,14 +38,14 @@ class CustomToast {
       color:
           // themeManager!.primaryToastBackgroundColor
           toastType == ToastType.defult
-              ? themeManager!.toastDefaultColor :
-              toastType == ToastType.success
-              ? themeManager!.toastSuccessColor :
-              toastType == ToastType.warning
-              ? themeManager!.toastWarningColor :
-              toastType == ToastType.failure
-              ? themeManager!.toastErrorColor
-              : themeManager!.toastDefaultColor,
+              ? themeManager!.toastDefaultColor
+              : toastType == ToastType.success
+                  ? themeManager!.toastSuccessColor
+                  : toastType == ToastType.warning
+                      ? themeManager!.toastWarningColor
+                      : toastType == ToastType.failure
+                          ? themeManager!.toastErrorColor
+                          : themeManager!.toastDefaultColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(
@@ -74,7 +74,10 @@ class CustomToast {
                 message,
                 type: FontStyle.Small,
                 fontWeight: FontWeightt.Medium,
-                color: (themeManager!.theme == THEME.dark || themeManager!.theme == THEME.darkHighContrast) ? Colors.white : Colors.black,
+                color: (themeManager!.theme == THEME.dark ||
+                        themeManager!.theme == THEME.darkHighContrast)
+                    ? Colors.white
+                    : Colors.black,
                 maxLines: 3,
                 overflow: TextOverflow.visible,
               ),
@@ -123,7 +126,7 @@ class CustomToast {
     int duration = 2,
     ToastType toastType = ToastType.defult,
   }) {
-    Widget toast = Card(
+    final Widget toast = Card(
       borderOnForeground: true,
       elevation: 20,
       color: primaryToastBackgroundColor,

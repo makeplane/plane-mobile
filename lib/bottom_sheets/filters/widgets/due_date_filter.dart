@@ -18,17 +18,16 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.targetLastWeek) {
-                  widget.state.filters.targetDate = [];
-                } else {
-                  widget.state.filters.targetDate = [
-                    '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
-                    '${DateTime.now().toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.targetDatesEnabled();
-              });
+              if (widget.state.targetLastWeek) {
+                widget.state.filters.targetDate = [];
+              } else {
+                widget.state.filters.targetDate = [
+                  '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
+                  '${DateTime.now().toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.targetDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -48,17 +47,16 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.targetTwoWeeks) {
-                  widget.state.filters.targetDate = [];
-                } else {
-                  widget.state.filters.targetDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.targetDatesEnabled();
-              });
+              if (widget.state.targetTwoWeeks) {
+                widget.state.filters.targetDate = [];
+              } else {
+                widget.state.filters.targetDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.targetDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -78,18 +76,17 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.targetOneMonth) {
-                  widget.state.filters.targetDate = [];
-                } else {
-                  widget.state.filters.targetDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
-                  ];
-                }
+              if (widget.state.targetOneMonth) {
+                widget.state.filters.targetDate = [];
+              } else {
+                widget.state.filters.targetDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
+                ];
+              }
 
-                widget.state.targetDatesEnabled();
-              });
+              widget.state.targetDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -109,17 +106,16 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.targetTwoMonths) {
-                  widget.state.filters.targetDate = [];
-                } else {
-                  widget.state.filters.targetDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.targetDatesEnabled();
-              });
+              if (widget.state.targetTwoMonths) {
+                widget.state.filters.targetDate = [];
+              } else {
+                widget.state.filters.targetDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.targetDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -199,8 +195,8 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                   themeProvider.themeManager.secondaryTextColor,
                             ),
                           ),
-                          value:
-                              widget.state._targetRangeDatePickerValueWithDefaultValue,
+                          value: widget.state
+                              ._targetRangeDatePickerValueWithDefaultValue,
                           onValueChanged: (dates) => setState(() => widget.state
                                   ._targetRangeDatePickerValueWithDefaultValue =
                               dates),
@@ -222,6 +218,8 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                       .primaryBackgroundDefaultColor,
                                   ontap: () {
                                     widget.state.filters.targetDate = [];
+                                    widget.state.targetDatesEnabled();
+                                    widget.state.setState();
                                     Navigator.pop(context);
                                   },
                                   textColor: themeProvider
@@ -233,7 +231,8 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                 child: Button(
                                   text: 'Apply',
                                   ontap: () {
-                                    if (widget.state
+                                    if (widget
+                                            .state
                                             ._targetRangeDatePickerValueWithDefaultValue
                                             .length !=
                                         2) {
@@ -242,13 +241,14 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                           toastType: ToastType.warning);
                                       return;
                                     }
-                                    setState(() {
-                                      widget.state.filters.targetDate = [
-                                        '${widget.state._targetRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
-                                        '${widget.state._targetRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
-                                      ];
-                                      widget.state.targetDatesEnabled();
-                                    });
+
+                                    widget.state.filters.targetDate = [
+                                      '${widget.state._targetRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
+                                      '${widget.state._targetRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
+                                    ];
+                                    widget.state.targetDatesEnabled();
+
+                                    widget.state.setState();
                                     Navigator.pop(context);
                                   },
                                   textColor: Colors.white,

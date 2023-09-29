@@ -33,9 +33,9 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
 
   @override
   Widget render(BuildContext context) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var fileProvider = ref.watch(ProviderList.fileUploadProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final fileProvider = ref.watch(ProviderList.fileUploadProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -55,7 +55,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                     alignment: Alignment.center,
                     child: GestureDetector(
                       onTap: () async {
-                        var file = await ImagePicker()
+                        final file = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
                         if (file != null) {
                           setState(() {
@@ -94,7 +94,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                 )
               : GestureDetector(
                   onTap: () async {
-                    var file = await ImagePicker()
+                    final file = await ImagePicker()
                         .pickImage(source: ImageSource.gallery);
                     if (file != null) {
                       setState(() {
@@ -117,7 +117,8 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
           Button(
             text: 'UPLOAD',
             ontap: () async {
-              int sizeOfImage = coverImage!.readAsBytesSync().lengthInBytes;
+              final int sizeOfImage =
+                  coverImage!.readAsBytesSync().lengthInBytes;
 
               if (sizeOfImage > 5000000) {
                 CustomToast.showToast(context,
@@ -125,7 +126,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                     toastType: ToastType.warning);
                 return;
               }
-              var url = await fileProvider.uploadFile(
+              final url = await fileProvider.uploadFile(
                 coverImage!,
                 coverImage!.path.split('.').last,
               );

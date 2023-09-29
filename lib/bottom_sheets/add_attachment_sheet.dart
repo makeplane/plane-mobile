@@ -12,10 +12,10 @@ import '../utils/enums.dart';
 
 class AddAttachmentsSheet extends ConsumerStatefulWidget {
   const AddAttachmentsSheet({
-    super.key,
     required this.projectId,
     required this.slug,
     required this.issueId,
+    super.key,
   });
 
   final String projectId;
@@ -30,8 +30,8 @@ class AddAttachmentsSheet extends ConsumerStatefulWidget {
 class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var issueProvider = ref.read(ProviderList.issueProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final issueProvider = ref.read(ProviderList.issueProvider);
 
     //List<String> allowedAttachmentFileExtensiones = ['PNG', 'JPEG', 'PDF'];
     return Container(
@@ -86,7 +86,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   Navigator.pop(context);
                   return;
                 } else {
-                  String? path = result.files.single.path;
+                  final String? path = result.files.single.path;
 
                   issueProvider.addIssueAttachment(
                     fileSize: result.files.single.size,

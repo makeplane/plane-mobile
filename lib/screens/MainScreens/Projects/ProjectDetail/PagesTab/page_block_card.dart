@@ -7,9 +7,9 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class PageBlockCard extends ConsumerStatefulWidget {
+  const PageBlockCard({super.key, required this.index, required this.pageID});
   final int index;
   final String pageID;
-  const PageBlockCard({super.key, required this.index, required this.pageID});
 
   @override
   ConsumerState<PageBlockCard> createState() => _PageBlockCardState();
@@ -18,10 +18,10 @@ class PageBlockCard extends ConsumerStatefulWidget {
 class _PageBlockCardState extends ConsumerState<PageBlockCard> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
 
-    String description = "";
+    const String description = "";
     return InkWell(
       onTap: () async {
         //  ref.read(ProviderList.pageProvider).setSelectedPageBlock(widget.block);
@@ -105,10 +105,10 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
             ),
             description == ''
                 ? Container()
-                : Column(
+                : const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       CustomText(
                         description,
                         type: FontStyle.Small,
@@ -179,11 +179,11 @@ class _PageBlockCardState extends ConsumerState<PageBlockCard> {
   }
 
   bool checkAccess() {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     bool hasAccess = false;
 
-    for (var element in projectProvider.projectMembers) {
+    for (final element in projectProvider.projectMembers) {
       if (element['member']['id'] == profileProvider.userProfile.id &&
           (element['role'] == 20 || element['role'] == 15)) {
         hasAccess = true;

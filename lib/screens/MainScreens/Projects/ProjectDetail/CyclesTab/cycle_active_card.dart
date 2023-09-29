@@ -16,8 +16,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '/utils/enums.dart';
 
 class CycleActiveCard extends ConsumerStatefulWidget {
-  final int index;
   const CycleActiveCard({required this.index, super.key});
+  final int index;
 
   @override
   ConsumerState<CycleActiveCard> createState() => _CycleActiveCardState();
@@ -42,13 +42,13 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
             true
         ? true
         : false;
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
     getChartData(
         cyclesProvider.cyclesActiveData[0]['distribution']['completion_chart']);
     super.initState();
   }
 
-  getChartData(Map<String, dynamic> data) {
+  void getChartData(Map<String, dynamic> data) {
     data.forEach((key, value) {
       chartData.add(ChartData(DateTime.parse(key), value.toDouble()));
     });
@@ -56,8 +56,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     return Container(
       width: double.infinity,
       //height: 1300,
@@ -196,8 +196,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget firstPart(int index) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -324,9 +324,9 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget secondPart(int index) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -554,8 +554,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget thirdPart() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -638,8 +638,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget fourthPart() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -737,8 +737,8 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget fifthPart() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -826,7 +826,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   Widget sixthPart() {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -891,12 +891,12 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
   }
 
   String checkDate({required String startDate, required String endDate}) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if ((startDate.isEmpty) || (endDate.isEmpty)) {
       return 'Draft';
     } else {
       if (DateTime.parse(startDate).isAfter(now)) {
-        Duration difference = DateTime.parse(startDate).difference(now);
+        final Duration difference = DateTime.parse(startDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -905,7 +905,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
       }
       if (DateTime.parse(startDate).isBefore(now) &&
           DateTime.parse(endDate).isAfter(now)) {
-        Duration difference = DateTime.parse(endDate).difference(now);
+        final Duration difference = DateTime.parse(endDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -919,7 +919,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
 
   double convertToRatio(double? decimalValue) {
     if (decimalValue == null) return 0.0;
-    double value = decimalValue / 100;
+    final double value = decimalValue / 100;
     return value == 10 ? 1.0 : value;
   }
 }

@@ -13,16 +13,16 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteCycleSheet extends ConsumerStatefulWidget {
-  final String name;
-  final String id;
-  final String type;
-  final int? index;
   const DeleteCycleSheet(
       {required this.id,
       required this.name,
       required this.type,
       this.index,
       super.key});
+  final String name;
+  final String id;
+  final String type;
+  final int? index;
 
   @override
   ConsumerState<DeleteCycleSheet> createState() => _DeleteCycleSheetState();
@@ -31,12 +31,12 @@ class DeleteCycleSheet extends ConsumerStatefulWidget {
 class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
   @override
   Widget build(BuildContext context) {
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var cyclesProviderWatch = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var viewsProvider = ref.watch(ProviderList.viewsProvider);
-    var pagesProvider = ref.watch(ProviderList.pageProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final cyclesProviderWatch = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final viewsProvider = ref.watch(ProviderList.viewsProvider);
+    final pagesProvider = ref.watch(ProviderList.pageProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Wrap(
       children: [
         Container(
@@ -100,7 +100,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                     color: Colors.redAccent,
                     text: 'Delete',
                     ontap: () async {
-                      var projProv = ref.read(ProviderList.projectProvider);
+                      final projProv = ref.read(ProviderList.projectProvider);
                       if (projProv.role != Role.admin &&
                           projProv.role != Role.member) {
                         Navigator.of(context).pop();
@@ -182,7 +182,7 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             cycleId: '',
                             query: 'draft');
                       } else if (widget.type == 'Module') {
-                        var modulesProvider =
+                        final modulesProvider =
                             ref.read(ProviderList.modulesProvider);
                         await modulesProvider.deleteModule(
                           slug: ref
@@ -204,7 +204,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
 
                         log('View delete');
                       } else if (widget.type == 'Page') {
-                        var pagesProvider = ref.read(ProviderList.pageProvider);
+                        final pagesProvider =
+                            ref.read(ProviderList.pageProvider);
                         await pagesProvider.deletePage(
                           slug: ref
                               .read(ProviderList.workspaceProvider)

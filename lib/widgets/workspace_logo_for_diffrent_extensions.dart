@@ -37,8 +37,8 @@ class _WorkspaceLogoForDiffrentExtensionsState
 
   Widget customImageRenderer(
       String? imageUrl, String workspaceName, ThemeProvider themeProvider) {
-    List<String> imageExtensiones = [".jpg", ".png", ".jpeg", ".webp"];
-    String svgExtension = ".svg";
+    final List<String> imageExtensiones = [".jpg", ".png", ".jpeg", ".webp"];
+    const String svgExtension = ".svg";
 
     if (imageUrl == null) {
       return imageAlternative(themeProvider, workspaceName);

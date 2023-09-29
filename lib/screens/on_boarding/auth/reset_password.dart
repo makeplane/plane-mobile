@@ -19,8 +19,8 @@ class ResetPassword extends ConsumerStatefulWidget {
 class _ResetPasswordState extends ConsumerState<ResetPassword> {
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(

@@ -34,9 +34,9 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
   bool allFine = false;
   @override
   Widget build(BuildContext context) {
-    var prov = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final prov = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     log(prov.workspaces.toString());
     return GestureDetector(
       onTap: () {
@@ -237,7 +237,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                       GestureDetector(
                         onTap: () {
                           formKey.currentState!.validate();
-                          for (var item in invitations) {
+                          for (final item in invitations) {
                             if (item["is_valid"] == false) {
                               setState(() {});
                               log("HERRE");
@@ -296,7 +296,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                               : false,
                           ontap: () async {
                             formKey.currentState!.validate();
-                            for (var item in invitations) {
+                            for (final item in invitations) {
                               if (item["is_valid"] == false) {
                                 setState(() {});
                                 log("HERRE");
@@ -304,7 +304,7 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
                               }
                             }
 
-                            var data = invitations
+                            final List data = invitations
                                 .map((e) => {
                                       "email": e['email'].text,
                                       "role": fromRole(role: e['role']),

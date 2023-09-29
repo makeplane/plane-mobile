@@ -9,10 +9,10 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteStateSheet extends ConsumerStatefulWidget {
-  final String stateName;
-  final String stateId;
   const DeleteStateSheet(
       {required this.stateName, required this.stateId, super.key});
+  final String stateName;
+  final String stateId;
 
   @override
   ConsumerState<DeleteStateSheet> createState() => _DeleteStateSheetState();
@@ -21,9 +21,9 @@ class DeleteStateSheet extends ConsumerStatefulWidget {
 class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return LoadingWidget(
       loading: projectProvider.stateCrudState == StateEnum.loading,
       allowBorderRadius: true,

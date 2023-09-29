@@ -26,8 +26,8 @@ class SimpleModuleCard extends ConsumerStatefulWidget {
 class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     return GestureDetector(
       onTap: () {
         modulesProvider.currentModule = widget.isFav
@@ -174,7 +174,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                             ? GestureDetector(
                                 //visualDensity: VisualDensity.compact,
                                 onTap: () async {
-                                  String moduleID = modulesProvider
+                                  final String moduleID = modulesProvider
                                       .favModules[widget.index]['id'];
                                   modulesProvider.modules.add(
                                       modulesProvider.favModules[widget.index]);
@@ -200,7 +200,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                 ))
                             : GestureDetector(
                                 onTap: () async {
-                                  String moduleId = modulesProvider
+                                  final String moduleId = modulesProvider
                                       .modules[widget.index]['id'];
                                   modulesProvider.favModules.add(
                                       modulesProvider.modules[widget.index]);

@@ -63,7 +63,7 @@ void main() {
           () async => await Future.delayed(const Duration(milliseconds: 1500)));
       return const Left([]);
     });
-    var getWorkspaces = workspaceProvider.getWorkspaces();
+    final getWorkspaces = workspaceProvider.getWorkspaces();
     expect(workspaceProvider.workspaceInvitationState, StateEnum.loading);
     await getWorkspaces;
 
@@ -108,7 +108,7 @@ void main() {
   //         () async => await Future.delayed(const Duration(milliseconds: 1500)));
   //     return const Left([]);
   //   });
-  //   var getWorkspaces = workspaceProvider.getWorkspaces();
+  //   final getWorkspaces = workspaceProvider.getWorkspaces();
   //   expect(workspaceProvider.workspaceInvitationState, StateEnum.loading);
   //   await getWorkspaces;
   //   verify(() =>
@@ -143,17 +143,12 @@ void main() {
     ProviderList.profileProvider =
         ChangeNotifierProvider((ref) => profileProvider);
     await profileProvider.getProfile();
-    var getWorkspaces = workspaceProvider.getWorkspaceMembers();
+    final getWorkspaces = workspaceProvider.getWorkspaceMembers();
     expect(workspaceProvider.getMembersState, StateEnum.loading);
     await getWorkspaces;
     expect(workspaceProvider.role.name == 'none', false);
     expect(workspaceProvider.getMembersState, StateEnum.success);
   });
 
-  testWidgets('Select Workspaces', (widgetTester)async{
-
-
-
-
-  });
+  testWidgets('Select Workspaces', (widgetTester) async {});
 }

@@ -35,7 +35,7 @@ void main() {
   late MockProjectsProvider mockProjectsProvider;
   late DashBoardProvider dashboardProvider;
 
-  var gridCardKeys = [
+  final gridCardKeys = [
     'assigned_issues_count',
     'pending_issues_count',
     'completed_issues_count',
@@ -156,8 +156,9 @@ void main() {
         ),
         findsOneWidget);
 
-    for (var element in gridCardKeys) {
-      var text = find.byKey(Key('grid-card-${gridCardKeys.indexOf(element)}'));
+    for (final element in gridCardKeys) {
+      final text =
+          find.byKey(Key('grid-card-${gridCardKeys.indexOf(element)}'));
 
       expect(tester.widget<CustomText>(text).text,
           mockDashBoardProvider.dashboardData[element].toString());
@@ -250,7 +251,7 @@ void main() {
   });
 
   testWidgets('Integration', (tester) async {
-    var workspaces = [
+    final workspaces = [
       {
         "id": "cd4ab5a2-1a5f-4516-a6c6-8da1a9fa5be4",
         "name": "Plane",
@@ -273,7 +274,8 @@ void main() {
     when(
       () => mockWorkspaceProvider.workspaces,
     ).thenReturn(workspaces);
-    when(() => mockWorkspaceProvider.selectWorkspace(context: any(named: "context"),id: any(named: "id")))
+    when(() => mockWorkspaceProvider.selectWorkspace(
+            context: any(named: "context"), id: any(named: "id")))
         .thenAnswer((invocation) async => Left(WorkspaceModel.initialize()));
     when(() => mockProfileProvider.userProfile).thenReturn(
         UserProfile.initialize(
@@ -290,7 +292,7 @@ void main() {
     await tester.tap(find.byKey(const Key('select-workspace')));
     await tester.pumpAndSettle();
     expect(find.byType(SelectWorkspace), findsOneWidget);
-    for (var element in workspaces) {
+    for (final element in workspaces) {
       expect(find.text(element['name'].toString()), findsOneWidget);
     }
     expect(find.byIcon(Icons.done), findsOneWidget);

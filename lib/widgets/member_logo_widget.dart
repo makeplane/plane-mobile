@@ -31,8 +31,8 @@ class MemberLogoWidget extends StatelessWidget {
   }
 
   Widget customImageRenderer(String? imageUrl) {
-    List<String> imageExtensiones = [".jpg", ".png", ".jpeg", ".webp"];
-    String svgExtension = ".svg";
+    final List<String> imageExtensiones = [".jpg", ".png", ".jpeg", ".webp"];
+    const String svgExtension = ".svg";
 
     if (imageUrl == null) {
       return MemeberLogoAlternativeWidget(

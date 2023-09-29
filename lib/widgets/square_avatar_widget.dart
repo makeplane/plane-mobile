@@ -7,8 +7,8 @@ import 'package:plane/widgets/custom_text.dart';
 import '../utils/enums.dart';
 
 class SquareAvatarWidget extends ConsumerStatefulWidget {
-  final List details;
   const SquareAvatarWidget({required this.details, super.key});
+  final List details;
 
   @override
   ConsumerState<SquareAvatarWidget> createState() => _SquareAvatarWidgetState();
@@ -17,7 +17,7 @@ class SquareAvatarWidget extends ConsumerStatefulWidget {
 class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return SizedBox(
       width: widget.details.length == 1
           ? 30
@@ -100,18 +100,18 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                 fit: BoxFit.cover,
                                 errorWidget: (context, url, error) {
                                   return Container(
-                            color: const Color.fromRGBO(55, 65, 80, 1),
-                            child: Center(
-                              child: CustomText(
-                                widget.details[1]['display_name'][0]
-                                    .toString()
-                                    .toUpperCase(),
-                                type: FontStyle.Small,
-                                color: Colors.white,
-                                //  color: Colors.white,
-                              ),
-                            ),
-                          );
+                                    color: const Color.fromRGBO(55, 65, 80, 1),
+                                    child: Center(
+                                      child: CustomText(
+                                        widget.details[1]['display_name'][0]
+                                            .toString()
+                                            .toUpperCase(),
+                                        type: FontStyle.Small,
+                                        color: Colors.white,
+                                        //  color: Colors.white,
+                                      ),
+                                    ),
+                                  );
                                 },
                               ))
                           : Center(
@@ -140,7 +140,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                         color: widget.details[2]['avatar'] != "" &&
                                 widget.details[2]['avatar'] != null
                             ? Colors.transparent
-                            :const Color.fromRGBO(55, 65, 80, 1),
+                            : const Color.fromRGBO(55, 65, 80, 1),
                       ),
                       child: widget.details[2]['avatar'] != "" &&
                               widget.details[2]['avatar'] != null
@@ -150,7 +150,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                   imageUrl: widget.details[2]['avatar'],
                                   errorWidget: (context, url, error) {
                                     return Container(
-                                      color: const Color.fromRGBO(55, 65, 80, 1),
+                                      color:
+                                          const Color.fromRGBO(55, 65, 80, 1),
                                       child: Center(
                                         child: CustomText(
                                           widget.details[2]['display_name'][0]

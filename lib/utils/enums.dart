@@ -20,7 +20,16 @@ enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
 enum ProjectView { kanban, list, calendar, spreadsheet }
 
-enum GroupBY { state, priority, labels,assignees, createdBY, project, none, stateGroups }
+enum GroupBY {
+  state,
+  priority,
+  labels,
+  assignees,
+  createdBY,
+  project,
+  none,
+  stateGroups
+}
 
 enum OrderBY { manual, lastCreated, lastUpdated, priority, startDate }
 

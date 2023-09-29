@@ -31,8 +31,8 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return cyclesProvider.cyclesState == StateEnum.loading
         ? Center(
             child: SizedBox(
@@ -52,7 +52,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycles() {
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
     return SizedBox(
       width: width,
       height: height,
@@ -90,13 +90,13 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleNaveBarItem(String title, int itemIndex) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    BoxDecoration decarationOnSelected = BoxDecoration(
+    final BoxDecoration decarationOnSelected = BoxDecoration(
         border: Border.all(width: 1, color: Colors.blueAccent),
         color: themeProvider.themeManager.primaryColour,
         borderRadius: const BorderRadius.all(Radius.circular(5)));
-    BoxDecoration decarationOnUnSelected = BoxDecoration(
+    final BoxDecoration decarationOnUnSelected = BoxDecoration(
         border: Border.all(
             width: 1, color: themeProvider.themeManager.borderSubtle01Color),
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -133,7 +133,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleBody() {
-    List<Widget> widgets = [
+    final List<Widget> widgets = [
       cycleAll(),
       cycleActive(),
       cycleUpcoming(),
@@ -144,9 +144,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleAll() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
       loading: cyclesProvider.allCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesAllData.isEmpty &&
@@ -300,7 +300,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleActive() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     if (cyclesProvider.activeCyclesState == StateEnum.loading) {
       return const LoadingWidget(widgetClass: Center(), loading: true);
     } else if (cyclesProvider.cyclesActiveData.isEmpty) {
@@ -327,9 +327,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleCompleted() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
       loading: cyclesProvider.completedCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesCompletedData.isEmpty &&
@@ -468,9 +468,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleUpcoming() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return LoadingWidget(
       loading: cyclesProvider.upcomingCyclesState == StateEnum.loading,
@@ -609,9 +609,9 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleDraft() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
       loading: cyclesProvider.draftCyclesState == StateEnum.loading,
       widgetClass: cyclesProvider.cyclesDraftData.isEmpty &&
@@ -747,12 +747,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   String checkDate({String? startDate, String? endDate}) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if ((startDate == null) || (endDate == null)) {
       return 'Draft';
     } else {
       if (DateTime.parse(startDate).isAfter(now)) {
-        Duration difference = DateTime.parse(startDate).difference(now);
+        final Duration difference = DateTime.parse(startDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -761,7 +761,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       }
       if (DateTime.parse(startDate).isBefore(now) &&
           DateTime.parse(endDate).isAfter(now)) {
-        Duration difference = DateTime.parse(endDate).difference(now);
+        final Duration difference = DateTime.parse(endDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {

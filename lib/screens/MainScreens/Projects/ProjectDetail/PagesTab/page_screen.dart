@@ -16,7 +16,7 @@ class PageScreen extends ConsumerStatefulWidget {
 class _PageScreenState extends ConsumerState<PageScreen> {
   @override
   Widget build(BuildContext context) {
-    var pageProvider = ref.watch(ProviderList.pageProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
     return LoadingWidget(
       loading: pageProvider.pagesListState == StateEnum.loading,
       widgetClass: Padding(

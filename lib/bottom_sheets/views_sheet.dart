@@ -11,11 +11,6 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class ViewsSheet extends ConsumerStatefulWidget {
-  final Enum issueCategory;
-  final ProjectView projectView;
-  final bool fromView;
-  final String? cycleId;
-  final bool isArchived;
   const ViewsSheet({
     required this.issueCategory,
     required this.projectView,
@@ -24,6 +19,11 @@ class ViewsSheet extends ConsumerStatefulWidget {
     this.isArchived = false,
     super.key,
   });
+  final Enum issueCategory;
+  final ProjectView projectView;
+  final bool fromView;
+  final String? cycleId;
+  final bool isArchived;
 
   @override
   ConsumerState<ViewsSheet> createState() => _ViewsSheetState();
@@ -89,7 +89,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
   ];
 
   bool isTagsEnabled() {
-    for (var i = 0; i < displayProperties.length; i++) {
+    for (int i = 0; i < displayProperties.length; i++) {
       if (displayProperties[i]['selected']) {
         return true;
       }
@@ -149,12 +149,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final myIssuesProvider = ref.watch(ProviderList.myIssuesProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     Widget customHorizontalLine() {
       return Container(
         color: themeProvider.themeManager.borderDisabledColor,
@@ -780,11 +780,11 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      String slug = ref
+                      final String slug = ref
                           .read(ProviderList.workspaceProvider)
                           .selectedWorkspace
                           .workspaceSlug;
-                      String projID = ref
+                      final String projID = ref
                           .read(ProviderList.projectProvider)
                           .currentProject["id"];
                       issueProvider.getProjectView(reset: true).then((value) {
@@ -819,11 +819,11 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      String slug = ref
+                      final String slug = ref
                           .read(ProviderList.workspaceProvider)
                           .selectedWorkspace
                           .workspaceSlug;
-                      String projID = ref
+                      final String projID = ref
                           .read(ProviderList.projectProvider)
                           .currentProject["id"];
                       issueProvider.issues.orderBY = Issues.toOrderBY(orderBy);
@@ -1035,7 +1035,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       }
                     }
 
-                    DisplayProperties properties = DisplayProperties(
+                    final DisplayProperties properties = DisplayProperties(
                       estimate:
                           projectProvider.currentProject['estimate'] == null
                               ? false

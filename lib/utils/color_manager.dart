@@ -18,27 +18,27 @@ class ColorManager {
 
   static Color getColorWithIndex(int index) {
     index = index % listOfColors.length;
-    Color colorToReturn = listOfColors[index];
+    final Color colorToReturn = listOfColors[index];
     return colorToReturn;
   }
 
   static Color getColorRandomly() {
-    Random randomIndex = Random();
-    Color colorToReturn =
+    final Random randomIndex = Random();
+    final Color colorToReturn =
         listOfColors[randomIndex.nextInt(listOfColors.length - 1)];
     return colorToReturn;
   }
 
   static Color getColorFromHexaDecimal(String? value) {
-    Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
-    String? colorData = value;
+    const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
+    final String? colorData = value;
     return (colorData == null || !isValidHexaCode(colorData))
         ? colorToReturnOnApiError
         : Color(int.parse("FF${colorData.replaceAll('#', '')}", radix: 16));
   }
 
   static bool isValidHexaCode(String str) {
-    RegExp hexaCode = RegExp(r"^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
+    final RegExp hexaCode = RegExp(r"^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
     return hexaCode.hasMatch(str);
   }
 }

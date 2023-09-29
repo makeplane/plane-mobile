@@ -1,13 +1,4 @@
 class UserActivityModel {
-  String? nextCursor;
-  String? prevCursor;
-  bool? nextPageResults;
-  bool? prevPageResults;
-  int? count;
-  int? totalPages;
-  dynamic extraStats;
-  List<UserActivityResult>? results;
-
   UserActivityModel({
     this.nextCursor,
     this.prevCursor,
@@ -50,31 +41,17 @@ class UserActivityModel {
       results: [],
     );
   }
+  String? nextCursor;
+  String? prevCursor;
+  bool? nextPageResults;
+  bool? prevPageResults;
+  int? count;
+  int? totalPages;
+  dynamic extraStats;
+  List<UserActivityResult>? results;
 }
 
 class UserActivityResult {
-  String? id;
-  UserDetail? actorDetail;
-  IssueDetail? issueDetail;
-  ProjectDetail? projectDetail;
-  String? createdAt;
-  String? updatedAt;
-  String? verb;
-  String? field;
-  String? oldValue;
-  String? newValue;
-  String? comment;
-  List<dynamic>? attachments;
-  String? oldIdentifier;
-  String? newIdentifier;
-  String? createdBy;
-  String? updatedBy;
-  String? project;
-  String? workspace;
-  String? issue;
-  dynamic issueComment;
-  String? actor;
-
   UserActivityResult({
     this.id,
     this.actorDetail,
@@ -126,16 +103,30 @@ class UserActivityResult {
       actor: json['actor'] as String,
     );
   }
+  String? id;
+  UserDetail? actorDetail;
+  IssueDetail? issueDetail;
+  ProjectDetail? projectDetail;
+  String? createdAt;
+  String? updatedAt;
+  String? verb;
+  String? field;
+  String? oldValue;
+  String? newValue;
+  String? comment;
+  List<dynamic>? attachments;
+  String? oldIdentifier;
+  String? newIdentifier;
+  String? createdBy;
+  String? updatedBy;
+  String? project;
+  String? workspace;
+  String? issue;
+  dynamic issueComment;
+  String? actor;
 }
 
 class UserDetail {
-  String? id;
-  String? firstName;
-  String? lastName;
-  String? avatar;
-  bool? isBot;
-  String? displayName;
-
   UserDetail({
     this.id,
     this.firstName,
@@ -144,7 +135,6 @@ class UserDetail {
     this.isBot,
     this.displayName,
   });
-
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
       id: json['id'] as String,
@@ -155,19 +145,15 @@ class UserDetail {
       displayName: json['display_name'] as String,
     );
   }
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? avatar;
+  bool? isBot;
+  String? displayName;
 }
 
 class IssueDetail {
-  String? id;
-  String? name;
-  //  String? description;
-  String? descriptionHtml;
-  String? priority;
-  String? startDate;
-  String? targetDate;
-  int? sequenceId;
-  double? sortOrder;
-
   IssueDetail({
     this.id,
     this.name,
@@ -206,17 +192,18 @@ class IssueDetail {
       );
     }
   }
+  String? id;
+  String? name;
+  //  String? description;
+  String? descriptionHtml;
+  String? priority;
+  String? startDate;
+  String? targetDate;
+  int? sequenceId;
+  double? sortOrder;
 }
 
 class ProjectDetail {
-  String? id;
-  String? identifier;
-  String? name;
-  String? coverImage;
-  String? iconProp;
-  String? emoji;
-  String? description;
-
   ProjectDetail({
     this.id,
     this.identifier,
@@ -238,4 +225,11 @@ class ProjectDetail {
       description: json['description'] as String,
     );
   }
+  String? id;
+  String? identifier;
+  String? name;
+  String? coverImage;
+  String? iconProp;
+  String? emoji;
+  String? description;
 }

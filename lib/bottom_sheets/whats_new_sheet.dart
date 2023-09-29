@@ -19,8 +19,8 @@ class WhatsNewSheet extends ConsumerStatefulWidget {
 class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
   @override
   Widget build(BuildContext context) {
-    var whatsNewProvider = ref.watch(ProviderList.whatsNewProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final whatsNewProvider = ref.watch(ProviderList.whatsNewProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return whatsNewProvider.whatsNewData == null
         ? Container(
             decoration: BoxDecoration(

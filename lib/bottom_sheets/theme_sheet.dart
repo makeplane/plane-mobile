@@ -17,7 +17,7 @@ class ThemeSheet extends ConsumerStatefulWidget {
 class _ThemeSheetState extends ConsumerState<ThemeSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(

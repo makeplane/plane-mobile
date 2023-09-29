@@ -15,11 +15,6 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
 
 class IssuesListSheet extends ConsumerStatefulWidget {
-  // bool parent;
-  final String issueId;
-  final bool createIssue;
-  // bool blocking;
-  final IssueDetailCategory type;
   const IssuesListSheet(
       {
       // required this.parent,
@@ -28,6 +23,11 @@ class IssuesListSheet extends ConsumerStatefulWidget {
       required this.type,
       // required this.blocking,
       super.key});
+  // bool parent;
+  final String issueId;
+  final bool createIssue;
+  // bool blocking;
+  final IssueDetailCategory type;
 
   @override
   ConsumerState<IssuesListSheet> createState() => _IssuesListSheetState();
@@ -57,13 +57,13 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var searchIssueProvider = ref.watch(ProviderList.searchIssueProvider);
-    var searchIssueProviderRead = ref.read(ProviderList.searchIssueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var modulesProvider = ref.read(ProviderList.modulesProvider);
+    final searchIssueProvider = ref.watch(ProviderList.searchIssueProvider);
+    final searchIssueProviderRead = ref.read(ProviderList.searchIssueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final modulesProvider = ref.read(ProviderList.modulesProvider);
     return (widget.type == IssueDetailCategory.addModuleIssue &&
                 modulesProvider.moduleIssueState == StateEnum.loading) ||
             (widget.type == IssueDetailCategory.addCycleIssue &&
@@ -628,11 +628,11 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
   }
 
   Widget checkBoxWidget(IssueDetailCategory type, int index) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var searchIssueProvider = ref.watch(ProviderList.searchIssueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final searchIssueProvider = ref.watch(ProviderList.searchIssueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     if (type == IssueDetailCategory.blocking) {
       return issuesProvider.blockingIssuesIds
               .contains(searchIssueProvider.issues[index]['id'])

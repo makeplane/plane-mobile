@@ -24,14 +24,14 @@ import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dar
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
   Ref? ref;
-  var modules = [];
-  var favModules = [];
-  var createModule = {};
+  final modules = [];
+  final favModules = [];
+  Map createModule = {};
   int cycleDetailSelectedIndex = 0;
   Map<String, dynamic> moduleDetailsData = {};
   List<String> selectedIssues = [];
   int statusIndex = -1;
-  var moduleSatatus = [
+  final moduleSatatus = [
     {
       'name': 'Backlog',
       'value': 'backlog',
@@ -75,7 +75,7 @@ class ModuleProvider with ChangeNotifier {
   bool isIssuesEmpty = false;
   int moduleDetailSelectedIndex = 0;
 
-  var createModuleState = StateEnum.empty;
+  StateEnum createModuleState = StateEnum.empty;
   StateEnum moduleState = StateEnum.empty;
   StateEnum moduleDetailState = StateEnum.empty;
   StateEnum moduleIssueState = StateEnum.loading;
@@ -117,7 +117,7 @@ class ModuleProvider with ChangeNotifier {
     }
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.listModules
             .replaceAll('\$SLUG', slug)
@@ -150,11 +150,11 @@ class ModuleProvider with ChangeNotifier {
       String? moduleId,
       required WidgetRef ref}) async {
     createModuleState = StateEnum.loading;
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.listModules
             .replaceAll('\$SLUG', slug)
@@ -190,18 +190,18 @@ class ModuleProvider with ChangeNotifier {
       {required String slug,
       required String projId,
       required String moduleId,
-      required data,
+      required Map data,
       bool disableLoading = false,
       required WidgetRef ref}) async {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     if (!disableLoading) {
       moduleDetailState = StateEnum.loading;
       notifyListeners();
     }
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
@@ -243,7 +243,7 @@ class ModuleProvider with ChangeNotifier {
     // moduleState = StateEnum.loading;
     // notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: isFav
             ? '${APIs.favouriteModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/'
@@ -273,7 +273,7 @@ class ModuleProvider with ChangeNotifier {
     deleteModuleState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
@@ -304,7 +304,7 @@ class ModuleProvider with ChangeNotifier {
     }
     moduleDetailState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
@@ -330,13 +330,13 @@ class ModuleProvider with ChangeNotifier {
       String? moduleId}) async {
     moduleIssueState = StateEnum.loading;
     notifyListeners();
-    var data = {
+    final data = {
       'issues': issues,
     };
     log(data.toString());
     //1a6b5ed6-63af-4584-8d73-d7d3cf1a5eef
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.moduleIssues
             .replaceAll(
@@ -374,7 +374,7 @@ class ModuleProvider with ChangeNotifier {
     moduleIssueState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: '${APIs.moduleIssues.replaceAll(
               '\$SLUG',
@@ -409,7 +409,7 @@ class ModuleProvider with ChangeNotifier {
     moduleIssueState = StateEnum.loading;
     notifyListeners();
     try {
-      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
       filterIssues = await issuesProvider.filterIssues(
         slug: slug,
         projID: projectId,
@@ -419,7 +419,7 @@ class ModuleProvider with ChangeNotifier {
       issuesResponse = [];
       isIssuesEmpty = true;
       if (issues.groupBY != GroupBY.none) {
-        for (var key in filterIssues.keys) {
+        for (final key in filterIssues.keys) {
           if (filterIssues[key].isNotEmpty) {
             isIssuesEmpty = false;
             break;
@@ -455,13 +455,13 @@ class ModuleProvider with ChangeNotifier {
   }
 
   List<BoardListsData> initializeBoard() {
-    var themeProvider = ref!.read(ProviderList.themeProvider);
-    var issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final themeProvider = ref!.read(ProviderList.themeProvider);
+    final issuesProvider = ref!.read(ProviderList.issuesProvider);
     int count = 0;
     issuesResponse = [];
     issues.issues = [];
     for (int j = 0; j < filterIssues.length; j++) {
-      List<Widget> items = [];
+      final List<Widget> items = [];
 
       for (int i = 0;
           filterIssues[stateOrdering[j]] != null &&
@@ -548,7 +548,7 @@ class ModuleProvider with ChangeNotifier {
       ));
     }
 
-    for (var element in issues.issues) {
+    for (final element in issues.issues) {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(
@@ -709,8 +709,8 @@ class ModuleProvider with ChangeNotifier {
           filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
 
       notifyListeners();
-      var issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
-      var response = await DioConfig().dioServe(
+      final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll(
@@ -735,8 +735,8 @@ class ModuleProvider with ChangeNotifier {
                 });
       filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
 
-      List labelDetails = [];
-      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      final List labelDetails = [];
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
       filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
           .forEach((element) {
         for (int i = 0; i < issuesProvider.labels.length; i++) {
@@ -805,7 +805,7 @@ class ModuleProvider with ChangeNotifier {
 
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.moduleLinks
                 .replaceAll(
@@ -832,7 +832,7 @@ class ModuleProvider with ChangeNotifier {
         moduleDetailsData['link_module']
             .removeWhere((element) => element['id'] == linkID);
       } else if (method == HttpMethod.put) {
-        int index = moduleDetailsData['link_module']
+        final int index = moduleDetailsData['link_module']
             .indexWhere((element) => element['id'] == linkID);
         moduleDetailsData['link_module'][index] = response.data;
       } else {

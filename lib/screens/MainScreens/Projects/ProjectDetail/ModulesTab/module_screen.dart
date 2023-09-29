@@ -17,8 +17,8 @@ class ModuleScreen extends ConsumerStatefulWidget {
 class _ModuleScreenState extends ConsumerState<ModuleScreen> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     return LoadingWidget(
       loading: modulesProvider.moduleState == StateEnum.loading,
       widgetClass: Padding(

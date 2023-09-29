@@ -12,8 +12,9 @@ class __LabelFilterState extends ConsumerState<_LabelFilter> {
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
-    IssuesProvider issuesProvider = ref.watch(ProviderList.issuesProvider);
-    MyIssuesProvider myIssuesProvider =
+    final IssuesProvider issuesProvider =
+        ref.watch(ProviderList.issuesProvider);
+    final MyIssuesProvider myIssuesProvider =
         ref.watch(ProviderList.myIssuesProvider);
     return CustomExpansionTile(
       title: 'Labels',
@@ -23,13 +24,12 @@ class __LabelFilterState extends ConsumerState<_LabelFilter> {
                   : issuesProvider.labels)
               .map((e) => GestureDetector(
                     onTap: () {
-                      setState(() {
-                        if (widget.state.filters.labels.contains(e['id'])) {
-                          widget.state.filters.labels.remove(e['id']);
-                        } else {
-                          widget.state.filters.labels.add(e['id']);
-                        }
-                      });
+                      if (widget.state.filters.labels.contains(e['id'])) {
+                        widget.state.filters.labels.remove(e['id']);
+                      } else {
+                        widget.state.filters.labels.add(e['id']);
+                      }
+                      widget.state.setState();
                     },
                     child: RectangularChip(
                       ref: ref,

@@ -29,7 +29,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var themeProv = ref.read(ProviderList.themeProvider);
+      final themeProv = ref.read(ProviderList.themeProvider);
       AppTheme.setUiOverlayStyle(
           theme: themeProv.theme, themeManager: themeProv.themeManager);
     });
@@ -38,9 +38,9 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var memberprofileProvider = ref.watch(ProviderList.memberProfileProvider);
-    ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final memberprofileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
 
     return LoadingWidget(
       loading: memberprofileProvider.getMemberProfileState == StateEnum.loading,
@@ -70,12 +70,12 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
         itemCount: memberprofileProvider.memberProfile['project_data'].length,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemBuilder: (ctx, index) {
-          int assignedIssues = memberprofileProvider
+          final int assignedIssues = memberprofileProvider
               .memberProfile['project_data'][index]['assigned_issues'];
-          int completedIssues = memberprofileProvider
+          final int completedIssues = memberprofileProvider
               .memberProfile['project_data'][index]['completed_issues'];
 
-          int percentage = assignedIssues == 0
+          final int percentage = assignedIssues == 0
               ? 0
               : double.parse(
                       ((completedIssues / assignedIssues) * 100).toString())
@@ -479,7 +479,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                 top: 20,
                 child: GestureDetector(
                   onTap: () async {
-                    Map<String, dynamic> url = {};
+                    final Map<String, dynamic> url = {};
                     await showModalBottomSheet(
                         isScrollControlled: true,
                         enableDrag: true,

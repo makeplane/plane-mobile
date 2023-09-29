@@ -18,17 +18,16 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.startLastWeek) {
-                  widget.state.filters.startDate = [];
-                } else {
-                  widget.state.filters.startDate = [
-                    '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
-                    '${DateTime.now().toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.startDatesEnabled();
-              });
+              if (widget.state.startLastWeek) {
+                widget.state.filters.startDate = [];
+              } else {
+                widget.state.filters.startDate = [
+                  '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
+                  '${DateTime.now().toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.startDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -48,17 +47,16 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.startTwoWeeks) {
-                  widget.state.filters.startDate = [];
-                } else {
-                  widget.state.filters.startDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.startDatesEnabled();
-              });
+              if (widget.state.startTwoWeeks) {
+                widget.state.filters.startDate = [];
+              } else {
+                widget.state.filters.startDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.startDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -78,17 +76,16 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.startOneMonth) {
-                  widget.state.filters.startDate = [];
-                } else {
-                  widget.state.filters.startDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.startDatesEnabled();
-              });
+              if (widget.state.startOneMonth) {
+                widget.state.filters.startDate = [];
+              } else {
+                widget.state.filters.startDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.startDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -108,17 +105,16 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (widget.state.startTwoMonths) {
-                  widget.state.filters.startDate = [];
-                } else {
-                  widget.state.filters.startDate = [
-                    '${DateTime.now().toString().split(' ')[0]};after',
-                    '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
-                  ];
-                }
-                widget.state.startDatesEnabled();
-              });
+              if (widget.state.startTwoMonths) {
+                widget.state.filters.startDate = [];
+              } else {
+                widget.state.filters.startDate = [
+                  '${DateTime.now().toString().split(' ')[0]};after',
+                  '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
+                ];
+              }
+              widget.state.startDatesEnabled();
+              widget.state.setState();
             },
             child: RectangularChip(
               ref: ref,
@@ -220,7 +216,9 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
                                   color: themeProvider.themeManager
                                       .primaryBackgroundDefaultColor,
                                   ontap: () {
-                                    widget.state.filters.targetDate = [];
+                                    widget.state.filters.startDate = [];
+                                    widget.state.startDatesEnabled();
+                                    widget.state.setState();
                                     Navigator.pop(context);
                                   },
                                   textColor: themeProvider
@@ -242,13 +240,13 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
                                           toastType: ToastType.warning);
                                       return;
                                     }
-                                    setState(() {
-                                      widget.state.filters.startDate = [
-                                        '${widget.state._startRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
-                                        '${widget.state._startRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
-                                      ];
-                                      widget.state.targetDatesEnabled();
-                                    });
+
+                                    widget.state.filters.startDate = [
+                                      '${widget.state._startRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
+                                      '${widget.state._startRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
+                                    ];
+                                    widget.state.startDatesEnabled();
+                                    widget.state.setState();
                                     Navigator.pop(context);
                                   },
                                   textColor: Colors.white,

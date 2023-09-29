@@ -1,21 +1,12 @@
 class GlobalSearchModal {
-  final List<Workspace> workspaces;
-  final List<Project> projects;
-  final List<Issue> issues;
-  final List<Cycle> cycles;
-  final List<Module> modules;
-  final List<View> views;
-  final List<Page> pages;
-
-  GlobalSearchModal({
-    required this.workspaces,
-    required this.projects,
-    required this.issues,
-    required this.cycles,
-    required this.modules,
-    required this.views,
-    required this.pages
-  });
+  GlobalSearchModal(
+      {required this.workspaces,
+      required this.projects,
+      required this.issues,
+      required this.cycles,
+      required this.modules,
+      required this.views,
+      required this.pages});
   factory GlobalSearchModal.initialize() {
     return GlobalSearchModal(
       workspaces: [],
@@ -53,13 +44,16 @@ class GlobalSearchModal {
           .toList(),
     );
   }
+  final List<Workspace> workspaces;
+  final List<Project> projects;
+  final List<Issue> issues;
+  final List<Cycle> cycles;
+  final List<Module> modules;
+  final List<View> views;
+  final List<Page> pages;
 }
 
 class Workspace {
-  final String name;
-  final String id;
-  final String slug;
-
   Workspace({
     required this.name,
     required this.id,
@@ -73,14 +67,12 @@ class Workspace {
       slug: json['slug'],
     );
   }
+  final String name;
+  final String id;
+  final String slug;
 }
 
 class Project {
-  final String name;
-  final String id;
-  final String identifier;
-  final String workspaceSlug;
-
   Project({
     required this.name,
     required this.id,
@@ -96,16 +88,13 @@ class Project {
       workspaceSlug: json['workspace__slug'],
     );
   }
+  final String name;
+  final String id;
+  final String identifier;
+  final String workspaceSlug;
 }
 
 class Issue {
-  final String name;
-  final String id;
-  final int sequenceId;
-  final String projectIdentifier;
-  final String projectId;
-  final String workspaceSlug;
-
   Issue({
     required this.name,
     required this.id,
@@ -125,15 +114,15 @@ class Issue {
       workspaceSlug: json['workspace__slug'],
     );
   }
+  final String name;
+  final String id;
+  final int sequenceId;
+  final String projectIdentifier;
+  final String projectId;
+  final String workspaceSlug;
 }
 
 class Cycle {
-  final String name;
-  final String id;
-  final String projectId;
-  final String projectIdentifier;
-  final String workspaceSlug;
-
   Cycle({
     required this.name,
     required this.id,
@@ -151,15 +140,14 @@ class Cycle {
       workspaceSlug: json['workspace__slug'],
     );
   }
-}
-
-class Module {
   final String name;
   final String id;
   final String projectId;
   final String projectIdentifier;
   final String workspaceSlug;
+}
 
+class Module {
   Module({
     required this.name,
     required this.id,
@@ -177,15 +165,14 @@ class Module {
       workspaceSlug: json['workspace__slug'],
     );
   }
-}
-
-class View {
   final String name;
   final String id;
   final String projectId;
   final String projectIdentifier;
   final String workspaceSlug;
+}
 
+class View {
   View({
     required this.name,
     required this.id,
@@ -203,15 +190,14 @@ class View {
       workspaceSlug: json['workspace__slug'],
     );
   }
-}
-
-class Page {
   final String name;
   final String id;
   final String projectId;
   final String projectIdentifier;
   final String workspaceSlug;
+}
 
+class Page {
   Page({
     required this.name,
     required this.id,
@@ -229,4 +215,9 @@ class Page {
       workspaceSlug: json['workspace__slug'],
     );
   }
+  final String name;
+  final String id;
+  final String projectId;
+  final String projectIdentifier;
+  final String workspaceSlug;
 }

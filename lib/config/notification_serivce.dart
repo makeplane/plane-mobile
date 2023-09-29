@@ -7,7 +7,7 @@ class NotificationsServices {
       FlutterLocalNotificationsPlugin();
 
   final AndroidInitializationSettings _androidInitializationSettings =
-      const  AndroidInitializationSettings('app_logo');
+      const AndroidInitializationSettings('app_logo');
 
   void initialiseNotifications() async {
     await flutterLocalNotificationsPlugin.initialize(
@@ -20,7 +20,7 @@ class NotificationsServices {
   void sendNotification(String title, String body) async {
     log('sending notification.....');
 
-    NotificationDetails notificationDetails = const NotificationDetails(
+    const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'channel id',
         'channel name',

@@ -62,8 +62,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
   List<String> dropDownItems = ['5', '10', '25', '50'];
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     // imageUrl = ref
     //     .read(ProviderList.workspaceProvider)
     //     .selectedWorkspace
@@ -170,7 +170,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                       builder: (ctx) {
                                         return const WorkspaceLogo();
                                       });
-                                  // var file = await ImagePicker.platform
+                                  // final file = await ImagePicker.platform
                                   //     .pickImage(source: ImageSource.gallery);
                                   // if (file != null) {
                                   //   setState(() {
@@ -589,11 +589,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
   }
 
   bool checkUserAccess() {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    List members = workspaceProvider.workspaceMembers;
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final List members = workspaceProvider.workspaceMembers;
     bool hasAccess = false;
-    for (var element in members) {
+    for (final element in members) {
       if ((element['member']['id'] == profileProvider.userProfile.id) &&
           (element['role'] == 20)) {
         hasAccess = true;
@@ -603,11 +603,11 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
   }
 
   Role getRole() {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     int? userRole;
-    List members = workspaceProvider.workspaceMembers;
-    for (var element in members) {
+    final List members = workspaceProvider.workspaceMembers;
+    for (final element in members) {
       if (element['member']['id'] == profileProvider.userProfile.id) {
         userRole = element['role'];
       }

@@ -31,10 +31,10 @@ class _SignUpState extends ConsumerState<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

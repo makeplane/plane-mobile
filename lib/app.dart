@@ -28,7 +28,7 @@ class _AppState extends ConsumerState<App> {
     final ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
     final WorkspaceProvider workspaceProv =
         ref.watch(ProviderList.workspaceProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
         body: (profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
@@ -71,9 +71,9 @@ class _AppState extends ConsumerState<App> {
   }
 
   Future getData() async {
-    var prov = ref.read(ProviderList.profileProvider);
-    var projectProv = ref.read(ProviderList.projectProvider);
-    var dashProv = ref.read(ProviderList.dashboardProvider);
+    final prov = ref.read(ProviderList.profileProvider);
+    final projectProv = ref.read(ProviderList.projectProvider);
+    final dashProv = ref.read(ProviderList.dashboardProvider);
     final WorkspaceProvider workspaceProv =
         ref.watch(ProviderList.workspaceProvider);
     prov.getProfile().then((value) {

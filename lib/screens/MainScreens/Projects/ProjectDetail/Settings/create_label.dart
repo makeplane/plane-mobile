@@ -12,16 +12,16 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class CreateLabel extends ConsumerStatefulWidget {
-  final String? label;
-  final String? labelColor;
-  final CRUD method;
-  final String? labelId;
   const CreateLabel(
       {this.label,
       this.labelColor,
       required this.method,
       this.labelId,
       super.key});
+  final String? label;
+  final String? labelColor;
+  final CRUD method;
+  final String? labelId;
 
   @override
   ConsumerState<CreateLabel> createState() => _CreateLabelState();
@@ -29,7 +29,7 @@ class CreateLabel extends ConsumerStatefulWidget {
 
 class _CreateLabelState extends ConsumerState<CreateLabel> {
   TextEditingController lableController = TextEditingController();
-  var colorController = TextEditingController();
+  final colorController = TextEditingController();
   bool showColoredBox = false;
 
   @override
@@ -43,8 +43,8 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     return GestureDetector(
       onTap: () {
         setState(() {

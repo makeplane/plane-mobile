@@ -54,7 +54,7 @@ void main() async {
       await setREF(tester);
       when(() => mockDashboardService.getDashboardData(url: any(named: 'url')))
           .thenAnswer((_) async => {});
-      var getDashboard = mockDashBoardProvider.getDashboard();
+      final getDashboard = mockDashBoardProvider.getDashboard();
       expect(mockDashBoardProvider.getDashboardState, StateEnum.loading);
       await getDashboard;
       expect(mockDashBoardProvider.dashboardData, isA<Map>());

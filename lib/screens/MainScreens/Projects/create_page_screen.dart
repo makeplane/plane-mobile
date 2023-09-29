@@ -13,9 +13,9 @@ class CreatePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
-    TextEditingController pageTitleController = TextEditingController();
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
+    final TextEditingController pageTitleController = TextEditingController();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

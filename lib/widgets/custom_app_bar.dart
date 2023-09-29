@@ -6,15 +6,6 @@ import 'package:plane/utils/enums.dart';
 import 'custom_text.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
-  final Function onPressed;
-  final String text;
-  final List<Widget>? actions;
-  final bool leading;
-  final bool elevation;
-  final bool centerTitle;
-  final IconData icon;
-  final FontStyle fontType;
-  final Color? textColor;
   const CustomAppBar({
     super.key,
     required this.onPressed,
@@ -27,10 +18,19 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.fontType = FontStyle.H6,
     this.actions,
   });
+  final Function onPressed;
+  final String text;
+  final List<Widget>? actions;
+  final bool leading;
+  final bool elevation;
+  final bool centerTitle;
+  final IconData icon;
+  final FontStyle fontType;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return AppBar(
       elevation: elevation ? 1 : 0,
       shadowColor: themeProvider.themeManager.borderSubtle01Color,

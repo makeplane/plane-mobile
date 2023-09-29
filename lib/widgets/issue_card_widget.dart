@@ -16,13 +16,6 @@ import 'custom_rich_text.dart';
 import 'custom_text.dart';
 
 class IssueCardWidget extends ConsumerStatefulWidget {
-  final int cardIndex;
-  final int listIndex;
-  final Enum issueCategory;
-  final bool fromMyIssues;
-  final bool isArchive;
-  final PreviousScreen from;
-
   const IssueCardWidget(
       {required this.cardIndex,
       required this.listIndex,
@@ -32,6 +25,13 @@ class IssueCardWidget extends ConsumerStatefulWidget {
       this.fromMyIssues = false,
       super.key});
 
+  final int cardIndex;
+  final int listIndex;
+  final Enum issueCategory;
+  final bool fromMyIssues;
+  final bool isArchive;
+  final PreviousScreen from;
+
   @override
   ConsumerState<IssueCardWidget> createState() => _IssueCardWidgetState();
 }
@@ -39,7 +39,7 @@ class IssueCardWidget extends ConsumerStatefulWidget {
 class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     dynamic provider;
     if (widget.issueCategory == IssueCategory.cycleIssues) {
       provider = ref.watch(ProviderList.cyclesProvider);
@@ -180,10 +180,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
   }
 
   Widget kanbanCard() {
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     // IssuesProvider provider = widget.cycleIssues ? ref.watch(ProviderList.cyclesProvider) : ref.watch(ProviderList.issuesProvider);
     dynamic provider;
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
 
     if (widget.issueCategory == IssueCategory.cycleIssues) {
       provider = ref.watch(ProviderList.cyclesProvider);
@@ -817,7 +817,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
   }
 
   Widget listCard() {
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     dynamic provider;
     if (widget.issueCategory == IssueCategory.cycleIssues) {
       provider = ref.watch(ProviderList.cyclesProvider);

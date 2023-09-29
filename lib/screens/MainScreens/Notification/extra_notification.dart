@@ -7,13 +7,14 @@ import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
 class ExtraNotifications extends ConsumerStatefulWidget {
-  final String title;
-  final String type;
   const ExtraNotifications({
     super.key,
     required this.title,
     required this.type,
   });
+
+  final String title;
+  final String type;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -23,7 +24,7 @@ class ExtraNotifications extends ConsumerStatefulWidget {
 class _ExtraNotificationsState extends ConsumerState<ExtraNotifications> {
   @override
   Widget build(BuildContext context) {
-    var notificationProvider = ref.watch(ProviderList.notificationProvider);
+    final notificationProvider = ref.watch(ProviderList.notificationProvider);
 
     return Scaffold(
       appBar: CustomAppBar(

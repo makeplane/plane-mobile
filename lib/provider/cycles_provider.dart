@@ -57,16 +57,16 @@ class CyclesProvider with ChangeNotifier {
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
   List stateOrdering = [];
   List<String> loadingCycleId = [];
-  setState() {
+  void setState() {
     notifyListeners();
   }
 
-  changeTabIndex(int index) {
+  void changeTabIndex(int index) {
     cycleDetailSelectedIndex = index;
     notifyListeners();
   }
 
-  clearData() {
+  void clearData() {
     cyclesAllData = [];
     cycleFavoriteData = [];
     cycleUpcomingFavoriteData = [];
@@ -86,14 +86,14 @@ class CyclesProvider with ChangeNotifier {
     required String projectId,
     required Map<String, dynamic> data,
   }) async {
-    var url = APIs.dateCheck
+    final url = APIs.dateCheck
         .replaceFirst('\$SLUG', slug)
         .replaceFirst('\$PROJECTID', projectId);
 
     try {
       cyclesState = StateEnum.loading;
       notifyListeners();
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: true,
@@ -122,8 +122,8 @@ class CyclesProvider with ChangeNotifier {
       Map<String, dynamic>? data,
       required String cycleId,
       required WidgetRef ref}) async {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     if (query == 'all') {
       allCyclesState = StateEnum.loading;
     } else if (query == 'current') {
@@ -135,7 +135,7 @@ class CyclesProvider with ChangeNotifier {
     } else if (query == 'draft') {
       draftCyclesState = StateEnum.loading;
     }
-    var url = query == ''
+    final url = query == ''
         ? APIs.cycles
             .replaceFirst('\$SLUG', slug)
             .replaceFirst('\$PROJECTID', projectId)
@@ -146,7 +146,7 @@ class CyclesProvider with ChangeNotifier {
       //   cyclesState = StateEnum.loading;
       //   notifyListeners();
       // }
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: data != null ? true : false,
@@ -270,9 +270,9 @@ class CyclesProvider with ChangeNotifier {
         cyclesDetailState = StateEnum.loading;
         notifyListeners();
       }
-      var url =
+      final url =
           '${APIs.cycles.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$cycleId/';
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: data != null ? true : false,
@@ -315,7 +315,7 @@ class CyclesProvider with ChangeNotifier {
       required String query,
       bool disableLoading = false,
       required WidgetRef ref}) async {
-    var url = !isFavorite
+    final url = !isFavorite
         ? APIs.toggleFavoriteCycle
             .replaceFirst('\$SLUG', slug)
             .replaceFirst('\$PROJECTID', projectId)
@@ -328,7 +328,7 @@ class CyclesProvider with ChangeNotifier {
       loadingCycleId.add(cycleId);
       notifyListeners();
 
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: !isFavorite ? true : false,
@@ -378,14 +378,14 @@ class CyclesProvider with ChangeNotifier {
   }
 
   List<BoardListsData> initializeBoard() {
-    var themeProvider = ref!.read(ProviderList.themeProvider);
-    var issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final themeProvider = ref!.read(ProviderList.themeProvider);
+    final issuesProvider = ref!.read(ProviderList.issuesProvider);
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
     for (int j = 0; j < stateOrdering.length; j++) {
-      List<Widget> items = [];
+      final List<Widget> items = [];
 
       for (int i = 0;
           filterIssues[stateOrdering[j]] != null &&
@@ -473,7 +473,7 @@ class CyclesProvider with ChangeNotifier {
       ));
     }
 
-    for (var element in issues.issues) {
+    for (final element in issues.issues) {
       //  log(issues.groupBY.toString());
 
       element.leading = issues.groupBY == GroupBY.priority
@@ -637,9 +637,9 @@ class CyclesProvider with ChangeNotifier {
           filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
 
       notifyListeners();
-      var issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
       // log(issue.toString());
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll(
@@ -664,8 +664,8 @@ class CyclesProvider with ChangeNotifier {
                 });
       filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
 
-      List labelDetails = [];
-      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      final List labelDetails = [];
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
       filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
           .forEach((element) {
         for (int i = 0; i < issuesProvider.labels.length; i++) {
@@ -721,7 +721,7 @@ class CyclesProvider with ChangeNotifier {
       String? cycleId}) async {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
-    var data = {
+    final data = {
       'issues': issues,
     };
 
@@ -812,7 +812,7 @@ class CyclesProvider with ChangeNotifier {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
     try {
-      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
       filterIssues = await issuesProvider.filterIssues(
         slug: slug,
         projID: projectId,
@@ -824,7 +824,7 @@ class CyclesProvider with ChangeNotifier {
       issuesResponse = [];
       isIssuesEmpty = true;
       if (issues.groupBY != GroupBY.none) {
-        for (var key in filterIssues.keys) {
+        for (final key in filterIssues.keys) {
           if (filterIssues[key].isNotEmpty) {
             isIssuesEmpty = false;
             break;
@@ -876,7 +876,7 @@ class CyclesProvider with ChangeNotifier {
     try {
       transferIssuesState = StateEnum.loading;
       notifyListeners();
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.transferIssues
             .replaceAll(

@@ -18,7 +18,7 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
 
   void setHeight() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final RenderBox box = context.findRenderObject() as RenderBox;
       _height = box.size.height;
       if (_count > 0) {
         setState(() {
@@ -36,7 +36,7 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
       {LoadingType loadingType = LoadingType.translucent,
       bool allowError = true}) {
     errorAllowed = allowError;
-    for (var state in states) {
+    for (final state in states) {
       if (state == StateEnum.loading) {
         return loadingType;
       } else if (state == StateEnum.error || state == StateEnum.failed) {
@@ -51,7 +51,7 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     themeManager = ref.read(ProviderList.themeProvider).themeManager;
     loadingType = getLoading(ref);
     setHeight();
-    if(loadingType==LoadingType.error && !errorAllowed){
+    if (loadingType == LoadingType.error && !errorAllowed) {
       loadingType = LoadingType.none;
     }
     return loadingType == LoadingType.error

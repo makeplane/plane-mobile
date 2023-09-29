@@ -1,29 +1,4 @@
 class ProjectDetailModel {
-  String? id;
-  Workspace? workspace;
-  Map<String,dynamic>? defaultAssignee;
-  Map<String,dynamic>? projectLead;
-  bool? isFavorite;
-  String? createdAt;
-  String? updatedAt;
-  String? name;
-  String? description;
-  String? descriptionText;
-  String? descriptionHtml;
-  int? network;
-  String? identifier;
-  String? emoji;
-  String? iconProp;
-  bool? moduleView;
-  bool? cycleView;
-  bool? issueViewsView;
-  bool? pageView;
-  bool? inboxView;
-  String? coverImage;
-  String? createdBy;
-  String? updatedBy;
-  String? estimate;
-
   ProjectDetailModel(
       {this.id,
       this.workspace,
@@ -78,6 +53,30 @@ class ProjectDetailModel {
     updatedBy = json['updated_by'];
     estimate = json['estimate'];
   }
+  String? id;
+  Workspace? workspace;
+  Map<String, dynamic>? defaultAssignee;
+  Map<String, dynamic>? projectLead;
+  bool? isFavorite;
+  String? createdAt;
+  String? updatedAt;
+  String? name;
+  String? description;
+  String? descriptionText;
+  String? descriptionHtml;
+  int? network;
+  String? identifier;
+  String? emoji;
+  String? iconProp;
+  bool? moduleView;
+  bool? cycleView;
+  bool? issueViewsView;
+  bool? pageView;
+  bool? inboxView;
+  String? coverImage;
+  String? createdBy;
+  String? updatedBy;
+  String? estimate;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
@@ -112,17 +111,6 @@ class ProjectDetailModel {
 }
 
 class Workspace {
-  String? id;
-  Owner? owner;
-  String? createdAt;
-  String? updatedAt;
-  String? name;
-  String? logo;
-  String? slug;
-  int? companySize;
-  String? createdBy;
-  String? updatedBy;
-
   Workspace(
       {this.id,
       this.owner,
@@ -147,6 +135,16 @@ class Workspace {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
   }
+  String? id;
+  Owner? owner;
+  String? createdAt;
+  String? updatedAt;
+  String? name;
+  String? logo;
+  String? slug;
+  int? companySize;
+  String? createdBy;
+  String? updatedBy;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
@@ -167,13 +165,6 @@ class Workspace {
 }
 
 class Owner {
-  String? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? avatar;
-  bool? isBot;
-
   Owner(
       {this.id,
       this.firstName,
@@ -190,6 +181,12 @@ class Owner {
     avatar = json['avatar'];
     isBot = json['is_bot'];
   }
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? avatar;
+  bool? isBot;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};

@@ -23,7 +23,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
   @override
   void initState() {
     super.initState();
-    var issueProvider = ref.read(ProviderList.issuesProvider);
+    final issueProvider = ref.read(ProviderList.issuesProvider);
     issueProvider.tempProjectView = issueProvider.issues.projectView;
     issueProvider.issues.projectView = ProjectView.list;
 
@@ -40,9 +40,9 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueState.name);
     if (issueProvider.issues.projectView == ProjectView.list) {
       issueProvider.initializeBoard(

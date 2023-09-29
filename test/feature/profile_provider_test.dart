@@ -22,7 +22,7 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 1500));
       return Left(UserProfile.initialize(firstName: 'TESTING'));
     });
-    var getProfile = profileProvider.getProfile();
+    final getProfile = profileProvider.getProfile();
     expect(profileProvider.getProfileState, StateEnum.loading);
     await getProfile;
     expect(profileProvider.getProfileState, StateEnum.success);
@@ -34,7 +34,7 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 1500));
       return Right(DioException(requestOptions: RequestOptions()));
     });
-    var getProfile = profileProvider.getProfile();
+    final getProfile = profileProvider.getProfile();
     expect(profileProvider.getProfileState, StateEnum.loading);
     await getProfile;
     expect(profileProvider.getProfileState, StateEnum.error);

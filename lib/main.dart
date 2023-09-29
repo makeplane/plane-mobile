@@ -81,7 +81,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           if (workspaceProv.workspaces.isEmpty) {
             return;
           }
-          var theme = profileProvider.userProfile.theme;
+          final theme = profileProvider.userProfile.theme;
 
           if (profileProvider.userProfile.theme != null) {
             if (profileProvider.userProfile.theme!['theme'] ==
@@ -162,12 +162,12 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var profileProvider = ref.read(ProviderList.profileProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
 
     if (profileProvider.userProfile.theme != null &&
         profileProvider.userProfile.theme!['theme'] == PlaneKeys.SYSTEM_THEME) {
-      var theme = profileProvider.userProfile.theme;
+      final theme = profileProvider.userProfile.theme;
 
       theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
       log(theme.toString());

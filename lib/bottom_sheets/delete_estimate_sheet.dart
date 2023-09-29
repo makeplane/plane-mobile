@@ -7,13 +7,13 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_text.dart';
 
 class DeleteEstimateSheet extends ConsumerStatefulWidget {
-  final String estimateName;
-  final String estimateId;
   const DeleteEstimateSheet({
     super.key,
     required this.estimateName,
     required this.estimateId,
   });
+  final String estimateName;
+  final String estimateId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

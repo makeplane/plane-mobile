@@ -36,17 +36,17 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
     super.initState();
   }
 
-  var height = 0.0;
+  double height = 0.0;
   TextEditingController search = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var pageProvider = ref.watch(ProviderList.pageProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final pageProvider = ref.watch(ProviderList.pageProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(
@@ -166,7 +166,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                       ref: ref);
                   if (pageProvider.blockSheetState == StateEnum.success) {
                     pageProvider.selectedLabels.clear();
-                    for (var element in (pageProvider.pages[
+                    for (final element in (pageProvider.pages[
                             pageProvider.selectedFilter]![widget.pageIndex]
                         ['label_details'] as List)) {
                       pageProvider.selectedLabels.add(element['id']);

@@ -6,13 +6,13 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class LeadSheet extends ConsumerStatefulWidget {
-  final bool fromModuleDetail;
-  final bool fromCycleDetail;
   const LeadSheet({
     super.key,
     this.fromModuleDetail = false,
     this.fromCycleDetail = false,
   });
+  final bool fromModuleDetail;
+  final bool fromCycleDetail;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LeadSheetState();
@@ -21,9 +21,9 @@ class LeadSheet extends ConsumerStatefulWidget {
 class _LeadSheetState extends ConsumerState<LeadSheet> {
   @override
   Widget build(BuildContext context) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -191,8 +191,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
   }
 
   Widget createIsseuSelectedMembersWidget(int idx) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return (widget.fromCycleDetail
             ? (ref.read(ProviderList.cyclesProvider).currentCycle['owned_by']
                     ['id'] ==

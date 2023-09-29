@@ -15,10 +15,10 @@ class ImportExportCancel extends ConsumerStatefulWidget {
 }
 
 class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
-  var selected = 0;
+  int selected = 0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       //backgroundColor: Colors.white,
       appBar: CustomAppBar(
@@ -233,7 +233,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
     );
   }
 
-  upload(ThemeProvider themeProvider) {
+  Widget upload(ThemeProvider themeProvider) {
     return Column(
       children: [
         Container(

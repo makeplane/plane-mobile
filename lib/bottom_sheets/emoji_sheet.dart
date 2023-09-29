@@ -21,7 +21,7 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
   bool showEMOJI = false;
   bool showColor = false;
   List<String> emojisWidgets = [];
-  generateEmojis() {
+  void generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
       setState(() {
         emojisWidgets.add(emojis[i]);
@@ -51,7 +51,7 @@ class _EmojiSheetState extends ConsumerState<EmojiSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

@@ -5,79 +5,6 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 
 class ThemeManager {
-  final THEME theme;
-  // TEXT COLORS ///
-  late Color primaryTextColor;
-  late Color secondaryTextColor;
-  late Color tertiaryTextColor;
-  late Color placeholderTextColor;
-  late Color textonColor;
-  late Color textOnColorDisabled;
-  late Color textErrorColor;
-  late Color textWarningColor;
-  late Color textSuccessColor;
-  late Color textdisabledColor;
-  late Color disabledButtonColor;
-
-  // TextField Decoration
-  late InputDecoration textFieldDecoration;
-  late TextStyle textFieldTextStyle;
-
-  ///BACKGROUND COLORS///
-  late Color primaryColour;
-  late Color primaryBackgroundDefaultColor;
-  late Color secondaryBackgroundDefaultColor;
-  late Color tertiaryBackgroundDefaultColor;
-  late Color borderSubtle00Color;
-  late Color borderSubtle01Color;
-  late Color borderStrong01Color;
-  late Color borderDisabledColor;
-
-  //late Color borderStrong01Color;
-  late Color secondaryIcon;
-  late Color primaryBackgroundSelectedColour;
-  late Color secondaryBackgroundSelectedColor;
-  late Color secondaryBackgroundActiveColor;
-
-  late Color primaryToastBackgroundColor;
-  late Color successBackgroundColor;
-
-  late Color toastDefaultColor;
-  late Color toastSuccessColor;
-  late Color toastWarningColor;
-  late Color toastErrorColor;
-  late Color toastDefaultBorderColor = const Color.fromRGBO(63, 118, 255, 1);
-  late Color toastSuccessBorderColor = const Color.fromRGBO(34, 197, 94, 1);
-  late Color toastWarningBorderColor = const Color.fromRGBO(245, 158, 11, 1);
-  late Color toastErrorBorderColor = const Color.fromRGBO(220, 38, 38, 1);
-
-  late Color shadowColorXS;
-  late List<BoxShadow> shadowXXS;
-  late List<BoxShadow> shadowBottomControlButtons;
-
-  late ThemeData datePickerThemeData;
-  late ThemeData timePickerThemeData;
-
-  // Color toastDefaultColor = Color.fromRGBO(236, 241, 255, 1);
-
-  Color convertHexToSpecificShade({required int shade, required Color color}) {
-    if (shade <= 100) {
-      var decimalValue = (100 - shade) / 100;
-      var newR = (color.red + (255 - color.red) * decimalValue).floor();
-      var newG = (color.green + (255 - color.green) * decimalValue).floor();
-      var newB = (color.blue + (255 - color.blue) * decimalValue).floor();
-      return Color.fromRGBO(newR, newG, newB, 1);
-    } else {
-      var decimalValue = 1 - ((shade - 100) / 100) / 10;
-
-      var newR = (color.red * decimalValue).ceil();
-      var newG = (color.green * decimalValue).ceil();
-      var newB = (color.blue * decimalValue).ceil();
-
-      return Color.fromRGBO(newR, newG, newB, 1);
-    }
-  }
-
   ThemeManager(this.theme) {
     primaryTextColor = theme == THEME.light
         ? lightPrimaryTextColor
@@ -140,29 +67,41 @@ class ThemeManager {
                     ? lightBorderDisabledColor
                     : convertHexToSpecificShade(
                         shade: 150, color: customBackgroundColor);
-    toastDefaultColor =
-        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark))
-            ? toastDefaultColorDark
-            : toastDefaultColorlight;
+    toastDefaultColor = (theme == THEME.dark ||
+            theme == THEME.darkHighContrast ||
+            (theme == THEME.systemPreferences &&
+                SchedulerBinding
+                        .instance.platformDispatcher.platformBrightness ==
+                    Brightness.dark))
+        ? toastDefaultColorDark
+        : toastDefaultColorlight;
 
-    toastSuccessColor =
-        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark))
-            ? toastSuccessColorDark
-            : toastSuccessColorlight;
+    toastSuccessColor = (theme == THEME.dark ||
+            theme == THEME.darkHighContrast ||
+            (theme == THEME.systemPreferences &&
+                SchedulerBinding
+                        .instance.platformDispatcher.platformBrightness ==
+                    Brightness.dark))
+        ? toastSuccessColorDark
+        : toastSuccessColorlight;
 
-    toastWarningColor =
-        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark))
-            ? toastkWarningColorDark
-            : toastWarningColorlight;
+    toastWarningColor = (theme == THEME.dark ||
+            theme == THEME.darkHighContrast ||
+            (theme == THEME.systemPreferences &&
+                SchedulerBinding
+                        .instance.platformDispatcher.platformBrightness ==
+                    Brightness.dark))
+        ? toastkWarningColorDark
+        : toastWarningColorlight;
 
-    toastErrorColor =
-        (theme == THEME.dark || theme == THEME.darkHighContrast || (theme == THEME.systemPreferences && SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark))
-            ? toastErrorColorDark 
-            : toastErrorCololight;
+    toastErrorColor = (theme == THEME.dark ||
+            theme == THEME.darkHighContrast ||
+            (theme == THEME.systemPreferences &&
+                SchedulerBinding
+                        .instance.platformDispatcher.platformBrightness ==
+                    Brightness.dark))
+        ? toastErrorColorDark
+        : toastErrorCololight;
 
     textFieldTextStyle = GoogleFonts.inter(
         fontSize: 14,
@@ -609,5 +548,77 @@ class ThemeManager {
                             spreadRadius: 0),
                       ]
                     : [];
+  }
+  final THEME theme;
+  // TEXT COLORS ///
+  late Color primaryTextColor;
+  late Color secondaryTextColor;
+  late Color tertiaryTextColor;
+  late Color placeholderTextColor;
+  late Color textonColor;
+  late Color textOnColorDisabled;
+  late Color textErrorColor;
+  late Color textWarningColor;
+  late Color textSuccessColor;
+  late Color textdisabledColor;
+  late Color disabledButtonColor;
+
+  // TextField Decoration
+  late InputDecoration textFieldDecoration;
+  late TextStyle textFieldTextStyle;
+
+  ///BACKGROUND COLORS///
+  late Color primaryColour;
+  late Color primaryBackgroundDefaultColor;
+  late Color secondaryBackgroundDefaultColor;
+  late Color tertiaryBackgroundDefaultColor;
+  late Color borderSubtle00Color;
+  late Color borderSubtle01Color;
+  late Color borderStrong01Color;
+  late Color borderDisabledColor;
+
+  //late Color borderStrong01Color;
+  late Color secondaryIcon;
+  late Color primaryBackgroundSelectedColour;
+  late Color secondaryBackgroundSelectedColor;
+  late Color secondaryBackgroundActiveColor;
+
+  late Color primaryToastBackgroundColor;
+  late Color successBackgroundColor;
+
+  late Color toastDefaultColor;
+  late Color toastSuccessColor;
+  late Color toastWarningColor;
+  late Color toastErrorColor;
+  late Color toastDefaultBorderColor = const Color.fromRGBO(63, 118, 255, 1);
+  late Color toastSuccessBorderColor = const Color.fromRGBO(34, 197, 94, 1);
+  late Color toastWarningBorderColor = const Color.fromRGBO(245, 158, 11, 1);
+  late Color toastErrorBorderColor = const Color.fromRGBO(220, 38, 38, 1);
+
+  late Color shadowColorXS;
+  late List<BoxShadow> shadowXXS;
+  late List<BoxShadow> shadowBottomControlButtons;
+
+  late ThemeData datePickerThemeData;
+  late ThemeData timePickerThemeData;
+
+  // Color toastDefaultColor = Color.fromRGBO(236, 241, 255, 1);
+
+  Color convertHexToSpecificShade({required int shade, required Color color}) {
+    if (shade <= 100) {
+      final decimalValue = (100 - shade) / 100;
+      final newR = (color.red + (255 - color.red) * decimalValue).floor();
+      final newG = (color.green + (255 - color.green) * decimalValue).floor();
+      final newB = (color.blue + (255 - color.blue) * decimalValue).floor();
+      return Color.fromRGBO(newR, newG, newB, 1);
+    } else {
+      final decimalValue = 1 - ((shade - 100) / 100) / 10;
+
+      final newR = (color.red * decimalValue).ceil();
+      final newG = (color.green * decimalValue).ceil();
+      final newB = (color.blue * decimalValue).ceil();
+
+      return Color.fromRGBO(newR, newG, newB, 1);
+    }
   }
 }

@@ -2,20 +2,6 @@ import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/utils/enums.dart';
 
 class DisplayProperties {
-  bool assignee = false;
-  bool dueDate = false;
-  bool id = false;
-  bool label = false;
-  bool state = false;
-  bool subIsseCount = false;
-  bool priority = false;
-  bool linkCount = false;
-  bool attachmentCount = false;
-  bool estimate = false;
-  bool createdOn = false;
-  bool updatedOn = false;
-  bool startDate = false;
-
   DisplayProperties({
     required this.assignee,
     required this.dueDate,
@@ -49,9 +35,31 @@ class DisplayProperties {
       startDate: false,
     );
   }
+
+  bool assignee = false;
+  bool dueDate = false;
+  bool id = false;
+  bool label = false;
+  bool state = false;
+  bool subIsseCount = false;
+  bool priority = false;
+  bool linkCount = false;
+  bool attachmentCount = false;
+  bool estimate = false;
+  bool createdOn = false;
+  bool updatedOn = false;
+  bool startDate = false;
 }
 
 class Issues {
+  Issues(
+      {required this.issues,
+      required this.projectView,
+      required this.groupBY,
+      required this.orderBY,
+      required this.issueType,
+      required this.showSubIssues,
+      required this.displayProperties});
   List<BoardListsData> issues = [];
   ProjectView projectView;
   GroupBY groupBY = GroupBY.state;
@@ -71,14 +79,6 @@ class Issues {
   );
 
   DisplayProperties displayProperties;
-  Issues(
-      {required this.issues,
-      required this.projectView,
-      required this.groupBY,
-      required this.orderBY,
-      required this.issueType,
-      required this.showSubIssues,
-      required this.displayProperties});
 
   static Issues initialize() {
     return Issues(
@@ -92,7 +92,7 @@ class Issues {
     );
   }
 
-  static toOrderBY(String orderBy) {
+  static OrderBY toOrderBY(String orderBy) {
     switch (orderBy) {
       case "sort_order":
         return OrderBY.manual;
@@ -109,7 +109,7 @@ class Issues {
     }
   }
 
-  static fromOrderBY(OrderBY orderBy) {
+  static String fromOrderBY(OrderBY orderBy) {
     switch (orderBy) {
       case OrderBY.manual:
         return "sort_order";
@@ -126,7 +126,7 @@ class Issues {
     }
   }
 
-  static toIssueType(String? issueType) {
+  static IssueType toIssueType(String? issueType) {
     switch (issueType) {
       case "all":
         return IssueType.all;
@@ -139,7 +139,7 @@ class Issues {
     }
   }
 
-  static fromIssueType(IssueType issueType) {
+  static String fromIssueType(IssueType issueType) {
     switch (issueType) {
       case IssueType.all:
         return "all";
@@ -152,7 +152,7 @@ class Issues {
     }
   }
 
-  static toGroupBY(String? groupBY) {
+  static GroupBY toGroupBY(String? groupBY) {
     switch (groupBY) {
       case "state":
         return GroupBY.state;
@@ -175,7 +175,7 @@ class Issues {
     }
   }
 
-  static fromGroupBY(GroupBY groupBY) {
+  static String fromGroupBY(GroupBY groupBY) {
     switch (groupBY) {
       case GroupBY.state:
         return "state";
@@ -200,15 +200,6 @@ class Issues {
 }
 
 class Filters {
-  List priorities = [];
-  List states = [];
-  List assignees = [];
-  List createdBy = [];
-  List labels = [];
-  List targetDate = [];
-  List startDate = [];
-  List stateGroup = [];
-  List subscriber = [];
   Filters({
     required this.priorities,
     required this.states,
@@ -220,21 +211,6 @@ class Filters {
     required this.stateGroup,
     required this.subscriber,
   });
-
-  static Map<String, List<dynamic>> toJson(Filters filters) {
-    return {
-      "assignees": filters.assignees,
-      "created_by": filters.createdBy,
-      "labels": filters.labels,
-      "priority": filters.priorities,
-      "state": filters.states,
-      "target_date": filters.targetDate,
-      "start_date": filters.startDate,
-      "state_group": filters.stateGroup,
-      "subscriber": filters.subscriber,
-    };
-  }
-
   factory Filters.fromJson(Map json) {
     return Filters(
       priorities: json['priority'] ?? [],
@@ -247,5 +223,28 @@ class Filters {
       stateGroup: json['state_group'] ?? [],
       subscriber: json['subscriber'] ?? [],
     );
+  }
+  List priorities = [];
+  List states = [];
+  List assignees = [];
+  List createdBy = [];
+  List labels = [];
+  List targetDate = [];
+  List startDate = [];
+  List stateGroup = [];
+  List subscriber = [];
+
+  static Map<String, List<dynamic>> toJson(Filters filters) {
+    return {
+      "assignees": List.from(filters.assignees),
+      "created_by": List.from(filters.createdBy),
+      "labels": List.from(filters.labels),
+      "priority": List.from(filters.priorities),
+      "state": List.from(filters.states),
+      "target_date": List.from(filters.targetDate),
+      "start_date": List.from(filters.startDate),
+      "state_group": List.from(filters.stateGroup),
+      "subscriber": List.from(filters.subscriber),
+    };
   }
 }

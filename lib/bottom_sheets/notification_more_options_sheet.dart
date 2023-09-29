@@ -17,9 +17,9 @@ class _NotificationMoreOptionsSheetState
     extends ConsumerState<NotificationMoreOptionsSheet> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var notificationProvider = ref.watch(ProviderList.notificationProvider);
-    var options = [
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final notificationProvider = ref.watch(ProviderList.notificationProvider);
+    final options = [
       {
         'icon': Icons.messenger_outline,
         'text': 'Mark all as read',

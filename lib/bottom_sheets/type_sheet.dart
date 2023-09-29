@@ -5,18 +5,18 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class TypeSheet extends ConsumerStatefulWidget {
-  final Enum issueCategory;
   const TypeSheet({super.key, required this.issueCategory});
+  final Enum issueCategory;
 
   @override
   ConsumerState<TypeSheet> createState() => _TypeSheetState();
 }
 
 class _TypeSheetState extends ConsumerState<TypeSheet> {
-  var selected = 0;
+  int selected = 0;
   @override
   void initState() {
-    dynamic prov = widget.issueCategory == IssueCategory.myIssues
+    final dynamic prov = widget.issueCategory == IssueCategory.myIssues
         ? ref.read(ProviderList.myIssuesProvider)
         : ref.read(ProviderList.issuesProvider);
     selected = prov.issues.projectView == ProjectView.kanban
@@ -31,9 +31,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var prov = ref.watch(ProviderList.issuesProvider);
-    var myIssuesProv = ref.watch(ProviderList.myIssuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final prov = ref.watch(ProviderList.issuesProvider);
+    final myIssuesProv = ref.watch(ProviderList.myIssuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
@@ -70,10 +70,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    String projID = ref
+                    final String projID = ref
                         .read(ProviderList.projectProvider)
                         .currentProject['id'];
-                    String worspaceSlug = ref
+                    final String worspaceSlug = ref
                         .read(ProviderList.workspaceProvider)
                         .selectedWorkspace
                         .workspaceSlug;

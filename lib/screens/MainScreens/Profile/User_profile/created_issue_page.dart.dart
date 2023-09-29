@@ -19,8 +19,8 @@ class CreatedIssuesPage extends ConsumerStatefulWidget {
 class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
     return Container(
       color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       margin: const EdgeInsets.only(top: 5),
@@ -57,17 +57,22 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                       MaterialPageRoute(
                         builder: (context) => IssueDetail(
                           from: PreviousScreen.profileCreatedIssues,
-                          appBarTitle: userProfileProvider.createdIssues![index].name.toString(),
+                          appBarTitle: userProfileProvider
+                              .createdIssues![index].name
+                              .toString(),
                           ref: ref.read(ProviderList.workspaceProvider).ref!,
-                          issueId: userProfileProvider.createdIssues![index].id!,
-                          projID: userProfileProvider.createdIssues![index].projectDetail!.id,
+                          issueId:
+                              userProfileProvider.createdIssues![index].id!,
+                          projID: userProfileProvider
+                              .createdIssues![index].projectDetail!.id,
                         ),
                       ),
                     );
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                        color: themeProvider
+                            .themeManager.primaryBackgroundDefaultColor,
                         border: Border(
                             top: BorderSide(
                                 color: themeProvider
@@ -87,14 +92,15 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                         Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color),
-                            borderRadius: BorderRadius.circular(5),
-                            color: userProfileProvider
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color),
+                              borderRadius: BorderRadius.circular(5),
+                              color: userProfileProvider
                                           .createdIssues![index].priority ==
-                                      'urgent' ? Colors.red : null
-                          ),
+                                      'urgent'
+                                  ? Colors.red
+                                  : null),
                           margin: const EdgeInsets.only(right: 15),
                           height: 30,
                           width: 30,
@@ -120,7 +126,8 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                           'high'
                                       ? const Icon(
                                           Icons.signal_cellular_alt,
-                                          color: Color.fromRGBO(249, 115, 23,1),
+                                          color:
+                                              Color.fromRGBO(249, 115, 23, 1),
                                           size: 18,
                                         )
                                       : userProfileProvider
@@ -129,12 +136,14 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                               'medium'
                                           ? const Icon(
                                               Icons.signal_cellular_alt_2_bar,
-                                              color: Color.fromRGBO(234, 179, 9,1),
+                                              color: Color.fromRGBO(
+                                                  234, 179, 9, 1),
                                               size: 18,
                                             )
                                           : const Icon(
                                               Icons.signal_cellular_alt_1_bar,
-                                              color: Color.fromRGBO(34, 197, 94,1),
+                                              color: Color.fromRGBO(
+                                                  34, 197, 94, 1),
                                               size: 18,
                                             ),
                         ),

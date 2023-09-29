@@ -8,12 +8,6 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class MemberStatus extends ConsumerStatefulWidget {
-  final String firstName;
-  final String lastName;
-  final Map role;
-  final String userId;
-  final bool fromWorkspace;
-  final bool isInviteMembers;
   const MemberStatus(
       {super.key,
       required this.firstName,
@@ -22,6 +16,12 @@ class MemberStatus extends ConsumerStatefulWidget {
       required this.isInviteMembers,
       required this.fromWorkspace,
       required this.userId});
+  final String firstName;
+  final String lastName;
+  final Map role;
+  final String userId;
+  final bool fromWorkspace;
+  final bool isInviteMembers;
 
   @override
   ConsumerState<MemberStatus> createState() => _MemberStatusState();
@@ -71,9 +71,9 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
 
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Stack(
       children: [
         Wrap(

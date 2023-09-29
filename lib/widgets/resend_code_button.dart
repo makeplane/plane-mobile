@@ -9,10 +9,10 @@ import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class ResendCodeButton extends ConsumerStatefulWidget {
-  final bool signUp;
-  final String email;
   const ResendCodeButton({required this.signUp, required this.email, Key? key})
       : super(key: key);
+  final bool signUp;
+  final String email;
 
   @override
   ConsumerState<ResendCodeButton> createState() => _ResendCodeButtonState();
@@ -50,8 +50,8 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
 
   @override
   Widget build(BuildContext context) {
-    // var resendprov = ref.read(ProviderList.resendOtpCounterProvider);
-    var themeProvider = ref.read(ProviderList.themeProvider);
+    // final resendprov = ref.read(ProviderList.resendOtpCounterProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     if (start == 0) {
       return Align(
         alignment: Alignment.centerRight,

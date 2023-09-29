@@ -43,13 +43,13 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   int sizeToMultiplayForEachIssue = 40;
   int constantValueToAdd = 50;
 
-  var gridCards = [
+  final gridCards = [
     'Issues assigned to you',
     'Pending Issues',
     'Completed Issues',
     'Due by this week'
   ];
-  var gridCardKeys = [
+  final gridCardKeys = [
     'assigned_issues_count',
     'pending_issues_count',
     'completed_issues_count',
@@ -73,15 +73,17 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var dashboardProvider = ref.watch(ProviderList.dashboardProvider);
-    List? overdueIssues = dashboardProvider.dashboardData['overdue_issues'];
-    List? upcomingIssues = dashboardProvider.dashboardData['upcoming_issues'];
-    List? stateDistribution =
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
+    final List? overdueIssues =
+        dashboardProvider.dashboardData['overdue_issues'];
+    final List? upcomingIssues =
+        dashboardProvider.dashboardData['upcoming_issues'];
+    final List? stateDistribution =
         dashboardProvider.dashboardData['state_distribution'];
-    List? issuesCompleted =
+    final List? issuesCompleted =
         dashboardProvider.issuesClosedByMonth['completed_issues'];
 
     return Scaffold(
@@ -284,7 +286,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     onPressed: () async {
                       //redirect to github using url launcher.
                       try {
-                        var url = Uri.parse(
+                        final url = Uri.parse(
                             'https://github.com/makeplane/plane-mobile');
 
                         await launchUrl(url);
@@ -441,7 +443,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     );
   }
 
-  Column overDueIssuesWidget(ThemeProvider themeProvider, overdueIssues) {
+  Column overDueIssuesWidget(ThemeProvider themeProvider, List overdueIssues) {
     return Column(
       children: [
         Align(
@@ -566,7 +568,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     );
   }
 
-  Column upcomingIssuesWidget(ThemeProvider themeProvider, upcomingIssues) {
+  Column upcomingIssuesWidget(
+      ThemeProvider themeProvider, List upcomingIssues) {
     return Column(
       children: [
         Align(
@@ -691,8 +694,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     );
   }
 
-  Column issuesByStatesWidget(ThemeProvider themeProvider, stateDistribution) {
-    TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
+  Column issuesByStatesWidget(
+      ThemeProvider themeProvider, List stateDistribution) {
+    final TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
 
     final List<IssuesByState> data = List.generate(
       stateDistribution.length,
@@ -784,19 +788,19 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   }
 
   Column issuesClosedByYouWidget(ThemeProvider themeProvider,
-      DashBoardProvider dashboardProvider, issuesClosedOnMonth) {
+      DashBoardProvider dashboardProvider, List issuesClosedOnMonth) {
     const Color widgetPrimaryColor = Color.fromRGBO(250, 147, 252, 1);
-    TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
-    Map<int, int> issuesClosedPerMonthMap = {};
-    List<IssuesClosedPerMonth>? data =
+    final TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
+    final Map<int, int> issuesClosedPerMonthMap = {};
+    final List<IssuesClosedPerMonth> data =
         List.generate(5, (index) => IssuesClosedPerMonth(index, index));
 
-    for (var index in issuesClosedOnMonth) {
+    for (final index in issuesClosedOnMonth) {
       issuesClosedPerMonthMap[index['week_in_month']] =
           index['completed_count'];
     }
 
-    for (var i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
       if (!issuesClosedPerMonthMap.containsKey(i + 1)) {
         issuesClosedPerMonthMap[i + 1] = 0;
       }
@@ -961,8 +965,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   }
 
   Widget headerWidget() {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(bottom: 15),
@@ -1094,7 +1098,7 @@ class IssuesByState {
   final int issues;
 
   static Color getColorForState(String state) {
-    Color colorToReturn = Colors.red;
+    const Color colorToReturn = Colors.red;
 
     switch (state) {
       case 'backlog':
@@ -1119,7 +1123,7 @@ class IssuesClosedPerMonth {
   );
 
   @override
-  toString() {
+  String toString() {
     return '$week : $issuesClosed';
   }
 

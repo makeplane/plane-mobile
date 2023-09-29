@@ -7,14 +7,14 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class ProjectLeadAssigneeSheet extends ConsumerStatefulWidget {
-  final String title;
-  final String leadId;
-  final String assigneId;
   const ProjectLeadAssigneeSheet(
       {required this.title,
       required this.leadId,
       required this.assigneId,
       super.key});
+  final String title;
+  final String leadId;
+  final String assigneId;
 
   @override
   ConsumerState<ProjectLeadAssigneeSheet> createState() =>
@@ -35,10 +35,10 @@ class _ProjectLeadAssigneeSheetState
 
   @override
   Widget render(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return SizedBox(
@@ -72,8 +72,7 @@ class _ProjectLeadAssigneeSheetState
                     icon: Icon(
                       Icons.close,
                       size: 27,
-                      color:
-                          themeProvider.themeManager.placeholderTextColor,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ),
                   ),
                 ],
@@ -109,19 +108,17 @@ class _ProjectLeadAssigneeSheetState
                                           ['member']['id']
                                   ? {
                                       'project_lead': null,
-                                      'default_assignee':
-                                          widget.assigneId != ''
-                                              ? widget.assigneId
-                                              : null,
+                                      'default_assignee': widget.assigneId != ''
+                                          ? widget.assigneId
+                                          : null,
                                     }
                                   : {
-                                      'project_lead': projectProvider
-                                              .projectMembers[index]
-                                          ['member']['id'],
-                                      'default_assignee':
-                                          widget.assigneId != ''
-                                              ? widget.assigneId
-                                              : null,
+                                      'project_lead':
+                                          projectProvider.projectMembers[index]
+                                              ['member']['id'],
+                                      'default_assignee': widget.assigneId != ''
+                                          ? widget.assigneId
+                                          : null,
                                     }
                               : widget.assigneId ==
                                       projectProvider.projectMembers[index]
@@ -136,9 +133,9 @@ class _ProjectLeadAssigneeSheetState
                                       'project_lead': widget.leadId != ''
                                           ? widget.leadId
                                           : null,
-                                      'default_assignee': projectProvider
-                                              .projectMembers[index]
-                                          ['member']['id'],
+                                      'default_assignee':
+                                          projectProvider.projectMembers[index]
+                                              ['member']['id'],
                                     },
                         )
                             .then((value) {
@@ -157,14 +154,12 @@ class _ProjectLeadAssigneeSheetState
                                 .then((value) {
                               setState(() {
                                 projectProvider.lead.text = projectProvider
-                                            .projectDetailModel!
-                                            .projectLead ==
+                                            .projectDetailModel!.projectLead ==
                                         null
                                     ? ''
                                     : projectProvider.projectDetailModel!
                                         .projectLead!['display_name'];
-                                projectProvider
-                                    .assignee.text = projectProvider
+                                projectProvider.assignee.text = projectProvider
                                             .projectDetailModel!
                                             .defaultAssignee ==
                                         null
@@ -214,8 +209,8 @@ class _ProjectLeadAssigneeSheetState
                               '${projectProvider.projectMembers[index]['member']['display_name']}',
                               type: FontStyle.Medium,
                               maxLines: 1,
-                              color: themeProvider
-                                  .themeManager.primaryTextColor,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                           ),
                           const SizedBox(

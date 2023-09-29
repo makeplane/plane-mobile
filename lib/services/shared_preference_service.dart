@@ -22,18 +22,18 @@ class SharedPrefrenceServices {
     };
   }
 
-  static Map<String, String> getTokens() {
+  static Map<String, String?> getTokens() {
     Const.accessToken = instance.getString(PlaneKeys.ACCESS_TOKEN);
     Const.refreshToken = instance.getString(PlaneKeys.REFRESH_TOKEN);
     return {
-      PlaneKeys.ACCESS_TOKEN: Const.accessToken!,
-      PlaneKeys.REFRESH_TOKEN: Const.refreshToken!,
+      PlaneKeys.ACCESS_TOKEN: Const.accessToken,
+      PlaneKeys.REFRESH_TOKEN: Const.refreshToken,
     };
   }
 
-  static String getUserID() {
+  static String? getUserID() {
     Const.userId = instance.getString(PlaneKeys.USER_ID);
-    return Const.userId!;
+    return Const.userId;
   }
 
   static Future<String> setUserID(String userId) async {

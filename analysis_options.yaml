@@ -40,7 +40,6 @@ linter:
     - type_annotate_public_apis
     - annotate_overrides
     - prefer_final_in_for_each
-    - prefer_final_locals
     
 errors:
   invalid_annotation_target: ignore

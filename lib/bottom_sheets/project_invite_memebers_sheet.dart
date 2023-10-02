@@ -234,10 +234,8 @@ class _ProjectInviteMembersSheetState
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor),
+                                style: themeProvider
+                                    .themeManager.textFieldTextStyle,
                                 controller:
                                     workspaceProvider.invitingMembersRole,
                                 decoration: themeProvider

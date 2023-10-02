@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -28,12 +30,12 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
     'November',
     'December',
   ];
-  int indexOfTickedItem = 0;
+  int selectedMonth = 0;
 
   @override
   void initState() {
     super.initState();
-    indexOfTickedItem = ref
+    selectedMonth = ref
             .read(ProviderList.dashboardProvider)
             .selectedMonthForissuesClosedByMonthWidget -
         1; // Month start from 1. but in list view index its start from 0
@@ -43,7 +45,6 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
   Widget build(BuildContext context) {
     final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final BuildContext currentContext = context;
     return Container(
       padding: const EdgeInsets.only(top: 25),
       decoration: BoxDecoration(
@@ -85,17 +86,15 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
                 itemCount: monthList.length,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () async {
-                    indexOfTickedItem = index;
+                    selectedMonth = index;
                     await dashboardProvider.getIssuesClosedByMonth(index + 1);
                     if (dashboardProvider.getIssuesClosedThisMonthState ==
                         StateEnum.error) {
-                      // ignore: use_build_context_synchronously
                       CustomToast.showToast(context,
                           message: 'Something went wrong!',
                           toastType: ToastType.failure);
                     } else {
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(currentContext);
+                      if (context.mounted) Navigator.pop(context);
                     }
                   },
                   child: Padding(
@@ -108,7 +107,7 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
                           monthList[index],
                           type: FontStyle.H6,
                         ),
-                        index == indexOfTickedItem
+                        index == selectedMonth
                             ? const Icon(
                                 Icons.done,
                                 color: Color.fromRGBO(9, 169, 83, 1),

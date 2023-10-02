@@ -8,6 +8,7 @@ import 'package:plane/bottom_sheets/notification_more_options_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Notification/notifications_list.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
 import '/utils/enums.dart';
 
@@ -163,9 +164,9 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
                   text: 'Subscribed',
                 ),
               ]),
-          Container(
+          CustomDivider(
+            themeProvider: themeProvider,
             color: themeProvider.themeManager.borderSubtle01Color,
-            height: 1,
           ),
           Expanded(
             child: TabBarView(

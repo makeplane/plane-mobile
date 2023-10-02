@@ -213,7 +213,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   greetingImageAtTime(DateTime.now().hour),
                   const SizedBox(width: 5),
                   CustomText(
-                    //DateFormat('EEEE, MMM dd  hh:mm ').format(DateTime.now()),
                     DateFormat('EEEE, MMM dd,').add_jm().format(DateTime.now()),
                     type: FontStyle.XSmall,
                     fontWeight: FontWeightt.Medium,
@@ -328,51 +327,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                     : Colors.white,
                           ),
                         ),
-                      )
-
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //       backgroundColor: themeProvider.theme == THEME.custom
-                      //           ? themeProvider
-                      //               .themeManager.tertiaryBackgroundDefaultColor
-                      //           : themeProvider.themeManager.primaryTextColor,
-                      //       elevation: 0),
-                      //   onPressed: () async {
-                      //     //redirect to github using url launcher.
-                      //     try {
-                      //       var url = Uri.parse(
-                      //           'https://github.com/makeplane/plane-mobile');
-
-                      //       await launchUrl(url);
-                      //       postHogService(
-                      //           eventName: 'STAR_US_ON_GITHIB',
-                      //           properties: {},
-                      //           ref: ref);
-                      //     } catch (e) {
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //         const SnackBar(
-                      //           backgroundColor: Colors.redAccent,
-                      //           content: Text('Something went wrong !',
-                      //               style: TextStyle(color: Colors.white)),
-                      //         ),
-                      //       );
-                      //     }
-                      //   },
-                      //   child: CustomText(
-                      //     'Star us on GitHub',
-                      //     type: FontStyle.Small,
-                      //     fontWeight: FontWeightt.Medium,
-                      //     color: themeProvider.themeManager.theme == THEME.dark ||
-                      //             themeProvider.themeManager.theme ==
-                      //                 THEME.darkHighContrast
-                      //         ? Colors.black
-                      //         : themeProvider.theme == THEME.custom
-                      //             ? themeProvider.themeManager
-                      //                 .secondaryBackgroundDefaultColor
-                      //             : Colors.white,
-                      //   ),
-                      // ),
-                      ),
+                      )),
                 ],
               )
             ],

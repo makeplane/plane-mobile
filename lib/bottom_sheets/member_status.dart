@@ -119,17 +119,13 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                             selectedRole =
                                                 options[index]['value'] as int;
                                             if (widget.isInviteMembers) {
-                                              ref
-                                                      .read(ProviderList
-                                                          .workspaceProvider)
+                                              workspaceProvider
                                                       .invitingMembersRole
                                                       .text =
                                                   options[index]['role'];
                                             } else {
                                               if (widget.fromWorkspace) {
-                                                ref
-                                                    .watch(ProviderList
-                                                        .workspaceProvider)
+                                                workspaceProvider
                                                     .updateWorkspaceMember(
                                                   userId: widget.userId,
                                                   method: selectedRole == 0
@@ -141,18 +137,12 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                   },
                                                 );
                                               } else {
-                                                ref
-                                                    .watch(ProviderList
-                                                        .projectProvider)
+                                                projectProvider
                                                     .updateProjectMember(
-                                                  slug: ref
-                                                      .watch(ProviderList
-                                                          .workspaceProvider)
+                                                  slug: workspaceProvider
                                                       .selectedWorkspace
                                                       .workspaceSlug,
-                                                  projId: ref
-                                                      .watch(ProviderList
-                                                          .projectProvider)
+                                                  projId: projectProvider
                                                       .currentProject['id'],
                                                   userId: widget.userId,
                                                   method: selectedRole == 0
@@ -193,17 +183,13 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                   if (widget.isInviteMembers) {
                                                     // widget.role['role'] =
                                                     //     selectedRole;
-                                                    ref
-                                                            .read(ProviderList
-                                                                .workspaceProvider)
+                                                    workspaceProvider
                                                             .invitingMembersRole
                                                             .text =
                                                         options[index]['role'];
                                                   } else {
                                                     if (widget.fromWorkspace) {
-                                                      ref
-                                                          .watch(ProviderList
-                                                              .workspaceProvider)
+                                                      workspaceProvider
                                                           .updateWorkspaceMember(
                                                         userId: widget.userId,
                                                         method:
@@ -216,19 +202,14 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                                         },
                                                       );
                                                     } else {
-                                                      ref
-                                                          .watch(ProviderList
-                                                              .projectProvider)
+                                                      projectProvider
                                                           .updateProjectMember(
-                                                        slug: ref
-                                                            .watch(ProviderList
-                                                                .workspaceProvider)
+                                                        slug: workspaceProvider
                                                             .selectedWorkspace
                                                             .workspaceSlug,
-                                                        projId: ref
-                                                            .watch(ProviderList
-                                                                .projectProvider)
-                                                            .currentProject['id'],
+                                                        projId: projectProvider
+                                                                .currentProject[
+                                                            'id'],
                                                         userId: widget.userId,
                                                         method:
                                                             selectedRole == 0
@@ -285,24 +266,17 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (widget.fromWorkspace) {
-                                    ref
-                                        .watch(ProviderList.workspaceProvider)
-                                        .updateWorkspaceMember(
+                                    workspaceProvider.updateWorkspaceMember(
                                       userId: widget.userId,
                                       method: CRUD.delete,
                                       data: {'role': 0},
                                     );
                                   } else {
-                                    ref
-                                        .watch(ProviderList.projectProvider)
-                                        .updateProjectMember(
-                                      slug: ref
-                                          .watch(ProviderList.workspaceProvider)
-                                          .selectedWorkspace
-                                          .workspaceSlug,
-                                      projId: ref
-                                          .watch(ProviderList.projectProvider)
-                                          .currentProject['id'],
+                                    projectProvider.updateProjectMember(
+                                      slug: workspaceProvider
+                                          .selectedWorkspace.workspaceSlug,
+                                      projId:
+                                          projectProvider.currentProject['id'],
                                       userId: widget.userId,
                                       method: CRUD.delete,
                                       data: {'role': 0},

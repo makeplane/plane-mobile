@@ -255,8 +255,8 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                 height: 200,
                 width: width,
                 child: const Center(
-                  child: CustomText('No issues by priority'),
-                ),
+                    child: CustomText('No issues by priority',
+                        type: FontStyle.Medium)),
               )
             : SfCartesianChart(
                 margin: EdgeInsets.zero,
@@ -315,7 +315,10 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
           padding: const EdgeInsets.all(15),
           child: userProfileProvider.userStats.stateDistribution.isNullOrEmpty()
               ? const Center(
-                  child: CustomText('No issues by State'),
+                  child: CustomText(
+                    'No issues by State',
+                    type: FontStyle.Medium,
+                  ),
                 )
               : Center(
                   child: Row(

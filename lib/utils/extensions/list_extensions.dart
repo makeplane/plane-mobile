@@ -1,17 +1,9 @@
 extension ListExtension on List? {
   bool isNullOrEmpty() {
-    final List? data = this;
-    if (data == null) {
-      return true;
-    } else if (data.isEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return this == null || this!.isEmpty;
   }
 
   bool isNotNullOrEmpty() {
-    final List? data = this;
-    return !data.isNullOrEmpty();
+    return !isNullOrEmpty();
   }
 }

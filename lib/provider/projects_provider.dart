@@ -322,10 +322,6 @@ class ProjectsProvider extends ChangeNotifier {
       );
       // log(response.data.toString());
       projectInvitationState = StateEnum.success;
-      CustomToast.showToast(context,
-          message: 'Invitation sent successfully',
-          toastType: ToastType.success);
-      projectInvitationState = StateEnum.error;
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {

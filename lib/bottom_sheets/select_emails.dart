@@ -126,10 +126,10 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                                     ),
                                   ),
                                   Container(
-                                    height: 2,
+                                    height: 1,
                                     width: double.infinity,
                                     color: themeProv
-                                        .themeManager.borderSubtle01Color,
+                                        .themeManager.borderDisabledColor,
                                   ),
                                 ],
                               );

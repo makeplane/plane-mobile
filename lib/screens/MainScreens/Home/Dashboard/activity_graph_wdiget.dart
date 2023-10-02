@@ -77,7 +77,7 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(6),
                 border: Border.all(
                     color: themeProvider.themeManager.borderSubtle01Color),
               ),

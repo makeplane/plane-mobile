@@ -272,7 +272,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                         .validateMagicCode(
                                             key: "magic_${email.text}",
                                             token: code.text,
-                                            context: context)
+                                            context: context,
+                                            ref: ref)
                                         .then(
                                       (value) async {
                                         if (authProvider.validateCodeState ==
@@ -470,7 +471,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                 .env['GOOGLE_SERVER_CLIENT_ID'],
                                             "credential": googleAuth.idToken,
                                             "medium": "google"
-                                          }, context: context).then((value) {
+                                          }, context: context, ref: ref).then(
+                                                  (value) {
                                             if (authProvider.googleAuthState ==
                                                     StateEnum.success &&
                                                 profileProvider

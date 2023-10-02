@@ -13,6 +13,67 @@ class CustomToast {
   static final FToast _fToast = FToast();
   static ThemeManager? themeManager;
 
+  static Widget getToastWithColorWidget(
+    String message, {
+    Color primaryToastBackgroundColor = Colors.white,
+    Color textSuccessColor = Colors.green,
+    Color textErrorColor = Colors.red,
+    Color primaryTextColor = Colors.black,
+    int duration = 2,
+    ToastType toastType = ToastType.defult,
+  }) {
+    return Card(
+      borderOnForeground: true,
+      elevation: 20,
+      color: primaryToastBackgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            toastType == ToastType.defult
+                ? Container()
+                : toastType == ToastType.success
+                    ? Icon(
+                        Icons.check_circle_outline,
+                        color: textSuccessColor,
+                      )
+                    : toastType == ToastType.failure
+                        ? Icon(
+                            Icons.error_outline,
+                            color: textErrorColor,
+                          )
+                        : const Icon(
+                            Icons.warning_amber_outlined,
+                            color: Colors.amber,
+                          ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: CustomText(
+                message,
+                type: FontStyle.Small,
+                fontWeight: FontWeightt.Medium,
+                maxLines: 3,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: () {
+                  _fToast.removeCustomToast;
+                },
+                child: Icon(
+                  Icons.close,
+                  color: primaryTextColor,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   static void showToast(
     BuildContext context, {
     required String message,
@@ -126,58 +187,17 @@ class CustomToast {
     int duration = 2,
     ToastType toastType = ToastType.defult,
   }) {
-    final Widget toast = Card(
-      borderOnForeground: true,
-      elevation: 20,
-      color: primaryToastBackgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            toastType == ToastType.defult
-                ? Container()
-                : toastType == ToastType.success
-                    ? Icon(
-                        Icons.check_circle_outline,
-                        color: textSuccessColor,
-                      )
-                    : toastType == ToastType.failure
-                        ? Icon(
-                            Icons.error_outline,
-                            color: textErrorColor,
-                          )
-                        : const Icon(
-                            Icons.warning_amber_outlined,
-                            color: Colors.amber,
-                          ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: CustomText(
-                message,
-                type: FontStyle.Small,
-                fontWeight: FontWeightt.Medium,
-                maxLines: 3,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  _fToast.removeCustomToast;
-                },
-                child: Icon(
-                  Icons.close,
-                  color: primaryTextColor,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    _fToast.init(context);
     _fToast.showToast(
-      child: toast,
+      child: getToastWithColorWidget(
+        message,
+        primaryToastBackgroundColor: primaryToastBackgroundColor,
+        textSuccessColor: textSuccessColor,
+        textErrorColor: textErrorColor,
+        primaryTextColor: primaryTextColor,
+        duration: duration,
+        toastType: toastType,
+      ),
       toastDuration: Duration(seconds: duration),
       gravity: ToastGravity.BOTTOM,
     );

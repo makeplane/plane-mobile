@@ -385,9 +385,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 ),
                                 disabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : const Color(0xFFE5E5E5),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(8)),

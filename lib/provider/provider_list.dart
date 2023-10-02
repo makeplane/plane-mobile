@@ -96,7 +96,6 @@ class ProviderList {
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();
-    ref.read(themeProvider).clear();
     ref.read(issuesProvider).clear();
     ref.read(profileProvider).clear();
     ref.read(projectProvider).clear();

@@ -208,7 +208,8 @@ class _SignUpState extends ConsumerState<SignUp> {
                                   .signUpWithEmailAndPassword(
                                       email: email.text,
                                       password: password.text,
-                                      context: context)
+                                      context: context,
+                                      ref: ref)
                                   .then((value) {
                                 if (authProvider.signUpState ==
                                         StateEnum.success &&

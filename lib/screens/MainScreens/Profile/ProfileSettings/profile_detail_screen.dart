@@ -488,21 +488,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const PrefrencesScreen()));
-                              // showModalBottomSheet(
-                              //     context: context,
-                              //     constraints: BoxConstraints(
-                              //       maxHeight:
-                              //           MediaQuery.of(context).size.height * 0.5,
-                              //     ),
-                              //     shape: const RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.only(
-                              //         topLeft: Radius.circular(20),
-                              //         topRight: Radius.circular(20),
-                              //       ),
-                              //     ),
-                              //     builder: (context) {
-                              //       return const ThemeSheet();
-                              //     });
                             },
                             child: Container(
                               margin:

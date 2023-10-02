@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane/services/connection_service.dart';
 import 'package:plane/services/shared_preference_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:retry/retry.dart';
@@ -55,7 +54,16 @@ class DioConfig {
         return handler.next(options);
       },
       onError: (DioException error, ErrorInterceptorHandler handler) async {
-        ConnectionService().checkConnectivity();
+        // bool isConnected = await ConnectionService.checkConnectivity();
+        // if (!isConnected) {
+        //   Navigator.push(
+        //       Const.globalKey.currentContext!,
+        //       MaterialPageRoute(
+        //           builder: (ctx) => Scaffold(
+        //                   body: errorState(
+        //                 context: Const.globalKey.currentContext!,
+        //               ))));
+        // }
         if (error.response?.statusCode == 401) {
           await SharedPrefrenceServices.instance.clear();
           Const.accessToken = '';

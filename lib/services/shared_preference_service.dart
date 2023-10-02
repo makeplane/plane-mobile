@@ -1,6 +1,9 @@
 import 'package:plane/config/const.dart';
 import 'package:plane/config/plane_keys.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/enums.dart';
 
 class SharedPrefrenceServices {
   static late SharedPreferences instance;
@@ -48,5 +51,21 @@ class SharedPrefrenceServices {
 
   static bool getTheme() {
     return instance.getBool('dark_mode') ?? false;
+  }
+
+  static Future<void> setTheme(Map themeData) async {
+    THEME theme = themeParser(theme: themeData['theme']??'light');
+    await instance
+        .setString(PlaneKeys.SELECTED_THEME, fromTHEME(theme: theme))
+        .then((value) {
+      if (theme == THEME.custom) {
+        instance.setString('primary', themeData['primary'].toString());
+        instance.setString('background', themeData['background'].toString());
+        instance.setString('text', themeData['text'].toString());
+        instance.setString(
+            'sidebarBackground', themeData['sidebarBackground'].toString());
+        instance.setString('sidebarText', themeData['sidebarText'].toString());
+      }
+    });
   }
 }

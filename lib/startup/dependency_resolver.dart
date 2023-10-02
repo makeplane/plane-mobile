@@ -1,21 +1,25 @@
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
-
-import '../config/plane_keys.dart';
+import '../models/user_profile_model.dart';
 import '../provider/my_issues_provider.dart';
 import '../provider/notification_provider.dart';
 import '../provider/profile_provider.dart';
 import '../provider/provider_list.dart';
 import '../provider/theme_provider.dart';
 import '../provider/whats_new_provider.dart';
-import '../utils/constants.dart';
+import '../utils/custom_toast.dart';
 import '../utils/enums.dart';
+import '../utils/theme_manager.dart';
 
 class DependencyResolver {
   static Future<void> resolve({required WidgetRef ref}) async {
     if (Const.accessToken == null) {
+      CustomToast(manager: ThemeManager(THEME.light));
       return;
     }
     final ProfileProvider profileProvider =
@@ -23,7 +27,25 @@ class DependencyResolver {
     final WorkspaceProvider workspaceProvider =
         ref.read(ProviderList.workspaceProvider);
 
-    await _resolveUserProfile(ref);
+    await _resolveUserProfile(ref).then((value) {
+      value.fold((userProfile) => null, (error) {
+        OverlayEntry entry = OverlayEntry(
+          builder: (context) {
+          return Positioned(
+            width: MediaQuery.of(context).size.width,
+            bottom: 0,
+            child: CustomToast.getToastWithColorWidget(
+                'Something went wrong while fetching your data, Please try again.',
+                toastType: ToastType.failure),
+          );
+        });
+        Overlay.of(ref.context).insert(entry);
+        Future.delayed(const Duration(seconds: 1), () {
+          entry.remove();
+        });
+        return;
+      });
+    });
     if (profileProvider.userProfile.isOnboarded == false) {
       return;
     }
@@ -43,10 +65,11 @@ class DependencyResolver {
     ref.read(ProviderList.dashboardProvider).getDashboard();
   }
 
-  static Future<void> _resolveUserProfile(WidgetRef ref) async {
+  static Future<Either<UserProfile, DioException>> _resolveUserProfile(
+      WidgetRef ref) async {
     final ProfileProvider profileProvider =
         ref.read(ProviderList.profileProvider);
-    await profileProvider.getProfile();
+    return await profileProvider.getProfile();
   }
 
   static Future<void> _resolveWorkspaces(WidgetRef ref) async {
@@ -61,47 +84,7 @@ class DependencyResolver {
 
   static void _resolveTheme(WidgetRef ref) {
     final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
-    final ProfileProvider profileProvider =
-        ref.read(ProviderList.profileProvider);
-    Map<dynamic, dynamic>? theme = profileProvider.userProfile.theme;
-    if (profileProvider.userProfile.theme != null) {
-      if (profileProvider.userProfile.theme!['theme'] == PlaneKeys.DARK_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.dark);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else if (profileProvider.userProfile.theme!['theme'] ==
-          PlaneKeys.LIGHT_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.light);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else if (profileProvider.userProfile.theme!['theme'] ==
-          PlaneKeys.SYSTEM_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else if (profileProvider.userProfile.theme!['theme'] ==
-          PlaneKeys.DARK_CONTRAST_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else if (profileProvider.userProfile.theme!['theme'] ==
-          PlaneKeys.LIGHT_CONTRAST_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else if (profileProvider.userProfile.theme!['theme'] ==
-          PlaneKeys.CUSTOM_THEME) {
-        theme!['theme'] = fromTHEME(theme: THEME.custom);
-        themeProvider.changeTheme(data: {'theme': theme}, context: null);
-      } else {
-        themeProvider.changeTheme(data: {
-          'theme': {
-            'primary': profileProvider.userProfile.theme!['primary'],
-            'background': profileProvider.userProfile.theme!['background'],
-            'text': profileProvider.userProfile.theme!['text'],
-            'sidebarText': profileProvider.userProfile.theme!['sidebarText'],
-            'sidebarBackground':
-                profileProvider.userProfile.theme!['sidebarBackground'],
-            'theme': 'custom',
-          }
-        }, context: null);
-      }
-    }
+    themeProvider.getTheme();
   }
 
   static Future<void> _resolveProjects(WidgetRef ref) async {

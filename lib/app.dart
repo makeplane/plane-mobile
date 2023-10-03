@@ -8,6 +8,7 @@ import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
 import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane/screens/on_boarding/auth/sign_in.dart';
+import 'package:plane/startup/dependency_resolver.dart';
 import 'package:plane/widgets/error_state.dart';
 import 'utils/enums.dart';
 import 'provider/profile_provider.dart';
@@ -48,7 +49,9 @@ class _AppState extends ConsumerState<App> {
                 ? errorState(
                     context: context,
                     showButton: false,
-                  )
+                    ontap: () {
+                      DependencyResolver.resolve(ref: ref);
+                    })
                 : !profileProv.userProfile.isOnboarded!
                     ? (!profileProv
                             .userProfile.onboardingStep!['profile_complete']

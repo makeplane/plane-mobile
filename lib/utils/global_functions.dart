@@ -15,7 +15,17 @@ void sentryService() {
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
     );
   } else {
-    runApp(const ProviderScope(child: MyApp()));
+    runApp(ProviderScope(
+        child: Directionality(
+      textDirection: TextDirection.ltr,
+      child: Overlay(
+        initialEntries: [
+          OverlayEntry(builder: (context) {
+            return const MyApp();
+          })
+        ],
+      ),
+    )));
   }
 }
 

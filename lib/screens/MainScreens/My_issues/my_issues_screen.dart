@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/global_search_sheet.dart';
 import 'package:plane/bottom_sheets/views_and_layout_sheet.dart';
@@ -233,175 +234,197 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
           body: projectProvider.projects.isEmpty &&
                   projectProvider.getProjectState == StateEnum.success
               ? EmptyPlaceholder.emptyProject(context, refresh, ref)
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      //bottom border
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color:
-                                themeProvider.themeManager.borderSubtle01Color,
-                            width: 1,
-                          ),
+              : projectProvider.getProjectState == StateEnum.loading
+                  ? Center(
+                      child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.lineSpinFadeLoader,
+                          colors: [themeProvider.themeManager.primaryTextColor],
+                          strokeWidth: 1.0,
+                          backgroundColor: Colors.transparent,
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                controller.jumpToPage(0);
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: CustomText(
-                                          'Assigned',
-                                          color: selected == 0
-                                              ? themeProvider
-                                                  .themeManager.primaryColour
-                                              : themeProvider.themeManager
-                                                  .placeholderTextColor,
-                                          overrride: true,
-                                          type: FontStyle.Medium,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  selected == 0
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              color: themeProvider
-                                                  .themeManager.primaryColour,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          height: 6,
-                                        )
-                                      : Container(
-                                          height: 6,
-                                        )
-                                ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          //bottom border
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
+                                width: 1,
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                controller.jumpToPage(1);
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.jumpToPage(0);
+                                  },
+                                  child: Column(
                                     children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: CustomText(
-                                          'Created',
-                                          overrride: true,
-                                          color: selected == 1
-                                              ? themeProvider
-                                                  .themeManager.primaryColour
-                                              : themeProvider.themeManager
-                                                  .placeholderTextColor,
-                                          type: FontStyle.Medium,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: CustomText(
+                                              'Assigned',
+                                              color: selected == 0
+                                                  ? themeProvider.themeManager
+                                                      .primaryColour
+                                                  : themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                              overrride: true,
+                                              type: FontStyle.Medium,
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                      selected == 0
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              height: 6,
+                                            )
+                                          : Container(
+                                              height: 6,
+                                            )
                                     ],
                                   ),
-                                  selected == 1
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              color: themeProvider
-                                                  .themeManager.primaryColour,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          height: 6,
-                                        )
-                                      : Container(
-                                          height: 6,
-                                        )
-                                ],
+                                ),
                               ),
-                            ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.jumpToPage(1);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: CustomText(
+                                              'Created',
+                                              overrride: true,
+                                              color: selected == 1
+                                                  ? themeProvider.themeManager
+                                                      .primaryColour
+                                                  : themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                              type: FontStyle.Medium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      selected == 1
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              height: 6,
+                                            )
+                                          : Container(
+                                              height: 6,
+                                            )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.jumpToPage(2);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: CustomText(
+                                              'Subscribed',
+                                              color: selected == 2
+                                                  ? themeProvider.themeManager
+                                                      .primaryColour
+                                                  : themeProvider.themeManager
+                                                      .placeholderTextColor,
+                                              overrride: true,
+                                              type: FontStyle.Medium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      selected == 2
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryColour,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              height: 6,
+                                            )
+                                          : Container(
+                                              height: 6,
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                controller.jumpToPage(2);
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: CustomText(
-                                          'Subscribed',
-                                          color: selected == 2
-                                              ? themeProvider
-                                                  .themeManager.primaryColour
-                                              : themeProvider.themeManager
-                                                  .placeholderTextColor,
-                                          overrride: true,
-                                          type: FontStyle.Medium,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  selected == 2
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              color: themeProvider
-                                                  .themeManager.primaryColour,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          height: 6,
-                                        )
-                                      : Container(
-                                          height: 6,
-                                        ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        color: themeProvider
-                            .themeManager.secondaryBackgroundDefaultColor,
-                        child: PageView(
-                          //disable swipe
-                          physics: const NeverScrollableScrollPhysics(),
-                          controller: controller,
-                          onPageChanged: (value) {
-                            setState(() {
-                              selected = value;
-                              myIssuesProvider.changePage(value);
-                            });
-                          },
-                          children: [
-                            issues(context, ref),
-                            issues(context, ref),
-                            issues(context, ref),
-                          ],
                         ),
-                      ),
-                    ),
-                  ],
-                )),
+                        Expanded(
+                          child: Container(
+                            color: themeProvider
+                                .themeManager.secondaryBackgroundDefaultColor,
+                            child: PageView(
+                              //disable swipe
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: controller,
+                              onPageChanged: (value) {
+                                setState(() {
+                                  selected = value;
+                                  myIssuesProvider.changePage(value);
+                                });
+                              },
+                              children: [
+                                issues(context, ref),
+                                issues(context, ref),
+                                issues(context, ref),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
     );
   }
 

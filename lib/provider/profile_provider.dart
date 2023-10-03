@@ -65,9 +65,9 @@ class ProfileProvider extends ChangeNotifier {
   Future<Either<UserProfile, DioException>> getProfile() async {
     getProfileState = StateEnum.loading;
     final response = await profileService.getProfile();
-    if (response.isLeft()) {
-      userProfile = response.fold(
-          (userProfile) => userProfile, (error) => UserProfile.initialize());
+    return response.fold((userProfile) {
+      this.userProfile = userProfile;
+      SharedPrefrenceServices.setTheme(userProfile.theme!);
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
       getProfileState = StateEnum.success;
@@ -76,23 +76,12 @@ class ProfileProvider extends ChangeNotifier {
           'UTC, GMT';
       notifyListeners();
       return Left(userProfile);
-    } else {
-      log(response.fold((l) => l.toString(), (r) => r.toString()));
+    }, (error) {
+      log(error.toString());
       getProfileState = StateEnum.error;
       notifyListeners();
-      return Right(response.fold(
-          (userProfile) => DioException(requestOptions: RequestOptions()),
-          (error) => error));
-    }
-  }
-
-  void saveCustomTheme(Map data) {
-    final prefs = SharedPrefrenceServices.instance;
-    prefs.setString('background', data['background']);
-    prefs.setString('primary', data['primary']);
-    prefs.setString('text', data['text']);
-    prefs.setString('sidebarText', data['sidebarText']);
-    prefs.setString('sidebarBackground', data['sidebarBackground']);
+      return Right(error);
+    });
   }
 
   Future<Either<UserProfile, DioException>> updateProfile(
@@ -102,6 +91,7 @@ class ProfileProvider extends ChangeNotifier {
     final response = await profileService.updateProfile(data: data);
     if (response.isLeft()) {
       userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
+      SharedPrefrenceServices.setTheme(userProfile.theme!);
       updateProfileState = StateEnum.success;
       notifyListeners();
     } else {

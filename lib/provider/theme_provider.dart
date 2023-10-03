@@ -15,23 +15,18 @@ class ThemeProvider extends ChangeNotifier {
   ThemeProvider(ChangeNotifierProviderRef<ThemeProvider> this.ref);
   Ref ref;
   BuildContext? context;
-  bool isDarkThemeEnabled = false;
   THEME theme = THEME.light;
   ThemeManager themeManager = ThemeManager(THEME.light);
-
-  //function to change theme and stor the theme in shared preferences
-  void clear() {
-    isDarkThemeEnabled = false;
-    // notifyListeners();
-  }
 
   void notify() {
     notifyListeners();
   }
 
   Future<void> toggleTheme(THEME theme) async {
-    theme = theme;
+    this.theme = theme;
     themeManager = ThemeManager(theme);
+    CustomToast(manager: themeManager);
+    AppTheme.setUiOverlayStyle(theme: theme, themeManager: themeManager);
     notifyListeners();
   }
 
@@ -139,13 +134,9 @@ class ThemeProvider extends ChangeNotifier {
             radix: 16));
       }
     }
-    if (theme == THEME.dark) {
-      isDarkThemeEnabled = true;
-    } else {
-      isDarkThemeEnabled = false;
-    }
+
     themeManager = ThemeManager(theme);
     CustomToast(manager: themeManager);
-    // print(themeManager);
+    notifyListeners();
   }
 }

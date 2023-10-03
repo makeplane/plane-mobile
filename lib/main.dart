@@ -14,7 +14,6 @@ import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 import 'app.dart';
 import 'config/const.dart';
-import 'provider/theme_provider.dart';
 import 'utils/enums.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
@@ -33,7 +32,6 @@ void main() async {
   await SharedPrefrenceServices.init();
   SharedPrefrenceServices.getTokens();
   SharedPrefrenceServices.getUserID();
-
   sentryService();
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
@@ -53,9 +51,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    final ThemeProvider themeProv = ref.read(ProviderList.themeProvider);
     DependencyResolver.resolve(ref: ref);
-    themeProv.getTheme();
     super.initState();
   }
 
@@ -70,7 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
       theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
       log(theme.toString());
-      themeProvider.changeTheme(data: {'theme': theme}, context: null);
+      themeProvider.changeTheme(data: {'theme': theme}, context: ref.context);
     }
     super.didChangePlatformBrightness();
   }
@@ -84,9 +80,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: PlaneKeys.APP_NAME,
-      theme: AppTheme.getAppThemeData(themeProvider.themeManager),
-      themeMode:
-          themeProvider.isDarkThemeEnabled ? ThemeMode.dark : ThemeMode.light,
+      theme: AppTheme.getThemeData(themeProvider.themeManager),
+      themeMode: AppTheme.getThemeMode(themeProvider.theme),
       navigatorKey: Const.globalKey,
       navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
       home: UpgradeAlert(

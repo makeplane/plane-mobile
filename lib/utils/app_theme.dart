@@ -5,7 +5,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/theme_manager.dart';
 
 class AppTheme {
-  static ThemeData getAppThemeData(ThemeManager themeManager) {
+  static ThemeData getThemeData(ThemeManager themeManager) {
     return ThemeData(
       textTheme: TextTheme(
         titleMedium: TextStyle(
@@ -90,6 +90,16 @@ class AppTheme {
         background: themeManager.primaryBackgroundDefaultColor,
       ),
     );
+  }
+
+  static ThemeMode getThemeMode(THEME theme) {
+    if (theme == THEME.light || theme == THEME.lightHighContrast) {
+      return ThemeMode.light;
+    } else if (theme == THEME.dark || theme == THEME.darkHighContrast) {
+      return ThemeMode.dark;
+    } else {
+      return ThemeMode.system;
+    }
   }
 
   static void setUiOverlayStyle(

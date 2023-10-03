@@ -4,16 +4,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/Authentication/google_sign_in.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/services/dio_service.dart';
-import 'package:plane/utils/constants.dart';
+import 'package:plane/startup/dependency_resolver.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/services/shared_preference_service.dart';
-
-import 'provider_list.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthProvider(ChangeNotifierProviderRef<AuthProvider> this.ref);
@@ -54,7 +51,8 @@ class AuthProvider extends ChangeNotifier {
   Future<void> validateMagicCode(
       {required String key,
       required String token,
-      BuildContext? context}) async {
+      required BuildContext context,
+      required WidgetRef ref}) async {
     validateCodeState = StateEnum.loading;
     notifyListeners();
     try {
@@ -71,153 +69,24 @@ class AuthProvider extends ChangeNotifier {
           refreshToken: response.data["refresh_token"]);
       SharedPrefrenceServices.setUserID(response.data["user"]['id']);
 
+      await DependencyResolver.resolve(ref: ref);
       validateCodeState = StateEnum.success;
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        final prov = ref.read(ProviderList.profileProvider);
-        final themeProv = ref.read(ProviderList.themeProvider);
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            final theme = prov.userProfile.theme;
-
-            if (prov.userProfile.theme != null) {
-              if (prov.userProfile.theme!['theme'] == 'dark') {
-                theme!['theme'] = fromTHEME(theme: THEME.dark);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light') {
-                theme!['theme'] = fromTHEME(theme: THEME.light);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'system') {
-                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'custom') {
-                theme!['theme'] = fromTHEME(theme: THEME.custom);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else {
-                themeProv.changeTheme(data: {
-                  'theme': {
-                    'primary': prov.userProfile.theme!['primary'],
-                    'background': prov.userProfile.theme!['background'],
-                    'text': prov.userProfile.theme!['text'],
-                    'sidebarText': prov.userProfile.theme!['sidebarText'],
-                    'sidebarBackground':
-                        prov.userProfile.theme!['sidebarBackground'],
-                    'theme': 'custom',
-                  }
-                }, context: null);
-              }
-            }
-
-            ref.read(ProviderList.dashboardProvider).getDashboard();
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref
-                .read(ProviderList.myIssuesProvider)
-                .getMyIssuesView()
-                .then((value) {
-              ref
-                  .read(ProviderList.myIssuesProvider)
-                  .filterIssues(assigned: true);
-            });
-
-            ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'assigned');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'created');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'watching');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'unread', getUnread: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'archived', getArchived: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'snoozed', getSnoozed: true);
-          });
-        } else {
-          Const.accessToken = null;
-          Const.userId = null;
-          SharedPrefrenceServices.instance.clear();
-          validateCodeState = StateEnum.error;
-          notifyListeners();
-          if (context != null) {
-            CustomToast.showToastWithColors(context,
-                'Something went wrong while fetching your data, Please try again.',
-                toastType: ToastType.failure);
-          }
-        }
-      });
-
       log(response.data.toString());
       notifyListeners();
-    } catch (e) {
-      Object? message;
-      if (e is DioException) {
-        final errorResponse = e.error;
-        message = errorResponse;
-        log(message.toString());
-        // CustomToast.showSimpleToast(
-        //   message.toString(),
-        // );
-
-        if (context != null) {
-          CustomToast.showToastWithColors(
-              context, e.response!.data['error'].toString(),
-              toastType: ToastType.failure);
-        }
-      } else {
-        message = e;
-      }
+    } on DioException catch (error) {
+      log(error.toString());
+      String message = error.response?.data['error'] ?? 'Something went wrong!';
+      CustomToast.showToastWithColors(context, message,
+          toastType: ToastType.failure);
       validateCodeState = StateEnum.failed;
-
-      log(e.toString());
       notifyListeners();
     }
   }
 
-  Future googleAuth({required Map data, required BuildContext context}) async {
+  Future googleAuth(
+      {required Map data,
+      required BuildContext context,
+      required WidgetRef ref}) async {
     try {
       googleAuthState = StateEnum.loading;
       notifyListeners();
@@ -234,125 +103,7 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       googleAuthState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        final prov = ref.read(ProviderList.profileProvider);
-        final themeProv = ref.read(ProviderList.themeProvider);
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            final theme = prov.userProfile.theme;
-
-            if (prov.userProfile.theme != null) {
-              if (prov.userProfile.theme!['theme'] == 'dark') {
-                theme!['theme'] = fromTHEME(theme: THEME.dark);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light') {
-                theme!['theme'] = fromTHEME(theme: THEME.light);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'system') {
-                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'custom') {
-                theme!['theme'] = fromTHEME(theme: THEME.custom);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else {
-                themeProv.changeTheme(data: {
-                  'theme': {
-                    'primary': prov.userProfile.theme!['primary'],
-                    'background': prov.userProfile.theme!['background'],
-                    'text': prov.userProfile.theme!['text'],
-                    'sidebarText': prov.userProfile.theme!['sidebarText'],
-                    'sidebarBackground':
-                        prov.userProfile.theme!['sidebarBackground'],
-                    'theme': 'custom',
-                  }
-                }, context: null);
-              }
-            }
-
-            ref.read(ProviderList.dashboardProvider).getDashboard();
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref
-                .read(ProviderList.myIssuesProvider)
-                .getMyIssuesView()
-                .then((value) {
-              ref
-                  .read(ProviderList.myIssuesProvider)
-                  .filterIssues(assigned: true);
-
-              ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'assigned');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'created');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'watching');
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'unread', getUnread: true);
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'archived', getArchived: true);
-              ref
-                  .read(ProviderList.notificationProvider)
-                  .getNotifications(type: 'snoozed', getSnoozed: true);
-            });
-          });
-        } else {
-          Const.accessToken = null;
-          Const.userId = null;
-          SharedPrefrenceServices.instance.clear();
-          GoogleSignInApi.logout();
-          validateCodeState = StateEnum.failed;
-          notifyListeners();
-          // ignore: unnecessary_null_comparison
-          if (context != null) {
-            CustomToast.showToastWithColors(context,
-                'Something went wrong while fetching your data, Please try again.',
-                toastType: ToastType.failure);
-          }
-        }
-      });
+      DependencyResolver.resolve(ref: ref);
     } catch (e) {
       log(e.toString());
 
@@ -367,7 +118,8 @@ class AuthProvider extends ChangeNotifier {
   Future signInWithEmailAndPassword(
       {required String email,
       required String password,
-      BuildContext? context}) async {
+      required BuildContext context,
+      required WidgetRef ref}) async {
     signInState = StateEnum.loading;
     notifyListeners();
     try {
@@ -388,137 +140,14 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       signInState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        final prov = ref.read(ProviderList.profileProvider);
-        final themeProv = ref.read(ProviderList.themeProvider);
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            final theme = prov.userProfile.theme;
-
-            if (prov.userProfile.theme != null) {
-              if (prov.userProfile.theme!['theme'] == 'dark') {
-                theme!['theme'] = fromTHEME(theme: THEME.dark);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light') {
-                theme!['theme'] = fromTHEME(theme: THEME.light);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'system') {
-                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'custom') {
-                theme!['theme'] = fromTHEME(theme: THEME.custom);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else {
-                themeProv.changeTheme(data: {
-                  'theme': {
-                    'primary': prov.userProfile.theme!['primary'],
-                    'background': prov.userProfile.theme!['background'],
-                    'text': prov.userProfile.theme!['text'],
-                    'sidebarText': prov.userProfile.theme!['sidebarText'],
-                    'sidebarBackground':
-                        prov.userProfile.theme!['sidebarBackground'],
-                    'theme': 'custom',
-                  }
-                }, context: null);
-              }
-            }
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref
-                .read(ProviderList.myIssuesProvider)
-                .getMyIssuesView()
-                .then((value) {
-              ref
-                  .read(ProviderList.myIssuesProvider)
-                  .filterIssues(assigned: true);
-            });
-
-            ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'assigned');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'created');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'watching');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'unread', getUnread: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'archived', getArchived: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'snoozed', getSnoozed: true);
-          });
-        } else {
-          Const.accessToken = null;
-          Const.userId = null;
-          SharedPrefrenceServices.instance.clear();
-
-          notifyListeners();
-          if (context != null) {
-            CustomToast.showToastWithColors(context,
-                'Something went wrong while fetching your data, Please try again.',
-                toastType: ToastType.failure);
-          }
-        }
-      });
+      DependencyResolver.resolve(ref: ref);
     } on DioException catch (e) {
       log(e.toString());
       signInState = StateEnum.failed;
-
       notifyListeners();
-
-      if (context != null) {
-        CustomToast.showToastWithColors(context, e.error.toString(),
-            toastType: ToastType.failure);
-      }
-      if (context != null) {
-        CustomToast.showToastWithColors(
-            context, 'Something went wrong, please try again.',
-            toastType: ToastType.failure);
-      }
+      CustomToast.showToastWithColors(
+          context, e.response!.data['error'].toString(),
+          toastType: ToastType.failure);
     }
   }
 
@@ -547,7 +176,8 @@ class AuthProvider extends ChangeNotifier {
   Future signUpWithEmailAndPassword(
       {required String email,
       required String password,
-      BuildContext? context}) async {
+      BuildContext? context,
+      required WidgetRef ref}) async {
     signUpState = StateEnum.loading;
     notifyListeners();
     try {
@@ -568,128 +198,7 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       signUpState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          log('no error in getProfile');
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.workspaceProvider)
-                        .workspaceInvitationState ==
-                    StateEnum.error ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            final prov = ref.read(ProviderList.profileProvider);
-            final themeProv = ref.read(ProviderList.themeProvider);
-            final theme = prov.userProfile.theme;
-
-            if (prov.userProfile.theme != null) {
-              if (prov.userProfile.theme!['theme'] == 'dark') {
-                theme!['theme'] = fromTHEME(theme: THEME.dark);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light') {
-                theme!['theme'] = fromTHEME(theme: THEME.light);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'system') {
-                theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'dark-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.darkHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'light-contrast') {
-                theme!['theme'] = fromTHEME(theme: THEME.lightHighContrast);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else if (prov.userProfile.theme!['theme'] == 'custom') {
-                theme!['theme'] = fromTHEME(theme: THEME.custom);
-                themeProv.changeTheme(data: {'theme': theme}, context: null);
-              } else {
-                themeProv.changeTheme(data: {
-                  'theme': {
-                    'primary': prov.userProfile.theme!['primary'],
-                    'background': prov.userProfile.theme!['background'],
-                    'text': prov.userProfile.theme!['text'],
-                    'sidebarText': prov.userProfile.theme!['sidebarText'],
-                    'sidebarBackground':
-                        prov.userProfile.theme!['sidebarBackground'],
-                    'theme': 'custom',
-                  }
-                }, context: null);
-              }
-            }
-
-            ref.read(ProviderList.dashboardProvider).getDashboard();
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref
-                .read(ProviderList.myIssuesProvider)
-                .getMyIssuesView()
-                .then((value) {
-              ref
-                  .read(ProviderList.myIssuesProvider)
-                  .filterIssues(assigned: true);
-            });
-
-            ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'assigned');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'created');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'watching');
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'unread', getUnread: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'archived', getArchived: true);
-            ref
-                .read(ProviderList.notificationProvider)
-                .getNotifications(type: 'snoozed', getSnoozed: true);
-          });
-        } else {
-          Const.accessToken = null;
-          Const.userId = null;
-          SharedPrefrenceServices.instance.clear();
-
-          notifyListeners();
-          if (context != null) {
-            CustomToast.showToastWithColors(context,
-                'Something went wrong while fetching your data, Please try again.',
-                toastType: ToastType.failure);
-          }
-        }
-      });
+      DependencyResolver.resolve(ref: ref);
     } catch (e) {
       log(e.toString());
       signUpState = StateEnum.failed;

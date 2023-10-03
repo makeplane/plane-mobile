@@ -189,7 +189,9 @@ class _SignInSelfHostedState extends ConsumerState<SignInSelfHosted> {
                                   .signInWithEmailAndPassword(
                                       email: email.text,
                                       password: password.text,
-                                      context: context);
+                                      context: context,
+                                      ref: ref
+                                      );
 
                               if (authProvider.signInState ==
                                       StateEnum.success &&

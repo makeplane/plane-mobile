@@ -216,9 +216,16 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(
-                        userProfileProvider.issuesCountByState[index]['state'],
-                        textAlign: TextAlign.start,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: CustomText(
+                          userProfileProvider.issuesCountByState[index]
+                              ['state'],
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 7,
                       ),
                       CustomText(
                         userProfileProvider.issuesCountByState[index]['count']

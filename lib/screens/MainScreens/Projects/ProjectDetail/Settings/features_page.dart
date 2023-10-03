@@ -84,12 +84,15 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          cardData[index]['title'],
-                          textAlign: TextAlign.left,
-                          // color: Colors.black,
-                          type: FontStyle.H5,
-                          color: themeProvider.themeManager.primaryTextColor,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: CustomText(
+                            cardData[index]['title'],
+                            textAlign: TextAlign.left,
+                            // color: Colors.black,
+                            type: FontStyle.H5,
+                            color: themeProvider.themeManager.primaryTextColor,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,

@@ -373,7 +373,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
               const SizedBox(
-                height: 0,
+                height: 5,
               ),
               SizedBox(
                 width: width * 0.5,
@@ -383,6 +383,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   color: themeProvider.themeManager.placeholderTextColor,
                   maxLines: 1,
                 ),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               InkWell(
                 onTap: () {

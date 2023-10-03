@@ -1999,6 +1999,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               ...List.generate(
                 states.length,
                 (index) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 50),
                     Padding(
@@ -2027,11 +2028,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               : greenHighLight,
                               BlendMode.srcIn)),
                     ),
-                    CustomText(
-                      states[index],
-                      type: FontStyle.Large,
-                      fontWeight: FontWeightt.Regular,
-                      color: themeProvider.themeManager.secondaryTextColor,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: CustomText(
+                        states[index],
+                        type: FontStyle.Large,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor,
+                      ),
                     ),
                     const Spacer(),
                     index == 0
@@ -2140,11 +2144,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                CustomText(
-                                  detailData['distribution']['labels'][index]
-                                          ['label_name'] ??
-                                      'No Label',
-                                  maxLines: 2,
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: CustomText(
+                                    detailData['distribution']['labels'][index]
+                                            ['label_name'] ??
+                                        'No Label',
+                                    maxLines: 2,
+                                  ),
                                 ),
                               ],
                             ),

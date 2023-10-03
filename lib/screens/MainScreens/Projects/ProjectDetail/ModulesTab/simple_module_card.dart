@@ -83,16 +83,19 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: CustomText(
-                      widget.isFav
-                          ? modulesProvider.favModules[widget.index]['name']
-                              .toString()
-                          : modulesProvider.modules[widget.index]['name']
-                              .toString(),
-                      overflow: TextOverflow.ellipsis,
-                      type: FontStyle.H6,
-                      fontWeight: FontWeightt.Medium,
-                      color: themeProvider.themeManager.primaryTextColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: CustomText(
+                        widget.isFav
+                            ? modulesProvider.favModules[widget.index]['name']
+                                .toString()
+                            : modulesProvider.modules[widget.index]['name']
+                                .toString(),
+                        overflow: TextOverflow.ellipsis,
+                        type: FontStyle.H6,
+                        fontWeight: FontWeightt.Medium,
+                        color: themeProvider.themeManager.primaryTextColor,
+                      ),
                     ),
                   ),
                   Row(

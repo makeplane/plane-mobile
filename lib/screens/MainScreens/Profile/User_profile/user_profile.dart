@@ -109,7 +109,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                     child: TabBar(
                       controller: tabController,
                       indicatorWeight: 6,
-                      indicatorPadding: const EdgeInsets.only(top: 31),
+                      indicatorPadding: const EdgeInsets.only(top: 25),
                       indicator: BoxDecoration(
                           color: themeProvider.themeManager.primaryColour,
                           borderRadius: BorderRadius.circular(6)),

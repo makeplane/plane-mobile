@@ -1067,7 +1067,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                           margin:
                                               const EdgeInsets.only(right: 8),
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 14, vertical: 6),
+                                              horizontal: 14, vertical: 10),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),

@@ -921,12 +921,15 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                                 100,
                                                                           ),
                                                                           child:
-                                                                              CustomText(
-                                                                            issuesProvider.createIssuedata['members'].values.first['name'],
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            maxLines:
-                                                                                1,
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(top: 5),
+                                                                            child:
+                                                                                CustomText(
+                                                                              issuesProvider.createIssuedata['members'].values.first['name'],
+                                                                              type: FontStyle.Small,
+                                                                              maxLines: 1,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ],

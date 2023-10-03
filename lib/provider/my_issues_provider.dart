@@ -649,15 +649,18 @@ class MyIssuesProvider extends ChangeNotifier {
             const SizedBox(
               width: 10,
             ),
-            SizedBox(
-              width: element.width - 150,
-              child: CustomText(
-                element.title.toString(),
-                type: FontStyle.Large,
-                fontWeight: FontWeightt.Semibold,
-                textAlign: TextAlign.start,
-                fontSize: 20,
-                maxLines: 1,
+            Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: SizedBox(
+                width: element.width - 150,
+                child: CustomText(
+                  element.title.toString(),
+                  type: FontStyle.Large,
+                  fontWeight: FontWeightt.Semibold,
+                  textAlign: TextAlign.start,
+                  fontSize: 20,
+                  maxLines: 1,
+                ),
               ),
             ),
             Container(

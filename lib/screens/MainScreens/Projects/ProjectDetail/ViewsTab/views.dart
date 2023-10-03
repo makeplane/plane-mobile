@@ -181,7 +181,7 @@ class _ViewsState extends ConsumerState<Views> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 5),
                     //width: MediaQuery.sizeOf(context).width - 250,
-                    padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
+                    padding: const EdgeInsets.only(left: 5, right: 5, top: 20),
                     child: CustomText(
                       viewsProvider.views[index]["name"],
                       type: FontStyle.H6,

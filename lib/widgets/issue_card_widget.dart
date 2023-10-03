@@ -328,7 +328,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                     //               width: 5,
                     //             ),
                     //             Padding(
-                    //               padding: const EdgeInsets.only(top: 2),
+                    //               padding: const EdgeInsets.only(top: 7),
                     //               child: CustomText(
                     //                 provider
                     //                         .issuesResponse[widget.cardIndex]
@@ -519,7 +519,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 margin: const EdgeInsets.only(right: 5),
                                 padding: const EdgeInsets.only(
                                   left: 8,
-                                  top: 2,
+                                  top: 7,
                                   bottom: 5,
                                   right: 8,
                                 ),
@@ -543,7 +543,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             height: 30,
                             margin: const EdgeInsets.only(right: 5),
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 2, bottom: 5),
+                                left: 8, right: 8, top: 7, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: themeProvider
@@ -572,7 +572,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             height: 30,
                             margin: const EdgeInsets.only(right: 5),
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 2, bottom: 5),
+                                left: 8, right: 8, top: 7, bottom: 5),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: themeProvider
@@ -625,7 +625,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 2),
+                                  padding: const EdgeInsets.only(top: 7),
                                   child: CustomText(
                                     provider.issuesResponse[widget.cardIndex]
                                                     ['sub_issues_count'] !=
@@ -677,7 +677,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 2),
+                                  padding: const EdgeInsets.only(top: 7),
                                   child: CustomText(
                                     provider.issuesResponse[widget.cardIndex]
                                                     ['link_count'] !=
@@ -726,7 +726,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 2),
+                                  padding: const EdgeInsets.only(top: 7),
                                   child: CustomText(
                                     provider.issuesResponse[widget.cardIndex]
                                                     ['attachment_count'] !=
@@ -776,7 +776,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 2),
+                                  padding: const EdgeInsets.only(top: 7),
                                   child: CustomText(
                                     provider.issuesResponse[widget.cardIndex]
                                                     ['estimate_point'] !=

@@ -449,7 +449,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     maxLines: 1,
                   ),
                   const SizedBox(
-                    height: 3,
+                    height: 8,
                   ),
                   CustomText(
                     dashboardProvider.dashboardData[gridCardKeys[index]] != null
@@ -785,6 +785,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   child: SfCircularChart(
                     // margin: EdgeInsets.zero,
                     tooltipBehavior: tooltipBehavior,
+
                     series: <CircularSeries>[
                       DoughnutSeries<IssuesByState, String>(
                         radius: '100%',
@@ -810,25 +811,28 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     shrinkWrap: true,
                     itemCount: data.length,
                     itemBuilder: (context, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 15,
-                            width: 15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: IssuesByState.getColorForState(
-                                  data[index].state),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: IssuesByState.getColorForState(
+                                    data[index].state),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          CustomText(StringManager.capitalizeFirstLetter(
-                              data[index].state)),
-                          const Spacer(),
-                          CustomText(data[index].issues.toString()),
-                        ],
+                            const SizedBox(width: 8),
+                            CustomText(StringManager.capitalizeFirstLetter(
+                                data[index].state)),
+                            const Spacer(),
+                            CustomText(data[index].issues.toString()),
+                          ],
+                        ),
                       );
                     },
                   ),

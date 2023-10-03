@@ -167,8 +167,9 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
     );
   }
 
-  SizedBox cycleNameText() {
-    return SizedBox(
+  Widget cycleNameText() {
+    return Container(
+      padding: const EdgeInsets.only(top: 5),
       width: width * 0.6,
       child: CustomText(
         cycleName,

@@ -88,7 +88,7 @@ class CustomText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final style = getStyle(type, themeProvider, letterSpacing);
+    final style = getStyle(type, themeProvider, letterSpacing, maxLines ?? 1);
 
     return Text(
       text.toString(),
@@ -99,13 +99,13 @@ class CustomText extends ConsumerWidget {
     );
   }
 
-  TextStyle getStyle(
-      FontStyle? type, ThemeProvider themeProvider, double? letterSpacing) {
+  TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider,
+      double? letterSpacing, int maxLines) {
     // log(customTextColor.toString());
     return GoogleFonts.inter(
         letterSpacing:
             letterSpacing ?? ((type != null) ? -(fontSIZE[type]! * 0.02) : 0),
-        height: type != null ? lineHeight[type] : null,
+        height: maxLines > 1 ? 1.2 : 1,
         fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
         fontWeight:
             fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,

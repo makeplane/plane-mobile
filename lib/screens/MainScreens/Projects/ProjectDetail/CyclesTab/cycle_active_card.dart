@@ -222,12 +222,14 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
               ),
               const SizedBox(width: 5),
               Expanded(
-                child: CustomText(
-                  cyclesProvider.cyclesActiveData[index]['name'],
-                  // '111111111111111111111111111111111111111111111111',
-                  maxLines: 1,
-                  type: FontStyle.Large,
-                  fontWeight: FontWeightt.Medium,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: CustomText(
+                    cyclesProvider.cyclesActiveData[index]['name'],
+                    maxLines: 1,
+                    type: FontStyle.Large,
+                    fontWeight: FontWeightt.Medium,
+                  ),
                 ),
               ),
               //const Spacer(),

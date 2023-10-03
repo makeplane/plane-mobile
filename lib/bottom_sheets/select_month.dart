@@ -183,7 +183,7 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
                       decoration: themeProvider.themeManager.textFieldDecoration
                           .copyWith(
                               suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 9),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         child: CustomText(
                           'Months   ',
                           color: themeProvider.themeManager.tertiaryTextColor,

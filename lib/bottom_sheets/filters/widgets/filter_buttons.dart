@@ -33,10 +33,13 @@ Widget _clearFilterButton(
         ),
         child: Row(
           children: [
-            CustomText(
-              'Clear all Filters',
-              type: FontStyle.Medium,
-              color: themeManager.placeholderTextColor,
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: CustomText(
+                'Clear all Filters',
+                type: FontStyle.Medium,
+                color: themeManager.placeholderTextColor,
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -92,13 +95,16 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
                       : themeProvider.themeManager.primaryColour,
                   size: 24,
                 ),
-                CustomText(
-                  '  Save View',
-                  color: state.isFilterEmpty()
-                      ? themeProvider.themeManager.placeholderTextColor
-                      : themeProvider.themeManager.primaryColour,
-                  fontWeight: FontWeightt.Semibold,
-                  type: FontStyle.Medium,
+                Padding(
+                  padding: const EdgeInsets.only(top: 3),
+                  child: CustomText(
+                    '  Save View',
+                    color: state.isFilterEmpty()
+                        ? themeProvider.themeManager.placeholderTextColor
+                        : themeProvider.themeManager.primaryColour,
+                    fontWeight: FontWeightt.Semibold,
+                    type: FontStyle.Medium,
+                  ),
                 ),
               ],
             ),
@@ -114,7 +120,7 @@ Widget _applyFilterButton({
   return Container(
     height: 50,
     width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues
-        ? MediaQuery.of(context).size.width * 0.9
+        ? MediaQuery.of(context).size.width * 0.87
         : MediaQuery.of(context).size.width * 0.42,
     margin: const EdgeInsets.only(bottom: 18),
     child: Button(

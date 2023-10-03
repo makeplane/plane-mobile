@@ -430,7 +430,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 color:
                     themeProvider.themeManager.secondaryBackgroundActiveColor,
               ),
-              child: InkWell(
+              child: GestureDetector(
                 onTap: menus[index]['menu'] == 'Workspace Settings'
                     ? () {
                         showModalBottomSheet(

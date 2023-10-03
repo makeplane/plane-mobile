@@ -94,7 +94,7 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
                           message: 'Something went wrong!',
                           toastType: ToastType.failure);
                     } else {
-                      if (context.mounted) Navigator.pop(context);
+                      if (context.mounted) Navigator.maybePop(context);
                     }
                   },
                   child: Padding(

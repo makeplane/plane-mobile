@@ -45,7 +45,7 @@ class _DeleteLeaveProjectSheetState
                   widget.role == Role.admin
                       ? 'Delete Project'
                       : 'Leave Project',
-                  type: FontStyle.H6,
+                  type: FontStyle.H5,
                   fontWeight: FontWeightt.Semibold,
                 ),
                 Container(
@@ -55,7 +55,7 @@ class _DeleteLeaveProjectSheetState
                   widget.role == Role.admin
                       ? 'Are you sure you want to delete this project?'
                       : 'Are you sure you want to leave this project?',
-                  type: FontStyle.H5,
+                  type: FontStyle.H6,
                   fontSize: 20,
                 ),
                 Container(
@@ -215,7 +215,8 @@ class _DeleteLeaveProjectSheetState
                       onTap: () async {
                         if (widget.role == Role.guest ||
                             widget.role == Role.viewer ||
-                            widget.role == Role.member) {
+                            widget.role == Role.member || 
+                            widget.role == Role.none) {
                           final leftSuccessfully =
                               await projectProvider.leaveProject(
                                   slug: ref
@@ -223,7 +224,9 @@ class _DeleteLeaveProjectSheetState
                                       .selectedWorkspace
                                       .workspaceSlug,
                                   projId: projectProvider.currentProject['id'],
-                                  index: 0);
+                                  index: 0,
+                                  context: context
+                                  );
                           if (leftSuccessfully) {
                             CustomToast.showToast(
                               context,
@@ -286,9 +289,13 @@ class _DeleteLeaveProjectSheetState
                                 projectProvider.leaveProjectState ==
                                     StateEnum.loading
                             ? Center(
-                                child: CircularProgressIndicator(
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor,
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
                                 ),
                               )
                             : CustomText(

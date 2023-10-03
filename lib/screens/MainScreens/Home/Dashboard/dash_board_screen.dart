@@ -94,67 +94,81 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           backgroundColor:
               themeProvider.themeManager.primaryBackgroundDefaultColor,
           onRefresh: refresh,
-          child: ListView(
-            controller: parentScrollController,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: headerWidget(),
-              ),
-              const SizedBox(height: 20),
-              greetingAndDateTimeWidget(
-                  context, profileProvider, themeProvider),
-              const SizedBox(height: 20),
-              dashboardProvider.hideGithubBlock == false
-                  ? starUsOnGitHubWidget(
-                      themeProvider, context, dashboardProvider)
-                  : Container(),
-              const SizedBox(height: 20),
-              projectProvider.projects.isEmpty &&
-                      projectProvider.getProjectState == StateEnum.success
-                  ? createProjectWidget(themeProvider, context)
-                  : Container(),
-              projectProvider.projects.isNotEmpty
-                  ? quichInfoWidget(context, themeProvider, dashboardProvider)
-                  : Container(),
-              const SizedBox(height: 20),
-              const ActivityGraphWidget(),
-              const SizedBox(height: 20),
-              // overdueIssues.isEmpty || overdueIssues.isNull
-              overdueIssues == null || overdueIssues.isEmpty
-                  ? Container()
-                  : Column(
-                      children: [
-                        overDueIssuesWidget(themeProvider, overdueIssues),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-              upcomingIssues == null || upcomingIssues.isEmpty
-                  ? Container()
-                  : Column(
-                      children: [
-                        upcomingIssuesWidget(themeProvider, upcomingIssues),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-              stateDistribution == null || stateDistribution.isEmpty
-                  ? Container()
-                  : Column(
-                      children: [
-                        issuesByStatesWidget(themeProvider, stateDistribution),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-              issuesCompleted == null
-                  ? Container()
-                  : Column(
-                      children: [
-                        issuesClosedByYouWidget(
-                            themeProvider, dashboardProvider, issuesCompleted),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-            ],
+          child: SizedBox(
+            height: height,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: headerWidget(),
+                ),
+                Expanded(
+                  child: ListView(
+                    controller: parentScrollController,
+                    children: [
+                      const SizedBox(height: 20),
+                      greetingAndDateTimeWidget(
+                          context, profileProvider, themeProvider),
+                      const SizedBox(height: 20),
+                      dashboardProvider.hideGithubBlock == false
+                          ? starUsOnGitHubWidget(
+                              themeProvider, context, dashboardProvider)
+                          : Container(),
+                      const SizedBox(height: 20),
+                      projectProvider.projects.isEmpty &&
+                              projectProvider.getProjectState ==
+                                  StateEnum.success
+                          ? createProjectWidget(themeProvider, context)
+                          : Container(),
+                      projectProvider.projects.isNotEmpty
+                          ? quichInfoWidget(
+                              context, themeProvider, dashboardProvider)
+                          : Container(),
+                      const SizedBox(height: 20),
+                      const ActivityGraphWidget(),
+                      const SizedBox(height: 20),
+                      // overdueIssues.isEmpty || overdueIssues.isNull
+                      overdueIssues == null || overdueIssues.isEmpty
+                          ? Container()
+                          : Column(
+                              children: [
+                                overDueIssuesWidget(
+                                    themeProvider, overdueIssues),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                      upcomingIssues == null || upcomingIssues.isEmpty
+                          ? Container()
+                          : Column(
+                              children: [
+                                upcomingIssuesWidget(
+                                    themeProvider, upcomingIssues),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                      stateDistribution == null || stateDistribution.isEmpty
+                          ? Container()
+                          : Column(
+                              children: [
+                                issuesByStatesWidget(
+                                    themeProvider, stateDistribution),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                      issuesCompleted == null
+                          ? Container()
+                          : Column(
+                              children: [
+                                issuesClosedByYouWidget(themeProvider,
+                                    dashboardProvider, issuesCompleted),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -202,7 +216,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName ?? 'User name'}',
+                '${greetAtTime(DateTime.now().hour)}, ${profileProvider.userProfile.firstName!.contains(' ') ? profileProvider.userProfile.firstName!.split(' ').first : profileProvider.userProfile.firstName ?? ''}',
                 type: FontStyle.H5,
                 fontWeight: FontWeightt.Semibold,
                 maxLines: 1,
@@ -466,7 +480,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             )),
         const SizedBox(height: 10),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(6),
@@ -476,28 +489,43 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                      flex: flexForUpcomingAndOverdueWidgets[0],
-                      child: CustomText(
-                        'Overdue',
-                        color: themeProvider.themeManager.placeholderTextColor,
-                      )),
-                  Expanded(
-                      flex: flexForUpcomingAndOverdueWidgets[1],
-                      child: CustomText(
-                        'Issue',
-                        color: themeProvider.themeManager.placeholderTextColor,
-                      )),
-                  Expanded(
-                    flex: flexForUpcomingAndOverdueWidgets[2],
-                    child: CustomText(
-                      'Due Date',
-                      color: themeProvider.themeManager.placeholderTextColor,
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: themeProvider.themeManager.toastErrorColor,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: flexForUpcomingAndOverdueWidgets[0],
+                        child: CustomText(
+                          'Overdue',
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Semibold,
+                        )),
+                    const SizedBox(
+                      width: 20,
                     ),
-                  ),
-                ],
+                    Expanded(
+                        flex: flexForUpcomingAndOverdueWidgets[1],
+                        child: CustomText(
+                          'Issue',
+                          color: themeProvider.themeManager.primaryTextColor,
+                          fontWeight: FontWeightt.Semibold,
+                        )),
+                    Expanded(
+                      flex: flexForUpcomingAndOverdueWidgets[2],
+                      child: CustomText(
+                        'Due Date',
+                        color: themeProvider.themeManager.primaryTextColor,
+                        fontWeight: FontWeightt.Semibold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 5),
               GestureDetector(
@@ -523,6 +551,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   }
                 },
                 child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   constraints: const BoxConstraints(maxHeight: 200),
                   child: ListView.builder(
                     controller: overDueScrollController,
@@ -540,6 +569,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               '${DateTimeManager.diffrenceInDays(startDate: overdueIssues[index]['target_date'], endDate: DateTime.now().toString()).abs()}d',
                               color: themeProvider.themeManager.textErrorColor,
                             ),
+                          ),
+                          const SizedBox(
+                            width: 20,
                           ),
                           Expanded(
                             flex: flexForUpcomingAndOverdueWidgets[1],
@@ -589,7 +621,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             )),
         const SizedBox(height: 10),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(6),
@@ -599,28 +630,41 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                      flex: flexForUpcomingAndOverdueWidgets[0],
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color:
+                      themeProvider.themeManager.tertiaryBackgroundDefaultColor,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: flexForUpcomingAndOverdueWidgets[0],
+                        child: CustomText(
+                          'Time',
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        )),
+                    Expanded(
+                        flex: flexForUpcomingAndOverdueWidgets[1],
+                        child: CustomText(
+                          'Issue',
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        )),
+                    Expanded(
+                      flex: flexForUpcomingAndOverdueWidgets[2],
                       child: CustomText(
-                        'Time',
-                        color: themeProvider.themeManager.placeholderTextColor,
-                      )),
-                  Expanded(
-                      flex: flexForUpcomingAndOverdueWidgets[1],
-                      child: CustomText(
-                        'Issue',
-                        color: themeProvider.themeManager.placeholderTextColor,
-                      )),
-                  Expanded(
-                    flex: flexForUpcomingAndOverdueWidgets[2],
-                    child: CustomText(
-                      'Start Date',
-                      color: themeProvider.themeManager.placeholderTextColor,
+                        'Start Date',
+                        fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryTextColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 5),
               GestureDetector(
@@ -646,6 +690,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   }
                 },
                 child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   constraints: const BoxConstraints(maxHeight: 200),
                   child: ListView.builder(
                     controller: upComingScrollController,
@@ -883,12 +928,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             ),
           ),
           child: issuesClosedOnMonth.isEmpty
-              ? const Center(
+              ? Center(
                   child: CustomText(
                   'No issues closed this month',
                   fontWeight: FontWeightt.Semibold,
-                  type: FontStyle.Large,
-                  color: widgetPrimaryColor,
+                  type: FontStyle.Medium,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ))
               : Column(
                   children: [

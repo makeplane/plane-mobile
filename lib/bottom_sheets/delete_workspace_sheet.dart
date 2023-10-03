@@ -225,7 +225,8 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                     GestureDetector(
                       onTap: () async {
                         if (widget.role == Role.guest ||
-                            widget.role == Role.viewer) {
+                            widget.role == Role.viewer || 
+                            widget.role == Role.none) {
                           final isSuccessfullyLeft = await workspaceProvider
                               .leaveWorkspace(context, ref);
                           if (isSuccessfullyLeft) {

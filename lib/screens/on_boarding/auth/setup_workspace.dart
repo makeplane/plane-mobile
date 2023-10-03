@@ -79,7 +79,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                           //   style: TextStylingWidget.mainHeading,
                           // ),
                           CustomText(
-                            ' Create Workspaces',
+                            ' Create Workspace',
                             type: FontStyle.H4,
                             fontWeight: FontWeightt.Semibold,
                             color: themeProvider.themeManager.primaryTextColor,
@@ -273,9 +273,13 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                       ? 'Select Company Size'
                                                       : prov.companySize,
                                                   type: FontStyle.Small,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .placeholderTextColor),
+                                                  color: prov.companySize == ''
+                                                      ? themeProvider
+                                                          .themeManager
+                                                          .placeholderTextColor
+                                                      : themeProvider
+                                                          .themeManager
+                                                          .primaryTextColor),
                                             ),
                                             Container(
                                               margin: const EdgeInsets.only(

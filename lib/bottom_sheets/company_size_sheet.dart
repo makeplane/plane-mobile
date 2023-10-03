@@ -23,10 +23,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
         children: [
           Row(
             children: [
-              const CustomText(
+              CustomText(
                 'Company Size',
-                type: FontStyle.H6,
+                type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               IconButton(
@@ -68,9 +69,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         //workspaceProvider.changeCompanySize(size: 'Just myself');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     'Just myself',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),
@@ -108,9 +111,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         // workspaceProvider.changeCompanySize(size: '2-10');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     '2-10',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),
@@ -148,9 +153,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         // workspaceProvider.changeCompanySize(size: '11-50');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     '11-50',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),
@@ -188,9 +195,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         // workspaceProvider.changeCompanySize(size: '51-200');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     '51-200',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),
@@ -228,9 +237,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         // workspaceProvider.changeCompanySize(size: '201-500');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     '201-500',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),
@@ -268,9 +279,11 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                         // workspaceProvider.changeCompanySize(size: '500+');
                       }),
                   const SizedBox(width: 10),
-                  const CustomText(
+                  CustomText(
                     '500+',
-                    type: FontStyle.Small,
+                    type: FontStyle.Medium,
+                    fontWeight: FontWeightt.Regular,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                 ],
               ),

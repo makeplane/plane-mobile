@@ -509,9 +509,9 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       title: CustomText(
                         'Danger Zone',
                         textAlign: TextAlign.left,
-                        type: FontStyle.H5,
+                        type: FontStyle.H6,
                         fontWeight: FontWeightt.Semibold,
-                        color: themeProvider.themeManager.primaryTextColor,
+                        color: themeProvider.themeManager.tertiaryTextColor,
                       ),
                       children: [
                         CustomText(
@@ -521,7 +521,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           type: FontStyle.Medium,
                           maxLines: 8,
                           textAlign: TextAlign.left,
-                          color: Colors.grey,
+                          color: themeProvider.themeManager.tertiaryTextColor,
                         ),
                         const SizedBox(
                           height: 20,

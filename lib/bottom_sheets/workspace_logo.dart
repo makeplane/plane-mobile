@@ -37,7 +37,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
     final fileProvider = ref.watch(ProviderList.fileUploadProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
       decoration: const BoxDecoration(
         //color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -46,14 +46,30 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 10,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.close,
+                  size: 27,
+                  color: themeProvider.themeManager.placeholderTextColor,
+                ),
+              ),
+            ],
           ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           coverImage == null
               ? Expanded(
                   child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
                     alignment: Alignment.center,
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () async {
                         final file = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
@@ -65,9 +81,8 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                       },
                       child: Container(
                         height: 40,
-                        width: 120,
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Row(
@@ -82,7 +97,7 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                               width: 10,
                             ),
                             const CustomText(
-                              'Upload',
+                              'Select from device',
                               type: FontStyle.Small,
                               color: Colors.black,
                             ),
@@ -103,8 +118,8 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
                     }
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    height: 250,
+                    margin: const EdgeInsets.only(bottom: 20, top: 10),
+                    height: 200,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       image: DecorationImage(

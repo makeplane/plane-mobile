@@ -224,9 +224,27 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                       ),
                     );
                   } else {
-                    CustomToast.showToast(context,
-                        message: "You can't change your own role",
-                        toastType: ToastType.warning);
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.85),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      context: context,
+                      builder: (BuildContext context) => DeleteOrLeaveWorkpace(
+                        workspaceName:
+                            workspaceProvider.selectedWorkspace.workspaceName,
+                        role: Role.none,
+                      ),
+                    );
+                    // CustomToast.showToast(context,
+                    //     message: "You can't change your own role",
+                    //     toastType: ToastType.warning);
                   }
                 } else {
                   showModalBottomSheet(
@@ -475,9 +493,35 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                         );
                       });
                 } else {
-                  CustomToast.showToast(context,
-                      message: "You can't change your own role",
-                      toastType: ToastType.warning);
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return DeleteLeaveProjectSheet(
+                          data: {
+                            'WORKSPACE_ID':
+                                workspaceProvider.selectedWorkspace.workspaceId,
+                            'WORKSPACE_NAME': workspaceProvider
+                                .selectedWorkspace.workspaceName,
+                            'WORKSPACE_SLUG': workspaceProvider
+                                .selectedWorkspace.workspaceSlug,
+                            'PROJECT_ID':
+                                projectsProvider.projectDetailModel!.id,
+                            'PROJECT_NAME':
+                                projectsProvider.projectDetailModel!.name
+                          },
+                          role: Role.none,
+                        );
+                      });
+                  // CustomToast.showToast(context,
+                      // message: "You can't change your own role",
+                      // toastType: ToastType.warning);
                 }
               } else {
                 showModalBottomSheet(

@@ -30,14 +30,12 @@ class IssueDetail extends ConsumerStatefulWidget {
   IssueDetail(
       {required this.from,
       required this.appBarTitle,
-      required this.ref,
       this.projID,
       this.workspaceSlug,
       this.isArchive = false,
       required this.issueId,
       super.key});
   final String issueId;
-  final Ref ref;
   final PreviousScreen? from;
   String appBarTitle;
   final String? projID;
@@ -51,43 +49,44 @@ class IssueDetail extends ConsumerStatefulWidget {
 class _IssueDetailState extends ConsumerState<IssueDetail> {
   late String workspaceSlug;
   late String projID;
+  late Ref reff;
 
   void _reloadPreviousScreen() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       switch (widget.from) {
         case PreviousScreen.myIssues:
           final MyIssuesProvider myIssuesProvider =
-              widget.ref.read(ProviderList.myIssuesProvider);
+              ref.read(ProviderList.myIssuesProvider);
           myIssuesProvider.myIssuesFilterState = StateEnum.loading;
           myIssuesProvider.setState();
           break;
         case PreviousScreen.activity:
-          final activityProv = widget.ref.read(ProviderList.activityProvider);
+          final activityProv = ref.read(ProviderList.activityProvider);
           activityProv.getActivityState = StateEnum.loading;
           activityProv.setState();
           break;
         case PreviousScreen.projectDetail:
           final IssuesProvider issuesProvider =
-              widget.ref.read(ProviderList.issuesProvider);
+              ref.read(ProviderList.issuesProvider);
           issuesProvider.orderByState = StateEnum.loading;
           issuesProvider.setsState();
           break;
         case PreviousScreen.cycles:
           final CyclesProvider cycleProvider =
-              widget.ref.read(ProviderList.cyclesProvider);
+              ref.read(ProviderList.cyclesProvider);
           cycleProvider.cyclesIssueState = StateEnum.loading;
           cycleProvider.setState();
 
           break;
         case PreviousScreen.modules:
           final ModuleProvider modulesProvider =
-              widget.ref.read(ProviderList.modulesProvider);
+              ref.read(ProviderList.modulesProvider);
           modulesProvider.moduleIssueState = StateEnum.loading;
           modulesProvider.setState();
           break;
         case PreviousScreen.views:
           final IssuesProvider issuesProvider =
-              widget.ref.read(ProviderList.issuesProvider);
+              ref.read(ProviderList.issuesProvider);
           issuesProvider.orderByState = StateEnum.loading;
           issuesProvider.setsState();
           break;
@@ -101,32 +100,32 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       switch (widget.from) {
         case PreviousScreen.myIssues:
-          widget.ref.read(ProviderList.myIssuesProvider).filterIssues();
+          reff.read(ProviderList.myIssuesProvider).filterIssues();
           break;
         case PreviousScreen.activity:
-          final activityProv = widget.ref.read(ProviderList.activityProvider);
+          final activityProv = reff.read(ProviderList.activityProvider);
           activityProv.getActivityState = StateEnum.loading;
           activityProv.setState();
           activityProv.getAcivity(slug: workspaceSlug);
           break;
         case PreviousScreen.projectDetail:
-          widget.ref.read(ProviderList.issuesProvider).filterIssues(
+          reff.read(ProviderList.issuesProvider).filterIssues(
               slug: workspaceSlug,
               projID: projID,
               isArchived: widget.isArchive);
           break;
         case PreviousScreen.cycles:
-          widget.ref
+          reff
               .read(ProviderList.cyclesProvider)
               .filterCycleIssues(slug: workspaceSlug, projectId: projID);
           break;
         case PreviousScreen.modules:
-          widget.ref
+          reff
               .read(ProviderList.modulesProvider)
               .filterModuleIssues(slug: workspaceSlug, projectId: projID);
           break;
         case PreviousScreen.views:
-          widget.ref
+          reff
               .read(ProviderList.issuesProvider)
               .filterIssues(slug: workspaceSlug, projID: projID);
           break;
@@ -139,6 +138,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
   @override
   void initState() {
     super.initState();
+    reff = ref.read(ProviderList.workspaceProvider).ref!;
     workspaceSlug = widget.workspaceSlug ??
         ref
             .read(ProviderList.workspaceProvider)

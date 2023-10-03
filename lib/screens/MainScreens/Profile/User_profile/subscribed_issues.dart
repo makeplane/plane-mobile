@@ -76,8 +76,6 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                               appBarTitle: userProfileProvider
                                   .userSubscribedIssues[index].name
                                   .toString(),
-                              ref:
-                                  ref.read(ProviderList.workspaceProvider).ref!,
                               issueId: userProfileProvider
                                   .userSubscribedIssues[index].id!,
                               projID: userProfileProvider

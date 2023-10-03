@@ -535,7 +535,6 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                       Const.globalKey.currentContext!,
                       MaterialPageRoute(
                         builder: (context) => IssueDetail(
-                          ref: ref.read(ProviderList.workspaceProvider).ref!,
                           from: PreviousScreen.userProfile,
                           appBarTitle: userProfileProvider
                               .userActivity.results![index].issueDetail!.name!,

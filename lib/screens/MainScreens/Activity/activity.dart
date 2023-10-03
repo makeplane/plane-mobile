@@ -86,10 +86,6 @@ class _ActivityState extends ConsumerState<Activity> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => IssueDetail(
-                                                        ref: ref
-                                                            .read(ProviderList
-                                                                .workspaceProvider)
-                                                            .ref!,
                                                         from: PreviousScreen
                                                             .activity,
                                                         projID: activityProvider
@@ -251,7 +247,6 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 ..onTap = () {
                                                                                   Navigator.of(context).push(MaterialPageRoute(
                                                                                       builder: (_) => IssueDetail(
-                                                                                            ref: ref.read(ProviderList.workspaceProvider).ref!,
                                                                                             from: PreviousScreen.activity,
                                                                                             projID: activityProvider.data[index]["project"],
                                                                                             workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
@@ -469,7 +464,6 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               ..onTap = () {
                                                                                 Navigator.of(context).push(MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                                                                          ref: ref.read(ProviderList.workspaceProvider).ref!,
                                                                                           from: PreviousScreen.activity,
                                                                                           projID: activityProvider.data[index]["project"],
                                                                                           workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],

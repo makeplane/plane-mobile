@@ -22,6 +22,8 @@ import 'package:plane/bottom_sheets/role_sheet.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
+import '../../../../widgets/custom_rich_text.dart';
+
 class ProfileDetailScreen extends ConsumerStatefulWidget {
   const ProfileDetailScreen({super.key});
 
@@ -270,11 +272,20 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           // const Text('Full Name *', style: TextStylingWidget.description),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText(
-                              'First Name *',
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'First name',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
                               type: FontStyle.Medium,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                           ),
                           const SizedBox(
@@ -307,11 +318,20 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           // const Text('Full Name *', style: TextStylingWidget.description),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText(
-                              'Last Name *',
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'Last name',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
                               type: FontStyle.Medium,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                           ),
                           const SizedBox(
@@ -371,11 +391,20 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           // const Text('Email *', style: TextStylingWidget.description),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText(
-                              'Email *',
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'Email',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
                               type: FontStyle.Medium,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
                             ),
                           ),
                           const SizedBox(
@@ -399,10 +428,21 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText('Role *',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor),
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'Role',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
+                              type: FontStyle.Medium,
+                            ),
                           ),
                           const SizedBox(
                             height: 10,

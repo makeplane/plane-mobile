@@ -533,7 +533,8 @@ class ProjectsProvider extends ChangeNotifier {
   Future<bool> leaveProject(
       {required String slug,
       required String projId,
-      required int index}) async {
+      required int index,
+      required BuildContext context}) async {
     try {
       leaveProjectState = StateEnum.loading;
       notifyListeners();
@@ -551,6 +552,12 @@ class ProjectsProvider extends ChangeNotifier {
       return true;
     } on DioException catch (e) {
       log(e.error.toString());
+      CustomToast.showToast(
+        context,
+        message: (e.error as Map)['error'].toString(),
+        toastType: ToastType.failure,
+        duration: 5
+      );
       leaveProjectState = StateEnum.error;
       notifyListeners();
       return false;

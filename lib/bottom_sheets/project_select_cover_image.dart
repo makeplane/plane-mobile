@@ -13,7 +13,6 @@ import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
-import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 // ignore: must_be_immutable
@@ -160,92 +159,82 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
             ),
           ),
           isEnableAuth()
-              ? Container(
-                  //bottom border
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: lightGreeyColor,
-                        width: 2,
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          pageController.jumpToPage(0);
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: CustomText(
+                                'Unsplash',
+                                color: selected == 0
+                                    ? themeProvider.themeManager.primaryColour
+                                    : themeProvider
+                                        .themeManager.placeholderTextColor,
+                                type: FontStyle.H5,
+                                fontWeight: FontWeightt.Medium,
+                              ),
+                            ),
+                            selected == 0
+                                ? Container(
+                                    height: 2,
+                                    decoration: BoxDecoration(
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
+                                        borderRadius:
+                                            BorderRadius.circular(10)))
+                                : Container(
+                                    height: 2,
+                                    color: themeProvider
+                                        .themeManager.borderSubtle01Color,
+                                  )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            pageController.jumpToPage(0);
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: CustomText(
-                                  'Unsplash',
-                                  color: selected == 0
-                                      ? themeProvider.themeManager.primaryColour
-                                      : themeProvider
-                                          .themeManager.placeholderTextColor,
-                                  type: FontStyle.H5,
-                                  fontWeight: FontWeightt.Medium,
-                                ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          pageController.jumpToPage(1);
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: CustomText(
+                                'Upload',
+                                color: selected == 1
+                                    ? themeProvider.themeManager.primaryColour
+                                    : themeProvider
+                                        .themeManager.placeholderTextColor,
+                                type: FontStyle.H5,
+                                fontWeight: FontWeightt.Medium,
                               ),
-                              selected == 0
-                                  ? Container(
-                                      height: 2,
-                                      decoration: BoxDecoration(
-                                          color: themeProvider
-                                              .themeManager.primaryColour,
-                                          borderRadius:
-                                              BorderRadius.circular(10)))
-                                  : Container(
-                                      height: 0,
-                                      color: lightGreeyColor,
-                                    )
-                            ],
-                          ),
+                            ),
+                            selected == 1
+                                ? Container(
+                                    height: 2,
+                                    decoration: BoxDecoration(
+                                        color: themeProvider
+                                            .themeManager.primaryColour,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  )
+                                : Container(
+                                    height: 2,
+                                    color: themeProvider
+                                        .themeManager.borderSubtle01Color,
+                                  )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            pageController.jumpToPage(1);
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: CustomText(
-                                  'Upload',
-                                  color: selected == 1
-                                      ? themeProvider.themeManager.primaryColour
-                                      : lightGreyTextColor,
-                                  type: FontStyle.H5,
-                                  fontWeight: FontWeightt.Medium,
-                                ),
-                              ),
-                              selected == 1
-                                  ? Container(
-                                      height: 2,
-                                      decoration: BoxDecoration(
-                                          color: themeProvider
-                                              .themeManager.primaryColour,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                    )
-                                  : Container(
-                                      height: 0,
-                                      color: lightGreeyColor,
-                                    )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               : Container(),
           Expanded(
@@ -293,7 +282,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                             },
                             child: Container(
                               margin: const EdgeInsets.only(right: 10, top: 15),
-                              height: 50,
+                              height: 46,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: themeProvider.themeManager.primaryColour,
@@ -385,22 +374,24 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                   height: 40,
                                   width: 120,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[200],
+                                    color: themeProvider.themeManager
+                                        .tertiaryBackgroundDefaultColor,
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.file_upload_outlined,
-                                          color: themeProvider.themeManager
-                                              .placeholderTextColor),
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor),
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      const CustomText(
+                                      CustomText(
                                         'Upload',
                                         type: FontStyle.Small,
-                                        color: Colors.black,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
                                       ),
                                     ],
                                   ),

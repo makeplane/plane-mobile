@@ -325,7 +325,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                                 },
                                               ),
                                               CustomText(
-                                                'Secret',
+                                                'Private',
                                                 type: FontStyle.Medium,
                                                 fontWeight: FontWeightt.Medium,
                                                 color: themeProvider

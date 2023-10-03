@@ -530,14 +530,14 @@ class WorkspaceProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } on DioException catch (e) {
+      leaveWorspaceState = StateEnum.error;
+      notifyListeners();
       CustomToast.showToast(context,
-          message: e.message == null
+          message: e.error == null
               ? 'something went wrong!'
-              : e.message.toString(),
+              : (e.error as Map)['error'].toString(),
           toastType: ToastType.failure);
       log(e.error.toString());
-      leaveWorspaceState == StateEnum.error;
-      notifyListeners();
       return false;
     }
   }

@@ -35,8 +35,7 @@ class __LabelFilterState extends ConsumerState<_LabelFilter> {
                       ref: ref,
                       icon: CircleAvatar(
                           radius: 5,
-                          backgroundColor:
-                              ColorManager.getColorFromHexaDecimal(e['color'])),
+                          backgroundColor: e['color'].toString().toColor()),
                       text: e['name'],
                       selected: widget.state.filters.labels.contains(e['id']),
                       color: widget.state.filters.labels.contains(e['id'])

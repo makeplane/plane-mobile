@@ -52,7 +52,7 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
                     colorFilter: ColorFilter.mode(
                         widget.state.filters.states.contains(e['id'])
                             ? (Colors.white)
-                            : ColorManager.getColorFromHexaDecimal(e['color']),
+                            : e['color'].toString().toColor(),
                         BlendMode.srcIn),
                     height: 20,
                     width: 20,

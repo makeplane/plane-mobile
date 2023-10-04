@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
@@ -51,7 +50,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
       provider = ref.watch(ProviderList.issuesProvider);
     }
 
-    // log('issue category ${provider.issuesResponse}');
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -92,10 +90,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                 : const EdgeInsets.only(bottom: 15, right: 5, left: 5, top: 5),
             decoration: BoxDecoration(
               color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-              // border: Border(
-              //     bottom: BorderSide(
-              //         color: themeProvider.themeManager.borderDisabledColor,
-              //         width: 1)),
               boxShadow: (widget.issueCategory == IssueCategory.myIssues
                       ? ref
                               .watch(ProviderList.myIssuesProvider)
@@ -142,8 +136,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                 padding: const EdgeInsets.only(
                   left: 15.0,
                   right: 10,
-                  // top: provider.isTagsEnabled() ? 0 : 0,
-                  // bottom: provider.isTagsEnabled() ? 0 : 0
                 ),
                 child: (widget.issueCategory == IssueCategory.myIssues
                         ? ref
@@ -180,7 +172,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
 
   Widget kanbanCard() {
     final themeProvider = ref.read(ProviderList.themeProvider);
-    // IssuesProvider provider = widget.cycleIssues ? ref.watch(ProviderList.cyclesProvider) : ref.watch(ProviderList.issuesProvider);
     dynamic provider;
     final projectProvider = ref.watch(ProviderList.projectProvider);
 
@@ -200,7 +191,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             ? Container(
                 margin: const EdgeInsets.only(top: 15),
                 child: CustomRichText(
-                    //ype: RichFontStyle.Small,
                     type: FontStyle.Small,
                     color: themeProvider.themeManager.placeholderTextColor,
                     widgets: [
@@ -295,53 +285,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             width: 0,
                           ),
 
-                    // -------------- STATE UI WIDGET ------------- //
-
-                    // provider.issues.displayProperties.state
-                    //     ? Container(
-                    //         height: 30,
-                    //         margin: const EdgeInsets.only(
-                    //           right: 5,
-                    //         ),
-                    //         padding: const EdgeInsets.only(
-                    //             left: 8, right: 8, top: 5, bottom: 5),
-                    //         decoration: BoxDecoration(
-                    //             border: Border.all(
-                    //                 color: themeProvider.isDarkThemeEnabled
-                    //                     ? darkThemeBorder
-                    //                     : lightGreeyColor),
-                    //             borderRadius: BorderRadius.circular(5)),
-                    //         child: Wrap(
-                    //           children: [
-                    //             SizedBox(
-                    //               height: 20,
-                    //               width: 20,
-                    //               child: ref
-                    //                   .watch(ProviderList.issuesProvider)
-                    //                   .stateIcons[provider
-                    //                       .issuesResponse[widget.cardIndex]
-                    //                   ['state_detail']['id']],
-                    //             ),
-                    //             const SizedBox(
-                    //               width: 5,
-                    //             ),
-                    //             Padding(
-                    //               padding: const EdgeInsets.only(top: 2),
-                    //               child: CustomText(
-                    //                 provider
-                    //                         .issuesResponse[widget.cardIndex]
-                    //                     ['state_detail']['name'],
-                    //                 type: FontStyle.Medium,
-                    //                 fontSize: 13,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       )
-                    //     : Container(),
-
-                    // -------------------------------------------- //
-
                     provider.issues.displayProperties.assignee == true
                         ? (provider.issuesResponse[widget.cardIndex]
                                         ['assignee_details'] !=
@@ -413,19 +356,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                       children: [
                                         CircleAvatar(
                                           radius: 5,
-                                          backgroundColor: ColorManager
-                                              .getColorFromHexaDecimal(
-                                                  provider.issuesResponse[
-                                                              widget.cardIndex]
-                                                          ['label_details'][0]
-                                                      ['color']),
-                                          // Color(int.parse(
-                                          //     provider
-                                          //         .issuesResponse[widget
-                                          //                 .cardIndex]
-                                          //             ['label_details'][0]
-                                          //             ['color']
-                                          //         .replaceAll('#', '0xFF'))),
+                                          backgroundColor: provider
+                                              .issuesResponse[widget.cardIndex]
+                                                  ['label_details'][0]['color']
+                                              .toString()
+                                              .toColor(),
                                         ),
                                         const SizedBox(
                                           width: 5,
@@ -817,7 +752,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
       provider = ref.watch(ProviderList.issuesProvider);
     }
     return Container(
-      // color: Colors.amber,
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: Row(
         children: [
@@ -878,7 +812,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               ? Container(
                   margin: const EdgeInsets.only(right: 8),
                   child: CustomRichText(
-                      //ype: RichFontStyle.Small,
                       type: FontStyle.Small,
                       color: themeProvider.themeManager.placeholderTextColor,
                       widgets: [
@@ -903,7 +836,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               margin: const EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              //color: Colors.amber,
 
               child: CustomText(
                 provider.issuesResponse[widget.cardIndex]['name']
@@ -915,7 +847,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               ),
             ),
           ),
-          // const Spacer(),
           provider.issues.displayProperties.assignee == true
               ? provider.issuesResponse[widget.cardIndex]['assignee_details'] !=
                           null &&

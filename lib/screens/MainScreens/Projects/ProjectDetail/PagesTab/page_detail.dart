@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/block_sheet.dart';
 import 'package:plane/bottom_sheets/label_sheet.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -159,7 +159,6 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                       Container(
                         color: themeProvider
                             .themeManager.primaryBackgroundSelectedColour,
-                        //margin: const EdgeInsets.only(top: 15),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
                         child: Row(
@@ -466,9 +465,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                       margin: const EdgeInsets.only(bottom: 20),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: ColorManager
-                                            .getColorFromHexaDecimal(
-                                                e.toString()),
+                                        color: e.toString().toColor(),
                                         borderRadius: BorderRadius.circular(5),
                                         boxShadow: const [
                                           BoxShadow(
@@ -662,8 +659,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                             CircleAvatar(
                               radius: 5,
                               backgroundColor:
-                                  ColorManager.getColorFromHexaDecimal(
-                                      element['color'].toString()),
+                                  element['color'].toString().toColor(),
                             ),
                             const SizedBox(
                               width: 10,
@@ -821,26 +817,6 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                       ],
                     ),
             )
-            // Expanded(
-            //   child: LoadingWidget(
-            //     loading: pageProvider.pagesListState == StateEnum.loading ||
-            //         pageProvider.blockState == StateEnum.loading,
-            //     widgetClass: ListView.builder(
-            //       itemCount: pageProvider.blocks.length,
-            //       itemBuilder: (context, index) {
-            //         return Padding(
-            //           padding: const EdgeInsets.symmetric(
-            //               horizontal: 15, vertical: 5),
-            //           child: PageBlockCard(
-            //             pageID: pageProvider.pages[
-            //                 pageProvider.selectedFilter]![widget.index]['id'],
-            //             index: index,
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

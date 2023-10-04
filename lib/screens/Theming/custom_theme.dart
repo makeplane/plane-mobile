@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/theme_provider.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -48,8 +48,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
   @override
   void initState() {
     final profileProvider = ref.read(ProviderList.profileProvider);
-    // if (profileProvider.userProfile.theme == null ||
-    //     profileProvider.userProfile.theme!.isEmpty) {
     fields['Accent Color']!.text =
         profileProvider.userProfile.theme!['primary'] ?? '#3f76ff';
     fields['Background Color']!.text =
@@ -60,7 +58,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
         profileProvider.userProfile.theme!['sidebarBackground'] ?? '#0d101b';
     fields['Navbar Text Color']!.text =
         profileProvider.userProfile.theme!['sidebarText'] ?? '#c5c5c5';
-    //  }
     super.initState();
   }
 
@@ -176,12 +173,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                                                     radix: 16)),
                                           ),
                                         ),
-                                        // Icon(
-                                        //   Icons.arrow_drop_down,
-                                        //   color: themeProvider.themeManager
-                                        //       .placeholderTextColor,
-                                        //   size: 20,
-                                        // ),
                                       )),
                                       style: themeProvider
                                           .themeManager.textFieldTextStyle,
@@ -240,8 +231,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
 
                           theme!['theme'] = fromTHEME(theme: THEME.custom);
 
-                          // themeProvider.changeTheme(
-                          //     data: {'theme': theme}, context: context);
                           themeProvider.changeTheme(data: {
                             'theme': {
                               'primary': fields['Accent Color']!.text,
@@ -274,8 +263,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                           : themeProvider
                               .themeManager.primaryBackgroundDefaultColor
                               .withOpacity(0.7),
-                  // height: 25,
-                  // width: 25,
                   child: Center(
                     child: SizedBox(
                       height: 25,
@@ -336,8 +323,7 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                               margin: const EdgeInsets.only(bottom: 20),
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: ColorManager.getColorFromHexaDecimal(
-                                    e.toString()),
+                                color: e.toString().toColor(),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: const [
                                   BoxShadow(
@@ -352,112 +338,6 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
                         .toList(),
                   ),
                 ),
-                ///////////////////////////////////
-                // Container(
-                //   margin:
-                //       const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                //   // height: 50,
-                //   child: Row(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Container(
-                //         width: 55,
-                //         height: 60,
-                //         alignment: Alignment.center,
-                //         decoration: BoxDecoration(
-                //             color: int.tryParse(
-                //                             "FF${colorController.text.toString().toUpperCase().replaceAll("#", "FF")}",
-                //                             radix: 16) ==
-                //                         null ||
-                //                     colorController.text.trim().isEmpty
-                //                 ? Color(int.parse(
-                //                     colors[0]
-                //                         .toUpperCase()
-                //                         .replaceAll("#", "FF"),
-                //                     radix: 16))
-                //                 : Color(int.parse(
-                //                     "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
-                //                     radix: 16)),
-                //             borderRadius: const BorderRadius.only(
-                //                 topLeft: Radius.circular(8),
-                //                 bottomLeft: Radius.circular(8))),
-                //         child: const CustomText(
-                //           '#',
-                //           color: Colors.white,
-                //           fontWeight: FontWeightt.Semibold,
-                //           fontSize: 20,
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: TextFormField(
-                //           validator: (value) {
-                //             if (value!.isEmpty) {
-                //               return '*required';
-                //             }
-                //             return null;
-                //           },
-                //           controller: colorController,
-                //           maxLength: 6,
-                //           onChanged: (val) {
-                //             colorController.text = val.toUpperCase();
-                //             colorController.selection =
-                //                 TextSelection.fromPosition(TextPosition(
-                //                     offset: colorController.text.length));
-                //             setState(() {});
-                //           },
-                //           decoration: themeProvider
-                //               .themeManager.textFieldDecoration
-                //               .copyWith(
-                //             counterText: '',
-                //             errorStyle: const TextStyle(
-                //                 fontSize: 16,
-                //                 color: Colors.red,
-                //                 fontWeight: FontWeight.w600),
-                //             errorBorder: OutlineInputBorder(
-                //               borderSide: BorderSide(
-                //                   color: Colors.red.shade600, width: 1.0),
-                //               borderRadius: const BorderRadius.only(
-                //                 topRight: Radius.circular(6),
-                //                 bottomRight: Radius.circular(6),
-                //               ),
-                //             ),
-                //             focusedErrorBorder: OutlineInputBorder(
-                //               borderSide: BorderSide(
-                //                   color: Colors.red.shade600, width: 2.0),
-                //               borderRadius: const BorderRadius.only(
-                //                 topRight: Radius.circular(6),
-                //                 bottomRight: Radius.circular(6),
-                //               ),
-                //             ),
-                //             enabledBorder: OutlineInputBorder(
-                //               borderSide: BorderSide(
-                //                   color: themeProvider
-                //                       .themeManager.borderSubtle01Color,
-                //                   width: 1.0),
-                //               borderRadius: const BorderRadius.only(
-                //                 topRight: Radius.circular(6),
-                //                 bottomRight: Radius.circular(6),
-                //               ),
-                //             ),
-                //             focusedBorder: OutlineInputBorder(
-                //               borderSide: BorderSide(
-                //                   color: themeProvider
-                //                       .themeManager.borderSubtle01Color,
-                //                   width: 1.0),
-                //               borderRadius: const BorderRadius.only(
-                //                 topRight: Radius.circular(6),
-                //                 bottomRight: Radius.circular(6),
-                //               ),
-                //             ),
-                //             fillColor: themeProvider
-                //                 .themeManager.secondaryBackgroundActiveColor,
-                //             filled: true,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           )

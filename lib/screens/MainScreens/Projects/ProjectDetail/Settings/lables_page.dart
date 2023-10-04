@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/delete_labels_sheet.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -71,21 +71,18 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         !isChildAvail
                                             ? CircleAvatar(
                                                 radius: 6,
-                                                backgroundColor: ColorManager
-                                                    .getColorFromHexaDecimal(
-                                                        issuesProvider
-                                                                .labels[index]
-                                                            ['color']),
+                                                backgroundColor: issuesProvider
+                                                    .labels[index]['color']
+                                                    .toString()
+                                                    .toColor(),
                                               )
                                             : SvgPicture.asset(
                                                 "assets/svg_images/label_group.svg",
                                                 colorFilter: ColorFilter.mode(
-                                                    ColorManager
-                                                        .getColorFromHexaDecimal(
-                                                            issuesProvider
-                                                                .labels[index]
-                                                                    ['color']
-                                                                .toString()),
+                                                    issuesProvider.labels[index]
+                                                            ['color']
+                                                        .toString()
+                                                        .toColor(),
                                                     BlendMode.srcIn),
                                               ),
                                         const SizedBox(
@@ -386,10 +383,10 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                           children: [
                                                             CircleAvatar(
                                                               radius: 6,
-                                                              backgroundColor: ColorManager
-                                                                  .getColorFromHexaDecimal(
-                                                                      e['color']
-                                                                          .toString()),
+                                                              backgroundColor: e[
+                                                                      'color']
+                                                                  .toString()
+                                                                  .toColor(),
                                                             ),
                                                             const SizedBox(
                                                               width: 10,
@@ -734,12 +731,10 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                           children: [
                                             CircleAvatar(
                                               radius: 8,
-                                              backgroundColor: ColorManager
-                                                  .getColorFromHexaDecimal(
-                                                      issuesProvider
-                                                          .labels[index]
-                                                              ['color']
-                                                          .toString()),
+                                              backgroundColor: issuesProvider
+                                                  .labels[index]['color']
+                                                  .toString()
+                                                  .toColor(),
                                             ),
                                             Container(width: 10),
                                             CustomText(

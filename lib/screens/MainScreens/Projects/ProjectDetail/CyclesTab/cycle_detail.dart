@@ -22,11 +22,10 @@ import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
-import 'package:plane/utils/color_manager.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/completion_percentage.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -175,7 +174,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     ref
         .read(ProviderList.issuesProvider)
         .getIssueProperties(issueCategory: IssueCategory.cycleIssues);
-    // ref.read(ProviderList.issuesProvider).getProjectView().then((value) {
     cyclesProvider
         .filterCycleIssues(
       cycleID: widget.cycleId!,
@@ -213,8 +211,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     return WillPopScope(
       onWillPop: () async {
-        // await issueProvider.getProjectView();
-        // issueProvider.issuesList = tempIssuesList;
         if (widget.from == PreviousScreen.myIssues) return true;
         issueProvider.getIssues(
           slug: ref
@@ -285,17 +281,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 ),
               )
             : null,
-        // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: CustomAppBar(
           centerTitle: true,
-          //elevation: false,
-
           onPressed: () {
             if (widget.from == PreviousScreen.myIssues) {
               Navigator.pop(context);
               return;
             }
-            // issueProvider.issuesList = tempIssuesList;
             issueProvider.getIssues(
               slug: ref
                   .read(ProviderList.workspaceProvider)
@@ -328,8 +320,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               ? projectProvider.currentProject['name']
               : projectProvider.projects.firstWhere(
                   (element) => element['id'] == widget.projId)['name'],
-
-          // color: themeProvider.primaryTextColor,
         ),
         body: isLoading
             ? Center(
@@ -362,7 +352,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       ),
                     ],
                   ),
-
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
@@ -394,9 +383,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 child: CustomText(
                                   overrride: true,
                                   'Issues',
-                                  // color: selected == 0
-                                  //     ? primaryColor
-                                  // : themeProvider.strokeColor,
                                   type: FontStyle.Large,
                                   fontWeight: FontWeightt.Medium,
                                   color: (widget.fromModule
@@ -419,25 +405,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               .themeManager.placeholderTextColor
                                           : themeProvider
                                               .themeManager.primaryColour,
-                                  // !themeProvider.isDarkThemeEnabled &&
-                                  //         (widget.fromModule
-                                  //             ? modulesProvider
-                                  //                     .moduleDetailSelectedIndex ==
-                                  //                 1
-                                  //             : cyclesProviderRead
-                                  //                     .cycleDetailSelectedIndex ==
-                                  //                 1)
-                                  //     ? lightSecondaryTextColor
-                                  //     : themeProvider.isDarkThemeEnabled &&
-                                  //             (widget.fromModule
-                                  //                 ? modulesProvider
-                                  //                         .moduleDetailSelectedIndex ==
-                                  //                     1
-                                  //                 : cyclesProviderRead
-                                  //                         .cycleDetailSelectedIndex ==
-                                  //                     1)
-                                  //         ? darkSecondaryTextColor
-                                  //         : primaryColor,
                                 ),
                               ),
                               Container(
@@ -481,9 +448,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText('Details',
                                     overrride: true,
-                                    // color: selected == 1
-                                    //     ? primaryColor
-                                    // : themeProvider.strokeColor,
                                     type: FontStyle.Large,
                                     fontWeight: FontWeightt.Medium,
                                     color: (widget.fromModule
@@ -549,11 +513,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           children: [
                             Expanded(
                               child:
-                                  ((widget.fromModule &&
-                                                  (modulesProvider.moduleIssueState ==
-                                                          StateEnum.loading ||
-                                                      modulesProvider.moduleDetailState ==
-                                                          StateEnum.loading)) ||
+                                  ((widget.fromModule && (modulesProvider.moduleIssueState == StateEnum.loading || modulesProvider.moduleDetailState == StateEnum.loading)) ||
                                               (!widget.fromModule &&
                                                   (cyclesProvider.cyclesIssueState ==
                                                           StateEnum.loading ||
@@ -630,10 +590,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -668,7 +630,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                       issueProvider.createIssuedata['state'] = state.id;
                                                                                     } else {
                                                                                       issueProvider.createIssuedata['priority'] = 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
-                                                                                      // createIssuedata['s'] = element.id;
                                                                                     }
                                                                                     Navigator.of(context).push(MaterialPageRoute(
                                                                                         builder: (ctx) => CreateIssue(
@@ -712,7 +673,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                                      (widget.fromModule &&
+                                                          issueProvider.issues.projectView ==
+                                                              ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -861,22 +825,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         ? Expanded(
                                             child: GestureDetector(
                                               onTap: () {
-                                                // showModalBottomSheet(
-                                                //     isScrollControlled: true,
-                                                //     enableDrag: true,
-                                                //     constraints: BoxConstraints(
-                                                //         maxHeight:
-                                                //             MediaQuery.of(context).size.height *
-                                                //                 0.85),
-                                                //     shape: const RoundedRectangleBorder(
-                                                //         borderRadius: BorderRadius.only(
-                                                //       topLeft: Radius.circular(30),
-                                                //       topRight: Radius.circular(30),
-                                                //     )),
-                                                //     context: context,
-                                                //     builder: (ctx) {
-                                                //       return const FilterSheet();
-                                                //     });
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
@@ -1112,20 +1060,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       ],
                     ),
                   ),
-                  // Expanded(
-                  //     child: (widget.fromModule
-                  //             ? modulesProvider.moduleDetailSelectedIndex == 0
-                  //             : cyclesProviderRead.cycleDetailSelectedIndex ==
-                  //                 0)
-                  //         ? Container()
-                  //         : Container()),
-                  // ((!widget.fromModule &&
-                  //             cyclesProviderRead.cycleDetailSelectedIndex ==
-                  //                 0) ||
-                  //         (widget.fromModule &&
-                  //             modulesProvider.moduleDetailSelectedIndex == 0))
-                  //     ? Container()
-                  //     : Container()
                 ],
               ),
       ),
@@ -1831,8 +1765,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    // log("assignees : ${detailData['distribution']['assignees']}");
-
     return Column(
       children: [
         Align(
@@ -1866,24 +1798,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               vertical: 8, horizontal: 8),
                           margin: const EdgeInsets.symmetric(vertical: 2),
                           decoration: BoxDecoration(
-                            color:
-                                // themeProvider.isDarkThemeEnabled
-                                //     ?
-                                (issuesProvider.issues.filters.assignees
-                                        .contains(detailData['distribution']
-                                            ['assignees'][idx]['assignee_id'])
-                                    ? themeProvider.themeManager
-                                        .secondaryBackgroundDefaultColor
-                                    : themeProvider.themeManager
-                                        .primaryBackgroundDefaultColor),
-                            // : (issuesProvider
-                            //         .issues.filters.assignees
-                            //         .contains(
-                            //             detailData['distribution']
-                            //                     ['assignees'][idx]
-                            //                 ['assignee_id'])
-                            //     ? lightGreeyColor
-                            //     : lightBackgroundColor),
+                            color: (issuesProvider.issues.filters.assignees
+                                    .contains(detailData['distribution']
+                                        ['assignees'][idx]['assignee_id'])
+                                ? themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor
+                                : themeProvider.themeManager
+                                    .primaryBackgroundDefaultColor),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Row(
@@ -2101,7 +2022,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     primary: false,
                     itemCount: detailData['distribution']['labels'].length,
                     itemBuilder: (context, index) {
-                      // log('index $index');
                       return Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 8),
@@ -2132,10 +2052,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               null
                                       ? themeProvider
                                           .themeManager.placeholderTextColor
-                                      : ColorManager.getColorFromHexaDecimal(
-                                          detailData['distribution']['labels']
-                                                  [index]['color']
-                                              .toString()),
+                                      : detailData['distribution']['labels']
+                                              [index]['color']
+                                          .toString()
+                                          .toColor(),
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -2155,28 +2075,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         [index]['completed_issues'],
                                     totalValue: detailData['distribution']
                                         ['labels'][index]['total_issues'])
-                                //   CircularPercentIndicator(
-                                //       radius: 10,
-                                //       lineWidth: 2,
-                                //       progressColor: primaryColor,
-                                //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
-                                //               detailData['distribution']
-                                //                               ['labels']
-                                //                           [index][
-                                //                       'completed_issues'] ==
-                                //                   null
-                                //           ? 1.0
-                                //           : convertToRatio(
-                                //               detailData['distribution']
-                                //                           ['labels']
-                                //                       [index][
-                                //                   'completed_issues'],
-                                //               detailData['distribution']
-                                //                       ['labels'][index]
-                                //                   ['total_issues'])),
-                                //   const SizedBox(width: 5),
-                                //   CustomText(
-                                //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
                               ],
                             )
                           ],
@@ -2261,14 +2159,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               color: themeProvider.themeManager.placeholderTextColor,
             ),
             const SizedBox(width: 15),
-            // const Text(
-            //   'Assignees',
-            //   style: TextStyle(
-            //     fontSize: 16,
-            //     fontWeight: FontWeight.w400,
-            //     color: Color.fromRGBO(143, 143, 147, 1),
-            //   ),
-            // ),
             CustomText(
               'Members',
               type: FontStyle.Medium,
@@ -2343,11 +2233,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Color.fromRGBO(55, 65, 81, 1),
-                                          // image: DecorationImage(
-                                          //   image: NetworkImage(
-                                          //       e['profileUrl']),
-                                          //   fit: BoxFit.cover,
-                                          // ),
                                         ),
                                         child: CustomText(
                                           e['first_name'][0]
@@ -2374,8 +2259,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
-
-    // log(detailData.toString());
 
     return Container(
       height: 45,

@@ -19,11 +19,11 @@ import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/editor.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -49,8 +49,6 @@ class CreateIssue extends ConsumerStatefulWidget {
 
 class _CreateIssueState extends ConsumerState<CreateIssue>
     with WidgetStateMixin {
-  // NotificationsServices notificationsServices = NotificationsServices();
-
   Map tempStatesData = {};
   Map tempStates = {};
   List tempStateOrdering = [];
@@ -82,7 +80,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     tempIssues = ref.read(ProviderList.searchIssueProvider).issues;
     tempAssignees = prov.members;
 
-    // if (prov.states.isEmpty) {
     if (widget.fromMyIssues) {
       prov.statesState = StateEnum.loading;
       prov
@@ -148,9 +145,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
 
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
     initCreateIssue();
-    // });
     super.initState();
   }
 
@@ -160,15 +155,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   bool expanded = false;
   bool createMoreIssues = false;
 
-  // @override
-  // void dispose() {
-  //   final issuesProvider = ref.read(ProviderList.issuesProvider);
-  //   issuesProvider.createIssueParent = '';
-  //   issuesProvider.createIssueParentId = '';
-  //   issuesProvider.setsState();
-  //   super.dispose();
-  // }
-
   DateTime? startDate;
   DateTime? dueDate;
 
@@ -176,7 +162,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   Widget render(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    //final issueProvider = ref.watch(ProviderList.issueProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     final BuildContext baseContext = context;
@@ -185,7 +170,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
       issuesProvider.createIssuedata['state'] =
           issuesProvider.states.keys.first;
     }
-    //log(ref.read(ProviderList.projectProvider).currentProject['id'].toString());
     return WillPopScope(
       onWillPop: () async {
         log('WillPopScope');
@@ -206,12 +190,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          // backgroundColor:
-          //     themeProvider.themeManager.primaryBackgroundDefaultColor,
-          //#f5f5f5f5 color
-          // backgroundColor: themeProvider.isDarkThemeEnabled
-          //     ? darkSecondaryBackgroundColor
-          //     : const Color.fromRGBO(248, 249, 250, 1),
           appBar: CustomAppBar(
             onPressed: () {
               issuesProvider.createIssuedata = {};
@@ -253,17 +231,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                //form conatining title and description
-                                // Text(
-                                //   'Title',
-                                //   style: TextStyle(
-                                //     color: themeProvider.secondaryTextColor,
-                                //     fontSize: 16,
-                                //     fontWeight: FontWeightt.Medium,
-                                //   ),
-                                // ),
-
-                                //dropdown for selecting project
                                 Row(
                                   children: [
                                     CustomText(
@@ -276,7 +243,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                       ' *',
                                       type: FontStyle.Small,
                                       color: Colors.red,
-                                      // color: themeProvider.secondaryTextColor,
                                     ),
                                   ],
                                 ),
@@ -383,7 +349,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                       ' *',
                                       type: FontStyle.Small,
                                       color: Colors.red,
-                                      // color: themeProvider.secondaryTextColor,
                                     ),
                                   ],
                                 ),
@@ -417,7 +382,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                         fontWeight: FontWeightt.Medium,
                                         color: themeProvider
                                             .themeManager.primaryTextColor,
-                                        // color: themeProvider.secondaryTextColor,
                                       )
                                     : GestureDetector(
                                         onTap: () {
@@ -460,7 +424,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                 color: themeProvider
                                                     .themeManager
                                                     .placeholderTextColor,
-                                                // color: themeProvider.secondaryTextColor,
                                               ),
                                             ],
                                           ),
@@ -494,7 +457,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                   ? descriptionHeight
                                                   : 160,
                                               child: SizedBox(
-                                                // height: 500,
                                                 child: Stack(
                                                   children: [
                                                     InAppWebView(
@@ -653,7 +615,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                 .keyboard_arrow_down,
 
                                                         color: const Color
-                                                                .fromRGBO(
+                                                            .fromRGBO(
                                                             63, 118, 255, 1),
                                                       ),
                                                     ),
@@ -671,7 +633,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                   type: FontStyle.Medium,
                                   color: themeProvider
                                       .themeManager.primaryTextColor,
-                                  // color: themeProvider.secondaryTextColor,
                                 ),
                                 const SizedBox(height: 5),
                                 //three dropdown each occupying full width of the screen , each consits of a row with hint text and dropdown button at end
@@ -819,14 +780,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                 .placeholderTextColor,
                                           ),
                                           const SizedBox(width: 15),
-                                          // const Text(
-                                          //   'Assignees',
-                                          //   style: TextStyle(
-                                          //     fontSize: 16,
-                                          //     fontWeight: FontWeight.w400,
-                                          //     color: Color.fromRGBO(143, 143, 147, 1),
-                                          //   ),
-                                          // ),
                                           CustomText(
                                             'Assignees',
                                             type: FontStyle.Small,
@@ -895,11 +848,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                                 65,
                                                                                 81,
                                                                                 1),
-                                                                            // image: DecorationImage(
-                                                                            //   image: NetworkImage(
-                                                                            //       e['profileUrl']),
-                                                                            //   fit: BoxFit.cover,
-                                                                            // ),
                                                                           ),
                                                                           child:
                                                                               CustomText(
@@ -952,11 +900,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                                 const BoxDecoration(
                                                                               shape: BoxShape.circle,
                                                                               color: Color.fromRGBO(55, 65, 81, 1),
-                                                                              // image: DecorationImage(
-                                                                              //   image: NetworkImage(
-                                                                              //       e['profileUrl']),
-                                                                              //   fit: BoxFit.cover,
-                                                                              // ),
                                                                             ),
                                                                             child:
                                                                                 CustomText(
@@ -1021,14 +964,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                 .placeholderTextColor,
                                           ),
                                           const SizedBox(width: 15),
-                                          // const Text(
-                                          //   'Priority',
-                                          //   style: TextStyle(
-                                          //     fontSize: 16,
-                                          //     fontWeight: FontWeight.w400,
-                                          //     color: Color.fromRGBO(143, 143, 147, 1),
-                                          //   ),
-                                          // ),
                                           CustomText(
                                             'Priority',
                                             type: FontStyle.Small,
@@ -1093,11 +1028,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                   ),
                                 ),
                                 (expanded &&
-                                        //  ( ref
-                                        //           .read(ProviderList
-                                        //               .projectProvider)
-                                        //           .currentProject['estimate'] !=
-                                        //       null ) &&
                                         ref
                                                 .read(ProviderList
                                                     .projectProvider)
@@ -1113,11 +1043,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                     ? const SizedBox(height: 8)
                                     : Container(),
                                 (expanded &&
-                                        // ref
-                                        //         .read(ProviderList
-                                        //             .projectProvider)
-                                        //         .currentProject['estimate'] !=
-                                        //     null &&
                                         ref
                                                 .read(ProviderList
                                                     .projectProvider)
@@ -1215,7 +1140,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                             color: themeProvider
                                                                 .themeManager
                                                                 .primaryTextColor,
-                                                            // color: Colors.black,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1259,7 +1183,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                             color: themeProvider
                                                                 .themeManager
                                                                 .primaryTextColor,
-                                                            // color: Colors.black,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1303,13 +1226,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                             showModalBottomSheet(
                                               enableDrag: true,
                                               isScrollControlled: true,
-                                              constraints: const BoxConstraints(
-                                                  // maxHeight:
-                                                  //     MediaQuery.of(context)
-                                                  //             .size
-                                                  //             .height *
-                                                  //         0.8,
-                                                  ),
+                                              constraints:
+                                                  const BoxConstraints(),
                                               shape:
                                                   const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.only(
@@ -1347,14 +1265,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                       .placeholderTextColor,
                                                 ),
                                                 const SizedBox(width: 15),
-                                                // const Text(
-                                                //   'Priority',
-                                                //   style: TextStyle(
-                                                //     fontSize: 16,
-                                                //     fontWeight: FontWeight.w400,
-                                                //     color: Color.fromRGBO(143, 143, 147, 1),
-                                                //   ),
-                                                // ),
                                                 CustomText(
                                                   'Label',
                                                   type: FontStyle.Small,
@@ -1396,7 +1306,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                // color: Colors.amber,
                                                                 height: 30,
                                                                 constraints:
                                                                     const BoxConstraints(
@@ -1423,7 +1332,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                                 width: 25,
                                                                                 decoration: BoxDecoration(
                                                                                   shape: BoxShape.circle,
-                                                                                  color: ColorManager.getColorFromHexaDecimal(e['color'].toString()),
+                                                                                  color: e['color'].toString().toColor(),
                                                                                 )),
                                                                           ))
                                                                       .toList(),
@@ -1527,7 +1436,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                             color: themeProvider
                                                                 .themeManager
                                                                 .primaryTextColor,
-                                                            // color: Colors.black,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -1578,13 +1486,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                           )
                                                         ],
                                                       )
-
-                                                //createIssuedata['due_date'] != null
-
-                                                //         setState(() {
-                                                //   issuesProvider.createIssuedata[
-                                                //       'due_date'] = date;
-                                                // })
                                               ],
                                             ),
                                           ),
@@ -1718,13 +1619,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                           )
                                                         ],
                                                       )
-
-                                                //createIssuedata['due_date'] != null
-
-                                                //         setState(() {
-                                                //   issuesProvider.createIssuedata[
-                                                //       'due_date'] = date;
-                                                // })
                                               ],
                                             ),
                                           ),
@@ -1765,12 +1659,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                         .viewInsets
                                                         .bottom),
                                                 child: const IssuesListSheet(
-                                                  // parent: true,
                                                   type: IssueDetailCategory
                                                       .parent,
                                                   issueId: '',
                                                   createIssue: true,
-                                                  // blocking: false,
                                                 ),
                                               ),
                                             );
@@ -1894,13 +1786,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                         Container(
                                           margin: const EdgeInsets.only(top: 5),
                                           child: Icon(
-                                            //arrow down icon
-
                                             expanded
                                                 ? Icons
                                                     .keyboard_arrow_up_rounded
                                                 : Icons.keyboard_arrow_down,
-
                                             color: const Color.fromRGBO(
                                                 63, 118, 255, 1),
                                           ),
@@ -1909,28 +1798,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                     ),
                                   ),
                                 ),
-                                // const SizedBox(height: 20),
-
-                                // const SizedBox(height: 50),
-                                // Button(
-                                //     text: 'Create Issue',
-                                //     ontap: () async {
-                                //       if (!formKey.currentState!.validate()) return;
-
-                                //       issueProvider.createIssuedata['title'] =
-                                //           title.text;
-
-                                //       await issueProvider.createIssue(
-                                //         slug: ref
-                                //             .read(ProviderList.workspaceProvider)
-                                //             .selectedWorkspace
-                                //             .workspaceSlug,
-                                //         projID: ref
-                                //             .read(ProviderList.projectProvider)
-                                //             .currentProject["id"],
-                                //       );
-                                //       Navigator.pop(context);
-                                //     }),
                                 const SizedBox(height: 20),
                                 InkWell(
                                   onTap: () {
@@ -2062,7 +1929,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                   .issues;
                               tempAssignees = issuesProvider.members;
 
-                              // if (prov.states.isEmpty) {
                               if (widget.fromMyIssues) {
                                 issuesProvider
                                     .getStates(
@@ -2109,7 +1975,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                               issuesProvider.createIssuedata['members'] = null;
                               issuesProvider.createIssuedata['labels'] = null;
                               issuesProvider.createIssueParent = '';
-                              //issuesProvider.setsState();
                             } else {
                               Navigator.pop(Const.globalKey.currentContext!);
                             }

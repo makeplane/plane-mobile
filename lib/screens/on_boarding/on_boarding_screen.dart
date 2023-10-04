@@ -46,6 +46,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
     ProviderList.clear(ref: ref);
     cards = [
       SizedBox(
+        width: width * 0.95,
         height: 150,
         child: Card(
           elevation: 3,
@@ -201,6 +202,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         ),
       ),
       Container(
+        width: width * 0.95,
         height: 160,
         constraints: const BoxConstraints(maxWidth: 500),
         child: Card(
@@ -353,6 +355,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         ),
       ),
       Container(
+        width: width * 0.95,
         height: 200,
         constraints: const BoxConstraints(maxWidth: 500),
         child: Card(
@@ -585,7 +588,6 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
           decoration: const BoxDecoration(
             gradient: gradient,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -599,34 +601,38 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                     });
                   },
                   itemBuilder: (context, index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        cards[index],
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomText(
-                          data[index]['title'],
-                          type: FontStyle.H4,
-                          color: themeProvider.themeManager.primaryTextColor,
-                          fontWeight: FontWeightt.Semibold,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: CustomText(
-                            data[index]['description'],
-                            type: FontStyle.Medium,
-                            color: themeProvider.themeManager.tertiaryTextColor,
-                            textAlign: TextAlign.center,
-                            maxLines: 5,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          cards[index],
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ],
+                          CustomText(
+                            data[index]['title'],
+                            type: FontStyle.H4,
+                            color: themeProvider.themeManager.primaryTextColor,
+                            fontWeight: FontWeightt.Semibold,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: CustomText(
+                              data[index]['description'],
+                              type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                              textAlign: TextAlign.center,
+                              maxLines: 5,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -676,20 +682,23 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
               ),
               Hero(
                 tag: 'button',
-                child: Button(
-                  text: 'Get Started',
-                  ontap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            dotenv.env['ENABLE_O_AUTH'] != null &&
-                                    isEnableAuth()
-                                ? const SignInScreen()
-                                : const SignUp(),
-                      ),
-                    );
-                  },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Button(
+                    text: 'Get Started',
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              dotenv.env['ENABLE_O_AUTH'] != null &&
+                                      isEnableAuth()
+                                  ? const SignInScreen()
+                                  : const SignUp(),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(

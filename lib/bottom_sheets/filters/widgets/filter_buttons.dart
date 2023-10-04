@@ -114,7 +114,7 @@ Widget _applyFilterButton({
   return Container(
     height: 50,
     width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues
-        ? MediaQuery.of(context).size.width * 0.9
+        ? MediaQuery.of(context).size.width * 0.87
         : MediaQuery.of(context).size.width * 0.42,
     margin: const EdgeInsets.only(bottom: 18),
     child: Button(

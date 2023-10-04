@@ -80,6 +80,8 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                     )
                         .then(
                       (value) async {
+                        ref.read(ProviderList.projectProvider).currentProject =
+                            {};
                         ref.read(ProviderList.cyclesProvider).clearData();
                         ref.read(ProviderList.modulesProvider).clearData();
                         ref.read(ProviderList.myIssuesProvider).clear();

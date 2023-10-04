@@ -141,7 +141,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
     }
   }
 
-  Future updateViews(
+  Future<Map> updateViews(
       {required int index,
       required String id,
       bool fromGlobalSearch = false,
@@ -160,6 +160,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
         data: data,
       );
       log('API success');
+
       if (!fromGlobalSearch) {
         state = state.copyWith(views: [
           ...state.views.sublist(0, index),
@@ -168,6 +169,7 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
         ]);
       }
       state = state.copyWith(viewsState: StateEnum.success);
+      return response.data;
     } on DioException catch (e) {
       log('Update views error: ');
       log(e.error.toString());

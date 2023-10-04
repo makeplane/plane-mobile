@@ -420,7 +420,10 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                               MediaQuery.of(context).size.width,
                                           child: Row(
                                             children: [
-                                              projectProvider.role == Role.admin
+                                              projectProvider.role ==
+                                                          Role.admin ||
+                                                      projectProvider.role ==
+                                                          Role.member
                                                   ? Expanded(
                                                       child: InkWell(
                                                         onTap: () {

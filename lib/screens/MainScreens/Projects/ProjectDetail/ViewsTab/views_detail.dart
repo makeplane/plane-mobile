@@ -253,6 +253,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                         index: widget.index,
                                       )
                                       .then((value) {
+                                    viewData = value;
                                     countFilters();
                                     if (viewsProv.viewsState !=
                                         StateEnum.success) {

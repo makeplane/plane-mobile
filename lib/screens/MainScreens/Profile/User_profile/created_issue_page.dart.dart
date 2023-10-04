@@ -60,7 +60,6 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                           appBarTitle: userProfileProvider
                               .createdIssues![index].name
                               .toString(),
-                          ref: ref.read(ProviderList.workspaceProvider).ref!,
                           issueId:
                               userProfileProvider.createdIssues![index].id!,
                           projID: userProfileProvider

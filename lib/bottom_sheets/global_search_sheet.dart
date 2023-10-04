@@ -654,8 +654,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         Navigator.of(Const.globalKey.currentContext!).push(
                           MaterialPageRoute(
                             builder: (context) => IssueDetail(
-                              ref:
-                                  ref.read(ProviderList.workspaceProvider).ref!,
                               from: PreviousScreen.globalSearch,
                               appBarTitle:
                                   globalSearchProvider.data!.issues[index].name,

@@ -98,10 +98,6 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => IssueDetail(
-                                          ref: ref
-                                              .read(ProviderList
-                                                  .workspaceProvider)
-                                              .ref!,
                                           from: PreviousScreen.notification,
                                           projID: widget.data[index]["project"],
                                           issueId: widget.data[index]['data']

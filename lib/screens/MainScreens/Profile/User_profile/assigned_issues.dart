@@ -78,8 +78,6 @@ class _UserAssignedIssuesPageState
                               appBarTitle: userProfileProvider
                                   .userAssignedIssues[index].name
                                   .toString(),
-                              ref:
-                                  ref.read(ProviderList.workspaceProvider).ref!,
                               issueId: userProfileProvider
                                   .userAssignedIssues[index].id!,
                               projID: userProfileProvider

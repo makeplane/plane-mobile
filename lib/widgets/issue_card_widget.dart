@@ -59,7 +59,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             MaterialPageRoute(
                 builder: (context) => IssueDetail(
                       isArchive: widget.isArchive,
-                      ref: ref.read(ProviderList.workspaceProvider).ref!,
                       from: widget.from,
                       projID: widget.issueCategory == IssueCategory.myIssues
                           ? provider.issuesResponse[widget.cardIndex]
@@ -233,7 +232,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                 height: 55,
                 padding: const EdgeInsets.only(bottom: 15, top: 10),
                 child: ListView(
-                  // runSpacing: 10,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -250,7 +248,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     color: themeProvider
                                         .themeManager.borderSubtle01Color),
                                 borderRadius: BorderRadius.circular(5)),
-                            margin: const EdgeInsets.only(right: 15),
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             width: 30,
                             child: provider.issuesResponse[widget.cardIndex]['priority'] == null ||
@@ -364,7 +362,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
                                 padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 5, bottom: 5),
+                                    left: 8, right: 8),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                       color: themeProvider
@@ -432,15 +430,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         const SizedBox(
                                           width: 5,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 2),
-                                          child: CustomText(
-                                            '${provider.issuesResponse[widget.cardIndex]['label_details'].length} Labels',
-                                            type: FontStyle.XSmall,
-                                            color: themeProvider
-                                                .themeManager.tertiaryTextColor,
-                                          ),
+                                        CustomText(
+                                          '${provider.issuesResponse[widget.cardIndex]['label_details'].length} Labels',
+                                          type: FontStyle.XSmall,
+                                          height: 1,
+                                          color: themeProvider
+                                              .themeManager.tertiaryTextColor,
                                         ),
                                       ],
                                     ),
@@ -488,19 +483,16 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 2),
-                                                child: CustomText(
-                                                  provider.issuesResponse[
-                                                              widget.cardIndex]
-                                                          ['label_details'][idx]
-                                                      ['name'],
-                                                  type: FontStyle.XSmall,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .tertiaryTextColor,
-                                                ),
+                                              CustomText(
+                                                provider.issuesResponse[
+                                                            widget.cardIndex]
+                                                        ['label_details'][idx]
+                                                    ['name'],
+                                                type: FontStyle.XSmall,
+                                                height: 1,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .tertiaryTextColor,
                                               ),
                                             ],
                                           ),
@@ -517,10 +509,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             ? Container(
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
+                                alignment: Alignment.center,
                                 padding: const EdgeInsets.only(
                                   left: 8,
-                                  top: 2,
-                                  bottom: 5,
                                   right: 8,
                                 ),
                                 decoration: BoxDecoration(
@@ -531,6 +522,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 child: CustomText(
                                   'No Label',
                                   type: FontStyle.XSmall,
+                                  height: 1,
                                   color: themeProvider
                                       .themeManager.tertiaryTextColor,
                                 ),
@@ -542,8 +534,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         ? Container(
                             height: 30,
                             margin: const EdgeInsets.only(right: 5),
+                            alignment: Alignment.center,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 2, bottom: 5),
+                              left: 8,
+                              right: 8,
+                            ),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: themeProvider
@@ -562,6 +557,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                           ['start_date']))
                                   : 'Start date',
                               type: FontStyle.XSmall,
+                              height: 1,
                               color:
                                   themeProvider.themeManager.tertiaryTextColor,
                             ),
@@ -569,10 +565,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : Container(),
                     provider.issues.displayProperties.dueDate == true
                         ? Container(
-                            height: 30,
                             margin: const EdgeInsets.only(right: 5),
+                            alignment: Alignment.center,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 2, bottom: 5),
+                              left: 8,
+                              right: 8,
+                            ),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: themeProvider
@@ -590,6 +588,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                           ['target_date']))
                                   : 'Due date',
                               type: FontStyle.XSmall,
+                              height: 1,
                               color:
                                   themeProvider.themeManager.tertiaryTextColor,
                             ),
@@ -600,7 +599,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 0, bottom: 5),
+                              left: 8,
+                              right: 8,
+                            ),
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: themeProvider
@@ -610,39 +612,34 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             child: Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: SvgPicture.asset(
-                                      'assets/svg_images/issues_icon.svg',
-                                      width: 16,
-                                      height: 16,
-                                      colorFilter: ColorFilter.mode(
-                                          themeProvider
-                                              .themeManager.tertiaryTextColor,
-                                          BlendMode.srcIn)),
-                                ),
+                                SvgPicture.asset(
+                                    'assets/svg_images/issues_icon.svg',
+                                    width: 16,
+                                    height: 16,
+                                    colorFilter: ColorFilter.mode(
+                                        themeProvider
+                                            .themeManager.tertiaryTextColor,
+                                        BlendMode.srcIn)),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: CustomText(
-                                    provider.issuesResponse[widget.cardIndex]
-                                                    ['sub_issues_count'] !=
-                                                '' &&
-                                            provider.issuesResponse[
-                                                        widget.cardIndex]
-                                                    ['sub_issues_count'] !=
-                                                null
-                                        ? provider
-                                            .issuesResponse[widget.cardIndex]
-                                                ['sub_issues_count']
-                                            .toString()
-                                        : '0',
-                                    type: FontStyle.XSmall,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
+                                CustomText(
+                                  provider.issuesResponse[widget.cardIndex]
+                                                  ['sub_issues_count'] !=
+                                              '' &&
+                                          provider.issuesResponse[
+                                                      widget.cardIndex]
+                                                  ['sub_issues_count'] !=
+                                              null
+                                      ? provider
+                                          .issuesResponse[widget.cardIndex]
+                                              ['sub_issues_count']
+                                          .toString()
+                                      : '0',
+                                  type: FontStyle.XSmall,
+                                  height: 1,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
                                 ),
                               ],
                             ),
@@ -650,73 +647,22 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(),
                     provider.issues.displayProperties.linkCount == true
                         ? Container(
+                            alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 5),
                             height: 30,
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 0, bottom: 5),
+                            padding: const EdgeInsets.only(left: 8, right: 8),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: themeProvider
                                         .themeManager.borderSubtle01Color),
                                 borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: Transform.rotate(
-                                    angle: 33.6,
-                                    child: Icon(
-                                      Icons.link,
-                                      size: 18,
-                                      color: themeProvider
-                                          .themeManager.tertiaryTextColor,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: CustomText(
-                                    provider.issuesResponse[widget.cardIndex]
-                                                    ['link_count'] !=
-                                                '' &&
-                                            provider.issuesResponse[widget
-                                                    .cardIndex]['link_count'] !=
-                                                null
-                                        ? provider
-                                            .issuesResponse[widget.cardIndex]
-                                                ['link_count']
-                                            .toString()
-                                        : '0',
-                                    type: FontStyle.XSmall,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : const SizedBox(),
-                    provider.issues.displayProperties.attachmentCount == true
-                        ? Container(
-                            margin: const EdgeInsets.only(right: 5),
-                            height: 30,
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, bottom: 5),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: themeProvider
-                                      .themeManager.borderSubtle01Color,
-                                ),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Wrap(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5),
+                                Transform.rotate(
+                                  angle: 33.6,
                                   child: Icon(
-                                    Icons.attach_file,
+                                    Icons.link,
                                     size: 18,
                                     color: themeProvider
                                         .themeManager.tertiaryTextColor,
@@ -725,25 +671,71 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: CustomText(
-                                    provider.issuesResponse[widget.cardIndex]
-                                                    ['attachment_count'] !=
-                                                '' &&
-                                            provider.issuesResponse[
-                                                        widget.cardIndex]
-                                                    ['attachment_count'] !=
-                                                null
-                                        ? provider
-                                            .issuesResponse[widget.cardIndex]
-                                                ['attachment_count']
-                                            .toString()
-                                        : '0',
-                                    type: FontStyle.XSmall,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
+                                CustomText(
+                                  provider.issuesResponse[widget.cardIndex]
+                                                  ['link_count'] !=
+                                              '' &&
+                                          provider.issuesResponse[widget
+                                                  .cardIndex]['link_count'] !=
+                                              null
+                                      ? provider
+                                          .issuesResponse[widget.cardIndex]
+                                              ['link_count']
+                                          .toString()
+                                      : '0',
+                                  type: FontStyle.XSmall,
+                                  height: 1,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
+                    provider.issues.displayProperties.attachmentCount == true
+                        ? Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 5),
+                            height: 30,
+                            padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color,
+                                ),
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.attach_file,
+                                  size: 18,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                CustomText(
+                                  provider.issuesResponse[widget.cardIndex]
+                                                  ['attachment_count'] !=
+                                              '' &&
+                                          provider.issuesResponse[
+                                                      widget.cardIndex]
+                                                  ['attachment_count'] !=
+                                              null
+                                      ? provider
+                                          .issuesResponse[widget.cardIndex]
+                                              ['attachment_count']
+                                          .toString()
+                                      : '0',
+                                  type: FontStyle.XSmall,
+                                  height: 1,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
                                 ),
                               ],
                             ),
@@ -762,48 +754,44 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(4)),
                             child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 3),
-                                  child: Icon(
-                                    Icons.change_history,
-                                    size: 18,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
+                                Icon(
+                                  Icons.change_history,
+                                  size: 18,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
                                 ),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: CustomText(
-                                    provider.issuesResponse[widget.cardIndex]
-                                                    ['estimate_point'] !=
-                                                '' &&
-                                            provider.issuesResponse[
-                                                        widget.cardIndex]
-                                                    ['estimate_point'] !=
-                                                null
-                                        ? ref
-                                            .read(
-                                                ProviderList.estimatesProvider)
-                                            .estimates
-                                            .firstWhere((element) {
-                                            return element['id'] ==
-                                                projectProvider
-                                                    .currentProject['estimate'];
-                                          })['points'].firstWhere((element) {
-                                            return element['key'] ==
-                                                provider.issuesResponse[
-                                                        widget.cardIndex]
-                                                    ['estimate_point'];
-                                          })['value']
-                                        : 'Estimate',
-                                    type: FontStyle.XSmall,
-                                    color: themeProvider
-                                        .themeManager.tertiaryTextColor,
-                                  ),
+                                CustomText(
+                                  provider.issuesResponse[widget.cardIndex]
+                                                  ['estimate_point'] !=
+                                              '' &&
+                                          provider.issuesResponse[
+                                                      widget.cardIndex]
+                                                  ['estimate_point'] !=
+                                              null
+                                      ? ref
+                                          .read(
+                                              ProviderList.estimatesProvider)
+                                          .estimates
+                                          .firstWhere((element) {
+                                          return element['id'] ==
+                                              projectProvider
+                                                  .currentProject['estimate'];
+                                        })['points'].firstWhere((element) {
+                                          return element['key'] ==
+                                              provider.issuesResponse[
+                                                      widget.cardIndex]
+                                                  ['estimate_point'];
+                                        })['value']
+                                      : 'Estimate',
+                                  type: FontStyle.XSmall,
+                                  height: 1,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor,
                                 ),
                               ],
                             ),

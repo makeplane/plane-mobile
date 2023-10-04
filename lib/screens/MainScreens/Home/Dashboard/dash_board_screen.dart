@@ -892,7 +892,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               },
               child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
@@ -900,15 +900,21 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     children: [
-                      CustomText(DateTimeManager.getMonthFromNumber(
+                      CustomText(
+                        DateTimeManager.getMonthFromNumber(
                           dashboardProvider
                                   .selectedMonthForissuesClosedByMonthWidget -
-                              1)),
+                              1,
+                        ),
+                        type: FontStyle.Small,
+                        height: 1,
+                      ),
                       const SizedBox(width: 5),
                       Icon(
                         Icons.keyboard_arrow_down,
                         color: themeProvider.themeManager.primaryTextColor,
-                      )
+                        size: 16,
+                      ),
                     ],
                   )),
             )

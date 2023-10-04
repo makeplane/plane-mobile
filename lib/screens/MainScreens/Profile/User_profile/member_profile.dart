@@ -53,7 +53,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                 children: [
                   coverImageAndProfileImage(profileProv, themeProvider, context,
                       memberprofileProvider),
-                  userInfo(memberprofileProvider, themeProvider),
+                  userInfo(memberprofileProvider, themeProvider, profileProv),
                   projectInfo(memberprofileProvider, themeProvider, context),
                   const SizedBox(height: 30),
                 ],
@@ -313,7 +313,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
   }
 
   Column userInfo(MemberProfileStateModel memberprofileProvider,
-      ThemeProvider themeProvider) {
+      ThemeProvider themeProvider, ProfileProvider profileProv) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -331,7 +331,10 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
         Container(
           margin: const EdgeInsets.only(left: 20, bottom: 30),
           child: CustomText(
-            memberprofileProvider.memberProfile['user_data']['display_name'],
+            memberprofileProvider.memberProfile['user_data'][
+                widget.userID == profileProv.userProfile.id
+                    ? 'email'
+                    : 'display_name'],
             color: themeProvider.themeManager.tertiaryTextColor,
             type: FontStyle.Small,
             fontWeight: FontWeightt.Regular,

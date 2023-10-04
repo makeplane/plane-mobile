@@ -136,10 +136,15 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           ),
           Positioned(
             bottom: 0,
+            left: 0,
+            right: 0,
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: widget.fromCreateView ||
+                        widget.issueCategory == IssueCategory.myIssues
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
                 children: [
                   widget.fromCreateView ||
                           widget.issueCategory == IssueCategory.myIssues

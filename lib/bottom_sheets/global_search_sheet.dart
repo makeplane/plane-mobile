@@ -364,20 +364,9 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                           'You are not a member of any project, try joining one',
                     );
                   } else {
-                    // ref.watch(ProviderList.projectProvider).currentProject =
-                    //     ref.watch(ProviderList.projectProvider).projects[0];
-                    // ref.watch(ProviderList.projectProvider).setState();
-                    // await ref
-                    //     .read(ProviderList.projectProvider)
-                    //     .initializeProject(ref: ref);
                     items[index]['screen']();
                   }
                 } else {
-                  if (index == 2) {
-                    ref.watch(ProviderList.projectProvider).currentProject =
-                        ref.watch(ProviderList.projectProvider).projects[0];
-                    ref.watch(ProviderList.projectProvider).setState();
-                  }
                   items[index]['screen']();
                 }
               },

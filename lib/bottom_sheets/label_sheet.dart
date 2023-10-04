@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -54,7 +54,6 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
         child: Stack(
           children: [
             Wrap(children: [
-              //text heading
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -75,22 +74,15 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               const CustomText(
                 'Search',
                 type: FontStyle.Small,
-                // color: themeProvider.secondaryTextColor,
               ),
               Container(height: 5),
               TextField(
                 controller: search,
                 onChanged: (val) {},
                 decoration:
-                    themeProvider.themeManager.textFieldDecoration.copyWith(
-                        // fillColor: themeProvider.isDarkThemeEnabled
-                        //     ? darkBackgroundColor
-                        //     : lightBackgroundColor,
-                        // filled: true,
-                        ),
+                    themeProvider.themeManager.textFieldDecoration.copyWith(),
               ),
               Container(height: 20),
-
               Wrap(
                 children: issuesProvider.labels.map((label) {
                   return search.text.toLowerCase().contains(
@@ -104,7 +96,6 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                               selectedLabels.add(label["id"]);
                             }
                             setState(() {});
-                            // print(selectedLabels);
                           },
                           child: Container(
                             margin:
@@ -128,8 +119,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                                 CircleAvatar(
                                     radius: 6,
                                     backgroundColor:
-                                        ColorManager.getColorFromHexaDecimal(
-                                            label["color"])),
+                                        label["color"].toString().toColor()),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -186,8 +176,6 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                     alignment: Alignment.center,
                     color: themeProvider
                         .themeManager.primaryBackgroundDefaultColor,
-                    // height: 25,
-                    // width: 25,
                     child: Center(
                       child: SizedBox(
                         height: 25,

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -36,11 +36,6 @@ class _CreateStateState extends ConsumerState<CreateState> {
     "#EB144C",
     "#F78DA7",
     "#9900EF",
-
-    // {'lable': 'Lable 1', 'color': Colors.orange},
-    // {'lable': 'Lable 2', 'color': Colors.purple},
-    // {'lable': 'Lable 3', 'color': Colors.blue},
-    // {'lable': 'Lable 4', 'color': Colors.pink}
   ];
   @override
   void initState() {
@@ -66,12 +61,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
             key: formKey,
             child: Container(
               alignment: Alignment.center,
-              //   color: Colors.black.withOpacity(0.5),
               child: Container(
-                // padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                    //  color: Colors.white,
-                    ),
+                decoration: const BoxDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -99,7 +90,6 @@ class _CreateStateState extends ConsumerState<CreateState> {
                         )),
                     Container(
                       margin: const EdgeInsets.only(left: 15, right: 15),
-                      // height: 45,
                       child: TextFormField(
                         controller: name,
                         validator: (value) {
@@ -250,8 +240,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                   margin: const EdgeInsets.only(bottom: 20),
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: ColorManager.getColorFromHexaDecimal(
-                                        e.toString()),
+                                    color: e.toString().toColor(),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: const [
                                       BoxShadow(
@@ -266,7 +255,6 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 15, right: 15),
-                      // height: 50,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -275,8 +263,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             height: 50,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: ColorManager.getColorFromHexaDecimal(
-                                    "#${colorController.text.toString()}"),
+                                color: "#${colorController.text.toString()}"
+                                    .toColor(),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     bottomLeft: Radius.circular(8))),
@@ -362,11 +350,9 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             const EdgeInsets.only(top: 20, bottom: 5, left: 15),
                         child: const CustomText(
                           'Description ',
-                          // color: themeProvider.secondaryTextColor,
                           type: FontStyle.Small,
                         )),
                     Container(
-                      // height: 45,
                       margin: const EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         controller: description,

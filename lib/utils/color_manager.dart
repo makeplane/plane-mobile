@@ -28,17 +28,4 @@ class ColorManager {
         listOfColors[randomIndex.nextInt(listOfColors.length - 1)];
     return colorToReturn;
   }
-
-  static Color getColorFromHexaDecimal(String? value) {
-    const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
-    final String? colorData = value;
-    return (colorData == null || !isValidHexaCode(colorData))
-        ? colorToReturnOnApiError
-        : Color(int.parse("FF${colorData.replaceAll('#', '')}", radix: 16));
-  }
-
-  static bool isValidHexaCode(String str) {
-    final RegExp hexaCode = RegExp(r"^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
-    return hexaCode.hasMatch(str);
-  }
 }

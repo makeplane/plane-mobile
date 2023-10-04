@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -44,8 +44,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
     colorController.text =
         colorsForLabel[Random().nextInt(colorsForLabel.length)]
             .replaceAll('#', '');
-    //.replaceAll('#F', '');
-    // 'BC009E';
 
     selectedLabels.addAll(
         (ref.read(ProviderList.issuesProvider).createIssuedata['labels'] ?? [])
@@ -183,7 +181,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   });
                                 },
                                 child: Container(
-                                  //height: 40,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 10,
                                   ),
@@ -197,11 +194,10 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                         children: [
                                           CircleAvatar(
                                             radius: 8,
-                                            backgroundColor: ColorManager
-                                                .getColorFromHexaDecimal(
-                                                    issuesProvider.labels[index]
-                                                            ['color']
-                                                        .toString()),
+                                            backgroundColor: issuesProvider
+                                                .labels[index]['color']
+                                                .toString()
+                                                .toColor(),
                                           ),
                                           Container(width: 10),
                                           CustomText(
@@ -224,7 +220,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                       const SizedBox(height: 20),
                                       Container(
                                           height: 1,
-                                          // margin: const EdgeInsets.only(bottom: 5),
                                           color: themeProvider
                                               .themeManager.borderDisabledColor)
                                     ],
@@ -250,15 +245,13 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   prefixIconConstraints: const BoxConstraints(
                                       minWidth: 0, minHeight: 0),
                                   prefixIcon: Container(
-                                    // padding: EdgeInsets.all(5),
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 7, vertical: 5),
                                     height: 25,
                                     width: 25,
                                     decoration: BoxDecoration(
                                       color:
-                                          ColorManager.getColorFromHexaDecimal(
-                                              '#${colorController.text}'),
+                                          '#${colorController.text}'.toColor(),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
@@ -275,8 +268,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                             colorController.text = e
                                                 .toString()
                                                 .replaceAll('#', '');
-                                            // .toUpperCase()
-                                            // .replaceAll("#", "");
                                           });
                                         },
                                         child: Container(
@@ -286,9 +277,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                               const EdgeInsets.only(bottom: 10),
                                           padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                            color: ColorManager
-                                                .getColorFromHexaDecimal(
-                                                    e.toString()),
+                                            color: e.toString().toColor(),
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             boxShadow: const [
@@ -325,7 +314,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                 width: 3,
                                                 color: themeProvider
                                                     .themeManager
-                                                    .primaryBackgroundSelectedColour), //<-- SEE HERE
+                                                    .primaryBackgroundSelectedColour),
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
@@ -348,7 +337,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                                     .themeManager
                                                     .primaryBackgroundSelectedColour,
                                                 borderRadius: const BorderRadius
-                                                        .only(
+                                                    .only(
                                                     topLeft: Radius.circular(5),
                                                     bottomLeft:
                                                         Radius.circular(5))),
@@ -394,9 +383,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                         ),
                       ),
                       alignment: Alignment.center,
-
-                      // height: 25,
-                      // width: 25,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -457,7 +443,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                     ref: ref);
                                 setState(() {
                                   createNew = false;
-                                  // showColorPallette = false;
                                   colorController.clear();
                                   labelContrtoller.clear();
                                 });

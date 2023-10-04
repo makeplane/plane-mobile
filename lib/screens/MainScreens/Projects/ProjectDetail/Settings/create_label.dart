@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -102,8 +102,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                   height: 25,
                                   width: 25,
                                   decoration: BoxDecoration(
-                                    color: ColorManager.getColorFromHexaDecimal(
-                                        '#${colorController.text}'),
+                                    color: '#${colorController.text}'.toColor(),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
@@ -128,9 +127,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                             const EdgeInsets.only(bottom: 10),
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                          color: ColorManager
-                                              .getColorFromHexaDecimal(
-                                                  e.toString()),
+                                          color: e.toString().toColor(),
                                           borderRadius:
                                               BorderRadius.circular(5),
                                           boxShadow: const [

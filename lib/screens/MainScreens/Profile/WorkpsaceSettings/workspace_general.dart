@@ -1,13 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/company_size_sheet.dart';
 import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
-import 'package:plane/bottom_sheets/workspace_logo.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
@@ -60,14 +63,16 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
 
   String? dropDownValue;
   List<String> dropDownItems = ['5', '10', '25', '50'];
+  File? coverImage;
+  String? url;
+  bool? expansionState;
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    // imageUrl = ref
-    //     .read(ProviderList.workspaceProvider)
-    //     .selectedWorkspace
-    //     .workspaceLogo;
+    final fileProvider = ref.watch(ProviderList.fileUploadProvider);
+
     return WillPopScope(
       onWillPop: () async {
         workspaceProvider.changeLogo(
@@ -106,45 +111,88 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                     margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
                     child: Row(
                       children: [
-                        GestureDetector(
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: workspaceProvider.tempLogo == ''
-                                  ? themeProvider.themeManager.primaryColour
-                                  : null,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            //image
-                            child: workspaceProvider.tempLogo == ''
-                                ? SizedBox(
-                                    child: CustomText(
-                                      workspaceProvider
-                                          .selectedWorkspace.workspaceName
-                                          .toString()
-                                          .toUpperCase()[0],
-                                      type: FontStyle.Medium,
-                                      fontWeight: FontWeightt.Semibold,
-                                      // fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                      overrride: true,
-                                    ),
-                                  )
-                                : ClipRRect(
+                        coverImage != null
+                            ? Stack(
+                                children: [
+                                  ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
-                                    child: WorkspaceLogoForDiffrentExtensions(
-                                        height: 45,
-                                        width: 45,
-                                        imageUrl: workspaceProvider.tempLogo,
-                                        themeProvider: themeProvider,
-                                        workspaceName: workspaceProvider
-                                            .selectedWorkspace.workspaceName
-                                            .toString()),
+                                    child: Image.file(
+                                      File(coverImage!.path),
+                                      height: 45,
+                                      width: 45,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                          ),
-                        ),
+                                  fileProvider.fileUploadState ==
+                                          StateEnum.loading
+                                      ? Container(
+                                          height: 45,
+                                          width: 45,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            color: Colors.grey.withOpacity(0.4),
+                                          ),
+                                          child: Center(
+                                            child: SizedBox(
+                                              width: 30,
+                                              height: 30,
+                                              child: LoadingIndicator(
+                                                indicatorType: Indicator
+                                                    .lineSpinFadeLoader,
+                                                colors: [
+                                                  themeProvider.themeManager
+                                                      .primaryTextColor
+                                                ],
+                                                strokeWidth: 1.0,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox()
+                                ],
+                              )
+                            : Container(
+                                height: 45,
+                                width: 45,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: workspaceProvider.tempLogo == ''
+                                      ? themeProvider.themeManager.primaryColour
+                                      : null,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                //image
+                                child: workspaceProvider.tempLogo == ''
+                                    ? SizedBox(
+                                        child: CustomText(
+                                          workspaceProvider
+                                              .selectedWorkspace.workspaceName
+                                              .toString()
+                                              .toUpperCase()[0],
+                                          type: FontStyle.Medium,
+                                          fontWeight: FontWeightt.Semibold,
+                                          // fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                          overrride: true,
+                                        ),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child:
+                                            WorkspaceLogoForDiffrentExtensions(
+                                          height: 45,
+                                          width: 45,
+                                          imageUrl: workspaceProvider.tempLogo,
+                                          themeProvider: themeProvider,
+                                          workspaceName: workspaceProvider
+                                              .selectedWorkspace.workspaceName
+                                              .toString(),
+                                        ),
+                                      ),
+                              ),
                         getRole() == Role.admin
                             ? GestureDetector(
                                 onTap: () async {
@@ -156,27 +204,39 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                         toastType: ToastType.warning);
                                     return;
                                   }
-                                  showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      enableDrag: true,
-                                      constraints:
-                                          const BoxConstraints(maxHeight: 370),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30),
-                                      )),
-                                      context: context,
-                                      builder: (ctx) {
-                                        return const WorkspaceLogo();
-                                      });
-                                  // final file = await ImagePicker.platform
-                                  //     .pickImage(source: ImageSource.gallery);
-                                  // if (file != null) {
-                                  //   setState(() {
-                                  //     coverImage = File(file.path);
-                                  //   });
-                                  // }
+                                  final file = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (file != null) {
+                                    if (File(file.path).lengthSync() >
+                                        5000000) {
+                                      CustomToast.showToast(context,
+                                          message:
+                                              'Image size should be less than 5MB',
+                                          toastType: ToastType.warning);
+                                      return;
+                                    }
+                                    setState(() {
+                                      coverImage = File(file.path);
+                                    });
+                                    url = await fileProvider.uploadFile(
+                                      coverImage!,
+                                      coverImage!.path.split('.').last,
+                                    );
+                                  }
+                                  // showModalBottomSheet(
+                                  //     isScrollControlled: true,
+                                  //     enableDrag: true,
+                                  //     constraints:
+                                  //         const BoxConstraints(maxHeight: 370),
+                                  //     shape: const RoundedRectangleBorder(
+                                  //         borderRadius: BorderRadius.only(
+                                  //       topLeft: Radius.circular(30),
+                                  //       topRight: Radius.circular(30),
+                                  //     )),
+                                  //     context: context,
+                                  //     builder: (ctx) {
+                                  //       return const WorkspaceLogo();
+                                  //     });
                                 },
                                 child: Container(
                                     margin: const EdgeInsets.only(left: 16),
@@ -391,20 +451,21 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         return;
                       }
                       showModalBottomSheet(
-                          context: context,
-                          constraints: BoxConstraints(
-                            minHeight: height * 0.5,
-                            maxHeight: MediaQuery.of(context).size.height * 0.5,
+                        context: context,
+                        constraints: BoxConstraints(
+                          minHeight: height * 0.5,
+                          maxHeight: MediaQuery.of(context).size.height * 0.5,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          builder: (context) {
-                            return const CompanySize();
-                          });
+                        ),
+                        builder: (context) {
+                          return const CompanySize();
+                        },
+                      );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(
@@ -453,7 +514,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               //convert to int
                               'organization_size':
                                   workspaceProvider.companySize,
-                              'logo': workspaceProvider.tempLogo,
+                              if (url != null) 'logo': url,
                             }, ref: ref);
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
@@ -473,22 +534,24 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             // refreshImage();
                           },
                           child: Container(
-                              height: 45,
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(
-                                  top: 20, left: 20, right: 20),
-                              decoration: BoxDecoration(
-                                color: themeProvider.themeManager.primaryColour,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Center(
-                                  child: CustomText(
+                            height: 45,
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.only(
+                                top: 20, left: 20, right: 20),
+                            decoration: BoxDecoration(
+                              color: themeProvider.themeManager.primaryColour,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Center(
+                              child: CustomText(
                                 'Update',
                                 color: Colors.white,
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
                                 overrride: true,
-                              ))),
+                              ),
+                            ),
+                          ),
                         )
                       : Container(),
                   Container(
@@ -496,9 +559,17 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         //light red
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                            color: const Color.fromRGBO(255, 12, 12, 1))),
+                            color: expansionState == true
+                                ? themeProvider.themeManager.textErrorColor
+                                : themeProvider
+                                    .themeManager.borderSubtle01Color)),
                     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: ExpansionTile(
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          expansionState = value;
+                        });
+                      },
                       childrenPadding: const EdgeInsets.only(
                           left: 15, right: 15, bottom: 10),
                       iconColor: themeProvider.themeManager.primaryTextColor,

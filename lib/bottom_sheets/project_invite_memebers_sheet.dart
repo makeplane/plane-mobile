@@ -227,6 +227,7 @@ class _ProjectInviteMembersSheetState
                                       },
                                       userId: '',
                                       isInviteMembers: true,
+                                      pendingInvite: false,
                                     );
                                   });
                             },
@@ -339,13 +340,20 @@ class _ProjectInviteMembersSheetState
                                 message: 'Member added successfully',
                                 toastType: ToastType.success);
                             Navigator.pop(mainBuildContext);
+                            projectProvider.getProjectMembers(
+                                slug: workspaceProvider
+                                    .selectedWorkspace.workspaceSlug,
+                                projId:
+                                    projectProvider.projectDetailModel!.id!);
                           } else {
-                            CustomToast.showToast(mainBuildContext,
-                                message: 'Something went wrong',
-                                toastType: ToastType.failure);
+                            CustomToast.showToast(
+                              mainBuildContext,
+                              message: 'Something went wrong',
+                              toastType: ToastType.failure,
+                            );
                           }
                         },
-                        text: 'Invite',
+                        text: 'Add',
                       ),
                     )
                   ],

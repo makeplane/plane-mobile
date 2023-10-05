@@ -331,7 +331,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: profileProvider.userProfile.avatar != null &&
                         profileProvider.userProfile.avatar != ""
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(900),
+                        borderRadius: BorderRadius.circular(10),
                         child: SizedBox(
                           height: 90,
                           width: 90,
@@ -342,11 +342,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                       )
                     : Container(
-                        height: 75,
-                        width: 75,
+                        height: 90,
+                        width: 90,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(10),
                           color: themeProvider
                               .themeManager.tertiaryBackgroundDefaultColor,
                         ),

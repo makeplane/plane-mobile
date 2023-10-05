@@ -13,6 +13,7 @@ import 'package:plane/bottom_sheets/time_zone_selector_sheet.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/Theming/prefrences.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/timezone_manager.dart';
@@ -89,50 +90,65 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
           loading: profileProvider.updateProfileState == StateEnum.loading,
           widgetClass:
               LayoutBuilder(builder: (context, BoxConstraints constraints) {
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 1,
-                            width: MediaQuery.of(context).size.width,
-                            color:
-                                themeProvider.themeManager.borderDisabledColor,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              children: [
-                                Hero(
+            return SafeArea(
+              child: Form(
+                key: _formKey,
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: themeProvider
+                                  .themeManager.borderDisabledColor,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                children: [
+                                  Hero(
                                     tag: 'photo',
                                     child: pickedImage != null
                                         ? Stack(
                                             children: [
-                                              CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage:
-                                                    FileImage(pickedImage!),
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.file(
+                                                  pickedImage!,
+                                                  height: 100,
+                                                  width: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                               fileUploadProvider
                                                           .fileUploadState ==
                                                       StateEnum.loading
-                                                  ? CircleAvatar(
-                                                      radius: 50,
-                                                      backgroundColor: Colors
-                                                          .white
-                                                          .withOpacity(0.7),
+                                                  ? Container(
+                                                      height: 100,
+                                                      width: 100,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .tertiaryBackgroundDefaultColor
+                                                            .withOpacity(0.7),
+                                                      ),
                                                       child: const Center(
                                                         child: SizedBox(
                                                           width: 30,
@@ -162,7 +178,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                                     ""
                                             ? ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(900),
+                                                    BorderRadius.circular(10),
                                                 child: SizedBox(
                                                   height: 100,
                                                   width: 100,
@@ -174,12 +190,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                                 ),
                                               )
                                             : Container(
-                                                height: 75,
-                                                width: 75,
+                                                height: 100,
+                                                width: 100,
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(50),
+                                                      BorderRadius.circular(10),
                                                   color: themeProvider
                                                       .themeManager
                                                       .tertiaryBackgroundDefaultColor,
@@ -190,266 +206,247 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                                       .themeManager
                                                       .placeholderTextColor,
                                                   size: 35,
-                                                ))),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    pickImage();
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: themeProvider.themeManager
-                                                .borderSubtle01Color),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: themeProvider.themeManager
-                                            .tertiaryBackgroundDefaultColor),
-                                    padding: const EdgeInsets.all(8),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.file_upload_outlined,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        CustomText(
-                                          'Upload',
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Bold,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
-                                        )
-                                      ],
+                                                ),
+                                              ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      pickImage();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor),
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.file_upload_outlined,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          CustomText(
+                                            'Upload',
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Bold,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    log(profileProvider.userProfile.avatar!
-                                        .toString());
-                                    if (profileProvider
-                                        .userProfile.avatar!.isNotEmpty) {
-                                      profileProvider.deleteAvatar();
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      log(profileProvider.userProfile.avatar!
+                                          .toString());
+                                      if (profileProvider
+                                          .userProfile.avatar!.isNotEmpty) {
+                                        profileProvider.deleteAvatar();
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor),
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        children: [
+                                          CustomText(
+                                            'Remove',
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Bold,
+                                            color: themeProvider
+                                                .themeManager.textErrorColor,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomText(
+                                'First Name *',
+                                type: FontStyle.Medium,
+                                color: themeProvider
+                                    .themeManager.tertiaryTextColor,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              // height: 50,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "*required ";
                                     }
+                                    if (val.length >= 24) {
+                                      return "name should be smaller ";
+                                    }
+
+                                    return null;
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: themeProvider.themeManager
-                                                .borderSubtle01Color),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: themeProvider.themeManager
-                                            .tertiaryBackgroundDefaultColor),
-                                    padding: const EdgeInsets.all(8),
-                                    child: Row(
-                                      children: [
-                                        CustomText(
-                                          'Remove',
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Bold,
+                                  controller: firstNameController,
+                                  style: TextStyle(
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomText(
+                                'Last Name *',
+                                type: FontStyle.Medium,
+                                color: themeProvider
+                                    .themeManager.tertiaryTextColor,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              // height: 50,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "*required ";
+                                    }
+                                    if (val.length >= 24) {
+                                      return "name should be smaller ";
+                                    }
+
+                                    return null;
+                                  },
+                                  controller: lastNameController,
+                                  style: TextStyle(
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomText(
+                                'Display Name',
+                                type: FontStyle.Medium,
+                                color: themeProvider
+                                    .themeManager.tertiaryTextColor,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              height: 50,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                  controller: displayNameController,
+                                  style: TextStyle(
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomText(
+                                'Email *',
+                                type: FontStyle.Medium,
+                                color: themeProvider
+                                    .themeManager.tertiaryTextColor,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              height: 50,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                  controller: emailController,
+                                  enabled: false,
+                                  style: TextStyle(
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomRichText(
+                                widgets: [
+                                  TextSpan(
+                                      text: 'Role',
+                                      style: TextStyle(
                                           color: themeProvider
-                                              .themeManager.textErrorColor,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
+                                              .themeManager.tertiaryTextColor)),
+                                  TextSpan(
+                                      text: ' *',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.textErrorColor))
+                                ],
+                                type: FontStyle.Medium,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          // const Text('Full Name *', style: TextStylingWidget.description),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'First name',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            // height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return "*required ";
-                                  }
-                                  if (val.length >= 24) {
-                                    return "name should be smaller ";
-                                  }
-
-                                  return null;
-                                },
-                                controller: firstNameController,
-                                style: TextStyle(
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor),
-                                decoration: themeProvider
-                                    .themeManager.textFieldDecoration),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // const Text('Full Name *', style: TextStylingWidget.description),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'Last name',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            // height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return "*required ";
-                                  }
-                                  if (val.length >= 24) {
-                                    return "name should be smaller ";
-                                  }
-
-                                  return null;
-                                },
-                                controller: lastNameController,
-                                style: TextStyle(
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor),
-                                decoration: themeProvider
-                                    .themeManager.textFieldDecoration),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // const Text('Full Name *', style: TextStylingWidget.description),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText(
-                              'Display Name',
-                              type: FontStyle.Medium,
-                              color:
-                                  themeProvider.themeManager.tertiaryTextColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                                controller: displayNameController,
-                                style: TextStyle(
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor),
-                                decoration: themeProvider
-                                    .themeManager.textFieldDecoration),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // const Text('Email *', style: TextStylingWidget.description),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'Email',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                              controller: emailController,
-                              enabled: false,
-                              style: TextStyle(
-                                  color: themeProvider
-                                      .themeManager.primaryTextColor),
-                              decoration: themeProvider
-                                  .themeManager.textFieldDecoration,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'Role',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
                                   context: context,
                                   constraints: BoxConstraints(
                                     maxHeight:
@@ -464,205 +461,198 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   ),
                                   builder: (context) {
                                     return const RoleSheet();
-                                  });
-                            },
-                            child: Container(
+                                  },
+                                );
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 16),
+                                      child: CustomText(
+                                        profileProvider.dropDownValue == null
+                                            ? 'Select Role'
+                                            : profileProvider.dropDownValue!,
+                                        type: FontStyle.Small,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 16),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // ),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Container(
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                    color: themeProvider
-                                        .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 16),
-                                    child: CustomText(
-                                      profileProvider.dropDownValue == null
-                                          ? 'Select Role'
-                                          : profileProvider.dropDownValue!,
-                                      type: FontStyle.Small,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 16),
-                                    child: Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: CustomText('Theme',
+                                  type: FontStyle.Medium,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor),
                             ),
-                            // ),
-                          ),
-
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          // const Text('Theme', style: TextStylingWidget.description),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText('Theme',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PrefrencesScreen()));
-                            },
-                            child: Container(
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PrefrencesScreen()));
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 16),
+                                      child: CustomText(
+                                        themeProvider.theme == THEME.light
+                                            ? 'Light'
+                                            : themeProvider.theme == THEME.dark
+                                                ? 'Dark'
+                                                : themeProvider.theme ==
+                                                        THEME.lightHighContrast
+                                                    ? 'Light High Contrast'
+                                                    : themeProvider.theme ==
+                                                            THEME
+                                                                .darkHighContrast
+                                                        ? 'Dark High Contrast'
+                                                        : 'Custom',
+                                        type: FontStyle.Small,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // ),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Container(
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                    color: themeProvider
-                                        .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 16),
-                                    child: CustomText(
-                                      themeProvider.theme == THEME.light
-                                          ? 'Light'
-                                          : themeProvider.theme == THEME.dark
-                                              ? 'Dark'
-                                              : themeProvider.theme ==
-                                                      THEME.lightHighContrast
-                                                  ? 'Light High Contrast'
-                                                  : themeProvider.theme ==
-                                                          THEME.darkHighContrast
-                                                      ? 'Dark High Contrast'
-                                                      : 'Custom',
-                                      type: FontStyle.Small,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: CustomText('Time Zone',
+                                  type: FontStyle.Medium,
+                                  color: themeProvider
+                                      .themeManager.tertiaryTextColor),
                             ),
-                            // ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          // Expanded(child: Container()),
-                          // Button(
-                          //   ontap: () => profileProvier.updateProfile(data: {
-                          //     "first_name": fullName.text,
-                          //     "role": dropDownValue,
-                          //     if (fileUploadProvider.downloadUrl != null)
-                          //       "avatar": fileUploadProvider.downloadUrl
-                          //   }),
-                          //   text: 'Update',
-                          // ),
-                          // const SizedBox(
-                          //   height: 20,
-                          // )
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomText('Time Zone',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  constraints: BoxConstraints(
-                                    maxHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.8,
-                                  ),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    constraints: BoxConstraints(
+                                      maxHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.8,
                                     ),
-                                  ),
-                                  builder: (context) {
-                                    return const TimeZoneSelectorSheet();
-                                  });
-                            },
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                    color: themeProvider
-                                        .themeManager.borderSubtle01Color),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 16),
-                                    child: CustomText(
-                                      TimeZoneManager.timeZones.firstWhere(
-                                                  (element) =>
-                                                      element['value'] ==
-                                                      profileProvider
-                                                          .selectedTimeZone)[
-                                              'label'] ??
-                                          '',
-                                      type: FontStyle.Small,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                      ),
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 16),
-                                    child: Icon(
-                                      Icons.keyboard_arrow_down,
+                                    builder: (context) {
+                                      return const TimeZoneSelectorSheet();
+                                    });
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
                                       color: themeProvider
-                                          .themeManager.primaryTextColor,
+                                          .themeManager.borderSubtle01Color),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 16),
+                                      child: CustomText(
+                                        TimeZoneManager.timeZones.firstWhere(
+                                                    (element) =>
+                                                        element['value'] ==
+                                                        profileProvider
+                                                            .selectedTimeZone)[
+                                                'label'] ??
+                                            '',
+                                        type: FontStyle.Small,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    const Spacer(),
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 16),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: themeProvider
+                                            .themeManager.primaryTextColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 30),
-                        ],
+                            const SizedBox(height: 60),
+                          ],
+                        ),
                       ),
-                      Container(
-                        height: 50,
-                        alignment: Alignment.bottomCenter,
-                        margin: const EdgeInsets.only(
-                            bottom: 15, left: 16, right: 16),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      child: Container(
+                        width: width,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
                         child: Button(
                           ontap: () async {
                             if (!_formKey.currentState!.validate()) {
@@ -688,38 +678,23 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   message: 'Profile updated successfully',
                                   toastType: ToastType.success);
                             } else {
-                              CustomToast.showToast(screenContext,
-                                  message: 'Something went wrong',
-                                  toastType: ToastType.failure);
+                              CustomToast.showToast(
+                                screenContext,
+                                message: 'Something went wrong',
+                                toastType: ToastType.failure,
+                              );
                             }
                           },
                           text: 'Update',
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
           }),
         ),
-
-        // bottomNavigationBar: Container(
-        //   height: 50,
-        //   alignment: Alignment.bottomCenter,
-        //   margin: const EdgeInsets.only(bottom: 15, left: 16, right: 16),
-        //   child: Button(
-        //     ontap: () => profileProvier.updateProfile(data: {
-        //       "first_name": fullName.text,
-        //       "role": dropDownValue,
-        //       if (fileUploadProvider.downloadUrl != null)
-        //         "avatar": fileUploadProvider.downloadUrl
-        //     }),
-        //     text: 'Update',
-        //   ),
-        // ),
-
-        //custom floating action buttom at bottom center
       ),
     );
   }
@@ -731,7 +706,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       final int sizeOfImage = File(image.path).readAsBytesSync().lengthInBytes;
       if (sizeOfImage > 5000000) {
         CustomToast.showToast(context,
-            message: 'File size should be less than 5MB',
+            message: 'Image size should be less than 5MB',
             toastType: ToastType.warning);
         return;
       }

@@ -37,6 +37,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
   bool isEmoji = false;
   String selectedColor = '#3A3A3A';
   Role? role;
+  bool? expansionState;
 
   void generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
@@ -81,9 +82,6 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    // projectProvider.projectDetailModel!.network == 1
-    //     ? isProjectPublic = false
-    //     : isProjectPublic = true;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -596,12 +594,15 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 // color: Colors.red[00],
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: const Color.fromRGBO(255, 12, 12, 1),
+                                  color: expansionState == true ? themeProvider.themeManager.textErrorColor : themeProvider.themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: ExpansionTile(
                                 onExpansionChanged: (value) async {
                                   scrollDown();
+                                  setState(() {
+                                    expansionState = value;
+                                  });
                                 },
                                 childrenPadding: const EdgeInsets.only(
                                     left: 15, right: 15, bottom: 10),

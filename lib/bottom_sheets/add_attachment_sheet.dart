@@ -81,7 +81,7 @@ class _AddAttachmentsSheetState extends ConsumerState<AddAttachmentsSheet> {
                   return;
                 } else if (result.files.single.size > 5000000) {
                   CustomToast.showToast(context,
-                      message: 'File size should be less than 5MB',
+                      message: 'Image size should be less than 5MB',
                       toastType: ToastType.warning);
                   Navigator.pop(context);
                   return;

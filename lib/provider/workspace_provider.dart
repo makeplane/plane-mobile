@@ -34,6 +34,7 @@ class WorkspaceProvider extends ChangeNotifier {
   bool urlAvailable = false;
   // final currentWorkspace = {};
   List workspaceMembers = [];
+  List workspaceInvitationsMembers = [];
   String tempLogo = '';
   WorkspaceModel? workspace;
   StateEnum workspaceInvitationState = StateEnum.empty;
@@ -41,6 +42,8 @@ class WorkspaceProvider extends ChangeNotifier {
   StateEnum selectWorkspaceState = StateEnum.empty;
   StateEnum uploadImageState = StateEnum.empty;
   StateEnum getMembersState = StateEnum.empty;
+  StateEnum getMembersInvitationsState = StateEnum.empty;
+  StateEnum removeMembersInvitationsState = StateEnum.empty;
   StateEnum joinWorkspaceState = StateEnum.empty;
   StateEnum createWorkspaceState = StateEnum.empty;
   StateEnum updateWorkspaceState = StateEnum.empty;
@@ -58,7 +61,10 @@ class WorkspaceProvider extends ChangeNotifier {
     createWorkspaceState = StateEnum.empty;
     updateWorkspaceState = StateEnum.empty;
     leaveWorspaceState = StateEnum.empty;
+    getMembersInvitationsState = StateEnum.empty;
+    removeMembersInvitationsState = StateEnum.empty;
     workspaceMembers = [];
+    workspaceInvitationsMembers = [];
   }
 
   void changeLogo({required String logo}) {
@@ -567,6 +573,45 @@ class WorkspaceProvider extends ChangeNotifier {
       getMembersState = StateEnum.error;
       notifyListeners();
     }
+  }
+
+  Future getWorkspaceMemberInvitations() async {
+    getMembersInvitationsState = StateEnum.loading;
+    notifyListeners();
+    final response = await workspaceService.getWorkspaceMembersInvitations(
+      url: APIs.pendingInvites.replaceAll(
+        '\$SLUG',
+        selectedWorkspace.workspaceSlug,
+      ),
+    );
+    if (response.isLeft()) {
+      workspaceInvitationsMembers = response.fold((l) => l, (r) => []);
+      getMembersInvitationsState = StateEnum.success;
+      notifyListeners();
+    } else {
+      log(response.fold((l) => l.toString(), (r) => r.error.toString()));
+      getMembersInvitationsState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  Future removeWorkspaceMemberInvitations({required String userId}) async {
+    removeMembersInvitationsState = StateEnum.loading;
+    notifyListeners();
+    final response = await workspaceService.removeWorkspaceMembersInvitations(
+      url: '${APIs.pendingInvites.replaceAll(
+        '\$SLUG',
+        selectedWorkspace.workspaceSlug,
+      )}$userId/',
+    );
+    response.fold((l) {
+      removeMembersInvitationsState = StateEnum.success;
+      notifyListeners();
+    }, (r) {
+      log(r.error.toString());
+      removeMembersInvitationsState = StateEnum.error;
+      notifyListeners();
+    });
   }
 
   Future updateWorkspaceMember(

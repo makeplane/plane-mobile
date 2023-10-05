@@ -18,13 +18,16 @@ class MemberLogoWidget extends StatelessWidget {
   final Color colorForErrorWidget;
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: SizedBox(
-        height: size ?? 45,
-        width: size ?? 45,
-        child: customImageRenderer(
-          imageUrl,
+    return Container(
+      padding: const EdgeInsets.all(5),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: SizedBox(
+          height: size ?? 45,
+          width: size ?? 45,
+          child: customImageRenderer(
+            imageUrl,
+          ),
         ),
       ),
     );
@@ -55,15 +58,17 @@ class MemberLogoWidget extends StatelessWidget {
     }
   }
 
-  SvgPicture svgImage(String imageUrl) {
+  Widget svgImage(String imageUrl) {
     return SvgPicture.network(
       imageUrl,
       fit: BoxFit.cover,
     );
   }
 
-  CachedNetworkImage networkImage(String imageUrl) {
+  Widget networkImage(String imageUrl) {
     return CachedNetworkImage(
+      height: 45,
+      width: 45,
       fit: BoxFit.cover,
       imageUrl: imageUrl,
       placeholder: (context, url) => const CircularProgressIndicator(),

@@ -52,6 +52,15 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
 
     return InkWell(
       onTap: () {
+        if (widget.from == PreviousScreen.myIssues) {
+          final projectProvider = ref.read(ProviderList.projectProvider);
+         projectProvider.currentProject['name'] = provider.issuesResponse[
+              widget.cardIndex]['project_detail']
+                  ['name'];
+                  projectProvider.currentProject['id'] = provider.issuesResponse[
+              widget.cardIndex]['project_detail']
+                  ['id'];
+        }
         Navigator.push(
             Const.globalKey.currentContext!,
             MaterialPageRoute(
@@ -304,8 +313,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             : Container(
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8),
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 8),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                       color: themeProvider
@@ -709,8 +718,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                                   ['estimate_point'] !=
                                               null
                                       ? ref
-                                          .read(
-                                              ProviderList.estimatesProvider)
+                                          .read(ProviderList.estimatesProvider)
                                           .estimates
                                           .firstWhere((element) {
                                           return element['id'] ==
@@ -718,9 +726,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                                   .currentProject['estimate'];
                                         })['points'].firstWhere((element) {
                                           return element['key'] ==
-                                              provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['estimate_point'];
+                                              provider.issuesResponse[widget
+                                                  .cardIndex]['estimate_point'];
                                         })['value']
                                       : 'Estimate',
                                   type: FontStyle.XSmall,

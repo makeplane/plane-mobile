@@ -161,7 +161,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       body: EDITOR(
         from: widget.from,
         url:
-            '${dotenv.env['EDITOR_URL']}m/$workspaceSlug/projects/$projID/issues/${widget.issueId}',
+            '${dotenv.env['EDITOR_URL']}m/$workspaceSlug/projects/$projID/issues/${widget.issueId}${widget.isArchive?'?archive=true':''}',
         title: widget.appBarTitle,
       ),
     );

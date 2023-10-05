@@ -1092,8 +1092,8 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['due_date'];
           cyclesProvider.issues.displayProperties.id =
               cyclesProvider.issueProperty['properties']['key'];
-          issues.displayProperties.label =
-              issueProperty['properties']['labels'];
+           cyclesProvider.issues.displayProperties.label =
+               cyclesProvider.issueProperty['properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
               cyclesProvider.issueProperty['properties']['state'];
           cyclesProvider.issues.displayProperties.subIsseCount =
@@ -1109,7 +1109,8 @@ class IssuesProvider extends ChangeNotifier {
           cyclesProvider.issues.displayProperties.startDate =
               cyclesProvider.issueProperty['properties']['start_date'];
           cyclesProvider.issues.displayProperties.createdOn =
-              cyclesProvider.issueProperty['properties']['created_on'];
+              cyclesProvider.issueProperty['properties']?['created_on'] ??
+                  false;
           cyclesProvider.issues.displayProperties.updatedOn =
               cyclesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
@@ -1139,7 +1140,8 @@ class IssuesProvider extends ChangeNotifier {
           modulesProvider.issues.displayProperties.startDate =
               modulesProvider.issueProperty['properties']['start_date'];
           modulesProvider.issues.displayProperties.createdOn =
-              modulesProvider.issueProperty['properties']['created_on'];
+              modulesProvider.issueProperty['properties']?['created_on'] ??
+                  false;
           modulesProvider.issues.displayProperties.updatedOn =
               modulesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =

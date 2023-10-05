@@ -101,9 +101,10 @@ class AuthProvider extends ChangeNotifier {
           accessToken: response.data["access_token"],
           refreshToken: response.data["refresh_token"]);
       SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       googleAuthState = StateEnum.success;
       notifyListeners();
-      DependencyResolver.resolve(ref: ref);
+      
     } catch (e) {
       log(e.toString());
 

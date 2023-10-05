@@ -121,8 +121,12 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                           null) {
                                         selectedMembers[issuesProvider
                                             .members[index]['member']['id']] = {
-                                          "name": issuesProvider.members[index]
-                                              ['member']['display_name'],
+                                          "avatar":
+                                              issuesProvider.members[index]
+                                                  ['member']['avatar'],
+                                          "display_name":
+                                              issuesProvider.members[index]
+                                                  ['member']['display_name'],
                                           "id": issuesProvider.members[index]
                                               ['member']['id']
                                         };
@@ -161,7 +165,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                             height: 30,
                                             width: 30,
                                             child: MemberLogoWidget(
-                                              usePadding: false,
+                                              padding: EdgeInsets.zero,
                                               imageUrl:
                                                   issuesProvider.members[index]
                                                       ['member']['avatar'],

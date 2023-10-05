@@ -432,6 +432,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issueProvider = ref.watch(ProviderList.myIssuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     // log(issueProvider.issueState.name);
     if (issueProvider.issues.projectView == ProjectView.list) {
       issueProvider.initializeBoard();
@@ -459,16 +460,12 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                               type: IssueCategory.myIssues,
                               assignee: issueProvider.pageIndex == 0
                                   ? {
-                                      ref
-                                          .watch(ProviderList.profileProvider)
-                                          .userProfile
-                                          .id!: {
-                                        'name':
-                                            "${ref.watch(ProviderList.profileProvider).userProfile.firstName} ${ref.watch(ProviderList.profileProvider).userProfile.lastName}",
-                                        'id': ref
-                                            .watch(ProviderList.profileProvider)
-                                            .userProfile
-                                            .id,
+                                      profileProvider.userProfile.id!: {
+                                        'display_name ':
+                                            "${profileProvider.userProfile.firstName} ${ref.watch(ProviderList.profileProvider).userProfile.lastName}",
+                                        'id': profileProvider.userProfile.id,
+                                        'avatar':
+                                            profileProvider.userProfile.avatar
                                       }
                                     }
                                   : null,
@@ -581,8 +578,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                                 0
                                                                             ? {
                                                                                 profileProv.userProfile.id.toString(): {
-                                                                                  'name': profileProv.userProfile.displayName,
-                                                                                  'id': profileProv.userProfile.id
+                                                                                  'display_name': profileProv.userProfile.displayName,
+                                                                                  'id': profileProv.userProfile.id,
+                                                                                  'avatar': profileProv.userProfile.avatar
                                                                                 }
                                                                               }
                                                                             : null,

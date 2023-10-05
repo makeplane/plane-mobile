@@ -230,6 +230,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                       },
                                       userId: '',
                                       isInviteMembers: true,
+                                      pendingInvite: false,
                                     );
                                   });
                             },
@@ -257,6 +258,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                           role: {'role': 15},
                                           userId: '',
                                           isInviteMembers: true,
+                                          pendingInvite: false,
                                         );
                                       });
                                 },
@@ -465,6 +467,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                   toastType: ToastType.success);
 
                               Navigator.of(mainBuildContext).pop();
+                              workspaceProvider.getWorkspaceMemberInvitations();
                             } else {
                               CustomToast.showToast(mainBuildContext,
                                   message: 'Something went wrong',

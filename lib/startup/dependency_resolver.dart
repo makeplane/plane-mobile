@@ -29,8 +29,7 @@ class DependencyResolver {
 
     await _resolveUserProfile(ref).then((value) {
       value.fold((userProfile) => null, (error) {
-        OverlayEntry entry = OverlayEntry(
-          builder: (context) {
+        OverlayEntry entry = OverlayEntry(builder: (context) {
           return Positioned(
             width: MediaQuery.of(context).size.width,
             bottom: 0,

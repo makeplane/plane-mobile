@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 
@@ -14,13 +15,15 @@ class MemberStatus extends ConsumerStatefulWidget {
       required this.role,
       required this.isInviteMembers,
       required this.fromWorkspace,
-      required this.userId});
+      required this.userId,
+      required this.pendingInvite});
   final String firstName;
   final String lastName;
   final Map role;
   final String userId;
   final bool fromWorkspace;
   final bool isInviteMembers;
+  final bool pendingInvite;
 
   @override
   ConsumerState<MemberStatus> createState() => _MemberStatusState();
@@ -75,7 +78,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                         margin: const EdgeInsets.only(left: 15),
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: CustomText(
-                          name,
+                          widget.pendingInvite ? '' : name,
                           type: FontStyle.H4,
                           fontWeight: FontWeightt.Semibold,
                           textAlign: TextAlign.start,
@@ -115,49 +118,56 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          setState(() {
-                                            selectedRole =
-                                                options[index]['value'] as int;
-                                            if (widget.isInviteMembers) {
-                                              workspaceProvider
-                                                      .invitingMembersRole
-                                                      .text =
-                                                  options[index]['role'];
-                                            } else {
-                                              if (widget.fromWorkspace) {
+                                          if (widget.pendingInvite) {
+                                            CustomToast.showToast(context,
+                                                message:
+                                                    'Member hasn\'t joined yet',
+                                                toastType: ToastType.defult);
+                                          } else {
+                                            setState(() {
+                                              selectedRole = options[index]
+                                                  ['value'] as int;
+                                              if (widget.isInviteMembers) {
                                                 workspaceProvider
-                                                    .updateWorkspaceMember(
-                                                  userId: widget.userId,
-                                                  method: selectedRole == 0
-                                                      ? CRUD.delete
-                                                      : CRUD.update,
-                                                  data: {
-                                                    'role':
-                                                        selectedRole.toString()
-                                                  },
-                                                );
+                                                        .invitingMembersRole
+                                                        .text =
+                                                    options[index]['role'];
                                               } else {
-                                                projectProvider
-                                                    .updateProjectMember(
-                                                  slug: workspaceProvider
-                                                      .selectedWorkspace
-                                                      .workspaceSlug,
-                                                  projId: projectProvider
-                                                      .currentProject['id'],
-                                                  userId: widget.userId,
-                                                  method: selectedRole == 0
-                                                      ? CRUD.delete
-                                                      : CRUD.update,
-                                                  data: {
-                                                    'role':
-                                                        selectedRole.toString()
-                                                  },
-                                                );
+                                                if (widget.fromWorkspace) {
+                                                  workspaceProvider
+                                                      .updateWorkspaceMember(
+                                                    userId: widget.userId,
+                                                    method: selectedRole == 0
+                                                        ? CRUD.delete
+                                                        : CRUD.update,
+                                                    data: {
+                                                      'role': selectedRole
+                                                          .toString()
+                                                    },
+                                                  );
+                                                } else {
+                                                  projectProvider
+                                                      .updateProjectMember(
+                                                    slug: workspaceProvider
+                                                        .selectedWorkspace
+                                                        .workspaceSlug,
+                                                    projId: projectProvider
+                                                        .currentProject['id'],
+                                                    userId: widget.userId,
+                                                    method: selectedRole == 0
+                                                        ? CRUD.delete
+                                                        : CRUD.update,
+                                                    data: {
+                                                      'role': selectedRole
+                                                          .toString()
+                                                    },
+                                                  );
+                                                }
                                               }
-                                            }
 
-                                            Navigator.pop(context);
-                                          });
+                                              Navigator.pop(context);
+                                            });
+                                          }
                                         },
                                         child: Row(
                                           children: [
@@ -177,61 +187,69 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                                               value: options[index]['value'],
                                               groupValue: selectedRole,
                                               onChanged: (value) {
-                                                setState(() {
-                                                  selectedRole = options[index]
-                                                      ['value'] as int;
-                                                  if (widget.isInviteMembers) {
-                                                    // widget.role['role'] =
-                                                    //     selectedRole;
-                                                    workspaceProvider
-                                                            .invitingMembersRole
-                                                            .text =
-                                                        options[index]['role'];
-                                                  } else {
-                                                    if (widget.fromWorkspace) {
+                                                if (!widget.pendingInvite) {
+                                                  setState(() {
+                                                    selectedRole =
+                                                        options[index]['value']
+                                                            as int;
+                                                    if (widget
+                                                        .isInviteMembers) {
+                                                      // widget.role['role'] =
+                                                      //     selectedRole;
                                                       workspaceProvider
-                                                          .updateWorkspaceMember(
-                                                        userId: widget.userId,
-                                                        method:
-                                                            selectedRole == 0
-                                                                ? CRUD.delete
-                                                                : CRUD.update,
-                                                        data: {
-                                                          'role': selectedRole
-                                                              .toString()
-                                                        },
-                                                      );
+                                                              .invitingMembersRole
+                                                              .text =
+                                                          options[index]
+                                                              ['role'];
                                                     } else {
-                                                      projectProvider
-                                                          .updateProjectMember(
-                                                        slug: workspaceProvider
-                                                            .selectedWorkspace
-                                                            .workspaceSlug,
-                                                        projId: projectProvider
-                                                                .currentProject[
-                                                            'id'],
-                                                        userId: widget.userId,
-                                                        method:
-                                                            selectedRole == 0
-                                                                ? CRUD.delete
-                                                                : CRUD.update,
-                                                        data: {
-                                                          'role': selectedRole
-                                                              .toString()
-                                                        },
-                                                      );
+                                                      if (widget
+                                                          .fromWorkspace) {
+                                                        workspaceProvider
+                                                            .updateWorkspaceMember(
+                                                          userId: widget.userId,
+                                                          method:
+                                                              selectedRole == 0
+                                                                  ? CRUD.delete
+                                                                  : CRUD.update,
+                                                          data: {
+                                                            'role': selectedRole
+                                                                .toString()
+                                                          },
+                                                        );
+                                                      } else {
+                                                        projectProvider
+                                                            .updateProjectMember(
+                                                          slug: workspaceProvider
+                                                              .selectedWorkspace
+                                                              .workspaceSlug,
+                                                          projId: projectProvider
+                                                                  .currentProject[
+                                                              'id'],
+                                                          userId: widget.userId,
+                                                          method:
+                                                              selectedRole == 0
+                                                                  ? CRUD.delete
+                                                                  : CRUD.update,
+                                                          data: {
+                                                            'role': selectedRole
+                                                                .toString()
+                                                          },
+                                                        );
+                                                      }
                                                     }
-                                                  }
 
-                                                  Navigator.pop(context);
-                                                });
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
                                               },
                                             ),
                                             CustomText(options[index]['role'],
                                                 type: FontStyle.Small,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryTextColor),
+                                                color: widget.pendingInvite
+                                                    ? themeProvider.themeManager
+                                                        .tertiaryTextColor
+                                                    : themeProvider.themeManager
+                                                        .primaryTextColor),
                                           ],
                                         ),
                                       ),
@@ -266,11 +284,19 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (widget.fromWorkspace) {
-                                    workspaceProvider.updateWorkspaceMember(
-                                      userId: widget.userId,
-                                      method: CRUD.delete,
-                                      data: {'role': 0},
-                                    );
+                                    if (widget.pendingInvite) {
+                                      workspaceProvider
+                                          .removeWorkspaceMemberInvitations(
+                                              userId: widget.userId)
+                                          .then((value) => workspaceProvider
+                                              .getWorkspaceMemberInvitations());
+                                    } else {
+                                      workspaceProvider.updateWorkspaceMember(
+                                        userId: widget.userId,
+                                        method: CRUD.delete,
+                                        data: {'role': 0},
+                                      );
+                                    }
                                   } else {
                                     projectProvider.updateProjectMember(
                                       slug: workspaceProvider
@@ -285,11 +311,13 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
 
                                   Navigator.pop(context);
                                 },
-                                child: CustomText("Remove",
-                                    type: FontStyle.H5,
-                                    fontWeight: FontWeightt.Medium,
-                                    color: themeProvider
-                                        .themeManager.textErrorColor),
+                                child: CustomText(
+                                  "Remove",
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
+                                ),
                               ),
                             ),
                           ],

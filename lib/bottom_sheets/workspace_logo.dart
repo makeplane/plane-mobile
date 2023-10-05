@@ -21,7 +21,6 @@ class WorkspaceLogo extends ConsumerStatefulWidget {
 class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
     with WidgetStateMixin {
   File? coverImage;
-  final searchController = TextEditingController();
 
   @override
   LoadingType getLoading(WidgetRef ref) {

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:plane/bottom_sheets/delete_leave_project_sheet.dart';
 import 'package:plane/bottom_sheets/delete_workspace_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -36,6 +37,7 @@ class _MembersState extends ConsumerState<Members> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final workspaceProvider = ref.read(ProviderList.workspaceProvider);
       workspaceProvider.getWorkspaceMembers();
+      workspaceProvider.getWorkspaceMemberInvitations();
     });
   }
 
@@ -136,9 +138,23 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
 
-    return ListView.separated(
-        itemCount: workspaceProvider.workspaceMembers.length,
-        separatorBuilder: (context, index) => Container(
+    return RefreshIndicator(
+      color: themeProvider.themeManager.primaryColour,
+      backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+      onRefresh: () async {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+          workspaceProvider.getWorkspaceMembers();
+          workspaceProvider.getWorkspaceMemberInvitations();
+        });
+      },
+      child: ListView(
+        children: [
+          ListView.separated(
+            primary: false,
+            shrinkWrap: true,
+            itemCount: workspaceProvider.workspaceMembers.length,
+            separatorBuilder: (context, index) => Container(
               padding:
                   const EdgeInsets.only(left: 20, right: 20, top: 3, bottom: 3),
               child: Divider(
@@ -148,193 +164,431 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                   endIndent: 0,
                   color: themeProvider.themeManager.borderSubtle01Color),
             ),
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              if (roleParser(
-                      role: workspaceProvider.workspaceMembers[index]
-                          ['role']) ==
-                  Role.guest) {
-                return;
-              }
-
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (_) => UserProfileScreen(
-                          userID: workspaceProvider.workspaceMembers[index]
-                              ['member']["id"],
-                        )),
-              );
-            },
-            leading: MemberLogoWidget(
-              colorForErrorWidget: ColorManager.getColorWithIndex(index),
-              imageUrl: workspaceProvider.workspaceMembers[index]['member']
-                  ['avatar'],
-              memberNameFirstLetterForErrorWidget: workspaceProvider
-                  .workspaceMembers[index]['member']['first_name'][0]
-                  .toString()
-                  .toUpperCase(),
-            ),
-            title: CustomText(
-              '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
-              type: FontStyle.H6,
-              fontWeight: FontWeightt.Medium,
-              maxLines: 1,
-              color: themeProvider.themeManager.primaryTextColor,
-            ),
-            subtitle: SizedBox(
-              child: CustomText(
-                checkIfWorkspaceAdmin()
-                    ? workspaceProvider.workspaceMembers[index]['member']
-                        ['email']
-                    : workspaceProvider.workspaceMembers[index]['member']
-                        ['display_name'],
-                color: themeProvider.themeManager.placeholderTextColor,
-                textAlign: TextAlign.left,
-                type: FontStyle.Small,
-              ),
-            ),
-            trailing: InkWell(
-              onTap: () {
-                if (fromRole(role: workspaceProvider.role) <
-                    workspaceProvider.workspaceMembers[index]['role']) {
-                  CustomToast.showToast(context,
-                      message: accessRestrictedMSG,
-                      toastType: ToastType.failure);
-                } else if (workspaceProvider.workspaceMembers[index]['member']
-                        ["id"] ==
-                    ref.read(ProviderList.profileProvider).userProfile.id) {
-                  if (workspaceProvider.workspaceMembers[index]['role'] == 15) {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.85),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        ),
-                      ),
-                      context: context,
-                      builder: (BuildContext context) => DeleteOrLeaveWorkpace(
-                        workspaceName:
-                            workspaceProvider.selectedWorkspace.workspaceName,
-                        role: getRole(),
-                      ),
-                    );
-                  } else {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.85),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        ),
-                      ),
-                      context: context,
-                      builder: (BuildContext context) => DeleteOrLeaveWorkpace(
-                        workspaceName:
-                            workspaceProvider.selectedWorkspace.workspaceName,
-                        role: Role.none,
-                      ),
-                    );
-                    // CustomToast.showToast(context,
-                    //     message: "You can't change your own role",
-                    //     toastType: ToastType.warning);
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  if (roleParser(
+                          role: workspaceProvider.workspaceMembers[index]
+                              ['role']) ==
+                      Role.guest) {
+                    return;
                   }
-                } else {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    enableDrag: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return MemberStatus(
-                        fromWorkspace: true,
-                        firstName: workspaceProvider.workspaceMembers[index]
-                            ['member']['first_name'],
-                        lastName: workspaceProvider.workspaceMembers[index]
-                            ['member']['last_name'],
-                        role: {
-                          "role": workspaceProvider.workspaceMembers[index]
-                              ['role']
-                        },
-                        userId: workspaceProvider.workspaceMembers[index]['id'],
-                        isInviteMembers: false,
-                      );
-                    },
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => UserProfileScreen(
+                              userID: workspaceProvider.workspaceMembers[index]
+                                  ['member']["id"],
+                            )),
                   );
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                constraints: const BoxConstraints(maxWidth: 87),
-                child: Row(
-                  children: [
-                    const Spacer(),
-                    SizedBox(
-                      child: SizedBox(
-                        child: CustomText(
-                          workspaceProvider.workspaceMembers[index]['role'] ==
-                                  20
-                              ? 'Admin'
-                              : workspaceProvider.workspaceMembers[index]
+                },
+                leading: MemberLogoWidget(
+                  colorForErrorWidget: ColorManager.getColorWithIndex(index),
+                  imageUrl: workspaceProvider.workspaceMembers[index]['member']
+                      ['avatar'],
+                  memberNameFirstLetterForErrorWidget: workspaceProvider
+                      .workspaceMembers[index]['member']['first_name'][0]
+                      .toString()
+                      .toUpperCase(),
+                ),
+                title: CustomText(
+                  '${workspaceProvider.workspaceMembers[index]['member']['first_name']} ${workspaceProvider.workspaceMembers[index]['member']['last_name'] ?? ''}',
+                  type: FontStyle.H6,
+                  fontWeight: FontWeightt.Medium,
+                  maxLines: 1,
+                  color: themeProvider.themeManager.primaryTextColor,
+                ),
+                subtitle: SizedBox(
+                  child: CustomText(
+                    checkIfWorkspaceAdmin()
+                        ? workspaceProvider.workspaceMembers[index]['member']
+                            ['email']
+                        : workspaceProvider.workspaceMembers[index]['member']
+                            ['display_name'],
+                    color: themeProvider.themeManager.placeholderTextColor,
+                    textAlign: TextAlign.left,
+                    type: FontStyle.Small,
+                  ),
+                ),
+                trailing: InkWell(
+                  onTap: () {
+                    if (fromRole(role: workspaceProvider.role) <
+                        workspaceProvider.workspaceMembers[index]['role']) {
+                      CustomToast.showToast(context,
+                          message: accessRestrictedMSG,
+                          toastType: ToastType.failure);
+                    } else if (workspaceProvider.workspaceMembers[index]
+                            ['member']["id"] ==
+                        ref.read(ProviderList.profileProvider).userProfile.id) {
+                      if (workspaceProvider.workspaceMembers[index]['role'] ==
+                          15) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.85),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) =>
+                              DeleteOrLeaveWorkpace(
+                            workspaceName: workspaceProvider
+                                .selectedWorkspace.workspaceName,
+                            role: getRole(),
+                          ),
+                        );
+                      } else {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.85),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) =>
+                              DeleteOrLeaveWorkpace(
+                            workspaceName: workspaceProvider
+                                .selectedWorkspace.workspaceName,
+                            role: Role.none,
+                          ),
+                        );
+                        // CustomToast.showToast(context,
+                        //     message: "You can't change your own role",
+                        //     toastType: ToastType.warning);
+                      }
+                    } else {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        )),
+                        context: context,
+                        builder: (ctx) {
+                          return MemberStatus(
+                            fromWorkspace: true,
+                            firstName: workspaceProvider.workspaceMembers[index]
+                                ['member']['first_name'],
+                            lastName: workspaceProvider.workspaceMembers[index]
+                                ['member']['last_name'],
+                            role: {
+                              "role": workspaceProvider.workspaceMembers[index]
+                                  ['role']
+                            },
+                            userId: workspaceProvider.workspaceMembers[index]
+                                ['id'],
+                            isInviteMembers: false,
+                            pendingInvite: false,
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    constraints: const BoxConstraints(maxWidth: 87),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        SizedBox(
+                          child: SizedBox(
+                            child: CustomText(
+                              workspaceProvider.workspaceMembers[index]
                                           ['role'] ==
-                                      15
-                                  ? 'Member'
+                                      20
+                                  ? 'Admin'
                                   : workspaceProvider.workspaceMembers[index]
                                               ['role'] ==
-                                          10
-                                      ? 'Viewer'
-                                      : 'Guest',
-                          type: FontStyle.Medium,
-                          fontWeight: FontWeightt.Medium,
-                          color: (workspaceProvider.workspaceMembers[index]
-                                      ['member']["id"] ==
-                                  profileProvider.userProfile.id)
-                              ? greyColor
-                              : themeProvider.themeManager.theme ==
-                                          THEME.dark ||
-                                      themeProvider.themeManager.theme ==
-                                          THEME.darkHighContrast
-                                  ? fromRole(role: workspaceProvider.role) >=
-                                          workspaceProvider
-                                              .workspaceMembers[index]['role']
-                                      ? Colors.white
-                                      : darkSecondaryTextColor
-                                  : fromRole(role: workspaceProvider.role) >=
-                                          workspaceProvider
-                                              .workspaceMembers[index]['role']
-                                      ? Colors.black
-                                      : greyColor,
-                          fontSize: 15,
+                                          15
+                                      ? 'Member'
+                                      : workspaceProvider
+                                                      .workspaceMembers[index]
+                                                  ['role'] ==
+                                              10
+                                          ? 'Viewer'
+                                          : 'Guest',
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Medium,
+                              color: (workspaceProvider.workspaceMembers[index]
+                                          ['member']["id"] ==
+                                      profileProvider.userProfile.id)
+                                  ? greyColor
+                                  : themeProvider.themeManager.theme ==
+                                              THEME.dark ||
+                                          themeProvider.themeManager.theme ==
+                                              THEME.darkHighContrast
+                                      ? fromRole(
+                                                  role:
+                                                      workspaceProvider.role) >=
+                                              workspaceProvider
+                                                      .workspaceMembers[index]
+                                                  ['role']
+                                          ? Colors.white
+                                          : darkSecondaryTextColor
+                                      : fromRole(
+                                                  role:
+                                                      workspaceProvider.role) >=
+                                              workspaceProvider
+                                                      .workspaceMembers[index]
+                                                  ['role']
+                                          ? Colors.black
+                                          : greyColor,
+                              fontSize: 15,
+                            ),
+                          ),
                         ),
+                        Icon(Icons.arrow_drop_down,
+                            color: (workspaceProvider.workspaceMembers[index]
+                                        ['member']["id"] ==
+                                    profileProvider.userProfile.id)
+                                ? Colors.transparent
+                                : fromRole(role: workspaceProvider.role) >=
+                                        workspaceProvider
+                                            .workspaceMembers[index]['role']
+                                    ? themeProvider
+                                        .themeManager.primaryTextColor
+                                    : Colors.transparent)
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          ListView.separated(
+              primary: false,
+              shrinkWrap: true,
+              itemCount: workspaceProvider.workspaceInvitationsMembers.length,
+              separatorBuilder: (context, index) => Container(
+                    padding: const EdgeInsets.only(
+                        left: 20, right: 20, top: 3, bottom: 3),
+                    child: Divider(
+                      height: 1,
+                      thickness: 1,
+                      indent: 0,
+                      endIndent: 0,
+                      color: themeProvider.themeManager.borderSubtle01Color,
+                    ),
+                  ),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Stack(
+                    children: [
+                      MemberLogoWidget(
+                        colorForErrorWidget: ColorManager.getColorWithIndex(index),
+                        imageUrl: '',
+                        memberNameFirstLetterForErrorWidget: workspaceProvider
+                            .workspaceInvitationsMembers[index]['email'][0]
+                            .toString()
+                            .toUpperCase(),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                          child: CircleAvatar(
+                            backgroundColor: themeProvider.themeManager.textWarningColor,
+                            radius: 9,
+                            child: SvgPicture.asset('assets/svg_images/Pending.svg'),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  title: CustomText(
+                    workspaceProvider.workspaceInvitationsMembers[index]
+                        ['email'],
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Medium,
+                    maxLines: 1,
+                    color: themeProvider.themeManager.primaryTextColor,
+                  ),
+                  subtitle: SizedBox(
+                    child: CustomText(
+                      workspaceProvider.workspaceInvitationsMembers[index]
+                          ['email'],
+                      color: themeProvider.themeManager.placeholderTextColor,
+                      textAlign: TextAlign.left,
+                      type: FontStyle.Small,
+                    ),
+                  ),
+                  trailing: InkWell(
+                    onTap: () {
+                      if (fromRole(role: workspaceProvider.role) <
+                          workspaceProvider.workspaceInvitationsMembers[index]
+                              ['role']) {
+                        CustomToast.showToast(context,
+                            message: accessRestrictedMSG,
+                            toastType: ToastType.failure);
+                      } else if (workspaceProvider
+                              .workspaceInvitationsMembers[index]["id"] ==
+                          ref
+                              .read(ProviderList.profileProvider)
+                              .userProfile
+                              .id) {
+                        if (workspaceProvider.workspaceInvitationsMembers[index]
+                                ['role'] ==
+                            15) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            enableDrag: true,
+                            constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.85),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                            ),
+                            context: context,
+                            builder: (BuildContext context) =>
+                                DeleteOrLeaveWorkpace(
+                              workspaceName: workspaceProvider
+                                  .selectedWorkspace.workspaceName,
+                              role: getRole(),
+                            ),
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            enableDrag: true,
+                            constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.85),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                            ),
+                            context: context,
+                            builder: (BuildContext context) =>
+                                DeleteOrLeaveWorkpace(
+                              workspaceName: workspaceProvider
+                                  .selectedWorkspace.workspaceName,
+                              role: Role.none,
+                            ),
+                          );
+                        }
+                      } else {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          )),
+                          context: context,
+                          builder: (ctx) {
+                            return MemberStatus(
+                              fromWorkspace: true,
+                              firstName: workspaceProvider
+                                  .workspaceInvitationsMembers[index]['email'],
+                              lastName: '',
+                              role: {
+                                "role": workspaceProvider
+                                    .workspaceInvitationsMembers[index]['role']
+                              },
+                              userId: workspaceProvider
+                                  .workspaceInvitationsMembers[index]['id'],
+                              isInviteMembers: false,
+                              pendingInvite: true,
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      constraints: const BoxConstraints(maxWidth: 87),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            child: SizedBox(
+                              child: CustomText(
+                                workspaceProvider.workspaceInvitationsMembers[
+                                            index]['role'] ==
+                                        20
+                                    ? 'Admin'
+                                    : workspaceProvider
+                                                    .workspaceInvitationsMembers[
+                                                index]['role'] ==
+                                            15
+                                        ? 'Member'
+                                        : workspaceProvider
+                                                        .workspaceInvitationsMembers[
+                                                    index]['role'] ==
+                                                10
+                                            ? 'Viewer'
+                                            : 'Guest',
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Medium,
+                                color: (workspaceProvider
+                                                .workspaceInvitationsMembers[index]
+                                            ["id"] ==
+                                        profileProvider.userProfile.id)
+                                    ? greyColor
+                                    : themeProvider.themeManager.theme ==
+                                                THEME.dark ||
+                                            themeProvider.themeManager.theme ==
+                                                THEME.darkHighContrast
+                                        ? fromRole(role: workspaceProvider.role) >=
+                                                workspaceProvider
+                                                        .workspaceInvitationsMembers[
+                                                    index]['role']
+                                            ? Colors.white
+                                            : darkSecondaryTextColor
+                                        : fromRole(role: workspaceProvider.role) >=
+                                                workspaceProvider
+                                                        .workspaceInvitationsMembers[
+                                                    index]['role']
+                                            ? Colors.black
+                                            : greyColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: (workspaceProvider
+                                            .workspaceInvitationsMembers[index]
+                                        ["id"] ==
+                                    profileProvider.userProfile.id)
+                                ? Colors.transparent
+                                : fromRole(role: workspaceProvider.role) >=
+                                        workspaceProvider
+                                                .workspaceInvitationsMembers[
+                                            index]['role']
+                                    ? themeProvider
+                                        .themeManager.primaryTextColor
+                                    : Colors.transparent,
+                          )
+                        ],
                       ),
                     ),
-                    Icon(Icons.arrow_drop_down,
-                        color: (workspaceProvider.workspaceMembers[index]
-                                    ['member']["id"] ==
-                                profileProvider.userProfile.id)
-                            ? Colors.transparent
-                            : fromRole(role: workspaceProvider.role) >=
-                                    workspaceProvider.workspaceMembers[index]
-                                        ['role']
-                                ? themeProvider.themeManager.primaryTextColor
-                                : Colors.transparent)
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
   }
 
   bool checkIfWorkspaceAdmin() {
@@ -494,34 +748,31 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       });
                 } else {
                   showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
-                      context: context,
-                      builder: (ctx) {
-                        return DeleteLeaveProjectSheet(
-                          data: {
-                            'WORKSPACE_ID':
-                                workspaceProvider.selectedWorkspace.workspaceId,
-                            'WORKSPACE_NAME': workspaceProvider
-                                .selectedWorkspace.workspaceName,
-                            'WORKSPACE_SLUG': workspaceProvider
-                                .selectedWorkspace.workspaceSlug,
-                            'PROJECT_ID':
-                                projectsProvider.projectDetailModel!.id,
-                            'PROJECT_NAME':
-                                projectsProvider.projectDetailModel!.name
-                          },
-                          role: Role.none,
-                        );
-                      });
-                  // CustomToast.showToast(context,
-                      // message: "You can't change your own role",
-                      // toastType: ToastType.warning);
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return DeleteLeaveProjectSheet(
+                        data: {
+                          'WORKSPACE_ID':
+                              workspaceProvider.selectedWorkspace.workspaceId,
+                          'WORKSPACE_NAME':
+                              workspaceProvider.selectedWorkspace.workspaceName,
+                          'WORKSPACE_SLUG':
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
+                          'PROJECT_ID': projectsProvider.projectDetailModel!.id,
+                          'PROJECT_NAME':
+                              projectsProvider.projectDetailModel!.name
+                        },
+                        role: Role.none,
+                      );
+                    },
+                  );
                 }
               } else {
                 showModalBottomSheet(
@@ -545,6 +796,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                       },
                       userId: projectsProvider.projectMembers[index]['id'],
                       isInviteMembers: false,
+                      pendingInvite: false,
                     );
                   },
                 );

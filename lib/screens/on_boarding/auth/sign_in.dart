@@ -282,54 +282,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                 StateEnum.success) {
                                           if (profileProvider
                                               .userProfile.isOnboarded!) {
-                                            // await workspaceProvider
-                                            //     .getWorkspaces()
-                                            //     .then((value) {
-                                            //   if (workspaceProvider
-                                            //       .workspaces.isEmpty) {
-                                            //     return;
-                                            //   }
-                                            //   //  log(prov.userProfile.last_workspace_id.toString());
-
-                                            //   ref
-                                            //       .read(ProviderList
-                                            //           .projectProvider)
-                                            //       .getProjects(
-                                            //           slug: workspaceProvider
-                                            //               .workspaces
-                                            //               .where((element) {
-                                            //         if (element['id'] ==
-                                            //             profileProvider
-                                            //                 .userProfile
-                                            //                 .last_workspace_id) {
-                                            //           // workspaceProvider
-                                            //           //         .currentWorkspace =
-                                            //           //     element;
-                                            //           workspaceProvider
-                                            //                   .selectedWorkspace =
-                                            //               WorkspaceModel
-                                            //                   .fromJson(
-                                            //                       element);
-                                            //           return true;
-                                            //         }
-                                            //         return false;
-                                            //       }).first['slug']);
-                                            //   ref
-                                            //       .read(ProviderList
-                                            //           .projectProvider)
-                                            //       .favouriteProjects(
-                                            //           index: 0,
-                                            //           slug: workspaceProvider
-                                            //               .workspaces
-                                            //               .where((element) =>
-                                            //                   element['id'] ==
-                                            //                   profileProvider
-                                            //                       .userProfile
-                                            //                       .last_workspace_id)
-                                            //               .first['slug'],
-                                            //           method: HttpMethod.get,
-                                            //           projectID: "");
-                                            // });
                                             postHogService(
                                                 eventName: 'Log In',
                                                 properties: {
@@ -450,15 +402,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                           .themeManager.primaryTextColor,
                                       filledButton: false,
                                       ontap: () async {
-                                        // await GoogleSignInApi.logout();
                                         try {
                                           final user =
                                               await GoogleSignInApi.logIn();
                                           if (user == null) {
-                                            // CustomToast.showToast(context,
-                                            //     message:
-                                            //         'Something went wrong, please try again.',
-                                            //     toastType: ToastType.failure);
                                             return;
                                           }
                                           final GoogleSignInAuthentication
@@ -478,6 +425,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                 profileProvider
                                                         .getProfileState ==
                                                     StateEnum.success) {
+
                                               if (profileProvider
                                                   .userProfile.isOnboarded!) {
                                                 Navigator.pushAndRemoveUntil(

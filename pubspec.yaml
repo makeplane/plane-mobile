@@ -187,6 +187,7 @@ flutter:
     - assets/svg_images/view_settings.svg
     - assets/svg_images/issue_archive.svg
     - assets/svg_images/empty_issues.svg
+    - assets/svg_images/Pending.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

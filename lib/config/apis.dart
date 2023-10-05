@@ -145,4 +145,5 @@ class APIs {
 
   static String userIssues =
       '$baseApi/api/workspaces/\$SLUG/user-issues/\$USERID/';
+  static String pendingInvites = '$baseApi/api/workspaces/\$SLUG/invitations/';
 }

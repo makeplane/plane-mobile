@@ -66,31 +66,34 @@ class _WorkspaceLogoForDiffrentExtensionsState
     );
   }
 
-  CachedNetworkImage networkImage(
+  ClipRRect networkImage(
       String imageUrl, ThemeProvider themeProvider, String workspaceName) {
-    return CachedNetworkImage(
-      width: widget.height,
-      height: widget.width,
-      fit: BoxFit.cover,
-      imageUrl: imageUrl,
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Container(
-        width: 35,
-        height: 35,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: themeProvider.themeManager.primaryColour,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 0,
-        ),
-        child: Center(
-          child: CustomText(
-            workspaceName[0].toUpperCase(),
-            type: FontStyle.Medium,
-            fontWeight: FontWeightt.Bold,
-            color: Colors.white,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: CachedNetworkImage(
+        width: widget.height,
+        height: widget.width,
+        fit: BoxFit.cover,
+        imageUrl: imageUrl,
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: themeProvider.themeManager.primaryColour,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 0,
+          ),
+          child: Center(
+            child: CustomText(
+              workspaceName[0].toUpperCase(),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Bold,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

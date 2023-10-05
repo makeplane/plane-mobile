@@ -30,12 +30,9 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
   void initState() {
     super.initState();
     gridScrollController.addListener(() {
-      // if (listScrollController.offset <
-      //     listScrollController.position.maxScrollExtent) {
       listScrollController.jumpTo(
         gridScrollController.offset,
       );
-      // } else {}
     });
     monthsData = getMonthsData(6);
     allMonthsData();

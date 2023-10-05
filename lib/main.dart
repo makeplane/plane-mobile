@@ -78,17 +78,26 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         theme: themeProvider.theme, themeManager: themeProvider.themeManager);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: PlaneKeys.APP_NAME,
-      theme: AppTheme.getThemeData(themeProvider.themeManager),
-      themeMode: AppTheme.getThemeMode(themeProvider.theme),
-      navigatorKey: Const.globalKey,
-      navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
-      home: UpgradeAlert(
-        child:
-            Const.accessToken == null ? const OnBoardingScreen() : const App(),
-      ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: PlaneKeys.APP_NAME,
+        theme: AppTheme.getThemeData(themeProvider.themeManager),
+        themeMode: AppTheme.getThemeMode(themeProvider.theme),
+        navigatorKey: Const.globalKey,
+        navigatorObservers: checkPostHog() ? [PosthogObserver()] : [],
+        home: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Overlay(
+            initialEntries: [
+              OverlayEntry(builder: (context) {
+                return UpgradeAlert(
+                  child: Const.accessToken == null
+                      ? const OnBoardingScreen()
+                      : const App(),
+                );
+              })
+            ],
+          ),
+        ));
   }
 
   bool checkPostHog() {

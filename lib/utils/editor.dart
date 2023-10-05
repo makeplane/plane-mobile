@@ -10,9 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
-import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'dart:developer';
@@ -120,54 +117,11 @@ class _EDITORState extends ConsumerState<EDITOR> {
                             key: 'data_html', value: descriptionHtml);
                         issuesProvider.setsState();
                         Navigator.pop(context);
-                      } else if (msg.message.startsWith("cycle")) {
-                        final Map data = json.decode(msg.message.substring(5));
-                        ref
-                            .read(ProviderList.projectProvider)
-                            .currentProject['id'] = data['cycle_id'];
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CycleDetail(
-                              from: widget.from,
-                              cycleId: data['cycle_id'],
-                              projId: data['project_id'],
-                              cycleName: 'abcd',
-                            ),
-                          ),
-                        );
-                      } else if (msg.message.startsWith("module")) {
-                        final Map data = json.decode(msg.message.substring(6));
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CycleDetail(
-                              moduleId: data['module_id'],
-                              projId: data['project_id'],
-                              moduleName: 'abcd',
-                            ),
-                          ),
-                        );
-                      } else if (msg.message.startsWith("toast")) {
-                        final Map data = json.decode(msg.message.substring(5));
-
-                        CustomToast.showToast(context,
-                            message: data['message'],
-                            toastType: data['type'] == 'success'
-                                ? ToastType.success
-                                : data['type'] == 'warning'
-                                    ? ToastType.warning
-                                    : ToastType.failure);
-                      } else if (msg.message.startsWith("user")) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserProfileScreen(
-                              userID: msg.message.substring(5),
-                            ),
-                          ),
-                        );
+                      } else {
+                        issueProvider.handleIssueDetailRedirection(
+                            context: context,
+                            msg: msg,
+                            previousScreen: widget.from!);
                       }
                     },
                     onWebViewCreated: (controller) =>

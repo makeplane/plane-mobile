@@ -10,12 +10,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import '../utils/global_functions.dart';
 // import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
@@ -586,5 +590,70 @@ class IssueProvider with ChangeNotifier {
     issueDetails = {};
     issueActivity = [];
     notifyListeners();
+  }
+
+  void handleIssueDetailRedirection(
+      {required BuildContext context,
+      required ConsoleMessage msg,
+      required PreviousScreen previousScreen}) async {
+    log(msg.message);
+    if (msg.message.startsWith('link')) {
+      launchUrl(Uri.parse(msg.message.substring(5)));
+    } else if (msg.message.startsWith("cycle")) {
+      final Map data = json.decode(msg.message.substring(5));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CycleDetail(
+            from: previousScreen,
+            cycleId: data['cycle_id'],
+            projId: data['project_id'],
+            cycleName: data['cycle_name'],
+          ),
+        ),
+      );
+    } else if (msg.message.startsWith("module")) {
+      final Map data = json.decode(msg.message.substring(6));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CycleDetail(
+            from: previousScreen,
+            fromModule: true,
+            moduleId: data['module_id'],
+            projId: data['project_id'],
+            moduleName: data['module_name'],
+          ),
+        ),
+      );
+    } else if (msg.message.startsWith("issue")) {
+      final Map data = json.decode(msg.message.substring(5));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => IssueDetail(
+                from: previousScreen,
+                appBarTitle: data['issue_identifier'],
+                projID: data['project_id'],
+                issueId: data['issue_id'],
+              )));
+    } else if (msg.message.startsWith("toast")) {
+      final Map data = json.decode(msg.message.substring(5));
+
+      CustomToast.showToast(context,
+          message: data['message'],
+          toastType: data['type'] == 'success'
+              ? ToastType.success
+              : data['type'] == 'warning'
+                  ? ToastType.warning
+                  : ToastType.failure);
+    } else if (msg.message.startsWith("user")) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserProfileScreen(
+            userID: msg.message.substring(5),
+          ),
+        ),
+      );
+    }
   }
 }

@@ -17,8 +17,10 @@ import 'package:plane/bottom_sheets/select_project_members.dart';
 import 'package:plane/bottom_sheets/select_states.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
+import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/editor.dart';
@@ -27,6 +29,7 @@ import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 class CreateIssue extends ConsumerStatefulWidget {
   const CreateIssue({
@@ -164,6 +167,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final BuildContext baseContext = context;
     if (issuesProvider.createIssuedata['state'] == null &&
         issuesProvider.states.isNotEmpty) {
@@ -208,6 +212,16 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
           ),
           body: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
+            // print(
+            //     "issuesProvider.createIssuedata['members'] : ${issuesProvider.createIssuedata['members']}");
+            projectProvider.projectMembers.map((e) {
+              if (e['member']['id'] ==
+                  issuesProvider
+                      .createIssuedata['members'].values.first['id']) {
+                issuesProvider.createIssuedata['members']['avatar'] =
+                    e['member']['avatar'];
+              }
+            });
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -807,121 +821,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                     ),
                                                   ],
                                                 )
-                                              : Row(
-                                                  children: [
-                                                    Wrap(
-                                                      children: [
-                                                        Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          height: 30,
-                                                          constraints:
-                                                              const BoxConstraints(
-                                                                  maxWidth: 130,
-                                                                  minWidth: 30),
-                                                          child: Stack(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            fit: StackFit
-                                                                .passthrough,
-                                                            children: issuesProvider
-                                                                        .createIssuedata[
-                                                                            'members']
-                                                                        .length ==
-                                                                    1
-                                                                ? [
-                                                                    Wrap(
-                                                                      children: [
-                                                                        Container(
-                                                                          height:
-                                                                              25,
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          width:
-                                                                              25,
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            shape:
-                                                                                BoxShape.circle,
-                                                                            color: Color.fromRGBO(
-                                                                                55,
-                                                                                65,
-                                                                                81,
-                                                                                1),
-                                                                          ),
-                                                                          child:
-                                                                              CustomText(
-                                                                            issuesProvider.createIssuedata['members'].values.first['name'][0].toString().toUpperCase(),
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Container(
-                                                                          constraints:
-                                                                              const BoxConstraints(
-                                                                            maxWidth:
-                                                                                100,
-                                                                          ),
-                                                                          child:
-                                                                              CustomText(
-                                                                            issuesProvider.createIssuedata['members'].values.first['name'],
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            maxLines:
-                                                                                1,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ]
-                                                                : (issuesProvider
-                                                                            .createIssuedata['members']
-                                                                        as Map)
-                                                                    .entries
-                                                                    .map((e) =>
-                                                                        Positioned(
-                                                                          right:
-                                                                              (issuesProvider.createIssuedata['members'] as Map).values.toList().indexOf(e) * 00.0,
-                                                                          child:
-                                                                              Container(
-                                                                            height:
-                                                                                25,
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            width:
-                                                                                25,
-                                                                            decoration:
-                                                                                const BoxDecoration(
-                                                                              shape: BoxShape.circle,
-                                                                              color: Color.fromRGBO(55, 65, 81, 1),
-                                                                            ),
-                                                                            child:
-                                                                                CustomText(
-                                                                              e.value['name'][0].toString().toUpperCase(),
-                                                                              type: FontStyle.Small,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        ))
-                                                                    .toList(),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Icon(
-                                                      Icons.keyboard_arrow_down,
-                                                      color: themeProvider
-                                                          .themeManager
-                                                          .primaryTextColor,
-                                                    ),
-                                                  ],
-                                                )
+                                              : assigneesImages(
+                                                  issuesProvider,
+                                                  workspaceProvider,
+                                                  themeProvider)
                                         ],
                                       ),
                                     ),
@@ -1993,6 +1896,157 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
           }),
         ),
       ),
+    );
+  }
+
+  Row assigneesImages(IssuesProvider issuesProvider,
+      WorkspaceProvider workspaceProvider, ThemeProvider themeProvider) {
+    print(
+        "issuesProvider.createIssuedata['members'] : ${issuesProvider.createIssuedata['members']}");
+    return Row(
+      children: [
+        Wrap(
+          children: [
+            Container(
+              alignment: Alignment.centerRight,
+              height: 30,
+              width: issuesProvider.createIssuedata['members'].length < 4
+                  ? (issuesProvider.createIssuedata['members'].length *
+                          15.toDouble()) +
+                      15
+                  : (4 * 15) + 15,
+              constraints: const BoxConstraints(maxWidth: 130, minWidth: 30),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.passthrough,
+                children: issuesProvider.createIssuedata['members'].length == 1
+                    ? [
+                        Container(
+                            height: 25,
+                            alignment: Alignment.center,
+                            width: 25,
+                            child: MemberLogoWidget(
+                                usePadding: false,
+                                imageUrl:
+                                    workspaceProvider.getWorkspaceMemberImage(
+                                            userId: issuesProvider
+                                                .createIssuedata['members']
+                                                .values
+                                                .first['id']) ??
+                                        '',
+                                colorForErrorWidget:
+                                    const Color.fromRGBO(55, 65, 81, 1),
+                                memberNameFirstLetterForErrorWidget:
+                                    issuesProvider.createIssuedata['members']
+                                        .values.first['name'][0]
+                                        .toString()
+                                        .toUpperCase())),
+                      ]
+                    : issuesProvider.createIssuedata['members'].length < 4
+                        ? (issuesProvider.createIssuedata['members'] as Map)
+                            .entries
+                            .map(
+                              (e) => Positioned(
+                                left: (issuesProvider.createIssuedata['members']
+                                            as Map)
+                                        .values
+                                        .toList()
+                                        .indexOf(e.value) *
+                                    15.0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: Colors.white, width: 0.5),
+                                  ),
+                                  height: 25,
+                                  alignment: Alignment.center,
+                                  width: 25,
+                                  child: MemberLogoWidget(
+                                    usePadding: false,
+                                    imageUrl: workspaceProvider
+                                            .getWorkspaceMemberImage(
+                                                userId: e.value['id']) ??
+                                        '',
+                                    colorForErrorWidget:
+                                        const Color.fromRGBO(55, 65, 81, 1),
+                                    memberNameFirstLetterForErrorWidget: e
+                                        .value['name'][0]
+                                        .toString()
+                                        .toUpperCase(),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList()
+                        : [
+                            for (int i = 0; i < 3; i++)
+                              Positioned(
+                                left: i * 16.0,
+                                child: Container(
+                                  height: 25,
+                                  alignment: Alignment.center,
+                                  width: 25,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: Colors.white, width: 0.5),
+                                  ),
+                                  child: MemberLogoWidget(
+                                    usePadding: false,
+                                    imageUrl: workspaceProvider
+                                            .getWorkspaceMemberImage(
+                                                userId: (issuesProvider
+                                                            .createIssuedata[
+                                                        'members'] as Map)
+                                                    .values
+                                                    .toList()[i]['id']) ??
+                                        '',
+                                    colorForErrorWidget:
+                                        const Color.fromRGBO(55, 65, 81, 1),
+                                    memberNameFirstLetterForErrorWidget:
+                                        (issuesProvider
+                                                    .createIssuedata['members']
+                                                as Map)
+                                            .values
+                                            .toList()[i]['name'][0]
+                                            .toString()
+                                            .toUpperCase(),
+                                  ),
+                                ),
+                              ),
+                            Positioned(
+                              left: 3 * 16.0,
+                              child: Container(
+                                height: 25,
+                                alignment: Alignment.center,
+                                width: 25,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
+                                  border: Border.all(
+                                      color: Colors.white, width: 0.5),
+                                ),
+                                child: Center(
+                                  child: CustomText(
+                                    '+${issuesProvider.createIssuedata['members'].length - 3}',
+                                    type: FontStyle.XSmall,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+              ),
+            )
+          ],
+        ),
+        Icon(
+          Icons.keyboard_arrow_down,
+          color: themeProvider.themeManager.primaryTextColor,
+        ),
+      ],
     );
   }
 

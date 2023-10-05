@@ -511,6 +511,15 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
+  String? getProjectMemberImage({required String userId}) {
+    for (var member in projectMembers) {
+      if (member['member']['id'] == userId) {
+        return member['member']['avatar'];
+      }
+    }
+    return null;
+  }
+
   Future deleteProject({required String slug, required String projId}) async {
     try {
       deleteProjectState = StateEnum.loading;
@@ -552,12 +561,10 @@ class ProjectsProvider extends ChangeNotifier {
       return true;
     } on DioException catch (e) {
       log(e.error.toString());
-      CustomToast.showToast(
-        context,
-        message: (e.error as Map)['error'].toString(),
-        toastType: ToastType.failure,
-        duration: 5
-      );
+      CustomToast.showToast(context,
+          message: (e.error as Map)['error'].toString(),
+          toastType: ToastType.failure,
+          duration: 5);
       leaveProjectState = StateEnum.error;
       notifyListeners();
       return false;

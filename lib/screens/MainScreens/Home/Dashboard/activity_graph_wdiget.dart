@@ -84,7 +84,7 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: 25,
                     width: MediaQuery.of(context).size.width,
                     child: Row(
                       children: [
@@ -171,29 +171,33 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
                     height: 15,
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 25,
                     child: Row(
                       children: [
                         const CustomText(
                           'Less',
                           type: FontStyle.XSmall,
                         ),
-                        ListView.builder(
-                          itemCount: activityRangeColors.length,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 10,
-                              width: 15,
-                              margin: const EdgeInsets.symmetric(horizontal: 3),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                color: activityRangeColors[index],
-                              ),
-                            );
-                          },
+                        SizedBox(
+                          height: 16,
+                          child: ListView.builder(
+                            itemCount: activityRangeColors.length,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: 10,
+                                width: 15,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 3),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: activityRangeColors[index],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         const CustomText(
                           'More',

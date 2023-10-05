@@ -27,6 +27,7 @@ import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/square_avatar_widget.dart';
 
 class CreateIssue extends ConsumerStatefulWidget {
   const CreateIssue({
@@ -208,6 +209,16 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
           ),
           body: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
+            // print(
+            //     "issuesProvider.createIssuedata['members'] : ${issuesProvider.createIssuedata['members']}");
+            projectProvider.projectMembers.map((e) {
+              if (e['member']['id'] ==
+                  issuesProvider
+                      .createIssuedata['members'].values.first['id']) {
+                issuesProvider.createIssuedata['members']['avatar'] =
+                    e['member']['avatar'];
+              }
+            });
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -807,121 +818,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                     ),
                                                   ],
                                                 )
-                                              : Row(
-                                                  children: [
-                                                    Wrap(
-                                                      children: [
-                                                        Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          height: 30,
-                                                          constraints:
-                                                              const BoxConstraints(
-                                                                  maxWidth: 130,
-                                                                  minWidth: 30),
-                                                          child: Stack(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            fit: StackFit
-                                                                .passthrough,
-                                                            children: issuesProvider
-                                                                        .createIssuedata[
-                                                                            'members']
-                                                                        .length ==
-                                                                    1
-                                                                ? [
-                                                                    Wrap(
-                                                                      children: [
-                                                                        Container(
-                                                                          height:
-                                                                              25,
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          width:
-                                                                              25,
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            shape:
-                                                                                BoxShape.circle,
-                                                                            color: Color.fromRGBO(
-                                                                                55,
-                                                                                65,
-                                                                                81,
-                                                                                1),
-                                                                          ),
-                                                                          child:
-                                                                              CustomText(
-                                                                            issuesProvider.createIssuedata['members'].values.first['name'][0].toString().toUpperCase(),
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Container(
-                                                                          constraints:
-                                                                              const BoxConstraints(
-                                                                            maxWidth:
-                                                                                100,
-                                                                          ),
-                                                                          child:
-                                                                              CustomText(
-                                                                            issuesProvider.createIssuedata['members'].values.first['name'],
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            maxLines:
-                                                                                1,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ]
-                                                                : (issuesProvider
-                                                                            .createIssuedata['members']
-                                                                        as Map)
-                                                                    .entries
-                                                                    .map((e) =>
-                                                                        Positioned(
-                                                                          right:
-                                                                              (issuesProvider.createIssuedata['members'] as Map).values.toList().indexOf(e) * 00.0,
-                                                                          child:
-                                                                              Container(
-                                                                            height:
-                                                                                25,
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            width:
-                                                                                25,
-                                                                            decoration:
-                                                                                const BoxDecoration(
-                                                                              shape: BoxShape.circle,
-                                                                              color: Color.fromRGBO(55, 65, 81, 1),
-                                                                            ),
-                                                                            child:
-                                                                                CustomText(
-                                                                              e.value['name'][0].toString().toUpperCase(),
-                                                                              type: FontStyle.Small,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        ))
-                                                                    .toList(),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Icon(
-                                                      Icons.keyboard_arrow_down,
-                                                      color: themeProvider
-                                                          .themeManager
-                                                          .primaryTextColor,
-                                                    ),
-                                                  ],
-                                                )
+                                              : SquareAvatarWidget(
+                                                  details: (issuesProvider
+                                                                  .createIssuedata[
+                                                              'members'] ??
+                                                          {} as Map)
+                                                      .values
+                                                      .toList())
                                         ],
                                       ),
                                     ),

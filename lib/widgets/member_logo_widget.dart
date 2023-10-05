@@ -11,15 +11,17 @@ class MemberLogoWidget extends StatelessWidget {
     required this.colorForErrorWidget,
     required this.memberNameFirstLetterForErrorWidget,
     this.size = 45,
+    this.padding = const EdgeInsets.all(5),
   });
   final String imageUrl;
   final String memberNameFirstLetterForErrorWidget;
   final double? size;
   final Color colorForErrorWidget;
+  final EdgeInsets padding;
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: padding,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: SizedBox(

@@ -27,6 +27,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                   ? 70
                   : 90,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Container(
               height: 30,

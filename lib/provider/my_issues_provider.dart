@@ -722,9 +722,11 @@ class MyIssuesProvider extends ChangeNotifier {
                                 assignee: pageIndex == 0
                                     ? {
                                         profileProv.userProfile.id.toString(): {
-                                          'name': profileProv
+                                          'display_name': profileProv
                                               .userProfile.displayName,
-                                          'id': profileProv.userProfile.id
+                                          'id': profileProv.userProfile.id,
+                                          "avatar":
+                                              profileProv.userProfile.avatar
                                         }
                                       }
                                     : null,

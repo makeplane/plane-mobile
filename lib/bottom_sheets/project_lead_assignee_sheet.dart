@@ -84,6 +84,7 @@ class _ProjectLeadAssigneeSheetState
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: projectProvider.projectMembers.length,
+                padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 15),

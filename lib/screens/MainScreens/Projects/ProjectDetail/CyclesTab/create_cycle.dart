@@ -362,6 +362,12 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                   ref: ref,
                                   cycleId: '');
 
+                              CustomToast.showToastFromBool(
+                                  context: mainBuildContext,
+                                  isSuccess: cyclesProvider.cyclesState ==
+                                      StateEnum.success,
+                                  sucessMessage: 'Cycle created successfully');
+
                               await cyclesProvider.cyclesCrud(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)

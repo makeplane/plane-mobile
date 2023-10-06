@@ -129,7 +129,7 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                             : Container();
                       }),
                 ),
-                Container(height: 30),
+                Container(height: bottomSheetConstBottomPadding),
               ],
             ),
           ),

@@ -73,7 +73,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
         return true;
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: bottomSheetConstPadding,
         decoration: BoxDecoration(
           color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(

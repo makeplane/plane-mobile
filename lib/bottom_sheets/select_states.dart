@@ -76,7 +76,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
         return true;
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: bottomSheetConstPadding,
         decoration: BoxDecoration(
           color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
@@ -279,6 +279,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                           ),
                         )
                       : Container(),
+                  SizedBox(height: bottomSheetConstBottomPadding),
                 ],
               ),
               issuesProvider.statesState == StateEnum.loading

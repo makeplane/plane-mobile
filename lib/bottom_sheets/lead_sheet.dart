@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/utils/constants.dart';
 
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -74,6 +75,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                     maxHeight: MediaQuery.of(context).size.height * 0.7,
                   ),
                   child: ListView.builder(
+                    padding:
+                        EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
                     itemCount: projectProvider.projectMembers.length,
                     shrinkWrap: true,
                     // physics: const NeverScrollableScrollPhysics(),
@@ -137,7 +140,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                           ),
                           decoration: BoxDecoration(
                             color: themeProvider
-                                .themeManager.secondaryBackgroundDefaultColor,
+                                .themeManager.primaryBackgroundDefaultColor,
                           ),
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Row(

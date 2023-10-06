@@ -155,8 +155,8 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                                 left: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: themeProvider.themeManager
-                                    .secondaryBackgroundDefaultColor,
+                                color: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                               ),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: Row(

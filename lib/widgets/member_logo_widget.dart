@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/member_logo_alternative_widget.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 
 class MemberLogoWidget extends StatelessWidget {
   const MemberLogoWidget({
@@ -63,6 +64,10 @@ class MemberLogoWidget extends StatelessWidget {
   Widget svgImage(String imageUrl) {
     return SvgPicture.network(
       imageUrl,
+      placeholderBuilder: (context) => const ShimmerEffectWidget(
+        height: 45,
+        width: 45,
+      ),
       fit: BoxFit.cover,
     );
   }
@@ -73,7 +78,10 @@ class MemberLogoWidget extends StatelessWidget {
       width: 45,
       fit: BoxFit.cover,
       imageUrl: imageUrl,
-      placeholder: (context, url) => const CircularProgressIndicator(),
+      placeholder: (context, url) => const ShimmerEffectWidget(
+        height: 45,
+        width: 45,
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 import '../utils/enums.dart';
 
 class SquareAvatarWidget extends ConsumerStatefulWidget {
@@ -29,52 +30,61 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                    color: themeProvider.themeManager.borderSubtle01Color,
-                    width: 1),
-                color: widget.details[0]['avatar'] != "" &&
+          Positioned(
+            left: 0,
+            child: Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: themeProvider.themeManager.borderSubtle01Color,
+                      width: 1),
+                  color: widget.details[0]['avatar'] != "" &&
+                          widget.details[0]['avatar'] != null
+                      ? Colors.transparent
+                      : const Color.fromRGBO(55, 65, 80, 1),
+                ),
+                child: widget.details[0]['avatar'] != "" &&
                         widget.details[0]['avatar'] != null
-                    ? Colors.transparent
-                    : const Color.fromRGBO(55, 65, 80, 1),
-              ),
-              child: widget.details[0]['avatar'] != "" &&
-                      widget.details[0]['avatar'] != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.details[0]['avatar'],
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) {
-                          return Container(
-                            color: const Color.fromRGBO(55, 65, 80, 1),
-                            child: Center(
-                              child: CustomText(
-                                widget.details[0]['display_name'][0]
-                                    .toString()
-                                    .toUpperCase(),
-                                type: FontStyle.Small,
-                                color: Colors.white,
-                                //  color: Colors.white,
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.details[0]['avatar'],
+                          placeholder: (context, url) =>
+                              const ShimmerEffectWidget(
+                            height: 30,
+                            width: 30,
+                            borderRadius: 5,
+                          ),
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) {
+                            return Container(
+                              color: const Color.fromRGBO(55, 65, 80, 1),
+                              child: Center(
+                                child: CustomText(
+                                  widget.details[0]['display_name'][0]
+                                      .toString()
+                                      .toUpperCase(),
+                                  type: FontStyle.Small,
+                                  color: Colors.white,
+                                  //  color: Colors.white,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ))
-                  : Center(
-                      child: CustomText(
-                        widget.details[0]['display_name'][0]
-                            .toString()
-                            .toUpperCase(),
-                        type: FontStyle.Small,
-                        color: Colors.white,
-                        //  color: Colors.white,
-                      ),
-                    )),
+                            );
+                          },
+                        ))
+                    : Center(
+                        child: CustomText(
+                          widget.details[0]['display_name'][0]
+                              .toString()
+                              .toUpperCase(),
+                          type: FontStyle.Small,
+                          color: Colors.white,
+                          //  color: Colors.white,
+                        ),
+                      )),
+          ),
           widget.details.length >= 2
               ? Positioned(
                   left: 20,
@@ -98,6 +108,12 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               borderRadius: BorderRadius.circular(5),
                               child: CachedNetworkImage(
                                 imageUrl: widget.details[1]['avatar'],
+                                placeholder: (context, url) =>
+                                    const ShimmerEffectWidget(
+                                  height: 30,
+                                  width: 30,
+                                  borderRadius: 5,
+                                ),
                                 fit: BoxFit.cover,
                                 errorWidget: (context, url, error) {
                                   return Container(
@@ -149,6 +165,12 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               borderRadius: BorderRadius.circular(5),
                               child: CachedNetworkImage(
                                   imageUrl: widget.details[2]['avatar'],
+                                  placeholder: (context, url) =>
+                                      const ShimmerEffectWidget(
+                                        height: 30,
+                                        width: 30,
+                                        borderRadius: 5,
+                                      ),
                                   errorWidget: (context, url, error) {
                                     return Container(
                                       color:

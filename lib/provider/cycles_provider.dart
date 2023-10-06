@@ -143,7 +143,7 @@ class CyclesProvider with ChangeNotifier {
 
     try {
       // if (!disableLoading) {
-      //   cyclesState = StateEnum.loading;
+      cyclesState = StateEnum.loading;
       //   notifyListeners();
       // }
       final response = await DioConfig().dioServe(

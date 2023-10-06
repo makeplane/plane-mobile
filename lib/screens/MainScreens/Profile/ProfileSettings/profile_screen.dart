@@ -21,6 +21,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -337,6 +338,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           width: 90,
                           child: CachedNetworkImage(
                             imageUrl: profileProvider.userProfile.avatar!,
+                            placeholder: (context, url) =>
+                                const ShimmerEffectWidget(
+                                    height: 90, width: 90, borderRadius: 10),
                             fit: BoxFit.cover,
                           ),
                         ),

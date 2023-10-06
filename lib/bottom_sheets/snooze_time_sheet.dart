@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -105,13 +107,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-          ),
+          CustomDivider(themeProvider: themeProvider),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -129,13 +125,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-          ),
+          CustomDivider(themeProvider: themeProvider),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -153,13 +143,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-          ),
+          CustomDivider(themeProvider: themeProvider),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -177,13 +161,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-          ),
+          CustomDivider(themeProvider: themeProvider),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -201,13 +179,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.themeManager.borderSubtle01Color,
-            ),
-          ),
+          CustomDivider(themeProvider: themeProvider),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -263,6 +235,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
+          Container(height: bottomSheetConstBottomPadding),
         ],
       ),
     );

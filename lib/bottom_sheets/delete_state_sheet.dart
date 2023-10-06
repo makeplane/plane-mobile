@@ -28,7 +28,7 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
       loading: projectProvider.stateCrudState == StateEnum.loading,
       allowBorderRadius: true,
       widgetClass: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

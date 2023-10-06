@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
 import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -38,7 +39,6 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        //color: Colors.white,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),
@@ -244,7 +244,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
             ),
           ),
           Container(
-            height: 20,
+            height: bottomSheetConstBottomPadding,
           ),
         ],
       ),

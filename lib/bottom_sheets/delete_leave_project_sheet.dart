@@ -36,7 +36,7 @@ class _DeleteLeaveProjectSheetState
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Form(
             key: _formKey,
             child: Wrap(
@@ -215,7 +215,7 @@ class _DeleteLeaveProjectSheetState
                       onTap: () async {
                         if (widget.role == Role.guest ||
                             widget.role == Role.viewer ||
-                            widget.role == Role.member || 
+                            widget.role == Role.member ||
                             widget.role == Role.none) {
                           final leftSuccessfully =
                               await projectProvider.leaveProject(
@@ -225,8 +225,7 @@ class _DeleteLeaveProjectSheetState
                                       .workspaceSlug,
                                   projId: projectProvider.currentProject['id'],
                                   index: 0,
-                                  context: context
-                                  );
+                                  context: context);
                           if (leftSuccessfully) {
                             CustomToast.showToast(
                               context,

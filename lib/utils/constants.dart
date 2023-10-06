@@ -413,6 +413,11 @@ String fromTHEME({required THEME theme}) {
 double height = MediaQuery.of(Const.globalKey.currentContext!).size.height;
 double width = MediaQuery.of(Const.globalKey.currentContext!).size.width;
 
+EdgeInsets bottomSheetConstPadding =
+    const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 30);
+
+double bottomSheetConstBottomPadding = 30;
+
 const List<String> emojis = [
   "8986",
   "8987",

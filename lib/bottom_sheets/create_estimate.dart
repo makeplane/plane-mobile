@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/custom_text.dart';
@@ -301,7 +302,7 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                   ),
                 ),
                 Container(
-                  height: 20,
+                  height: bottomSheetConstBottomPadding,
                 ),
                 Button(
                   text: widget.estimatedata != null
@@ -408,6 +409,9 @@ class _CreateEstimateState extends ConsumerState<CreateEstimate> {
                           );
                     Navigator.of(context).pop();
                   },
+                ),
+                Container(
+                  height: bottomSheetConstBottomPadding,
                 ),
               ],
             ),

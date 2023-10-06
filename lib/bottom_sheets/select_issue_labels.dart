@@ -84,9 +84,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         return true;
       },
       child: Container(
-        height: issuesProvider.labels.isNotEmpty
-            ? MediaQuery.of(context).size.height * 0.8
-            : MediaQuery.of(context).size.height * 0.5,
+        padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
+        height: MediaQuery.of(context).size.height * 0.8,
         decoration: BoxDecoration(
           color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(

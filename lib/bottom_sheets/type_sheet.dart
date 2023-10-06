@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -376,6 +377,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                         ),
                       ),
                     ),
+              SizedBox(height: bottomSheetConstBottomPadding),
             ],
           ),
           //long blue button to apply filter

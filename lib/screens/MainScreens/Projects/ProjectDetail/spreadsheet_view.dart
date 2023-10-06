@@ -436,16 +436,11 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                               children: [
                                 CircleAvatar(
                                   radius: 5,
-                                  backgroundColor:
-                                      issuesProvider.issuesList[index]
-                                                      ['label_details'][0]
-                                                  ['color'][0] !=
-                                              '#'
-                                          ? Colors.grey
-                                          : Color(int.parse(issuesProvider
-                                              .issuesList[index]
-                                                  ['label_details'][0]['color']
-                                              .replaceAll('#', '0xFF'))),
+                                  backgroundColor: issuesProvider
+                                      .issuesList[index]['label_details'][0]
+                                          ['color']
+                                      .toString()
+                                      .toColor(),
                                 ),
                                 const SizedBox(
                                   width: 5,

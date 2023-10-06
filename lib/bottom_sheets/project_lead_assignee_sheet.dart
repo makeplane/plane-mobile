@@ -72,89 +72,40 @@ class _ProjectLeadAssigneeSheetState
                             setState(() {
                               currentIndex = index;
                             });
+
                             projectProvider
-                                .updateProject(
-                              slug: ref
-                                  .watch(ProviderList.workspaceProvider)
-                                  .selectedWorkspace
-                                  .workspaceSlug,
-                              projId: ref
-                                  .read(ProviderList.projectProvider)
-                                  .currentProject['id'],
-                              ref: ref,
-                              data: widget.title == 'Lead '
-                                  ? widget.leadId ==
-                                          projectProvider.projectMembers[index]
-                                              ['member']['id']
-                                      ? {
-                                          'project_lead': null,
-                                          'default_assignee':
-                                              widget.assigneId != ''
-                                                  ? widget.assigneId
-                                                  : null,
-                                        }
-                                      : {
-                                          'project_lead': projectProvider
-                                                  .projectMembers[index]
-                                              ['member']['id'],
-                                          'default_assignee':
-                                              widget.assigneId != ''
-                                                  ? widget.assigneId
-                                                  : null,
-                                        }
-                                  : widget.assigneId ==
-                                          projectProvider.projectMembers[index]
-                                              ['member']['id']
-                                      ? {
-                                          'project_lead': widget.leadId != ''
-                                              ? widget.leadId
-                                              : null,
-                                          'default_assignee': null,
-                                        }
-                                      : {
-                                          'project_lead': widget.leadId != ''
-                                              ? widget.leadId
-                                              : null,
-                                          'default_assignee': projectProvider
-                                                  .projectMembers[index]
-                                              ['member']['id'],
-                                        },
-                            )
-                                .then((value) {
-                              if (projectProvider.updateProjectState ==
-                                  StateEnum.success) {
-                                projectProvider
-                                    .getProjectDetails(
+                                .updateProjectLeadAndAssignee(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
                                       .selectedWorkspace
                                       .workspaceSlug,
-                                  projId: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject['id'],
+                                  projId: projectProvider.currentProject['id'],
+                                  projectLead: widget.title == 'Lead '
+                                      ? widget.leadId ==
+                                              projectProvider
+                                                      .projectMembers[index]
+                                                  ['member']['id']
+                                          ? null
+                                          : projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['id']
+                                      : widget.leadId != ''
+                                          ? widget.leadId
+                                          : null,
+                                  defaultAssignee: widget.title == 'Assignee '
+                                      ? widget.assigneId ==
+                                              projectProvider
+                                                      .projectMembers[index]
+                                                  ['member']['id']
+                                          ? null
+                                          : projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['id']
+                                      : widget.assigneId != ''
+                                          ? widget.assigneId
+                                          : null,
                                 )
-                                    .then((value) {
-                                  setState(() {
-                                    projectProvider.lead.text = projectProvider
-                                                .projectDetailModel!
-                                                .projectLead ==
-                                            null
-                                        ? ''
-                                        : projectProvider.projectDetailModel!
-                                            .projectLead!['display_name'];
-                                    projectProvider
-                                        .assignee.text = projectProvider
-                                                .projectDetailModel!
-                                                .defaultAssignee ==
-                                            null
-                                        ? ''
-                                        : projectProvider.projectDetailModel!
-                                            .defaultAssignee!['display_name'];
-                                  });
-                                  Navigator.of(context).pop();
-                                });
-                              }
-                            });
+                                .then((value) => Navigator.pop(context));
                           },
                           child: Row(
                             children: [

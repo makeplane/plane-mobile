@@ -56,13 +56,6 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   bool isFilterDataEmpty = false;
   @override
   void initState() {
-    if (widget.issueCategory == IssueCategory.myIssues) {
-      isFilterDataEmpty = isFiltersEmpty(
-          ref.read(ProviderList.myIssuesProvider).issues.filters);
-    } else {
-      isFilterDataEmpty =
-          isFiltersEmpty(ref.read(ProviderList.issuesProvider).issues.filters);
-    }
     state = _FilterState(
         fromCreateView: widget.fromCreateView,
         fromViews: widget.fromViews,
@@ -74,19 +67,27 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         },
         ref: ref);
 
-    super.initState();
-  }
+    if (widget.issueCategory == IssueCategory.myIssues) {
+      Filters tempFilters =
+          ref.read(ProviderList.myIssuesProvider).issues.filters;
+      isFilterDataEmpty = state.isFilterEmpty(
+          tempFilters: Filters(
+        assignees: [],
+        createdBy: [],
+        labels: tempFilters.labels,
+        priorities: tempFilters.priorities,
+        startDate: tempFilters.startDate,
+        targetDate: tempFilters.targetDate,
+        states: tempFilters.states,
+        stateGroup: tempFilters.stateGroup,
+        subscriber: tempFilters.subscriber,
+      ));
+    } else {
+      isFilterDataEmpty = state.isFilterEmpty(
+          tempFilters: ref.read(ProviderList.issuesProvider).issues.filters);
+    }
 
-  bool isFiltersEmpty(Filters filters) {
-    return filters.priorities.isEmpty &&
-        filters.states.isEmpty &&
-        filters.assignees.isEmpty &&
-        filters.createdBy.isEmpty &&
-        filters.labels.isEmpty &&
-        filters.targetDate.isEmpty &&
-        filters.startDate.isEmpty &&
-        filters.stateGroup.isEmpty &&
-        filters.subscriber.isEmpty;
+    super.initState();
   }
 
   @override

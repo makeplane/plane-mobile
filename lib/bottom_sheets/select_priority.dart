@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssuePriority extends ConsumerStatefulWidget {
@@ -54,9 +55,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     for (int i = 0; i < priorities.length; i++) {
       //change color of all icon according to theme
       priorities[i]['icon'] = Icon(priorities[i]['icon'].icon,
-          color: Color(int.parse(
-              "FF${priorities[i]['color'].replaceAll('#', '')}",
-              radix: 16)));
+          color: priorities[i]['color'].toString().toColor());
     }
   }
 

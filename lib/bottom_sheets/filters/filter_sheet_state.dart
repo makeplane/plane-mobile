@@ -73,7 +73,8 @@ class _FilterState {
     subscriber: [],
   );
 
-  bool isFilterEmpty() {
+  bool isFilterEmpty({Filters? tempFilters}) {
+    Filters filters = tempFilters ?? this.filters;
     return filters.priorities.isEmpty &&
         filters.states.isEmpty &&
         filters.assignees.isEmpty &&

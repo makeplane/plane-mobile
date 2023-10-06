@@ -487,6 +487,43 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
+  Future updateProjectLeadAndAssignee({
+    required String slug,
+    required String projId,
+    String? projectLead,
+    String? defaultAssignee,
+  }) async {
+    updateProjectState = StateEnum.loading;
+
+    try {
+      final data = {
+        'project_lead': projectLead,
+        'default_assignee': defaultAssignee,
+      };
+      log(data.toString());
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: "${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/",
+        hasBody: true,
+        httpMethod: HttpMethod.patch,
+        data: data,
+      );
+      await getProjectDetails(slug: slug, projId: projId);
+      lead.text = projectDetailModel!.projectLead == null
+          ? ''
+          : projectDetailModel!.projectLead!['display_name'];
+      assignee.text = projectDetailModel!.defaultAssignee == null
+          ? ''
+          : projectDetailModel!.defaultAssignee!['display_name'];
+      updateProjectState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      updateProjectState = StateEnum.error;
+      log(e.toString());
+      notifyListeners();
+    }
+  }
+
   Future getProjectMembers(
       {required String slug, required String projId}) async {
     // projectDetailState = AuthStateEnum.loading;

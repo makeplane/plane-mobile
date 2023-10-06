@@ -251,8 +251,6 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                     markerBuilder: (context, day, events) {
                       if (events.isNotEmpty) {
                         return Positioned(
-                          // bottom: -2,
-                          // bottom: -2,
                           child: Container(
                             decoration: BoxDecoration(
                               // color: greyColor,
@@ -397,8 +395,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                       markerBuilder: (context, day, events) {
                         if (events.isNotEmpty) {
                           return Positioned(
-                            // bottom: -2,
-                            bottom: -2,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: themeProvider.themeManager.primaryColour,

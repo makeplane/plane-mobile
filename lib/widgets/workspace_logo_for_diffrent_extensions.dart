@@ -5,6 +5,7 @@ import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 
 class WorkspaceLogoForDiffrentExtensions extends StatefulWidget {
   const WorkspaceLogoForDiffrentExtensions(
@@ -63,6 +64,8 @@ class _WorkspaceLogoForDiffrentExtensionsState
       imageUrl,
       width: widget.height,
       height: widget.width,
+      placeholderBuilder: (context) => ShimmerEffectWidget(
+          height: widget.height ?? 35, width: widget.width ?? 35),
     );
   }
 
@@ -75,7 +78,8 @@ class _WorkspaceLogoForDiffrentExtensionsState
         height: widget.width,
         fit: BoxFit.cover,
         imageUrl: imageUrl,
-        placeholder: (context, url) => const CircularProgressIndicator(),
+        placeholder: (context, url) =>
+            const ShimmerEffectWidget(height: 35, width: 35, borderRadius: 5),
         errorWidget: (context, url, error) => Container(
           width: 35,
           height: 35,

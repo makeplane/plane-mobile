@@ -23,6 +23,7 @@ import 'utils/app_theme.dart';
 late String selectedTheme;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(const Duration(milliseconds: 300));
   await dotenv.load(fileName: '.env');
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -76,7 +77,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     AppTheme.setUiOverlayStyle(
         theme: themeProvider.theme, themeManager: themeProvider.themeManager);
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: PlaneKeys.APP_NAME,

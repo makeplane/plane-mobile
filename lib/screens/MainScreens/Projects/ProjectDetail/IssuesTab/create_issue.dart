@@ -1754,6 +1754,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                       child: Button(
                         text: 'Create Issue',
                         ontap: () async {
+                          FocusScope.of(context).unfocus();
                           if (!formKey.currentState!.validate()) return;
 
                           issuesProvider.createIssuedata['title'] = title.text;

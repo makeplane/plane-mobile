@@ -443,6 +443,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                           child: Button(
                             text: 'Create View',
                             ontap: () async {
+                              FocusScope.of(context).unfocus();
                               try {
                                 setState(() {
                                   loading = true;

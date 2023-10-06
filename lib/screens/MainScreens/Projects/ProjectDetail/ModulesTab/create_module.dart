@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/assignee_sheet.dart';
 import 'package:plane/bottom_sheets/lead_sheet.dart';
 import 'package:plane/bottom_sheets/status_sheet.dart';
-import 'package:plane/config/const.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -38,6 +37,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    BuildContext mainContext = context;
     return WillPopScope(
       onWillPop: () async {
         modulesProvider.createModule = {};
@@ -511,7 +511,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                     constraints: BoxConstraints(
                                       maxHeight:
                                           MediaQuery.of(context).size.height *
-                                              0.5,
+                                              0.8,
                                     ),
                                     isScrollControlled: true,
                                     shape: const RoundedRectangleBorder(
@@ -609,6 +609,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                           child: Button(
                             text: 'Create Module',
                             ontap: () async {
+                              FocusScope.of(context).unfocus();
                               if (!formKey.currentState!.validate()) {
                                 return;
                               }
@@ -650,7 +651,14 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                       .currentProject['id'],
                                   ref: ref);
 
-                              Navigator.pop(Const.globalKey.currentContext!);
+                              CustomToast.showToastFromBool(
+                                  context: mainContext,
+                                  isSuccess:
+                                      modulesProvider.createModuleState ==
+                                          StateEnum.success,
+                                  sucessMessage: "Module creates sucessfully");
+
+                              Navigator.pop(mainContext);
                             },
                             textColor: themeProvider.themeManager.textonColor,
                           ),

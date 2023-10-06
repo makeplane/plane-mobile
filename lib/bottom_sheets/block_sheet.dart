@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -54,7 +55,8 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
       height = box.size.height;
     });
     return Container(
-      padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
+      padding: EdgeInsets.only(
+          top: 23, left: 23, right: 23, bottom: bottomSheetConstBottomPadding),
       child: Stack(
         children: [
           SingleChildScrollView(

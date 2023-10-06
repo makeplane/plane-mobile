@@ -55,7 +55,8 @@ class _DeleteCycleSheetState extends ConsumerState<DeleteCycleSheet> {
                             ? pagesProvider.pagesListState == StateEnum.loading
                             : false,
             widgetClass: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 20, bottom: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

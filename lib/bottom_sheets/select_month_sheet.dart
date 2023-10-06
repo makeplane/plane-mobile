@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_divider.dart';
@@ -81,6 +82,7 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
             const SizedBox(height: 15),
             Expanded(
               child: ListView.separated(
+                padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
                 separatorBuilder: (context, index) =>
                     CustomDivider(themeProvider: themeProvider),
                 itemCount: monthList.length,

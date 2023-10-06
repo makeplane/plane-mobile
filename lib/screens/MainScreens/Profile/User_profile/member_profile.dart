@@ -11,7 +11,7 @@ import 'package:plane/widgets/custom_progress_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 import 'package:plane/widgets/member_logo_widget.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 
 import '../../../../bottom_sheets/project_select_cover_image.dart';
 import '../../../../provider/profile_provider.dart';
@@ -400,17 +400,10 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
     return Stack(
       children: [
         profileProv.updateProfileState == StateEnum.loading
-            ? Shimmer.fromColors(
-                baseColor:
-                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
-                highlightColor: themeProvider.themeManager.borderSubtle01Color,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  color: themeProvider
-                      .themeManager.secondaryBackgroundDefaultColor,
-                  height: 140,
-                  width: MediaQuery.sizeOf(context).width,
-                ),
+            ? ShimmerEffectWidget(
+                height: 140,
+                width: MediaQuery.sizeOf(context).width,
+                margin: const EdgeInsets.only(bottom: 30),
               )
             : Container(
                 margin: const EdgeInsets.only(bottom: 30),
@@ -427,8 +420,9 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                       ? DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(
-                              memberprofileProvider.memberProfile['user_data']
-                                  ['cover_image']!))
+                            memberprofileProvider.memberProfile['user_data']
+                                ['cover_image']!,
+                          ))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: Image.asset('assets/cover.png').image,

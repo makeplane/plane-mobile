@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/timezone_manager.dart';
 import 'package:plane/widgets/custom_divider.dart';
@@ -76,6 +77,7 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
           const SizedBox(height: 10),
           Expanded(
             child: ListView.separated(
+              padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
               itemCount: filteredTimeZones.length,
               itemBuilder: (context, index) {
                 return InkWell(

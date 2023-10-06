@@ -71,6 +71,8 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
                   ? Container()
                   : ListView.builder(
                       itemCount: emails.length,
+                      padding: EdgeInsets.only(
+                          bottom: bottomSheetConstBottomPadding),
                       shrinkWrap: true,
                       primary: false,
                       itemBuilder: (context, index) {

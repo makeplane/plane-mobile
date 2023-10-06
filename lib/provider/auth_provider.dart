@@ -76,8 +76,12 @@ class AuthProvider extends ChangeNotifier {
     } on DioException catch (error) {
       log(error.toString());
       String message = error.response?.data['error'] ?? 'Something went wrong!';
-      CustomToast.showToastWithColors(context, message,
-          toastType: ToastType.failure);
+      CustomToast.showToastWithColors(
+        context,
+        message,
+        toastType: ToastType.failure,
+        maxHeight: 100,
+      );
       validateCodeState = StateEnum.failed;
       notifyListeners();
     }
@@ -104,13 +108,14 @@ class AuthProvider extends ChangeNotifier {
       await DependencyResolver.resolve(ref: ref);
       googleAuthState = StateEnum.success;
       notifyListeners();
-      
     } catch (e) {
       log(e.toString());
 
-      CustomToast.showToast(context,
-          message: 'Something went wrong, please try again.',
-          toastType: ToastType.failure);
+      CustomToast.showToast(
+        context,
+        message: 'Something went wrong, please try again.',
+        toastType: ToastType.failure,
+      );
       googleAuthState = StateEnum.failed;
       notifyListeners();
     }

@@ -33,7 +33,8 @@ class _DeleteModulesState extends ConsumerState<DeleteModules> {
           child: LoadingWidget(
             loading: modulesProvider.deleteModuleState == StateEnum.loading,
             widgetClass: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 20, bottom: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

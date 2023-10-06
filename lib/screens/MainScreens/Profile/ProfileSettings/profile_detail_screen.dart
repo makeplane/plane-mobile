@@ -22,6 +22,7 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/bottom_sheets/role_sheet.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
 
 import '../../../../widgets/custom_rich_text.dart';
 
@@ -185,6 +186,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                                   child: CachedNetworkImage(
                                                     imageUrl: profileProvider
                                                         .userProfile.avatar!,
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        const ShimmerEffectWidget(
+                                                            height: 100,
+                                                            width: 100,
+                                                            borderRadius: 10),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),

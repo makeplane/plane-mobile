@@ -32,7 +32,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
       },
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Form(
             key: _formKey,
             child: Wrap(
@@ -225,7 +225,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                     GestureDetector(
                       onTap: () async {
                         if (widget.role == Role.guest ||
-                            widget.role == Role.viewer || 
+                            widget.role == Role.viewer ||
                             widget.role == Role.none) {
                           final isSuccessfullyLeft = await workspaceProvider
                               .leaveWorkspace(context, ref);

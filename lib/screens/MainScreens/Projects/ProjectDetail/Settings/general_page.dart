@@ -479,6 +479,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 children: [
                                   Row(
                                     children: [
+                                      const CustomText(
+                                        'Network',
+                                        type: FontStyle.H4,
+                                        fontWeight: FontWeightt.Semibold,
+                                      ),
                                       const Spacer(),
                                       GestureDetector(
                                         onTap: () {
@@ -594,7 +599,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                 // color: Colors.red[00],
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: expansionState == true ? themeProvider.themeManager.textErrorColor : themeProvider.themeManager.borderSubtle01Color,
+                                  color: expansionState == true
+                                      ? themeProvider
+                                          .themeManager.textErrorColor
+                                      : themeProvider
+                                          .themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: ExpansionTile(
@@ -868,7 +877,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
           const SizedBox(height: 33),
           CustomText(
             title,
-            type: FontStyle.Small,
+            type: FontStyle.H6,
             // color: Colors.black,
           ),
           const Spacer(),

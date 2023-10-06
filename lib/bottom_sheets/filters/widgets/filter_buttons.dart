@@ -22,7 +22,7 @@ Widget _clearFilterButton(
     },
     child: Container(
         height: 35,
-        width: 175,
+        width: 150,
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 2),
         margin: const EdgeInsets.only(bottom: 20, top: 10),
         decoration: BoxDecoration(
@@ -32,23 +32,13 @@ Widget _clearFilterButton(
           borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
               'Clear all Filters',
               type: FontStyle.Medium,
               color: themeManager.placeholderTextColor,
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 3),
-              child: Icon(
-                Icons.close,
-                size: 16,
-                color: themeManager.placeholderTextColor,
-              ),
-            )
           ],
         )),
   );

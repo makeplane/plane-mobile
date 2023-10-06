@@ -23,23 +23,24 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     {
       'name': 'Urgent',
       'icon': const Icon(Icons.error_outline_rounded),
+      'color': '#EF4444',
     },
     {
       'name': 'High',
       'icon': const Icon(Icons.signal_cellular_alt_outlined),
+      'color': '#F59E0B'
     },
     {
       'name': 'Medium',
       'icon': const Icon(Icons.signal_cellular_alt_2_bar_outlined),
+      'color': '#F59E0B'
     },
     {
       'name': 'Low',
       'icon': const Icon(Icons.signal_cellular_alt_1_bar_outlined),
+      'color': '#22C55E'
     },
-    {
-      'name': 'None',
-      'icon': const Icon(Icons.block),
-    }
+    {'name': 'None', 'icon': const Icon(Icons.block), 'color': '#A3A3A3'}
   ];
 
   @override
@@ -50,14 +51,12 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     //     ref.read(ProviderList.issuesProvider).createIssuedata['priority']
     //         ['name']);
 
-    final themeProvider = ref.read(ProviderList.themeProvider);
-
     for (int i = 0; i < priorities.length; i++) {
       //change color of all icon according to theme
-      priorities[i]['icon'] = Icon(
-        priorities[i]['icon'].icon,
-        color: themeProvider.themeManager.secondaryTextColor,
-      );
+      priorities[i]['icon'] = Icon(priorities[i]['icon'].icon,
+          color: Color(int.parse(
+              "FF${priorities[i]['color'].replaceAll('#', '')}",
+              radix: 16)));
     }
   }
 

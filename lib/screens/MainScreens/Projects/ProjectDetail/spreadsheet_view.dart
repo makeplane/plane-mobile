@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +34,6 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
     scrollController3.addListener(() {
       scrollController4.jumpTo(scrollController3.offset);
     });
-    log(ref.read(ProviderList.issuesProvider).issuesList.toString());
   }
 
   @override
@@ -140,17 +137,19 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 : width += 0;
 
     //for estimate
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.estimate
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['estimate']
+    ref.read(ProviderList.projectProvider).currentProject['estimate'] != null
+        ? widget.issueCategory == IssueCategory.issues
+            ? issuesProvider.issues.displayProperties.estimate
                 ? width += 151
                 : width += 0
-            : modulesProvider.issueProperty['properties']['estimate']
-                ? width += 151
-                : width += 0;
+            : widget.issueCategory == IssueCategory.cycleIssues
+                ? cyclesProvider.issueProperty['properties']['estimate']
+                    ? width += 151
+                    : width += 0
+                : modulesProvider.issueProperty['properties']['estimate']
+                    ? width += 151
+                    : width += 0
+        : width += 0;
 
     //for updated on
     widget.issueCategory == IssueCategory.issues
@@ -437,10 +436,16 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                               children: [
                                 CircleAvatar(
                                   radius: 5,
-                                  backgroundColor: Color(int.parse(
+                                  backgroundColor:
                                       issuesProvider.issuesList[index]
-                                              ['label_details'][0]['color']
-                                          .replaceAll('#', '0xFF'))),
+                                                      ['label_details'][0]
+                                                  ['color'][0] !=
+                                              '#'
+                                          ? Colors.grey
+                                          : Color(int.parse(issuesProvider
+                                              .issuesList[index]
+                                                  ['label_details'][0]['color']
+                                              .replaceAll('#', '0xFF'))),
                                 ),
                                 const SizedBox(
                                   width: 5,

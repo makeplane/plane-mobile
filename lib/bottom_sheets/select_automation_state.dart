@@ -28,7 +28,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
           Row(
             children: [
               const CustomText(
-                'Select Duration',
+                'Select State',
                 type: FontStyle.H6,
                 fontWeight: FontWeightt.Semibold,
               ),

@@ -43,7 +43,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
         decoration: BoxDecoration(
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
         width: double.infinity,
         //  height: height * 0.5,

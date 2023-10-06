@@ -53,8 +53,16 @@ class FilterSheet extends ConsumerStatefulWidget {
 
 class _FilterSheetState extends ConsumerState<FilterSheet> {
   late _FilterState state;
+  bool isFilterDataEmpty = false;
   @override
   void initState() {
+    if (widget.issueCategory == IssueCategory.myIssues) {
+      isFilterDataEmpty = isFiltersEmpty(
+          ref.read(ProviderList.myIssuesProvider).issues.filters);
+    } else {
+      isFilterDataEmpty =
+          isFiltersEmpty(ref.read(ProviderList.issuesProvider).issues.filters);
+    }
     state = _FilterState(
         fromCreateView: widget.fromCreateView,
         fromViews: widget.fromViews,
@@ -67,6 +75,18 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
         ref: ref);
 
     super.initState();
+  }
+
+  bool isFiltersEmpty(Filters filters) {
+    return filters.priorities.isEmpty &&
+        filters.states.isEmpty &&
+        filters.assignees.isEmpty &&
+        filters.createdBy.isEmpty &&
+        filters.labels.isEmpty &&
+        filters.targetDate.isEmpty &&
+        filters.startDate.isEmpty &&
+        filters.stateGroup.isEmpty &&
+        filters.subscriber.isEmpty;
   }
 
   @override
@@ -101,11 +121,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   ],
                 ),
               ),
-              _clearFilterButton(state: state, ref: ref)
+              isFilterDataEmpty
+                  ? Container()
+                  : _clearFilterButton(state: state, ref: ref)
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 95, bottom: 80),
+            margin:
+                EdgeInsets.only(top: isFilterDataEmpty ? 50 : 95, bottom: 80),
             child: SingleChildScrollView(
               child: Wrap(
                 children: [

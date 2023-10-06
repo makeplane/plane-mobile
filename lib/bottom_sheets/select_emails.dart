@@ -36,111 +36,130 @@ class _SelectEmailsState extends ConsumerState<SelectEmails> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
+        padding: const EdgeInsets.only(top: 5),
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         )),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 25, bottom: 20),
-                child: Row(
-                  children: [
-                    const CustomText(
-                      'Select Member',
-                      type: FontStyle.H6,
-                      fontWeight: FontWeightt.Semibold,
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: themeProv.themeManager.placeholderTextColor,
-                      ),
-                    )
-                  ],
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 55,
+                  ),
+                  emails.length == 1
+                      ? Container()
+                      : ListView.builder(
+                          itemCount: emails.length,
+                          padding: EdgeInsets.only(
+                              bottom: bottomSheetConstBottomPadding),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (context, index) {
+                            return emails[index]["email"] ==
+                                    profProv.userProfile.email
+                                ? Container()
+                                : Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            widget.email["email"] =
+                                                emails[index]["email"];
+                                            widget.email["id"] =
+                                                emails[index]["id"];
+
+                                            selectedEmail = index;
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Radio(
+                                              fillColor:
+                                                  MaterialStateProperty.all(
+                                                      themeProv.themeManager
+                                                          .borderStrong01Color),
+                                              activeColor: primaryColor,
+                                              value: index,
+                                              groupValue: selectedEmail,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  widget.email["email"] =
+                                                      emails[index]["email"];
+                                                  widget.email["id"] =
+                                                      emails[index]["id"];
+
+                                                  selectedEmail = index;
+                                                });
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      5, 15, 15, 15),
+                                              child: CustomText(
+                                                emails[index]["email"],
+                                                type: FontStyle.Small,
+                                                color: themeProv.themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        height: 1,
+                                        width: double.infinity,
+                                        color: themeProv
+                                            .themeManager.borderDisabledColor,
+                                      ),
+                                    ],
+                                  );
+                          }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: themeProv.themeManager.primaryBackgroundDefaultColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
-              emails.length == 1
-                  ? Container()
-                  : ListView.builder(
-                      itemCount: emails.length,
-                      padding: EdgeInsets.only(
-                          bottom: bottomSheetConstBottomPadding),
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (context, index) {
-                        return emails[index]["email"] ==
-                                profProv.userProfile.email
-                            ? Container()
-                            : Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        widget.email["email"] =
-                                            emails[index]["email"];
-                                        widget.email["id"] =
-                                            emails[index]["id"];
-
-                                        selectedEmail = index;
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Radio(
-                                          fillColor: MaterialStateProperty.all(
-                                              themeProv.themeManager
-                                                  .borderStrong01Color),
-                                          activeColor: primaryColor,
-                                          value: index,
-                                          groupValue: selectedEmail,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              widget.email["email"] =
-                                                  emails[index]["email"];
-                                              widget.email["id"] =
-                                                  emails[index]["id"];
-
-                                              selectedEmail = index;
-                                            });
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              5, 15, 15, 15),
-                                          child: CustomText(
-                                            emails[index]["email"],
-                                            type: FontStyle.Small,
-                                            color: themeProv
-                                                .themeManager.primaryTextColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    width: double.infinity,
-                                    color: themeProv
-                                        .themeManager.borderDisabledColor,
-                                  ),
-                                ],
-                              );
-                      }),
-              const SizedBox(
-                height: 20,
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 25, bottom: 20),
+              child: Row(
+                children: [
+                  const CustomText(
+                    'Select Member',
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: themeProv.themeManager.placeholderTextColor,
+                    ),
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -250,16 +250,14 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                     },
                     markerBuilder: (context, day, events) {
                       if (events.isNotEmpty) {
-                        return Positioned(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              // color: greyColor,
-                              color: themeProvider.themeManager.primaryColour,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            width: 8,
-                            height: 8,
+                        return Container(
+                          decoration: BoxDecoration(
+                            // color: greyColor,
+                            color: themeProvider.themeManager.primaryColour,
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          width: 8,
+                          height: 8,
                         );
                       }
                       return Container();
@@ -394,15 +392,13 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                       },
                       markerBuilder: (context, day, events) {
                         if (events.isNotEmpty) {
-                          return Positioned(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: themeProvider.themeManager.primaryColour,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              width: 8,
-                              height: 8,
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: themeProvider.themeManager.primaryColour,
+                              borderRadius: BorderRadius.circular(15),
                             ),
+                            width: 8,
+                            height: 8,
                           );
                         }
                         return Container();

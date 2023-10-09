@@ -502,7 +502,7 @@ class ProjectsProvider extends ChangeNotifier {
             ? null
             : projectMembers[index]['member']['id'],
       };
-      updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
       await getProjectDetails(slug: slug, projId: projId);
       lead.text = projectDetailModel!.projectLead == null
           ? ''
@@ -531,7 +531,7 @@ class ProjectsProvider extends ChangeNotifier {
             ? null
             : projectMembers[index]['member']['id'],
       };
-      updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
       await getProjectDetails(slug: slug, projId: projId);
       assignee.text = projectDetailModel!.defaultAssignee == null
           ? ''

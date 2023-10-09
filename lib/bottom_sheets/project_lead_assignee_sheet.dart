@@ -72,20 +72,23 @@ class _ProjectLeadAssigneeSheetState
                             setState(() {
                               currentIndex = index;
                             });
-                            widget.title == 'Lead '
-                                ? projectProvider
-                                    .updateProjectLead(
-                                        leadId: widget.leadId,
-                                        index: index,
-                                        ref: ref)
-                                    .then((value) => Navigator.pop(context))
-                                : projectProvider
-                                    .updateProjectAssignee(
-                                      assigneeId: widget.assigneId,
+
+                            if (widget.title == 'Lead ') {
+                              projectProvider
+                                  .updateProjectLead(
+                                      leadId: widget.leadId,
                                       index: index,
-                                      ref: ref,
-                                    )
-                                    .then((value) => Navigator.pop(context));
+                                      ref: ref)
+                                  .then((value) => Navigator.pop(context));
+                            } else {
+                              projectProvider
+                                  .updateProjectAssignee(
+                                    assigneeId: widget.assigneId,
+                                    index: index,
+                                    ref: ref,
+                                  )
+                                  .then((value) => Navigator.pop(context));
+                            }
                           },
                           child: Row(
                             children: [

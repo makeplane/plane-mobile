@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/kanban/Provider/provider_list.dart';
+import 'dart:developer';
 
 class Item extends ConsumerStatefulWidget {
   const Item({
@@ -26,7 +27,8 @@ class _ItemState extends ConsumerState<Item> {
   Widget build(BuildContext context) {
     // log("BUILDED ${widget.itemIndex}");
     var prov = ref.read(ProviderList.boardProviders[widget.boardID]!.notifier);
-    var cardProv = ref.read(ProviderList.cardProviders[widget.boardID]!.notifier);
+    var cardProv =
+        ref.read(ProviderList.cardProviders[widget.boardID]!.notifier);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       cardProv.calculateCardPositionSize(
@@ -88,6 +90,11 @@ class _ItemState extends ConsumerState<Item> {
         },
         child: GestureDetector(
           onLongPress: () {
+            if (!prov.board.lists[widget.listIndex].items[widget.itemIndex]
+                .draggable) {
+              log("Card is not draggable");
+              return;
+            }
             cardProv.onLongpressCard(
                 listIndex: widget.listIndex,
                 itemIndex: widget.itemIndex,

@@ -152,6 +152,7 @@ class BoardProvider extends ChangeNotifier {
         );
         emptyStates.items.add(ListItem(
             child: widget,
+            draggable: false,
             listIndex: data.length,
             index: emptyStates.items.length,
             prevChild: widget));

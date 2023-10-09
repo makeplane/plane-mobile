@@ -6,8 +6,10 @@ import 'package:plane/kanban/models/item_state.dart';
 import 'provider_list.dart';
 
 class ListItemProvider extends ChangeNotifier {
-  ListItemProvider(ChangeNotifierProviderRef<ListItemProvider> this.ref);
+  ListItemProvider(ChangeNotifierProviderRef<ListItemProvider> this.ref,
+      {required this.boardID});
   Ref ref;
+  String boardID;
   TextEditingController newCardTextController = TextEditingController();
   void calculateCardPositionSize(
       {required int listIndex,
@@ -15,7 +17,7 @@ class ListItemProvider extends ChangeNotifier {
       required BuildContext context,
       required VoidCallback setsate}) {
     if (!context.mounted) return;
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
 
     prov.board.lists[listIndex].items[itemIndex].context = context;
     var box = context.findRenderObject() as RenderBox;
@@ -31,7 +33,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void resetCardWidget() {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var dragItemIndex = prov.board.dragItemIndex!;
     var dragItemOfListIndex = prov.board.dragItemOfListIndex!;
     prov.board.lists[dragItemOfListIndex].items[dragItemIndex]
@@ -46,7 +48,7 @@ class ListItemProvider extends ChangeNotifier {
     required int listIndex,
     required int itemIndex,
   }) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var list = prov.board.lists[listIndex];
     if (item.context == null ||
@@ -75,7 +77,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void addPlaceHolder({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     item.containsPlaceholder = true;
     item.child = Column(
@@ -116,7 +118,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool isPrevSystemCard({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var isItemHidden = itemIndex - 1 >= 0 &&
         prov.draggedItemState!.itemIndex == itemIndex - 1 &&
@@ -146,7 +148,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void checkForYAxisMovement({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
 
     // To check whether the placeholder should be placed at the top or bottom of the card //
@@ -218,7 +220,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool isLastItemDragged({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     if (prov.draggedItemState!.itemIndex == itemIndex &&
         prov.draggedItemState!.listIndex == listIndex &&
@@ -261,7 +263,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool getYAxisCondition({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var willPlaceHolderAtBottom = ((itemIndex ==
             prov.board.lists[listIndex].items.length - 1) &&
@@ -290,7 +292,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool getXAxisCondition({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
 
     var right = ((prov.draggedItemState!.width * 0.6) +
                 prov.valueNotifier.value.dx >
@@ -310,7 +312,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void checkForXAxisMovement({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
 
     var canReplaceCurrent = ((prov.valueNotifier.value.dy >= item.y!) &&
@@ -361,7 +363,7 @@ class ListItemProvider extends ChangeNotifier {
       required int itemIndex,
       required BuildContext context,
       required VoidCallback setsate}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     if (prov.board.isCardsDraggable == false) {
       log("CARD DRAGGABLE IS FALSE");
       return;
@@ -382,12 +384,12 @@ class ListItemProvider extends ChangeNotifier {
     prov.board.isElementDragged = true;
     prov.draggedItemState = DraggedItemState(
         child: SizedBox(
-            width: box.size.width - 15, // issue card margin -(left+right)
+            width: box.size.width, // issue card margin -(left+right)
             child: prov.board.lists[listIndex].items[itemIndex].child),
         listIndex: listIndex,
         itemIndex: itemIndex,
         height: box.size.height - 20, // issue card margin -(top+bottom)
-        width: box.size.width - 15, // issue card margin -(left+right)
+        width: box.size.width-15, // issue card margin -(left+right)
         x: location.dx,
         y: location.dy);
     prov.draggedItemState!.setState = setsate;
@@ -398,7 +400,7 @@ class ListItemProvider extends ChangeNotifier {
 
   bool isCurrentElementDragged(
       {required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
 
     return prov.board.isElementDragged &&
         prov.draggedItemState!.itemIndex == itemIndex &&
@@ -406,7 +408,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void saveNewCard() {
-    var boardProv = ref.read(ProviderList.boardProvider);
+    var boardProv = ref.read(ProviderList.boardProviders[boardID]!);
     boardProv.board.lists[boardProv.board.newCardListIndex!]
         .items[boardProv.board.newCardIndex!].child = Container(
       decoration: BoxDecoration(
@@ -444,7 +446,7 @@ class ListItemProvider extends ChangeNotifier {
               int? oldCardIndex,
               int? oldListIndex})
           onItemReorder}) {
-    var boardProv = ref.read(ProviderList.boardProvider);
+    var boardProv = ref.read(ProviderList.boardProviders[boardID]!);
     boardProv.board.lists[boardProv.board.dragItemOfListIndex!]
             .items[boardProv.board.dragItemIndex!].child =
         boardProv.board.lists[boardProv.board.dragItemOfListIndex!]

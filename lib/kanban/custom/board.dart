@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/kanban/Provider/board_list_provider.dart';
+import 'package:plane/kanban/Provider/board_provider.dart';
+import 'package:plane/kanban/Provider/list_item_provider.dart';
 import 'package:plane/kanban/Provider/provider_list.dart';
 import 'package:plane/kanban/custom/board_list.dart';
 import 'package:plane/kanban/models/inputs.dart';
@@ -8,6 +11,7 @@ import 'package:plane/kanban/models/inputs.dart';
 class KanbanBoard extends StatefulWidget {
   const KanbanBoard(
     this.list, {
+    required this.boardID,
     this.groupEmptyStates = false,
     this.backgroundColor = Colors.white,
     this.cardPlaceHolderDecoration,
@@ -36,6 +40,7 @@ class KanbanBoard extends StatefulWidget {
     super.key,
   });
   final List<BoardListsData> list;
+  final String boardID;
   final Color backgroundColor;
   final ScrollConfig? boardScrollConfig;
   final ScrollConfig? listScrollConfig;
@@ -80,6 +85,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
         child: MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Board(widget.list,
+          boardID: widget.boardID,
           groupEmptyStates: widget.groupEmptyStates,
           displacementX: widget.displacementX,
           displacementY: widget.displacementY,
@@ -113,6 +119,7 @@ class Board extends ConsumerStatefulWidget {
   const Board(
     this.list, {
     this.groupEmptyStates = false,
+    required this.boardID,
     this.backgroundColor = Colors.white,
     this.cardPlaceHolderColor,
     this.cardPlaceHolderDecoration,
@@ -140,6 +147,7 @@ class Board extends ConsumerStatefulWidget {
     super.key,
   });
   final List<BoardListsData> list;
+  final String boardID;
   final Color backgroundColor;
   final Color? cardPlaceHolderColor;
   final Color? listPlaceHolderColor;
@@ -180,9 +188,19 @@ class Board extends ConsumerStatefulWidget {
 class _BoardState extends ConsumerState<Board> {
   @override
   void initState() {
-    var boardProv = ref.read(ProviderList.boardProvider);
-    var boardListProv = ref.read(ProviderList.boardListProvider);
+    ProviderList.boardProviders[widget.boardID] =
+        ChangeNotifierProvider<BoardProvider>((ref) => BoardProvider(ref));
+    ProviderList.cardProviders[widget.boardID] =
+        ChangeNotifierProvider<ListItemProvider>(
+            (ref) => ListItemProvider(ref,boardID: widget.boardID));
+    ProviderList.boardListProviders[widget.boardID] =
+        ChangeNotifierProvider<BoardListProvider>(
+            (ref) => BoardListProvider(ref,boardID: widget.boardID));
+
+    var boardProv = ref.read(ProviderList.boardProviders[widget.boardID]!);
+    var boardListProv = ref.read(ProviderList.boardListProviders[widget.boardID]!);
     boardProv.initializeBoard(
+        boardID: widget.boardID,
         data: widget.list,
         isCardsDraggable: widget.isCardsDraggable,
         groupEmptyStates: widget.groupEmptyStates!,
@@ -261,10 +279,12 @@ class _BoardState extends ConsumerState<Board> {
   @override
   void didUpdateWidget(covariant Board oldWidget) {
     // if (oldWidget. == widget.list) {
-    var boardProv = ref.read(ProviderList.boardProvider);
+
+    var boardProv = ref.read(ProviderList.boardProviders[widget.boardID]!);
     // var boardListProv = ref.read(ProviderList.boardListProvider);
     //log("UPDATE WIDGET");
     boardProv.initializeBoard(
+        boardID: widget.boardID,
         groupEmptyStates: widget.groupEmptyStates!,
         data: widget.list,
         isCardsDraggable: widget.isCardsDraggable,
@@ -297,8 +317,8 @@ class _BoardState extends ConsumerState<Board> {
 
   @override
   Widget build(BuildContext context) {
-    var boardProv = ref.read(ProviderList.boardProvider);
-    var boardListProv = ref.read(ProviderList.boardListProvider);
+    var boardProv = ref.read(ProviderList.boardProviders[widget.boardID]!);
+    var boardListProv = ref.read(ProviderList.boardListProviders[widget.boardID]!);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       boardProv.board.setstate = () => setState(() {});
       if (!context.mounted) return;
@@ -312,7 +332,7 @@ class _BoardState extends ConsumerState<Board> {
       onPointerUp: (event) {
         if (boardProv.board.isElementDragged || boardProv.board.isListDragged) {
           if (boardProv.board.isElementDragged) {
-            ref.read(ProviderList.cardProvider).reorderCard(
+            ref.read(ProviderList.cardProviders[widget.boardID]!).reorderCard(
                 onItemReorder: widget.onItemReorder ??
                     (
                         {int? newCardIndex,
@@ -352,7 +372,7 @@ class _BoardState extends ConsumerState<Board> {
       child: GestureDetector(
         onTap: () {
           if (boardProv.board.newCardFocused == true) {
-            ref.read(ProviderList.cardProvider).saveNewCard();
+            ref.read(ProviderList.cardProviders[widget.boardID]!).saveNewCard();
           }
         },
         child: Scaffold(
@@ -394,6 +414,7 @@ class _BoardState extends ConsumerState<Board> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: boardProv.board.lists
                                       .map((e) => BoardList(
+                                              boardID: widget.boardID,
                                             index: boardProv.board.lists
                                                 .indexOf(e),
                                           ))

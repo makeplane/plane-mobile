@@ -46,6 +46,7 @@ class BoardProvider extends ChangeNotifier {
 
   void initializeBoard(
       {required List<BoardListsData> data,
+      required String boardID,
       Color backgroundColor = Colors.white,
       TextStyle? textStyle,
       final bool isCardsDraggable = true,
@@ -81,6 +82,7 @@ class BoardProvider extends ChangeNotifier {
       required bool groupEmptyStates}) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     board = BoardState(
+      boardID: boardID,
         textStyle: textStyle,
         lists: [],
         isCardsDraggable: isCardsDraggable,
@@ -150,6 +152,7 @@ class BoardProvider extends ChangeNotifier {
         );
         emptyStates.items.add(ListItem(
             child: widget,
+            draggable: false,
             listIndex: data.length,
             index: emptyStates.items.length,
             prevChild: widget));

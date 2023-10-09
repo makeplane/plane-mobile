@@ -687,6 +687,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                 .initializeBoard()
                                                             : cyclesProvider
                                                                 .initializeBoard(),
+                                                        boardID: widget.fromModule?'module-board':'cycle-board',
                                                         onItemReorder: (
                                                             {newCardIndex,
                                                             newListIndex,

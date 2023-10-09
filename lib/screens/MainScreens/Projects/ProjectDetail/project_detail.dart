@@ -183,9 +183,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
               ((selected == 1 &&
-                      (cycleProvider.cyclesAllData.isNotEmpty ||
-                          cycleProvider.cycleFavoriteData.isNotEmpty) &&
-                      cycleProvider.cyclesState != StateEnum.loading) ||
+                      cycleProvider.showAddFloatingButton()) ||
                   (selected == 2 &&
                       moduleProvider.moduleState != StateEnum.loading &&
                       (moduleProvider.modules.isNotEmpty ||
@@ -1097,6 +1095,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                         : issueProvider.issues.projectView == ProjectView.kanban
                             ? KanbanBoard(
                                 issueProvider.initializeBoard(views: isViews),
+                                boardID: 'issues-board',
                                 isCardsDraggable:
                                     issueProvider.checkIsCardsDaraggable(),
                                 onItemReorder: (
@@ -1133,11 +1132,15 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                     .secondaryBackgroundDefaultColor,
                                 cardPlaceHolderColor: themeProvider
                                     .themeManager.primaryBackgroundDefaultColor,
+                                
                                 cardPlaceHolderDecoration: BoxDecoration(
                                   color: themeProvider.themeManager
                                       .primaryBackgroundDefaultColor,
-                                  boxShadow: themeProvider
-                                      .themeManager.shadowBottomControlButtons,
+                                  boxShadow: [ BoxShadow(
+                        blurRadius: 2,
+                        color: themeProvider.themeManager.borderSubtle01Color,
+                        spreadRadius: 0,
+                      ),]
                                 ),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,

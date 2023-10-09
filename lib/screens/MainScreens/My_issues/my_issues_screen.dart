@@ -646,6 +646,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       )
                     : KanbanBoard(
                         issueProvider.initializeBoard(),
+                        boardID: 'my-issues-board',
                         groupEmptyStates: !issueProvider.showEmptyStates,
                         backgroundColor: themeProvider
                             .themeManager.secondaryBackgroundDefaultColor,

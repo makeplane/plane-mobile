@@ -1097,6 +1097,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                         : issueProvider.issues.projectView == ProjectView.kanban
                             ? KanbanBoard(
                                 issueProvider.initializeBoard(views: isViews),
+                                boardID: 'issues-board',
                                 isCardsDraggable:
                                     issueProvider.checkIsCardsDaraggable(),
                                 onItemReorder: (

@@ -7,8 +7,9 @@ import 'package:plane/kanban/models/item_state.dart';
 import 'list_item.dart';
 
 class BoardList extends ConsumerStatefulWidget {
-  const BoardList({super.key, required this.index});
+  const BoardList({super.key, required this.boardID, required this.index});
   final int index;
+  final String boardID;
 
   @override
   ConsumerState<BoardList> createState() => _BoardListState();
@@ -19,8 +20,8 @@ class _BoardListState extends ConsumerState<BoardList> {
 
   @override
   Widget build(BuildContext context) {
-    var prov = ref.read(ProviderList.boardProvider);
-    var listProv = ref.read(ProviderList.boardListProvider);
+    var prov = ref.read(ProviderList.boardProviders[widget.boardID]!);
+    var listProv = ref.read(ProviderList.boardListProviders[widget.boardID]!);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       listProv.calculateSizePosition(
           listIndex: widget.index,
@@ -417,6 +418,7 @@ class _BoardListState extends ConsumerState<BoardList> {
                                             shrinkWrap: true,
                                             itemBuilder: (ctx, index) {
                                               return Item(
+                                                boardID: widget.boardID,
                                                 itemIndex: index,
                                                 listIndex: widget.index,
                                               );

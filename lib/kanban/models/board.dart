@@ -5,6 +5,7 @@ import 'inputs.dart';
 
 class BoardState {
   List<BoardList> lists = [];
+  String boardID;
   ScrollController controller;
   VoidCallback? setstate;
   int? dragListIndex = 0;
@@ -53,6 +54,7 @@ class BoardState {
   final bool isCardsDraggable;
   BoardState(
       {required this.lists,
+      required this.boardID,
       required this.controller,
       this.dragListIndex,
       this.isCardsDraggable = true,

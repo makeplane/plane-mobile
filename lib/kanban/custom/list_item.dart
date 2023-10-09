@@ -8,10 +8,12 @@ class Item extends ConsumerStatefulWidget {
     required this.itemIndex,
     this.color = Colors.pink,
     required this.listIndex,
+    required this.boardID,
   });
   final int itemIndex;
   final int listIndex;
   final Color color;
+  final String boardID;
   @override
   ConsumerState<Item> createState() => _ItemState();
 }
@@ -23,8 +25,8 @@ class _ItemState extends ConsumerState<Item> {
   @override
   Widget build(BuildContext context) {
     // log("BUILDED ${widget.itemIndex}");
-    var prov = ref.read(ProviderList.boardProvider.notifier);
-    var cardProv = ref.read(ProviderList.cardProvider.notifier);
+    var prov = ref.read(ProviderList.boardProviders[widget.boardID]!.notifier);
+    var cardProv = ref.read(ProviderList.cardProviders[widget.boardID]!.notifier);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       cardProv.calculateCardPositionSize(

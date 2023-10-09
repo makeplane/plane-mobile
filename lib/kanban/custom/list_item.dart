@@ -42,7 +42,9 @@ class _ItemState extends ConsumerState<Item> {
         builder: (ctx, a, b) {
           if (prov.board.isElementDragged == true) {
             // item added by system in empty list, its widget/UI should not be manipulated on movements //
-            if (prov.board.lists[widget.listIndex].items.isEmpty) return b!;
+            if (prov.board.lists[widget.listIndex].items.isEmpty ||
+                !prov.board.lists[widget.listIndex].items[widget.itemIndex]
+                    .draggable) return b!;
 
             // CALCULATE SIZE AND POSITION OF ITEM //
             if (cardProv.calculateSizePosition(

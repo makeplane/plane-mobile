@@ -461,6 +461,7 @@ class ProjectsProvider extends ChangeNotifier {
       projects[index]["description"] = currentProject["description"];
       projects[index]["identifier"] = currentProject["identifier"];
       projects[index]["emoji"] = currentProject["emoji"];
+      projects[index]['estimate'] = currentProject['estimate'];
 
       projects[index]["icon_prop"] = currentProject["icon_prop"] != null
           ? {

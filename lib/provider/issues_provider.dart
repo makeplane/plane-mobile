@@ -404,7 +404,7 @@ class IssuesProvider extends ChangeNotifier {
                 fontWeight: FontWeightt.Semibold,
                 textAlign: TextAlign.start,
                 fontSize: 20,
-                maxLines: 3,
+                maxLines: 1,
               ),
             ),
             Container(

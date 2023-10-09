@@ -53,6 +53,7 @@ class FilterSheet extends ConsumerStatefulWidget {
 
 class _FilterSheetState extends ConsumerState<FilterSheet> {
   late _FilterState state;
+
   @override
   void initState() {
     state = _FilterState(
@@ -101,11 +102,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   ],
                 ),
               ),
-              _clearFilterButton(state: state, ref: ref)
+              state.isFilterDataEmpty
+                  ? Container()
+                  : _clearFilterButton(state: state, ref: ref)
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 95, bottom: 80),
+            margin: EdgeInsets.only(
+                top: state.isFilterDataEmpty ? 50 : 95, bottom: 80),
             child: SingleChildScrollView(
               child: Wrap(
                 children: [

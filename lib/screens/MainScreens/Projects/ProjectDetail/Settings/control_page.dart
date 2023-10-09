@@ -188,7 +188,7 @@ class _ControlPageState extends ConsumerState<ControlPage> {
                   context: context,
                   builder: (ctx) {
                     return ProjectLeadAssigneeSheet(
-                      title: 'Assignee',
+                      title: 'Assignee ',
                       assigneId:
                           projectProvider.projectDetailModel!.defaultAssignee !=
                                   null

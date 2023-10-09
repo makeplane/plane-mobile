@@ -487,6 +487,63 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
+  Future updateProjectLead(
+      {required String leadId,
+      required int index,
+      required WidgetRef ref}) async {
+    try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
+      final data = {
+        'project_lead': leadId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
+      };
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await getProjectDetails(slug: slug, projId: projId);
+      lead.text = projectDetailModel!.projectLead == null
+          ? ''
+          : projectDetailModel!.projectLead!['display_name'];
+
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future updateProjectAssignee({
+    required String assigneeId,
+    required int index,
+    required WidgetRef ref,
+  }) async {
+    try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
+      final data = {
+        'default_assignee': assigneeId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
+      };
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await getProjectDetails(slug: slug, projId: projId);
+      assignee.text = projectDetailModel!.defaultAssignee == null
+          ? ''
+          : projectDetailModel!.defaultAssignee!['display_name'];
+
+      notifyListeners();
+    } on DioException catch (e) {
+      notifyListeners();
+      log(e.toString());
+    }
+  }
+
   Future getProjectMembers(
       {required String slug, required String projId}) async {
     // projectDetailState = AuthStateEnum.loading;

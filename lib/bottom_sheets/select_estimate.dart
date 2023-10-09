@@ -204,7 +204,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               height: 1,
                               width: width,
                               color: themeProvider
-                                  .themeManager.placeholderTextColor),
+                                  .themeManager.borderDisabledColor),
                         ],
                       ),
                     ),
@@ -347,7 +347,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                     height: 1,
                                     width: width,
                                     color: themeProvider
-                                        .themeManager.placeholderTextColor),
+                                        .themeManager.borderDisabledColor),
                               ],
                             ),
                           ),

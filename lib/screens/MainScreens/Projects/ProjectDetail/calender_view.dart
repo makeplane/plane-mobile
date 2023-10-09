@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,7 +59,6 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
   void initState() {
     super.initState();
     final int ind = months.indexOf(DateFormat("MMMM").format(DateTime.now()));
-    log(ind.toString());
     _pageController = ScrollController(
       initialScrollOffset: ind * 310,
       keepScrollOffset: true,
@@ -253,18 +250,14 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                     },
                     markerBuilder: (context, day, events) {
                       if (events.isNotEmpty) {
-                        return Positioned(
-                          // bottom: -2,
-                          bottom: 2,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              // color: greyColor,
-                              color: themeProvider.themeManager.primaryColour,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            width: 8,
-                            height: 8,
+                        return Container(
+                          decoration: BoxDecoration(
+                            // color: greyColor,
+                            color: themeProvider.themeManager.primaryColour,
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          width: 8,
+                          height: 8,
                         );
                       }
                       return Container();
@@ -296,7 +289,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
   bool showFull = true;
   @override
   Widget build(BuildContext context) {
-    log(widget.selectedDay.toString());
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
@@ -400,17 +392,13 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                       },
                       markerBuilder: (context, day, events) {
                         if (events.isNotEmpty) {
-                          return Positioned(
-                            // bottom: -2,
-                            bottom: 2,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: themeProvider.themeManager.primaryColour,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              width: 8,
-                              height: 8,
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: themeProvider.themeManager.primaryColour,
+                              borderRadius: BorderRadius.circular(15),
                             ),
+                            width: 8,
+                            height: 8,
                           );
                         }
                         return Container();
@@ -629,7 +617,6 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     : Container();
               },
               separatorBuilder: (context, index) {
-                log('separator');
                 return (issuesProvider.issuesList[index]['target_date'] !=
                             null &&
                         DateFormat("MMM d, yyyy").format(DateTime.parse(

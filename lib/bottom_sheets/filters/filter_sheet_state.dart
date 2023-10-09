@@ -12,11 +12,19 @@ class _FilterState {
   }) {
     if (!fromCreateView) {
       if (issueCategory == IssueCategory.myIssues) {
-        filters = Filters.fromJson(Filters.toJson(
-            ref.read(ProviderList.myIssuesProvider).issues.filters));
+        final myIssuesProvider = ref.read(ProviderList.myIssuesProvider);
+        filters =
+            Filters.fromJson(Filters.toJson(myIssuesProvider.issues.filters));
+
+        isFilterDataEmpty =
+            isFilterEmpty(tempFilters: myIssuesProvider.issues.filters);
       } else {
-        filters = Filters.fromJson(Filters.toJson(
-            ref.read(ProviderList.issuesProvider).issues.filters));
+        final issuesProvider = ref.read(ProviderList.issuesProvider);
+        filters =
+            Filters.fromJson(Filters.toJson(issuesProvider.issues.filters));
+
+        isFilterDataEmpty =
+            isFilterEmpty(tempFilters: issuesProvider.issues.filters);
       }
     } else {
       filters = Filters.fromJson(filtersData["Filters"]);
@@ -36,6 +44,7 @@ class _FilterState {
   final IssueCategory issueCategory;
   final WidgetRef ref;
   final VoidCallback setState;
+  bool isFilterDataEmpty = false;
 
   List priorities = [
     {'icon': Icons.error_outline_rounded, 'text': 'urgent', 'color': '#EF4444'},
@@ -73,11 +82,14 @@ class _FilterState {
     subscriber: [],
   );
 
-  bool isFilterEmpty() {
+  bool isFilterEmpty({Filters? tempFilters}) {
+    Filters filters = tempFilters ?? this.filters;
     return filters.priorities.isEmpty &&
         filters.states.isEmpty &&
-        filters.assignees.isEmpty &&
-        filters.createdBy.isEmpty &&
+        (issueCategory == IssueCategory.myIssues ||
+            filters.assignees.isEmpty) &&
+        (issueCategory == IssueCategory.myIssues ||
+            filters.createdBy.isEmpty) &&
         filters.labels.isEmpty &&
         filters.targetDate.isEmpty &&
         filters.startDate.isEmpty &&

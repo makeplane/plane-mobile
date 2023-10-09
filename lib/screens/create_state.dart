@@ -360,6 +360,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                         decoration: themeProvider
                             .themeManager.textFieldDecoration
                             .copyWith(
+                          contentPadding: const EdgeInsets.all(10),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: themeProvider

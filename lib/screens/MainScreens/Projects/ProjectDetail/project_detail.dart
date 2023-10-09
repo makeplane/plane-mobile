@@ -1132,11 +1132,15 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                     .secondaryBackgroundDefaultColor,
                                 cardPlaceHolderColor: themeProvider
                                     .themeManager.primaryBackgroundDefaultColor,
+                                
                                 cardPlaceHolderDecoration: BoxDecoration(
                                   color: themeProvider.themeManager
                                       .primaryBackgroundDefaultColor,
-                                  boxShadow: themeProvider
-                                      .themeManager.shadowBottomControlButtons,
+                                  boxShadow: [ BoxShadow(
+                        blurRadius: 2,
+                        color: themeProvider.themeManager.borderSubtle01Color,
+                        spreadRadius: 0,
+                      ),]
                                 ),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,

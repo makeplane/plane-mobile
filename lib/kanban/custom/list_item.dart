@@ -116,7 +116,7 @@ class _ItemState extends ConsumerState<Item> {
                             Colors.white,
                       ),
                   margin: const EdgeInsets.only(
-                      bottom: 15, left: 10, right: 10, top: 5),
+                      bottom: 15, left: 5, right: 5, top: 5),
                   width: prov.draggedItemState!.width,
                   height: prov.draggedItemState!.height,
                 )
@@ -131,8 +131,7 @@ class _ItemState extends ConsumerState<Item> {
                                     .items[widget.itemIndex].backgroundColor ??
                                 Colors.white,
                           ),
-                      width: prov.board.lists[widget.listIndex]
-                          .items[widget.itemIndex].width,
+                      width: prov.draggedItemState!.width,
                     )
                   : SizedBox(
                       width: prov.board.lists[widget.listIndex]

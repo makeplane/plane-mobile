@@ -384,12 +384,12 @@ class ListItemProvider extends ChangeNotifier {
     prov.board.isElementDragged = true;
     prov.draggedItemState = DraggedItemState(
         child: SizedBox(
-            width: box.size.width - 15, // issue card margin -(left+right)
+            width: box.size.width, // issue card margin -(left+right)
             child: prov.board.lists[listIndex].items[itemIndex].child),
         listIndex: listIndex,
         itemIndex: itemIndex,
         height: box.size.height - 20, // issue card margin -(top+bottom)
-        width: box.size.width - 15, // issue card margin -(left+right)
+        width: box.size.width-15, // issue card margin -(left+right)
         x: location.dx,
         y: location.dy);
     prov.draggedItemState!.setState = setsate;

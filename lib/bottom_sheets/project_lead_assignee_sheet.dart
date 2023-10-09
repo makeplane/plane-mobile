@@ -72,40 +72,20 @@ class _ProjectLeadAssigneeSheetState
                             setState(() {
                               currentIndex = index;
                             });
-
-                            projectProvider
-                                .updateProjectLeadAndAssignee(
-                                  slug: ref
-                                      .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace
-                                      .workspaceSlug,
-                                  projId: projectProvider.currentProject['id'],
-                                  projectLead: widget.title == 'Lead '
-                                      ? widget.leadId ==
-                                              projectProvider
-                                                      .projectMembers[index]
-                                                  ['member']['id']
-                                          ? null
-                                          : projectProvider
-                                                  .projectMembers[index]
-                                              ['member']['id']
-                                      : widget.leadId != ''
-                                          ? widget.leadId
-                                          : null,
-                                  defaultAssignee: widget.title == 'Assignee '
-                                      ? widget.assigneId ==
-                                              projectProvider
-                                                      .projectMembers[index]
-                                                  ['member']['id']
-                                          ? null
-                                          : projectProvider
-                                                  .projectMembers[index]
-                                              ['member']['id']
-                                      : widget.assigneId != ''
-                                          ? widget.assigneId
-                                          : null,
-                                )
-                                .then((value) => Navigator.pop(context));
+                            widget.title == 'Lead '
+                                ? projectProvider
+                                    .updateProjectLead(
+                                        leadId: widget.leadId,
+                                        index: index,
+                                        ref: ref)
+                                    .then((value) => Navigator.pop(context))
+                                : projectProvider
+                                    .updateProjectAssignee(
+                                      assigneeId: widget.assigneId,
+                                      index: index,
+                                      ref: ref,
+                                    )
+                                    .then((value) => Navigator.pop(context));
                           },
                           child: Row(
                             children: [

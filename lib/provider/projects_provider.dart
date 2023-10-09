@@ -487,40 +487,60 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future updateProjectLeadAndAssignee({
-    required String slug,
-    required String projId,
-    String? projectLead,
-    String? defaultAssignee,
-  }) async {
-    updateProjectState = StateEnum.loading;
-
+  Future updateProjectLead(
+      {required String leadId,
+      required int index,
+      required WidgetRef ref}) async {
     try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
       final data = {
-        'project_lead': projectLead,
-        'default_assignee': defaultAssignee,
+        'project_lead': leadId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
       };
-      log(data.toString());
-      await DioConfig().dioServe(
-        hasAuth: true,
-        url: "${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/",
-        hasBody: true,
-        httpMethod: HttpMethod.patch,
-        data: data,
-      );
+      updateProject(slug: slug, projId: projId, data: data, ref: ref);
       await getProjectDetails(slug: slug, projId: projId);
       lead.text = projectDetailModel!.projectLead == null
           ? ''
           : projectDetailModel!.projectLead!['display_name'];
+
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future updateProjectAssignee({
+    required String assigneeId,
+    required int index,
+    required WidgetRef ref,
+  }) async {
+    try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
+      final data = {
+        'default_assignee': assigneeId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
+      };
+      updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await getProjectDetails(slug: slug, projId: projId);
       assignee.text = projectDetailModel!.defaultAssignee == null
           ? ''
           : projectDetailModel!.defaultAssignee!['display_name'];
-      updateProjectState = StateEnum.success;
+
       notifyListeners();
     } on DioException catch (e) {
-      updateProjectState = StateEnum.error;
-      log(e.toString());
       notifyListeners();
+      log(e.toString());
     }
   }
 

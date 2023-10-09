@@ -17,13 +17,14 @@ import 'config/const.dart';
 import 'utils/enums.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
-
 import 'utils/app_theme.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 late String selectedTheme;
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding=WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(const Duration(milliseconds: 300));
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

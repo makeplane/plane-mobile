@@ -618,7 +618,6 @@ class CyclesProvider with ChangeNotifier {
         ),
       );
     }
-    //   log(issues.issues.toString());
     return issues.issues;
   }
 

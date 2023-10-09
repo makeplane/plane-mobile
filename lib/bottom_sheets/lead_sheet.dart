@@ -51,7 +51,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                     // ),
                     const CustomText(
                       'Lead',
-                      type: FontStyle.H6,
+                      type: FontStyle.H4,
                       fontWeight: FontWeightt.Semibold,
                     ),
                     const Spacer(),

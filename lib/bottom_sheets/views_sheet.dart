@@ -831,6 +831,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       issueProvider.issues.issueType =
                           Issues.toIssueType(issueType);
                       issueProvider.updateProjectView(
+                        setDefault: true,
                           isArchive: widget.isArchived);
 
                       if (widget.issueCategory == IssueCategory.cycleIssues) {

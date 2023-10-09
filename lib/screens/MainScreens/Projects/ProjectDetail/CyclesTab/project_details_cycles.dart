@@ -20,7 +20,6 @@ class CycleWidget extends ConsumerStatefulWidget {
 }
 
 class _CycleWidgetState extends ConsumerState<CycleWidget> {
-  int cycleNaveBarSelectedIndex = 0;
   EdgeInsets favouriteTextPadding =
       const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20);
 
@@ -91,6 +90,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
 
   Widget cycleNaveBarItem(String title, int itemIndex) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
 
     final BoxDecoration decarationOnSelected = BoxDecoration(
         border: Border.all(width: 1, color: Colors.blueAccent),
@@ -103,13 +103,12 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
         borderRadius: const BorderRadius.all(Radius.circular(5)));
     return GestureDetector(
       onTap: () {
-        setState(() {
-          cycleNaveBarSelectedIndex = itemIndex;
-        });
+        cyclesProvider.cyclesTabIndex = itemIndex;
+        cyclesProvider.setState();
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
-        decoration: cycleNaveBarSelectedIndex == itemIndex
+        decoration: cyclesProvider.cyclesTabIndex == itemIndex
             ? decarationOnSelected
             : decarationOnUnSelected,
         child: Align(
@@ -121,7 +120,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
             child: CustomText(
               title,
               height: 1,
-              color: cycleNaveBarSelectedIndex == itemIndex
+              color: cyclesProvider.cyclesTabIndex == itemIndex
                   ? Colors.white
                   : themeProvider.themeManager.primaryTextColor,
               type: FontStyle.Small,
@@ -134,6 +133,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
   }
 
   Widget cycleBody() {
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
     final List<Widget> widgets = [
       cycleAll(),
       cycleActive(),
@@ -141,7 +141,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
       cycleCompleted(),
       cycleDraft()
     ];
-    return widgets[cycleNaveBarSelectedIndex];
+    return widgets[cyclesProvider.cyclesTabIndex];
   }
 
   Widget cycleAll() {

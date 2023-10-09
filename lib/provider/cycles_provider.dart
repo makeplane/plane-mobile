@@ -46,6 +46,7 @@ class CyclesProvider with ChangeNotifier {
   List<dynamic> cyclesDraftData = [];
   Map<String, dynamic> cyclesDetailsData = {};
   Map currentCycle = {};
+  int cyclesTabIndex = 0;
   Issues issues = Issues.initialize();
   List issuesResponse = [];
   List shrinkStates = [];
@@ -868,6 +869,30 @@ class CyclesProvider with ChangeNotifier {
         issues.displayProperties.priority ||
         issues.displayProperties.linkCount ||
         issues.displayProperties.attachmentCount;
+  }
+
+  bool showAddFloatingButton() {
+    switch (cyclesTabIndex) {
+      case 0:
+        return (cyclesAllData.isNotEmpty || cycleFavoriteData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      case 1:
+        return cyclesActiveData.isNotEmpty && cyclesState != StateEnum.loading;
+      case 2:
+        return (cyclesUpcomingData.isNotEmpty ||
+                cycleUpcomingFavoriteData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      case 3:
+        return (cycleCompletedFavoriteData.isNotEmpty ||
+                cyclesCompletedData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      case 4:
+        return (cycleDraftFavoriteData.isNotEmpty &&
+                cyclesDraftData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      default:
+        return cyclesState != StateEnum.loading;
+    }
   }
 
   Future transferIssues(

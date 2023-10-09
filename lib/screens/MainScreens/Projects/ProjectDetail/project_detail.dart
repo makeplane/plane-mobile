@@ -183,9 +183,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
               ((selected == 1 &&
-                      (cycleProvider.cyclesAllData.isNotEmpty ||
-                          cycleProvider.cycleFavoriteData.isNotEmpty) &&
-                      cycleProvider.cyclesState != StateEnum.loading) ||
+                      cycleProvider.showAddFloatingButton()) ||
                   (selected == 2 &&
                       moduleProvider.moduleState != StateEnum.loading &&
                       (moduleProvider.modules.isNotEmpty ||

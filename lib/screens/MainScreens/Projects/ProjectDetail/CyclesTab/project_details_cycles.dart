@@ -120,6 +120,7 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
             ),
             child: CustomText(
               title,
+              height: 1,
               color: cycleNaveBarSelectedIndex == itemIndex
                   ? Colors.white
                   : themeProvider.themeManager.primaryTextColor,

@@ -191,10 +191,10 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
         const SizedBox(height: 20),
         Container(
           //bottom border
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: lightGreeyColor,
+                color: themeProvider.themeManager.borderSubtle01Color,
                 width: 1,
               ),
             ),
@@ -227,7 +227,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                             )
                           : Container(
                               height: 2,
-                              color: lightGreeyColor,
+                              color: themeProvider.themeManager.borderSubtle01Color,
                             )
                     ],
                   ),
@@ -258,7 +258,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                             )
                           : Container(
                               height: 2,
-                              color: lightGreeyColor,
+                              color: themeProvider.themeManager.borderSubtle01Color,
                             )
                     ],
                   ),
@@ -1067,7 +1067,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                           margin:
                                               const EdgeInsets.only(right: 8),
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 14, vertical: 6),
+                                              horizontal: 14, vertical: 10),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -1087,6 +1087,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                               textAlign: TextAlign.center,
                                               type: FontStyle.Medium,
                                               overrride: true,
+                                              height: 1,
                                               fontWeight: FontWeightt.Regular,
                                               color: tag['selected'] ?? false
                                                   ? Colors.white
@@ -1097,14 +1098,14 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                             .toList()),
 
                     const SizedBox(height: 20),
-                    applyButton(issueProvider, context, myIssuesProvider,
-                        projectProvider),
+                    
                   ],
                 ),
               ],
             ),
           ),
-        ),
+        ),applyButton(issueProvider, context, myIssuesProvider,
+                        projectProvider),
       ],
     );
   }
@@ -1112,7 +1113,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
   Container applyButton(IssuesProvider issueProvider, BuildContext context,
       MyIssuesProvider myIssuesProvider, ProjectsProvider projectProvider) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20, top: 30),
+      margin: const EdgeInsets.all(20),
       child: Button(
         text: 'Apply',
         ontap: () async {

@@ -94,6 +94,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ref
                                   .read(ProviderList.dashboardProvider)
                                   .getDashboard();
+                            } else if (i == 2) {
+                              ref
+                                  .read(ProviderList.myIssuesProvider)
+                                  .setState();
                             }
                             bottomNavProvider.setIndex(i);
                           },

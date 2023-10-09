@@ -296,16 +296,24 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                             const SizedBox(
                               height: 40,
                             ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: CustomText(
-                                'First Name *',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor,
-                              ),
+                             Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'First name',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
+                              type: FontStyle.Medium,
                             ),
+                          ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -334,16 +342,24 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: CustomText(
-                                'Last Name *',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor,
-                              ),
+                             Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'Last name',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
+                              type: FontStyle.Medium,
                             ),
+                          ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -400,16 +416,24 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: CustomText(
-                                'Email *',
-                                type: FontStyle.Medium,
-                                color: themeProvider
-                                    .themeManager.tertiaryTextColor,
-                              ),
+                             Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: CustomRichText(
+                              widgets: [
+                                TextSpan(
+                                    text: 'Email',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.tertiaryTextColor)),
+                                TextSpan(
+                                    text: ' *',
+                                    style: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.textErrorColor))
+                              ],
+                              type: FontStyle.Medium,
                             ),
+                          ),
                             const SizedBox(
                               height: 10,
                             ),

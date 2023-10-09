@@ -25,7 +25,7 @@ class _StatusSheetState extends ConsumerState<StatusSheet> {
             children: [
               const CustomText(
                 'Status',
-                type: FontStyle.H6,
+                type: FontStyle.H4,
                 fontWeight: FontWeightt.Semibold,
               ),
               const Spacer(),

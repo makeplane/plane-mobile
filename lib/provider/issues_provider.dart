@@ -762,7 +762,7 @@ class IssuesProvider extends ChangeNotifier {
       required Enum issueCategory,
       required WidgetRef ref}) async {
     createIssueState = StateEnum.loading;
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     notifyListeners();
     try {
       final response = await DioConfig().dioServe(
@@ -855,23 +855,17 @@ class IssuesProvider extends ChangeNotifier {
       }
       if (issueCategory == IssueCategory.cycleIssues) {
         await ref.read(ProviderList.cyclesProvider).createCycleIssues(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace
-              .workspaceSlug,
-          projId: ref.read(ProviderList.projectProvider).currentProject["id"],
+          slug: slug,
+          projId: projID,
           issues: [response.data['id']],
         );
         ref.read(ProviderList.cyclesProvider).filterCycleIssues(
               slug: slug,
               projectId:
-                  ref.read(ProviderList.projectProvider).currentProject["id"],
+                  projID,
             );
         filterIssues(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace
-              .workspaceSlug,
+          slug: slug,
           projID: projID,
           issueCategory: IssueCategory.cycleIssues,
         );
@@ -1092,8 +1086,8 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['due_date'];
           cyclesProvider.issues.displayProperties.id =
               cyclesProvider.issueProperty['properties']['key'];
-           cyclesProvider.issues.displayProperties.label =
-               cyclesProvider.issueProperty['properties']['labels'];
+          cyclesProvider.issues.displayProperties.label =
+              cyclesProvider.issueProperty['properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
               cyclesProvider.issueProperty['properties']['state'];
           cyclesProvider.issues.displayProperties.subIsseCount =
@@ -1251,16 +1245,54 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future updateProjectView({
-    bool isArchive = false,
-  }) async {
+  Future updateProjectView(
+      {bool isArchive = false, bool setDefault = false}) async {
     log(tempProjectView.toString());
-    // dynamic filterPriority;
-    // if (issues.filters.priorities.isNotEmpty) {
-    //   filterPriority = issues.filters.priorities
-    //       .map((element) => element == 'none' ? null : element)
-    //       .toList();
-    // }
+    final Map<String, dynamic> view = {
+      "view_props": {
+        "calendarDateRange": "",
+        "collapsed": false,
+        "filterIssue": null,
+        "filters": {
+          // 'type': null,
+          // "priority": filterPriority,
+          if (issues.filters.priorities.isNotEmpty)
+            "priority": issues.filters.priorities,
+          if (issues.filters.states.isNotEmpty) "state": issues.filters.states,
+          if (issues.filters.assignees.isNotEmpty)
+            "assignees": issues.filters.assignees,
+          if (issues.filters.createdBy.isNotEmpty)
+            "created_by": issues.filters.createdBy,
+          if (issues.filters.labels.isNotEmpty) "labels": issues.filters.labels,
+          if (issues.filters.targetDate.isNotEmpty)
+            "target_date": issues.filters.targetDate,
+          if (issues.filters.startDate.isNotEmpty)
+            "start_date": issues.filters.startDate,
+          if (issues.filters.subscriber.isNotEmpty)
+            "subscriber": issues.filters.subscriber,
+          if (issues.filters.stateGroup.isNotEmpty)
+            "state_group": issues.filters.stateGroup,
+        },
+        "display_filters": {
+          "group_by": Issues.fromGroupBY(issues.groupBY),
+          "order_by": Issues.fromOrderBY(issues.orderBY),
+          "type": Issues.fromIssueType(issues.issueType),
+          "show_empty_groups": showEmptyStates,
+          if (!isArchive)
+            "layout": issues.projectView == ProjectView.kanban
+                ? 'kanban'
+                : issues.projectView == ProjectView.list
+                    ? 'list'
+                    : issues.projectView == ProjectView.calendar
+                        ? 'calendar'
+                        : 'spreadsheet',
+          "sub_issue": false,
+        },
+      }
+    };
+    if (setDefault) {
+      view['default_props'] = view['view_props'];
+    }
     try {
       await DioConfig().dioServe(
         hasAuth: true,
@@ -1274,50 +1306,8 @@ class IssuesProvider extends ChangeNotifier {
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
         hasBody: true,
-        data: {
-          "view_props": {
-            "calendarDateRange": "",
-            "collapsed": false,
-            "filterIssue": null,
-            "filters": {
-              // 'type': null,
-              // "priority": filterPriority,
-              if (issues.filters.priorities.isNotEmpty)
-                "priority": issues.filters.priorities,
-              if (issues.filters.states.isNotEmpty)
-                "state": issues.filters.states,
-              if (issues.filters.assignees.isNotEmpty)
-                "assignees": issues.filters.assignees,
-              if (issues.filters.createdBy.isNotEmpty)
-                "created_by": issues.filters.createdBy,
-              if (issues.filters.labels.isNotEmpty)
-                "labels": issues.filters.labels,
-              if (issues.filters.targetDate.isNotEmpty)
-                "target_date": issues.filters.targetDate,
-              if (issues.filters.startDate.isNotEmpty)
-                "start_date": issues.filters.startDate,
-              if (issues.filters.subscriber.isNotEmpty)
-                "subscriber": issues.filters.subscriber,
-              if (issues.filters.stateGroup.isNotEmpty)
-                "state_group": issues.filters.stateGroup,
-            },
-            "display_filters": {
-              "group_by": Issues.fromGroupBY(issues.groupBY),
-              "order_by": Issues.fromOrderBY(issues.orderBY),
-              "type": Issues.fromIssueType(issues.issueType),
-              "show_empty_groups": showEmptyStates,
-              if (!isArchive)
-                "layout": issues.projectView == ProjectView.kanban
-                    ? 'kanban'
-                    : issues.projectView == ProjectView.list
-                        ? 'list'
-                        : issues.projectView == ProjectView.calendar
-                            ? 'calendar'
-                            : 'spreadsheet',
-              "sub_issue": false,
-            },
-          }
-        },
+        data: view,
+       
         httpMethod: HttpMethod.post,
       );
       projectViewState = StateEnum.success;
@@ -1350,7 +1340,8 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      issueView = response.data["view_props"];
+      issueView =
+          reset ? response.data["default_props"] : response.data["view_props"];
       log(issueView.toString());
       issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list

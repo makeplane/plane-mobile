@@ -101,6 +101,7 @@ class _ViewsState extends ConsumerState<Views> {
                             }),
                       ],
                     ),
+                    Container(height: 60,)
                   ]),
             ),
     );

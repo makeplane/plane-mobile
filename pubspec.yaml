@@ -73,11 +73,12 @@ dependencies:
   lucide_icons: ^0.257.0
   dartz: ^0.10.1
   upgrader: ^8.1.0
+  flutter_native_splash: ^2.3.2
 
 dev_dependencies:
   build_runner: ^2.1.7
   flutter_lints: ^2.0.0
-  flutter_native_splash: ^2.3.2
+  
   flutter_test:
     sdk: flutter
   integration_test:

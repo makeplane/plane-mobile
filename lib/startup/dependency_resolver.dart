@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/projects_provider.dart';
@@ -20,6 +21,7 @@ class DependencyResolver {
   static Future<void> resolve({required WidgetRef ref}) async {
     if (Const.accessToken == null) {
       CustomToast(manager: ThemeManager(THEME.light));
+      FlutterNativeSplash.remove();
       return;
     }
     final ProfileProvider profileProvider =
@@ -29,6 +31,7 @@ class DependencyResolver {
 
     await _resolveUserProfile(ref).then((value) {
       value.fold((userProfile) => null, (error) {
+        FlutterNativeSplash.remove();
         OverlayEntry entry = OverlayEntry(builder: (context) {
           return Positioned(
             width: MediaQuery.of(context).size.width,
@@ -46,10 +49,12 @@ class DependencyResolver {
       });
     });
     if (profileProvider.userProfile.isOnboarded == false) {
+      FlutterNativeSplash.remove();
       return;
     }
     await _resolveWorkspaces(ref);
     if (workspaceProvider.workspaces.isEmpty) {
+      FlutterNativeSplash.remove();
       return;
     }
     _resolveTheme(ref);
@@ -58,6 +63,7 @@ class DependencyResolver {
     _resolveMyIssues(ref);
     _resolveNotifications(ref);
     _resolveWhatsNew(ref);
+    FlutterNativeSplash.remove();
   }
 
   static Future<void> _resolveDashBoard(WidgetRef ref) async {
@@ -76,6 +82,7 @@ class DependencyResolver {
         ref.read(ProviderList.workspaceProvider);
     await workspaceProvider.getWorkspaces();
     if (workspaceProvider.workspaces.isEmpty) {
+      FlutterNativeSplash.remove();
       return;
     }
     workspaceProvider.getWorkspaceMembers();

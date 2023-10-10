@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +12,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 //import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
 import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -38,6 +38,7 @@ class MyIssuesProvider extends ChangeNotifier {
   List stateOrdering = [];
   Map myIssueView = {};
   int pageIndex = 0;
+  int selectedTab = 0;
 
   Issues issues = Issues.initialize();
   bool showEmptyStates = true;
@@ -54,6 +55,11 @@ class MyIssuesProvider extends ChangeNotifier {
   }
 
   void setState() {
+    notifyListeners();
+  }
+
+  void changeTabIndex({required int index}) {
+    selectedTab = index;
     notifyListeners();
   }
 
@@ -495,11 +501,18 @@ class MyIssuesProvider extends ChangeNotifier {
               'name': projectProvider.projects[index]['emoji'],
               'is_emoji': true,
             };
-          } else {
+          } else if (projectProvider.projects[index]['icon_prop'] != null) {
             projectIcons[title.toLowerCase()] = {
               'name': projectProvider.projects[index]['icon_prop']['name'],
               'is_emoji': false,
               'color': projectProvider.projects[index]['icon_prop']['color'],
+            };
+          }
+          else {
+            projectIcons[title.toLowerCase()] = {
+              'name': '',
+              'is_emoji': false,
+              'color': '0xFF00000',
             };
           }
         }

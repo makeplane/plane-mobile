@@ -90,10 +90,6 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   .watch(ProviderList.projectProvider)
                                   .projects[0];
                           ref.watch(ProviderList.projectProvider).setState();
-                          // await ref
-                          //     .read(ProviderList.projectProvider)
-                          //     .initializeProject(ref: ref);
-                          // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -124,8 +120,6 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                   showModalBottomSheet(
                       isScrollControlled: true,
                       enableDrag: true,
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.9),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),

@@ -79,9 +79,9 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
                         height:
                             loadingType == LoadingType.wrap ? _height : null,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                          // borderRadius: BorderRadius.circular(30),
                           color: themeManager.primaryBackgroundDefaultColor
-                              .withOpacity(0.3),
+                              .withOpacity(0.5),
                         ),
                         alignment: Alignment.center,
                         child: SizedBox(

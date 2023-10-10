@@ -1729,8 +1729,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        Colors.white.withOpacity(0.5),
-                        Colors.white.withOpacity(0.2),
+                        Colors.transparent,
                         themeProvider.themeManager.primaryColour
                             .withOpacity(0.2),
                         themeProvider.themeManager.primaryColour

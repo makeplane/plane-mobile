@@ -47,10 +47,8 @@ class _SelectProjectState extends ConsumerState<SelectProject> {
                             ? InkWell(
                                 onTap: () {
                                   issuesProvider
-                                          .createIssueProjectData['name'] =
-                                      projectProvider.projects[index]['name'];
-                                  issuesProvider.createIssueProjectData['id'] =
-                                      projectProvider.projects[index]['id'];
+                                          .createIssueProjectData =
+                                      projectProvider.projects[index];
 
                                   issuesProvider.setsState();
 

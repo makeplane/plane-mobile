@@ -556,38 +556,10 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                       ),
                     ),
                   ),
-                  // DropdownButtonFormField(
-                  //   value: projectProvider.projectDetailModel!.network == 1
-                  //       ? 'Secret'
-                  //       : 'Public',
-                  //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
-                  //     fillColor: themeProvider.isDarkThemeEnabled
-                  //         ? darkBackgroundColor
-                  //         : lightBackgroundColor,
-                  //     filled: true,
-                  //   ),
-                  //   dropdownColor: themeProvider.isDarkThemeEnabled
-                  //       ? Colors.black
-                  //       : Colors.white,
-                  //   items: [
-                  //     DropdownMenuItem(
-                  //       value: 'Secret',
-                  //       child: CustomText(
-                  //         'Secret',
-                  //         type: FontStyle.Medium,
-                  //       ),
-                  //     ),
-                  //     DropdownMenuItem(
-                  //       value: 'Public',
-                  //       child: CustomText(
-                  //         'Public',
-                  //         type: FontStyle.Medium,
-                  //       ),
-                  //     ),
-                  //   ],
-                  //   onChanged: (val) {},
-                  // ),
-                  getRole() == Role.member
+
+                  !checkUser() ? const SizedBox(height: 10) : Container(),
+
+                  !checkUser()
                       ? Container()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -782,18 +754,6 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         toastType: ToastType.failure);
                                   }
                                 }
-                                // await projectProvider.updateProject(
-                                //     projId: projectProvider.projectDetailModel!.id!,
-                                //     slug: ref
-                                //         .read(ProviderList.workspaceProvider)
-                                //         .selectedWorkspace
-                                //         .workspaceSlug,
-                                //     data: {
-                                //       'name': name.text,
-                                //       'description': description.text,
-                                //       'identifier': identifier.text,
-                                //       'network': isProjectPublic ? 0 : 1,
-                                //     });
                               },
                             ),
                             const SizedBox(height: 15),

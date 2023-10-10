@@ -137,7 +137,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 : width += 0;
 
     //for estimate
-    ref.read(ProviderList.projectProvider).currentProject['estimate'] != null
+    ref.watch(ProviderList.projectProvider).currentProject['estimate'] != null
         ? widget.issueCategory == IssueCategory.issues
             ? issuesProvider.issues.displayProperties.estimate
                 ? width += 151
@@ -541,15 +541,17 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               ),
             ),
             width: 150,
-            child: CustomText(
-              issuesProvider.issuesList[index]['target_date'] != null
-                  ? DateFormat('dd MMM yyyy').format(
-                      DateTime.parse(
-                        issuesProvider.issuesList[index]['target_date'],
-                      ),
-                    )
-                  : 'No Due Date',
-              type: FontStyle.Small,
+            child: Center(
+              child: CustomText(
+                issuesProvider.issuesList[index]['target_date'] != null
+                    ? DateFormat('dd MMM yyyy').format(
+                        DateTime.parse(
+                          issuesProvider.issuesList[index]['target_date'],
+                        ),
+                      )
+                    : 'No Due Date',
+                type: FontStyle.Small,
+              ),
             ),
           ),
           Container(
@@ -576,15 +578,17 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               ),
             ),
             width: 150,
-            child: CustomText(
-              issuesProvider.issuesList[index]['start_date'] != null
-                  ? DateFormat('dd MMM yyyy').format(
-                      DateTime.parse(
-                        issuesProvider.issuesList[index]['start_date'],
-                      ),
-                    )
-                  : 'No Start Date',
-              type: FontStyle.Small,
+            child: Center(
+              child: CustomText(
+                issuesProvider.issuesList[index]['start_date'] != null
+                    ? DateFormat('dd MMM yyyy').format(
+                        DateTime.parse(
+                          issuesProvider.issuesList[index]['start_date'],
+                        ),
+                      )
+                    : 'No Start Date',
+                type: FontStyle.Small,
+              ),
             ),
           ),
           Container(
@@ -631,7 +635,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           .firstWhere((element) {
                           return element['id'] ==
                               ref
-                                  .read(ProviderList.projectProvider)
+                                  .watch(ProviderList.projectProvider)
                                   .currentProject['estimate'];
                         })['points'].firstWhere((element) {
                           return element['key'] ==
@@ -668,13 +672,15 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               ),
             ),
             width: 150,
-            child: CustomText(
-              DateFormat('dd MMM yyyy').format(
-                DateTime.parse(
-                  issuesProvider.issuesList[index]['created_at'],
+            child: Center(
+              child: CustomText(
+                DateFormat('dd MMM yyyy').format(
+                  DateTime.parse(
+                    issuesProvider.issuesList[index]['created_at'],
+                  ),
                 ),
+                type: FontStyle.Small,
               ),
-              type: FontStyle.Small,
             ),
           ),
           Container(
@@ -701,14 +707,16 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               ),
             ),
             width: 150,
-            child: CustomText(
-              //date month year
-              DateFormat('dd MMM yyyy').format(
-                DateTime.parse(
-                  issuesProvider.issuesList[index]['created_at'],
+            child: Center(
+              child: CustomText(
+                //date month year
+                DateFormat('dd MMM yyyy').format(
+                  DateTime.parse(
+                    issuesProvider.issuesList[index]['created_at'],
+                  ),
                 ),
+                type: FontStyle.Small,
               ),
-              type: FontStyle.Small,
             ),
           ),
           Container(
@@ -835,7 +843,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
 
                         //for estimate
                         ref
-                                    .read(ProviderList.projectProvider)
+                                    .watch(ProviderList.projectProvider)
                                     .currentProject['estimate'] ==
                                 null
                             ? Container()
@@ -979,7 +987,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
 
               //for estimate
               ref
-                          .read(ProviderList.projectProvider)
+                          .watch(ProviderList.projectProvider)
                           .currentProject['estimate'] ==
                       null
                   ? Container()

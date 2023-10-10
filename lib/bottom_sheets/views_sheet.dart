@@ -898,7 +898,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                           tag['name'] == 'Link' ||
                                           tag['name'] == 'Sub Issue Count') &&
                                       issueProvider.issues.projectView ==
-                                          ProjectView.spreadsheet))
+                                          ProjectView.spreadsheet) ||
+                                  ((tag['name'] != 'Priority' &&
+                                          tag['name'] != 'ID' &&
+                                          tag['name'] != 'Assignee') &&
+                                      issueProvider.issues.projectView ==
+                                          ProjectView.list))
                               ?
                               ///////////////////
                               // Container(

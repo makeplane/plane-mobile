@@ -513,7 +513,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           children: [
                             Expanded(
                               child:
-                                  ((widget.fromModule && (modulesProvider.moduleIssueState == StateEnum.loading || modulesProvider.moduleDetailState == StateEnum.loading)) ||
+                                  ((widget.fromModule &&
+                                                  (modulesProvider.moduleIssueState ==
+                                                          StateEnum.loading ||
+                                                      modulesProvider.moduleDetailState ==
+                                                          StateEnum.loading)) ||
                                               (!widget.fromModule &&
                                                   (cyclesProvider.cyclesIssueState ==
                                                           StateEnum.loading ||
@@ -590,12 +594,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left: 15),
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 15),
+                                                                          margin:
+                                                                              const EdgeInsets.only(bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -673,10 +675,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
-                                                      (widget.fromModule &&
-                                                          issueProvider.issues.projectView ==
-                                                              ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -2139,115 +2138,124 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Widget membersWidget() {
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    return Container(
-      height: 45,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: getBorderColor(themeProvider),
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.5,
+          ),
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          context: context,
+          builder: (context) => AssigneeSheet(
+            fromModuleDetail: widget.fromModule,
+          ),
+        );
+      },
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: getBorderColor(themeProvider),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Row(
-          children: [
-            //icon
-            Icon(
-              //two people icon
-              Icons.people_alt_rounded,
-              color: themeProvider.themeManager.placeholderTextColor,
-            ),
-            const SizedBox(width: 15),
-            CustomText(
-              'Members',
-              type: FontStyle.Medium,
-              fontWeight: FontWeightt.Regular,
-              color: themeProvider.themeManager.placeholderTextColor,
-            ),
-            Expanded(child: Container()),
-            GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  showBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (ctx) => const AssigneeSheet(
-                            fromModuleDetail: true,
-                          ));
-                },
-                child: (modulesProvider.currentModule['members_detail'] ==
-                            null ||
-                        modulesProvider.currentModule['members_detail'].isEmpty)
-                    ? Row(
-                        children: [
-                          CustomText(
-                            'No members',
-                            type: FontStyle.Medium,
-                            fontWeight: FontWeightt.Regular,
-                            color: themeProvider.themeManager.primaryTextColor,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: themeProvider.themeManager.primaryTextColor,
-                          ),
-                        ],
-                      )
-                    : SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            children: [
+              //icon
+              Icon(
+                //two people icon
+                Icons.people_alt_rounded,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              const SizedBox(width: 15),
+              CustomText(
+                'Members',
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              Expanded(child: Container()),
+              (modulesProvider.currentModule['members_detail'] == null ||
+                      modulesProvider.currentModule['members_detail'].isEmpty)
+                  ? Row(
+                      children: [
+                        CustomText(
+                          'No members',
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 30,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: themeProvider.themeManager
+                                    .primaryBackgroundDefaultColor),
+                            borderRadius: BorderRadius.circular(5)),
                         height: 30,
-                        child: Container(
+                        margin: const EdgeInsets.only(right: 5),
+                        width: (modulesProvider
+                                    .currentModule['members_detail'].length *
+                                22.0) +
+                            ((modulesProvider.currentModule['members_detail']
+                                        .length) ==
+                                    1
+                                ? 15
+                                : 0),
+                        child: Stack(
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: themeProvider.themeManager
-                                      .primaryBackgroundDefaultColor),
-                              borderRadius: BorderRadius.circular(5)),
-                          height: 30,
-                          margin: const EdgeInsets.only(right: 5),
-                          width: (modulesProvider
-                                      .currentModule['members_detail'].length *
-                                  22.0) +
-                              ((modulesProvider.currentModule['members_detail']
-                                          .length) ==
-                                      1
-                                  ? 15
-                                  : 0),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            fit: StackFit.passthrough,
-                            children: (modulesProvider
-                                    .currentModule['members_detail'] as List)
-                                .map((e) => Positioned(
-                                      right: ((modulesProvider.currentModule[
-                                                      'members_detail'] as List)
-                                                  .indexOf(e) *
-                                              15) +
-                                          10,
-                                      child: Container(
-                                        height: 20,
-                                        alignment: Alignment.center,
-                                        width: 20,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color.fromRGBO(55, 65, 81, 1),
-                                        ),
-                                        child: CustomText(
-                                          e['first_name'][0]
-                                              .toString()
-                                              .toUpperCase(),
-                                          type: FontStyle.Small,
-                                          color: Colors.white,
-                                        ),
+                          fit: StackFit.passthrough,
+                          children: (modulesProvider
+                                  .currentModule['members_detail'] as List)
+                              .map((e) => Positioned(
+                                    right: ((modulesProvider.currentModule[
+                                                    'members_detail'] as List)
+                                                .indexOf(e) *
+                                            15) +
+                                        10,
+                                    child: Container(
+                                      height: 20,
+                                      alignment: Alignment.center,
+                                      width: 20,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(55, 65, 81, 1),
                                       ),
-                                    ))
-                                .toList(),
-                          ),
-                        )))
-          ],
+                                      child: CustomText(
+                                        e['first_name'][0]
+                                            .toString()
+                                            .toUpperCase(),
+                                        type: FontStyle.Small,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ))
+            ],
+          ),
         ),
       ),
     );
@@ -2261,128 +2269,138 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    return Container(
-      height: 45,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: getBorderColor(themeProvider),
+    return GestureDetector(
+      onTap: widget.fromModule
+          ? () {
+              showModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                context: context,
+                builder: (context) => LeadSheet(
+                  fromModuleDetail: widget.fromModule,
+                ),
+              );
+            }
+          : () {},
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: getBorderColor(themeProvider),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //icon
-            Icon(
-              //two people icon
-              Icons.people_outline_outlined,
-              color: themeProvider.themeManager.placeholderTextColor,
-            ),
-            const SizedBox(width: 15),
-            CustomText(
-              'Lead',
-              type: FontStyle.Medium,
-              fontWeight: FontWeightt.Regular,
-              color: themeProvider.themeManager.placeholderTextColor,
-            ),
-            Expanded(child: Container()),
-            GestureDetector(
-              onTap: widget.fromModule
-                  ? () {
-                      showModalBottomSheet(
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.5,
-                        ),
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        context: context,
-                        builder: (context) => LeadSheet(
-                          fromModuleDetail: widget.fromModule,
-                        ),
-                      );
-                    }
-                  : () {},
-              child: Row(
-                children: [
-                  (detailData[widget.fromModule ? 'lead_detail' : 'owned_by'] !=
-                                  null &&
-                              detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['avatar'] !=
-                                  null) &&
-                          detailData[widget.fromModule
-                                  ? 'lead_detail'
-                                  : 'owned_by']['avatar'] !=
-                              ''
-                      ? CircleAvatar(
-                          backgroundImage: Image.network(detailData[
-                                  widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['avatar'])
-                              .image,
-                          radius: 10,
-                        )
-                      : CircleAvatar(
-                          radius: 10,
-                          backgroundColor: darkSecondaryBGC,
-                          child: Center(
-                            child: CustomText(
-                              (detailData[widget.fromModule
-                                              ? 'lead_detail'
-                                              : 'owned_by'] !=
-                                          null &&
-                                      detailData[widget.fromModule
-                                              ? 'lead_detail'
-                                              : 'owned_by']['email'] !=
-                                          null)
-                                  ? detailData[widget.fromModule
-                                          ? 'lead_detail'
-                                          : 'owned_by']['first_name'][0]
-                                      .toString()
-                                      .toUpperCase()
-                                  : '',
-                              type: FontStyle.Small,
-                              textAlign: TextAlign.center,
-                              color: lightSecondaryBackgroundColor,
-                            ),
-                          ),
-                        ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    constraints: BoxConstraints(maxWidth: width * 0.4),
-                    child: CustomText(
-                      (detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by'] !=
-                                  null &&
-                              detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['display_name'] !=
-                                  null)
-                          ? detailData[widget.fromModule
-                                  ? 'lead_detail'
-                                  : 'owned_by']['display_name'] ??
-                              ''
-                          : '',
-                      type: FontStyle.Small,
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //icon
+              Icon(
+                //two people icon
+                Icons.people_outline_outlined,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
-            ),
-          ],
+              const SizedBox(width: 15),
+              CustomText(
+                'Lead',
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              Expanded(child: Container()),
+              detailData[widget.fromModule ? 'lead_detail' : 'owned_by'] == null
+                  ? CustomText(
+                      'No lead',
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )
+                  : Row(
+                      children: [
+                        (detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by'] !=
+                                        null &&
+                                    detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by']['avatar'] !=
+                                        null) &&
+                                detailData[widget.fromModule
+                                        ? 'lead_detail'
+                                        : 'owned_by']['avatar'] !=
+                                    ''
+                            ? CircleAvatar(
+                                backgroundImage: Image.network(detailData[
+                                        widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by']['avatar'])
+                                    .image,
+                                radius: 10,
+                              )
+                            : CircleAvatar(
+                                radius: 10,
+                                backgroundColor: darkSecondaryBGC,
+                                child: Center(
+                                  child: CustomText(
+                                    (detailData[widget.fromModule
+                                                    ? 'lead_detail'
+                                                    : 'owned_by'] !=
+                                                null &&
+                                            detailData[widget.fromModule
+                                                        ? 'lead_detail'
+                                                        : 'owned_by']
+                                                    ['display_name'] !=
+                                                null)
+                                        ? detailData[widget.fromModule
+                                                ? 'lead_detail'
+                                                : 'owned_by']['display_name'][0]
+                                            .toString()
+                                            .toUpperCase()
+                                        : '',
+                                    type: FontStyle.Small,
+                                    textAlign: TextAlign.center,
+                                    color: lightSecondaryBackgroundColor,
+                                  ),
+                                ),
+                              ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: width * 0.4),
+                          child: CustomText(
+                            (detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by'] !=
+                                        null &&
+                                    detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by']['display_name'] !=
+                                        null)
+                                ? detailData[widget.fromModule
+                                        ? 'lead_detail'
+                                        : 'owned_by']['display_name'] ??
+                                    ''
+                                : '',
+                            type: FontStyle.Small,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );

@@ -174,7 +174,10 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 type: FontStyle.Small,
                               ),
                               const Spacer(),
-                              createIsseuSelectedMembersWidget(index),
+                              modulesProvider.currentModule['lead_detail'] !=
+                                      null
+                                  ? createIsseuSelectedMembersWidget(index)
+                                  : Container(),
                               const SizedBox(
                                 width: 10,
                               )

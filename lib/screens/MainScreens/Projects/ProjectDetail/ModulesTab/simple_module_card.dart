@@ -95,6 +95,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
                   ),
+                  const SizedBox(width: 5),
                   Row(
                     children: [
                       Container(

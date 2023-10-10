@@ -25,7 +25,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
       onWillPop: () async {
         if (widget.fromModuleDetail) {
           modulesProvider.updateModules(
-              disableLoading: true,
+              // disableLoading: true,
               slug: ref
                   .read(ProviderList.workspaceProvider)
                   .selectedWorkspace
@@ -65,7 +65,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                           onPressed: () {
                             if (widget.fromModuleDetail) {
                               modulesProvider.updateModules(
-                                  disableLoading: true,
+                                  // disableLoading: true,
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
                                       .selectedWorkspace
@@ -204,6 +204,23 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                   Button(
                     text: 'Select Assignees',
                     ontap: () {
+                      if (widget.fromModuleDetail) {
+                        modulesProvider.updateModules(
+                            // disableLoading: true,
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject['id'],
+                            moduleId: modulesProvider.currentModule['id'],
+                            data: {
+                              'members_list':
+                                  modulesProvider.currentModule['members']
+                            },
+                            ref: ref);
+                      }
                       Navigator.of(context).pop();
                     },
                   ),

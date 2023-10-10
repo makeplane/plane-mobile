@@ -28,6 +28,8 @@ class _FilterState {
       }
     } else {
       filters = Filters.fromJson(filtersData["Filters"]);
+      isFilterDataEmpty =
+          isFilterEmpty(tempFilters: Filters.fromJson(filtersData["Filters"]));
     }
     if (filters.startDate.isNotEmpty) {
       log(filters.startDate.toString());

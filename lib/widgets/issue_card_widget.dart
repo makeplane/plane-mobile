@@ -54,12 +54,10 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
       onTap: () {
         if (widget.from == PreviousScreen.myIssues) {
           final projectProvider = ref.read(ProviderList.projectProvider);
-         projectProvider.currentProject['name'] = provider.issuesResponse[
-              widget.cardIndex]['project_detail']
-                  ['name'];
-                  projectProvider.currentProject['id'] = provider.issuesResponse[
-              widget.cardIndex]['project_detail']
-                  ['id'];
+          projectProvider.currentProject['name'] = provider
+              .issuesResponse[widget.cardIndex]['project_detail']['name'];
+          projectProvider.currentProject['id'] =
+              provider.issuesResponse[widget.cardIndex]['project_detail']['id'];
         }
         Navigator.push(
             Const.globalKey.currentContext!,
@@ -293,7 +291,6 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         : const SizedBox(
                             width: 0,
                           ),
-
                     provider.issues.displayProperties.assignee == true
                         ? (provider.issuesResponse[widget.cardIndex]
                                         ['assignee_details'] !=
@@ -816,9 +813,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                     ))
               : const SizedBox(),
           provider.issues.displayProperties.id
-              ? Container(
-                  margin: const EdgeInsets.only(right: 8),
+              ? SizedBox(
+                  width: 80, // So that id will take a fixed space and the starting position of issue title will be same
                   child: CustomRichText(
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
                       type: FontStyle.Small,
                       color: themeProvider.themeManager.placeholderTextColor,
                       widgets: [
@@ -839,19 +838,13 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                       ]))
               : Container(),
           Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-
-              child: CustomText(
-                provider.issuesResponse[widget.cardIndex]['name']
-                    .toString()
-                    .trim(),
-                type: FontStyle.Small,
-                maxLines: 1,
-                textAlign: TextAlign.start,
-              ),
+            child: CustomText(
+              provider.issuesResponse[widget.cardIndex]['name']
+                  .toString()
+                  .trim(),
+              type: FontStyle.Small,
+              maxLines: 1,
+              textAlign: TextAlign.start,
             ),
           ),
           provider.issues.displayProperties.assignee == true

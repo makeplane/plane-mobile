@@ -184,6 +184,17 @@ class CustomToast {
         toastType: isSuccess ? ToastType.success : ToastType.failure);
   }
 
+  static void showToastFromStateEnum(
+      {required BuildContext context,
+      required StateEnum stateEnum,
+      required String sucessMessage,
+      String errorMessage = "Something went wrong!"}) {
+    showToastFromBool(
+        context: context,
+        isSuccess: stateEnum == StateEnum.success,
+        sucessMessage: sucessMessage);
+  }
+
   static void showToastWithCustomChild(
       BuildContext context, String message, Widget child,
       {int duration = 1}) {

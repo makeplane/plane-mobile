@@ -101,7 +101,9 @@ class _ViewsState extends ConsumerState<Views> {
                             }),
                       ],
                     ),
-                    Container(height: 60,)
+                    Container(
+                      height: 60,
+                    )
                   ]),
             ),
     );
@@ -181,11 +183,10 @@ class _ViewsState extends ConsumerState<Views> {
                   flex: 500,
                   child: Container(
                     margin: const EdgeInsets.only(left: 5),
-                    //width: MediaQuery.sizeOf(context).width - 250,
                     padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
                     child: CustomText(
                       viewsProvider.views[index]["name"],
-                      type: FontStyle.H6,
+                      type: FontStyle.Medium,
                       fontWeight: FontWeightt.Medium,
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
@@ -231,7 +232,6 @@ class _ViewsState extends ConsumerState<Views> {
                           setState(() {});
                         },
                         child: Container(
-                          //margin: const EdgeInsets.only(top: 12, left: 10, right: 10),
                           child:
                               viewsProvider.views[index]["is_favorite"] == false
                                   ? Icon(

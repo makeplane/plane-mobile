@@ -409,15 +409,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               ),
                               Container(
                                 height: 7,
-                                color: (widget.fromModule
-                                        ? modulesProvider
-                                                .moduleDetailSelectedIndex ==
-                                            0
-                                        : cyclesProviderRead
-                                                .cycleDetailSelectedIndex ==
-                                            0)
-                                    ? themeProvider.themeManager.primaryColour
-                                    : Colors.transparent,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              0
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              0)
+                                      ? themeProvider.themeManager.primaryColour
+                                      : Colors.transparent,
+                                ),
                               ),
                             ],
                           ),
@@ -473,15 +476,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                               ),
                               Container(
                                 height: 7,
-                                color: (widget.fromModule
-                                        ? modulesProvider
-                                                .moduleDetailSelectedIndex ==
-                                            1
-                                        : cyclesProviderRead
-                                                .cycleDetailSelectedIndex ==
-                                            1)
-                                    ? themeProvider.themeManager.primaryColour
-                                    : Colors.transparent,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              1
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              1)
+                                      ? themeProvider.themeManager.primaryColour
+                                      : Colors.transparent,
+                                ),
                               ),
                             ],
                           ),

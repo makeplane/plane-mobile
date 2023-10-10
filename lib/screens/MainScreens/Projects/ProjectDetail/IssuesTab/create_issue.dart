@@ -19,6 +19,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/editor.dart';
@@ -66,12 +67,12 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     final prov = ref.read(ProviderList.issuesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     ref.read(ProviderList.issueProvider).initCookies();
-    prov.createIssueProjectData['name'] = widget.projectId != null
+    prov.createIssueProjectData = widget.projectId != null
         ? projectProvider.projects
-            .firstWhere((element) => element['id'] == widget.projectId)['name']
-        : ref.read(ProviderList.projectProvider).currentProject['name'];
-    prov.createIssueProjectData['id'] = widget.projectId ??
-        ref.read(ProviderList.projectProvider).currentProject['id'];
+            .firstWhere((element) => element['id'] == widget.projectId)
+        : ref.read(ProviderList.projectProvider).currentProject;
+    // prov.createIssueProjectData['id'] = widget.projectId ??
+    //     ref.read(ProviderList.projectProvider).currentProject['id'];
     final themeProvider = ref.read(ProviderList.themeProvider);
     tempStatesData = prov.statesData;
     tempStates = prov.states;
@@ -242,23 +243,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      'Project',
-                                      type: FontStyle.Medium,
-                                      color: themeProvider
-                                          .themeManager.primaryTextColor,
-                                    ),
-                                    const CustomText(
-                                      ' *',
-                                      type: FontStyle.Small,
-                                      color: Colors.red,
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 5),
                                 Container(
                                   height: 50,
                                   width: double.infinity,
@@ -329,17 +313,97 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 10),
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          //icon
-                                          Expanded(
-                                              child: CustomText(
-                                            issuesProvider
-                                                .createIssueProjectData['name'],
-                                            type: FontStyle.Medium,
-                                            color: themeProvider
-                                                .themeManager.primaryTextColor,
-                                            fontWeight: FontWeightt.Medium,
-                                          ))
+                                          CustomText(
+                                            'Project',
+                                            type: FontStyle.Small,
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              issuesProvider.createIssueProjectData[
+                                                          'emoji'] !=
+                                                      null
+                                                  ? CustomText(
+                                                      String.fromCharCode(
+                                                        int.parse(
+                                                          issuesProvider
+                                                                  .createIssueProjectData[
+                                                              'emoji'],
+                                                        ),
+                                                      ),
+                                                      type: FontStyle.H5,
+                                                    )
+                                                  : issuesProvider.createIssueProjectData[
+                                                              'icon_prop'] !=
+                                                          null
+                                                      ? Icon(
+                                                          iconList[issuesProvider
+                                                                  .createIssueProjectData[
+                                                              'icon_prop']['name']],
+                                                          color: Color(
+                                                            int.parse(
+                                                              issuesProvider
+                                                                  .createIssueProjectData[
+                                                                      'icon_prop']
+                                                                      ['color']
+                                                                  .toString()
+                                                                  .replaceAll(
+                                                                    '#',
+                                                                    '0xFF',
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            color: ColorManager.getColorRandomly()
+                                                          ),
+                                                          child: Center(
+                                                            child: CustomText(
+                                                              issuesProvider
+                                                                  .createIssueProjectData
+                                                                      ['name']
+                                                                      [0]
+                                                                  .toString()
+                                                                  .toUpperCase(),
+                                                              type: FontStyle
+                                                                  .Small,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeightt
+                                                                      .Medium,
+                                                            ),
+                                                          ),
+                                                        ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              CustomText(
+                                                issuesProvider
+                                                        .createIssueProjectData[
+                                                    'name'],
+                                                type: FontStyle.Small,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                                fontWeight: FontWeightt.Medium,
+                                              ),
+                                              const Icon(
+                                                Icons.keyboard_arrow_down,
+                                              )
+                                            ],
+                                          )
                                         ],
                                       ),
                                     ),
@@ -822,7 +886,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                   details: (issuesProvider
                                                                   .createIssuedata[
                                                               'members'] ??
-                                                          {} as Map)
+                                                          {})
                                                       .values
                                                       .toList())
                                         ],
@@ -1807,20 +1871,19 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                 toastType: ToastType.success);
                             if (createMoreIssues) {
                               title.text = '';
-                              issuesProvider.createIssueProjectData['name'] =
+                              issuesProvider.createIssueProjectData =
                                   widget.projectId != null
                                       ? projectProvider.projects.firstWhere(
                                           (element) =>
-                                              element['id'] ==
-                                              widget.projectId)['name']
+                                              element['id'] == widget.projectId)
                                       : ref
                                           .read(ProviderList.projectProvider)
-                                          .currentProject['name'];
-                              issuesProvider.createIssueProjectData['id'] =
-                                  widget.projectId ??
-                                      ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject['id'];
+                                          .currentProject;
+                              // issuesProvider.createIssueProjectData['id'] =
+                              //     widget.projectId ??
+                              //         ref
+                              //             .read(ProviderList.projectProvider)
+                              //             .currentProject['id'];
                               final themeProvider =
                                   ref.read(ProviderList.themeProvider);
                               tempStatesData = issuesProvider.statesData;

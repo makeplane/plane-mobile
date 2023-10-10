@@ -193,27 +193,31 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: themeProvider
-                              .themeManager.secondaryBackgroundDefaultColor,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color:
-                                themeProvider.themeManager.borderSubtle01Color,
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: themeProvider
+                                .themeManager.secondaryBackgroundDefaultColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color:
+                                  themeProvider.themeManager.borderSubtle01Color,
+                            ),
                           ),
-                        ),
-                        child: CustomText(
-                          'Cancel',
-                          type: FontStyle.Medium,
-                          fontWeight: FontWeightt.Semibold,
-                          color: themeProvider.themeManager.primaryTextColor,
+                          child: Center(
+                            child: CustomText(
+                              'Cancel',
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
+                              color: themeProvider.themeManager.primaryTextColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -222,55 +226,17 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                     ),
 
                     //container with red background having delete text
-                    GestureDetector(
-                      onTap: () async {
-                        if (widget.role == Role.guest ||
-                            widget.role == Role.viewer ||
-                            widget.role == Role.none) {
-                          final isSuccessfullyLeft = await workspaceProvider
-                              .leaveWorkspace(context, ref);
-                          if (isSuccessfullyLeft) {
-                            postHogService(
-                                eventName: 'LEAVE_WORKSPACE',
-                                properties: {
-                                  'WORKSPACE_NAME': widget.workspaceName
-                                },
-                                ref: ref);
-                            await ref
-                                .watch(ProviderList.profileProvider)
-                                .updateProfile(data: {
-                              'last_workspace_id': workspaceProvider
-                                  .selectedWorkspace.workspaceId,
-                            });
-                            await ref
-                                .watch(ProviderList.projectProvider)
-                                .getProjects(
-                                    slug: workspaceProvider
-                                        .selectedWorkspace.workspaceSlug);
-                            CustomToast.showToast(
-                              context,
-                              message: 'Left workspace successfully',
-                              toastType: ToastType.success,
-                            );
-                            Navigator.of(context).pop();
-                          }
-                          Navigator.of(context).pop();
-                        } else {
-                          if (_formKey.currentState!.validate()) {
-                            // if (workspaceProvider.role != Role.admin &&
-                            //     workspaceProvider.role != Role.member) {
-                            //   CustomToast.showToast(
-                            //       context,
-                            //       'You don\'t have permissions to delete this workspace',
-                            //       themeProvider,
-                            //       toastType: ToastType.failure);
-                            //   return;
-                            // }
-                            final isSuccesfullyDeleted =
-                                await workspaceProvider.deleteWorkspace();
-                            if (isSuccesfullyDeleted) {
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (widget.role == Role.guest ||
+                              widget.role == Role.viewer ||
+                              widget.role == Role.none) {
+                            final isSuccessfullyLeft = await workspaceProvider
+                                .leaveWorkspace(context, ref);
+                            if (isSuccessfullyLeft) {
                               postHogService(
-                                  eventName: 'DELETE_WORKSPACE',
+                                  eventName: 'LEAVE_WORKSPACE',
                                   properties: {
                                     'WORKSPACE_NAME': widget.workspaceName
                                   },
@@ -288,51 +254,93 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                           .selectedWorkspace.workspaceSlug);
                               CustomToast.showToast(
                                 context,
-                                message: 'Workspace deleted successfully',
+                                message: 'Left workspace successfully',
                                 toastType: ToastType.success,
                               );
                               Navigator.of(context).pop();
-                            } else {
-                              //show snackbar
-                              CustomToast.showToast(
-                                context,
-                                message: 'Workspace could not be deleted',
-                                toastType: ToastType.warning,
-                              );
                             }
+                            Navigator.of(context).pop();
+                          } else {
+                            if (_formKey.currentState!.validate()) {
+                              // if (workspaceProvider.role != Role.admin &&
+                              //     workspaceProvider.role != Role.member) {
+                              //   CustomToast.showToast(
+                              //       context,
+                              //       'You don\'t have permissions to delete this workspace',
+                              //       themeProvider,
+                              //       toastType: ToastType.failure);
+                              //   return;
+                              // }
+                              final isSuccesfullyDeleted =
+                                  await workspaceProvider.deleteWorkspace();
+                              if (isSuccesfullyDeleted) {
+                                postHogService(
+                                    eventName: 'DELETE_WORKSPACE',
+                                    properties: {
+                                      'WORKSPACE_NAME': widget.workspaceName
+                                    },
+                                    ref: ref);
+                                await ref
+                                    .watch(ProviderList.profileProvider)
+                                    .updateProfile(data: {
+                                  'last_workspace_id': workspaceProvider
+                                      .selectedWorkspace.workspaceId,
+                                });
+                                await ref
+                                    .watch(ProviderList.projectProvider)
+                                    .getProjects(
+                                        slug: workspaceProvider
+                                            .selectedWorkspace.workspaceSlug);
+                                CustomToast.showToast(
+                                  context,
+                                  message: 'Workspace deleted successfully',
+                                  toastType: ToastType.success,
+                                );
+                                Navigator.of(context).pop();
+                              } else {
+                                //show snackbar
+                                CustomToast.showToast(
+                                  context,
+                                  message: 'Workspace could not be deleted',
+                                  toastType: ToastType.warning,
+                                );
+                              }
+                            }
+                            Navigator.of(context).pop();
                           }
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(255, 12, 12, 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: workspaceProvider.selectWorkspaceState ==
-                                    StateEnum.loading ||
-                                workspaceProvider.leaveWorspaceState ==
-                                    StateEnum.loading
-                            ? Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor,
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(255, 12, 12, 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: workspaceProvider.selectWorkspaceState ==
+                                      StateEnum.loading ||
+                                  workspaceProvider.leaveWorspaceState ==
+                                      StateEnum.loading
+                              ? Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                    ),
                                   ),
-                                ),
-                              )
-                            : CustomText(
-                                widget.role == Role.admin
-                                    ? 'Delete Workspace'
-                                    : 'Leave workspace',
-                                type: FontStyle.Medium,
-                                fontWeight: FontWeightt.Semibold,
-                                color: Colors.white,
+                                )
+                              : Center(
+                                child: CustomText(
+                                    widget.role == Role.admin
+                                        ? 'Delete Workspace'
+                                        : 'Leave workspace',
+                                    type: FontStyle.Medium,
+                                    fontWeight: FontWeightt.Semibold,
+                                    color: Colors.white,
+                                  ),
                               ),
+                        ),
                       ),
                     ),
                   ],

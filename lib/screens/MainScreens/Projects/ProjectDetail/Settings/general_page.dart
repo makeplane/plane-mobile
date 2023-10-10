@@ -872,32 +872,25 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
       required void Function() onTap}) {
     return InkWell(
       onTap: onTap,
-      child: Row(
-        children: [
-          const SizedBox(height: 33),
-          CustomText(
-            title,
-            type: FontStyle.H6,
-            // color: Colors.black,
-          ),
-          const Spacer(),
-          isSelected
-              ? const Icon(
-                  Icons.done,
-                  color: Color.fromRGBO(8, 171, 34, 1),
-                )
-              // : false
-              //     ? const SizedBox(
-              //         height: 20,
-              //         width: 20,
-              //         child: CircularProgressIndicator(
-              //           strokeWidth: 2,
-              //           color: greyColor,
-              //         ),
-              //       )
-              : const SizedBox(),
-          const SizedBox(height: 33),
-        ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            CustomText(
+              title,
+              type: FontStyle.H6,
+              // color: Colors.black,
+            ),
+            const Spacer(),
+            isSelected
+                ? const Icon(
+                    Icons.done,
+                    color: Color.fromRGBO(8, 171, 34, 1),
+                  )
+                : const SizedBox(),
+            const SizedBox(height: 33),
+          ],
+        ),
       ),
     );
   }

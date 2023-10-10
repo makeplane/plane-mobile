@@ -188,9 +188,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           enableDrag: true,
                                           isScrollControlled: true,
                                           constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
+                                            maxHeight: height *
                                                 0.8,
                                           ),
                                           shape: const RoundedRectangleBorder(

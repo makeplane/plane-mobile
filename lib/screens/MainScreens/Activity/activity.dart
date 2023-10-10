@@ -462,14 +462,17 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                           TextSpan(
                                                                             recognizer: TapGestureRecognizer()
                                                                               ..onTap = () {
-                                                                                Navigator.of(context).push(MaterialPageRoute(
+                                                                                Navigator.of(context).push(
+                                                                                  MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                                                                          from: PreviousScreen.activity,
-                                                                                          projID: activityProvider.data[index]["project"],
-                                                                                          workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                          appBarTitle: activityProvider.data[index]['issue_detail'] != null ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
-                                                                                          issueId: activityProvider.data[index]["issue"],
-                                                                                        )));
+                                                                                      from: PreviousScreen.activity,
+                                                                                      projID: activityProvider.data[index]["project"],
+                                                                                      workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
+                                                                                      appBarTitle: activityProvider.data[index]['issue_detail'] != null ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
+                                                                                      issueId: activityProvider.data[index]["issue"],
+                                                                                    ),
+                                                                                  ),
+                                                                                );
                                                                               },
                                                                             text: activityProvider.data[index]['issue_detail'] != null
                                                                                 ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}'

@@ -68,7 +68,7 @@ dependencies:
   sentry_flutter: ^7.10.1
   shimmer: ^3.0.0
   posthog_flutter: ^3.1.0
-  flutter_inappwebview: ^5.7.2+3
+  flutter_inappwebview: ^5.8.0
   flutter_markdown: ^0.6.17+3
   lucide_icons: ^0.257.0
   dartz: ^0.10.1

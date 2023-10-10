@@ -249,7 +249,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                             });
                                       },
                                       child: Container(
-                                        height: 55,
+                                        height: 50,
                                         width:
                                             MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
@@ -424,7 +424,6 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                         .read(ProviderList.workspaceProvider)
                                         .getWorkspaces();
                                     // Wrap Navigator with SchedulerBinding to wait for rendering state before navigating
-
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -435,19 +434,16 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       ),
                                       (Route<dynamic> route) => false,
                                     );
-
-                                    // }
                                   },
                                 )
                               : Container(),
-
                           widget.fromHomeScreen
                               ? GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pop();
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.only(bottom: 20),
+                                    padding: const EdgeInsets.symmetric(vertical: 20),
                                     width: MediaQuery.of(context).size.width,
                                     child: Row(
                                       mainAxisAlignment:

@@ -33,7 +33,6 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
         modulesProvider.currentModule = widget.isFav
             ? modulesProvider.favModules[widget.index]
             : modulesProvider.modules[widget.index];
-        // modulesProvider.setState();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -90,7 +89,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                           : modulesProvider.modules[widget.index]['name']
                               .toString(),
                       overflow: TextOverflow.ellipsis,
-                      type: FontStyle.H6,
+                      type: FontStyle.Medium,
                       fontWeight: FontWeightt.Medium,
                       color: themeProvider.themeManager.primaryTextColor,
                     ),
@@ -126,7 +125,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                         75
                                     ? themeProvider.themeManager.successBackgroundColor
                                     : themeProvider.themeManager.tertiaryBackgroundDefaultColor,
-                            borderRadius: BorderRadius.circular(5)), // success 10
+                            borderRadius: BorderRadius.circular(5)),
                         height: 28,
                         child: Center(
                           child: Padding(
@@ -164,7 +163,6 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                                           75
                                       ? themeProvider.themeManager.textSuccessColor
                                       : themeProvider.themeManager.placeholderTextColor,
-                              //themeProvider.themeManager.textSuccessColor,
                             ),
                           ),
                         ),
@@ -173,7 +171,6 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       Container(
                         child: widget.isFav
                             ? GestureDetector(
-                                //visualDensity: VisualDensity.compact,
                                 onTap: () async {
                                   final String moduleID = modulesProvider
                                       .favModules[widget.index]['id'];

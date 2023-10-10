@@ -3,9 +3,11 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class MemeberLogoAlternativeWidget extends StatelessWidget {
-  const MemeberLogoAlternativeWidget(this.imageUrl, this.color, {super.key});
+  const MemeberLogoAlternativeWidget(this.imageUrl, this.color,
+      {this.type, super.key});
   final String imageUrl;
   final Color color;
+  final FontStyle? type;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +21,7 @@ class MemeberLogoAlternativeWidget extends StatelessWidget {
         child: CustomText(
           imageUrl.toString().toUpperCase(),
           color: Colors.white,
-          type: FontStyle.Medium,
+          type: type ?? FontStyle.Medium,
           fontWeight: FontWeightt.Semibold,
         ),
       ),

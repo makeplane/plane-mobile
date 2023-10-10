@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -258,67 +257,75 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      log(profileProvider.userProfile.avatar!
-                                          .toString());
-                                      if (profileProvider
-                                          .userProfile.avatar!.isNotEmpty) {
-                                        profileProvider.deleteAvatar();
-                                      }
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: themeProvider.themeManager
-                                                  .borderSubtle01Color),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: themeProvider.themeManager
-                                              .tertiaryBackgroundDefaultColor),
-                                      padding: const EdgeInsets.all(8),
-                                      child: Row(
-                                        children: [
-                                          CustomText(
-                                            'Remove',
-                                            type: FontStyle.Medium,
-                                            fontWeight: FontWeightt.Bold,
-                                            color: themeProvider
-                                                .themeManager.textErrorColor,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
+                                  profileProvider.userProfile.avatar == null ||
+                                          profileProvider.userProfile.avatar ==
+                                              ''
+                                      ? Container()
+                                      : GestureDetector(
+                                          onTap: () {
+                                            log(profileProvider
+                                                .userProfile.avatar!
+                                                .toString());
+                                            if (profileProvider.userProfile
+                                                .avatar!.isNotEmpty) {
+                                              profileProvider.deleteAvatar();
+                                            }
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .borderSubtle01Color),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .tertiaryBackgroundDefaultColor),
+                                            padding: const EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                CustomText(
+                                                  'Remove',
+                                                  type: FontStyle.Medium,
+                                                  fontWeight: FontWeightt.Bold,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .textErrorColor,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
                                 ],
                               ),
                             ),
                             const SizedBox(
                               height: 40,
                             ),
-                             Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'First name',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomRichText(
+                                widgets: [
+                                  TextSpan(
+                                      text: 'First name',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.tertiaryTextColor)),
+                                  TextSpan(
+                                      text: ' *',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.textErrorColor))
+                                ],
+                                type: FontStyle.Medium,
+                              ),
                             ),
-                          ),
                             const SizedBox(
                               height: 10,
                             ),
                             Container(
-                              // height: 50,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
@@ -342,29 +349,29 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                             Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'Last name',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomRichText(
+                                widgets: [
+                                  TextSpan(
+                                      text: 'Last name',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.tertiaryTextColor)),
+                                  TextSpan(
+                                      text: ' *',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.textErrorColor))
+                                ],
+                                type: FontStyle.Medium,
+                              ),
                             ),
-                          ),
                             const SizedBox(
                               height: 10,
                             ),
                             Container(
-                              // height: 50,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
@@ -416,24 +423,25 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                             Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomRichText(
-                              widgets: [
-                                TextSpan(
-                                    text: 'Email',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor)),
-                                TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                        color: themeProvider
-                                            .themeManager.textErrorColor))
-                              ],
-                              type: FontStyle.Medium,
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomRichText(
+                                widgets: [
+                                  TextSpan(
+                                      text: 'Email',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.tertiaryTextColor)),
+                                  TextSpan(
+                                      text: ' *',
+                                      style: TextStyle(
+                                          color: themeProvider
+                                              .themeManager.textErrorColor))
+                                ],
+                                type: FontStyle.Medium,
+                              ),
                             ),
-                          ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -533,7 +541,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   ],
                                 ),
                               ),
-                              // ),
                             ),
                             const SizedBox(
                               height: 30,
@@ -594,7 +601,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                   ],
                                 ),
                               ),
-                              // ),
                             ),
                             const SizedBox(
                               height: 30,

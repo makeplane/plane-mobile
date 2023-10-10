@@ -4,13 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/models/chart_model.dart';
+import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/extensions/list_extensions.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/completion_percentage.dart';
 import 'package:plane/widgets/custom_progress_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 import 'package:plane/widgets/profile_circle_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '/utils/enums.dart';
@@ -99,13 +103,26 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     type: FontStyle.Medium,
                     fontWeight: FontWeightt.Medium,
                   ),
-                  CustomProgressBar(width: width * 0.5, itemValue: [
-                    cyclesProvider.cyclesActiveData[0]['backlog_issues'] ?? 0,
-                    cyclesProvider.cyclesActiveData[0]['unstarted_issues'] ?? 0,
-                    cyclesProvider.cyclesActiveData[0]['started_issues'] ?? 0,
-                    cyclesProvider.cyclesActiveData[0]['cancelled_issues'] ?? 0,
-                    cyclesProvider.cyclesActiveData[0]['completed_issues'] ?? 0,
-                  ])
+                  CustomProgressBar.withColorOverride(
+                    width: width * 0.5,
+                    itemValue: [
+                      cyclesProvider.cyclesActiveData[0]['backlog_issues'] ?? 0,
+                      cyclesProvider.cyclesActiveData[0]['unstarted_issues'] ??
+                          0,
+                      cyclesProvider.cyclesActiveData[0]['started_issues'] ?? 0,
+                      cyclesProvider.cyclesActiveData[0]['cancelled_issues'] ??
+                          0,
+                      cyclesProvider.cyclesActiveData[0]['completed_issues'] ??
+                          0,
+                    ],
+                    itemColors: const [
+                      Color(0xFFCED4DA),
+                      Color(0xFF26B5CE),
+                      Color(0xFFF7AE59),
+                      Color(0xFFD687FF),
+                      greenHighLight
+                    ],
+                  )
                 ],
               ),
               children: [
@@ -184,7 +201,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                     fontWeight: FontWeightt.Medium,
                   )),
               children: [
-                sixthPart(),
+                sixthPart(cyclesProvider),
               ],
             ),
           ),
@@ -376,10 +393,22 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
                                       null
                               ? CircleAvatar(
                                   radius: 10,
-                                  backgroundImage: Image.network(
-                                          cyclesProvider.cyclesActiveData[index]
-                                              ['owned_by']['avatar'])
-                                      .image,
+                                  child: MemberLogoWidget(
+                                    size: 20,
+                                    padding: EdgeInsets.zero,
+                                    boarderRadius: 100,
+                                    imageUrl:
+                                        cyclesProvider.cyclesActiveData[index]
+                                            ['owned_by']['avatar'],
+                                    colorForErrorWidget: themeProvider
+                                        .themeManager
+                                        .tertiaryBackgroundDefaultColor,
+                                    memberNameFirstLetterForErrorWidget: [
+                                      'first_name'
+                                    ][0]
+                                        .toString()
+                                        .toUpperCase(),
+                                  ),
                                 )
                               : CircleAvatar(
                                   radius: 10,
@@ -629,88 +658,97 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        children: [
-          ...List.generate(
-            cyclesProvider
-                .cyclesActiveData[widget.index]['distribution']['assignees']
-                .length,
-            (idx) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: cyclesProvider.cyclesActiveData[widget.index]
-                                            ['distribution']['assignees'][idx]
-                                        ['avatar'] !=
-                                    null &&
-                                cyclesProvider.cyclesActiveData[widget.index]
-                                            ['distribution']['assignees'][idx]
-                                        ['avatar'] !=
-                                    ''
-                            ? CircleAvatar(
-                                radius: 10,
-                                backgroundImage: NetworkImage(cyclesProvider
+      child: cyclesProvider
+              .cyclesActiveData[widget.index]['distribution']['assignees']
+              .isEmpty
+          ? noDataWidget(data: 'No assignees', themeProvider: themeProvider)
+          : Column(
+              children: [
+                ...List.generate(
+                  cyclesProvider
+                      .cyclesActiveData[widget.index]['distribution']
+                          ['assignees']
+                      .length,
+                  (idx) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: cyclesProvider.cyclesActiveData[
+                                                  widget.index]['distribution']
+                                              ['assignees'][idx]['avatar'] !=
+                                          null &&
+                                      cyclesProvider.cyclesActiveData[
+                                                  widget.index]['distribution']
+                                              ['assignees'][idx]['avatar'] !=
+                                          ''
+                                  ? CircleAvatar(
+                                      radius: 10,
+                                      backgroundImage: NetworkImage(
+                                          cyclesProvider.cyclesActiveData[
+                                                  widget.index]['distribution']
+                                              ['assignees'][idx]['avatar']),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: darkSecondaryBGC,
+                                      child: Center(
+                                        child: CustomText(
+                                          cyclesProvider.cyclesActiveData[
+                                                                  widget.index]
+                                                              ['distribution']
+                                                          ['assignees'][idx]
+                                                      ['display_name'] ==
+                                                  null
+                                              ? ''
+                                              : cyclesProvider
+                                                  .cyclesActiveData[widget.index]
+                                                      ['distribution']
+                                                      ['assignees'][idx]
+                                                      ['display_name'][0]
+                                                  .toString()
+                                                  .toUpperCase(),
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                            CustomText(
+                              cyclesProvider.cyclesActiveData[widget.index]
+                                          ['distribution']['assignees'][idx]
+                                      ['display_name'] ??
+                                  'No Assignees',
+                              fontWeight: FontWeightt.Regular,
+                              color:
+                                  themeProvider.themeManager.secondaryTextColor,
+                              type: FontStyle.Large,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            CompletionPercentage(
+                                value: cyclesProvider
                                             .cyclesActiveData[widget.index]
                                         ['distribution']['assignees'][idx]
-                                    ['avatar']),
-                              )
-                            : CircleAvatar(
-                                radius: 10,
-                                backgroundColor: darkSecondaryBGC,
-                                child: Center(
-                                  child: CustomText(
-                                    cyclesProvider.cyclesActiveData[widget
-                                                        .index]['distribution']
-                                                    ['assignees'][idx]
-                                                ['display_name'] ==
-                                            null
-                                        ? ''
-                                        : cyclesProvider
+                                    ['completed_issues'],
+                                totalValue: cyclesProvider
                                             .cyclesActiveData[widget.index]
-                                                ['distribution']['assignees']
-                                                [idx]['display_name'][0]
-                                            .toString()
-                                            .toUpperCase(),
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                      ),
-                      CustomText(
-                        cyclesProvider.cyclesActiveData[widget.index]
-                                    ['distribution']['assignees'][idx]
-                                ['display_name'] ??
-                            'No Assignees',
-                        fontWeight: FontWeightt.Regular,
-                        color: themeProvider.themeManager.secondaryTextColor,
-                        type: FontStyle.Large,
-                      ),
-                    ],
+                                        ['distribution']['assignees'][idx]
+                                    ['total_issues']),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      CompletionPercentage(
-                          value: cyclesProvider.cyclesActiveData[widget.index]
-                                  ['distribution']['assignees'][idx]
-                              ['completed_issues'],
-                          totalValue:
-                              cyclesProvider.cyclesActiveData[widget.index]
-                                      ['distribution']['assignees'][idx]
-                                  ['total_issues']),
-                    ],
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -722,13 +760,10 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
-          cyclesProvider.cyclesActiveData[widget.index]['distribution']
-                      ['labels'] ==
-                  null
-              ? const CustomText(
-                  'No labels found',
-                  type: FontStyle.Medium,
-                )
+          (cyclesProvider.cyclesActiveData[widget.index]['distribution']
+                      ['labels'] as List)
+                  .isNullOrEmpty()
+              ? noDataWidget(data: 'No labels', themeProvider: themeProvider)
               : ListView.builder(
                   shrinkWrap: true,
                   primary: false,
@@ -799,63 +834,69 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     );
   }
 
-  Widget sixthPart() {
+  Widget sixthPart(CyclesProvider cyclesProvider) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       alignment: Alignment.center,
-      child: Column(children: [
-        const SizedBox(height: 10),
-        SizedBox(
-            height: 200,
-            child: SfCartesianChart(
-                primaryYAxis: NumericAxis(
-                  majorGridLines:
-                      const MajorGridLines(width: 0), // Remove major grid lines
-                ),
-                primaryXAxis: CategoryAxis(
-                    labelPlacement:
-                        LabelPlacement.betweenTicks, // Adjust label placement
-                    interval: chartData.length > 5 ? 3 : 1,
-                    majorGridLines: const MajorGridLines(
-                      width: 0,
-                    ), // Remove major grid lines
-                    minorGridLines: const MinorGridLines(width: 0),
-                    axisLabelFormatter: (axisLabelRenderArgs) {
-                      return ChartAxisLabel(
-                          DateFormat('dd MMM')
-                              .format(DateTime.parse(axisLabelRenderArgs.text)),
-                          const TextStyle(fontWeight: FontWeight.normal));
-                    }),
-                series: <ChartSeries>[
-                  // Renders area chart
-                  AreaSeries<ChartData, DateTime>(
-                      gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Colors.white.withOpacity(0.5),
-                            Colors.white.withOpacity(0.2),
-                            primaryColor.withOpacity(0.2),
-                            primaryColor.withOpacity(0.3),
-                          ]),
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y),
-                  LineSeries<ChartData, DateTime>(
-                    dashArray: [5.0, 5.0],
-                    dataSource: <ChartData>[
-                      ChartData(chartData.first.x,
-                          chartData.first.y), // First data point
-                      ChartData(chartData.last.x,
-                          0.0), // Data point at current time with Y-value of last data point
-                    ],
-                    xValueMapper: (ChartData data, _) => data.x,
-                    yValueMapper: (ChartData data, _) => data.y,
-                  ),
-                ])),
-      ]),
+      child: cyclesProvider.cyclesActiveData[widget.index]['total_issues'] -
+                  cyclesProvider.cyclesActiveData[widget.index]
+                      ['completed_issues'] ==
+              0
+          ? noDataWidget(
+              data: 'No pending issues', themeProvider: themeProvider)
+          : Column(children: [
+              const SizedBox(height: 10),
+              SizedBox(
+                  height: 200,
+                  child: SfCartesianChart(
+                      primaryYAxis: NumericAxis(
+                        majorGridLines: const MajorGridLines(
+                            width: 0), // Remove major grid lines
+                      ),
+                      primaryXAxis: CategoryAxis(
+                          labelPlacement: LabelPlacement
+                              .betweenTicks, // Adjust label placement
+                          interval: chartData.length > 5 ? 3 : 1,
+                          majorGridLines: const MajorGridLines(
+                            width: 0,
+                          ), // Remove major grid lines
+                          minorGridLines: const MinorGridLines(width: 0),
+                          axisLabelFormatter: (axisLabelRenderArgs) {
+                            return ChartAxisLabel(
+                                DateFormat('dd MMM').format(
+                                    DateTime.parse(axisLabelRenderArgs.text)),
+                                const TextStyle(fontWeight: FontWeight.normal));
+                          }),
+                      series: <ChartSeries>[
+                        // Renders area chart
+                        AreaSeries<ChartData, DateTime>(
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.white.withOpacity(0.5),
+                                  Colors.white.withOpacity(0.2),
+                                  primaryColor.withOpacity(0.2),
+                                  primaryColor.withOpacity(0.3),
+                                ]),
+                            dataSource: chartData,
+                            xValueMapper: (ChartData data, _) => data.x,
+                            yValueMapper: (ChartData data, _) => data.y),
+                        LineSeries<ChartData, DateTime>(
+                          dashArray: [5.0, 5.0],
+                          dataSource: <ChartData>[
+                            ChartData(chartData.first.x,
+                                chartData.first.y), // First data point
+                            ChartData(chartData.last.x,
+                                0.0), // Data point at current time with Y-value of last data point
+                          ],
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y,
+                        ),
+                      ])),
+            ]),
     );
   }
 
@@ -890,5 +931,16 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
     if (decimalValue == null) return 0.0;
     final double value = decimalValue / 100;
     return value == 10 ? 1.0 : value;
+  }
+
+  Widget noDataWidget({String? data, required ThemeProvider themeProvider}) {
+    return Container(
+      padding: const EdgeInsets.only(left: 20, bottom: 20),
+      alignment: Alignment.centerLeft,
+      child: CustomText(
+        data ?? 'No data',
+        color: themeProvider.themeManager.placeholderTextColor,
+      ),
+    );
   }
 }

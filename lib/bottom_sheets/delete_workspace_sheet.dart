@@ -272,7 +272,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                               //   return;
                               // }
                               final isSuccesfullyDeleted =
-                                  await workspaceProvider.deleteWorkspace();
+                                  await ref.read(ProviderList.workspaceProvider).deleteWorkspace();
                               if (isSuccesfullyDeleted) {
                                 postHogService(
                                     eventName: 'DELETE_WORKSPACE',

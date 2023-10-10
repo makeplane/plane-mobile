@@ -96,7 +96,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(ProviderList.myIssuesProvider).changeTabIndex(index: 0);
+      ref.read(ProviderList.myIssuesProvider).changeTabIndex(index: 0);
     });
     dynamic issueProvider;
     if (widget.issueCategory == IssueCategory.cycleIssues) {
@@ -149,7 +149,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
             : prov.issues.projectView == ProjectView.calendar
                 ? 2
                 : 3;
-    
+
     super.initState();
   }
 
@@ -303,39 +303,19 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                 ProjectView.list;
                             myIssuesProvider.issues.groupBY =
                                 GroupBY.stateGroups;
-                            myIssuesProvider.filterIssues();
                             myIssuesProvider.setState();
                             myIssuesProvider.updateMyIssueView();
                             Navigator.of(context).pop();
                           },
                           child: Row(
                             children: [
-                              Radio(
-                                  visualDensity: const VisualDensity(
-                                    horizontal: VisualDensity.minimumDensity,
-                                    vertical: VisualDensity.minimumDensity,
-                                  ),
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  fillColor: selected == 1
-                                      ? null
-                                      : MaterialStateProperty.all<Color>(
-                                          themeProvider.themeManager
-                                              .borderSubtle01Color),
-                                  groupValue: selected,
-                                  activeColor:
-                                      themeProvider.themeManager.primaryColour,
-                                  value: 1,
-                                  onChanged: (val) {
-                                    myIssuesProvider.issues.projectView =
-                                        ProjectView.list;
-                                    myIssuesProvider.issues.groupBY =
-                                        GroupBY.stateGroups;
-                                    myIssuesProvider.filterIssues();
-                                    myIssuesProvider.setState();
-                                    myIssuesProvider.updateMyIssueView();
-                                    Navigator.of(context).pop();
-                                  }),
+                              selected == 1
+                                  ? Icon(
+                                      Icons.radio_button_on,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
+                                    )
+                                  : Icon(Icons.radio_button_off, color: themeProvider.themeManager.borderSubtle01Color,),
                               const SizedBox(width: 10),
                               CustomText(
                                 'List View',
@@ -367,29 +347,13 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                           },
                           child: Row(
                             children: [
-                              Radio(
-                                  visualDensity: const VisualDensity(
-                                    horizontal: VisualDensity.minimumDensity,
-                                    vertical: VisualDensity.minimumDensity,
-                                  ),
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  fillColor: selected == 0
-                                      ? null
-                                      : MaterialStateProperty.all<Color>(
-                                          themeProvider.themeManager
-                                              .borderSubtle01Color),
-                                  groupValue: selected,
-                                  activeColor:
-                                      themeProvider.themeManager.primaryColour,
-                                  value: 0,
-                                  onChanged: (val) {
-                                    myIssuesProvider.issues.projectView =
-                                        ProjectView.kanban;
-                                    myIssuesProvider.setState();
-                                    myIssuesProvider.updateMyIssueView();
-                                    Navigator.of(context).pop();
-                                  }),
+                              selected == 0
+                                  ? Icon(
+                                      Icons.radio_button_on,
+                                      color: themeProvider
+                                          .themeManager.primaryColour,
+                                    )
+                                  : Icon(Icons.radio_button_off, color: themeProvider.themeManager.borderSubtle01Color,),
                               const SizedBox(width: 10),
                               CustomText(
                                 'Kanban View',

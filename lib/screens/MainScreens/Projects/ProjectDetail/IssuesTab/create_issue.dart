@@ -70,9 +70,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     prov.createIssueProjectData = widget.projectId != null
         ? projectProvider.projects
             .firstWhere((element) => element['id'] == widget.projectId)
-        : ref.read(ProviderList.projectProvider).currentProject;
-    // prov.createIssueProjectData['id'] = widget.projectId ??
-    //     ref.read(ProviderList.projectProvider).currentProject['id'];
+        : projectProvider.currentProject;
     final themeProvider = ref.read(ProviderList.themeProvider);
     tempStatesData = prov.statesData;
     tempStates = prov.states;
@@ -347,19 +345,10 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                           iconList[issuesProvider
                                                                   .createIssueProjectData[
                                                               'icon_prop']['name']],
-                                                          color: Color(
-                                                            int.parse(
-                                                              issuesProvider
+                                                          color: issuesProvider
                                                                   .createIssueProjectData[
                                                                       'icon_prop']
-                                                                      ['color']
-                                                                  .toString()
-                                                                  .replaceAll(
-                                                                    '#',
-                                                                    '0xFF',
-                                                                  ),
-                                                            ),
-                                                          ),
+                                                                      ['color'].toString().toColor()
                                                         )
                                                       : Container(
                                                           height: 20,

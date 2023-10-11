@@ -814,10 +814,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
               : const SizedBox(),
           provider.issues.displayProperties.id
               ? SizedBox(
-                  width: 80, // So that id will take a fixed space and the starting position of issue title will be same
+                  width:
+                      70, // So that id will take a fixed space and the starting position of issue title will be same
                   child: CustomRichText(
                       maxLines: 1,
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.ellipsis,
                       type: FontStyle.Small,
                       color: themeProvider.themeManager.placeholderTextColor,
                       widgets: [
@@ -838,13 +839,16 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                       ]))
               : Container(),
           Expanded(
-            child: CustomText(
-              provider.issuesResponse[widget.cardIndex]['name']
-                  .toString()
-                  .trim(),
-              type: FontStyle.Small,
-              maxLines: 1,
-              textAlign: TextAlign.start,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: CustomText(
+                provider.issuesResponse[widget.cardIndex]['name']
+                    .toString()
+                    .trim(),
+                type: FontStyle.Small,
+                maxLines: 1,
+                textAlign: TextAlign.start,
+              ),
             ),
           ),
           provider.issues.displayProperties.assignee == true

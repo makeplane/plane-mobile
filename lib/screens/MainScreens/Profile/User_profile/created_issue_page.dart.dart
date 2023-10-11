@@ -146,9 +146,11 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                               size: 18,
                                             ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 8),
+                        SizedBox(
+                          width: 70,
                           child: CustomRichText(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             type: FontStyle.Small,
                             color:
                                 themeProvider.themeManager.placeholderTextColor,
@@ -174,10 +176,8 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                            ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: CustomText(
                               userProfileProvider.createdIssues![index].name
                                   .toString()

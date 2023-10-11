@@ -19,8 +19,31 @@ class ReGenerateToken extends Interceptor {
     try {
       if (err.response?.statusCode == status401Unauthorized && retryCount < 1) {
         retryCount++;
+        final Response response;
         await generateToken(dio);
-        final response = await dio.get(err.requestOptions.uri.toString());
+        switch (err.requestOptions.method) {
+          case 'GET':
+            response = await dio.get(err.requestOptions.uri.toString());
+            break;
+          case 'POST':
+            response = await dio.post(err.requestOptions.uri.toString());
+            break;
+          case 'PUT':
+            response = await dio.put(err.requestOptions.uri.toString());
+            break;
+          case 'DELETE':
+            response = await dio.delete(err.requestOptions.uri.toString());
+            break;
+          case 'PATCH':
+            response = await dio.patch(err.requestOptions.uri.toString());
+            break;
+          default:
+            response = await dio.get(err.requestOptions.uri.toString());
+            break;
+        }
+
+        retryCount = 0;
+        log(response.toString());
         handler.resolve(response);
       } else {
         handler.reject(err);
@@ -39,7 +62,6 @@ class ReGenerateToken extends Interceptor {
     // await Future.delayed(const Duration(seconds: 1));
     // log('TOKEN GENERATED');
     // Const.accessToken = Const.accessToken!.split('|').first;
-    // print(Const.accessToken);
     // dio.options.headers['Authorization'] = 'Bearer ${Const.accessToken!}';
 
     try {

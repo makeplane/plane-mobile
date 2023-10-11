@@ -36,6 +36,8 @@ class CustomRichText extends ConsumerWidget {
     final style = getStyle(type, themeProvider);
 
     return RichText(
+      overflow: overflow ?? TextOverflow.clip,
+      maxLines: maxLines,
       text: TextSpan(children: widgets, style: style.merge(style)),
     );
   }

@@ -4,16 +4,15 @@ import 'dart:io';
 
 // Package imports:
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane/services/shared_preference_service.dart';
+import 'package:plane/services/interceptors/token_refresh_handler.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:retry/retry.dart';
 
 class DioConfig {
   // Static Dio created to directly access Dio client
   static Dio dio = Dio();
+
   static Dio getDio({
     dynamic data,
     bool hasAuth = true,
@@ -41,52 +40,16 @@ class DioConfig {
     );
 
     dio.options = options;
-    dio.interceptors.add(
-        // InterceptorsWrapper(onRequest:
-        //     (RequestOptions options, RequestInterceptorHandler handler) async {
-        //   if (hasBody) options.data = data;
-        //   return handler.next(options);
-        // }),
-        InterceptorsWrapper(
-      onRequest:
-          (RequestOptions options, RequestInterceptorHandler handler) async {
-        if (hasBody) options.data = data;
-        return handler.next(options);
-      },
-      onError: (DioException error, ErrorInterceptorHandler handler) async {
-        // bool isConnected = await ConnectionService.checkConnectivity();
-        // if (!isConnected) {
-        //   Navigator.push(
-        //       Const.globalKey.currentContext!,
-        //       MaterialPageRoute(
-        //           builder: (ctx) => Scaffold(
-        //                   body: errorState(
-        //                 context: Const.globalKey.currentContext!,
-        //               ))));
-        // }
-        if (error.response?.statusCode == 401) {
-          await SharedPrefrenceServices.instance.clear();
-          Const.accessToken = '';
-          Const.userId = null;
-          Navigator.push(Const.globalKey.currentContext!,
-              MaterialPageRoute(builder: (ctx) => const OnBoardingScreen()));
-        }
-        // Retrieve the error response data
-        final errorResponse = error.response?.data;
-
-        // Create a new DioError instance with the error response data
-        final DioException newError = DioException(
-          response: error.response,
-          requestOptions: error.requestOptions,
-          error: errorResponse,
-        );
-
-        // Return the new DioError instance
-        handler.reject(newError);
-      },
-    )
-        // DioFirebasePerformanceInterceptor(),
-        );
+    dio.interceptors.addAll([
+      InterceptorsWrapper(
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
+          if (hasBody) options.data = data;
+          return handler.next(options);
+        },
+      ),
+      ReGenerateToken(dio)
+    ]);
 
     return dio;
   }

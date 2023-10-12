@@ -149,8 +149,8 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                         ),
                         Row(
                           children: [
-                            IconButton(
-                              onPressed: () {
+                            GestureDetector(
+                              onTap: () {
                                 showModalBottomSheet(
                                   constraints:
                                       BoxConstraints(maxHeight: height * 0.8),
@@ -187,7 +187,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                   },
                                 );
                               },
-                              icon: Icon(
+                              child: Icon(
                                 Icons.edit_outlined,
                                 color: themeProvider
                                     .themeManager.placeholderTextColor,

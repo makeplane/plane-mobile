@@ -70,7 +70,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
       FocusScope.of(context).unfocus();
     } else {
       isSearched = false;
-      searchController.text = '';
+      // searchController.text = '';
     }
 
     setState(() {
@@ -255,19 +255,30 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                       children: [
                         Container(
                           padding: const EdgeInsets.only(top: 15, left: 10),
-                          //   height: 50,
                           width: MediaQuery.of(context).size.width - 130,
                           child: TextFormField(
-                              controller: searchController,
-                              decoration: themeProvider
-                                  .themeManager.textFieldDecoration
-                                  .copyWith(
-                                labelText: 'Search for images',
-                                // labelStyle: TextStyle(
-                                //     color: themeProvider.isDarkThemeEnabled
-                                //         ? darkSecondaryTextColor
-                                //         : lightSecondaryTextColor),
-                              )),
+                            controller: searchController,
+                            onChanged: (value) {
+                              if (value.length == 1 || value.isEmpty) {
+                                setState(() {});
+                              }
+                            },
+                            decoration: themeProvider
+                                .themeManager.textFieldDecoration
+                                .copyWith(
+                                    hintText: 'Search for images',
+                                    suffixIcon: searchController.text.isNotEmpty
+                                        ? GestureDetector(
+                                            onTap: () => setState(() {
+                                              searchController.clear();
+                                            }),
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              size: 20,
+                                            ),
+                                          )
+                                        : const SizedBox()),
+                          ),
                         ),
                         const SizedBox(
                           width: 20,
@@ -278,7 +289,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                               images.clear();
                               page = 1;
 
-                              isSearched ? getImages(true) : getImages(false);
+                              getImages(true);
                             },
                             child: Container(
                               margin: const EdgeInsets.only(right: 10, top: 15),
@@ -289,7 +300,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: CustomText(
-                                isSearched ? 'Clear' : 'Search',
+                                'Search',
                                 type: FontStyle.Medium,
                                 fontWeight: FontWeightt.Bold,
                                 color: themeProvider.themeManager.textonColor,

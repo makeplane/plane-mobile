@@ -461,10 +461,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     Container(
                       width: MediaQuery.of(context).size.width - 105,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
+                          vertical: 15, horizontal: 10),
                       child: CustomText(
                         menus[index]['menu'],
                         type: FontStyle.Medium,
+                        height: 1,
                         color: themeProvider.themeManager.primaryColour,
                         textAlign: TextAlign.start,
                       ),

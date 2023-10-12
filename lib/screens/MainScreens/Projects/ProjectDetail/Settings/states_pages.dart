@@ -142,6 +142,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               issuesProvider.statesData[states[index]][idx]
                                   ['name'],
                               type: FontStyle.Medium,
+                              height: 1,
                               color:
                                   themeProvider.themeManager.primaryTextColor,
                             ),

@@ -388,8 +388,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                     .primaryTextColor,
                                                 fontWeight: FontWeightt.Medium,
                                               ),
-                                              const Icon(
+                                               Icon(
                                                 Icons.keyboard_arrow_down,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
                                               )
                                             ],
                                           )

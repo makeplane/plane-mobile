@@ -492,7 +492,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               Container(
                 margin: const EdgeInsets.all(8),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
                   color: themeProvider.themeManager.toastErrorColor,
@@ -503,6 +503,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         flex: flexForUpcomingAndOverdueWidgets[0],
                         child: CustomText(
                           'Overdue',
+                          height: 1,
                           color: themeProvider.themeManager.primaryTextColor,
                           fontWeight: FontWeightt.Semibold,
                         )),
@@ -513,6 +514,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         flex: flexForUpcomingAndOverdueWidgets[1],
                         child: CustomText(
                           'Issue',
+                          height: 1,
                           color: themeProvider.themeManager.primaryTextColor,
                           fontWeight: FontWeightt.Semibold,
                         )),
@@ -520,6 +522,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       flex: flexForUpcomingAndOverdueWidgets[2],
                       child: CustomText(
                         'Due Date',
+                        height: 1,
                         color: themeProvider.themeManager.primaryTextColor,
                         fontWeight: FontWeightt.Semibold,
                       ),

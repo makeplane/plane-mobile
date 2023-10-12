@@ -6,14 +6,18 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/services/interceptors/token_refresh_handler.dart';
+import 'package:plane/services/log.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:retry/retry.dart';
 
 class DioConfig {
   // Static Dio created to directly access Dio client
   static Dio dio = Dio();
+  static bool refreshingToken = false;
+  static RequestInterceptorHandler? nextHandler;
+  static RequestOptions? nextOptions;
 
-  static Dio getDio({
+  Dio getDio({
     dynamic data,
     bool hasAuth = true,
     bool hasBody = true,
@@ -40,16 +44,19 @@ class DioConfig {
     );
 
     dio.options = options;
-    dio.interceptors.addAll([
-      InterceptorsWrapper(
-        onRequest:
-            (RequestOptions options, RequestInterceptorHandler handler) async {
-          if (hasBody) options.data = data;
-          return handler.next(options);
-        },
-      ),
-      ReGenerateToken(dio)
-    ]);
+    if (dio.interceptors.length == 1) {
+      Log.info('Interceptor added');
+      dio.interceptors.addAll([
+        ReGenerateToken(dio),
+        // InterceptorsWrapper(
+        //   onRequest: (RequestOptions options,
+        //       RequestInterceptorHandler handler) async {
+        //     if (hasBody) options.data = data;
+        //     return handler.reject(DioException(requestOptions: options));
+        //   },
+        // ),
+      ]);
+    }
 
     return dio;
   }

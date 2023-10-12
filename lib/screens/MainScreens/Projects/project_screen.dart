@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/global_search_sheet.dart';
+import 'package:plane/config/const.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
@@ -440,6 +441,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                       ? Container()
                       : ListTile(
                           onTap: () {
+                            Const.accessToken = "${Const.accessToken!}|";
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
                               ref.read(ProviderList.issuesProvider).clearData();

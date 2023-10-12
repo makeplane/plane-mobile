@@ -102,10 +102,12 @@ class ProjectsProvider extends ChangeNotifier {
         .workspaceSlug;
 
     prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
+
     prov.getProjectMembers(
       slug: workspaceSlug,
       projID: currentProject['id'],
     );
+    // return;
     ref.read(ProviderList.estimatesProvider).getEstimates(
           slug: workspaceSlug,
           projID: currentProject['id'],

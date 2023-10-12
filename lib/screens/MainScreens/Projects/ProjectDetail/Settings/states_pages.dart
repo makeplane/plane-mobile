@@ -95,161 +95,169 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                   )
                 ],
               ),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                primary: false,
-                shrinkWrap: true,
-                itemCount: issuesProvider.statesData[states[index]].length,
-                itemBuilder: (context, idx) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.only(
-                      left: 14,
-                    ),
-                    decoration: BoxDecoration(
-                        color: themeProvider
-                            .themeManager.primaryBackgroundDefaultColor,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                            color: themeProvider
-                                .themeManager.borderSubtle01Color)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              states[index] == 'backlog'
-                                  ? 'assets/svg_images/circle.svg'
-                                  : states[index] == 'cancelled'
-                                      ? 'assets/svg_images/cancelled.svg'
-                                      : states[index] == 'completed'
-                                          ? 'assets/svg_images/done.svg'
-                                          : states[index] == 'started'
-                                              ? 'assets/svg_images/in_progress.svg'
-                                              : 'assets/svg_images/circle.svg',
-                              colorFilter: ColorFilter.mode(
-                                  getColorFromIssueProvider(
-                                      issuesProvider, index, idx),
-                                  BlendMode.srcIn),
-                              height: 20,
-                              width: 20,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomText(
-                              issuesProvider.statesData[states[index]][idx]
-                                  ['name'],
-                              type: FontStyle.Medium,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  constraints:
-                                      BoxConstraints(maxHeight: height * 0.8),
-                                  enableDrag: true,
-                                  isScrollControlled: true,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                              .viewInsets
-                                              .bottom),
-                                      child: AddUpdateState(
-                                        groupIndex: index,
-                                        stateKey: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ["group"],
-                                        method: CRUD.update,
-                                        stateId: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['id'],
-                                        name: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['name'],
-                                        color: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['color'],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(
-                                Icons.edit_outlined,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
+              issuesProvider.statesData[states[index]] == null
+                  ? const SizedBox.shrink()
+                  : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount:
+                          issuesProvider.statesData[states[index]].length,
+                      itemBuilder: (context, idx) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.only(
+                            left: 14,
+                          ),
+                          decoration: BoxDecoration(
+                              color: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    states[index] == 'backlog'
+                                        ? 'assets/svg_images/circle.svg'
+                                        : states[index] == 'cancelled'
+                                            ? 'assets/svg_images/cancelled.svg'
+                                            : states[index] == 'completed'
+                                                ? 'assets/svg_images/done.svg'
+                                                : states[index] == 'started'
+                                                    ? 'assets/svg_images/in_progress.svg'
+                                                    : 'assets/svg_images/circle.svg',
+                                    colorFilter: ColorFilter.mode(
+                                        getColorFromIssueProvider(
+                                            issuesProvider, index, idx),
+                                        BlendMode.srcIn),
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  CustomText(
+                                    issuesProvider.statesData[states[index]]
+                                        [idx]['name'],
+                                    type: FontStyle.Medium,
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor,
+                                  ),
+                                ],
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                if (issuesProvider.statesData[states[index]]
-                                        [idx]['default'] ==
-                                    true) {
-                                  CustomToast.showToast(
-                                    context,
-                                    message: 'Cannot delete the default state',
-                                    toastType: ToastType.failure,
-                                  );
-                                } else if (issuesProvider
-                                        .statesData[states[index]].length ==
-                                    1) {
-                                  CustomToast.showToast(
-                                    context,
-                                    message: 'Cannot have an empty group',
-                                    toastType: ToastType.failure,
-                                  );
-                                } else {
-                                  showModalBottomSheet(
-                                    constraints:
-                                        const BoxConstraints(maxHeight: 345),
-                                    enableDrag: true,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20))),
-                                    context: context,
-                                    builder: (context) {
-                                      return DeleteStateSheet(
-                                        stateName: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['name'],
-                                        stateId: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['id'],
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        constraints: BoxConstraints(
+                                            maxHeight: height * 0.8),
+                                        enableDrag: true,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20))),
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom),
+                                            child: AddUpdateState(
+                                              groupIndex: index,
+                                              stateKey: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]["group"],
+                                              method: CRUD.update,
+                                              stateId: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['id'],
+                                              name: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['name'],
+                                              color: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['color'],
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
-                                  );
-                                }
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg_images/delete_icon.svg',
-                                height: 20,
-                                width: 20,
-                                colorFilter: ColorFilter.mode(
-                                    themeProvider.themeManager.textErrorColor,
-                                    BlendMode.srcIn),
+                                    child: Icon(
+                                      Icons.edit_outlined,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      if (issuesProvider
+                                                  .statesData[states[index]]
+                                              [idx]['default'] ==
+                                          true) {
+                                        CustomToast.showToast(
+                                          context,
+                                          message:
+                                              'Cannot delete the default state',
+                                          toastType: ToastType.failure,
+                                        );
+                                      } else if (issuesProvider
+                                              .statesData[states[index]]
+                                              .length ==
+                                          1) {
+                                        CustomToast.showToast(
+                                          context,
+                                          message: 'Cannot have an empty group',
+                                          toastType: ToastType.failure,
+                                        );
+                                      } else {
+                                        showModalBottomSheet(
+                                          constraints: const BoxConstraints(
+                                              maxHeight: 345),
+                                          enableDrag: true,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20))),
+                                          context: context,
+                                          builder: (context) {
+                                            return DeleteStateSheet(
+                                              stateName: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['name'],
+                                              stateId: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['id'],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    icon: SvgPicture.asset(
+                                      'assets/svg_images/delete_icon.svg',
+                                      height: 20,
+                                      width: 20,
+                                      colorFilter: ColorFilter.mode(
+                                          themeProvider
+                                              .themeManager.textErrorColor,
+                                          BlendMode.srcIn),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ],
           );
         },

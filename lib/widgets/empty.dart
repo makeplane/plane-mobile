@@ -60,7 +60,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(
@@ -235,7 +235,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(
@@ -287,7 +287,8 @@ class EmptyPlaceholder {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius:
+                          BorderRadius.circular(buttonBorderRadiusMedium),
                       color: themeProvider.themeManager.primaryColour,
                     ),
                     child: const Row(
@@ -398,7 +399,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(
@@ -506,7 +507,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(
@@ -632,7 +633,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(
@@ -717,7 +718,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: ref.watch(ProviderList.issuesProvider).joinprojectState ==
@@ -809,7 +810,8 @@ class EmptyPlaceholder {
                   margin: const EdgeInsets.only(top: 30),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius:
+                        BorderRadius.circular(buttonBorderRadiusMedium),
                     color: themeProvider.themeManager.primaryColour,
                   ),
                   child: const Row(
@@ -1012,7 +1014,7 @@ class EmptyPlaceholder {
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const Row(

@@ -877,15 +877,13 @@ class CyclesProvider with ChangeNotifier {
         return (cyclesAllData.isNotEmpty || cycleFavoriteData.isNotEmpty) &&
             cyclesState != StateEnum.loading;
       case 1:
-        return cyclesActiveData.isNotEmpty && cyclesState != StateEnum.loading;
+        return false;
       case 2:
         return (cyclesUpcomingData.isNotEmpty ||
                 cycleUpcomingFavoriteData.isNotEmpty) &&
             cyclesState != StateEnum.loading;
       case 3:
-        return (cycleCompletedFavoriteData.isNotEmpty ||
-                cyclesCompletedData.isNotEmpty) &&
-            cyclesState != StateEnum.loading;
+        return false;
       case 4:
         return (cycleDraftFavoriteData.isNotEmpty &&
                 cyclesDraftData.isNotEmpty) &&

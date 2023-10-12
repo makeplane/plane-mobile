@@ -737,9 +737,10 @@ class IssuesProvider extends ChangeNotifier {
       }
       stateOrdering = [];
       for (final element in defaultStateGroups) {
-        //  log(element);
-        for (final element in (statesData[element] as List)) {
-          stateOrdering.add(element['id']);
+        if (statesData[element] != null) {
+          for (final element in (statesData[element] as List)) {
+            stateOrdering.add(element['id']);
+          }
         }
       }
       statesState = StateEnum.success;
@@ -861,8 +862,7 @@ class IssuesProvider extends ChangeNotifier {
         );
         ref.read(ProviderList.cyclesProvider).filterCycleIssues(
               slug: slug,
-              projectId:
-                  projID,
+              projectId: projID,
             );
         filterIssues(
           slug: slug,
@@ -1307,7 +1307,6 @@ class IssuesProvider extends ChangeNotifier {
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
         hasBody: true,
         data: view,
-       
         httpMethod: HttpMethod.post,
       );
       projectViewState = StateEnum.success;

@@ -45,7 +45,6 @@ class _ButtonState extends ConsumerState<Button> {
         child: Container(
           alignment: Alignment.center,
           height: 48,
-          // padding: const EdgeInsets.symmetric(vertical: 16),
           width: widget.width ?? MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             border: widget.filledButton
@@ -55,7 +54,7 @@ class _ButtonState extends ConsumerState<Button> {
                     : Border.all(
                         color: widget.borderColor ??
                             themeProvider.themeManager.borderSubtle01Color),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(buttonBorderRadiusLarge),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)
                     ? themeProvider.themeManager.primaryColour

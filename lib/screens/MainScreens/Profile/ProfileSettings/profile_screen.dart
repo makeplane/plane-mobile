@@ -519,8 +519,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         child: Center(
                                           child: CustomText(
                                             workspaceProvider.selectedWorkspace
-                                                .workspaceName[0]
-                                                .toUpperCase(),
+                                                        .workspaceName ==
+                                                    ''
+                                                ? ""
+                                                : workspaceProvider
+                                                    .selectedWorkspace
+                                                    .workspaceName[0]
+                                                    .toUpperCase(),
                                             fontSize: 14,
                                             fontWeight: FontWeightt.Semibold,
                                             // color: const Color.fromRGBO(

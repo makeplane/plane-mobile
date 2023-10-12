@@ -165,15 +165,13 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Stack(
-        // shrinkWrap: true,
         children: [
           ListView(
             shrinkWrap: true,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               Column(
                 children: [
+                  const SizedBox(height: 10),
                   issueProvider.issues.projectView != ProjectView.spreadsheet
                       ? const SizedBox(
                           height: 40,
@@ -194,7 +192,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
                                   ),
-                                  // dense: true,
                                   groupValue: groupBy,
                                   title: CustomText(
                                     'State',
@@ -223,7 +220,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
                                   ),
-                                  // dense: true,
                                   groupValue: groupBy,
                                   title: CustomText(
                                     'State Groups',
@@ -252,7 +248,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
                                   ),
-                                  // dense: true,
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Priority',
@@ -279,7 +274,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
                                   ),
-                                  // dense: true,
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Labels',
@@ -306,7 +300,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                     horizontal: VisualDensity.minimumDensity,
                                     vertical: VisualDensity.minimumDensity,
                                   ),
-                                  // dense: true,
                                   groupValue: groupBy,
                                   title: const CustomText(
                                     'Assignees',
@@ -336,7 +329,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                             VisualDensity.minimumDensity,
                                         vertical: VisualDensity.minimumDensity,
                                       ),
-                                      // dense: true,
                                       groupValue: groupBy,
                                       title: const CustomText(
                                         'Created by',
@@ -368,7 +360,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                             VisualDensity.minimumDensity,
                                         vertical: VisualDensity.minimumDensity,
                                       ),
-                                      // dense: true,
                                       groupValue: groupBy,
                                       title: const CustomText(
                                         'Project',
@@ -397,7 +388,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                             VisualDensity.minimumDensity,
                                         vertical: VisualDensity.minimumDensity,
                                       ),
-                                      // dense: true,
                                       groupValue: groupBy,
                                       title: CustomText(
                                         'None',
@@ -832,7 +822,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                           Issues.toIssueType(issueType);
                       issueProvider.updateProjectView(
                         setDefault: true,
-                          isArchive: widget.isArchived);
+                        isArchive: widget.isArchived,
+                      );
 
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
                         cyclesProvider.filterCycleIssues(
@@ -875,20 +866,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
 
               //rectangular grid of multiple tags to filter
               Wrap(
-                  //spacing: 10,
                   runSpacing: 10,
                   children: displayProperties
                       .map((tag) => (tag['name'] == 'Estimate' &&
                               projectProvider.currentProject['estimate'] ==
                                   null)
-                          ?
-                          //////////////
-                          // Container(
-                          //     color: Colors.amber,
-                          //     height: 0,
-                          //     width: 0,
-                          //   )
-                          const SizedBox()
+                          ? const SizedBox()
                           : (((tag['name'] == 'Created on' ||
                                           tag['name'] == 'Updated on') &&
                                       issueProvider.issues.projectView !=
@@ -904,14 +887,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                           tag['name'] != 'Assignee') &&
                                       issueProvider.issues.projectView ==
                                           ProjectView.list))
-                              ?
-                              ///////////////////
-                              // Container(
-                              //     color: Colors.amber,
-                              //     height: 0,
-                              //     width: 0,
-                              //   )
-                              const SizedBox()
+                              ? const SizedBox()
                               : GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -991,8 +967,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             Issues.toIssueType(issueType) ||
                         issueProvider.showEmptyStates != showEmptyStates ||
                         issueProvider.issues.showSubIssues != showSubIssues) {
-                      //   print(orderBy);
-                      //   print(' it is if');
                       setState(() {
                         issueProvider.issues.orderBY =
                             Issues.toOrderBY(orderBy);
@@ -1025,7 +999,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               .currentProject["id"],
                         );
                       } else {
-                        // log('filtering issues=============================${widget.fromView}');
                         issueProvider.filterIssues(
                           fromViews: widget.fromView,
                           slug: ref
@@ -1089,11 +1062,9 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueProvider.issues.displayProperties = properties;
                         issueProvider.showEmptyStates = showEmptyStates;
                       }
-                      // if (widget.issueCategory == IssueCategory.issues) {
                       if (widget.issueCategory == IssueCategory.issues) {
                         issueProvider.updateProjectView();
                       }
-                      // }
                     }
 
                     log(displayProperties.toString());

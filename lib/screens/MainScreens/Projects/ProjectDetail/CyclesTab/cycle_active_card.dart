@@ -171,7 +171,7 @@ class _CycleActiveCardState extends ConsumerState<CycleActiveCard> {
               title: const Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
-                    'Lables',
+                    'Labels',
                     type: FontStyle.Medium,
                     fontWeight: FontWeightt.Medium,
                   )),

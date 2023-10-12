@@ -418,6 +418,10 @@ EdgeInsets bottomSheetConstPadding =
 
 double bottomSheetConstBottomPadding = 30;
 
+const double buttonBorderRadiusLarge = 6;
+const double buttonBorderRadiusMedium = 5;
+const double buttonBorderRadiusSmall = 4;
+
 const List<String> emojis = [
   "8986",
   "8987",

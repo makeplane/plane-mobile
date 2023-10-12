@@ -67,7 +67,7 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setTokens(
           accessToken: response.data["access_token"],
           refreshToken: response.data["refresh_token"]);
-      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
 
       await DependencyResolver.resolve(ref: ref);
       validateCodeState = StateEnum.success;
@@ -104,10 +104,10 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setTokens(
           accessToken: response.data["access_token"],
           refreshToken: response.data["refresh_token"]);
-      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       googleAuthState = StateEnum.success;
       notifyListeners();
-      await DependencyResolver.resolve(ref: ref);
     } catch (e) {
       log(e.toString());
 
@@ -143,10 +143,10 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setTokens(
           accessToken: response.data["access_token"],
           refreshToken: response.data["refresh_token"]);
-      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       signInState = StateEnum.success;
       notifyListeners();
-      DependencyResolver.resolve(ref: ref);
     } on DioException catch (e) {
       log(e.toString());
       signInState = StateEnum.failed;
@@ -201,10 +201,10 @@ class AuthProvider extends ChangeNotifier {
       SharedPrefrenceServices.setTokens(
           accessToken: response.data["access_token"],
           refreshToken: response.data["refresh_token"]);
-      SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       signUpState = StateEnum.success;
       notifyListeners();
-      DependencyResolver.resolve(ref: ref);
     } catch (e) {
       log(e.toString());
       signUpState = StateEnum.failed;

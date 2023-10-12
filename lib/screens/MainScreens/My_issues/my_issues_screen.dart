@@ -280,9 +280,15 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                       .placeholderTextColor,
                                               overrride: true,
                                               type: FontStyle.Medium,
+                                              fontWeight: selected == 0
+                                                  ? FontWeightt.Medium
+                                                  : FontWeightt.Regular,
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
                                       ),
                                       selected == 0
                                           ? Container(
@@ -325,6 +331,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                   : themeProvider.themeManager
                                                       .placeholderTextColor,
                                               type: FontStyle.Medium,
+                                              fontWeight: selected == 1
+                                                  ? FontWeightt.Medium
+                                                  : FontWeightt.Regular,
                                             ),
                                           ),
                                         ],
@@ -370,6 +379,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                       .placeholderTextColor,
                                               overrride: true,
                                               type: FontStyle.Medium,
+                                              fontWeight: selected == 2
+                                                  ? FontWeightt.Medium
+                                                  : FontWeightt.Regular,
                                             ),
                                           ),
                                         ],

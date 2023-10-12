@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/models/user_profile_model.dart';
+import 'package:plane/models/user_setting_model.dart';
 import 'package:plane/repository/profile_provider_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/config/apis.dart';
@@ -34,6 +35,7 @@ class ProfileProvider extends ChangeNotifier {
   StateEnum getProfileState = StateEnum.empty;
   StateEnum updateProfileState = StateEnum.empty;
   UserProfile userProfile = UserProfile.initialize();
+  UserSettingModel userSetting = UserSettingModel.initialize();
 
   void changeIndex(int index) {
     roleIndex = index;
@@ -65,9 +67,11 @@ class ProfileProvider extends ChangeNotifier {
   Future<Either<UserProfile, DioException>> getProfile() async {
     getProfileState = StateEnum.loading;
     final response = await profileService.getProfile();
+
     return response.fold((userProfile) {
       this.userProfile = userProfile;
       SharedPrefrenceServices.setTheme(userProfile.theme!);
+      SharedPrefrenceServices.setUserID(userProfile.id!);
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
       getProfileState = StateEnum.success;
@@ -80,6 +84,17 @@ class ProfileProvider extends ChangeNotifier {
       log(error.toString());
       getProfileState = StateEnum.error;
       notifyListeners();
+      return Right(error);
+    });
+  }
+
+  Future<Either<UserSettingModel, DioException>> getProfileSetting() async {
+    final response = await profileService.getProfileSetting();
+    return response.fold((userSetting) {
+      this.userSetting = userSetting;
+      return Left(userSetting);
+    }, (error) {
+      log(error.toString());
       return Right(error);
     });
   }

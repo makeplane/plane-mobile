@@ -678,7 +678,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 60),
+                            const SizedBox(height: 100),
                           ],
                         ),
                       ),
@@ -688,7 +688,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       child: Container(
                         width: width,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
+                          horizontal: 20,
                         ),
                         child: Button(
                           ontap: () async {

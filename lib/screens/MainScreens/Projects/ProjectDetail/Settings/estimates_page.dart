@@ -524,7 +524,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
             margin: const EdgeInsets.only(top: 30),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,

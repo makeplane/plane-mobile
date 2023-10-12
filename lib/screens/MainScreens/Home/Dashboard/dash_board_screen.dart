@@ -320,7 +320,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           width: 150,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius:
+                                BorderRadius.circular(buttonBorderRadiusSmall),
                             color: themeProvider.theme == THEME.custom
                                 ? themeProvider
                                     .themeManager.tertiaryBackgroundDefaultColor
@@ -397,7 +398,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               width: 150,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusSmall),
                 color: themeProvider.themeManager.primaryColour,
               ),
               child: const CustomText(

@@ -540,7 +540,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 top: 20, left: 20, right: 20),
                             decoration: BoxDecoration(
                               color: themeProvider.themeManager.primaryColour,
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(
+                                  buttonBorderRadiusLarge),
                             ),
                             child: const Center(
                               child: CustomText(

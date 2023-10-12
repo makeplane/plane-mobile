@@ -57,43 +57,40 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
                     )));
           },
     child: Container(
-      width: MediaQuery.of(ref.context).size.width * 0.42,
-      height: 50,
-      margin: const EdgeInsets.only(bottom: 18),
-      child: Container(
-          decoration: BoxDecoration(
-            color: state.isFilterEmpty()
-                ? themeProvider.themeManager.borderSubtle01Color
-                    .withOpacity(0.6)
-                : themeProvider.themeManager.primaryColour.withOpacity(0.2),
-            border: Border.all(
+        width: MediaQuery.of(ref.context).size.width * 0.42,
+        height: 50,
+        margin: const EdgeInsets.only(bottom: 18),
+        decoration: BoxDecoration(
+          color: state.isFilterEmpty()
+              ? themeProvider.themeManager.borderSubtle01Color.withOpacity(0.6)
+              : themeProvider.themeManager.primaryColour.withOpacity(0.2),
+          border: Border.all(
+              color: state.isFilterEmpty()
+                  ? themeProvider.themeManager.placeholderTextColor
+                  : themeProvider.themeManager.primaryColour),
+          borderRadius: BorderRadius.circular(buttonBorderRadiusLarge),
+        ),
+        child: Center(
+          child: Wrap(
+            children: [
+              Icon(
+                Icons.add,
                 color: state.isFilterEmpty()
                     ? themeProvider.themeManager.placeholderTextColor
-                    : themeProvider.themeManager.primaryColour),
-            borderRadius: BorderRadius.circular(5),
+                    : themeProvider.themeManager.primaryColour,
+                size: 24,
+              ),
+              CustomText(
+                '  Save View',
+                color: state.isFilterEmpty()
+                    ? themeProvider.themeManager.placeholderTextColor
+                    : themeProvider.themeManager.primaryColour,
+                fontWeight: FontWeightt.Semibold,
+                type: FontStyle.Medium,
+              ),
+            ],
           ),
-          child: Center(
-            child: Wrap(
-              children: [
-                Icon(
-                  Icons.add,
-                  color: state.isFilterEmpty()
-                      ? themeProvider.themeManager.placeholderTextColor
-                      : themeProvider.themeManager.primaryColour,
-                  size: 24,
-                ),
-                CustomText(
-                  '  Save View',
-                  color: state.isFilterEmpty()
-                      ? themeProvider.themeManager.placeholderTextColor
-                      : themeProvider.themeManager.primaryColour,
-                  fontWeight: FontWeightt.Semibold,
-                  type: FontStyle.Medium,
-                ),
-              ],
-            ),
-          )),
-    ),
+        )),
   );
 }
 

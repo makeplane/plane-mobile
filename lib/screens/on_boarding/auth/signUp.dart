@@ -112,7 +112,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                             }
 
                             if (!RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+\.[a-zA-Z]+")
                                 .hasMatch(val)) {
                               return '*Please Enter valid email';
                             } else {

@@ -191,9 +191,9 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                             ),
                             const Spacer(),
                             ref
-                                        .read(ProviderList.profileProvider)
-                                        .userProfile
-                                        .lastWorkspaceId ==
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace
+                                        .workspaceId ==
                                     prov.workspaces[index]['id']
                                 ? const Icon(
                                     Icons.done,

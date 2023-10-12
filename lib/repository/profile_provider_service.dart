@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:plane/models/user_profile_model.dart';
+import 'package:plane/models/user_setting_model.dart';
 import 'package:plane/services/dio_service.dart';
 
 import '../config/apis.dart';
@@ -23,7 +24,22 @@ class ProfileService {
       return Left(UserProfile.fromMap(response.data));
     } on DioException catch (err) {
       log(err.response.toString());
-      return Right(DioException(requestOptions: RequestOptions()));
+      return Right(err);
+    }
+  }
+
+  Future<Either<UserSettingModel, DioException>> getProfileSetting() async {
+    try {
+      final response = await dio.dioServe(
+        hasAuth: true,
+        url: '${APIs.baseApi}${APIs.profile}settings/',
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      return Left(UserSettingModel.fromJson(response.data));
+    } on DioException catch (err) {
+      log(err.response.toString());
+      return Right(err);
     }
   }
 

@@ -52,6 +52,9 @@ class DependencyResolver {
       FlutterNativeSplash.remove();
       return;
     }
+
+    await _resolveProfileSetting(ref);
+
     await _resolveWorkspaces(ref);
     if (workspaceProvider.workspaces.isEmpty) {
       FlutterNativeSplash.remove();
@@ -75,6 +78,12 @@ class DependencyResolver {
     final ProfileProvider profileProvider =
         ref.read(ProviderList.profileProvider);
     return await profileProvider.getProfile();
+  }
+
+  static Future<void> _resolveProfileSetting(WidgetRef ref) async {
+    final ProfileProvider profileProvider =
+        ref.read(ProviderList.profileProvider);
+    await profileProvider.getProfileSetting();
   }
 
   static Future<void> _resolveWorkspaces(WidgetRef ref) async {

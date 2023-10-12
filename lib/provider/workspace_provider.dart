@@ -294,9 +294,11 @@ class WorkspaceProvider extends ChangeNotifier {
         if (element['id'] ==
             ref!
                 .read(ProviderList.profileProvider)
-                .userProfile
+                .userSetting
+                .workspace
                 .lastWorkspaceId) {
           selectedWorkspace = WorkspaceModel.fromJson(element);
+
           tempLogo = selectedWorkspace.workspaceLogo;
           return true;
         }

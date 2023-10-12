@@ -19,7 +19,7 @@ class ReGenerateToken extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     if ((JwtDecoder.tryDecode(Const.accessToken!) == null ||
-            !JwtDecoder.isExpired(Const.accessToken!)) &&
+            JwtDecoder.isExpired(Const.accessToken!)) &&
         !isRefreshing) {
       try {
         isRefreshing = true;

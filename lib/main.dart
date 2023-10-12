@@ -68,7 +68,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
       theme!['theme'] = fromTHEME(theme: THEME.systemPreferences);
       log(theme.toString());
-      themeProvider.changeTheme(data: {'theme': theme}, context: ref.context);
+      themeProvider.changeTheme(data: {'theme': theme}, context: null);
     }
     super.didChangePlatformBrightness();
   }

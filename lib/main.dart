@@ -22,7 +22,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 late String selectedTheme;
 void main() async {
-  final widgetsBinding=WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(const Duration(milliseconds: 300));
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
@@ -53,6 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    // Const.accessToken = "${Const.accessToken!}|";
     DependencyResolver.resolve(ref: ref);
     super.initState();
   }

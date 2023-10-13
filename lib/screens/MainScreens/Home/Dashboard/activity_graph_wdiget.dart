@@ -48,7 +48,6 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final dashBoardProvider = ref.watch(ProviderList.dashboardProvider);
     final List activityRangeColors = [
       themeProvider.themeManager.tertiaryBackgroundDefaultColor,
       themeProvider.themeManager.primaryColour.withOpacity(0.2),
@@ -57,164 +56,159 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
       themeProvider.themeManager.primaryColour,
     ];
 
-    if (dashBoardProvider.getDashboardState == StateEnum.success) {
-      return Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomText(
-              'Activity Graph',
-              type: FontStyle.Medium,
-              fontWeight: FontWeightt.Medium,
-              color: themeProvider.themeManager.primaryTextColor,
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            'Activity Graph',
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Medium,
+            color: themeProvider.themeManager.primaryTextColor,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(
+                  color: themeProvider.themeManager.borderSubtle01Color),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                    color: themeProvider.themeManager.borderSubtle01Color),
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 25,
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 45,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 25,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 45,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: listScrollController,
+                          shrinkWrap: true,
+                          primary: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: monthsData!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              width: 70,
+                              child: CustomText(
+                                monthsData![index]
+                                    .month
+                                    .split(' ')
+                                    .first
+                                    .substring(0, 3),
+                                textAlign: TextAlign.start,
+                                type: FontStyle.XSmall,
+                              ),
+                            );
+                          },
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                            controller: listScrollController,
-                            shrinkWrap: true,
-                            primary: false,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: monthsData!.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                width: 70,
-                                child: CustomText(
-                                  monthsData![index]
-                                      .month
-                                      .split(' ')
-                                      .first
-                                      .substring(0, 3),
-                                  textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 150,
+                  child: Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: defaultDays
+                            .map((e) => CustomText(
+                                  e,
                                   type: FontStyle.XSmall,
-                                ),
-                              );
-                            },
+                                ))
+                            .toList(),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: GridView.builder(
+                          controller: gridScrollController,
+                          scrollDirection: Axis.horizontal,
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 7,
+                            crossAxisSpacing: 6,
+                            mainAxisSpacing: 6,
+                            childAspectRatio: 1.1,
                           ),
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            return data[index] == 'Empty'
+                                ? Container()
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: getColor(data[index]),
+                                    ),
+                                  );
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 25,
+                  child: Row(
+                    children: [
+                      const CustomText(
+                        'Less',
+                        type: FontStyle.XSmall,
+                      ),
+                      SizedBox(
+                        height: 16,
+                        child: ListView.builder(
+                          itemCount: activityRangeColors.length,
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 10,
+                              width: 15,
+                              margin: const EdgeInsets.symmetric(horizontal: 3),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: activityRangeColors[index],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const CustomText(
+                        'More',
+                        type: FontStyle.XSmall,
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: 150,
-                    child: Row(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: defaultDays
-                              .map((e) => CustomText(
-                                    e,
-                                    type: FontStyle.XSmall,
-                                  ))
-                              .toList(),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: GridView.builder(
-                            controller: gridScrollController,
-                            scrollDirection: Axis.horizontal,
-                            physics: const ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 7,
-                              crossAxisSpacing: 6,
-                              mainAxisSpacing: 6,
-                              childAspectRatio: 1.1,
-                            ),
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              return data[index] == 'Empty'
-                                  ? Container()
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        color: getColor(data[index]),
-                                      ),
-                                    );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 25,
-                    child: Row(
-                      children: [
-                        const CustomText(
-                          'Less',
-                          type: FontStyle.XSmall,
-                        ),
-                        SizedBox(
-                          height: 16,
-                          child: ListView.builder(
-                            itemCount: activityRangeColors.length,
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: 10,
-                                width: 15,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 3),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  color: activityRangeColors[index],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const CustomText(
-                          'More',
-                          type: FontStyle.XSmall,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
+          ),
+        ],
+      ),
+    );
   }
 
   List<MonthData> getMonthsData(int count) {
@@ -267,28 +261,25 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
     final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     Color color = themeProvider.themeManager.tertiaryBackgroundDefaultColor;
-    for (final element in dashboardProvider.dashboardData['issue_activities']) {
-      if (element['created_date'] == date) {
-        if (element['activity_count'] <= 3) {
-          // setState(() {
-          color = themeProvider.themeManager.primaryColour.withOpacity(0.2);
-          // });
-        } else if (element['activity_count'] > 3 &&
-            element['activity_count'] <= 6) {
-          // setState(() {
-          color = themeProvider.themeManager.primaryColour.withOpacity(0.4);
-          // });
-        } else if (element['activity_count'] > 6 &&
-            element['activity_count'] <= 9) {
-          // setState(() {
-          color = themeProvider.themeManager.primaryColour.withOpacity(0.8);
-          // });
-        } else {
-          // setState(() {
-          color = themeProvider.themeManager.primaryColour;
-          // });
+    if (dashboardProvider.getDashboardState == StateEnum.success) {
+      for (final element
+          in dashboardProvider.dashboardData['issue_activities']) {
+        if (element['created_date'] == date) {
+          if (element['activity_count'] <= 3) {
+            color = themeProvider.themeManager.primaryColour.withOpacity(0.2);
+          } else if (element['activity_count'] > 3 &&
+              element['activity_count'] <= 6) {
+            color = themeProvider.themeManager.primaryColour.withOpacity(0.4);
+          } else if (element['activity_count'] > 6 &&
+              element['activity_count'] <= 9) {
+            color = themeProvider.themeManager.primaryColour.withOpacity(0.8);
+          } else {
+            color = themeProvider.themeManager.primaryColour;
+          }
         }
       }
+    } else {
+      color = themeProvider.themeManager.tertiaryBackgroundDefaultColor;
     }
     return color;
   }

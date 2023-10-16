@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -376,19 +378,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                               projectID: projectProvider
                                                   .projects[index]["id"]);
 
-                                          if (projectProvider.projectState !=
-                                              StateEnum.success) {
-                                            // ignore: use_build_context_synchronously
-                                            CustomToast.showToast(context,
-                                                message: "Something went wrong",
-                                                toastType: ToastType.failure);
-                                          } else {
-                                            // ignore: use_build_context_synchronously
-                                            CustomToast.showToast(context,
-                                                message:
-                                                    "Project favourited successfully",
-                                                toastType: ToastType.success);
-                                          }
+                                          CustomToast.showToastFromStateEnum(
+                                              context: context,
+                                              stateEnum:
+                                                  projectProvider.projectState,
+                                              sucessMessage:
+                                                  "successfully added the project to favorites");
                                         },
                                         icon: Icon(
                                           Icons.star_border,
@@ -572,77 +567,48 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                                     ['is_favorite'] ==
                                                 false
                                             ? () async {
-                                                await projectProvider.favouriteProjects(
-                                                    index: index,
-                                                    slug: ref
-                                                        .read(ProviderList
-                                                            .workspaceProvider)
-                                                        .workspaces
-                                                        .where((element) =>
-                                                            element['id'] ==
-                                                            ref
-                                                                .read(ProviderList
-                                                                    .profileProvider)
-                                                                .userProfile
-                                                                .lastWorkspaceId)
-                                                        .first['slug'],
-                                                    method: HttpMethod.post,
-                                                    projectID: projectProvider
-                                                        .projects[index]["id"]);
+                                                await projectProvider
+                                                    .favouriteProjects(
+                                                        index: index,
+                                                        slug: ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .selectedWorkspace
+                                                            .workspaceSlug,
+                                                        method: HttpMethod.post,
+                                                        projectID:
+                                                            projectProvider
+                                                                    .projects[
+                                                                index]["id"]);
 
-                                                if (projectProvider
-                                                        .projectState !=
-                                                    StateEnum.success) {
-                                                  // ignore: use_build_context_synchronously
-                                                  CustomToast.showToast(context,
-                                                      message:
-                                                          "Something went wrong",
-                                                      toastType:
-                                                          ToastType.failure);
-                                                } else {
-                                                  // ignore: use_build_context_synchronously
-                                                  CustomToast.showToast(context,
-                                                      message:
-                                                          "Successfully Added the project to favourites",
-                                                      toastType:
-                                                          ToastType.success);
-                                                }
+                                                CustomToast.showToastFromStateEnum(
+                                                    context: context,
+                                                    stateEnum: projectProvider
+                                                        .projectState,
+                                                    sucessMessage:
+                                                        'Successfully Added the project to favourites');
                                               }
                                             : () async {
-                                                await projectProvider.favouriteProjects(
-                                                    index: index,
-                                                    slug: ref
-                                                        .read(ProviderList
-                                                            .workspaceProvider)
-                                                        .workspaces
-                                                        .where((element) =>
-                                                            element['id'] ==
-                                                            ref
-                                                                .read(ProviderList
-                                                                    .profileProvider)
-                                                                .userProfile
-                                                                .lastWorkspaceId)
-                                                        .first['slug'],
-                                                    method: HttpMethod.delete,
-                                                    projectID: projectProvider
-                                                        .projects[index]["id"]);
-                                                if (projectProvider
-                                                        .projectState !=
-                                                    StateEnum.success) {
-                                                  // ignore: use_build_context_synchronously
-                                                  CustomToast.showToast(context,
-                                                      message:
-                                                          "Something went wrong",
-                                                      toastType:
-                                                          ToastType.failure);
-                                                } else {
-                                                  // ignore: use_build_context_synchronously
-                                                  CustomToast.showToast(context,
-                                                      message:
-                                                          "Successfully removed the project from favourites",
-                                                      toastType:
-                                                          ToastType.success);
-                                                }
+                                                await projectProvider
+                                                    .favouriteProjects(
+                                                        index: index,
+                                                        slug: ref
+                                                            .read(ProviderList
+                                                                .workspaceProvider)
+                                                            .selectedWorkspace
+                                                            .workspaceSlug,
+                                                        method:
+                                                            HttpMethod.delete,
+                                                        projectID:
+                                                            projectProvider
+                                                                    .projects[
+                                                                index]["id"]);
+                                                CustomToast.showToastFromStateEnum(
+                                                    context: context,
+                                                    stateEnum: projectProvider
+                                                        .projectState,
+                                                    sucessMessage:
+                                                        'Successfully removed the project from favourites');
                                               },
                                         icon: Icon(
                                           projectProvider.projects[index]
@@ -840,19 +806,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                             method: HttpMethod.delete,
                                             projectID: projectProvider
                                                 .projects[index]["id"]);
-                                        if (projectProvider.projectState !=
-                                            StateEnum.success) {
-                                          // ignore: use_build_context_synchronously
-                                          CustomToast.showToast(context,
-                                              message: "Something went wrong",
-                                              toastType: ToastType.failure);
-                                        } else {
-                                          // ignore: use_build_context_synchronously
-                                          CustomToast.showToast(context,
-                                              message:
-                                                  "Project unfavourited successfully",
-                                              toastType: ToastType.success);
-                                        }
+                                        CustomToast.showToastFromStateEnum(
+                                            context: context,
+                                            stateEnum:
+                                                projectProvider.projectState,
+                                            sucessMessage:
+                                                "Successfully removed the project from favourites");
                                       },
                                       icon: Icon(Icons.star,
                                           size: 25,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -13,12 +14,20 @@ class CompanySize extends ConsumerStatefulWidget {
 }
 
 class _CompanySizeState extends ConsumerState<CompanySize> {
+  final List<String> companySizeData = [
+    "Just myself",
+    "2-10",
+    "11-50",
+    "51-200",
+    "201-500",
+    "500+"
+  ];
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Padding(
-      padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
+      padding: const EdgeInsets.all(23),
       child: Column(
         children: [
           Row(
@@ -42,252 +51,47 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ],
           ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: 'Just myself');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
+          ListView.separated(
+            itemCount: companySizeData.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {
+                    workspaceProvider.changeCompanySize(
+                        size: companySizeData[index]);
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        workspaceProvider.companySize == companySizeData[index]
+                            ? Icons.radio_button_checked
+                            : Icons.radio_button_off,
+                        color: workspaceProvider.companySize ==
+                                companySizeData[index]
+                            ? themeProvider.themeManager.primaryColour
+                            : themeProvider.themeManager.borderSubtle01Color,
                       ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == 'Just myself'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: 'Just myself',
-                      onChanged: (val) {
-                        //workspaceProvider.changeCompanySize(size: 'Just myself');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    'Just myself',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: themeProvider.themeManager.borderDisabledColor,
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '2-10');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
+                      const SizedBox(width: 10),
+                      CustomText(
+                        companySizeData[index],
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '2-10'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: '2-10',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '2-10');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    '2-10',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: themeProvider.themeManager.borderDisabledColor,
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '11-50');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '11-50'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: '11-50',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '11-50');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    '11-50',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: themeProvider.themeManager.borderDisabledColor,
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '51-200');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '51-200'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: '51-200',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '51-200');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    '51-200',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: themeProvider.themeManager.borderDisabledColor,
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '201-500');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '201-500'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: '201-500',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '201-500');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    '201-500',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: themeProvider.themeManager.borderDisabledColor,
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '500+');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '500+'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              themeProvider.themeManager.borderSubtle01Color),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: themeProvider.themeManager.primaryColour,
-                      value: '500+',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '500+');
-                      }),
-                  const SizedBox(width: 10),
-                  CustomText(
-                    '500+',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Regular,
-                    color: themeProvider.themeManager.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return CustomDivider(
+                  themeProvider: themeProvider,
+                  color: themeProvider.themeManager.borderDisabledColor);
+            },
           ),
         ],
       ),

@@ -83,7 +83,7 @@ class UserActivityResult {
           UserDetail.fromJson(json['actor_detail'] as Map<String, dynamic>),
       issueDetail: IssueDetail.fromJson(json['issue_detail']),
       projectDetail: ProjectDetail.fromJson(
-          json['project_detail'] as Map<String, dynamic>),
+          json['project_detail']),
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
       verb: json['verb'] as String,
@@ -229,7 +229,23 @@ class ProjectDetail {
   String? identifier;
   String? name;
   String? coverImage;
-  String? iconProp;
+  Map<String, dynamic>? iconProp;
   String? emoji;
   String? description;
+}
+
+class IconProp{
+  IconProp({
+    this.iconName,
+    this.iconColor,
+  });
+  
+  factory IconProp.fromJson(Map<String, dynamic> json) {
+    return IconProp(
+      iconName: json['name'] as String,
+      iconColor: json['#adf672'] as String,
+    );
+  }
+  String? iconName;
+  String? iconColor;
 }

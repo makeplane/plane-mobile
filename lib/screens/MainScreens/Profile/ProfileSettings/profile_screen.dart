@@ -20,6 +20,7 @@ import 'package:plane/utils/enums.dart';
 
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/shimmer_effect_widget.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
@@ -152,6 +153,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           }
         },
       ]
+    },
+    {
+      'menu': 'Logout',
     }
   ];
 
@@ -167,37 +171,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CustomText(
-                  'Settings',
-                  type: FontStyle.H4,
-                  fontWeight: FontWeightt.Semibold,
-                  color: themeProvider.themeManager.primaryTextColor,
-                ),
-                const Spacer(),
-                MaterialButton(
-                  onPressed: _showLogoutModelBottomBar,
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.logout,
-                        color: Colors.red,
-                        size: 16,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      CustomText(
-                        'Logout',
-                        color: themeProvider.themeManager.textErrorColor,
-                        type: FontStyle.Medium,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+            headerWidget(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -206,9 +180,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       height: 15,
                     ),
                     profileCard(themeProvider, profileProvider),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     menuItems(themeProvider)
                   ],
                 ),
@@ -216,6 +187,96 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget headerWidget() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom:
+              BorderSide(color: themeProvider.themeManager.borderDisabledColor),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                enableDrag: true,
+                constraints: BoxConstraints(
+                    minHeight: height * 0.5,
+                    maxHeight: MediaQuery.of(context).size.height * 0.8),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+                context: context,
+                builder: (ctx) {
+                  return const SelectWorkspace();
+                },
+              );
+            },
+            child: Row(
+              children: [
+                !workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
+                    ? Container()
+                    : workspaceProvider.selectedWorkspace.workspaceLogo != ''
+                        ? WorkspaceLogoForDiffrentExtensions(
+                            imageUrl: workspaceProvider
+                                .selectedWorkspace.workspaceLogo,
+                            themeProvider: themeProvider,
+                            workspaceName: workspaceProvider
+                                .selectedWorkspace.workspaceName)
+                        : Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: themeProvider.themeManager.primaryColour,
+                            ),
+                            child: Center(
+                              child: CustomText(
+                                workspaceProvider
+                                    .selectedWorkspace.workspaceName[0]
+                                    .toUpperCase(),
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Bold,
+                                color: Colors.white,
+                                overrride: true,
+                              ),
+                            ),
+                          ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: width * 0.6),
+                      child: CustomText(
+                        workspaceProvider.selectedWorkspace.workspaceName,
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
+                      ),
+                    ),
+                    const Icon(Icons.keyboard_arrow_down)
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -419,200 +480,119 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget menuItems(ThemeProvider themeProvider) {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return ListView.builder(
       primary: false,
       shrinkWrap: true,
       itemCount: menus.length,
-      padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color:
-                    themeProvider.themeManager.secondaryBackgroundActiveColor,
-              ),
-              child: GestureDetector(
-                onTap: menus[index]['menu'] == 'Workspace Settings'
-                    ? () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          enableDrag: true,
-                          constraints: BoxConstraints(
-                              minHeight: height * 0.5,
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.8),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
-                          )),
-                          context: context,
-                          builder: (ctx) {
-                            return const SelectWorkspace();
-                          },
-                        );
-                      }
-                    : () {},
+            InkWell(
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                if (index == menus.length - 1) {
+                  _showLogoutModelBottomBar();
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width - 105,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      child: CustomText(
-                        menus[index]['menu'],
-                        type: FontStyle.Medium,
-                        color: themeProvider.themeManager.primaryColour,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    menus[index]['menu'] != 'Workspace Settings'
-                        ? Container()
-                        : Container(
-                            height: 35,
-                            width: 65,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              //color: const Color.fromRGBO(48, 0, 240, 1),
-                            ),
-                            child: Row(
-                              children: [
-                                workspaceProvider
-                                            .selectedWorkspace.workspaceLogo !=
-                                        ''
-                                    ? Container(
-                                        margin: const EdgeInsets.all(5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: SizedBox(
-                                            width: 25,
-                                            height: 25,
-                                            child:
-                                                WorkspaceLogoForDiffrentExtensions(
-                                                    imageUrl: workspaceProvider
-                                                        .selectedWorkspace
-                                                        .workspaceLogo,
-                                                    themeProvider:
-                                                        themeProvider,
-                                                    workspaceName:
-                                                        workspaceProvider
-                                                            .selectedWorkspace
-                                                            .workspaceName
-                                                            .toString()),
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: 25,
-                                        height: 25,
-                                        margin: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
-                                          color: themeProvider.themeManager
-                                              .primaryBackgroundDefaultColor,
-                                        ),
-                                        child: Center(
-                                          child: CustomText(
-                                            workspaceProvider.selectedWorkspace
-                                                        .workspaceName ==
-                                                    ''
-                                                ? ""
-                                                : workspaceProvider
-                                                    .selectedWorkspace
-                                                    .workspaceName[0]
-                                                    .toUpperCase(),
-                                            fontSize: 14,
-                                            fontWeight: FontWeightt.Semibold,
-                                            // color: const Color.fromRGBO(
-                                            //     48, 0, 240, 1),
-                                          ),
-                                        ),
-                                      ),
-                                // Container(
-                                //   margin: const EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
-                                //   height: 35,
-                                //   width: 25,
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(3),
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: themeProvider
-                                        .themeManager.primaryColour,
-                                  ),
-                                )
-                              ],
+                    index == menus.length - 1
+                        ? const Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Icon(
+                              Icons.logout,
+                              color: darkPrimaryButtonDangerSelectedColor,
+                              size: 18,
                             ),
                           )
+                        : const SizedBox.shrink(),
+                    CustomText(
+                      menus[index]['menu'],
+                      type: index == menus.length - 1
+                          ? FontStyle.Medium
+                          : FontStyle.Small,
+                      color: index == menus.length - 1
+                          ? darkPrimaryButtonDangerSelectedColor
+                          : themeProvider.themeManager.tertiaryTextColor,
+                      textAlign: TextAlign.start,
+                      fontWeight: index == menus.length - 1
+                          ? FontWeightt.Medium
+                          : FontWeightt.Regular,
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: (menus[index]['items']).length,
-              padding: const EdgeInsets.only(bottom: 15),
-              itemBuilder: (context, idx) {
-                if ((index == 0) ||
-                    (idx == 4 || idx == 0 || checkUserAccess())) {
-                  return InkWell(
-                    onTap: () {
-                      menus[index]['items'][idx]['onTap'](context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                menus[index]['items'][idx]['icon'],
-                                size: 18,
-                                color: themeProvider
-                                    .themeManager.placeholderTextColor,
+            index == menus.length - 1
+                ? const SizedBox.shrink()
+                : Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: (menus[index]['items']).length,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        itemBuilder: (context, idx) {
+                          if ((index == 0) ||
+                              (idx == 4 || idx == 0 || checkUserAccess())) {
+                            return InkWell(
+                              onTap: () {
+                                menus[index]['items'][idx]['onTap'](context);
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          menus[index]['items'][idx]['icon'],
+                                          size: 18,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        CustomText(
+                                          menus[index]['items'][idx]['title'],
+                                          type: FontStyle.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 12,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    )
+                                  ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              CustomText(
-                                menus[index]['items'][idx]['title'],
-                                type: FontStyle.Small,
-                                color:
-                                    themeProvider.themeManager.primaryTextColor,
-                              ),
-                            ],
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 15,
-                            color:
-                                themeProvider.themeManager.placeholderTextColor,
-                          )
-                        ],
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
                       ),
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            )
+                      CustomDivider(
+                        themeProvider: themeProvider,
+                        width: 8,
+                      ),
+                    ],
+                  )
           ],
         );
       },

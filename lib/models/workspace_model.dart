@@ -1,3 +1,5 @@
+import 'package:plane/config/apis.dart';
+
 class WorkspaceModel {
   WorkspaceModel({
     required this.workspaceName,
@@ -15,7 +17,7 @@ class WorkspaceModel {
       workspaceId: json['id'],
       workspaceLogo: json['logo'] ?? '',
       // workspaceUrl: json['url'],
-      workspaceUrl: 'https://takeoff.plane.so/${json['slug']}',
+      workspaceUrl: '${APIs.baseApi}/${json['slug']}',
     );
   }
   String workspaceName;

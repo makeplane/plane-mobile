@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -148,12 +147,16 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                                   Expanded(
                                     child: TextFormField(
                                       maxLength: 6,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[0-9a-fA-F]")),
-                                      ],
                                       controller: colorController,
                                       onChanged: (value) {
+                                        if (value.length == 6 &&
+                                            value.contains(
+                                                RegExp("[^0-9a-fA-F]"))) {
+                                          CustomToast.showToast(context,
+                                              message: 'HexCode is not valid',
+                                              toastType: ToastType.warning);
+                                        }
+
                                         setState(() {});
                                       },
                                       decoration: themeProvider

@@ -424,16 +424,24 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              CustomText(
-                                                provider.issuesResponse[
-                                                            widget.cardIndex]
-                                                        ['label_details'][idx]
-                                                    ['name'],
-                                                type: FontStyle.XSmall,
-                                                height: 1,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .tertiaryTextColor,
+                                              Container(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxWidth: 120),
+                                                child: CustomText(
+                                                  provider.issuesResponse[
+                                                              widget.cardIndex]
+                                                          ['label_details'][idx]
+                                                      ['name'],
+                                                  type: FontStyle.XSmall,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  height: 1,
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .tertiaryTextColor,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -685,9 +693,13 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                     (provider.issues.displayProperties.estimate == true &&
                             projectProvider.currentProject['estimate'] != null)
                         ? Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             padding: const EdgeInsets.only(
-                                left: 8, right: 8, bottom: 5),
+                              left: 8,
+                              right: 8,
+                            ),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: themeProvider

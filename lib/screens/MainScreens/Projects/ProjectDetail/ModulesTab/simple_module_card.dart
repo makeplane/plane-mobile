@@ -89,6 +89,7 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                           : modulesProvider.modules[widget.index]['name']
                               .toString(),
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       type: FontStyle.Medium,
                       fontWeight: FontWeightt.Medium,
                       color: themeProvider.themeManager.primaryTextColor,

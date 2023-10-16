@@ -195,6 +195,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                           width: MediaQuery.sizeOf(context).width - 120,
                           child: CustomText(
                             viewData['name'],
+                            maxLines: 1,
                             type: FontStyle.H6,
                             fontWeight: FontWeightt.Semibold,
                           ),

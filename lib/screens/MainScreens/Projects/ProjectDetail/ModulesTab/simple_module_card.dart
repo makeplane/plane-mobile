@@ -242,9 +242,16 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                             context: context,
                             builder: (ctx) {
                               return DeleteCycleSheet(
-                                id: modulesProvider.modules[widget.index]['id'],
-                                name: modulesProvider.modules[widget.index]
-                                    ['name'],
+                                id: widget.isFav
+                                    ? modulesProvider.favModules[widget.index]
+                                        ['id']
+                                    : modulesProvider.modules[widget.index]
+                                        ['id'],
+                                name: widget.isFav
+                                    ? modulesProvider.favModules[widget.index]
+                                        ['name']
+                                    : modulesProvider.modules[widget.index]
+                                        ['name'],
                                 type: 'Module',
                               );
                             },

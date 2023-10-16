@@ -66,7 +66,9 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: 'Just myself',
                       onChanged: (val) {
-                        //workspaceProvider.changeCompanySize(size: 'Just myself');
+                        workspaceProvider.changeCompanySize(
+                            size: 'Just myself');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -108,7 +110,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: '2-10',
                       onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '2-10');
+                        workspaceProvider.changeCompanySize(size: '2-10');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -150,7 +153,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: '11-50',
                       onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '11-50');
+                        workspaceProvider.changeCompanySize(size: '11-50');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -192,7 +196,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: '51-200',
                       onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '51-200');
+                        workspaceProvider.changeCompanySize(size: '51-200');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -234,7 +239,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: '201-500',
                       onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '201-500');
+                        workspaceProvider.changeCompanySize(size: '201-500');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(
@@ -276,7 +282,8 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
                       activeColor: themeProvider.themeManager.primaryColour,
                       value: '500+',
                       onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '500+');
+                        workspaceProvider.changeCompanySize(size: '500+');
+                        Navigator.pop(context);
                       }),
                   const SizedBox(width: 10),
                   CustomText(

@@ -404,10 +404,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                     },
                                                                                     child: filterWidget(
                                                                                       color: Colors.black,
-                                                                                      icon: const Icon(
+                                                                                      icon: Icon(
                                                                                         Icons.calendar_today_outlined,
                                                                                         size: 15,
-                                                                                        color: Colors.black,
+                                                                                        color: themeProvider.themeManager.placeholderTextColor,
                                                                                       ),
                                                                                       text: e,
                                                                                     ),
@@ -420,10 +420,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                                         },
                                                                                         child: filterWidget(
                                                                                           color: Colors.black,
-                                                                                          icon: const Icon(
+                                                                                          icon: Icon(
                                                                                             Icons.calendar_today_outlined,
                                                                                             size: 15,
-                                                                                            color: Colors.black,
+                                                                                            color: themeProvider.themeManager.placeholderTextColor,
                                                                                           ),
                                                                                           text: e,
                                                                                         ),

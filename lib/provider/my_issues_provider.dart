@@ -12,7 +12,6 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
 //import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
 import 'package:plane/services/dio_service.dart';
-import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -507,8 +506,7 @@ class MyIssuesProvider extends ChangeNotifier {
               'is_emoji': false,
               'color': projectProvider.projects[index]['icon_prop']['color'],
             };
-          }
-          else {
+          } else {
             projectIcons[title.toLowerCase()] = {
               'name': '',
               'is_emoji': false,

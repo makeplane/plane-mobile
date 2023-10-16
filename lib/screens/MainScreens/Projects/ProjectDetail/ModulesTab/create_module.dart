@@ -206,8 +206,6 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                             : DateFormat('yyyy-MM-dd')
                                                 .format(startDate!),
                                         type: FontStyle.Medium,
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor,
                                       ),
                                     ],
                                   ),
@@ -300,8 +298,6 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                             : DateFormat('yyyy-MM-dd')
                                                 .format(dueDate!),
                                         type: FontStyle.Medium,
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor,
                                       ),
                                     ],
                                   ),

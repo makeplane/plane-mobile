@@ -186,6 +186,7 @@ class _ViewsState extends ConsumerState<Views> {
                     padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
                     child: CustomText(
                       viewsProvider.views[index]["name"],
+                      maxLines: 1,
                       type: FontStyle.Medium,
                       fontWeight: FontWeightt.Medium,
                       color: themeProvider.themeManager.primaryTextColor,

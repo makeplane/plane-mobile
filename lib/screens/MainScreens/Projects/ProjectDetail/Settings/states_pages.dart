@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +12,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 
 import 'package:plane/widgets/custom_text.dart';
@@ -29,7 +30,6 @@ class _StatesPageState extends ConsumerState<StatesPage> {
   @override
   void initState() {
     super.initState();
-    log(ref.read(ProviderList.issuesProvider).states.toString());
   }
 
   @override
@@ -141,12 +141,17 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  CustomText(
-                                    issuesProvider.statesData[states[index]]
-                                        [idx]['name'],
-                                    type: FontStyle.Medium,
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor,
+                                  SizedBox(
+                                    width: width * 0.6,
+                                    child: CustomText(
+                                      issuesProvider.statesData[states[index]]
+                                          [idx]['name'],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      type: FontStyle.Medium,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -300,15 +305,22 @@ class AddUpdateState extends ConsumerStatefulWidget {
 
 class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   TextEditingController nameController = TextEditingController();
-  String color = '';
-
+  final colorController = TextEditingController();
   bool showColoredBox = false;
 
   @override
   void initState() {
     super.initState();
     nameController.text = widget.name.isNotEmpty ? widget.name : '';
-    color = widget.color.isNotEmpty ? widget.color : '#ABB8C3';
+
+    if (widget.color.isNotEmpty) {
+      colorController.text = widget.color.replaceAll('#', '');
+    } else {
+      colorController.text =
+          colorsForLabel[Random().nextInt(colorsForLabel.length)]
+              .replaceAll('#', '');
+    }
+
     // log(widget.stateKey);
   }
 
@@ -367,63 +379,98 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                     Container(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              setState(() {
-                                showColoredBox = !showColoredBox;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(int.parse(
-                                      '0xFF${color.toString().replaceAll('#', '')}'))),
-                            )),
-                        showColoredBox
-                            ? Container(
-                                margin: const EdgeInsets.only(left: 10),
-                                width: 300,
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 10,
+                      children: colorsForLabel
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  colorController.text = e
+                                      .toString()
+                                      .replaceAll('#', '')
+                                      .toUpperCase();
+                                });
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                margin: const EdgeInsets.only(bottom: 10),
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: themeProvider.themeManager
-                                      .secondaryBackgroundDefaultColor,
+                                  color: e.toString().toColor(),
+                                  borderRadius: BorderRadius.circular(5),
                                   boxShadow: const [
                                     BoxShadow(
-                                        blurRadius: 2.0, color: greyColor),
+                                        blurRadius: 1.0, color: greyColor),
                                   ],
-                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: colorsForLabel
-                                      .map((e) => GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                color = e;
-                                                showColoredBox = false;
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                color: Color(int.parse(
-                                                    '0xFF${e.toString().replaceAll('#', '')}')),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              maxLength: 6,
+                              controller: colorController,
+                              onChanged: (value) {
+                                if (value.length == 6 &&
+                                    value.contains(RegExp("[^0-9a-fA-F]"))) {
+                                  CustomToast.showToast(context,
+                                      message: 'HexCode is not valid',
+                                      toastType: ToastType.warning);
+                                }
+
+                                setState(() {});
+                              },
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3,
+                                      color: themeProvider.themeManager
+                                          .primaryBackgroundSelectedColour),
                                 ),
-                              )
-                            : Container()
-                      ],
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3,
+                                      color: themeProvider.themeManager
+                                          .primaryBackgroundSelectedColour),
+                                ),
+                                filled: true,
+                                fillColor: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                prefixIcon: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  width: 55,
+                                  height: 55,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color:
+                                          '#${colorController.text}'.toColor(),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5))),
+                                  child: CustomText(
+                                    '#',
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                    fontWeight: FontWeightt.Semibold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       height: 15,
@@ -517,7 +564,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                           context: context,
                           data: {
                             "name": nameController.text,
-                            "color": color,
+                            "color": '#${colorController.text}',
                             "group": states[widget.groupIndex],
                             "description": ""
                           },

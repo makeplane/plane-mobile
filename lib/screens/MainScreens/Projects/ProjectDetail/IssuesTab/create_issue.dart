@@ -343,26 +343,30 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                           null
                                                       ? Icon(
                                                           iconList[issuesProvider
-                                                                  .createIssueProjectData[
-                                                              'icon_prop']['name']],
+                                                                      .createIssueProjectData[
+                                                                  'icon_prop']
+                                                              ['name']],
                                                           color: issuesProvider
-                                                                  .createIssueProjectData[
-                                                                      'icon_prop']
-                                                                      ['color'].toString().toColor()
-                                                        )
+                                                              .createIssueProjectData[
+                                                                  'icon_prop']
+                                                                  ['color']
+                                                              .toString()
+                                                              .toColor())
                                                       : Container(
                                                           height: 20,
                                                           width: 20,
                                                           decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(5),
-                                                            color: ColorManager.getColorRandomly()
-                                                          ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              color: ColorManager
+                                                                  .getColorRandomly()),
                                                           child: Center(
                                                             child: CustomText(
                                                               issuesProvider
-                                                                  .createIssueProjectData
-                                                                      ['name']
-                                                                      [0]
+                                                                  .createIssueProjectData[
+                                                                      'name'][0]
                                                                   .toString()
                                                                   .toUpperCase(),
                                                               type: FontStyle
@@ -457,7 +461,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                             webviewController,
                                                         title: 'Description',
                                                         url:
-                                                            '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
+                                                            '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                       )));
                                         },
                                         child: Container(
@@ -557,7 +561,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                         initialUrlRequest:
                                                             URLRequest(
                                                                 url: Uri.parse(
-                                                                    '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=false'))),
+                                                                    '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=false'))),
                                                     descriptionLoading
                                                         ? Container(
                                                             alignment: Alignment
@@ -599,7 +603,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                             title:
                                                                                 'Description',
                                                                             url:
-                                                                                '${dotenv.env['EDITOR_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
+                                                                                '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                                           )));
                                                             },
                                                             child: Container(
@@ -679,7 +683,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                 .keyboard_arrow_down,
 
                                                         color: const Color
-                                                            .fromRGBO(
+                                                                .fromRGBO(
                                                             63, 118, 255, 1),
                                                       ),
                                                     ),

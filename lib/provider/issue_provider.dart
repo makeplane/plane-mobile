@@ -459,7 +459,7 @@ class IssueProvider with ChangeNotifier {
 
   Future setCookies({required String key, required String value}) async {
     if (value.isEmpty) return;
-    final Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+    final Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
     final cookieManager = CookieManager.instance();
     await cookieManager.setCookie(
       url: baseWebUrl,
@@ -478,7 +478,7 @@ class IssueProvider with ChangeNotifier {
       cookiesState = StateEnum.loading;
       final cookieManager = CookieManager.instance();
       cookieManager.deleteAllCookies();
-      final Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+      final Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
       if (data.isNotEmpty) {
         await cookieManager.setCookie(
           url: baseWebUrl,

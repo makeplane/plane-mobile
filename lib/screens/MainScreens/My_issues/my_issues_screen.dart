@@ -137,9 +137,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                       .themeManager.primaryBackgroundSelectedColour,
                   radius: 20,
                   child: Icon(
-                    size: 20,
-                    Icons.view_list_outlined,
-                    color: themeProvider.themeManager.secondaryTextColor,
+                    Icons.wysiwyg_outlined,
+                    color: themeProvider.themeManager.primaryTextColor,
+                    size: 19,
                   ),
                 ),
               ),
@@ -338,6 +338,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                           ),
                                         ],
                                       ),
+                                      const SizedBox(
+                                        height: 2,
+                                      ),
                                       selected == 1
                                           ? Container(
                                               decoration: BoxDecoration(
@@ -385,6 +388,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
                                       ),
                                       selected == 2
                                           ? Container(
@@ -503,11 +509,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                 child: Row(
                                                   children: [
                                                     state.leading ??
-                                                        Container(
-                                                          height: 20,
-                                                          width: 20,
-                                                          color: Colors.amber,
-                                                        ),
+                                                        const SizedBox.shrink(),
                                                     Container(
                                                       padding: EdgeInsets.only(
                                                         left: issueProvider
@@ -517,8 +519,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                             ? 0
                                                             : 10,
                                                       ),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.6,
                                                       child: CustomText(
                                                         state.title!,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
                                                         type: FontStyle.Large,
                                                         color: themeProvider
                                                             .themeManager

@@ -182,8 +182,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       floatingActionButton: selected != 0 &&
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
-              ((selected == 1 &&
-                      cycleProvider.showAddFloatingButton()) ||
+              ((selected == 1 && cycleProvider.showAddFloatingButton()) ||
                   (selected == 2 &&
                       moduleProvider.moduleState != StateEnum.loading &&
                       (moduleProvider.modules.isNotEmpty ||
@@ -191,12 +190,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                   (selected == 3 &&
                       viewsProvider.viewsState != StateEnum.loading &&
                       viewsProvider.views.isNotEmpty))
-          // selected != 0 &&
-          //         (projectProvider.role == Role.admin ||
-          //             projectProvider.role == Role.member) &&
-          //         (selected == 3 &&
-          //             viewsProvider.viewsState != StateEnum.loading &&
-          //             viewsProvider.views.isNotEmpty)
           ? FloatingActionButton(
               backgroundColor: themeProvider.themeManager.primaryColour,
               child: Icon(
@@ -377,7 +370,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                           ),
-
                           Expanded(
                             child: PageView.builder(
                               controller: controller,
@@ -791,86 +783,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
                                       ),
                                     )
                               : Container(),
-
-                          // GestureDetector(
-                          //     onTap: () {
-                          //       selected == 1
-                          //           ? Navigator.of(context).push(
-                          //               MaterialPageRoute(
-                          //                   builder: (ctx) =>
-                          //                       const CreateCycle()))
-                          //           : selected == 2
-                          //               ? Navigator.of(context).push(
-                          //                   MaterialPageRoute(
-                          //                       builder: (ctx) =>
-                          //                           const CreateModule()))
-                          //               : selected == 3
-                          //                   ? Navigator.of(context).push(
-                          //                       MaterialPageRoute(
-                          //                           builder: (ctx) =>
-                          //                               const CreateView()))
-                          //                   : Navigator.of(context).push(
-                          //                       MaterialPageRoute(
-                          //                           builder: (ctx) =>
-                          //                               const CreatePage()));
-                          //     },
-                          //     child: Container(
-                          //       height: 50,
-                          //       width: MediaQuery.of(context).size.width,
-                          //       color: Colors.black,
-                          //       child: Row(
-                          //         children: [
-                          //           Expanded(
-                          //               child: SizedBox(
-                          //             child: Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.center,
-                          //               children: [
-                          //                 const Icon(
-                          //                   Icons.add,
-                          //                   color: Colors.white,
-                          //                 ),
-                          //                 CustomText(
-                          //                   selected == 1
-                          //                       ? ' Add Cycle'
-                          //                       : selected == 2
-                          //                           ? 'Add Module'
-                          //                           : selected == 3
-                          //                               ? 'Add View'
-                          //                               : 'Add Page',
-                          //                   type: FontStyle.Medium,
-                          //                   color: Colors.white,
-                          //                 )
-                          //               ],
-                          //             ),
-                          //           )),
-                          //           Container(
-                          //             height: 50,
-                          //             width: 0.5,
-                          //             color: greyColor,
-                          //           ),
-                          //           Expanded(
-                          //               child: SizedBox(
-                          //             child: Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.center,
-                          //               children: [
-                          //                 const Icon(
-                          //                   Icons.filter_alt,
-                          //                   color: Colors.white,
-                          //                 ),
-                          //                 CustomText(
-                          //                   ' Filters',
-                          //                   type: FontStyle.Medium,
-                          //                   color: Colors.white,
-                          //                 )
-                          //               ],
-                          //             ),
-                          //           )),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   )
                         ],
                       ),
               ),
@@ -962,8 +874,17 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                                   .only(
                                                             left: 10,
                                                           ),
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.6,
                                                           child: CustomText(
                                                             state.title!,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
                                                             type:
                                                                 FontStyle.Large,
                                                             color: themeProvider
@@ -1132,16 +1053,17 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                     .secondaryBackgroundDefaultColor,
                                 cardPlaceHolderColor: themeProvider
                                     .themeManager.primaryBackgroundDefaultColor,
-                                
                                 cardPlaceHolderDecoration: BoxDecoration(
-                                  color: themeProvider.themeManager
-                                      .primaryBackgroundDefaultColor,
-                                  boxShadow: [ BoxShadow(
-                        blurRadius: 2,
-                        color: themeProvider.themeManager.borderSubtle01Color,
-                        spreadRadius: 0,
-                      ),]
-                                ),
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 2,
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                        spreadRadius: 0,
+                                      ),
+                                    ]),
                                 listScrollConfig: ScrollConfig(
                                     offset: 65,
                                     duration: const Duration(milliseconds: 100),

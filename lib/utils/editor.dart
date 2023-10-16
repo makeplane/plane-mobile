@@ -36,7 +36,7 @@ class EDITOR extends ConsumerStatefulWidget {
 class _EDITORState extends ConsumerState<EDITOR> {
   bool isLoading = true;
   late InAppWebViewController controller;
-  Uri baseWebUrl = Uri.parse(dotenv.env['EDITOR_URL']!);
+  Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
   final cookieManager = CookieManager.instance();
 
   @override

@@ -345,6 +345,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             widget.fromModule
                                 ? widget.moduleName!
                                 : widget.cycleName!,
+                            maxLines: 1,
                             type: FontStyle.H5,
                             fontWeight: FontWeightt.Semibold,
                           ),
@@ -612,8 +613,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 padding: const EdgeInsets.only(
                                                                                   left: 10,
                                                                                 ),
+                                                                                width: MediaQuery.of(context).size.width * 0.6,
                                                                                 child: CustomText(
                                                                                   state.title!,
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  maxLines: 1,
                                                                                   type: FontStyle.Small,
                                                                                   fontWeight: FontWeightt.Medium,
                                                                                 ),
@@ -692,7 +696,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                 .initializeBoard()
                                                             : cyclesProvider
                                                                 .initializeBoard(),
-                                                        boardID: widget.fromModule?'module-board':'cycle-board',
+                                                        boardID:
+                                                            widget.fromModule
+                                                                ? 'module-board'
+                                                                : 'cycle-board',
                                                         onItemReorder: (
                                                             {newCardIndex,
                                                             newListIndex,

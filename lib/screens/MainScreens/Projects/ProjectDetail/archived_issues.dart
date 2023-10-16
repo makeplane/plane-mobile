@@ -152,6 +152,10 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                                                                     state.leading ??
                                                                         Container(),
                                                                     Container(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.6,
                                                                       padding:
                                                                           const EdgeInsets
                                                                               .only(
@@ -162,6 +166,10 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                                                                           CustomText(
                                                                         state
                                                                             .title!,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        maxLines:
+                                                                            1,
                                                                         type: FontStyle
                                                                             .Large,
                                                                         color: themeProvider

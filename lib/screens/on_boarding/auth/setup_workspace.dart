@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/screens/on_boarding/auth/invite_co_workers.dart';
 import 'package:plane/utils/custom_toast.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_rich_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -192,7 +193,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                             left: 15,
                                           ),
                                           child: CustomText(
-                                            'https://takeoff.plane.so/',
+                                            dotenv.env['WEB_URL']!,
                                             type: FontStyle.Small,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
@@ -443,7 +444,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                     Navigator.of(context).pop();
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20),
                                     width: MediaQuery.of(context).size.width,
                                     child: Row(
                                       mainAxisAlignment:

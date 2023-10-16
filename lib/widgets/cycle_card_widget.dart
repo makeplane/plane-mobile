@@ -172,7 +172,7 @@ class _CycleCardWidgetState extends ConsumerState<CycleCardWidget> {
       width: width * 0.6,
       child: CustomText(
         cycleName,
-        maxLines: 2,
+        maxLines: 1,
         type: FontStyle.Medium,
         fontWeight: FontWeightt.Medium,
       ),

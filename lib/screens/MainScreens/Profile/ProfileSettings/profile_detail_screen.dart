@@ -684,7 +684,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       ),
                     ),
                     Positioned(
-                      bottom: 0,
+                      bottom: 4,
                       child: Container(
                         width: width,
                         padding: const EdgeInsets.symmetric(

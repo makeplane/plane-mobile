@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -7,6 +9,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/list_extensions.dart';
 import 'package:plane/utils/string_manager.dart';
@@ -23,11 +26,6 @@ class OverViewScreen extends ConsumerStatefulWidget {
 }
 
 class _OverViewScreenState extends ConsumerState<OverViewScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final userProfileProvider = ref.watch(ProviderList.memberProfileProvider);
@@ -454,51 +452,73 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                   }
                   if (userProfileProvider.userActivity.results![index].field ==
                       'modules') {
-                    Navigator.push(
-                      Const.globalKey.currentContext!,
-                      MaterialPageRoute(
-                          builder: (context) => CycleDetail(
-                                fromModule: true,
-                                projId: userProfileProvider.userActivity
-                                    .results![index].projectDetail!.id,
-                                moduleId: userProfileProvider.userActivity
-                                        .results![index].newIdentifier ??
-                                    userProfileProvider.userActivity
-                                        .results![index].oldIdentifier,
-                                moduleName: userProfileProvider.userActivity
-                                            .results![index].newValue !=
-                                        ''
-                                    ? userProfileProvider
-                                        .userActivity.results![index].newValue
-                                    : userProfileProvider.userActivity
-                                            .results![index].oldValue ??
-                                        '',
-                              )),
-                    );
+                    if (userProfileProvider
+                                .userActivity.results![index].newIdentifier ==
+                            null &&
+                        userProfileProvider
+                                .userActivity.results![index].oldIdentifier ==
+                            null) {
+                      CustomToast.showToast(context,
+                          message: 'Module does not exist',
+                          toastType: ToastType.warning);
+                    } else {
+                      Navigator.push(
+                        Const.globalKey.currentContext!,
+                        MaterialPageRoute(
+                            builder: (context) => CycleDetail(
+                                  fromModule: true,
+                                  projId: userProfileProvider.userActivity
+                                      .results![index].projectDetail!.id,
+                                  moduleId: userProfileProvider.userActivity
+                                          .results![index].newIdentifier ??
+                                      userProfileProvider.userActivity
+                                          .results![index].oldIdentifier,
+                                  moduleName: userProfileProvider.userActivity
+                                              .results![index].newValue !=
+                                          ''
+                                      ? userProfileProvider
+                                          .userActivity.results![index].newValue
+                                      : userProfileProvider.userActivity
+                                              .results![index].oldValue ??
+                                          '',
+                                )),
+                      );
+                    }
                   }
                   if (userProfileProvider.userActivity.results![index].field ==
                       'cycles') {
-                    Navigator.push(
-                      Const.globalKey.currentContext!,
-                      MaterialPageRoute(
-                          builder: (context) => CycleDetail(
-                                fromModule: false,
-                                projId: userProfileProvider.userActivity
-                                    .results![index].projectDetail!.id,
-                                cycleId: userProfileProvider.userActivity
-                                        .results![index].newIdentifier ??
-                                    userProfileProvider.userActivity
-                                        .results![index].oldIdentifier,
-                                cycleName: userProfileProvider.userActivity
-                                            .results![index].newValue !=
-                                        ''
-                                    ? userProfileProvider
-                                        .userActivity.results![index].newValue
-                                    : userProfileProvider.userActivity
-                                            .results![index].oldValue ??
-                                        '',
-                              )),
-                    );
+                    if (userProfileProvider
+                                .userActivity.results![index].oldIdentifier ==
+                            null &&
+                        userProfileProvider
+                                .userActivity.results![index].newIdentifier ==
+                            null) {
+                      CustomToast.showToast(context,
+                          message: 'Cycle does not exist',
+                          toastType: ToastType.warning);
+                    } else {
+                      Navigator.push(
+                        Const.globalKey.currentContext!,
+                        MaterialPageRoute(
+                            builder: (context) => CycleDetail(
+                                  fromModule: false,
+                                  projId: userProfileProvider.userActivity
+                                      .results![index].projectDetail!.id,
+                                  cycleId: userProfileProvider.userActivity
+                                          .results![index].newIdentifier ??
+                                      userProfileProvider.userActivity
+                                          .results![index].oldIdentifier,
+                                  cycleName: userProfileProvider.userActivity
+                                              .results![index].newValue !=
+                                          ''
+                                      ? userProfileProvider
+                                          .userActivity.results![index].newValue
+                                      : userProfileProvider.userActivity
+                                              .results![index].oldValue ??
+                                          '',
+                                )),
+                      );
+                    }
                   }
                   if (userProfileProvider.userActivity.results![index].comment!
                           .contains('created the issue') ||

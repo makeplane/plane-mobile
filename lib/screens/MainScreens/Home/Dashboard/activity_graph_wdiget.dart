@@ -100,7 +100,7 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
                           itemBuilder: (context, index) {
                             return Container(
                               margin: const EdgeInsets.only(right: 10),
-                              width: 70,
+                              width: 75,
                               child: CustomText(
                                 monthsData![index]
                                     .month

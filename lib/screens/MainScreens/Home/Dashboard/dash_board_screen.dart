@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/select_month_sheet.dart';
 import 'package:plane/screens/MainScreens/Home/Dashboard/activity_graph_wdiget.dart';
 import 'package:plane/utils/string_manager.dart';
+import 'package:plane/widgets/padding_widget.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -88,7 +89,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 15),
+        padding: const EdgeInsets.only(top: 15),
         child: RefreshIndicator(
           color: themeProvider.themeManager.primaryColour,
           backgroundColor:
@@ -103,68 +104,70 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   child: headerWidget(),
                 ),
                 Expanded(
-                  child: ListView(
-                    controller: parentScrollController,
-                    children: [
-                      const SizedBox(height: 20),
-                      greetingAndDateTimeWidget(
-                          context, profileProvider, themeProvider),
-                      const SizedBox(height: 20),
-                      dashboardProvider.hideGithubBlock == false
-                          ? starUsOnGitHubWidget(
-                              themeProvider, context, dashboardProvider)
-                          : Container(),
-                      const SizedBox(height: 20),
-                      projectProvider.projects.isEmpty &&
-                              projectProvider.getProjectState ==
-                                  StateEnum.success
-                          ? createProjectWidget(themeProvider, context)
-                          : Container(),
-                      projectProvider.projects.isNotEmpty
-                          ? quichInfoWidget(
-                              context, themeProvider, dashboardProvider)
-                          : Container(),
-                      const SizedBox(height: 20),
-                      const ActivityGraphWidget(),
-                      const SizedBox(height: 20),
-                      // overdueIssues.isEmpty || overdueIssues.isNull
-                      overdueIssues == null || overdueIssues.isEmpty
-                          ? Container()
-                          : Column(
-                              children: [
-                                overDueIssuesWidget(
-                                    themeProvider, overdueIssues),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                      upcomingIssues == null || upcomingIssues.isEmpty
-                          ? Container()
-                          : Column(
-                              children: [
-                                upcomingIssuesWidget(
-                                    themeProvider, upcomingIssues),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                      stateDistribution == null || stateDistribution.isEmpty
-                          ? Container()
-                          : Column(
-                              children: [
-                                issuesByStatesWidget(
-                                    themeProvider, stateDistribution),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                      issuesCompleted == null
-                          ? Container()
-                          : Column(
-                              children: [
-                                issuesClosedByYouWidget(themeProvider,
-                                    dashboardProvider, issuesCompleted),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                    ],
+                  child: horizontalPaddingWidget(
+                    child: ListView(
+                      controller: parentScrollController,
+                      children: [
+                        const SizedBox(height: 20),
+                        greetingAndDateTimeWidget(
+                            context, profileProvider, themeProvider),
+                        const SizedBox(height: 20),
+                        dashboardProvider.hideGithubBlock == false
+                            ? starUsOnGitHubWidget(
+                                themeProvider, context, dashboardProvider)
+                            : Container(),
+                        const SizedBox(height: 20),
+                        projectProvider.projects.isEmpty &&
+                                projectProvider.getProjectState ==
+                                    StateEnum.success
+                            ? createProjectWidget(themeProvider, context)
+                            : Container(),
+                        projectProvider.projects.isNotEmpty
+                            ? quichInfoWidget(
+                                context, themeProvider, dashboardProvider)
+                            : Container(),
+                        const SizedBox(height: 20),
+                        const ActivityGraphWidget(),
+                        const SizedBox(height: 20),
+                        // overdueIssues.isEmpty || overdueIssues.isNull
+                        overdueIssues == null || overdueIssues.isEmpty
+                            ? Container()
+                            : Column(
+                                children: [
+                                  overDueIssuesWidget(
+                                      themeProvider, overdueIssues),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                        upcomingIssues == null || upcomingIssues.isEmpty
+                            ? Container()
+                            : Column(
+                                children: [
+                                  upcomingIssuesWidget(
+                                      themeProvider, upcomingIssues),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                        stateDistribution == null || stateDistribution.isEmpty
+                            ? Container()
+                            : Column(
+                                children: [
+                                  issuesByStatesWidget(
+                                      themeProvider, stateDistribution),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                        issuesCompleted == null
+                            ? Container()
+                            : Column(
+                                children: [
+                                  issuesClosedByYouWidget(themeProvider,
+                                      dashboardProvider, issuesCompleted),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -541,7 +544,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         parentScrollController.offset - details.delta.dy);
                   } else {
                     overDueScrollController.jumpTo(
-                        overDueScrollController.offset - details.delta.dy);
+                        overDueScrollController.offset - (details.delta.dy - 1));
                   }
                   if (overDueScrollController.offset <=
                       overDueScrollController.position.minScrollExtent) {
@@ -811,25 +814,34 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     shrinkWrap: true,
                     itemCount: data.length,
                     itemBuilder: (context, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 15,
-                            width: 15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: IssuesByState.getColorForState(
-                                  data[index].state),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: IssuesByState.getColorForState(
+                                    data[index].state),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          CustomText(StringManager.capitalizeFirstLetter(
-                              data[index].state)),
-                          const Spacer(),
-                          CustomText(data[index].issues.toString()),
-                        ],
+                            const SizedBox(width: 8),
+                            CustomText(
+                              StringManager.capitalizeFirstLetter(
+                                  data[index].state),
+                              type: FontStyle.Small,
+                            ),
+                            const Spacer(),
+                            CustomText(
+                              data[index].issues.toString(),
+                              type: FontStyle.Small,
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -1032,120 +1044,122 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       decoration: BoxDecoration(
         border: Border(
           bottom:
-              BorderSide(color: themeProvider.themeManager.borderDisabledColor),
+              BorderSide(color: themeProvider.themeManager.borderSubtle01Color),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                enableDrag: true,
-                constraints: BoxConstraints(
-                    minHeight: height * 0.5,
-                    maxHeight: MediaQuery.of(context).size.height * 0.8),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                )),
-                context: context,
-                builder: (ctx) {
-                  return const SelectWorkspace();
-                },
-              ).then((value) {});
-            },
-            child: Row(
-              children: [
-                !workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
-                    ? Container()
-                    : workspaceProvider.selectedWorkspace.workspaceLogo != ''
-                        ? WorkspaceLogoForDiffrentExtensions(
-                            imageUrl: workspaceProvider
-                                .selectedWorkspace.workspaceLogo,
-                            themeProvider: themeProvider,
-                            workspaceName: workspaceProvider
-                                .selectedWorkspace.workspaceName)
-                        : Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: themeProvider.themeManager.primaryColour,
-                            ),
-                            child: Center(
-                              child: CustomText(
-                                workspaceProvider
-                                    .selectedWorkspace.workspaceName[0]
-                                    .toUpperCase(),
-                                type: FontStyle.Medium,
-                                fontWeight: FontWeightt.Bold,
-                                color: Colors.white,
-                                overrride: true,
+      child: horizontalPaddingWidget(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  constraints: BoxConstraints(
+                      minHeight: height * 0.5,
+                      maxHeight: MediaQuery.of(context).size.height * 0.8),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return const SelectWorkspace();
+                  },
+                ).then((value) {});
+              },
+              child: Row(
+                children: [
+                  !workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
+                      ? Container()
+                      : workspaceProvider.selectedWorkspace.workspaceLogo != ''
+                          ? WorkspaceLogoForDiffrentExtensions(
+                              imageUrl: workspaceProvider
+                                  .selectedWorkspace.workspaceLogo,
+                              themeProvider: themeProvider,
+                              workspaceName: workspaceProvider
+                                  .selectedWorkspace.workspaceName)
+                          : Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: themeProvider.themeManager.primaryColour,
+                              ),
+                              child: Center(
+                                child: CustomText(
+                                  workspaceProvider
+                                      .selectedWorkspace.workspaceName[0]
+                                      .toUpperCase(),
+                                  type: FontStyle.Medium,
+                                  fontWeight: FontWeightt.Bold,
+                                  color: Colors.white,
+                                  overrride: true,
+                                ),
                               ),
                             ),
-                          ),
-                const SizedBox(
-                  width: 10,
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  CustomText(
+                    workspaceProvider.selectedWorkspace.workspaceName,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SetupWorkspace(
+                                  fromHomeScreen: true,
+                                )));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: themeProvider
+                        .themeManager.primaryBackgroundSelectedColour,
+                    radius: 20,
+                    child: Icon(
+                      size: 20,
+                      Icons.add,
+                      color: themeProvider.themeManager.secondaryTextColor,
+                    ),
+                  ),
                 ),
-                CustomText(
-                  workspaceProvider.selectedWorkspace.workspaceName,
-                  type: FontStyle.H4,
-                  fontWeight: FontWeightt.Semibold,
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const GlobalSearchSheet()));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: themeProvider
+                        .themeManager.primaryBackgroundSelectedColour,
+                    radius: 20,
+                    child: Icon(
+                      size: 20,
+                      Icons.search,
+                      color: themeProvider.themeManager.secondaryTextColor,
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SetupWorkspace(
-                                fromHomeScreen: true,
-                              )));
-                },
-                child: CircleAvatar(
-                  backgroundColor: themeProvider
-                      .themeManager.primaryBackgroundSelectedColour,
-                  radius: 20,
-                  child: Icon(
-                    size: 20,
-                    Icons.add,
-                    color: themeProvider.themeManager.secondaryTextColor,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GlobalSearchSheet()));
-                },
-                child: CircleAvatar(
-                  backgroundColor: themeProvider
-                      .themeManager.primaryBackgroundSelectedColour,
-                  radius: 20,
-                  child: Icon(
-                    size: 20,
-                    Icons.search,
-                    color: themeProvider.themeManager.secondaryTextColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

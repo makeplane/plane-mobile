@@ -548,7 +548,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           ),
                           const Spacer(),
                           checkUser()
-                              ? Icon(Icons.arrow_drop_down,
+                              ? Icon(Icons.keyboard_arrow_down,
                                   color: themeProvider
                                       .themeManager.primaryTextColor)
                               : Container()

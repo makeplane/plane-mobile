@@ -10,7 +10,7 @@ import 'package:plane/kanban/custom/board.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/project_details_cycles.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/module_screen.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';

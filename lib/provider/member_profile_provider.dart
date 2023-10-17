@@ -349,8 +349,6 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
   void getIssuesCountByState() {
     final List<Map<String, dynamic>> issues = state.issuesCountByState;
 
-    log('Issues count by state: ${issues.toString()}}');
-
     final Map<String, int> stateCount = {
       'backlog': 0,
       'unstarted': 0,
@@ -384,11 +382,10 @@ class MemberProfileProvider extends StateNotifier<MemberProfileStateModel> {
       const Color.fromRGBO(153, 27, 27, 1),
       const Color.fromRGBO(239, 68, 68, 1),
       const Color.fromRGBO(245, 158, 11, 1),
-      const Color.fromRGBO(22, 163, 74, 1),
       const Color.fromRGBO(229, 229, 229, 1)
+      // const Color.fromRGBO(22, 163, 74, 1),
     ];
     state.issuesByPriority = state.userStats.priorityDistribution!;
-    // state.copyWith(issuesByPriority: state.userStats.priorityDistribution);
     for (int i = 0; i < state.issuesByPriority.length; i++) {
       state.issuesByPriority[i]["color"] = colors[i];
     }

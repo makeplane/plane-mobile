@@ -16,7 +16,7 @@ import '../../../../../bottom_sheets/views_sheet.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/enums.dart';
 import '../../../../../widgets/custom_text.dart';
-import '../IssuesTab/create_issue.dart';
+import '../IssuesTab/CreateIssue/create_issue.dart';
 
 class ViewsDetail extends ConsumerStatefulWidget {
   const ViewsDetail(

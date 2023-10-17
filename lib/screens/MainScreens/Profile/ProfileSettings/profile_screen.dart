@@ -22,6 +22,7 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/padding_widget.dart';
 import 'package:plane/widgets/shimmer_effect_widget.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
@@ -167,7 +168,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Material(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -196,11 +197,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 15, left: 16, right: 16),
       decoration: BoxDecoration(
         border: Border(
           bottom:
-              BorderSide(color: themeProvider.themeManager.borderDisabledColor),
+              BorderSide(color: themeProvider.themeManager.borderSubtle01Color),
         ),
       ),
       child: Row(
@@ -371,110 +372,112 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget profileCard(
       ThemeProvider themeProvider, ProfileProvider profileProvider) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
-      ),
-      padding: const EdgeInsets.all(15),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfileDetailScreen(),
-                ),
-              );
-            },
-            child: Hero(
-                tag: 'photo',
-                child: profileProvider.userProfile.avatar != null &&
-                        profileProvider.userProfile.avatar != ""
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: SizedBox(
+    return horizontalPaddingWidget(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+        ),
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileDetailScreen(),
+                  ),
+                );
+              },
+              child: Hero(
+                  tag: 'photo',
+                  child: profileProvider.userProfile.avatar != null &&
+                          profileProvider.userProfile.avatar != ""
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox(
+                            height: 90,
+                            width: 90,
+                            child: CachedNetworkImage(
+                              imageUrl: profileProvider.userProfile.avatar!,
+                              placeholder: (context, url) =>
+                                  const ShimmerEffectWidget(
+                                      height: 90, width: 90, borderRadius: 10),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
                           height: 90,
                           width: 90,
-                          child: CachedNetworkImage(
-                            imageUrl: profileProvider.userProfile.avatar!,
-                            placeholder: (context, url) =>
-                                const ShimmerEffectWidget(
-                                    height: 90, width: 90, borderRadius: 10),
-                            fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor,
                           ),
-                        ),
-                      )
-                    : Container(
-                        height: 90,
-                        width: 90,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: themeProvider
-                              .themeManager.tertiaryBackgroundDefaultColor,
-                        ),
-                        child: Icon(
-                          Icons.person_2_outlined,
-                          color:
-                              themeProvider.themeManager.placeholderTextColor,
-                          size: 35,
-                        ))),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: width * 0.5,
-                child: CustomText(
-                  profileProvider.userProfile.firstName ?? 'User name',
-                  type: FontStyle.H4,
-                  fontWeight: FontWeightt.Semibold,
-                  maxLines: 1,
-                ),
-              ),
-              const SizedBox(
-                height: 0,
-              ),
-              SizedBox(
-                width: width * 0.5,
-                child: CustomText(
-                  profileProvider.userProfile.email ?? '',
-                  type: FontStyle.Medium,
-                  color: themeProvider.themeManager.placeholderTextColor,
-                  maxLines: 1,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => UserProfileScreen(
-                        userID: profileProvider.userProfile.id!,
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Icon(
+                            Icons.person_2_outlined,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                            size: 35,
+                          ))),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
                   width: width * 0.5,
-                  //color: Colors.red,
                   child: CustomText(
-                    'View Profile',
-                    type: FontStyle.Medium,
-                    fontWeight: FontWeightt.Medium,
-                    color: themeProvider.themeManager.primaryColour,
+                    profileProvider.userProfile.firstName ?? 'User name',
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
                     maxLines: 1,
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+                const SizedBox(
+                  height: 0,
+                ),
+                SizedBox(
+                  width: width * 0.5,
+                  child: CustomText(
+                    profileProvider.userProfile.email ?? '',
+                    type: FontStyle.Medium,
+                    color: themeProvider.themeManager.placeholderTextColor,
+                    maxLines: 1,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => UserProfileScreen(
+                          userID: profileProvider.userProfile.id!,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    width: width * 0.5,
+                    //color: Colors.red,
+                    child: CustomText(
+                      'View Profile',
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.primaryColour,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -499,7 +502,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -548,7 +552,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               },
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

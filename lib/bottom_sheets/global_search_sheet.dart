@@ -883,7 +883,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget cyclesListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -915,13 +914,13 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 .watch(ProviderList.projectProvider)
                                 .currentProject['id'] =
                             globalSearchProvider.data!.cycles[index].projectId;
-                        await ref
-                            .read(ProviderList.projectProvider)
-                            .initializeProject(ref: ref);
-                        cyclesProvider.currentCycle['id'] =
-                            globalSearchProvider.data!.cycles[index].id;
-                        cyclesProvider.currentCycle['name'] =
-                            globalSearchProvider.data!.cycles[index].name;
+                        // await ref
+                        //     .read(ProviderList.projectProvider)
+                        //     .initializeProject(ref: ref);
+                        // cyclesProvider.currentCycle['id'] =
+                        //     globalSearchProvider.data!.cycles[index].id;
+                        // cyclesProvider.currentCycle['name'] =
+                        //     globalSearchProvider.data!.cycles[index].name;
                         Navigator.push(
                           Const.globalKey.currentContext!,
                           MaterialPageRoute(
@@ -949,13 +948,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                     themeProvider
                                         .themeManager.placeholderTextColor,
                                     BlendMode.srcIn)),
-                            // Icon(
-                            //   Icons.work_outline,
-                            //   size: 16,
-                            //   color: themeProvider.isDarkThemeEnabled
-                            //       ? darkPrimaryTextColor
-                            //       : lightPrimaryTextColor,
-                            // ),
                             const SizedBox(
                               width: 5,
                             ),
@@ -980,7 +972,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget modulesListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     if (globalSearchProvider.globalSearchState == StateEnum.loading) {
       return Container();
     } else {
@@ -1012,13 +1003,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                                 .watch(ProviderList.projectProvider)
                                 .currentProject['id'] =
                             globalSearchProvider.data!.modules[index].projectId;
-                        await ref
-                            .read(ProviderList.projectProvider)
-                            .initializeProject(ref: ref);
-                        modulesProvider.currentModule['id'] =
-                            globalSearchProvider.data!.modules[index].id;
-                        modulesProvider.currentModule['name'] =
-                            globalSearchProvider.data!.modules[index].name;
+
                         Navigator.push(
                           Const.globalKey.currentContext!,
                           MaterialPageRoute(

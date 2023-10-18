@@ -688,7 +688,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                 .keyboard_arrow_down,
 
                                                         color: const Color
-                                                            .fromRGBO(
+                                                                .fromRGBO(
                                                             63, 118, 255, 1),
                                                       ),
                                                     ),

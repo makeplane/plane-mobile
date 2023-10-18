@@ -305,7 +305,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
             issueProvider.issues.filters = issueProvider.tempFilters;
             issueProvider.showEmptyStates =
-                issueProvider.issueView['display_filters']["show_empty_groups"];
+                issueProvider.issueView['display_filters'] != null
+                    ? issueProvider.issueView['display_filters']
+                        ["show_empty_groups"]
+                    : false;
 
             issueProvider.setsState();
             issueProvider.filterIssues(
@@ -2072,11 +2075,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                CustomText(
-                                  detailData['distribution']['labels'][index]
-                                          ['label_name'] ??
-                                      'No Label',
-                                  maxLines: 2,
+                                SizedBox(
+                                  width: width * 0.4,
+                                  child: CustomText(
+                                    detailData['distribution']['labels'][index]
+                                            ['label_name'] ??
+                                        'No Label',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),

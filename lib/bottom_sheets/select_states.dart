@@ -83,47 +83,13 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
         width: double.infinity,
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        'Select State',
-                        type: FontStyle.H4,
-                        fontWeight: FontWeightt.Semibold,
-                        color: themeProvider.themeManager.primaryTextColor,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            final prov = ref.read(ProviderList.issuesProvider);
-                            //   if (selectedState.isNotEmpty) {
-                            prov.createIssuedata['state'] = selectedState;
-                            // print('state');
-                            // print(prov.createIssuedata['state'].toString());
-                            prov.getStates(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projID: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id']);
-                            prov.setsState();
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.close,
-                            color:
-                                themeProvider.themeManager.placeholderTextColor,
-                          ))
-                    ],
-                  ),
                   const SizedBox(
-                    height: 15,
+                    height: 45,
                   ),
                   for (int j = 0; j < states.length; j++)
                     for (int i = 0;
@@ -217,13 +183,18 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                                   Container(
                                     width: 10,
                                   ),
-                                  CustomText(
-                                    issuesProvider.statesData[states[j]][i]
-                                        ['name'],
-                                    type: FontStyle.Medium,
-                                    fontWeight: FontWeightt.Regular,
-                                    color: themeProvider
-                                        .themeManager.primaryTextColor,
+                                  SizedBox(
+                                    width: width * 0.7,
+                                    child: CustomText(
+                                      issuesProvider.statesData[states[j]][i]
+                                          ['name'],
+                                      type: FontStyle.Medium,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                    ),
                                   ),
                                   const Spacer(),
                                   widget.createIssue
@@ -282,30 +253,66 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                   SizedBox(height: bottomSheetConstBottomPadding),
                 ],
               ),
-              issuesProvider.statesState == StateEnum.loading
-                  ? Container(
-                      alignment: Alignment.center,
-                      color: Colors.white.withOpacity(0.7),
-                      // height: 25,
-                      // width: 25,
-                      child: const Wrap(
-                        children: [
-                          SizedBox(
-                            height: 25,
-                            width: 25,
-                            child: LoadingIndicator(
-                              indicatorType: Indicator.lineSpinFadeLoader,
-                              colors: [Colors.black],
-                              strokeWidth: 1.0,
-                              backgroundColor: Colors.transparent,
-                            ),
+            ),
+            Container(
+              color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    'Select State',
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                    color: themeProvider.themeManager.primaryTextColor,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        final prov = ref.read(ProviderList.issuesProvider);
+                        //   if (selectedState.isNotEmpty) {
+                        prov.createIssuedata['state'] = selectedState;
+                        // print('state');
+                        // print(prov.createIssuedata['state'].toString());
+                        prov.getStates(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projID: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject['id']);
+                        prov.setsState();
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: themeProvider.themeManager.placeholderTextColor,
+                      ))
+                ],
+              ),
+            ),
+            issuesProvider.statesState == StateEnum.loading
+                ? Container(
+                    alignment: Alignment.center,
+                    color: Colors.white.withOpacity(0.7),
+                    // height: 25,
+                    // width: 25,
+                    child: const Wrap(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.lineSpinFadeLoader,
+                            colors: [Colors.black],
+                            strokeWidth: 1.0,
+                            backgroundColor: Colors.transparent,
                           ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
-            ],
-          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
+          ],
         ),
       ),
     );

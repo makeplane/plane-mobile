@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +31,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-    if (!widget.createIssue) getIssueLabels();
+      if (!widget.createIssue) getIssueLabels();
     });
     super.initState();
   }
@@ -95,34 +94,34 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                             return InkWell(
                               onTap: () {
                                 // setState(() {
-                                  if (widget.createIssue) {
-                                    if (issuesProvider.selectedLabels.contains(
-                                        issuesProvider.labels[index])) {
-                                      issuesProvider.selectedLabels
-                                          .remove(issuesProvider.labels[index]);
-                                    } else {
-                                      issuesProvider.selectedLabels
-                                          .add(issuesProvider.labels[index]);
-                                    }
-                                    final prov =
-                                        ref.watch(ProviderList.issuesProvider);
-                                    prov.createIssuedata['labels'] =
-                                        issuesProvider.selectedLabels.isEmpty
-                                            ? null
-                                            : issuesProvider.selectedLabels;
-                                    prov.setsState();
+                                if (widget.createIssue) {
+                                  if (issuesProvider.selectedLabels
+                                      .contains(issuesProvider.labels[index])) {
+                                    issuesProvider.selectedLabels
+                                        .remove(issuesProvider.labels[index]);
                                   } else {
-                                    setState(() {
-                                      if (issueDetailsLabels.contains(
-                                          issuesProvider.labels[index]['id'])) {
-                                        issueDetailsLabels.remove(
-                                            issuesProvider.labels[index]['id']);
-                                      } else {
-                                        issueDetailsLabels.add(
-                                            issuesProvider.labels[index]['id']);
-                                      }
-                                    });
+                                    issuesProvider.selectedLabels
+                                        .add(issuesProvider.labels[index]);
                                   }
+                                  final prov =
+                                      ref.watch(ProviderList.issuesProvider);
+                                  prov.createIssuedata['labels'] =
+                                      issuesProvider.selectedLabels.isEmpty
+                                          ? null
+                                          : issuesProvider.selectedLabels;
+                                  prov.setsState();
+                                } else {
+                                  setState(() {
+                                    if (issueDetailsLabels.contains(
+                                        issuesProvider.labels[index]['id'])) {
+                                      issueDetailsLabels.remove(
+                                          issuesProvider.labels[index]['id']);
+                                    } else {
+                                      issueDetailsLabels.add(
+                                          issuesProvider.labels[index]['id']);
+                                    }
+                                  });
+                                }
                                 // });
                               },
                               child: Container(
@@ -145,13 +144,18 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                               .toColor(),
                                         ),
                                         Container(width: 10),
-                                        CustomText(
-                                          issuesProvider.labels[index]['name']
-                                              .toString(),
-                                          type: FontStyle.Medium,
-                                          fontWeight: FontWeightt.Regular,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
+                                        SizedBox(
+                                          width: width * 0.7,
+                                          child: CustomText(
+                                            issuesProvider.labels[index]['name']
+                                                .toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            type: FontStyle.Medium,
+                                            fontWeight: FontWeightt.Regular,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
                                         ),
                                         const Spacer(),
                                         widget.createIssue
@@ -437,12 +441,12 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
 
   Widget createIssueSelectedIconsWidget(Map<String, dynamic> data) {
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
-      return issuesProvider.selectedLabels.contains(data)
-          ? const Icon(
-              Icons.done,
-              color: Color.fromRGBO(8, 171, 34, 1),
-            )
-          : const SizedBox.shrink();
+    return issuesProvider.selectedLabels.contains(data)
+        ? const Icon(
+            Icons.done,
+            color: Color.fromRGBO(8, 171, 34, 1),
+          )
+        : const SizedBox.shrink();
   }
 
   Widget issueDetailSelectedIconsWidget(int idx) {

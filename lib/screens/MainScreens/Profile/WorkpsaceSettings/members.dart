@@ -349,17 +349,19 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                             ),
                           ),
                         ),
-                        Icon(Icons.arrow_drop_down,
-                            color: (workspaceProvider.workspaceMembers[index]
-                                        ['member']["id"] ==
-                                    profileProvider.userProfile.id)
-                                ? Colors.transparent
-                                : fromRole(role: workspaceProvider.role) >=
-                                        workspaceProvider
-                                            .workspaceMembers[index]['role']
-                                    ? themeProvider
-                                        .themeManager.primaryTextColor
-                                    : Colors.transparent)
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: (workspaceProvider.workspaceMembers[index]
+                                      ['member']["id"] ==
+                                  profileProvider.userProfile.id)
+                              ? Colors.transparent
+                              : fromRole(role: workspaceProvider.role) >=
+                                      workspaceProvider.workspaceMembers[index]
+                                          ['role']
+                                  ? themeProvider.themeManager.primaryTextColor
+                                  : Colors.transparent,
+                          size: 20,
+                        )
                       ],
                     ),
                   ),
@@ -387,7 +389,8 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                   leading: Stack(
                     children: [
                       MemberLogoWidget(
-                        colorForErrorWidget: ColorManager.getColorWithIndex(index),
+                        colorForErrorWidget:
+                            ColorManager.getColorWithIndex(index),
                         imageUrl: '',
                         memberNameFirstLetterForErrorWidget: workspaceProvider
                             .workspaceInvitationsMembers[index]['email'][0]
@@ -399,11 +402,14 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                         right: 0,
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                          backgroundColor: themeProvider
+                              .themeManager.primaryBackgroundDefaultColor,
                           child: CircleAvatar(
-                            backgroundColor: themeProvider.themeManager.textWarningColor,
+                            backgroundColor:
+                                themeProvider.themeManager.textWarningColor,
                             radius: 9,
-                            child: SvgPicture.asset('assets/svg_images/Pending.svg'),
+                            child: SvgPicture.asset(
+                                'assets/svg_images/Pending.svg'),
                           ),
                         ),
                       )
@@ -566,7 +572,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                             ),
                           ),
                           Icon(
-                            Icons.arrow_drop_down,
+                            Icons.keyboard_arrow_down,
                             color: (workspaceProvider
                                             .workspaceInvitationsMembers[index]
                                         ["id"] ==
@@ -579,6 +585,7 @@ class _WrokspaceMebersWidgetState extends ConsumerState<WrokspaceMebersWidget> {
                                     ? themeProvider
                                         .themeManager.primaryTextColor
                                     : Colors.transparent,
+                            size: 20,
                           )
                         ],
                       ),
@@ -845,7 +852,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                     ),
                   ),
                   Icon(
-                    Icons.arrow_drop_down,
+                    Icons.keyboard_arrow_down,
                     color: (projectsProvider.projectMembers[index]['member']
                                 ["id"] ==
                             profileProvider.userProfile.id)
@@ -854,6 +861,7 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                                 projectsProvider.projectMembers[index]['role']
                             ? themeProvider.themeManager.primaryTextColor
                             : Colors.transparent,
+                    size: 20,
                   )
                 ],
               ),

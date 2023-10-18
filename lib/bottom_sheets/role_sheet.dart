@@ -28,7 +28,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
-      child: Wrap(
+      child: ListView(
         children: [
           Row(
             children: [

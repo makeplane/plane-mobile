@@ -473,7 +473,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                               assignee: issueProvider.pageIndex == 0
                                   ? {
                                       profileProvider.userProfile.id!: {
-                                        'display_name ':
+                                        'display_name':
                                             "${profileProvider.userProfile.firstName} ${ref.watch(ProviderList.profileProvider).userProfile.lastName}",
                                         'id': profileProvider.userProfile.id,
                                         'avatar':

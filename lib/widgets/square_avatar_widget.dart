@@ -8,8 +8,10 @@ import 'package:plane/widgets/shimmer_effect_widget.dart';
 import '../utils/enums.dart';
 
 class SquareAvatarWidget extends ConsumerStatefulWidget {
-  const SquareAvatarWidget({required this.details, super.key});
+  const SquareAvatarWidget(
+      {required this.details, this.borderRadius = 5, super.key});
   final List details;
+  final double borderRadius;
 
   @override
   ConsumerState<SquareAvatarWidget> createState() => _SquareAvatarWidgetState();
@@ -36,7 +38,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                 height: 30,
                 width: 30,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
                   border: Border.all(
                       color: themeProvider.themeManager.borderSubtle01Color,
                       width: 1),
@@ -48,7 +50,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                 child: widget.details[0]['avatar'] != "" &&
                         widget.details[0]['avatar'] != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(widget.borderRadius),
                         child: CachedNetworkImage(
                           imageUrl: widget.details[0]['avatar'],
                           placeholder: (context, url) =>
@@ -92,7 +95,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(widget.borderRadius),
                         border: Border.all(
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
@@ -105,7 +109,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       child: widget.details[1]['avatar'] != "" &&
                               widget.details[1]['avatar'] != null
                           ? ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius:
+                                  BorderRadius.circular(widget.borderRadius),
                               child: CachedNetworkImage(
                                 imageUrl: widget.details[1]['avatar'],
                                 placeholder: (context, url) =>
@@ -149,7 +154,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(widget.borderRadius),
                         border: Border.all(
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
@@ -162,7 +168,8 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                       child: widget.details[2]['avatar'] != "" &&
                               widget.details[2]['avatar'] != null
                           ? ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius:
+                                  BorderRadius.circular(widget.borderRadius),
                               child: CachedNetworkImage(
                                   imageUrl: widget.details[2]['avatar'],
                                   placeholder: (context, url) =>
@@ -181,8 +188,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                               .toString()
                                               .toUpperCase(),
                                           type: FontStyle.Small,
-                                          color: themeProvider.themeManager
-                                              .placeholderTextColor,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     );
@@ -206,7 +212,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                     height: 30,
                     width: 30,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(widget.borderRadius),
                       border: Border.all(
                           color: themeProvider.themeManager.borderSubtle01Color,
                           width: 1),

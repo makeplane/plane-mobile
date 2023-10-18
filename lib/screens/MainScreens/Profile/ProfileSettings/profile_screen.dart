@@ -6,6 +6,7 @@ import 'package:plane/bottom_sheets/select_workspace.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane/screens/MainScreens/Activity/activity.dart';
 import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
@@ -164,11 +165,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
 
     return Material(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.only(top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -181,7 +183,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       height: 15,
                     ),
                     profileCard(themeProvider, profileProvider),
-                    menuItems(themeProvider)
+                    menuItems(themeProvider, workspaceProvider)
                   ],
                 ),
               ),
@@ -271,7 +273,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         fontWeight: FontWeightt.Semibold,
                       ),
                     ),
-                    const Icon(Icons.keyboard_arrow_down)
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )
                   ],
                 ),
               ],
@@ -482,7 +487,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget menuItems(ThemeProvider themeProvider) {
+  Widget menuItems(
+      ThemeProvider themeProvider, WorkspaceProvider workspaceProvider) {
     return ListView.builder(
       primary: false,
       shrinkWrap: true,
@@ -545,14 +551,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, idx) {
                           if ((index == 0) ||
-                              (idx == 4 || idx == 0 || checkUserAccess())) {
+                              (idx == 4 ||
+                                  idx == 0 ||
+                                  workspaceProvider.isAdminOrMember())) {
                             return InkWell(
                               onTap: () {
                                 menus[index]['items'][idx]['onTap'](context);
                               },
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -601,22 +609,5 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       },
     );
-  }
-
-  bool checkUserAccess() {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final profileProvider = ref.watch(ProviderList.profileProvider);
-    bool hasAccess = false;
-    if (workspaceProvider.getMembersState == StateEnum.error) {
-      return hasAccess;
-    } else {
-      for (final element in workspaceProvider.workspaceMembers) {
-        if ((element['member']['id'] == profileProvider.userProfile.id) &&
-            (element['role'] == 20 || element['role'] == 15)) {
-          hasAccess = true;
-        }
-      }
-    }
-    return hasAccess;
   }
 }

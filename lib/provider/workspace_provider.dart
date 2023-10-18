@@ -216,6 +216,8 @@ class WorkspaceProvider extends ChangeNotifier {
     }
   }
 
+  bool isAdminOrMember() => (role == Role.admin || role == Role.member);
+
   Future checkWorspaceSlug({required String slug}) async {
     checkWorkspaceState = StateEnum.loading;
     notifyListeners();
@@ -374,9 +376,11 @@ class WorkspaceProvider extends ChangeNotifier {
           workspaces.where((element) => element['id'] == id).first);
       ref!.read(ProviderList.dashboardProvider).getDashboard();
       role = Role.none;
+      await retrieveUserRole();
       getWorkspaceMembers();
-      tempLogo = selectedWorkspace.workspaceLogo;
       retrieveWorkspaceIntegration(slug: selectedWorkspace.workspaceSlug);
+
+      tempLogo = selectedWorkspace.workspaceLogo;
       selectWorkspaceState = StateEnum.success;
       notifyListeners();
       return Left(selectedWorkspace);
@@ -392,6 +396,22 @@ class WorkspaceProvider extends ChangeNotifier {
       selectWorkspaceState = StateEnum.error;
       notifyListeners();
       return Right(error);
+    }
+  }
+
+  Future retrieveUserRole() async {
+    try {
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.retrieveUserRoleOnWorkspace
+            .replaceAll('\$SLUG', selectedWorkspace.workspaceSlug),
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      role = roleParser(role: response.data["role"]);
+      notifyListeners();
+    } catch (e) {
+      log(e.toString());
     }
   }
 
@@ -422,6 +442,7 @@ class WorkspaceProvider extends ChangeNotifier {
   }
 
   Future retrieveWorkspaceIntegration({required String slug}) async {
+    if (!isAdminOrMember()) return;
     //selectWorkspaceState = StateEnum.loading;
     githubIntegration = null;
     slackIntegration = null;
@@ -551,6 +572,7 @@ class WorkspaceProvider extends ChangeNotifier {
   }
 
   Future getWorkspaceMembers() async {
+    if (!isAdminOrMember()) return;
     getMembersState = StateEnum.loading;
     notifyListeners();
     final response = await workspaceService.getWorkspaceMembers(

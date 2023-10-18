@@ -54,8 +54,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
           fontType: FontStyle.H4,
           elevation: false,
           actions: [
-            workspaceProvider.role != Role.admin &&
-                    workspaceProvider.role != Role.member
+            !workspaceProvider.isAdminOrMember()
                 ? Container()
                 : GestureDetector(
                     onTap: () {

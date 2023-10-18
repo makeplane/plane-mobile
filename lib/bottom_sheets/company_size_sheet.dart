@@ -51,47 +51,48 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               ),
             ],
           ),
-          ListView.separated(
-            itemCount: companySizeData.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: InkWell(
-                  onTap: () {
-                    workspaceProvider.changeCompanySize(
-                        size: companySizeData[index]);
-                    Navigator.pop(context);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        workspaceProvider.companySize == companySizeData[index]
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_off,
-                        color: workspaceProvider.companySize ==
-                                companySizeData[index]
-                            ? themeProvider.themeManager.primaryColour
-                            : themeProvider.themeManager.borderSubtle01Color,
-                      ),
-                      const SizedBox(width: 10),
-                      CustomText(
-                        companySizeData[index],
-                        type: FontStyle.Medium,
-                        fontWeight: FontWeightt.Regular,
-                        color: themeProvider.themeManager.primaryTextColor,
-                      ),
-                    ],
+          Expanded(
+            child: ListView.separated(
+              itemCount: companySizeData.length,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    onTap: () {
+                      workspaceProvider.changeCompanySize(
+                          size: companySizeData[index]);
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          workspaceProvider.companySize ==
+                                  companySizeData[index]
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          color: workspaceProvider.companySize ==
+                                  companySizeData[index]
+                              ? themeProvider.themeManager.primaryColour
+                              : themeProvider.themeManager.borderSubtle01Color,
+                        ),
+                        const SizedBox(width: 10),
+                        CustomText(
+                          companySizeData[index],
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return CustomDivider(
-                  themeProvider: themeProvider,
-                  color: themeProvider.themeManager.borderDisabledColor);
-            },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return CustomDivider(
+                    themeProvider: themeProvider,
+                    color: themeProvider.themeManager.borderDisabledColor);
+              },
+            ),
           ),
         ],
       ),

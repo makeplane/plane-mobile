@@ -36,8 +36,10 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
     super.initState();
     lableController.text = widget.label ?? '';
     colorController.text =
-        colorsForLabel[Random().nextInt(colorsForLabel.length)]
-            .replaceAll('#', '');
+        (widget.labelColor != '' && widget.labelColor != null)
+            ? widget.labelColor!.replaceAll('#', '')
+            : colorsForLabel[Random().nextInt(colorsForLabel.length)]
+                .replaceAll('#', '');
   }
 
   @override
@@ -50,43 +52,20 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
           showColoredBox = false;
         });
       },
-      child: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-            child: SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
               child: Wrap(
                 children: [
                   Wrap(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            widget.method == CRUD.update
-                                ? ' Edit Label'
-                                : 'Add Label',
-                            type: FontStyle.H6,
-                            fontWeight: FontWeightt.Semibold,
-                            fontSize: 22,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: Icon(
-                              Icons.close,
-                              color: themeProvider
-                                  .themeManager.placeholderTextColor,
-                            ),
-                          )
-                        ],
-                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Column(
                           children: [
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 60),
                             TextField(
                               controller: lableController,
                               decoration: themeProvider
@@ -253,8 +232,31 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                 ],
               ),
             ),
-          ),
-        ],
+            Container(
+              color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    widget.method == CRUD.update ? ' Edit Label' : 'Add Label',
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
+                    fontSize: 22,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

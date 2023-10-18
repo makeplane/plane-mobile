@@ -305,6 +305,7 @@ class AddUpdateState extends ConsumerStatefulWidget {
 
 class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   TextEditingController nameController = TextEditingController();
+  final TextEditingController stateController = TextEditingController();
   final colorController = TextEditingController();
   bool showColoredBox = false;
 
@@ -312,6 +313,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   void initState() {
     super.initState();
     nameController.text = widget.name.isNotEmpty ? widget.name : '';
+    stateController.text = states[widget.groupIndex];
 
     if (widget.color.isNotEmpty) {
       colorController.text = widget.color.replaceAll('#', '');
@@ -343,34 +345,11 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
               children: [
                 Wrap(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: width * 0.7,
-                          child: CustomText(
-                            widget.method == CRUD.update
-                                ? 'Update ${widget.name} state'
-                                : 'Add ${widget.name} state',
-                            type: FontStyle.H6,
-                            fontWeight: FontWeightt.Semibold,
-                            maxLines: 1,
-                            fontSize: 22,
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.close,
-                              color:
-                                  themeProvider.themeManager.primaryTextColor,
-                            )),
-                      ],
-                    ),
                     Container(
-                      height: 20,
+                      height: 50,
+                      width: double.infinity,
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                     ),
                     const CustomText(
                       'Color',
@@ -498,51 +477,219 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                           ),
                     widget.method == CRUD.create
                         ? Container()
-                        : Container(
-                            margin: const EdgeInsets.only(top: 4, bottom: 20),
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color,
-                              ),
-                            ),
-                            child: IgnorePointer(
-                              ignoring: issuesProvider
-                                          .statesData[states[widget.groupIndex]]
-                                          .length ==
-                                      1
-                                  ? true
-                                  : false,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButtonFormField(
-                                    dropdownColor: themeProvider.themeManager
-                                        .secondaryBackgroundDefaultColor,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      border: InputBorder.none,
-                                    ),
-                                    value: states[widget.groupIndex],
-                                    items: states
-                                        .map((e) => DropdownMenuItem(
-                                              value: e.toString(),
-                                              child: CustomText(
-                                                e.toString().replaceFirst(
-                                                    e[0], e[0].toUpperCase()),
-                                                // color: Colors.white,
-                                                type: FontStyle.Medium,
+                        : GestureDetector(
+                            onTap:
+                                issuesProvider
+                                            .statesData[
+                                                states[widget.groupIndex]]
+                                            .length ==
+                                        1
+                                    ? null
+                                    : () {
+                                        showModalBottomSheet(
+                                          enableDrag: true,
+                                          constraints: BoxConstraints(
+                                              maxHeight: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.5),
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20))),
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom,
                                               ),
-                                            ))
-                                        .toList(),
-                                    onChanged: (item) {
-                                      widget.groupIndex = states.indexOf(item);
-                                      //   log( widget.groupIndex.toString());
-                                    }),
+                                              child: Container(
+                                                padding:
+                                                    bottomSheetConstPadding,
+                                                decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .secondaryBackgroundDefaultColor,
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30)),
+                                                ),
+                                                width: double.infinity,
+                                                child: Stack(
+                                                  children: [
+                                                    SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 50,
+                                                          ),
+                                                          for (int i = 0;
+                                                              i < states.length;
+                                                              i++)
+                                                            GestureDetector(
+                                                              onTap: () async {
+                                                                setState(() {
+                                                                  stateController
+                                                                          .text =
+                                                                      states[i];
+                                                                });
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Container(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Radio(
+                                                                          activeColor: stateController.text == states[i]
+                                                                              ? null
+                                                                              : themeProvider.themeManager.primaryColour,
+                                                                          fillColor: stateController.text != states[i]
+                                                                              ? MaterialStateProperty.all<Color>(themeProvider.themeManager.borderSubtle01Color)
+                                                                              : null,
+                                                                          visualDensity:
+                                                                              VisualDensity.compact,
+                                                                          value:
+                                                                              states[i],
+                                                                          groupValue:
+                                                                              stateController.text,
+                                                                          onChanged:
+                                                                              (value) {
+                                                                            setState(() {
+                                                                              stateController.text = states[i];
+                                                                            });
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              width * 0.7,
+                                                                          child:
+                                                                              CustomText(
+                                                                            states[i],
+                                                                            type:
+                                                                                FontStyle.Medium,
+                                                                            maxLines:
+                                                                                1,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            fontWeight:
+                                                                                FontWeightt.Regular,
+                                                                            color:
+                                                                                themeProvider.themeManager.primaryTextColor,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Container(
+                                                                        width:
+                                                                            width,
+                                                                        height:
+                                                                            1,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .borderDisabledColor),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          // : Container(),
+
+                                                          SizedBox(
+                                                              height:
+                                                                  bottomSheetConstBottomPadding),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryBackgroundDefaultColor,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 15),
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.7,
+                                                            child:
+                                                                const CustomText(
+                                                              'Select State',
+                                                              type:
+                                                                  FontStyle.H4,
+                                                              fontWeight:
+                                                                  FontWeightt
+                                                                      .Semibold,
+                                                            ),
+                                                          ),
+                                                          const Spacer(),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.close,
+                                                              size: 27,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .placeholderTextColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 5, bottom: 20),
+                              child: TextField(
+                                controller: stateController,
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                        suffixIcon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                )),
+                                enabled: false,
                               ),
                             ),
-                          )
+                          ),
                   ],
                 ),
                 Button(
@@ -565,7 +712,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                           data: {
                             "name": nameController.text,
                             "color": '#${colorController.text}',
-                            "group": states[widget.groupIndex],
+                            "group": stateController.text.toLowerCase(),
                             "description": ""
                           },
                           ref: ref);
@@ -607,6 +754,34 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                   ),
                 )
               : const SizedBox(),
+          Container(
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: width * 0.7,
+                  child: CustomText(
+                    widget.method == CRUD.update
+                        ? 'Update ${widget.name} state'
+                        : 'Add ${widget.name} state',
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
+                    maxLines: 1,
+                    fontSize: 22,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )),
+              ],
+            ),
+          ),
         ],
       ),
     );

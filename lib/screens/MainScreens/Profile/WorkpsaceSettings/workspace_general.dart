@@ -366,12 +366,14 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                         controller: _workspaceUrlController,
                         //not editable
                         //enabled: true,
-                        onTap: () {
-                          CustomToast.showToast(context,
-                              message: accessRestrictedMSG,
-                              toastType: ToastType.failure);
-                        },
-                        readOnly: true,
+                        onTap: checkUserAccess()
+                            ? null
+                            : () {
+                                CustomToast.showToast(context,
+                                    message: accessRestrictedMSG,
+                                    toastType: ToastType.failure);
+                              },
+                        readOnly: checkUserAccess() ? false : true,
                         //style: ,
                         decoration:
                             themeProvider.themeManager.textFieldDecoration),
@@ -392,56 +394,6 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           ),
                         ],
                       )),
-                  // Container(
-                  //   height: 50,
-                  //   color: Colors.transparent,
-                  //   padding: const EdgeInsets.only(
-                  //     left: 20,
-                  //     right: 20,
-                  //   ),
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(8),
-                  //   border: Border.all(
-                  //     color: Colors.grey.shade500,
-                  //   ),
-                  // ),
-                  // padding: const EdgeInsets.symmetric(
-                  //     horizontal: 10, vertical: 4),
-                  // child: DropdownButtonFormField(
-                  //   dropdownColor: themeProvider.isDarkThemeEnabled
-                  //       ? darkSecondaryBGC
-                  //       : Colors.white,
-                  //   value: dropDownValue,
-                  //   elevation: 1,
-                  //   //padding to dropdown
-                  //   isExpanded: false,
-                  //   decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
-                  //     ),
-
-                  //   // underline: Container(color: Colors.transparent),
-                  //   icon: const Icon(Icons.keyboard_arrow_down),
-                  //   items: dropDownItems.map((String items) {
-                  //     return DropdownMenuItem(
-                  //       value: items,
-                  //       child: SizedBox(
-                  //         // width: MediaQuery.of(context).size.width - 80,
-                  //         // child: Text(items),
-                  //         child: CustomText(
-                  //           items,
-                  //           type: FontStyle.Small,
-                  //         ),
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (String? newValue) {
-                  //     setState(() {
-                  //       dropDownValue = newValue!;
-                  //     });
-                  //   },
-                  // ),
-
-                  //convert above dropdown to bottomsheet
-                  // child:
                   GestureDetector(
                     onTap: () {
                       if (workspaceProvider.role != Role.admin) {

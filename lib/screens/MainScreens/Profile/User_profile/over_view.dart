@@ -462,6 +462,11 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                           message: 'Module does not exist',
                           toastType: ToastType.warning);
                     } else {
+                      ref
+                              .watch(ProviderList.projectProvider)
+                              .currentProject['id'] =
+                          userProfileProvider
+                              .userActivity.results![index].projectDetail!.id;
                       Navigator.push(
                         Const.globalKey.currentContext!,
                         MaterialPageRoute(
@@ -497,6 +502,11 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                           message: 'Cycle does not exist',
                           toastType: ToastType.warning);
                     } else {
+                      ref
+                              .watch(ProviderList.projectProvider)
+                              .currentProject['id'] =
+                          userProfileProvider
+                              .userActivity.results![index].projectDetail!.id;
                       Navigator.push(
                         Const.globalKey.currentContext!,
                         MaterialPageRoute(

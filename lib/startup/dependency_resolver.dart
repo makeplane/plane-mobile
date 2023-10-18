@@ -94,6 +94,7 @@ class DependencyResolver {
       FlutterNativeSplash.remove();
       return;
     }
+    await workspaceProvider.retrieveUserRole();
     workspaceProvider.getWorkspaceMembers();
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/bottom_sheets/issues_list_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
@@ -19,6 +20,7 @@ import 'custom_text.dart';
 class EmptyPlaceholder {
   static Widget emptyCycles(BuildContext context, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -49,42 +51,48 @@ class EmptyPlaceholder {
               maxLines: 3,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CreateCycle()));
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              margin: const EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
-                color: themeProvider.themeManager.primaryColour,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 24,
+          projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member
+              ? noPermsionToCreateWidget('cycle', themeProvider)
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateCycle()));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.only(top: 30),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(buttonBorderRadiusMedium),
+                      color: themeProvider.themeManager.primaryColour,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CustomText(
+                          'Add Cycle',
+                          type: FontStyle.Small,
+                          fontWeight: FontWeightt.Medium,
+                          color: Colors.white,
+                          overrride: true,
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomText(
-                    'Add Cycle',
-                    type: FontStyle.Small,
-                    fontWeight: FontWeightt.Medium,
-                    color: Colors.white,
-                    overrride: true,
-                  )
-                ],
-              ),
-            ),
-          )
+                )
         ],
       ),
     );
@@ -164,6 +172,32 @@ class EmptyPlaceholder {
     );
   }
 
+  static Widget noPermsionToCreateWidget(
+      String name, ThemeProvider themeProvider) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: const EdgeInsets.only(top: 20),
+      decoration: BoxDecoration(
+        color: themeProvider.themeManager.secondaryBackgroundSelectedColor,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.gpp_maybe_outlined,
+              color: themeProvider.themeManager.placeholderTextColor),
+          const SizedBox(width: 5),
+          CustomText(
+            "No permission to create $name",
+            color: themeProvider.themeManager.placeholderTextColor,
+            fontWeight: FontWeightt.Medium,
+          ),
+        ],
+      ),
+    );
+  }
+
   static Widget emptyIssues(BuildContext context,
       {String? cycleId,
       String? moduleId,
@@ -172,6 +206,7 @@ class EmptyPlaceholder {
       WidgetRef? ref,
       IssueCategory? type}) {
     final themeProvider = ref!.watch(ProviderList.themeProvider);
+    final projectProvider = ref!.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -200,65 +235,72 @@ class EmptyPlaceholder {
               maxLines: 6,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              if (type == IssueCategory.myIssues) {
-                ref.watch(ProviderList.projectProvider).currentProject =
-                    ref.watch(ProviderList.projectProvider).projects[0];
-                ref.watch(ProviderList.projectProvider).setState();
-              }
+          projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member
+              ? noPermsionToCreateWidget('issue', themeProvider)
+              : GestureDetector(
+                  onTap: () {
+                    if (type == IssueCategory.myIssues) {
+                      ref.watch(ProviderList.projectProvider).currentProject =
+                          ref.watch(ProviderList.projectProvider).projects[0];
+                      ref.watch(ProviderList.projectProvider).setState();
+                    }
 
-              ref
-                      .read(ProviderList.issuesProvider)
-                      .createIssuedata['prioriry'] =
-                  'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
+                    ref
+                            .read(ProviderList.issuesProvider)
+                            .createIssuedata['prioriry'] =
+                        'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CreateIssue(
-                            projectId: projectId ??
-                                (type == IssueCategory.myIssues
-                                    ? ref
-                                        .read(ProviderList.projectProvider)
-                                        .projects[0]['id']
-                                    : null),
-                            cycleId: cycleId,
-                            moduleId: moduleId,
-                            assignee: assignee,
-                            fromMyIssues: type == IssueCategory.myIssues,
-                          )));
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              margin: const EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
-                color: themeProvider.themeManager.primaryColour,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 24,
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreateIssue(
+                                  projectId: projectId ??
+                                      (type == IssueCategory.myIssues
+                                          ? ref
+                                              .read(
+                                                  ProviderList.projectProvider)
+                                              .projects[0]['id']
+                                          : null),
+                                  cycleId: cycleId,
+                                  moduleId: moduleId,
+                                  assignee: assignee,
+                                  fromMyIssues: type == IssueCategory.myIssues,
+                                )));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.only(top: 30),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(buttonBorderRadiusMedium),
+                      color: themeProvider.themeManager.primaryColour,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CustomText('Add Issues',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            overrride: true,
+                            color: Colors.white)
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomText('Add Issues',
-                      type: FontStyle.Small,
-                      fontWeight: FontWeightt.Medium,
-                      overrride: true,
-                      color: Colors.white)
-                ],
-              ),
-            ),
-          ),
-          (cycleId != null || moduleId != null)
+                ),
+          (cycleId != null || moduleId != null) &&
+                  (projectProvider.role == Role.admin ||
+                      projectProvider.role == Role.member)
               ? GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -356,6 +398,7 @@ class EmptyPlaceholder {
 
   static Widget emptyModules(BuildContext context, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -386,42 +429,46 @@ class EmptyPlaceholder {
               maxLines: 3,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateModule()));
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              margin: const EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
-                color: themeProvider.themeManager.primaryColour,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 24,
+          projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member
+              ? noPermsionToCreateWidget('module', themeProvider)
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateModule()));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.only(top: 30),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(buttonBorderRadiusMedium),
+                      color: themeProvider.themeManager.primaryColour,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CustomText('Add Module',
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Medium,
+                            overrride: true,
+                            color: Colors.white)
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomText('Add Module',
-                      type: FontStyle.Small,
-                      fontWeight: FontWeightt.Medium,
-                      overrride: true,
-                      color: Colors.white)
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
     );
@@ -537,6 +584,7 @@ class EmptyPlaceholder {
 
   static Widget emptyView(BuildContext context, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       //  margin: const EdgeInsets.only(top: 150),
@@ -622,40 +670,46 @@ class EmptyPlaceholder {
               maxLines: 3,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CreateView()));
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              margin: const EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
-                color: themeProvider.themeManager.primaryColour,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 24,
+          projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member
+              ? noPermsionToCreateWidget('view', themeProvider)
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateView()));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.only(top: 30),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(buttonBorderRadiusMedium),
+                      color: themeProvider.themeManager.primaryColour,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CustomText('Add View',
+                            type: FontStyle.Small,
+                            overrride: true,
+                            fontWeight: FontWeightt.Medium,
+                            color: Colors.white),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CustomText('Add View',
-                      type: FontStyle.Small,
-                      overrride: true,
-                      fontWeight: FontWeightt.Medium,
-                      color: Colors.white),
-                ],
-              ),
-            ),
-          )
+                )
         ],
       ),
     );
@@ -760,6 +814,7 @@ class EmptyPlaceholder {
   static Widget emptyProject(
       BuildContext context, Future<void> Function() onRefresh, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return RefreshIndicator(
       color: themeProvider.themeManager.primaryColour,
       backgroundColor: themeProvider.themeManager.primaryBackgroundDefaultColor,
@@ -797,43 +852,45 @@ class EmptyPlaceholder {
                   maxLines: 3,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CreateProject()));
-                },
-                child: Container(
-                  height: 40,
-                  width: 150,
-                  margin: const EdgeInsets.only(top: 30),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(buttonBorderRadiusMedium),
-                    color: themeProvider.themeManager.primaryColour,
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 24,
+              !workspaceProvider.isAdminOrMember()
+                  ? noPermsionToCreateWidget('project', themeProvider)
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CreateProject()));
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 150,
+                        margin: const EdgeInsets.only(top: 30),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(buttonBorderRadiusMedium),
+                          color: themeProvider.themeManager.primaryColour,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomText('Add Project',
+                                type: FontStyle.Small,
+                                overrride: true,
+                                fontWeight: FontWeightt.Medium,
+                                color: Colors.white)
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CustomText('Add Project',
-                          type: FontStyle.Small,
-                          overrride: true,
-                          fontWeight: FontWeightt.Medium,
-                          color: Colors.white)
-                    ],
-                  ),
-                ),
-              )
+                    )
             ],
           ),
         ),

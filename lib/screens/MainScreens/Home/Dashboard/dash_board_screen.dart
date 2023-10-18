@@ -36,11 +36,6 @@ class DashBoardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   int sizeToMultiplayForEachIssue = 40;
   int constantValueToAdd = 50;
 
@@ -78,6 +73,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     final profileProvider = ref.watch(ProviderList.profileProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final List? overdueIssues =
         dashboardProvider.dashboardData['overdue_issues'];
     final List? upcomingIssues =
@@ -119,7 +115,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         const SizedBox(height: 20),
                         projectProvider.projects.isEmpty &&
                                 projectProvider.getProjectState ==
-                                    StateEnum.success
+                                    StateEnum.success &&
+                                workspaceProvider.isAdminOrMember()
                             ? createProjectWidget(themeProvider, context)
                             : Container(),
                         projectProvider.projects.isNotEmpty
@@ -544,7 +541,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         parentScrollController.offset - details.delta.dy);
                   } else {
                     overDueScrollController.jumpTo(
-                        overDueScrollController.offset - (details.delta.dy - 1));
+                        overDueScrollController.offset -
+                            (details.delta.dy - 1));
                   }
                   if (overDueScrollController.offset <=
                       overDueScrollController.position.minScrollExtent) {

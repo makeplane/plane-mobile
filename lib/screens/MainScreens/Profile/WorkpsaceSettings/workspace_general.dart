@@ -59,8 +59,6 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
     });
   }
 
-  Role? role;
-
   String? dropDownValue;
   List<String> dropDownItems = ['5', '10', '25', '50'];
   File? coverImage;
@@ -193,7 +191,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                         ),
                                       ),
                               ),
-                        getRole() == Role.admin
+                        workspaceProvider.role == Role.admin
                             ? GestureDetector(
                                 onTap: () async {
                                   if (workspaceProvider.role != Role.admin &&
@@ -269,7 +267,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                               )
                             : Container(),
                         workspaceProvider.tempLogo != '' &&
-                                getRole() == Role.admin
+                                workspaceProvider.role == Role.admin
                             ? GestureDetector(
                                 onTap: () {
                                   if (workspaceProvider.role != Role.admin &&
@@ -539,7 +537,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                       ),
                       children: [
                         CustomText(
-                          getRole() == Role.admin
+                          workspaceProvider.role == Role.admin
                               ? 'The danger zone of the workspace delete page is a critical area that requires careful consideration and attention. When deleting a workspace, all of the data and resources within that workspace will be permanently removed and cannot be recovered.'
                               : 'Once you leave the workspace, you will not be able to access any data associated with this workspace. All of your projects and issues associated with you will become inaccessible. You will only be able to rejoin this workspace when someone invites you back.',
                           type: FontStyle.Medium,
@@ -551,7 +549,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                           height: 20,
                         ),
                         Button(
-                          text: getRole() == Role.admin
+                          text: workspaceProvider.role == Role.admin
                               ? 'Delete Workspace'
                               : 'Leave Workspace',
                           ontap: () async {
@@ -575,7 +573,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                 child: DeleteOrLeaveWorkpace(
                                   workspaceName: workspaceProvider
                                       .selectedWorkspace.workspaceName,
-                                  role: getRole(),
+                                  role: workspaceProvider.role,
                                 ),
                               ),
                             );
@@ -624,29 +622,5 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
       }
     }
     return hasAccess;
-  }
-
-  Role getRole() {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final profileProvider = ref.watch(ProviderList.profileProvider);
-    int? userRole;
-    final List members = workspaceProvider.workspaceMembers;
-    for (final element in members) {
-      if (element['member']['id'] == profileProvider.userProfile.id) {
-        userRole = element['role'];
-      }
-    }
-    switch (userRole) {
-      case 20:
-        return role = Role.admin;
-      case 15:
-        return role = Role.member;
-      case 10:
-        return role = Role.viewer;
-      case 5:
-        return role = Role.guest;
-      default:
-        return role = Role.guest;
-    }
   }
 }

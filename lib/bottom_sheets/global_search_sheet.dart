@@ -263,6 +263,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
 
   Widget createWidget() {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final List items = [
       {
         'title': 'New Issue',
@@ -342,61 +343,64 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           itemCount: items.length,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () async {
-                if (index == 0) {
-                  if (ref
-                      .watch(ProviderList.projectProvider)
-                      .projects
-                      .isEmpty) {
-                    CustomToast.showToast(
-                      context,
-                      message:
-                          'You dont have any projects yet, try creating one',
-                    );
-                  } else if (ref
-                          .watch(ProviderList.projectProvider)
-                          .memberCount ==
-                      0) {
-                    CustomToast.showToast(
-                      context,
-                      message:
-                          'You are not a member of any project, try joining one',
-                    );
-                  } else {
-                    items[index]['screen']();
-                  }
-                } else {
-                  items[index]['screen']();
-                }
-              },
-              child: ((index == 2 || index == 3 || index == 4) &&
-                      ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject['id'] ==
-                          null)
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            items[index]['icon'],
-                            height: 20,
-                            width: 20,
-                            color: themeProvider.themeManager.primaryTextColor,
+            return (index == 1 && !workspaceProvider.isAdminOrMember())
+                ? const SizedBox.shrink()
+                : InkWell(
+                    onTap: () async {
+                      if (index == 0) {
+                        if (ref
+                            .watch(ProviderList.projectProvider)
+                            .projects
+                            .isEmpty) {
+                          CustomToast.showToast(
+                            context,
+                            message:
+                                'You dont have any projects yet, try creating one',
+                          );
+                        } else if (ref
+                                .watch(ProviderList.projectProvider)
+                                .memberCount ==
+                            0) {
+                          CustomToast.showToast(
+                            context,
+                            message:
+                                'You are not a member of any project, try joining one',
+                          );
+                        } else {
+                          items[index]['screen']();
+                        }
+                      } else {
+                        items[index]['screen']();
+                      }
+                    },
+                    child: ((index == 2 || index == 3 || index == 4) &&
+                            ref
+                                    .read(ProviderList.projectProvider)
+                                    .currentProject['id'] ==
+                                null)
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  items[index]['icon'],
+                                  height: 20,
+                                  width: 20,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                CustomText(
+                                  items[index]['title'],
+                                  type: FontStyle.Medium,
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CustomText(
-                            items[index]['title'],
-                            type: FontStyle.Medium,
-                          ),
-                        ],
-                      ),
-                    ),
-            );
+                  );
           },
         )
       ],

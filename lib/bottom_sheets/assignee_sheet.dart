@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 import '../utils/enums.dart';
 
@@ -98,7 +99,7 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                         // shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
+                          return InkWell(
                             onTap: () {
                               if (widget.fromModuleDetail) {
                                 if (modulesProvider.currentModule['members'] !=
@@ -154,31 +155,34 @@ class _AssigneeSheetState extends ConsumerState<AssigneeSheet> {
                               padding: const EdgeInsets.only(
                                 left: 5,
                               ),
-                              decoration: BoxDecoration(
-                                color: themeProvider
-                                    .themeManager.primaryBackgroundDefaultColor,
-                              ),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: Row(
                                 children: [
                                   Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromRGBO(55, 65, 81, 1),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: CustomText(
-                                      projectProvider.projectMembers[index]
-                                              ['member']['display_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
-                                      type: FontStyle.Small,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color.fromRGBO(55, 65, 81, 1),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: MemberLogoWidget(
+                                          boarderRadius: 50,
+                                          padding: EdgeInsets.zero,
+                                          size: 30,
+                                          imageUrl: projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['avatar'],
+                                          colorForErrorWidget:
+                                              const Color.fromRGBO(
+                                                  55, 65, 81, 1),
+                                          memberNameFirstLetterForErrorWidget:
+                                              projectProvider
+                                                  .projectMembers[index]
+                                                      ['member']['display_name']
+                                                      [0]
+                                                  .toString())),
                                   Container(
                                     width: 10,
                                   ),

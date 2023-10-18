@@ -5,6 +5,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 class LeadSheet extends ConsumerStatefulWidget {
   const LeadSheet({
@@ -42,13 +43,6 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
               children: [
                 Row(
                   children: [
-                    // const Text(
-                    //   'Type',
-                    //   style: TextStyle(
-                    //     fontSize: 24,
-                    //     fontWeight: FontWeight.w600,
-                    //   ),
-                    // ),
                     const CustomText(
                       'Lead',
                       type: FontStyle.H4,
@@ -79,7 +73,6 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                         EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
                     itemCount: projectProvider.projectMembers.length,
                     shrinkWrap: true,
-                    // physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () async {
@@ -146,22 +139,22 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                           child: Row(
                             children: [
                               Container(
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(55, 65, 81, 1),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                alignment: Alignment.center,
-                                child: CustomText(
-                                  projectProvider.projectMembers[index]
-                                          ['member']['first_name'][0]
-                                      .toString()
-                                      .toUpperCase(),
-                                  type: FontStyle.Small,
-                                  color: Colors.white,
-                                ),
-                              ),
+                                  height: 30,
+                                  width: 30,
+                                  alignment: Alignment.center,
+                                  child: MemberLogoWidget(
+                                      size: 30,
+                                      boarderRadius: 50,
+                                      padding: EdgeInsets.zero,
+                                      imageUrl:
+                                          projectProvider.projectMembers[index]
+                                              ['member']['avatar'],
+                                      colorForErrorWidget:
+                                          const Color.fromRGBO(55, 65, 81, 1),
+                                      memberNameFirstLetterForErrorWidget:
+                                          projectProvider.projectMembers[index]
+                                                  ['member']['first_name'][0]
+                                              .toString())),
                               Container(
                                 width: 10,
                               ),

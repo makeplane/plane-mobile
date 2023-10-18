@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/config/const.dart';
 import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/screens/on_boarding/auth/invite_co_workers.dart';
 import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
@@ -71,52 +70,5 @@ class _AppState extends ConsumerState<App> {
                     : const HomeScreen(
                         fromSignUp: false,
                       ));
-  }
-
-  Future getData() async {
-    final prov = ref.read(ProviderList.profileProvider);
-    final projectProv = ref.read(ProviderList.projectProvider);
-    final dashProv = ref.read(ProviderList.dashboardProvider);
-    final WorkspaceProvider workspaceProv =
-        ref.watch(ProviderList.workspaceProvider);
-    prov.getProfile().then((value) {
-      // log(prov.userProfile.workspace.toString());
-      if (prov.userProfile.isOnboarded == false) return;
-
-      workspaceProv.getWorkspaces().then((value) {
-        if (workspaceProv.workspaces.isEmpty) {
-          return;
-        }
-        workspaceProv.getWorkspaceMembers();
-        // log(prov.userProfile.last_workspace_id.toString());
-        dashProv.getDashboard();
-        projectProv.getProjects(
-          slug: workspaceProv.selectedWorkspace.workspaceSlug,
-        );
-        ref.read(ProviderList.notificationProvider).getUnreadCount();
-
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'assigned');
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'created');
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'watching');
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'unread', getUnread: true);
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'archived', getArchived: true);
-        ref
-            .read(ProviderList.notificationProvider)
-            .getNotifications(type: 'snoozed', getSnoozed: true);
-      });
-      setState(() {
-        Const.isOnline = true;
-      });
-    });
   }
 }

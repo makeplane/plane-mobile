@@ -18,7 +18,6 @@ import 'package:plane/models/chart_model.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
@@ -30,6 +29,8 @@ import 'package:plane/widgets/completion_percentage.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
+import 'package:plane/widgets/square_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../../bottom_sheets/add_link_sheet.dart';
@@ -523,11 +524,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           children: [
                             Expanded(
                               child:
-                                  ((widget.fromModule &&
-                                                  (modulesProvider.moduleIssueState ==
-                                                          StateEnum.loading ||
-                                                      modulesProvider.moduleDetailState ==
-                                                          StateEnum.loading)) ||
+                                  ((widget.fromModule && (modulesProvider.moduleIssueState == StateEnum.loading || modulesProvider.moduleDetailState == StateEnum.loading)) ||
                                               (!widget.fromModule &&
                                                   (cyclesProvider.cyclesIssueState ==
                                                           StateEnum.loading ||
@@ -604,10 +601,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -688,7 +687,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban))
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                                      (widget.fromModule &&
+                                                          issueProvider.issues.projectView ==
+                                                              ProjectView.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -1063,14 +1065,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             ? Container(
                                 color: themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
-                                padding: const EdgeInsets.all(25),
+                                padding:
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: activeCycleDetails(fromModule: true),
                               )
                             : Container(
                                 color: themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor,
-                                padding: const EdgeInsets.only(
-                                    top: 25, left: 25, right: 25),
+                                padding:
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: activeCycleDetails(),
                               ),
                       ],
@@ -1105,6 +1108,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     } else {
       return ListView(
         children: [
+          const SizedBox(height: 30),
           datePart(),
           const SizedBox(height: 30),
           detailsPart(),
@@ -1176,7 +1180,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                  color: getBorderColor(themeProvider),
+                  color: themeProvider.themeManager.borderSubtle01Color,
                 ),
               ),
               child: ListView.builder(
@@ -1297,6 +1301,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
@@ -1326,7 +1331,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                      width: 1, color: getBorderColor(themeProvider)),
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
                 ),
                 child: const CustomText(
                   'Draft',
@@ -1385,6 +1392,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           children: [
             GestureDetector(
               onTap: () async {
+                if (projectProvider.role != Role.admin &&
+                    projectProvider.role != Role.member) {
+                  CustomToast.showToast(context,
+                      message: accessRestrictedMSG,
+                      toastType: ToastType.failure);
+                  return;
+                }
                 final date = await showDatePicker(
                   builder: (context, child) => Theme(
                     data: themeProvider.themeManager.datePickerThemeData,
@@ -1476,7 +1490,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   color:
                       themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
-                      width: 1, color: getBorderColor(themeProvider)),
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
                 ),
                 child: (detailData['start_date'] == null ||
                             detailData['start_date'] == '') ||
@@ -1522,6 +1538,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             const SizedBox(width: 5),
             GestureDetector(
               onTap: () async {
+                if (projectProvider.role != Role.admin &&
+                    projectProvider.role != Role.member) {
+                  CustomToast.showToast(context,
+                      message: accessRestrictedMSG,
+                      toastType: ToastType.failure);
+                  return;
+                }
                 final date = await showDatePicker(
                   builder: (context, child) => Theme(
                     data: themeProvider.themeManager.datePickerThemeData,
@@ -1617,7 +1640,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   color:
                       themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
-                      width: 1, color: getBorderColor(themeProvider)),
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
                 ),
                 child: (detailData['start_date'] == null ||
                             detailData['start_date'] == '') ||
@@ -1705,7 +1730,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: getBorderColor(themeProvider),
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           child: SizedBox(
@@ -1800,7 +1825,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color: getBorderColor(themeProvider),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                   ),
                 ),
                 child: Column(
@@ -1927,7 +1952,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: getBorderColor(themeProvider),
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           child: Column(
@@ -2029,7 +2054,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color: getBorderColor(themeProvider),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                   ),
                 ),
                 child: ListView.builder(
@@ -2060,17 +2085,23 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                   Icons.circle,
                                   size: 20,
                                   color: detailData['distribution']['labels']
-                                                  [index]['color'] ==
-                                              '' ||
-                                          detailData['distribution']['labels']
-                                                  [index]['color'] ==
-                                              null
-                                      ? themeProvider
-                                          .themeManager.placeholderTextColor
+                                              [index]['label_name'] ==
+                                          null
+                                      ? themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor
                                       : detailData['distribution']['labels']
-                                              [index]['color']
-                                          .toString()
-                                          .toColor(),
+                                                      [index]['color'] ==
+                                                  '' ||
+                                              detailData['distribution']
+                                                          ['labels'][index]
+                                                      ['color'] ==
+                                                  null
+                                          ? themeProvider
+                                              .themeManager.placeholderTextColor
+                                          : detailData['distribution']['labels']
+                                                  [index]['color']
+                                              .toString()
+                                              .toColor(),
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -2120,7 +2151,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
       ),
       child: Padding(
@@ -2157,8 +2188,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   Widget membersWidget() {
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return GestureDetector(
       onTap: () {
+        if (projectProvider.role != Role.admin &&
+            projectProvider.role != Role.member) {
+          CustomToast.showToast(context,
+              message: accessRestrictedMSG, toastType: ToastType.failure);
+          return;
+        }
         showModalBottomSheet(
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height * 0.5,
@@ -2183,7 +2221,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: getBorderColor(themeProvider),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
         ),
         child: Padding(
@@ -2224,55 +2262,19 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                       ],
                     )
                   : SizedBox(
-                      height: 30,
-                      child: Container(
+                      height: 27,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: themeProvider.themeManager
-                                    .primaryBackgroundDefaultColor),
-                            borderRadius: BorderRadius.circular(5)),
-                        height: 30,
-                        margin: const EdgeInsets.only(right: 5),
-                        width: (modulesProvider
-                                    .currentModule['members_detail'].length *
-                                22.0) +
-                            ((modulesProvider.currentModule['members_detail']
-                                        .length) ==
-                                    1
-                                ? 15
-                                : 0),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          fit: StackFit.passthrough,
-                          children: (modulesProvider
-                                  .currentModule['members_detail'] as List)
-                              .map((e) => Positioned(
-                                    right: ((modulesProvider.currentModule[
-                                                    'members_detail'] as List)
-                                                .indexOf(e) *
-                                            15) +
-                                        10,
-                                    child: Container(
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      width: 20,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(55, 65, 81, 1),
-                                      ),
-                                      child: CustomText(
-                                        e['first_name'][0]
-                                            .toString()
-                                            .toUpperCase(),
-                                        type: FontStyle.Small,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
+                        child: SizedBox(
+                          height: 30,
+                          child: SquareAvatarWidget(
+                              borderRadius: 50,
+                              details: modulesProvider
+                                  .currentModule['members_detail']),
                         ),
-                      ))
+                      ),
+                    )
             ],
           ),
         ),
@@ -2284,6 +2286,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
@@ -2291,6 +2294,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     return GestureDetector(
       onTap: widget.fromModule
           ? () {
+              if (projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member) {
+                CustomToast.showToast(context,
+                    message: accessRestrictedMSG, toastType: ToastType.failure);
+                return;
+              }
               showModalBottomSheet(
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.5,
@@ -2316,7 +2325,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: getBorderColor(themeProvider),
+            color: themeProvider.themeManager.borderSubtle01Color,
           ),
         ),
         child: Padding(
@@ -2337,7 +2346,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 fontWeight: FontWeightt.Regular,
                 color: themeProvider.themeManager.placeholderTextColor,
               ),
-              Expanded(child: Container()),
+              const Spacer(),
               detailData[widget.fromModule ? 'lead_detail' : 'owned_by'] == null
                   ? CustomText(
                       'No lead',
@@ -2347,55 +2356,22 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     )
                   : Row(
                       children: [
-                        (detailData[widget.fromModule
-                                            ? 'lead_detail'
-                                            : 'owned_by'] !=
-                                        null &&
-                                    detailData[widget.fromModule
-                                            ? 'lead_detail'
-                                            : 'owned_by']['avatar'] !=
-                                        null) &&
-                                detailData[widget.fromModule
+                        MemberLogoWidget(
+                            fontType: FontStyle.Small,
+                            boarderRadius: 50,
+                            padding: EdgeInsets.zero,
+                            size: 25,
+                            imageUrl: (detailData[widget.fromModule
+                                ? 'lead_detail'
+                                : 'owned_by']['avatar']),
+                            colorForErrorWidget:
+                                const Color.fromRGBO(55, 65, 81, 1),
+                            memberNameFirstLetterForErrorWidget: detailData[
+                                    widget.fromModule
                                         ? 'lead_detail'
-                                        : 'owned_by']['avatar'] !=
-                                    ''
-                            ? CircleAvatar(
-                                backgroundImage: Image.network(detailData[
-                                        widget.fromModule
-                                            ? 'lead_detail'
-                                            : 'owned_by']['avatar'])
-                                    .image,
-                                radius: 10,
-                              )
-                            : CircleAvatar(
-                                radius: 10,
-                                backgroundColor: darkSecondaryBGC,
-                                child: Center(
-                                  child: CustomText(
-                                    (detailData[widget.fromModule
-                                                    ? 'lead_detail'
-                                                    : 'owned_by'] !=
-                                                null &&
-                                            detailData[widget.fromModule
-                                                        ? 'lead_detail'
-                                                        : 'owned_by']
-                                                    ['display_name'] !=
-                                                null)
-                                        ? detailData[widget.fromModule
-                                                ? 'lead_detail'
-                                                : 'owned_by']['display_name'][0]
-                                            .toString()
-                                            .toUpperCase()
-                                        : '',
-                                    type: FontStyle.Small,
-                                    textAlign: TextAlign.center,
-                                    color: lightSecondaryBackgroundColor,
-                                  ),
-                                ),
-                              ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                                        : 'owned_by']['display_name'][0]
+                                .toString()),
+                        const SizedBox(width: 5),
                         Container(
                           constraints: BoxConstraints(maxWidth: width * 0.4),
                           child: CustomText(
@@ -2458,9 +2434,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       }
     }
   }
-
-  Color getBorderColor(ThemeProvider themeProvider) =>
-      themeProvider.themeManager.borderSubtle01Color;
 
   String checkTimeDifferenc(String dateTime) {
     final DateTime now = DateTime.now();

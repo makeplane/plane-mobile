@@ -9,7 +9,7 @@ import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 //import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';

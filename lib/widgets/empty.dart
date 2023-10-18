@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/bottom_sheets/issues_list_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
 import 'package:plane/screens/MainScreens/Projects/create_page_screen.dart';

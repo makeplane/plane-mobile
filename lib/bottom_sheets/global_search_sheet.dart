@@ -14,7 +14,7 @@ import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart
 import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';

@@ -19,6 +19,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/selected_label_widget.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -125,6 +126,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     };
     prov.createIssuedata['members'] = null;
     prov.createIssuedata['labels'] = null;
+    prov.selectedLabels.clear();
     prov.createIssueParent = '';
     if (widget.assignee != null) {
       prov.createIssuedata['members'] = widget.assignee;
@@ -392,8 +394,11 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                     .primaryTextColor,
                                                 fontWeight: FontWeightt.Medium,
                                               ),
-                                              const Icon(
+                                              Icon(
                                                 Icons.keyboard_arrow_down,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
                                               )
                                             ],
                                           )
@@ -740,7 +745,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           //icon
                                           Icon(
                                             //four squares icon
-                                            Icons.view_cozy_rounded,
+                                            Icons.view_cozy_outlined,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
                                           ),
@@ -843,7 +848,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           //icon
                                           Icon(
                                             //two people icon
-                                            Icons.people_alt_rounded,
+                                            Icons.people_alt_outlined,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
                                           ),
@@ -1168,7 +1173,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                     : Container(),
                                 expanded
                                     ? Container(
-                                        height: 45,
+                                        // height: 45,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
                                           color: Colors.transparent,
@@ -1179,142 +1184,127 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           borderRadius:
                                               BorderRadius.circular(5),
                                         ),
-                                        child: InkWell(
-                                          onTap: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            showModalBottomSheet(
-                                              enableDrag: true,
-                                              isScrollControlled: true,
-                                              constraints:
-                                                  const BoxConstraints(),
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight: Radius.circular(20),
-                                                ),
-                                              ),
-                                              context: context,
-                                              builder: (context) {
-                                                return Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom:
-                                                          MediaQuery.of(context)
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                FocusManager
+                                                    .instance.primaryFocus
+                                                    ?.unfocus();
+                                                showModalBottomSheet(
+                                                  enableDrag: true,
+                                                  isScrollControlled: true,
+                                                  constraints:
+                                                      const BoxConstraints(),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                    ),
+                                                  ),
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: MediaQuery.of(
+                                                                  context)
                                                               .viewInsets
                                                               .bottom),
-                                                  child:
-                                                      const SelectIssueLabels(
-                                                    createIssue: true,
-                                                  ),
+                                                      child:
+                                                          const SelectIssueLabels(
+                                                        createIssue: true,
+                                                      ),
+                                                    );
+                                                  },
                                                 );
                                               },
-                                            );
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Row(
-                                              children: [
-                                                //icon
-                                                Icon(
-                                                  //antenna signal icon
-                                                  Icons.label,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .placeholderTextColor,
-                                                ),
-                                                const SizedBox(width: 15),
-                                                CustomText(
-                                                  'Label',
-                                                  type: FontStyle.Small,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .placeholderTextColor,
-                                                ),
-                                                Expanded(child: Container()),
-                                                issuesProvider.createIssuedata[
-                                                            'labels'] ==
-                                                        null
-                                                    ? Row(
-                                                        children: [
-                                                          CustomText(
-                                                            'Select',
-                                                            type:
-                                                                FontStyle.Small,
-                                                            color: themeProvider
-                                                                .themeManager
-                                                                .primaryTextColor,
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down,
-                                                            color: themeProvider
-                                                                .themeManager
-                                                                .primaryTextColor,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Row(
-                                                        children: [
-                                                          Wrap(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, right: 10),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    //icon
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          //antenna signal icon
+                                                          Icons.label_outline,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .placeholderTextColor,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 15),
+                                                        CustomText(
+                                                          'Label',
+                                                          type: FontStyle.Small,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .placeholderTextColor,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    issuesProvider.createIssuedata[
+                                                                'labels'] ==
+                                                            null
+                                                        ? Row(
                                                             children: [
-                                                              Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                height: 30,
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                        maxWidth:
-                                                                            80,
-                                                                        minWidth:
-                                                                            30),
-                                                                child: Stack(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  fit: StackFit
-                                                                      .passthrough,
-                                                                  children: (issuesProvider
-                                                                              .createIssuedata['labels']
-                                                                          as List)
-                                                                      .map((e) =>
-                                                                          Positioned(
-                                                                            right:
-                                                                                (issuesProvider.createIssuedata['labels'] as List).indexOf(e) * 15.0,
-                                                                            child: Container(
-                                                                                height: 25,
-                                                                                alignment: Alignment.center,
-                                                                                width: 25,
-                                                                                decoration: BoxDecoration(
-                                                                                  shape: BoxShape.circle,
-                                                                                  color: e['color'].toString().toColor(),
-                                                                                )),
-                                                                          ))
-                                                                      .toList(),
-                                                                ),
-                                                              )
+                                                              CustomText(
+                                                                'Select',
+                                                                type: FontStyle
+                                                                    .Small,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .primaryTextColor,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_down,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .primaryTextColor,
+                                                              ),
                                                             ],
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down,
-                                                            color: themeProvider
-                                                                .themeManager
-                                                                .primaryTextColor,
-                                                          ),
-                                                        ],
-                                                      )
-                                              ],
+                                                          )
+                                                        : Row(
+                                                            children: [
+                                                              SelectedLabelsWidget(
+                                                                selectedLabels:
+                                                                    issuesProvider
+                                                                            .createIssuedata[
+                                                                        'labels'],
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_down,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .primaryTextColor,
+                                                              ),
+                                                            ],
+                                                          )
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       )
                                     : Container(),

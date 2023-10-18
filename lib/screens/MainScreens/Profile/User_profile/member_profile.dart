@@ -95,7 +95,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Row(
                     children: [
                       SizedBox(
@@ -191,112 +191,105 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
               ),
               memberprofileProvider.expanded[index]
                   ? Column(
-                      children: [
-                        memberprofileProvider.memberProfile['project_data']
-                                            [index][
-                                        memberprofileProvider.projectData[0]
-                                            ['key']] ==
-                                    0 &&
-                                memberprofileProvider
-                                                .memberProfile['project_data']
-                                            [index][
-                                        memberprofileProvider.projectData[1]
-                                            ['key']] ==
-                                    0
-                            ? Container()
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 25, bottom: 10),
-                                child: CustomProgressBar.withColorOverride(
-                                    width: width,
-                                    itemValue: [
-                                      memberprofileProvider
-                                                  .memberProfile['project_data']
-                                              [index][
-                                          memberprofileProvider.projectData[0]
-                                              ['key']],
-                                      memberprofileProvider
-                                                  .memberProfile['project_data']
-                                              [index][
-                                          memberprofileProvider.projectData[1]
-                                              ['key']],
-                                      memberprofileProvider
-                                                  .memberProfile['project_data']
-                                              [index][
-                                          memberprofileProvider.projectData[2]
-                                              ['key']],
-                                      memberprofileProvider
-                                                  .memberProfile['project_data']
-                                              [index][
-                                          memberprofileProvider.projectData[3]
-                                              ['key']],
-                                    ],
-                                    itemColors: [
+                    children: [
+                      memberprofileProvider.memberProfile['project_data']
+                                          [index][
                                       memberprofileProvider.projectData[0]
-                                          ['color'],
+                                          ['key']] ==
+                                  0 &&
+                              memberprofileProvider
+                                              .memberProfile['project_data']
+                                          [index][
                                       memberprofileProvider.projectData[1]
-                                          ['color'],
-                                      memberprofileProvider.projectData[2]
-                                          ['color'],
-                                      memberprofileProvider.projectData[3]
-                                          ['color'],
-                                    ]),
-                              ),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: memberprofileProvider.projectData.length,
-                            itemBuilder: (ctx, i) {
-                              return Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 30, right: 10),
-                                      height: 12,
-                                      width: 12,
-                                      decoration: BoxDecoration(
-                                          color: memberprofileProvider
-                                              .projectData[i]['color'],
-                                          borderRadius:
-                                              BorderRadius.circular(4)),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(),
-                                      child: CustomText(
-                                        memberprofileProvider.projectData[i]
-                                            ['name'],
-                                        color: themeProvider
-                                            .themeManager.placeholderTextColor,
-                                        type: FontStyle.Small,
-                                        fontWeight: FontWeightt.Regular,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                        right: 30,
-                                      ),
-                                      child: CustomText(
-                                        "${memberprofileProvider.memberProfile['project_data'][index][memberprofileProvider.projectData[i]['key']]} Issues",
-                                        color: themeProvider
-                                            .themeManager.tertiaryTextColor,
-                                        type: FontStyle.Small,
-                                        fontWeight: FontWeightt.Medium,
-                                      ),
-                                    ),
+                                          ['key']] ==
+                                  0
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: CustomProgressBar.withColorOverride(
+                                  width: width,
+                                  itemValue: [
+                                    memberprofileProvider.memberProfile[
+                                            'project_data'][index][
+                                        memberprofileProvider.projectData[0]
+                                            ['key']],
+                                    memberprofileProvider.memberProfile[
+                                            'project_data'][index][
+                                        memberprofileProvider.projectData[1]
+                                            ['key']],
+                                    memberprofileProvider.memberProfile[
+                                            'project_data'][index][
+                                        memberprofileProvider.projectData[2]
+                                            ['key']],
+                                    memberprofileProvider.memberProfile[
+                                            'project_data'][index][
+                                        memberprofileProvider.projectData[3]
+                                            ['key']],
                                   ],
-                                ),
-                              );
-                            }),
-                      ],
-                    )
+                                  itemColors: [
+                                    memberprofileProvider.projectData[0]
+                                        ['color'],
+                                    memberprofileProvider.projectData[1]
+                                        ['color'],
+                                    memberprofileProvider.projectData[2]
+                                        ['color'],
+                                    memberprofileProvider.projectData[3]
+                                        ['color'],
+                                  ]),
+                            ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              memberprofileProvider.projectData.length,
+                          itemBuilder: (ctx, i) {
+                            return Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 30, right: 10),
+                                    height: 12,
+                                    width: 12,
+                                    decoration: BoxDecoration(
+                                        color: memberprofileProvider
+                                            .projectData[i]['color'],
+                                        borderRadius:
+                                            BorderRadius.circular(4)),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(),
+                                    child: CustomText(
+                                      memberprofileProvider.projectData[i]
+                                          ['name'],
+                                      color: themeProvider.themeManager
+                                          .placeholderTextColor,
+                                      type: FontStyle.Small,
+                                      fontWeight: FontWeightt.Regular,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                      right: 30,
+                                    ),
+                                    child: CustomText(
+                                      "${memberprofileProvider.memberProfile['project_data'][index][memberprofileProvider.projectData[i]['key']]} Issues",
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
+                                      type: FontStyle.Small,
+                                      fontWeight: FontWeightt.Medium,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ],
+                  )
                   : Container(),
-              const SizedBox(
-                height: 15,
-              ),
               index ==
                       memberprofileProvider
                               .memberProfile['project_data'].length -

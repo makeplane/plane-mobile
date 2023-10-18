@@ -36,12 +36,6 @@ class DashBoardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
-  @override
-  void initState() {
-    // ref.read(ProviderList.workspaceProvider).updateUserRole();
-    super.initState();
-  }
-
   int sizeToMultiplayForEachIssue = 40;
   int constantValueToAdd = 50;
 

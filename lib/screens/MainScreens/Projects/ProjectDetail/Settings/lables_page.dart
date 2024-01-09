@@ -1,18 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/delete_labels_sheet.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane/bottom_sheets/delete_labels_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/empty.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class LablesPage extends ConsumerStatefulWidget {
   const LablesPage({super.key});
@@ -24,8 +22,8 @@ class LablesPage extends ConsumerStatefulWidget {
 class _LablesPageState extends ConsumerState<LablesPage> {
   List expanded = [];
   bool isChildAvailable(String id) {
-    var issuesProv = ref.read(ProviderList.issuesProvider);
-    for (var element in issuesProv.labels) {
+    final issuesProv = ref.read(ProviderList.issuesProvider);
+    for (final element in issuesProv.labels) {
       if (element["parent"] == id) return true;
     }
     return false;
@@ -33,35 +31,31 @@ class _LablesPageState extends ConsumerState<LablesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    // log(ref.read(ProviderList.projectProvider).currentProject["id"]);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return LoadingWidget(
       loading: issuesProvider.labelState == StateEnum.loading,
       widgetClass: Container(
-        color:
-            themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: issuesProvider.labels.isEmpty
-            ? EmptyPlaceholder.emptyLabels(context)
+            ? EmptyPlaceholder.emptyLabels(context, ref)
             : ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 itemCount: issuesProvider.labels.length,
                 itemBuilder: (context, index) {
-                  var isChildAvail =
+                  final isChildAvail =
                       isChildAvailable(issuesProvider.labels[index]["id"]);
                   return issuesProvider.labels[index]["parent"] == null
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkBackgroundColor
-                                  : lightBackgroundColor,
+                              color: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? Colors.transparent
-                                      : strokeColor)),
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color)),
                           child: Column(
                             children: [
                               Container(
@@ -77,23 +71,36 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         !isChildAvail
                                             ? CircleAvatar(
                                                 radius: 6,
-                                                backgroundColor: Color(int.parse(
-                                                    '0xFF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll('#', '')}')),
+                                                backgroundColor: issuesProvider
+                                                    .labels[index]['color']
+                                                    .toString()
+                                                    .toColor(),
                                               )
                                             : SvgPicture.asset(
                                                 "assets/svg_images/label_group.svg",
                                                 colorFilter: ColorFilter.mode(
-                                                    Color(int.parse(
-                                                        '0xFF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll('#', '')}')),
+                                                    issuesProvider.labels[index]
+                                                            ['color']
+                                                        .toString()
+                                                        .toColor(),
                                                     BlendMode.srcIn),
                                               ),
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        CustomText(
-                                          issuesProvider.labels[index]['name'],
-                                          type: FontStyle.heading2,
-                                          maxLines: 3,
+                                        LimitedBox(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          child: CustomText(
+                                            issuesProvider.labels[index]
+                                                ['name'],
+                                            type: FontStyle.H5,
+                                            maxLines: 1,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -101,16 +108,12 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                       children: [
                                         PopupMenuButton(
                                           icon: Icon(
-                                            Icons.more_vert,
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : Colors.black,
+                                            Icons.edit_outlined,
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
                                           ),
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkBackgroundColor
-                                                  : Colors.white,
+                                          color: themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor,
                                           onSelected: (val) {
                                             if (val == 'EDIT') {
                                               showModalBottomSheet(
@@ -230,19 +233,18 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                           Icons.add,
                                                           size: 19,
                                                           color: themeProvider
-                                                                  .isDarkThemeEnabled
-                                                              ? darkSecondaryTextColor
-                                                              : Colors.black,
+                                                              .themeManager
+                                                              .secondaryTextColor,
                                                         )
                                                       : SvgPicture.asset(
                                                           "assets/svg_images/label_group.svg",
-                                                          colorFilter: ColorFilter.mode(
-                                                              themeProvider
-                                                                      .isDarkThemeEnabled
-                                                                  ? darkSecondaryTextColor
-                                                                  : Colors
-                                                                      .black,
-                                                              BlendMode.srcIn),
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                                  themeProvider
+                                                                      .themeManager
+                                                                      .secondaryTextColor,
+                                                                  BlendMode
+                                                                      .srcIn),
                                                         ),
                                                   const SizedBox(
                                                     width: 10,
@@ -252,9 +254,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                         ? 'Add more labels'
                                                         : 'Convert to group',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -267,9 +268,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                     Icons.edit,
                                                     size: 19,
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -277,9 +277,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                   CustomText(
                                                     'Edit Label',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -292,9 +291,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                     Icons.delete,
                                                     size: 19,
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -302,9 +300,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                   CustomText(
                                                     'Delete Label',
                                                     color: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? darkSecondaryTextColor
-                                                        : Colors.black,
+                                                        .themeManager
+                                                        .secondaryTextColor,
                                                   )
                                                 ],
                                               ),
@@ -326,24 +323,22 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                       }
                                                       setState(() {});
                                                     },
-                                                    child: expanded
-                                                            .contains(index)
-                                                        ? Icon(
-                                                            Icons
-                                                                .keyboard_arrow_up,
-                                                            color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : Colors.black,
-                                                          )
-                                                        : Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkSecondaryTextColor
-                                                                : Colors.black,
-                                                          )),
+                                                    child:
+                                                        expanded.contains(index)
+                                                            ? Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_up,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .secondaryTextColor,
+                                                              )
+                                                            : Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_down_outlined,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .secondaryTextColor,
+                                                              )),
                                               ),
                                       ],
                                     )
@@ -352,271 +347,264 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                               ),
                               Column(
                                   children: expanded.contains(index)
-                                      ? issuesProvider.labels
-                                          .map(
-                                            (e) =>
-                                                e["parent"] ==
-                                                        issuesProvider
-                                                            .labels[index]["id"]
-                                                    ? Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
+                                      ? issuesProvider.labels.map(
+                                          (e) {
+                                            return e["parent"] ==
+                                                    issuesProvider.labels[index]
+                                                        ["id"]
+                                                ? Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
                                                             bottom: 15,
                                                             left: 15,
                                                             right: 15),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10,
-                                                                top: 5,
-                                                                bottom: 5),
-                                                        decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            top: 5,
+                                                            bottom: 5),
+                                                    decoration: BoxDecoration(
+                                                        color: themeProvider
+                                                            .themeManager
+                                                            .primaryBackgroundDefaultColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        border: Border.all(
                                                             color: themeProvider
-                                                                    .isDarkThemeEnabled
-                                                                ? darkBackgroundColor
-                                                                : lightBackgroundColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? darkThemeBorder
-                                                                    : strokeColor)),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                                .themeManager
+                                                                .borderSubtle01Color)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
                                                           children: [
-                                                            Row(
-                                                              children: [
-                                                                CircleAvatar(
-                                                                  radius: 6,
-                                                                  backgroundColor:
-                                                                      Color(int
-                                                                          .parse(
-                                                                              '0xFF${e['color'].toString().toUpperCase().replaceAll('#', '')}')),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                CustomText(
-                                                                  e['name'],
-                                                                  type: FontStyle
-                                                                      .heading2,
-                                                                  maxLines: 3,
-                                                                ),
-                                                              ],
+                                                            CircleAvatar(
+                                                              radius: 6,
+                                                              backgroundColor: e[
+                                                                      'color']
+                                                                  .toString()
+                                                                  .toColor(),
                                                             ),
-                                                            PopupMenuButton(
-                                                              icon: Icon(
-                                                                Icons.more_vert,
-                                                                color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? darkSecondaryTextColor
-                                                                    : Colors
-                                                                        .black,
-                                                              ),
-                                                              color: themeProvider
-                                                                      .isDarkThemeEnabled
-                                                                  ? darkBackgroundColor
-                                                                  : Colors
-                                                                      .white,
-                                                              onSelected:
-                                                                  (val) {
-                                                                if (val ==
-                                                                    'EDIT') {
-                                                                  showModalBottomSheet(
-                                                                    enableDrag:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    constraints:
-                                                                        BoxConstraints(
-                                                                      maxHeight:
-                                                                          MediaQuery.of(context).size.height *
-                                                                              0.8,
-                                                                    ),
-                                                                    shape:
-                                                                        const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(20),
-                                                                        topRight:
-                                                                            Radius.circular(20),
-                                                                      ),
-                                                                    ),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                                        child:
-                                                                            CreateLabel(
-                                                                          label:
-                                                                              e['name'],
-                                                                          labelColor:
-                                                                              e['color'],
-                                                                          labelId:
-                                                                              e['id'],
-                                                                          method:
-                                                                              CRUD.update,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                } else if (val ==
-                                                                    'CONVERT') {
-                                                                  issuesProvider
-                                                                      .issueLabels(
-                                                                          slug: ref
-                                                                              .watch(ProviderList
-                                                                                  .workspaceProvider)
-                                                                              .selectedWorkspace!
-                                                                              .workspaceSlug,
-                                                                          projID: ref.watch(ProviderList.projectProvider).currentProject[
-                                                                              'id'],
-                                                                          method: CRUD
-                                                                              .update,
-                                                                          data: {
-                                                                            "parent":
-                                                                                null,
-                                                                          },
-                                                                          labelId:
-                                                                              e["id"]);
-                                                                } else {
-                                                                  showModalBottomSheet(
-                                                                    constraints:
-                                                                        const BoxConstraints(
-                                                                            maxHeight:
-                                                                                300),
-                                                                    enableDrag:
-                                                                        true,
-                                                                    shape:
-                                                                        const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(20),
-                                                                        topRight:
-                                                                            Radius.circular(20),
-                                                                      ),
-                                                                    ),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                                        child:
-                                                                            DeleteLabelSheet(
-                                                                          labelName:
-                                                                              e['name'],
-                                                                          labelId:
-                                                                              e['id'],
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                }
-                                                              },
-                                                              itemBuilder:
-                                                                  (ctx) => [
-                                                                PopupMenuItem(
-                                                                  value:
-                                                                      'CONVERT',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .close,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Remove from group',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                PopupMenuItem(
-                                                                  value: 'EDIT',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .edit,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Edit Label',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                PopupMenuItem(
-                                                                  value:
-                                                                      'DELETE',
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        size:
-                                                                            19,
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      CustomText(
-                                                                        'Delete Label',
-                                                                        color: themeProvider.isDarkThemeEnabled
-                                                                            ? darkSecondaryTextColor
-                                                                            : Colors.black,
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            CustomText(
+                                                              e['name'],
+                                                              type: FontStyle
+                                                                  .Medium,
+                                                              maxLines: 3,
                                                             ),
                                                           ],
                                                         ),
-                                                      )
-                                                    : Container(),
-                                          )
-                                          .toList()
+                                                        PopupMenuButton(
+                                                          icon: Icon(
+                                                            Icons.more_vert,
+                                                            color: themeProvider
+                                                                .themeManager
+                                                                .placeholderTextColor,
+                                                          ),
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .tertiaryBackgroundDefaultColor,
+                                                          onSelected: (val) {
+                                                            if (val == 'EDIT') {
+                                                              showModalBottomSheet(
+                                                                enableDrag:
+                                                                    true,
+                                                                isScrollControlled:
+                                                                    true,
+                                                                constraints:
+                                                                    BoxConstraints(
+                                                                  maxHeight: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.8,
+                                                                ),
+                                                                shape:
+                                                                    const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                  ),
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        bottom: MediaQuery.of(context)
+                                                                            .viewInsets
+                                                                            .bottom),
+                                                                    child:
+                                                                        CreateLabel(
+                                                                      label: e[
+                                                                          'name'],
+                                                                      labelColor:
+                                                                          e['color'],
+                                                                      labelId: e[
+                                                                          'id'],
+                                                                      method: CRUD
+                                                                          .update,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            } else if (val ==
+                                                                'CONVERT') {
+                                                              issuesProvider
+                                                                  .issueLabels(
+                                                                      slug: ref
+                                                                          .watch(ProviderList
+                                                                              .workspaceProvider)
+                                                                          .selectedWorkspace
+                                                                          .workspaceSlug,
+                                                                      projID: ref
+                                                                              .watch(ProviderList
+                                                                                  .projectProvider)
+                                                                              .currentProject[
+                                                                          'id'],
+                                                                      method: CRUD
+                                                                          .update,
+                                                                      data: {
+                                                                        "parent":
+                                                                            null,
+                                                                      },
+                                                                      labelId: e[
+                                                                          "id"],
+                                                                      ref: ref);
+                                                            } else {
+                                                              showModalBottomSheet(
+                                                                constraints:
+                                                                    const BoxConstraints(
+                                                                        maxHeight:
+                                                                            300),
+                                                                enableDrag:
+                                                                    true,
+                                                                shape:
+                                                                    const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            20),
+                                                                  ),
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        bottom: MediaQuery.of(context)
+                                                                            .viewInsets
+                                                                            .bottom),
+                                                                    child:
+                                                                        DeleteLabelSheet(
+                                                                      labelName:
+                                                                          e['name'],
+                                                                      labelId: e[
+                                                                          'id'],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            }
+                                                          },
+                                                          itemBuilder: (ctx) =>
+                                                              [
+                                                            PopupMenuItem(
+                                                              value: 'CONVERT',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.close,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  CustomText(
+                                                                    'Remove from group',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              value: 'EDIT',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.edit,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  CustomText(
+                                                                    'Edit Label',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              value: 'DELETE',
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 19,
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  CustomText(
+                                                                    'Delete Label',
+                                                                    color: themeProvider
+                                                                        .themeManager
+                                                                        .secondaryTextColor,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container();
+                                          },
+                                        ).toList()
                                       : [])
                             ],
                           ),
@@ -639,17 +627,17 @@ class SingleLabelSelect extends ConsumerStatefulWidget {
 class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
   double height = 0.0;
   bool isChildAvailable(String id) {
-    var issuesProv = ref.read(ProviderList.issuesProvider);
-    for (var element in issuesProv.labels) {
+    final issuesProv = ref.read(ProviderList.issuesProvider);
+    for (final element in issuesProv.labels) {
       if (element["parent"] == id) return true;
     }
     return false;
   }
 
   bool isLabelsAvailable({int index = 0, bool iterate = false}) {
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
     if (iterate) {
-      for (var element in issuesProvider.labels) {
+      for (final element in issuesProvider.labels) {
         if (!(element["id"] == widget.labelID ||
             element["parent"] == widget.labelID ||
             element["parent"] != null ||
@@ -668,14 +656,12 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
       ),
@@ -691,22 +677,23 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                   children: [
                     const CustomText(
                       'Select Labels',
-                      type: FontStyle.heading,
+                      type: FontStyle.H6,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
-                        color: Color.fromRGBO(143, 143, 147, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     )
                   ],
                 ),
                 Container(height: 15),
                 isLabelsAvailable(iterate: true)
-                    ? EmptyPlaceholder.emptyLabels(context)
+                    ? EmptyPlaceholder.emptyLabels(context, ref)
                     : ListView.builder(
                         itemCount: issuesProvider.labels.length,
                         shrinkWrap: true,
@@ -719,7 +706,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         slug: ref
                                             .watch(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projID: ref
                                             .watch(ProviderList.projectProvider)
@@ -729,35 +716,32 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                           "parent": widget.labelID,
                                         },
                                         labelId: issuesProvider.labels[index]
-                                            ["id"]);
+                                            ["id"],
+                                        ref: ref);
 
                                     Navigator.pop(context);
                                   },
                                   child: Container(
-                                    //height: 40,
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 10,
                                     ),
-
                                     child: Column(
                                       children: [
                                         Row(
                                           children: [
                                             CircleAvatar(
                                               radius: 8,
-                                              backgroundColor: Color(
-                                                int.parse(
-                                                  "FF${issuesProvider.labels[index]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                                  radix: 16,
-                                                ),
-                                              ),
+                                              backgroundColor: issuesProvider
+                                                  .labels[index]['color']
+                                                  .toString()
+                                                  .toColor(),
                                             ),
                                             Container(width: 10),
                                             CustomText(
                                               issuesProvider.labels[index]
                                                       ['name']
                                                   .toString(),
-                                              type: FontStyle.subheading,
+                                              type: FontStyle.Small,
                                             ),
                                             const Spacer(),
                                             const SizedBox(width: 10)
@@ -766,11 +750,8 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                         const SizedBox(height: 20),
                                         Container(
                                           height: 1,
-                                          // margin: const EdgeInsets.only(bottom: 5),
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : strokeColor,
+                                          color: themeProvider
+                                              .themeManager.borderSubtle01Color,
                                         )
                                       ],
                                     ),
@@ -784,22 +765,15 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
-                  // height: 25,
-                  // width: 25,
+                  color: themeProvider
+                      .themeManager.secondaryBackgroundDefaultColor,
                   child: Center(
                     child: SizedBox(
                       height: 25,
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),

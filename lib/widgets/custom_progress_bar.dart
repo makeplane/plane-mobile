@@ -34,7 +34,7 @@ class CustomProgressBar extends StatelessWidget {
   ];
 
   Color _getColor(int colorIndex) {
-    Color ifColorNotAvaiable = Colors.red;
+    const Color ifColorNotAvaiable = Colors.red;
     return itemColors.length <= colorIndex
         ? ifColorNotAvaiable
         : itemColors[colorIndex];
@@ -55,7 +55,9 @@ class CustomProgressBar extends StatelessWidget {
                       flex: itemValue[index],
                       child: Container(
                         margin: const EdgeInsets.only(left: 3),
-                        color: _getColor(index),
+                        decoration: BoxDecoration(
+                            color: _getColor(index),
+                            borderRadius: BorderRadius.circular(5)),
                       ),
                     )
                   : Container();

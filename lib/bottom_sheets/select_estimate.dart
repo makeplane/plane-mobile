@@ -2,17 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class SelectEstimate extends ConsumerStatefulWidget {
+  const SelectEstimate({this.issueId, required this.createIssue, super.key});
   final bool createIssue;
   final String? issueId;
-  final int? index;
-  const SelectEstimate(
-      {this.index, this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectEstimate> createState() => _SelectEstimateState();
@@ -25,12 +23,15 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   @override
   void initState() {
     super.initState();
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var estimatesProvider = ref.read(ProviderList.estimatesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final estimatesProvider = ref.read(ProviderList.estimatesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     if (widget.createIssue) {
       selectedEstimate = estimatesProvider.estimates.firstWhere((element) {
-        return element['id'] == projectProvider.currentProject['estimate'];
+        return element['id'] ==
+            projectProvider.projects.firstWhere((element) =>
+                element['id'] ==
+                issuesProvider.createIssueProjectData['id'])['estimate'];
       })['points'].indexWhere((element) {
         return element['key'] ==
             issuesProvider.createIssuedata['estimate_point'];
@@ -40,13 +41,14 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         if (widget.createIssue) {
           if (selectedEstimate == -1) {
             prov.createIssuedata['estimate_point'] = null;
@@ -54,7 +56,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
             prov.createIssuedata['estimate_point'] =
                 estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][selectedEstimate]['key'];
           }
         }
@@ -65,9 +69,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -93,9 +95,8 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                         issueProvider.upDateIssue(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
-                            index: widget.index!,
                             refs: ref,
                             projID: ref
                                 .read(ProviderList.projectProvider)
@@ -109,7 +110,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               .getIssueDetails(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -121,7 +122,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                     .getIssueActivity(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
+                                          .selectedWorkspace
                                           .workspaceSlug,
                                       projID: ref
                                           .read(ProviderList.projectProvider)
@@ -152,17 +153,19 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.change_history,
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkPrimaryTextColor
-                                      : lightPrimaryTextColor,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
                                 ),
                               ),
                               Container(
                                 width: 10,
                               ),
-                              const CustomText(
+                              CustomText(
                                 'No Estimate',
-                                type: FontStyle.subheading,
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Regular,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               const Spacer(),
                               if ((widget.createIssue &&
@@ -198,10 +201,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                           ),
                           const SizedBox(height: 20),
                           Container(
-                            height: 1,
-                            width: width,
-                            color: strokeColor,
-                          ),
+                              height: 1,
+                              width: width,
+                              color: themeProvider
+                                  .themeManager.borderDisabledColor),
                         ],
                       ),
                     ),
@@ -230,9 +233,8 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                               issueProvider.upDateIssue(
                                   slug: ref
                                       .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
-                                  index: widget.index!,
                                   refs: ref,
                                   projID: ref
                                       .read(ProviderList.projectProvider)
@@ -253,7 +255,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
+                                            .selectedWorkspace
                                             .workspaceSlug,
                                         projID: ref
                                             .read(ProviderList.projectProvider)
@@ -266,7 +268,7 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                             slug: ref
                                                 .read(ProviderList
                                                     .workspaceProvider)
-                                                .selectedWorkspace!
+                                                .selectedWorkspace
                                                 .workspaceSlug,
                                             projID: ref
                                                 .read(ProviderList
@@ -296,27 +298,40 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.change_history,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkPrimaryTextColor
-                                            : lightPrimaryTextColor,
-                                      ),
+                                      child: Icon(Icons.change_history,
+                                          color: themeProvider.themeManager
+                                              .placeholderTextColor),
                                     ),
                                     Container(
                                       width: 10,
                                     ),
                                     CustomText(
-                                      estimatesProvider.estimates
-                                          .firstWhere((element) =>
-                                              element['id'] ==
-                                              ref
-                                                  .read(ProviderList
-                                                      .projectProvider)
-                                                  .currentProject['estimate'])[
-                                              'points'][index]['value']
-                                          .toString(),
-                                      type: FontStyle.subheading,
+                                      widget.createIssue
+                                          ? estimatesProvider.estimates
+                                              .firstWhere((element) {
+                                              return element['id'] ==
+                                                  projectProvider.projects
+                                                      .firstWhere((element) =>
+                                                          element['id'] ==
+                                                          issuesProvider
+                                                                  .createIssueProjectData[
+                                                              'id'])['estimate'];
+                                            })['points'][index]
+                                                  ['value'].toString()
+                                          : estimatesProvider.estimates
+                                              .firstWhere((element) =>
+                                                  element['id'] ==
+                                                  ref
+                                                          .read(ProviderList
+                                                              .projectProvider)
+                                                          .currentProject[
+                                                      'estimate'])['points']
+                                                  [index]['value']
+                                              .toString(),
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const Spacer(),
                                     widget.createIssue
@@ -329,10 +344,10 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 ),
                                 const SizedBox(height: 20),
                                 Container(
-                                  height: 1,
-                                  width: width,
-                                  color: strokeColor,
-                                ),
+                                    height: 1,
+                                    width: width,
+                                    color: themeProvider
+                                        .themeManager.borderDisabledColor),
                               ],
                             ),
                           ),
@@ -343,19 +358,18 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
             ),
             Container(
               height: 50,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkBackgroundColor
-                  : lightBackgroundColor,
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomText(
                     'Select Estimate',
-                    type: FontStyle.heading,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   IconButton(
                       onPressed: () {
-                        var prov = ref.read(ProviderList.issuesProvider);
+                        final prov = ref.read(ProviderList.issuesProvider);
                         if (widget.createIssue) {
                           if (selectedEstimate == -1) {
                             prov.createIssuedata['estimate_point'] = null;
@@ -364,20 +378,21 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
                                 estimatesProvider.estimates
                                     .firstWhere((element) {
                               return element['id'] ==
-                                  projectProvider.currentProject['estimate'];
+                                  projectProvider.projects.firstWhere(
+                                      (element) =>
+                                          element['id'] ==
+                                          issuesProvider.createIssueProjectData[
+                                              'id'])['estimate'];
                             })['points'][selectedEstimate]['key'];
                           }
                         }
-
+                        log(prov.createIssuedata.toString());
                         prov.setsState();
                         Navigator.pop(context);
                       },
-                      icon: Icon(
-                        Icons.close,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkPrimaryTextColor
-                            : lightPrimaryTextColor,
-                      ))
+                      icon: Icon(Icons.close,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor))
                 ],
               ),
             ),
@@ -388,16 +403,21 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   }
 
   Widget createIssueSelectedPriority(int idx) {
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     if (selectedEstimate == -1) return const SizedBox();
     return estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][idx]['key'] ==
             estimatesProvider.estimates.firstWhere((element) {
               return element['id'] ==
-                  projectProvider.currentProject['estimate'];
+                  projectProvider.projects.firstWhere((element) =>
+                      element['id'] ==
+                      issuesProvider.createIssueProjectData['id'])['estimate'];
             })['points'][selectedEstimate]['key']
         ? const Icon(
             Icons.done,
@@ -407,9 +427,9 @@ class _SelectEstimateState extends ConsumerState<SelectEstimate> {
   }
 
   Widget issueDetailSelectedPriority(int idx) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueDetails['estimate_point'].toString());
     return issueProvider.issueDetails['estimate_point'] ==
             estimatesProvider.estimates.firstWhere((element) {

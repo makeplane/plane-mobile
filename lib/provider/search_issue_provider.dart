@@ -2,10 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-
+import 'package:plane/utils/enums.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
 
 class SearchIssueProvider with ChangeNotifier {
   List<dynamic> issues = [];
@@ -21,9 +20,17 @@ class SearchIssueProvider with ChangeNotifier {
       required String issueId,
       String input = '',
       // required bool parent
-      required IssueDetailCategory type
-      }) async {
-    String query = type == IssueDetailCategory.parent ? 'parent' : type == IssueDetailCategory.subIssue ? 'sub_issue' : 'blocker_blocked_by';
+      required IssueDetailCategory type}) async {
+    searchIssuesState = StateEnum.loading;
+    final String query = type == IssueDetailCategory.parent
+        ? 'parent'
+        : type == IssueDetailCategory.subIssue
+            ? 'sub_issue'
+            : type == IssueDetailCategory.addCycleIssue
+                ? 'cycle'
+                : type == IssueDetailCategory.addModuleIssue
+                    ? 'module'
+                    : 'blocker_blocked_by';
     String url = '';
     if (input != '') {
       url = issueId.isEmpty
@@ -35,7 +42,7 @@ class SearchIssueProvider with ChangeNotifier {
           : '${APIs.searchIssues.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}?search&$query=true&issue_id=$issueId';
     }
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -53,13 +60,13 @@ class SearchIssueProvider with ChangeNotifier {
     }
   }
 
-  clearIssues() {
+  void clearIssues() {
     searchIssuesState = StateEnum.loading;
     issues.clear();
     notifyListeners();
   }
 
-  setStateToLoading() {
+  void setStateToLoading() {
     searchIssuesState = StateEnum.loading;
     notifyListeners();
   }

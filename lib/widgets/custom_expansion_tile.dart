@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../provider/provider_list.dart';
 import 'custom_text.dart';
+import '../utils/enums.dart';
 
-class CustomExpansionTile extends StatefulWidget {
-  const CustomExpansionTile({super.key, required this.title, required this.child});
+class CustomExpansionTile extends ConsumerStatefulWidget {
+  const CustomExpansionTile(
+      {super.key,
+      this.textColor,
+      this.type,
+      required this.title,
+      required this.child});
 
   final String title;
   final Widget child;
+  final FontStyle? type;
+  final Color? textColor;
 
   @override
-  State<CustomExpansionTile> createState() => _CustomExpansionTileState();
+  ConsumerState<CustomExpansionTile> createState() =>
+      _CustomExpansionTileState();
 }
 
-class _CustomExpansionTileState extends State<CustomExpansionTile> {
+class _CustomExpansionTileState extends ConsumerState<CustomExpansionTile> {
   final double _iconAngleWhenCollapsed = 0;
   final double _iconAngleWhenExpanded = 1.6;
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ListTileTheme(
@@ -40,16 +51,18 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                     ? _iconAngleWhenExpanded
                     : _iconAngleWhenCollapsed),
                 transformAlignment: Alignment.center,
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_forward_ios,
                   size: 15,
-                  color: Color.fromRGBO(65, 65, 65, 1),
+                  color: themeProvider.themeManager.tertiaryTextColor,
                 ),
               ),
               const SizedBox(width: 10),
               CustomText(
                 widget.title,
-                type: FontStyle.subheading,
+                type: widget.type ?? FontStyle.H6,
+                color: widget.textColor ??
+                    themeProvider.themeManager.tertiaryTextColor,
               ),
             ],
           ),

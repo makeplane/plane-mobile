@@ -1,16 +1,19 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/custom/list_item.dart';
-import 'package:plane_startup/kanban/custom/text_field.dart';
-import 'package:plane_startup/kanban/models/item_state.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/kanban/custom/list_item.dart';
+import 'package:plane/kanban/custom/text_field.dart';
+import 'package:plane/kanban/models/item_state.dart';
+import 'package:plane/widgets/custom_text.dart';
 
+import '../../utils/enums.dart';
 import 'provider_list.dart';
 
 class BoardListProvider extends ChangeNotifier {
-  BoardListProvider(ChangeNotifierProviderRef<BoardListProvider> this.ref);
+  BoardListProvider(ChangeNotifierProviderRef<BoardListProvider> this.ref,
+      {required this.boardID});
   Ref ref;
+  String boardID;
   var scrolling = false;
   var scrollingUp = false;
   var scrollingDown = false;
@@ -21,7 +24,7 @@ class BoardListProvider extends ChangeNotifier {
       required BuildContext context,
       required VoidCallback setstate}) {
     if (!context.mounted) return;
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     prov.board.lists[listIndex].context = context;
     var box = context.findRenderObject() as RenderBox;
     var location = box.localToGlobal(Offset.zero);
@@ -35,7 +38,7 @@ class BoardListProvider extends ChangeNotifier {
   }
 
   Future addNewCard({required String position, required int listIndex}) async {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var scroll = prov.board.lists[listIndex].scrollController;
 
     // log("MAX EXTENT =${scroll.position.maxScrollExtent}");
@@ -50,7 +53,7 @@ class BoardListProvider extends ChangeNotifier {
               padding: const EdgeInsets.only(
                 left: 10,
               ),
-              child: const TField()),
+              child: TField(boardID: boardID,)),
           listIndex: listIndex,
           isNew: true,
           index: prov.board.lists[listIndex].items.length,
@@ -61,7 +64,7 @@ class BoardListProvider extends ChangeNotifier {
               padding: const EdgeInsets.only(
                 left: 10,
               ),
-              child: const TField()),
+              child: TField(boardID: boardID,)),
         ));
     position == "TOP" ? await scrollToMin(scroll) : scrollToMax(scroll);
     prov.board.newCardListIndex = listIndex;
@@ -75,7 +78,7 @@ class BoardListProvider extends ChangeNotifier {
       {required int listIndex,
       required BuildContext context,
       required VoidCallback setstate}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     for (var element in prov.board.lists) {
       if (element.context == null) break;
       var of = (element.context!.findRenderObject() as RenderBox)
@@ -114,9 +117,8 @@ class BoardListProvider extends ChangeNotifier {
               // ),
               child: CustomText(
                 prov.board.lists[listIndex].title,
-                fontSize: 20,
-                type: FontStyle.heading2,
-                fontWeight: FontWeight.bold,
+                type: FontStyle.H4,
+                fontWeight: FontWeightt.Semibold,
               ),
             ),
             Expanded(
@@ -130,6 +132,7 @@ class BoardListProvider extends ChangeNotifier {
                   shrinkWrap: true,
                   itemBuilder: (ctx, index) {
                     return Item(
+                      boardID: boardID,
                       color: prov.board.lists[listIndex].items[index]
                               .backgroundColor ??
                           Colors.grey.shade200,
@@ -196,7 +199,7 @@ class BoardListProvider extends ChangeNotifier {
   }
 
   void maybeListScroll() async {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     if (prov.board.isElementDragged == false || scrolling) {
       return;
     }
@@ -241,7 +244,7 @@ class BoardListProvider extends ChangeNotifier {
   }
 
   void moveListRight() {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     if (prov.draggedItemState!.listIndex == prov.board.lists.length - 1) {
       return;
     }
@@ -262,7 +265,7 @@ class BoardListProvider extends ChangeNotifier {
   }
 
   void moveListLeft() {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     if (prov.draggedItemState!.listIndex == 0) {
       return;
     }

@@ -1,16 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/member_status.dart';
-import 'package:plane_startup/bottom_sheets/select_emails.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/submit_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/member_status.dart';
+import 'package:plane/bottom_sheets/select_emails.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/widgets/submit_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class ProjectInviteMembersSheet extends ConsumerStatefulWidget {
   const ProjectInviteMembersSheet({super.key});
@@ -34,22 +35,25 @@ class _ProjectInviteMembersSheetState
   @override
   void initState() {
     super.initState();
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     workspaceProvider.invitingMembersRole.text = 'Viewer';
-    for (var element in workspaceProvider.workspaceMembers) {
+    for (final element in workspaceProvider.workspaceMembers) {
       emailList.add(element['member']['email']);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final BuildContext mainBuildContext = context;
     return LoadingWidget(
       loading: projectProvider.projectInvitationState == StateEnum.loading,
       widgetClass: GestureDetector(
         onTap: () {
+          FocusScope.of(context).unfocus();
+
           setState(() {
             keypadVisible = false;
           });
@@ -60,7 +64,6 @@ class _ProjectInviteMembersSheetState
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
@@ -68,15 +71,20 @@ class _ProjectInviteMembersSheetState
                       child: Row(
                         children: [
                           const CustomText(
-                            'Invite Members',
-                            type: FontStyle.heading,
+                            'Add Member',
+                            type: FontStyle.H4,
+                            fontWeight: FontWeightt.Semibold,
                           ),
                           const Spacer(),
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            child: const Icon(Icons.close),
+                            child: Icon(
+                              Icons.close,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
                           )
                         ],
                       ),
@@ -93,71 +101,75 @@ class _ProjectInviteMembersSheetState
                               children: [
                                 CustomText(
                                   'Email',
-                                  type: FontStyle.title,
+                                  type: FontStyle.Small,
                                 ),
                                 CustomText(
                                   '*',
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.Small,
                                   color: Colors.red,
                                 ),
                               ],
                             ),
                           ),
                           GestureDetector(
-                            onTap: () async {
-                              isEmailEmpty = false;
-                              await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  enableDrag: true,
-                                  constraints:
-                                      BoxConstraints(maxHeight: height * 0.8),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  )),
-                                  context: context,
-                                  builder: (ctx) {
-                                    return SelectEmails(
-                                      email: selectedEmail,
+                            onTap: workspaceProvider.workspaceMembers.length > 1
+                                ? () async {
+                                    isEmailEmpty = false;
+                                    await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        enableDrag: true,
+                                        constraints: BoxConstraints(
+                                            maxHeight: height * 0.8),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(30),
+                                        )),
+                                        context: context,
+                                        builder: (ctx) {
+                                          return SelectEmails(
+                                            email: selectedEmail,
+                                          );
+                                        });
+                                    setState(() {});
+                                    log(selectedEmail.toString());
+                                  }
+                                : () {
+                                    CustomToast.showToast(
+                                      context,
+                                      message:
+                                          'You are the only member of this workspace. Please add more members to workspace first.',
                                     );
-                                  });
-                              setState(() {});
-                              log(selectedEmail.toString());
-                            },
+                                  },
                             child: Container(
                                 margin: const EdgeInsets.only(
                                   left: 20,
                                   right: 20,
                                 ),
-                                height: 55,
+                                height: 48,
                                 padding: const EdgeInsets.only(
                                   left: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : lightBackgroundColor,
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(6)),
                                 child: Row(
                                   children: [
                                     CustomText(
                                       selectedEmail['email'] ?? '',
                                       fontSize: 16,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const Spacer(),
                                     Icon(
-                                      Icons.arrow_drop_down,
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkSecondaryTextColor
-                                          : strokeColor,
+                                      Icons.keyboard_arrow_down,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
                                     ),
                                     const SizedBox(
                                       width: 5,
@@ -171,7 +183,7 @@ class _ProjectInviteMembersSheetState
                                       left: 20, right: 20, bottom: 5),
                                   child: const CustomText(
                                     '*required',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     fontSize: 14,
                                     color: Colors.red,
                                   ),
@@ -184,11 +196,11 @@ class _ProjectInviteMembersSheetState
                                 children: [
                                   CustomText(
                                     'Role',
-                                    type: FontStyle.title,
+                                    type: FontStyle.Small,
                                   ),
                                   CustomText(
                                     '*',
-                                    type: FontStyle.appbarTitle,
+                                    type: FontStyle.Small,
                                     color: Colors.red,
                                   ),
                                 ],
@@ -198,8 +210,6 @@ class _ProjectInviteMembersSheetState
                               await showModalBottomSheet(
                                   isScrollControlled: true,
                                   enableDrag: true,
-                                  // constraints: BoxConstraints(
-                                  //     maxHeight: height * 0.55),
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -211,29 +221,31 @@ class _ProjectInviteMembersSheetState
                                       fromWorkspace: true,
                                       firstName: 'Set User',
                                       lastName: '',
-                                      role: selectedRole,
+                                      role: {
+                                        'role': getRoleIndex(workspaceProvider
+                                            .invitingMembersRole.text)
+                                      },
                                       userId: '',
                                       isInviteMembers: true,
+                                      pendingInvite: false,
                                     );
                                   });
-                              log(selectedRole.toString());
                             },
                             child: Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: TextFormField(
+                                style: themeProvider
+                                    .themeManager.textFieldTextStyle,
                                 controller:
                                     workspaceProvider.invitingMembersRole,
-                                decoration: kTextFieldDecoration.copyWith(
-                                  fillColor: themeProvider.isDarkThemeEnabled
-                                      ? darkBackgroundColor
-                                      : lightBackgroundColor,
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                  fillColor: themeProvider.themeManager
+                                      .primaryBackgroundDefaultColor,
                                   filled: true,
                                 ),
-                                style: TextStyle(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? Colors.white
-                                        : Colors.black),
                                 enabled: false,
                               ),
                             ),
@@ -243,7 +255,7 @@ class _ProjectInviteMembersSheetState
                                   left: 20, right: 20, top: 20, bottom: 5),
                               child: const CustomText(
                                 'Message ',
-                                type: FontStyle.title,
+                                type: FontStyle.Small,
                               )),
                           Container(
                             padding: const EdgeInsets.only(
@@ -258,10 +270,13 @@ class _ProjectInviteMembersSheetState
                               },
                               controller: messageController,
                               maxLines: 6,
-                              decoration: kTextFieldDecoration.copyWith(
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                fillColor: themeProvider
+                                    .themeManager.primaryBackgroundDefaultColor,
                                 filled: true,
                               ),
                             ),
@@ -273,51 +288,72 @@ class _ProjectInviteMembersSheetState
                       margin: const EdgeInsets.only(
                         left: 20,
                         right: 20,
-                        top: 20,
+                        top: 30,
                         bottom: 20,
                       ),
                       child: SubmitButton(
                         onPressed: () async {
-                          bool isCorrect = formKey.currentState!.validate();
+                          final bool isCorrect =
+                              formKey.currentState!.validate();
                           if (!isCorrect || selectedEmail['email'] == null) {
                             setState(() {
                               isEmailEmpty = true;
                             });
                             return;
                           }
-                          // log( projectProvider.currentProject["id"]);
                           await projectProvider.inviteToProject(
-                            context: context,
+                            context: mainBuildContext,
                             slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             projId: projectProvider.currentProject['id'],
                             data: {
                               "members": [
                                 {
                                   'member_id': selectedEmail['id'],
-                                  'role': selectedRole['role']
+                                  'role': getRoleIndex(workspaceProvider
+                                      .invitingMembersRole.text)
                                 }
                               ]
                             },
                           );
-
                           if (projectProvider.projectInvitationState ==
                               StateEnum.success) {
+                            postHogService(
+                                eventName: 'PROJECT_MEMBER_INVITE',
+                                properties: {
+                                  'WORKSPACE_ID': workspaceProvider
+                                      .selectedWorkspace.workspaceId,
+                                  'WORKSPACE_SLUG': workspaceProvider
+                                      .selectedWorkspace.workspaceSlug,
+                                  'WORKSPACE_NAME': workspaceProvider
+                                      .selectedWorkspace.workspaceName,
+                                  'PROJECT_ID':
+                                      projectProvider.projectDetailModel!.id,
+                                  'PROJECT_NAME':
+                                      projectProvider.projectDetailModel!.name,
+                                  'INVITED_PROJECT_MEMBER': emailController.text
+                                },
+                                ref: ref);
                             //show success snackbar
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: CustomText(
-                                  'Invitation sent successfully',
-                                  type: FontStyle.subtitle,
-                                  color: Colors.white,
-                                ),
-                                backgroundColor: greenHighLight,
-                              ),
+
+                            CustomToast.showToast(mainBuildContext,
+                                message: 'Member added successfully',
+                                toastType: ToastType.success);
+                            Navigator.pop(mainBuildContext);
+                            projectProvider.getProjectMembers(
+                                slug: workspaceProvider
+                                    .selectedWorkspace.workspaceSlug,
+                                projId:
+                                    projectProvider.projectDetailModel!.id!);
+                          } else {
+                            CustomToast.showToast(
+                              mainBuildContext,
+                              message: 'Something went wrong',
+                              toastType: ToastType.failure,
                             );
-                          } else {}
+                          }
                         },
-                        text: 'Invite',
+                        text: 'Add',
                       ),
                     )
                   ],
@@ -328,5 +364,22 @@ class _ProjectInviteMembersSheetState
         ),
       ),
     );
+  }
+
+  int getRoleIndex(String value) {
+    final List<Map<String, int>> options = [
+      {'Admin': 20},
+      {'Member': 15},
+      {'Viewer': 10},
+      {'Guest': 5},
+      {'Remove User': 0}
+    ];
+
+    for (final Map<String, int> item in options) {
+      if (item.containsKey(value)) {
+        return item[value]!;
+      }
+    }
+    return 10;
   }
 }

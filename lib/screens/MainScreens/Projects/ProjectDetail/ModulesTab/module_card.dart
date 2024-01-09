@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/bottom_sheets/delete_module_sheet.dart';
+import 'package:plane/bottom_sheets/delete_module_sheet.dart';
 
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/utils/constants.dart';
+import '/utils/enums.dart';
 
 // ignore: must_be_immutable
 class ModuleCard extends ConsumerStatefulWidget {
-  bool isFav;
-  int index;
   ModuleCard({
     super.key,
     required this.index,
     required this.isFav,
   });
+  bool isFav;
+  int index;
 
   @override
   ConsumerState<ModuleCard> createState() => _ModuleCardState();
@@ -25,8 +26,8 @@ class ModuleCard extends ConsumerStatefulWidget {
 class _ModuleCardState extends ConsumerState<ModuleCard> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     return GestureDetector(
       onTap: () {
         modulesProvider.currentModule = widget.isFav
@@ -51,9 +52,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             border: Border.all(
               color: Colors.grey.shade300,
             ),
@@ -75,7 +74,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                         : modulesProvider.modules[widget.index]['name']
                             .toString(),
                     overflow: TextOverflow.ellipsis,
-                    type: FontStyle.heading2,
+                    type: FontStyle.H5,
                   ),
                 ),
                 const Spacer(),
@@ -83,9 +82,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   margin: const EdgeInsets.only(top: 10),
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 3, bottom: 3),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightSecondaryBackgroundColor,
+                  color: themeProvider
+                      .themeManager.secondaryBackgroundDefaultColor,
                   height: 28,
                   child: Row(
                     children: [
@@ -102,16 +100,13 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       //   width: 10,
                       // ),
                       CustomText(
-                          widget.isFav
-                              ? modulesProvider.favModules[widget.index]
-                                      ['status']
-                                  .toString()
-                              : modulesProvider.modules[widget.index]['status']
-                                  .toString(),
-                          type: FontStyle.subtitle,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor),
+                        widget.isFav
+                            ? modulesProvider.favModules[widget.index]['status']
+                                .toString()
+                            : modulesProvider.modules[widget.index]['status']
+                                .toString(),
+                        type: FontStyle.Medium,
+                      ),
                     ],
                   ),
                 ),
@@ -121,7 +116,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       ? IconButton(
                           visualDensity: VisualDensity.compact,
                           onPressed: () async {
-                            String moduleID =
+                            final String moduleID =
                                 modulesProvider.favModules[widget.index]['id'];
                             modulesProvider.modules
                                 .add(modulesProvider.favModules[widget.index]);
@@ -130,7 +125,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                             modulesProvider.favouriteModule(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projId: ref
                                   .read(ProviderList.projectProvider)
@@ -139,13 +134,13 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                               isFav: true,
                             );
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.star,
-                            color: Colors.amber,
+                            color: themeProvider.themeManager.tertiaryTextColor,
                           ))
                       : IconButton(
                           onPressed: () async {
-                            String moduleId =
+                            final String moduleId =
                                 modulesProvider.modules[widget.index]['id'];
                             modulesProvider.favModules
                                 .add(modulesProvider.modules[widget.index]);
@@ -154,7 +149,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                             modulesProvider.favouriteModule(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projId: ref
                                   .read(ProviderList.projectProvider)
@@ -165,9 +160,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                           },
                           icon: Icon(
                             Icons.star_border,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
                           )),
                 ),
                 const SizedBox(
@@ -203,9 +197,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       },
                       icon: Icon(
                         Icons.more_vert,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkPrimaryTextColor
-                            : lightPrimaryTextColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       )),
                 ),
               ],
@@ -219,9 +211,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                 children: [
                   Icon(
                     Icons.calendar_month,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkPrimaryTextColor
-                        : lightPrimaryTextColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                     size: 18,
                   ),
                   const SizedBox(
@@ -241,7 +231,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                     DateTime.now())
                                 .toString())),
 
-                    type: FontStyle.smallText,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     width: 40,
@@ -249,9 +239,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   Icon(
                     Icons.my_location_sharp,
                     size: 18,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkPrimaryTextColor
-                        : lightPrimaryTextColor,
+                    color: themeProvider.themeManager.placeholderTextColor,
                   ),
                   const SizedBox(
                     width: 5,
@@ -268,7 +256,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                         ['target_date'] ??
                                     DateTime.now())
                                 .toString())),
-                    type: FontStyle.smallText,
+                    type: FontStyle.Small,
                   ),
                 ],
               ),
@@ -293,7 +281,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
             //       ),
             //       CustomText(
             //         ' Vamsi Kurama',
-            //         type: FontStyle.subtitle,
+            //         type: FontStyle.Medium,
             //       ),
             //     ],
             //   ),
@@ -314,7 +302,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                   children: [
                     const CustomText(
                       'Progress',
-                      type: FontStyle.smallText,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       width: 15,
@@ -356,7 +344,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                       widget.isFav
                           ? '${(((modulesProvider.favModules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.favModules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.favModules[widget.index]['total_issues'])) * 100).toStringAsFixed(2)} %'
                           : '${(((modulesProvider.modules[widget.index]['completed_issues'] ?? 0).toDouble() / (modulesProvider.modules[widget.index]['total_issues'] == 0 ? 1 : modulesProvider.modules[widget.index]['total_issues'])) * 100).toStringAsFixed(2)} %',
-                      type: FontStyle.smallText,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       width: 15,
@@ -372,7 +360,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                     padding: const EdgeInsets.only(left: 15, top: 20),
                     child: const CustomText(
                       'Last Updated: ',
-                      type: FontStyle.subtitle,
+                      type: FontStyle.Medium,
                     ),
                   ),
                   Container(
@@ -392,7 +380,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                               modulesProvider.modules[widget.index]
                                       ['updated_at']
                                   .toString())),
-                      type: FontStyle.subtitle,
+                      type: FontStyle.Medium,
                     ),
                   ),
                   const Spacer(),
@@ -409,9 +397,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
@@ -460,7 +447,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                                 e['first_name'][0]
                                                     .toString()
                                                     .toUpperCase(),
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -475,14 +462,14 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                   left: 8, right: 8, top: 5, bottom: 5),
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : lightGreeyColor),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.groups_2_outlined,
                                 size: 18,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             )
                       : (modulesProvider.modules[widget.index]
@@ -497,9 +484,8 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : lightGreeyColor),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color),
                                     borderRadius: BorderRadius.circular(5)),
                                 height: 30,
                                 margin: const EdgeInsets.only(right: 5),
@@ -548,7 +534,7 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                                 e['first_name'][0]
                                                     .toString()
                                                     .toUpperCase(),
-                                                type: FontStyle.title,
+                                                type: FontStyle.Small,
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -563,14 +549,14 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
                                   left: 8, right: 8, top: 5, bottom: 5),
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : lightGreeyColor),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.groups_2_outlined,
                                 size: 18,
-                                color: greyColor,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
                               ),
                             ),
 

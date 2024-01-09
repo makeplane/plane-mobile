@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/goto_plane_web_notifier_sheet.dart';
-
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/goto_plane_web_notifier_sheet.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImportEport extends ConsumerStatefulWidget {
   const ImportEport({super.key});
@@ -19,7 +18,7 @@ class ImportEport extends ConsumerStatefulWidget {
 class _ImportEportState extends ConsumerState<ImportEport> {
   @override
   void initState() {
-    var prov = ref.read(ProviderList.integrationProvider);
+    final prov = ref.read(ProviderList.integrationProvider);
     if (prov.integrations.isEmpty) {
       ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
     }
@@ -29,8 +28,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var integrationProvider = ref.watch(ProviderList.integrationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final integrationProvider = ref.watch(ProviderList.integrationProvider);
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: CustomAppBar(
@@ -49,58 +48,67 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 height: 1,
                 width: MediaQuery.of(context).size.width,
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkThemeBorder
-                    : Colors.grey[300],
+                color: themeProvider.themeManager.borderDisabledColor,
               ),
               Container(
-                height: 160,
+                // height: 160,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightSecondaryBackgroundColor,
+                  borderRadius: BorderRadius.circular(6),
+                  color:
+                      themeProvider.themeManager.secondaryBackgroundActiveColor,
                 ),
                 width: MediaQuery.of(context).size.width,
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
                       'Relocation Guide',
                       textAlign: TextAlign.left,
-                      type: FontStyle.subheading,
-                      fontWeight: FontWeight.bold,
+                      type: FontStyle.Small,
+                      fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CustomText(
                       'You can now transfer all the issues that you\'ve created in other tracking services. This tool will guide you to relocate the issue to Plane.',
                       textAlign: TextAlign.left,
                       maxLines: 7,
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
+                      color: themeProvider.themeManager.primaryTextColor,
                     ),
-                    SizedBox(
-                      height: 10,
+                    const SizedBox(
+                      height: 5,
                     ),
-                    Row(
-                      children: [
-                        CustomText(
-                          'Read more',
-                          textAlign: TextAlign.left,
-                          type: FontStyle.title,
-                          color: Color.fromRGBO(63, 118, 255, 1),
+                    InkWell(
+                      onTap: () {
+                        _launchUrl();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Row(
+                          children: [
+                            CustomText(
+                              'Read more',
+                              textAlign: TextAlign.left,
+                              type: FontStyle.Small,
+                              color: themeProvider.themeManager.primaryColour,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              size: 18,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          size: 18,
-                          color: Color.fromRGBO(63, 118, 255, 1),
-                        )
-                      ],
+                      ),
                     )
                   ],
                 ),
@@ -124,14 +132,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkSecondaryBGC
-                          : lightSecondaryBackgroundColor,
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.transparent
-                              : Colors.grey.shade300)),
+                          color:
+                              themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -152,24 +158,29 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CustomText(
+                                CustomText(
                                   'Github',
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.boldSubtitle,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.all(5),
-                                  color: integrationProvider
-                                                  .integrations["github"] !=
-                                              null &&
-                                          integrationProvider
-                                                  .integrations["github"]
-                                              ["installed"]
-                                      ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : const Color.fromRGBO(
-                                              243, 245, 248, 1),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 5, bottom: 8),
+                                  decoration: BoxDecoration(
+                                      color: integrationProvider
+                                                      .integrations["github"] !=
+                                                  null &&
+                                              integrationProvider
+                                                      .integrations["github"]
+                                                  ["installed"]
+                                          ? themeProvider.themeManager
+                                              .successBackgroundColor
+                                          : themeProvider.themeManager
+                                              .tertiaryBackgroundDefaultColor,
+                                      borderRadius: BorderRadius.circular(5)),
                                   child: CustomText(
                                     integrationProvider
                                                     .integrations["github"] !=
@@ -179,29 +190,32 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                 ["installed"]
                                         ? "Installed"
                                         : 'Not Installed',
-                                    type: FontStyle.subtitle,
+                                    type: FontStyle.XSmall,
                                     color: integrationProvider
                                                     .integrations["github"] !=
                                                 null &&
                                             integrationProvider
                                                     .integrations["github"]
                                                 ["installed"]
-                                        ? Colors.white
-                                        : const Color.fromRGBO(73, 80, 87, 1),
+                                        ? themeProvider
+                                            .themeManager.textSuccessColor
+                                        : themeProvider
+                                            .themeManager.tertiaryTextColor,
                                   ),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 5),
+                          const SizedBox(height: 5),
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
-                            child: const CustomText(
+                            child: CustomText(
                               'Connect with GitHub with your Plane workspace to sync project issues.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
-                              color: Color.fromRGBO(133, 142, 150, 1),
+                              type: FontStyle.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           ),
                         ],
@@ -229,14 +243,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkSecondaryBGC
-                          : lightSecondaryBackgroundColor,
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.transparent
-                              : Colors.grey.shade300)),
+                          color:
+                              themeProvider.themeManager.borderSubtle01Color)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -257,23 +269,30 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CustomText(
+                                CustomText(
                                   'Jira',
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.boldSubtitle,
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.all(5),
-                                  color: integrationProvider
-                                                  .integrations["jira"] !=
-                                              null &&
-                                          integrationProvider
-                                              .integrations["jira"]["installed"]
-                                      ? const Color.fromRGBO(9, 169, 83, 1)
-                                      : themeProvider.isDarkThemeEnabled
-                                          ? darkBackgroundColor
-                                          : const Color.fromRGBO(
-                                              243, 245, 248, 1),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: integrationProvider
+                                                    .integrations["jira"] !=
+                                                null &&
+                                            integrationProvider
+                                                    .integrations["jira"]
+                                                ["installed"]
+                                        ? themeProvider
+                                            .themeManager.successBackgroundColor
+                                        : themeProvider.themeManager
+                                            .tertiaryBackgroundDefaultColor,
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 5, bottom: 8),
                                   child: CustomText(
                                     integrationProvider.integrations["jira"] !=
                                                 null &&
@@ -282,29 +301,32 @@ class _ImportEportState extends ConsumerState<ImportEport> {
                                                 ["installed"]
                                         ? "Installed"
                                         : 'Not Installed',
-                                    type: FontStyle.subtitle,
+                                    type: FontStyle.XSmall,
                                     color: integrationProvider
                                                     .integrations["jira"] !=
                                                 null &&
                                             integrationProvider
                                                     .integrations["jira"]
                                                 ["installed"]
-                                        ? Colors.white
-                                        : const Color.fromRGBO(73, 80, 87, 1),
+                                        ? themeProvider
+                                            .themeManager.textSuccessColor
+                                        : themeProvider
+                                            .themeManager.tertiaryTextColor,
                                   ),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 5),
+                          const SizedBox(height: 5),
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
-                            child: const CustomText(
+                            child: CustomText(
                               'Import issues and epics from Jira projects and epics.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
-                              color: Color.fromRGBO(133, 142, 150, 1),
+                              type: FontStyle.Medium,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                             ),
                           ),
                         ],
@@ -319,7 +341,8 @@ class _ImportEportState extends ConsumerState<ImportEport> {
               //   child: const CustomText(
               //     'Billing History',
               //     textAlign: TextAlign.left,
-              //     type: FontStyle.heading,
+              //     type: FontStyle.H6,
+              // fontWeight: FontWeightt.Semibold,
               //   ),
               // ),
               // Container(
@@ -346,7 +369,7 @@ class _ImportEportState extends ConsumerState<ImportEport> {
               //       CustomText(
               //         'No previous imports available.',
               //         textAlign: TextAlign.center,
-              //         type: FontStyle.title,
+              //         type: FontStyle.Small,
               //       ),
               //     ],
               //   ),
@@ -356,5 +379,12 @@ class _ImportEportState extends ConsumerState<ImportEport> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    const String url = 'https://docs.plane.so/importers/github';
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

@@ -1,17 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
+import 'package:plane/mixins/widget_state_mixin.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
 
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class WorkspaceLogo extends ConsumerStatefulWidget {
   const WorkspaceLogo({super.key});
@@ -20,72 +18,59 @@ class WorkspaceLogo extends ConsumerStatefulWidget {
   ConsumerState<WorkspaceLogo> createState() => _WorkspaceLogoState();
 }
 
-class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
+class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo>
+    with WidgetStateMixin {
   File? coverImage;
-  final searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    var fileProvider = ref.watch(ProviderList.fileUploadProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            //color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  LoadingType getLoading(WidgetRef ref) {
+    return setWidgetState([
+      ref.read(ProviderList.fileUploadProvider).fileUploadState,
+      ref.read(ProviderList.workspaceProvider).updateWorkspaceState
+    ], allowError: false, loadingType: LoadingType.wrap);
+  }
+
+  @override
+  Widget render(BuildContext context) {
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final fileProvider = ref.watch(ProviderList.fileUploadProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+      decoration: const BoxDecoration(
+        //color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () async {
-                      var file = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (file != null) {
-                        setState(() {
-                          coverImage = File(file.path);
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.file_upload_outlined),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          CustomText(
-                            'Upload',
-                            type: FontStyle.subheading,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.close,
+                  size: 27,
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
-              coverImage != null
-                  ? GestureDetector(
+            ],
+          ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          coverImage == null
+              ? Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    alignment: Alignment.center,
+                    child: InkWell(
                       onTap: () async {
-                        var file = await ImagePicker()
+                        final file = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
                         if (file != null) {
                           setState(() {
@@ -94,84 +79,81 @@ class _WorkspaceLogoState extends ConsumerState<WorkspaceLogo> {
                         }
                       },
                       child: Container(
-                        height: 250,
-                        width: MediaQuery.of(context).size.width,
+                        height: 40,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: Image.file(coverImage!).image,
-                          ),
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_upload_outlined,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const CustomText(
+                              'Select from device',
+                              type: FontStyle.Small,
+                              color: Colors.black,
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  : const SizedBox(),
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
+                    ),
                   ),
-                  Button(
-                    text: 'UPLOAD',
-                    ontap: () async {
-                      int sizeOfImage =
-                          coverImage!.readAsBytesSync().lengthInBytes;
-
-                      if (sizeOfImage > 5000000) {
-                        CustomToast().showToast(context, 'file exceeding 5MB');
-                        return;
-                      }
-                      var url = await fileProvider.uploadFile(
-                        coverImage!,
-                        coverImage!.path.split('.').last,
-                      );
-                      if (url != null) {
-                        workspaceProvider.changeLogo(logo: url);
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        fileProvider.fileUploadState == StateEnum.loading
-            ? Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.black.withOpacity(0.7)
-                      : Colors.white.withOpacity(0.7),
-                  //color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                ),
-                alignment: Alignment.center,
-
-                // height: 25,
-                // width: 25,
-                child: Wrap(
-                  children: [
-                    SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: LoadingIndicator(
-                        indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
-                        strokeWidth: 1.0,
-                        backgroundColor: Colors.transparent,
+                )
+              : GestureDetector(
+                  onTap: () async {
+                    final file = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (file != null) {
+                      setState(() {
+                        coverImage = File(file.path);
+                      });
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20, top: 10),
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: Image.file(coverImage!).image,
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              )
-            : const SizedBox(),
-      ],
+          Button(
+            text: 'UPLOAD',
+            ontap: () async {
+              final int sizeOfImage =
+                  coverImage!.readAsBytesSync().lengthInBytes;
+
+              if (sizeOfImage > 5000000) {
+                CustomToast.showToast(context,
+                    message: 'file exceeding 5MB',
+                    toastType: ToastType.warning);
+                return;
+              }
+              final url = await fileProvider.uploadFile(
+                coverImage!,
+                coverImage!.path.split('.').last,
+              );
+              if (url != null) {
+                workspaceProvider.updateWorkspace(data: {
+                  'logo': url,
+                }, ref: ref);
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

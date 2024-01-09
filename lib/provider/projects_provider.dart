@@ -1,49 +1,57 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/kanban/models/project_detail_model.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/kanban/models/project_detail_model.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
+
+import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
-  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
-  final Ref ref;
-  var projects = [];
-  var starredProjects = [];
-  var projectState = StateEnum.empty;
-  var unsplashImageState = StateEnum.empty;
-  var createProjectState = StateEnum.empty;
-  var projectDetailState = StateEnum.empty;
-  var projectMembersState = StateEnum.empty;
-  var deleteProjectState = StateEnum.empty;
-  var updateProjectMemberState = StateEnum.empty;
-  var updateProjectState = StateEnum.empty;
-  var stateCrudState = StateEnum.empty;
-  var projectLabelsState = StateEnum.empty;
-  var projectInvitationState = StateEnum.empty;
-  var unsplashImages = [];
-  var currentProject = {};
+  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider>? this.ref);
+  final Ref? ref;
+  List projects = [];
+  List starredProjects = [];
+  StateEnum joinprojectState = StateEnum.empty;
+  StateEnum getProjectState = StateEnum.empty;
+  StateEnum projectState = StateEnum.empty;
+  StateEnum unsplashImageState = StateEnum.empty;
+  StateEnum createProjectState = StateEnum.empty;
+  StateEnum projectDetailState = StateEnum.empty;
+  StateEnum projectMembersState = StateEnum.empty;
+  StateEnum deleteProjectState = StateEnum.empty;
+  StateEnum leaveProjectState = StateEnum.empty;
+  StateEnum updateProjectMemberState = StateEnum.empty;
+  StateEnum updateProjectState = StateEnum.empty;
+  StateEnum stateCrudState = StateEnum.empty;
+  StateEnum projectLabelsState = StateEnum.empty;
+  StateEnum projectInvitationState = StateEnum.empty;
+  List unsplashImages = [];
+  Map currentProject = {};
   List projectMembers = [];
   Role role = Role.none;
-  var coverUrl =
+  String coverUrl =
       "https://app.plane.so/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1575116464504-9e7652fddcb3%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwyODUyNTV8MHwxfHNlYXJjaHwxOHx8cGxhbmV8ZW58MHx8fHwxNjgxNDY4NTY5%26ixlib%3Drb-4.0.3%26q%3D80%26w%3D1080&w=1920&q=75";
   ProjectDetailModel? projectDetailModel;
 
   TextEditingController lead = TextEditingController();
   TextEditingController assignee = TextEditingController();
-
+  int memberCount = 0;
+  List<int> loadingProjectIndex = [];
   List features = [
     {'title': 'Issues', 'width': 60, 'show': true},
     {'title': 'Cycles', 'width': 60, 'show': true},
     {'title': 'Modules', 'width': 75, 'show': true},
-    // {'title': 'Views', 'width': 60, 'show': true},
-    // {'title': 'Pages', 'width': 50, 'show': true},
+    {'title': 'Views', 'width': 60, 'show': true},
+    // {'title': 'Pages', 'width': 50, 'show': false},
   ];
 
   void clear() {
@@ -57,11 +65,15 @@ class ProjectsProvider extends ChangeNotifier {
     updateProjectMemberState = StateEnum.empty;
     updateProjectState = StateEnum.empty;
     stateCrudState = StateEnum.empty;
+    leaveProjectState = StateEnum.empty;
     unsplashImages = [];
     currentProject = {};
+    loadingProjectIndex = [];
+
     coverUrl =
         "https://app.plane.so/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1575116464504-9e7652fddcb3%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwyODUyNTV8MHwxfHNlYXJjaHwxOHx8cGxhbmV8ZW58MHx8fHwxNjgxNDY4NTY5%26ixlib%3Drb-4.0.3%26q%3D80%26w%3D1080&w=1920&q=75";
     projectDetailModel = null;
+    memberCount = 0;
     lead.clear();
     assignee.clear();
   }
@@ -70,17 +82,26 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initializeProject() {
-    var prov = ref.read(ProviderList.issuesProvider);
-    var moduleProv = ref.read(ProviderList.modulesProvider);
+  Future initializeProject(
+      {Filters? filters,
+      bool fromViews = false,
+      required WidgetRef ref}) async {
+    final prov = ref.read(ProviderList.issuesProvider);
+    final moduleProv = ref.read(ProviderList.modulesProvider);
+    final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
+    final intergrationProvider = ref.read(ProviderList.integrationProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
     }
-    String workspaceSlug = ref
+    final String workspaceSlug = ref
         .read(ProviderList.workspaceProvider)
-        .selectedWorkspace!
+        .selectedWorkspace
         .workspaceSlug;
+
+    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
     prov.getProjectMembers(
       slug: workspaceSlug,
       projID: currentProject['id'],
@@ -91,7 +112,11 @@ class ProjectsProvider extends ChangeNotifier {
         );
     prov.getIssueProperties(issueCategory: IssueCategory.issues);
     prov.getProjectView().then((value) {
+      if (filters != null) {
+        prov.issues.filters = filters;
+      }
       prov.filterIssues(
+        fromViews: fromViews,
         slug: workspaceSlug,
         projID: currentProject['id'],
       );
@@ -101,41 +126,69 @@ class ProjectsProvider extends ChangeNotifier {
       slug: workspaceSlug,
       projId: currentProject['id'],
     );
-    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
+    viewsProvider.getViews();
 
     prov.getLabels(slug: workspaceSlug, projID: currentProject['id']);
 
     getProjectDetails(slug: workspaceSlug, projId: currentProject['id']);
 
-    var cyclesProv = ref.read(ProviderList.cyclesProvider);
-    var projectID = currentProject['id'];
+    final cyclesProv = ref.read(ProviderList.cyclesProvider);
+    final projectID = currentProject['id'];
     cyclesProv.cyclesState = StateEnum.loading;
 
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'all');
+        query: 'all',
+        ref: ref,
+        cycleId: '');
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'current');
+        query: 'current',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'upcoming');
+        query: 'upcoming',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'completed');
+        query: 'completed',
+        cycleId: '',
+        ref: ref);
     cyclesProv.cyclesCrud(
         slug: workspaceSlug,
         projectId: projectID,
         method: CRUD.read,
-        query: 'draft');
+        query: 'draft',
+        cycleId: '',
+        ref: ref);
+
+    pageProv.updatepageList(
+      slug: workspaceSlug,
+      projectId: projectID,
+    );
+
+    if (workspaceProvider.githubIntegration != null) {
+      intergrationProvider.getSlackIntegration(
+          slug: workspaceSlug,
+          projectId: projectID,
+          integrationId: workspaceProvider.githubIntegration['id']);
+    }
+    if (workspaceProvider.githubIntegration != null) {
+      intergrationProvider.getGitHubIntegration(
+          slug: workspaceSlug,
+          projectId: projectID,
+          integrationId: workspaceProvider.githubIntegration['id']);
+    }
   }
 
   void changeCoverUrl({required String url}) {
@@ -143,23 +196,56 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getProjects({required String slug}) async {
-    projectState = StateEnum.loading;
-    notifyListeners();
+  Future joinProject({String? projectId, String? slug}) async {
     try {
-      var response = await DioConfig().dioServe(
+      joinprojectState = StateEnum.loading;
+      notifyListeners();
+      await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.joinProject.replaceAll("\$SLUG", slug!),
+          hasBody: true,
+          httpMethod: HttpMethod.post,
+          data: {
+            "project_ids": [projectId]
+          });
+      joinprojectState = StateEnum.success;
+      // updating local projects List
+      // ref!.read(ProviderList.projectProvider).projects[ref!
+      //     .read(ProviderList.projectProvider)
+      //     .currentProject["index"]]["is_member"] = true;
+      //ref!.read(ProviderList.projectProvider).initializeProject();
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.message.toString());
+      joinprojectState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  Future getProjects({required String slug, bool loading = true}) async {
+    if (loading) {
+      getProjectState = StateEnum.loading;
+      notifyListeners();
+    }
+    try {
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.listProjects.replaceAll('\$SLUG', slug),
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
       projects = response.data;
-      projectState = StateEnum.success;
+      for (int i = 0; i < projects.length; i++) {
+        if (projects[i]['is_member'] == true) {
+          memberCount++;
+        }
+      }
+      getProjectState = StateEnum.success;
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
       log(e.error.toString());
-      projectState = StateEnum.error;
+      getProjectState = StateEnum.error;
       notifyListeners();
     }
   }
@@ -170,10 +256,13 @@ class ProjectsProvider extends ChangeNotifier {
       required String projectID,
       required int index}) async {
     projectState = StateEnum.loading;
+    if (!loadingProjectIndex.contains(index)) {
+      loadingProjectIndex.add(index);
+    }
     notifyListeners();
     try {
       log(APIs.favouriteProjects.replaceAll('\$SLUG', slug) + projectID);
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: method == HttpMethod.delete
             ? '${APIs.favouriteProjects.replaceAll('\$SLUG', slug)}$projectID/'
@@ -187,20 +276,26 @@ class ProjectsProvider extends ChangeNotifier {
         httpMethod: method,
       );
       if (method == HttpMethod.post) {
-        projects.removeAt(index);
+        // projects.removeAt(index);
+
+        // When all projects are added to favorites at the same time, last element will have index
+        // out of range error becuase the project is removed and the last index wont be available untill
+        // getProjects method called
         starredProjects.add(response.data);
       } else if (method == HttpMethod.get) {
         starredProjects = response.data;
       } else {
         // projects.add(starredProjects.removeAt(index)['project_detail']);
       }
-      await getProjects(slug: slug);
+      await getProjects(slug: slug, loading: false);
       projectState = StateEnum.success;
+      loadingProjectIndex.remove(index);
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
       log("ERROR=${e.response}");
       projectState = StateEnum.error;
+      loadingProjectIndex.remove(index);
       notifyListeners();
     }
   }
@@ -209,7 +304,7 @@ class ProjectsProvider extends ChangeNotifier {
     required BuildContext context,
     required String slug,
     required String projId,
-    required data,
+    required Map data,
   }) async {
     projectInvitationState = StateEnum.loading;
     notifyListeners();
@@ -232,35 +327,52 @@ class ProjectsProvider extends ChangeNotifier {
     } on DioException catch (e) {
       log('Project Invite Error =  ${e.message}');
       log(e.error.toString());
-      CustomToast().showToast(context,
-          e.message == null ? 'something went wrong!' : e.message.toString());
+      CustomToast.showToast(context,
+          message: e.message == null
+              ? 'something went wrong!'
+              : e.message.toString(),
+          toastType: ToastType.failure);
       projectInvitationState = StateEnum.error;
       notifyListeners();
     }
   }
 
-  Future createProjects({required String slug, required data}) async {
+  Future createProjects(
+      {required String slug,
+      required Map data,
+      WidgetRef? ref,
+      BuildContext? context}) async {
     createProjectState = StateEnum.loading;
+    final workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
     notifyListeners();
-    log(slug);
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.createProjects.replaceAll('\$SLUG', slug),
         hasBody: true,
         data: data,
         httpMethod: HttpMethod.post,
       );
-      log(response.data.toString());
+      postHogService(
+          eventName: 'CREATE_PROJECT',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'PROJECT_ID': response.data['id'],
+            'PROJECT_NAME': response.data['name']
+          },
+          ref: ref);
       await getProjects(slug: slug);
       createProjectState = StateEnum.success;
       notifyListeners();
       // log(response.data.toString());
     } on DioException catch (e) {
-      // CustomToast().showToast(
-      //     Const.globalKey.currentContext!, 'Identifier already exists');
-      ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
-          const SnackBar(content: Text('Identifier already exists')));
+      if (context != null) {
+        CustomToast.showToast(context,
+            message: 'Identifier already exists', toastType: ToastType.failure);
+      }
+
       log(e.error.toString());
       createProjectState = StateEnum.error;
       notifyListeners();
@@ -272,7 +384,7 @@ class ProjectsProvider extends ChangeNotifier {
     required String identifier,
   }) async {
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectIdentifier
             .replaceAll(
@@ -293,17 +405,17 @@ class ProjectsProvider extends ChangeNotifier {
   Future getProjectDetails(
       {required String slug, required String projId}) async {
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: "${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/",
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      log("THIS IS THE PROJECT DETAIL : ");
+
       projectDetailModel = ProjectDetailModel.fromMap(response.data);
       features[1]['show'] = projectDetailModel!.cycleView ?? true;
       features[2]['show'] = projectDetailModel!.moduleView ?? true;
-      // features[3]['show'] = projectDetailModel!.issueViewsView ?? true;
+      features[3]['show'] = projectDetailModel!.issueViewsView ?? true;
       // features[4]['show'] = projectDetailModel!.pageView ?? true;
 
       getProjectMembers(slug: slug, projId: projId);
@@ -320,30 +432,54 @@ class ProjectsProvider extends ChangeNotifier {
   }
 
   Future updateProject(
-      {required String slug, required String projId, required Map data}) async {
+      {required String slug,
+      required String projId,
+      required Map data,
+      required WidgetRef ref}) async {
     updateProjectState = StateEnum.loading;
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     notifyListeners();
     log("${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/");
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: "${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/",
           hasBody: true,
           httpMethod: HttpMethod.patch,
           data: data);
-      var defaultAssignee = projectDetailModel!.defaultAssignee;
-      var projectLead = projectDetailModel!.projectLead;
+      final defaultAssignee = projectDetailModel!.defaultAssignee;
+      final projectLead = projectDetailModel!.projectLead;
       projectDetailModel = ProjectDetailModel.fromMap(response.data);
       projectDetailModel!.defaultAssignee = defaultAssignee;
       projectDetailModel!.projectLead = projectLead;
-      int index = currentProject["index"];
+      final int index = currentProject["index"];
       currentProject = projectDetailModel!.toJson();
+      log('CURRENT PROJECT');
+      log(currentProject.toString());
       currentProject["index"] = index;
       projects[index]["name"] = currentProject["name"];
       projects[index]["description"] = currentProject["description"];
       projects[index]["identifier"] = currentProject["identifier"];
       projects[index]["emoji"] = currentProject["emoji"];
+      projects[index]['estimate'] = currentProject['estimate'];
+
+      projects[index]["icon_prop"] = currentProject["icon_prop"] != null
+          ? {
+              'name': currentProject["icon_prop"]["name"],
+              'color': currentProject["icon_prop"]["color"],
+            }
+          : null;
       updateProjectState = StateEnum.success;
+      postHogService(
+          eventName: 'UPDATE_PROJECT',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'PROJECT_ID': response.data['id'],
+            'PROJECT_NAME': response.data['name']
+          },
+          ref: ref);
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
@@ -352,12 +488,69 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
+  Future updateProjectLead(
+      {required String leadId,
+      required int index,
+      required WidgetRef ref}) async {
+    try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
+      final data = {
+        'project_lead': leadId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
+      };
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await getProjectDetails(slug: slug, projId: projId);
+      lead.text = projectDetailModel!.projectLead == null
+          ? ''
+          : projectDetailModel!.projectLead!['display_name'];
+
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future updateProjectAssignee({
+    required String assigneeId,
+    required int index,
+    required WidgetRef ref,
+  }) async {
+    try {
+      final slug = ref
+          .read(ProviderList.workspaceProvider)
+          .selectedWorkspace
+          .workspaceSlug;
+      final projId = currentProject['id'];
+      final data = {
+        'default_assignee': assigneeId == projectMembers[index]['member']['id']
+            ? null
+            : projectMembers[index]['member']['id'],
+      };
+      await updateProject(slug: slug, projId: projId, data: data, ref: ref);
+      await getProjectDetails(slug: slug, projId: projId);
+      assignee.text = projectDetailModel!.defaultAssignee == null
+          ? ''
+          : projectDetailModel!.defaultAssignee!['display_name'];
+
+      notifyListeners();
+    } on DioException catch (e) {
+      notifyListeners();
+      log(e.toString());
+    }
+  }
+
   Future getProjectMembers(
       {required String slug, required String projId}) async {
     // projectDetailState = AuthStateEnum.loading;
     // notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectMembers
             .replaceFirst('\$SLUG', slug)
@@ -374,6 +567,15 @@ class ProjectsProvider extends ChangeNotifier {
       projectMembersState = StateEnum.error;
       notifyListeners();
     }
+  }
+
+  String? getProjectMemberImage({required String userId}) {
+    for (var member in projectMembers) {
+      if (member['member']['id'] == userId) {
+        return member['member']['avatar'];
+      }
+    }
+    return null;
   }
 
   Future deleteProject({required String slug, required String projId}) async {
@@ -395,14 +597,46 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> leaveProject(
+      {required String slug,
+      required String projId,
+      required int index,
+      required BuildContext context}) async {
+    try {
+      leaveProjectState = StateEnum.loading;
+      notifyListeners();
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.leaveProject
+            .replaceFirst('\$SLUG', slug)
+            .replaceFirst('\$PROJECTID', projId),
+        hasBody: false,
+        httpMethod: HttpMethod.delete,
+      );
+      leaveProjectState = StateEnum.success;
+      getProjects(slug: slug);
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      log(e.error.toString());
+      CustomToast.showToast(context,
+          message: (e.error as Map)['error'].toString(),
+          toastType: ToastType.failure,
+          duration: 5);
+      leaveProjectState = StateEnum.error;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future updateProjectMember(
       {required String slug,
       required String projId,
       required String userId,
       required CRUD method,
-      required data}) async {
+      required Map data}) async {
     try {
-      var url =
+      final url =
           '${APIs.projectMembers.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projId)}$userId/';
       updateProjectMemberState = StateEnum.loading;
       notifyListeners();
@@ -429,16 +663,19 @@ class ProjectsProvider extends ChangeNotifier {
       required String stateId,
       required CRUD method,
       required BuildContext context,
+      required WidgetRef ref,
       required Map data}) async {
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     try {
-      var url = method == CRUD.update || method == CRUD.delete
+      final url = method == CRUD.update || method == CRUD.delete
           ? '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projId)}$stateId/'
           : APIs.states
               .replaceFirst('\$SLUG', slug)
               .replaceFirst('\$PROJECTID', projId);
       stateCrudState = StateEnum.loading;
       notifyListeners();
-      await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -451,13 +688,39 @@ class ProjectsProvider extends ChangeNotifier {
                       : HttpMethod.patch,
           data: data);
       stateCrudState = StateEnum.success;
+      method != CRUD.read
+          ? postHogService(
+              eventName: method == CRUD.create
+                  ? 'STATE_CREATE'
+                  : method == CRUD.update
+                      ? 'STATE_UPDATE'
+                      : method == CRUD.delete
+                          ? 'STATE_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'STATE_ID':
+                          method == CRUD.create ? response.data['id'] : stateId
+                    },
+              ref: ref)
+          : null;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
         log(e.message.toString());
       }
-      CustomToast()
-          .showToast(context, 'Something went wrong, Please try again.');
+      CustomToast.showToast(context,
+          message: 'Something went wrong, Please try again.',
+          toastType: ToastType.failure);
       log(e.toString());
       stateCrudState = StateEnum.error;
       notifyListeners();

@@ -3,14 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_workspace.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/time_zone_selector_sheet.dart';
+import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/utils/timezone_manager.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 // import '../Provider/provider_list.dart';
 import '../../../widgets/custom_button.dart';
-import '../../../utils/constants.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../bottom_sheets/role_sheet.dart';
 import '../../../widgets/custom_text.dart';
@@ -43,8 +45,9 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     final prov = ref.watch(ProviderList.profileProvider);
+    final workspaceProv = ref.watch(ProviderList.workspaceProvider);
     // log(dropDownValue.toString());
     return Scaffold(
       //backgroundColor: themeProvider.backgroundColor,
@@ -56,7 +59,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
             child: Form(
               key: formKey,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height * 0.9,
                 child: Stack(
                   children: [
                     Padding(
@@ -73,9 +76,11 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                           //   'Setup up your profile',
                           //   style: TextStylingWidget.mainHeading,
                           // ),
-                          const CustomText(
+                          CustomText(
                             'Setup your profile',
-                            type: FontStyle.mainHeading,
+                            type: FontStyle.H4,
+                            fontWeight: FontWeightt.Semibold,
+                            color: themeProvider.themeManager.primaryTextColor,
                           ),
                           const SizedBox(
                             height: 30,
@@ -84,14 +89,20 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'First name'),
                                     TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        text: 'First name',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
+                                    TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -101,22 +112,34 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                     if (val!.isEmpty) {
                                       return "*required ";
                                     }
+                                    if (val.length >= 24) {
+                                      return "name should be smaller ";
+                                    }
                                     return null;
                                   },
                                   controller: prov.firstName,
-                                  decoration: kTextFieldDecoration,
+                                  style: themeProvider
+                                      .themeManager.textFieldTextStyle,
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration,
                                 ),
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'Last name'),
                                     TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        text: 'Last name',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
+                                    TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -126,27 +149,41 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       if (val!.isEmpty) {
                                         return "*required ";
                                       }
+                                      if (val.length >= 24) {
+                                        return "name should be smaller ";
+                                      }
+
                                       return null;
                                     },
+                                    style: themeProvider
+                                        .themeManager.textFieldTextStyle,
                                     controller: prov.lastName,
-                                    decoration: kTextFieldDecoration),
+                                    decoration: themeProvider
+                                        .themeManager.textFieldDecoration),
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const CustomRichText(
+                                CustomRichText(
                                   widgets: [
-                                    TextSpan(text: 'What is your Role?'),
                                     TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red))
+                                        text: 'What is your Role?',
+                                        style: TextStyle(
+                                            color: themeProvider.themeManager
+                                                .tertiaryTextColor)),
+                                    TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                            color: themeProvider
+                                                .themeManager.textErrorColor))
                                   ],
-                                  type: RichFontStyle.text,
+                                  type: FontStyle.Medium,
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    FocusScope.of(context).unfocus();
                                     showModalBottomSheet(
                                         context: context,
                                         constraints: BoxConstraints(
@@ -166,15 +203,14 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         });
                                   },
                                   child: Container(
-                                    height: 50,
+                                    height: 55,
                                     width: MediaQuery.of(context).size.width,
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       border: Border.all(
-                                          color:
-                                              themeProvider.isDarkThemeEnabled
-                                                  ? darkThemeBorder
-                                                  : Colors.grey.shade300),
+                                        color: themeProvider
+                                            .themeManager.borderSubtle01Color,
+                                      ),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Row(
@@ -188,7 +224,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                             prov.dropDownValue == null
                                                 ? 'Select Role'
                                                 : prov.dropDownValue!,
-                                            type: FontStyle.text,
+                                            type: FontStyle.Medium,
                                           ),
                                         ),
                                         Container(
@@ -196,10 +232,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                               const EdgeInsets.only(right: 16),
                                           child: Icon(
                                             Icons.keyboard_arrow_down,
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkPrimaryTextColor
-                                                    : lightPrimaryTextColor,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
                                           ),
                                         ),
                                       ],
@@ -208,16 +242,87 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                   // ),
                                 ),
                                 dropdownEmpty
-                                    ? const CustomText(
+                                    ? CustomText(
                                         "*required",
-                                        fontSize: 14,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
+                                        type: FontStyle.Small,
+                                        fontWeight: FontWeightt.Semibold,
+                                        color: themeProvider
+                                            .themeManager.textErrorColor,
                                       )
                                     : Container(),
-                                const SizedBox(
-                                  height: 30,
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  child: CustomText('Time Zone',
+                                      type: FontStyle.Medium,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor),
                                 ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        constraints: BoxConstraints(
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.8,
+                                        ),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        builder: (context) {
+                                          return const TimeZoneSelectorSheet();
+                                        });
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      border: Border.all(
+                                          color: themeProvider.themeManager
+                                              .borderSubtle01Color),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 16),
+                                          child: CustomText(
+                                            TimeZoneManager.timeZones
+                                                        .firstWhere((element) =>
+                                                            element['value'] ==
+                                                            prov.selectedTimeZone)[
+                                                    'label'] ??
+                                                '',
+                                            type: FontStyle.Small,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 16),
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: themeProvider
+                                                .themeManager.primaryTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 40),
                                 GestureDetector(
                                   onTap: () async {
                                     if (!formKey.currentState!.validate()) {
@@ -242,6 +347,8 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                       'first_name': prov.firstName.text,
                                       'last_name': prov.lastName.text,
                                       'role': prov.dropDownValue,
+                                      "user_timezone":
+                                          prov.selectedTimeZone.toString(),
                                       'onboarding_step': {
                                         "workspace_join": false,
                                         "profile_complete": true,
@@ -249,66 +356,96 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
                                         "workspace_invite": false
                                       }
                                     });
-                                    Navigator.of(context).push(
+                                    await workspaceProv
+                                        .getWorkspaceInvitations();
+                                    if (workspaceProv
+                                        .workspaceInvitations.isNotEmpty) {
+                                      // profileProvider.updateProfile(data: {
+                                      //   'onboarding_step': {
+                                      //     "workspace_join": false,
+                                      //     "profile_complete": true,
+                                      //     "workspace_create": false,
+                                      //     "workspace_invite": false
+                                      //   }
+                                      // });
+                                      Navigator.push(
+                                        context,
                                         MaterialPageRoute(
-                                            builder: (ctx) =>
-                                                const SetupWorkspace()));
+                                          builder: (context) =>
+                                              const JoinWorkspaces(
+                                            fromOnboard: true,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      // await workspaceProv.ref!
+                                      //     .read(ProviderList.profileProvider)
+                                      //     .updateIsOnBoarded(val: true);
+                                      // await profileProvider
+                                      //     .updateProfile(data: {
+                                      //   'onboarding_step': {
+                                      //     "workspace_join": true,
+                                      //     "profile_complete": true,
+                                      //     "workspace_create": false,
+                                      //     "workspace_invite": false
+                                      //   }
+                                      // });
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (ctx) =>
+                                                  const SetupWorkspace()));
+                                    }
                                   },
                                   child: const Button(
                                     text: 'Continue',
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    1 == 0
-                        ? Container()
-                        : Positioned(
-                            bottom: 0,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // pageController.previousPage(
-                                  //     duration: const Duration(milliseconds: 250),
-                                  //     curve: Curves.easeInOut);
-                                  // setState(() {
-                                  //   currentPage--;
-                                  // });
-                                },
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back,
-                                      color: greyColor,
-                                      size: 18,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    // Text(
-                                    //   'Go back',
-                                    //   style: TextStylingWidget.description
-                                    //       .copyWith(
-                                    //     color: greyColor,
-                                    //     fontWeight: FontWeight.w600,
-                                    //   ),
-                                    // ),
-                                    CustomText(
-                                      'Go back',
-                                      type: FontStyle.description,
-                                      color: greyColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                    // 1 == 0
+                    //     ? Container()
+                    //     : Positioned(
+                    //         bottom: 0,
+                    //         child: SizedBox(
+                    //           width: MediaQuery.of(context).size.width,
+                    //           child: GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.pop(context);
+                    //               // pageController.previousPage(
+                    //               //     duration: const Duration(milliseconds: 250),
+                    //               //     curve: Curves.easeInOut);
+                    //               // setState(() {
+                    //               //   currentPage--;
+                    //               // });
+                    //             },
+                    //             child: Row(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               children: [
+                    //                 Icon(
+                    //                   Icons.arrow_back,
+                    //                   color: themeProvider
+                    //                       .themeManager.placeholderTextColor,
+                    //                   size: 18,
+                    //                 ),
+                    //                 const SizedBox(
+                    //                   width: 5,
+                    //                 ),
+                    //                 CustomText(
+                    //                   'Go back',
+                    //                   type: FontStyle.Small,
+                    //                   fontWeight: FontWeightt.Semibold,
+                    //                   color: themeProvider
+                    //                       .themeManager.placeholderTextColor,
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
                   ],
                 ),
               ),

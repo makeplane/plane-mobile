@@ -1,22 +1,21 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/create_estimate.dart';
-import 'package:plane_startup/bottom_sheets/project_invite_memebers_sheet.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/estimates_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/features_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/general_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/integrations_page.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/lables_page.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/bottom_sheets/create_estimate.dart';
+import 'package:plane/bottom_sheets/project_invite_memebers_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/automations_page.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/estimates_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/features_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/general_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/integrations_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/lables_page.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import 'MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
 
@@ -38,9 +37,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     'Labels',
     'Integrations',
     'Estimates',
+    'Automations',
   ];
 
-  var pageViewController = PageController(initialPage: 0);
+  final pageViewController = PageController(initialPage: 0);
 
   int selectedIndex = 0;
   TabController? tabController;
@@ -51,7 +51,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     tabController = TabController(length: tabs.length, vsync: this);
 
     tabController!.addListener(() {
-      log('executed');
       setState(() {
         selectedIndex = tabController!.index;
         // tabController!.animateTo(selectedIndex);
@@ -61,74 +60,87 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
 
   @override
   Widget build(BuildContext context) {
-    var projectprovider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectprovider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         // backgroundColor: themeProvider.secondaryBackgroundColor,
         appBar: AppBar(
-          elevation: 1,
-          shadowColor: strokeColor,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.close,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : lightPrimaryTextColor,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
-          title: CustomText(
-            'Settings',
-            type: FontStyle.appbarTitle,
-            fontWeight: FontWeight.w600,
-            color: themeProvider.isDarkThemeEnabled
-                ? darkPrimaryTextColor
-                : lightPrimaryTextColor,
-            maxLines: 1,
-          ),
-          bottom: TabBar(
-            controller: tabController,
-            indicator: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: primaryColor,
-                  width: 7,
-                ),
+            elevation: 0,
+            //shadowColor: themeProvider.themeManager.borderSubtle01Color,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.close,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
             ),
-            // indicatorColor: primaryColor,
-            labelColor: primaryColor,
-            indicatorWeight: 9,
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            isScrollable: true,
-            tabs: tabs
-                .map(
-                  (e) => CustomText(
-                    tabs[tabs.indexOf(e)],
-                    type: FontStyle.secondaryText,
-                    color: tabs.indexOf(e) == selectedIndex
-                        ? primaryColor
-                        : lightGreyTextColor,
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+            centerTitle: true,
+            backgroundColor:
+                themeProvider.themeManager.primaryBackgroundDefaultColor,
+            title: CustomText(
+              'Settings',
+              type: FontStyle.Large,
+              fontWeight: FontWeightt.Semibold,
+              maxLines: 1,
+              color: themeProvider.themeManager.primaryTextColor,
+            ),
+            bottom: hasAccess()
+                ? PreferredSize(
+                    preferredSize: Size(width, 60),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          color: themeProvider.themeManager.borderSubtle01Color,
+                          height: 1,
+                        ),
+                        Theme(
+                          data: ThemeData(highlightColor: Colors.transparent),
+                          child: TabBar(
+                              controller: tabController,
+                              indicatorPadding: const EdgeInsets.only(top: 33),
+                              indicator: BoxDecoration(
+                                  color:
+                                      themeProvider.themeManager.primaryColour,
+                                  borderRadius: BorderRadius.circular(6)),
+                              // indicatorColor: primaryColor,
+                              labelColor:
+                                  themeProvider.themeManager.primaryColour,
+                              unselectedLabelColor:
+                                  themeProvider.themeManager.secondaryTextColor,
+                              indicatorWeight: 9,
+                              splashFactory: NoSplash.splashFactory,
+                              onTap: (index) {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              },
+                              isScrollable: true,
+                              tabs: tabs
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: CustomText(
+                                        tabs[tabs.indexOf(e)],
+                                        type: FontStyle.Medium,
+                                        overrride: true,
+                                      ),
+                                    ),
+                                  )
+                                  .toList()),
+                        ),
+                      ],
+                    ),
+                  )
+                : null),
         floatingActionButton: selectedIndex == 2 ||
                 selectedIndex == 5 ||
-                selectedIndex == 7
+                (selectedIndex == 7 && estimatesProvider.estimates.isNotEmpty)
             ? FloatingActionButton(
                 onPressed: () {
                   if (selectedIndex == 2) {
@@ -201,7 +213,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                     );
                   }
                 },
-                backgroundColor: primaryColor,
+                backgroundColor: themeProvider.themeManager.primaryColour,
                 child: const Icon(
                   Icons.add,
                   color: Colors.white,
@@ -214,13 +226,17 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
             height: height,
             child: Column(
               children: [
+                Container(
+                  height: 1,
+                  //width: double.infinity,
+                  color: themeProvider.themeManager.borderSubtle01Color,
+                ),
                 //grey line
                 const SizedBox(
                   height: 1,
                   width: double.infinity,
                   // color: themeProvider.secondaryBackgroundColor,
                 ),
-
                 // SizedBox(
                 //   //padding: const EdgeInsets.symmetric(horizontal: 20),
                 //   // color: themeProvider.backgroundColor,
@@ -244,7 +260,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 //             children: [
                 //               CustomText(
                 //                 tabs[index],
-                //                 type: FontStyle.secondaryText,
+                //                 type: FontStyle.Medium,
                 //                 color: index == selectedIndex
                 //                     ? primaryColor
                 //                     : lightGreyTextColor,
@@ -282,20 +298,23 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                 ),
                 Expanded(
                   child: TabBarView(
-                    controller: tabController,
-                    children: const [
-                      GeneralPage(),
-                      ControlPage(),
-                      MembersListWidget(
-                        fromWorkspace: false,
-                      ),
-                      FeaturesPage(),
-                      StatesPage(),
-                      LablesPage(),
-                      IntegrationsWidget(),
-                      EstimatsPage()
-                    ],
-                  ),
+                      controller: tabController,
+                      physics: hasAccess()
+                          ? const BouncingScrollPhysics()
+                          : const NeverScrollableScrollPhysics(),
+                      children: const [
+                        GeneralPage(),
+                        ControlPage(),
+                        MembersListWidget(
+                          fromWorkspace: false,
+                        ),
+                        FeaturesPage(),
+                        StatesPage(),
+                        LablesPage(),
+                        IntegrationsWidget(),
+                        EstimatsPage(),
+                        AutomationsPage(),
+                      ]),
                 ),
               ],
             ),
@@ -303,5 +322,19 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
         ),
       ),
     );
+  }
+
+  bool hasAccess() {
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final List members = projectProvider.projectMembers;
+    bool hasAccess = false;
+    for (final element in members) {
+      if ((element['member']['id'] == profileProvider.userProfile.id) &&
+          (element['role'] == 20 || element['role'] == 15)) {
+        hasAccess = true;
+      }
+    }
+    return hasAccess;
   }
 }

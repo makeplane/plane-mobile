@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ListItem {
   BuildContext? context;
+  bool draggable;
   double? height;
   double? width;
   int listIndex;
@@ -22,6 +23,7 @@ class ListItem {
     required this.child,
     required this.prevChild,
     required this.listIndex,
+    this.draggable=true,
     required this.index,
     this.actualSize,
     this.height,

@@ -6,10 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/enums.dart';
-
+import 'package:plane/config/apis.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/utils/enums.dart';
 
 class FileUploadProvider extends ChangeNotifier {
   FileUploadProvider(ChangeNotifierProviderRef<FileUploadProvider> this.ref);
@@ -20,16 +19,16 @@ class FileUploadProvider extends ChangeNotifier {
   Future<String?> uploadFile(File pickedFile, String fileType) async {
     fileUploadState = StateEnum.loading;
     notifyListeners();
-    var type = pickedFile.path.split('.').last;
+    final type = pickedFile.path.split('.').last;
 
-    var dio = Dio();
-    var formData = FormData.fromMap({
+    final dio = Dio();
+    final formData = FormData.fromMap({
       "asset": await MultipartFile.fromFile(pickedFile.path,
           filename: 'fileName.$type', contentType: MediaType(fileType, type)),
       "attributes": jsonEncode("{}")
     });
-    var token = Const.appBearerToken;
-    var response = await dio
+    final token = Const.accessToken;
+    final response = await dio
         .post(APIs.fileUpload,
             data: formData,
             onSendProgress: (sent, total) {},

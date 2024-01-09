@@ -2,18 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class DeleteStateSheet extends ConsumerStatefulWidget {
-  final String stateName;
-  final String stateId;
   const DeleteStateSheet(
       {required this.stateName, required this.stateId, super.key});
+  final String stateName;
+  final String stateId;
 
   @override
   ConsumerState<DeleteStateSheet> createState() => _DeleteStateSheetState();
@@ -22,14 +21,14 @@ class DeleteStateSheet extends ConsumerStatefulWidget {
 class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return LoadingWidget(
       loading: projectProvider.stateCrudState == StateEnum.loading,
       allowBorderRadius: true,
       widgetClass: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -40,41 +39,45 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                   children: [
                     const CustomText(
                       'Delete State',
-                      type: FontStyle.heading,
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       icon: Icon(Icons.close,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? lightSecondaryBackgroundColor
-                              : darkSecondaryBGC),
+                          color:
+                              themeProvider.themeManager.placeholderTextColor),
                     )
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 CustomText(
                   'Are you sure you want to delete state- ${widget.stateName}? All of the data related to the state will be permanently removed. This action cannot be undone.',
+                  type: FontStyle.H5,
                   maxLines: 5,
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 0,
                 ),
               ],
             ),
             Column(
               children: [
                 Button(
-                  color: Colors.redAccent,
+                  color: const Color.fromRGBO(254, 242, 242, 1),
+                  textColor: themeProvider.themeManager.textErrorColor,
+                  filledButton: false,
+                  borderColor: themeProvider.themeManager.textErrorColor,
                   text: 'Delete',
                   ontap: () async {
                     await projectProvider.stateCrud(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .watch(ProviderList.projectProvider)
@@ -82,11 +85,12 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                         method: CRUD.delete,
                         stateId: widget.stateId,
                         context: context,
-                        data: {});
+                        data: {},
+                        ref: ref);
                     issuesProvider.getStates(
                       slug: ref
                           .watch(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projID: ref
                           .watch(ProviderList.projectProvider)

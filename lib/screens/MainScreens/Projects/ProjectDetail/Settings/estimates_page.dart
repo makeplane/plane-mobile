@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/bottom_sheets/create_estimate.dart';
-import 'package:plane_startup/bottom_sheets/delete_estimate_sheet.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/create_estimate.dart';
+import 'package:plane/bottom_sheets/delete_estimate_sheet.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class EstimatsPage extends ConsumerStatefulWidget {
   const EstimatsPage({super.key});
@@ -28,53 +28,64 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var estimatesProvider = ref.watch(ProviderList.estimatesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
 
     return LoadingWidget(
       loading: (projectProvider.updateProjectState == StateEnum.loading ||
           estimatesProvider.estimateState == StateEnum.loading),
       widgetClass: Container(
         width: MediaQuery.of(context).size.width,
-        color:
-            themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: estimatesProvider.estimates.isEmpty
             ? const EmptyEstimatesWidget()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      log('update project');
-                      projectProvider.updateProject(
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
-                            .workspaceSlug,
-                        projId: projectProvider.currentProject['id'],
-                        data: {'estimate': null},
-                      ).then((_) {
-                        projectProvider.currentProject['estimate'] = null;
-                        projectProvider.setState();
-                      });
-                    },
-                    child: Container(
-                      height: 33,
-                      margin: const EdgeInsets.only(right: 16, top: 16),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 7),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: Colors.grey.shade300,
+                  (projectProvider.currentProject['estimate'] == null ||
+                          projectProvider.role != Role.admin)
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            log('update project');
+                            projectProvider
+                                .updateProject(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace
+                                        .workspaceSlug,
+                                    projId:
+                                        projectProvider.currentProject['id'],
+                                    data: {'estimate': null},
+                                    ref: ref)
+                                .then((_) {
+                              projectProvider.currentProject['estimate'] = null;
+                              projectProvider.setState();
+                            });
+                          },
+                          child: Container(
+                            // height: 33,
+                            margin: const EdgeInsets.only(right: 16, top: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 7),
+                            decoration: BoxDecoration(
+                              color: themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: themeProvider
+                                    .themeManager.borderSubtle01Color,
+                              ),
+                            ),
+                            child: CustomText(
+                              'Disable Estimate',
+                              type: FontStyle.Medium,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const CustomText('Disable Estimate',
-                          color: Colors.black, type: FontStyle.subtitle),
-                    ),
-                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: estimatesProvider.estimates.length,
@@ -93,14 +104,12 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                         margin:
                             const EdgeInsets.only(left: 16, right: 16, top: 16),
                         decoration: BoxDecoration(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkBackgroundColor
-                              : lightBackgroundColor,
+                          color: themeProvider
+                              .themeManager.primaryBackgroundDefaultColor,
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                              color: themeProvider.isDarkThemeEnabled
-                                  ? darkThemeBorder
-                                  : strokeColor),
+                              color: themeProvider
+                                  .themeManager.borderSubtle01Color),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,26 +120,36 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                 CustomText(
                                   estimatesProvider.estimates[index]['name'],
                                   textAlign: TextAlign.left,
-                                  type: FontStyle.appbarTitle,
+                                  type: FontStyle.H5,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
                                 ),
                                 Row(
                                   children: [
                                     GestureDetector(
                                       onTap: () {
                                         log('update project');
-                                        projectProvider.updateProject(
-                                          slug: ref
-                                              .read(ProviderList
-                                                  .workspaceProvider)
-                                              .selectedWorkspace!
-                                              .workspaceSlug,
-                                          projId: projectProvider
-                                              .currentProject['id'],
-                                          data: {
-                                            'estimate': estimatesProvider
-                                                .estimates[index]['id']
-                                          },
-                                        ).then((_) {
+                                        if (projectProvider
+                                                .currentProject['estimate'] ==
+                                            estimatesProvider.estimates[index]
+                                                ['id']) {
+                                          return;
+                                        }
+                                        projectProvider
+                                            .updateProject(
+                                                slug: ref
+                                                    .read(ProviderList
+                                                        .workspaceProvider)
+                                                    .selectedWorkspace
+                                                    .workspaceSlug,
+                                                projId: projectProvider
+                                                    .currentProject['id'],
+                                                data: {
+                                                  'estimate': estimatesProvider
+                                                      .estimates[index]['id']
+                                                },
+                                                ref: ref)
+                                            .then((_) {
                                           projectProvider
                                                   .currentProject['estimate'] =
                                               estimatesProvider.estimates[index]
@@ -139,9 +158,9 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                         });
                                       },
                                       child: Container(
-                                        height: 33,
+                                        // height: 33,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 7),
+                                            horizontal: 10, vertical: 5),
                                         decoration: BoxDecoration(
                                           color: projectProvider.currentProject[
                                                       'estimate'] ==
@@ -162,101 +181,129 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                                 ),
                                         ),
                                         child: CustomText(
-                                            projectProvider.currentProject[
-                                                        'estimate'] ==
-                                                    estimatesProvider
-                                                        .estimates[index]['id']
-                                                ? 'In Use'
-                                                : 'Use',
-                                            color: projectProvider
-                                                            .currentProject[
-                                                        'estimate'] ==
-                                                    estimatesProvider
-                                                        .estimates[index]['id']
-                                                ? greenHighLight
-                                                : Colors.black,
-                                            type: FontStyle.subtitle),
+                                          projectProvider.currentProject[
+                                                      'estimate'] ==
+                                                  estimatesProvider
+                                                      .estimates[index]['id']
+                                              ? 'In Use'
+                                              : 'Use',
+                                          color: projectProvider.currentProject[
+                                                      'estimate'] ==
+                                                  estimatesProvider
+                                                      .estimates[index]['id']
+                                              ? greenHighLight
+                                              : Colors.black,
+                                          type: FontStyle.Medium,
+                                        ),
                                       ),
                                     ),
 
                                     //delete estimate
-                                    IconButton(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 300),
-                                          enableDrag: true,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                    projectProvider.role != Role.admin
+                                        ? Container()
+                                        : IconButton(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            constraints: const BoxConstraints(),
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxHeight: 300),
+                                                enableDrag: true,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child: DeleteEstimateSheet(
+                                                      estimateName:
+                                                          estimatesProvider
+                                                                  .estimates[
+                                                              index]['name'],
+                                                      estimateId:
+                                                          estimatesProvider
+                                                                  .estimates[
+                                                              index]['id'],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: SvgPicture.asset(
+                                              'assets/svg_images/delete_icon.svg',
+                                              height: 20,
+                                              width: 20,
+                                              colorFilter: ColorFilter.mode(
+                                                  themeProvider.themeManager
+                                                      .textErrorColor,
+                                                  BlendMode.srcIn),
                                             ),
                                           ),
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: DeleteEstimateSheet(
-                                                estimateName: estimatesProvider
-                                                    .estimates[index]['name'],
-                                                estimateId: estimatesProvider
-                                                    .estimates[index]['id'],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: SvgPicture.asset(
-                                        'assets/svg_images/delete_icon.svg',
-                                        height: 20,
-                                        width: 20,
-                                        colorFilter: const ColorFilter.mode(
-                                            Colors.red, BlendMode.srcIn),
-                                      ),
-                                    ),
 
-                                    IconButton(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          enableDrag: true,
-                                          isScrollControlled: true,
-                                          constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8,
-                                          ),
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
-                                            ),
-                                          ),
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: CreateEstimate(
-                                                estimatedata: estimatesProvider
-                                                    .estimates[index],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: const Icon(Icons.edit_outlined),
-                                      color: greyColor,
-                                    ),
+                                    (projectProvider.role == Role.admin ||
+                                            projectProvider.role == Role.member)
+                                        ? IconButton(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            constraints: const BoxConstraints(),
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                enableDrag: true,
+                                                isScrollControlled: true,
+                                                constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.8,
+                                                ),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child: CreateEstimate(
+                                                      estimatedata:
+                                                          estimatesProvider
+                                                              .estimates[index],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon:
+                                                const Icon(Icons.edit_outlined),
+                                            color: themeProvider.themeManager
+                                                .placeholderTextColor,
+                                          )
+                                        : Container(),
                                   ],
                                 ),
                               ],
@@ -277,7 +324,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                                   '',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: const Color.fromRGBO(133, 142, 150, 1),
                             ),
                             (estimatesProvider.estimates[index]
@@ -293,7 +340,7 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
                             CustomText(
                               'Estimates ($est)',
                               textAlign: TextAlign.left,
-                              type: FontStyle.subtitle,
+                              type: FontStyle.Medium,
                             ),
                           ],
                         ),
@@ -318,13 +365,13 @@ class EmptyEstimatesWidget extends ConsumerStatefulWidget {
 class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 90,
+          height: 100,
           width: 150,
           child: Stack(
             children: [
@@ -335,25 +382,26 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '3',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -367,25 +415,26 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '2',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -399,25 +448,26 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                   width: 70,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkBackgroundColor
-                        : lightBackgroundColor,
-                    border: Border.all(color: Colors.grey.shade300),
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
+                    border: Border.all(
+                        color: themeProvider.themeManager.borderSubtle01Color),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Row(
                       children: [
                         Icon(
                           Icons.change_history,
-                          color: greyColor,
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        CustomText(
+                        const CustomText(
                           '1',
-                          type: FontStyle.heading2,
+                          type: FontStyle.H5,
                         )
                       ],
                     ),
@@ -430,7 +480,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
         const SizedBox(height: 20),
         const CustomText(
           'No Estimates Yet',
-          type: FontStyle.heading,
+          type: FontStyle.H6,
+          fontWeight: FontWeightt.Semibold,
           fontSize: 20,
         ),
         const SizedBox(height: 20),
@@ -438,7 +489,7 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
           width: width * 0.8,
           child: const CustomText(
             'There are no estimates available for this project at the moment.',
-            type: FontStyle.title,
+            type: FontStyle.Small,
             maxLines: 5,
             textAlign: TextAlign.center,
           ),
@@ -473,9 +524,8 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
             margin: const EdgeInsets.only(top: 30),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: const Color.fromRGBO(63, 118, 255, 1),
-            ),
+                borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
+                color: themeProvider.themeManager.primaryColour),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -489,7 +539,10 @@ class _EmptyEstimatesWidgetState extends ConsumerState<EmptyEstimatesWidget> {
                 ),
                 CustomText(
                   'Add Estimate',
-                  type: FontStyle.buttonText,
+                  type: FontStyle.Small,
+                  fontWeight: FontWeightt.Medium,
+                  color: Colors.white,
+                  overrride: true,
                 ),
               ],
             ),

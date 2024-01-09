@@ -3,18 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/screens/on_boarding/auth/signIn.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/screens/on_boarding/auth/setup_profile_screen.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_rich_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/screens/home_screen.dart';
+import 'package:plane/screens/on_boarding/auth/setup_profile_screen.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_rich_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
 import '../../../widgets/custom_text.dart';
 import 'setup_workspace.dart';
+import 'sign_in_selfhosted.dart';
 
 class SignUp extends ConsumerStatefulWidget {
   const SignUp({super.key});
@@ -32,9 +31,10 @@ class _SignUpState extends ConsumerState<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -58,36 +58,49 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 30,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             CustomText(
                               'Sign Up to',
-                              type: FontStyle.heading,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             CustomText(
                               ' Plane',
-                              type: FontStyle.heading,
-                              color: primaryColor,
+                              type: FontStyle.H4,
+                              fontWeight: FontWeightt.Semibold,
+                              color: themeProvider.themeManager.primaryColour,
                             ),
                           ],
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Email'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Email',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
                         ),
                         TextFormField(
                           controller: email,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your email';
@@ -110,13 +123,20 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Password'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Password',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -124,7 +144,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                         TextFormField(
                           obscureText: true,
                           controller: password,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your password';
@@ -136,13 +158,20 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const CustomRichText(
+                        CustomRichText(
                           widgets: [
-                            TextSpan(text: 'Confirm Password'),
                             TextSpan(
-                                text: '*', style: TextStyle(color: Colors.red))
+                                text: 'Confirm Password',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.tertiaryTextColor)),
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.textErrorColor))
                           ],
-                          type: RichFontStyle.text,
+                          type: FontStyle.Small,
                         ),
                         const SizedBox(
                           height: 5,
@@ -150,7 +179,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                         TextFormField(
                           obscureText: true,
                           controller: confirmPassword,
-                          decoration: kTextFieldDecoration.copyWith(),
+                          decoration: themeProvider
+                              .themeManager.textFieldDecoration
+                              .copyWith(),
                           validator: (val) {
                             if (val!.isEmpty) {
                               return '*Enter your password';
@@ -176,7 +207,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                               await authProvider
                                   .signUpWithEmailAndPassword(
                                       email: email.text,
-                                      password: password.text)
+                                      password: password.text,
+                                      context: context,
+                                      ref: ref)
                                   .then((value) {
                                 if (authProvider.signUpState ==
                                         StateEnum.success &&
@@ -228,7 +261,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                           children: [
                             const CustomText(
                               'Already have an account?',
-                              type: FontStyle.text,
+                              type: FontStyle.Small,
                               // color: primaryColor,
                             ),
                             const SizedBox(
@@ -238,15 +271,16 @@ class _SignUpState extends ConsumerState<SignUp> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const SignIn(),
+                                    builder: (context) =>
+                                        const SignInSelfHosted(),
                                   ),
                                 );
                               },
-                              child: const CustomText(
+                              child: CustomText(
                                 'Sign In',
-                                type: FontStyle.text,
-                                color: primaryColor,
-                                fontWeight: FontWeight.w600,
+                                type: FontStyle.Small,
+                                color: themeProvider.themeManager.primaryColour,
+                                fontWeight: FontWeightt.Semibold,
                               ),
                             ),
                           ],
@@ -254,32 +288,34 @@ class _SignUpState extends ConsumerState<SignUp> {
                         const SizedBox(
                           height: 30,
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.arrow_back,
-                                color: greyColor,
-                                size: 18,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const CustomText(
-                                  'Go back',
-                                  type: FontStyle.heading2,
-                                  color: greyColor,
-                                  fontWeight: FontWeight.w600,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_back,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
+                                  size: 18,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                CustomText(
+                                  'Go back',
+                                  type: FontStyle.Small,
+                                  fontWeight: FontWeightt.Semibold,
+                                  color: themeProvider
+                                      .themeManager.placeholderTextColor,
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       ],

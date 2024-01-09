@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
-import '../../../utils/constants.dart';
 import '../../../utils/enums.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../widgets/custom_text.dart';
@@ -20,7 +19,8 @@ class ResetPassword extends ConsumerStatefulWidget {
 class _ResetPasswordState extends ConsumerState<ResetPassword> {
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
@@ -39,16 +39,17 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      CustomText(
-                        'Reset Password',
-                        type: FontStyle.heading,
-                      ),
+                      CustomText('Reset Password',
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor),
                       CustomText(
                         '',
-                        type: FontStyle.heading,
-                        color: primaryColor,
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryColour,
                       ),
                     ],
                   ),
@@ -75,7 +76,7 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                           ),
                           CustomText(
                             'Please check your mail for code',
-                            type: FontStyle.text,
+                            type: FontStyle.Small,
                             color: Color.fromRGBO(9, 169, 83, 1),
                           ),
                         ],
@@ -85,53 +86,77 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                   const SizedBox(
                     height: 25,
                   ),
-                  const CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Code'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
+                      TextSpan(
+                          text: 'Code',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
                     ],
-                    type: RichFontStyle.text,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'New Password'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
+                      TextSpan(
+                          text: 'New Password',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
                     ],
-                    type: RichFontStyle.text,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const CustomRichText(
+                  CustomRichText(
                     widgets: [
-                      TextSpan(text: 'Confirm Password'),
-                      TextSpan(text: '*', style: TextStyle(color: Colors.red))
+                      TextSpan(
+                          text: 'Confirm Password',
+                          style: TextStyle(
+                              color: themeProvider
+                                  .themeManager.tertiaryTextColor)),
+                      TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              color: themeProvider.themeManager.textErrorColor))
                     ],
-                    type: RichFontStyle.text,
+                    type: FontStyle.Small,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   TextFormField(
                     // controller: email,
-                    decoration: kTextFieldDecoration.copyWith(),
+                    decoration: themeProvider.themeManager.textFieldDecoration
+                        .copyWith(),
                   ),
                   const SizedBox(
                     height: 25,

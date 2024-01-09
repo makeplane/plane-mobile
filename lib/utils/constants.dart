@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/config/plane_keys.dart';
+import 'package:plane/utils/enums.dart';
 // import 'package:google_fonts/google_fonts.dart';
-
-
 
 const primaryColor = Color.fromRGBO(63, 118, 255, 1);
 const primaryLightColor = Color.fromRGBO(63, 118, 255, 0.1);
@@ -16,21 +17,230 @@ const greenWithOpacity = Color.fromRGBO(9, 169, 83, 0.08);
 const greenHighLight = Color(0xFF09A953);
 const lightGreyBoxColor = Color(0xFFF5F5F5);
 
-const lightPrimaryTextColor = Colors.black;
-const lightSecondaryTextColor = Color.fromARGB(255, 97, 97, 97);
+// const lightPrimaryTextColor = Colors.black;
+// const lightSecondaryTextColor = Color.fromARGB(255, 97, 97, 97);
 const lightStrokeColor = Color.fromARGB(255, 158, 158, 158);
 const lightBackgroundColor = Colors.white;
 const lightSecondaryBackgroundColor = Color(0xFFFAFAFA);
 const bottomNavTextColor = Color(0xFF8F8F93);
 //Color(0xFFE5E5E5),
 
-const darkPrimaryTextColor = Colors.white;
-const darkSecondaryTextColor = Color.fromRGBO(142, 148, 146, 1);
+// const darkPrimaryTextColor = Colors.white;
+// const darkSecondaryTextColor = Color.fromRGBO(142, 148, 146, 1);
 const darkStrokeColor = Color.fromARGB(255, 189, 189, 189);
 const darkBackgroundColor = Color.fromRGBO(19, 20, 22, 1);
 const darkSecondaryBGC = Color.fromRGBO(29, 30, 32, 1);
 const darkCircleAvatarColor = Color.fromRGBO(34, 34, 34, 1);
 const darkThemeBorder = Color.fromRGBO(39, 42, 45, 1);
+
+const textFieldFilledColor = Color(0xFFF5F5F5);
+
+const lightPrimaryBackgroundDefaultColor =
+    Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkPrimaryBackgroundDefaultColor =
+    Color.fromRGBO(0, 0, 0, 1); // grey 1000
+const lightPrimaryBackgroundHoverColor =
+    Color.fromRGBO(245, 245, 245, 1); // grey 20
+const darkPrimaryBackgroundHoverColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightPrimaryBackgroundSelectedColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkPrimaryBackgroundSelectedColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightPrimaryBackgroundActiveColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const darkPrimaryBackgroundActiveColor =
+    Color.fromRGBO(13, 24, 51, 1); // blue 900
+const lightPrimaryBackgroundBrandColor =
+    Color.fromRGBO(63, 118, 255, 1); // blue 100
+const darkPrimaryBackgroundBrandColor =
+    Color.fromRGBO(63, 118, 255, 1); // blue 100
+const lightSecondaryBackgroundDefaultColor =
+    Color.fromRGBO(250, 250, 250, 1); // grey 10
+const darkSecondaryBackgroundDefaultColor =
+    Color.fromRGBO(13, 13, 13, 1); // grey 950
+const lightSecondaryBackgroundHoverColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkSecondaryBackgroundDeHoverColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightSecondaryBackgroundSelectedColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkSecondaryBackgroundSelectedColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightSecondaryBackgroundActiveColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const darkSecondaryBackgroundActiveColor =
+    Color.fromRGBO(13, 24, 51, 1); // blue 900
+const lightTertiaryBackgroundDefaultColor =
+    Color.fromRGBO(245, 245, 245, 1); // grey 20
+const darkTertiaryBackgroundDefaultColor =
+    Color.fromRGBO(23, 23, 23, 1); // grey 900
+const lightTertiaryBackgroundHoverColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkTertiaryBackgroundDeHoverColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightTertiaryBackgroundSelectedColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkTertiaryBackgroundSelectedColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+const lightTertiaryBackgroundActiveColor =
+    Color.fromRGBO(229, 229, 229, 1); // grey 40
+const darkTertiaryBackgroundActiveColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800
+// Text Color,
+const lightPrimaryTextColor = Color.fromRGBO(23, 23, 23, 1); // grey 900
+const darkPrimaryTextColor = Color.fromRGBO(229, 229, 229, 1); // grey 40
+const lightContrastPrimaryTextColor = Color.fromRGBO(13, 13, 13, 1); // grey 950
+const darkContrastPrimaryTextColor =
+    Color.fromRGBO(236, 241, 255, 1); // blue 10
+const lightSecondaryTextColor = Color.fromRGBO(58, 58, 58, 1); // grey 500
+const darkSecondaryTextColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const lightContrastSecondaryTextColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+const darkContrastSecondaryTextColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const lightTertiaryTextColor = Color.fromRGBO(82, 82, 82, 1); // grey 300
+const darkTertiaryTextColor = Color.fromRGBO(115, 115, 115, 1); // grey 100
+const lightContrastTertiaryTextColor =
+    Color.fromRGBO(58, 58, 58, 1); // grey 500
+const darkContrastTertiaryTextColor =
+    Color.fromRGBO(212, 212, 212, 1); // grey 50
+const lightPlaceholderTextColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkPlaceholderTextColor = Color.fromRGBO(82, 82, 82, 1); // grey 300
+const lightContrastPlaceholderTextColor =
+    Color.fromRGBO(115, 115, 115, 1); // grey 100
+const darkPContrastlaceholderTextColor =
+    Color.fromRGBO(115, 115, 115, 1); // grey 100
+const lightTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const lightContrastTextOnColorColor =
+    Color.fromRGBO(255, 255, 255, 1); // grey 0
+const darkContrastTextOnColorColor = Color.fromRGBO(255, 255, 255, 1); // grey 0
+const lightTextOnColorDisabledColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkTextOnColorDisabledColor = Color.fromRGBO(38, 38, 38, 1); // grey 700
+const lightContrastTextOnColorDisabledColor =
+    Color.fromRGBO(241, 241, 241, 1); // grey 30
+const darkContrastTextOnColorDisabledColor =
+    Color.fromRGBO(38, 38, 38, 1); // grey 700
+// const lightTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const darkTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const lightContrastTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+// const darkContrastTextHelperColor = Color.fromRGBO(111, 111, 111, 0); // no color on notion
+const lightTextHeadingColor = Colors.black;
+const darkTextHeadingColor = Colors.white;
+const lightTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const darkTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const lightContrastTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const darkContrastTextErrorColor = Color.fromRGBO(239, 68, 68, 1); // error 100
+const lightTextWarningColor = Color.fromRGBO(254, 243, 199, 1); // warning 100
+const darkTextWarningColor = Color.fromRGBO(254, 243, 199, 1); // warning 100
+const lightContrastTextWarningColor =
+    Color.fromRGBO(254, 243, 199, 1); // warning 100
+const darkContrastTextWarningColor =
+    Color.fromRGBO(254, 243, 199, 1); // warning 100
+const lightTextSuccessColor = Color.fromRGBO(22, 163, 74, 1); // success 100
+const darkTextSuccessColor = Color.fromRGBO(22, 163, 74, 1); // success 100
+const lightContrastTextSuccessColor =
+    Color.fromRGBO(22, 163, 74, 1); // success 100
+const darkContrastTextSuccessColor =
+    Color.fromRGBO(22, 163, 74, 1); // success 100
+const lightTextDisabledColor = Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkTextDisabledColor = Color.fromRGBO(34, 34, 34, 1); // grey 800
+const lightContrastTextDisabledColor =
+    Color.fromRGBO(163, 163, 163, 1); // grey 70
+const darkContrastTextDisabledColor =
+    Color.fromRGBO(34, 34, 34, 1); // grey 800 (edited)
+late Color customTextColor;
+late Color customBackgroundColor;
+late Color customAccentColor;
+late Color customNavBarColor;
+late Color customNavBarTextColor;
+
+const lightBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1); // blue 500
+const darkBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+const lightContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+const darkContrastBorderInteractiveColor = Color.fromRGBO(63, 118, 255, 1);
+
+const lightBorderSubtle00Color = Color.fromRGBO(245, 245, 245, 1);
+const darkBorderSubtle00Color = Color.fromRGBO(34, 34, 34, 1);
+
+const lightBorderSubtle01Color = Color.fromRGBO(229, 229, 229, 1);
+const darkBorderSubtle01Color = Color.fromRGBO(38, 38, 38, 1);
+const lightBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
+const darkBorderSubtleColor = Color.fromRGBO(34, 34, 34, 1);
+const lightContrastBorderSubtleColor = Color.fromRGBO(245, 245, 245, 1);
+const darkContrastBorderSubtleColor = Color.fromRGBO(34, 34, 34, 1);
+
+const lightBorderStrongColor = Color.fromRGBO(212, 212, 212, 1);
+const darkBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
+const lightContrastBorderStrongColor = Color.fromRGBO(212, 212, 212, 1);
+const darkContrastBorderStrongColor = Color.fromRGBO(46, 46, 46, 1);
+
+const lightBorderStrong01Color = Color.fromRGBO(212, 212, 212, 1);
+const darkBorderStrong01Color = Color.fromRGBO(46, 46, 46, 1);
+
+const lightBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);
+const darkBorderDisabledColor = Color.fromRGBO(23, 23, 23, 1);
+const lightContrastBorderDisabledColor = Color.fromRGBO(241, 241, 241, 1);
+const darkContrastBorderDisabledColor = Color.fromRGBO(23, 23, 23, 1);
+
+const lightPrimaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const darkPrimaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const lightPrimaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const darkPrimaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const lightPrimaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+const darkPrimaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+
+const lightSecondaryButtonColor = Color.fromRGBO(236, 241, 255, 1);
+const darkSecondaryButtonColor = Color.fromRGBO(13, 24, 51, 1);
+const lightSecondaryButtonSelectedColor = Color.fromRGBO(197, 214, 255, 1);
+const darkSecondaryButtonSelectedColor = Color.fromRGBO(19, 35, 76, 1);
+const lightSecondaryButtonDisabledColor = Color.fromRGBO(236, 241, 255, 1);
+const darkSecondaryButtonDisabledColor = Color.fromRGBO(13, 24, 51, 1);
+
+const lightTertiaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const darkTertiaryButtonColor = Color.fromRGBO(63, 118, 255, 1);
+const lightTertiaryButtonSelectedColor = Color.fromRGBO(50, 94, 204, 1);
+const darkTertiaryButtonSelectedColor = Color.fromRGBO(13, 24, 51, 1);
+const lightTertiaryButtonDisabledColor = Color.fromRGBO(140, 173, 255, 1);
+const darkTertiaryButtonDisabledColor = Color.fromRGBO(25, 47, 102, 1);
+
+const lightPrimaryButtonDangerColor = Color.fromRGBO(239, 68, 68, 1);
+const darkPrimaryButtonDangerSelectedColor = Color.fromRGBO(220, 38, 38, 1);
+
+const lightPrimaryLinkColor = Color.fromRGBO(63, 118, 255, 1);
+const darkPrimaryLinkColor = Color.fromRGBO(63, 118, 255, 1);
+const lightSecondaryLinkColor = Color.fromRGBO(57, 106, 230, 1);
+const darkSecondaryLinkColor = Color.fromRGBO(57, 106, 230, 1);
+
+const lightPrimaryIconColor = Color.fromRGBO(38, 38, 38, 1);
+const darkPrimaryIconColor = Color.fromRGBO(163, 163, 163, 1);
+const lightSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
+const darkSecondaryIconColor = Color.fromRGBO(82, 82, 82, 1);
+
+const lightToastBackgroundColor = Color.fromRGBO(255, 255, 255, 1);
+const darkToastBackgroundColor = Color.fromRGBO(23, 23, 23, 1);
+
+const lightSucessBackground = Color.fromRGBO(240, 253, 244, 1);
+const darkSucessBackground = Color.fromRGBO(34, 197, 94, 0.15);
+
+const lightShadowColorXS = Color.fromRGBO(0, 0, 0, 0.16);
+const darkShadowColorXS = Color.fromRGBO(0, 0, 0, 0.2);
+
+const Color toastDefaultColorlight = Color.fromRGBO(236, 241, 255, 1);
+const Color toastSuccessColorlight = Color.fromRGBO(240, 253, 244, 1);
+const Color toastWarningColorlight = Color.fromRGBO(255, 251, 235, 1);
+const Color toastErrorCololight = Color.fromRGBO(254, 242, 242, 1);
+const Color toastDefaultBorderColor = Color.fromRGBO(63, 118, 255, 1);
+const Color toastSuccessBorderColor = Color.fromRGBO(34, 197, 94, 1);
+const Color toastWarningBorderColor = Color.fromRGBO(245, 158, 11, 1);
+const Color toastErrorBorderColor = Color.fromRGBO(220, 38, 38, 1);
+
+const Color toastDefaultColorDark = Color.fromRGBO(16, 28, 60, 1);
+const Color toastSuccessColorDark = Color.fromRGBO(10, 51, 27, 1);
+const Color toastkWarningColorDark = Color.fromRGBO(72, 31, 7, 1);
+const Color toastErrorColorDark = Color.fromRGBO(95, 21, 21, 1);
 
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorStyle: const TextStyle(
@@ -43,6 +253,7 @@ InputDecoration kTextFieldDecoration = InputDecoration(
   labelStyle: const TextStyle(
     color: Color(0xFFA3A3A3),
   ),
+  contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
   alignLabelWithHint: true,
   errorBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Color.fromARGB(255, 253, 17, 0)),
@@ -50,10 +261,10 @@ InputDecoration kTextFieldDecoration = InputDecoration(
   ),
   focusedErrorBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.red.shade600, width: 2.0),
-    borderRadius:  BorderRadius.circular(6
-      // topRight: Radius.circular(6),
-      // bottomRight: Radius.circular(6),
-    ),
+    borderRadius: BorderRadius.circular(6
+        // topRight: Radius.circular(6),
+        // bottomRight: Radius.circular(6),
+        ),
   ),
   border: OutlineInputBorder(
     borderSide: BorderSide(
@@ -79,6 +290,8 @@ InputDecoration kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(8)),
   ),
 );
+const lightdisabledButtonColor = Color.fromRGBO(229, 229, 229, 1);
+const darkdisabledButtonColor = Color.fromRGBO(38, 38, 38, 1);
 
 const LinearGradient gradient = LinearGradient(
   begin: Alignment.topCenter,
@@ -96,6 +309,20 @@ const LinearGradient gradient = LinearGradient(
     (5, "Guest"),
 
 */
+
+List<String> colorsForLabel = [
+  '#FF6900',
+  '#FCB900',
+  '#7BDCB5',
+  '#00D084',
+  '#8ED1FC',
+  '#0693E3',
+  '#ABB8C3',
+  '#EB144C',
+  '#F78DA7',
+  '#9900EF',
+];
+
 const String accessRestrictedMSG = "You don't have permission to do this";
 Role roleParser({required int role}) {
   switch (role) {
@@ -111,6 +338,22 @@ Role roleParser({required int role}) {
       return Role.none;
   }
 }
+
+int priorityParser(String priority) {
+  switch (priority) {
+    case "urgent":
+      return 0;
+    case "high":
+      return 1;
+    case "medium":
+      return 2;
+    case "low":
+      return 3;
+    default:
+      return 0;
+  }
+}
+
 int fromRole({required Role role}) {
   switch (role) {
     case Role.admin:
@@ -126,8 +369,58 @@ int fromRole({required Role role}) {
   }
 }
 
+THEME themeParser({required String theme}) {
+  switch (theme) {
+    case PlaneKeys.LIGHT_THEME:
+      return THEME.light;
+    case PlaneKeys.DARK_THEME:
+      return THEME.dark;
+    case PlaneKeys.LIGHT_CONTRAST_THEME:
+      return THEME.lightHighContrast;
+    case PlaneKeys.DARK_CONTRAST_THEME:
+      return THEME.darkHighContrast;
+    case PlaneKeys.CUSTOM_THEME:
+      return THEME.custom;
+    case PlaneKeys.SYSTEM_THEME:
+      return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark
+          ? THEME.dark
+          : THEME.light;
+    default:
+      return THEME.light;
+  }
+}
+
+String fromTHEME({required THEME theme}) {
+  switch (theme) {
+    case THEME.light:
+      return PlaneKeys.LIGHT_THEME;
+    case THEME.dark:
+      return PlaneKeys.DARK_THEME;
+    case THEME.lightHighContrast:
+      return PlaneKeys.LIGHT_CONTRAST_THEME;
+    case THEME.darkHighContrast:
+      return PlaneKeys.DARK_CONTRAST_THEME;
+    case THEME.custom:
+      return PlaneKeys.CUSTOM_THEME;
+    case THEME.systemPreferences:
+      return PlaneKeys.SYSTEM_THEME;
+    default:
+      return PlaneKeys.LIGHT_THEME;
+  }
+}
+
 double height = MediaQuery.of(Const.globalKey.currentContext!).size.height;
 double width = MediaQuery.of(Const.globalKey.currentContext!).size.width;
+
+EdgeInsets bottomSheetConstPadding =
+    const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 30);
+
+double bottomSheetConstBottomPadding = 30;
+
+const double buttonBorderRadiusLarge = 6;
+const double buttonBorderRadiusMedium = 5;
+const double buttonBorderRadiusSmall = 4;
 
 const List<String> emojis = [
   "8986",
@@ -1301,7 +1594,6 @@ const List icons = [
   {"name": "keyboard_voice"},
   {"name": "create_new_folder"},
   {"name": "forward"},
-  {"name": "download"},
   {"name": "settings_applications"},
   {"name": "compare_arrows"},
   {"name": "redo"},
@@ -1424,232 +1716,205 @@ const List icons = [
   {"name": "skull"}
 ];
 
-// List<Map<String, FaIcon>> flutterIcon = [
-//   {'search': FaIcon(FontAwesomeIcons.search)},
-//   {'home': FaIcon(FontAwesomeIcons.home)},
-//   {'menu': FaIcon(FontAwesomeIcons.bars)},
-//   {'close': FaIcon(FontAwesomeIcons.times)},
-//   {'settings': FaIcon(FontAwesomeIcons.cog)},
-//   {'done': FaIcon(FontAwesomeIcons.check)},
-//   {'check_circle': FaIcon(FontAwesomeIcons.checkCircle)},
-//   {'favorite': FaIcon(FontAwesomeIcons.heart)},
-//   {'add': FaIcon(FontAwesomeIcons.plus)},
-//   {'delete': FaIcon(FontAwesomeIcons.trash)},
-//   {'arrow_back': FaIcon(FontAwesomeIcons.angleLeft)},
-//   {'star': FaIcon(FontAwesomeIcons.star)},
-//   {'logout': FaIcon(FontAwesomeIcons.signOutAlt)},
-//   {'add_circle': FaIcon(FontAwesomeIcons.plusCircle)},
-//   {'cancel': FaIcon(FontAwesomeIcons.timesCircle)},
-//   {'arrow_drop_down': FaIcon(FontAwesomeIcons.angleDown)},
-//   {'more_vert': FaIcon(FontAwesomeIcons.ellipsisV)},
-//   {'check': FaIcon(FontAwesomeIcons.checkSquare)},
-//   {'check_box': FaIcon(FontAwesomeIcons.checkSquare)},
-//   {'toggle_on': FaIcon(FontAwesomeIcons.toggleOn)},
-//   {'open_in_new': FaIcon(FontAwesomeIcons.externalLinkAlt)},
-//   {'refresh': FaIcon(FontAwesomeIcons.sync)},
-//   {'login': FaIcon(FontAwesomeIcons.signInAlt)},
-//   {'radio_button_unchecked': FaIcon(FontAwesomeIcons.square)},
-//   {'more_horiz': FaIcon(FontAwesomeIcons.ellipsisH)},
-//   {'apps': FaIcon(FontAwesomeIcons.android)},
-//   {'radio_button_checked': FaIcon(FontAwesomeIcons.checkSquare)},
-//   {'download': FaIcon(FontAwesomeIcons.download)},
-//   {'remove': FaIcon(FontAwesomeIcons.trash)},
-//   {'toggle_off': FaIcon(FontAwesomeIcons.toggleOff)},
-//   {'bolt': FaIcon(FontAwesomeIcons.bolt)},
-//   {'arrow_upward': FaIcon(FontAwesomeIcons.angleUp)},
-//   {'filter_list': FaIcon(FontAwesomeIcons.filter)},
-//   {'delete_forever': FaIcon(FontAwesomeIcons.trashAlt)},
-//   {'autorenew': FaIcon(FontAwesomeIcons.syncAlt)},
-//   {'key': FaIcon(FontAwesomeIcons.key)},
-//   {'sort': FaIcon(FontAwesomeIcons.sort)},
-//   {'sync': FaIcon(FontAwesomeIcons.sync)},
-//   {'add_box': FaIcon(FontAwesomeIcons.plusSquare)},
-//   {'block': FaIcon(FontAwesomeIcons.block)},
-//   {'restart_alt': FaIcon(FontAwesomeIcons.syncAlt)},
-//   {'menu_open': FaIcon(FontAwesomeIcons.bars)},
-//   {'shopping_cart_checkout': FaIcon(FontAwesomeIcons.shoppingCart)},
-//   {'expand_circle_down': FaIcon(FontAwesomeIcons.angleDownCircle)},
-//   {'backspace': FaIcon(FontAwesomeIcons.backspace)},
-//   {'undo': FaIcon(FontAwesomeIcons.undo)},
-//   {'done_all': FaIcon(FontAwesomeIcons.checkSquare)},
-//   {'do_not_disturb_on': FaIcon(FontAwesomeIcons.bell)},
-//   {'open_in_full': FaIcon(FontAwesomeIcons.openInFull)},
-//   {'double_arrow': FaIcon(FontAwesomeIcons.doulbea)},
-//   {'sync_alt': FaIcon(FontAwesomeIcons.syncAlt)},
-
-//   {'add_box': FaIcon(FontAwesomeIcons.plusSquare)},
-// {'block': FaIcon(FontAwesomeIcons.block)},
-// {'restart_alt': FaIcon(FontAwesomeIcons.restartAlt)},
-// {'menu_open': FaIcon(FontAwesomeIcons.menuOpen)},
-// {'shopping_cart_checkout': FaIcon(FontAwesomeIcons.shoppingCartCheckout)},
-// {'expand_circle_down': FaIcon(FontAwesomeIcons.expandCircleDown)},
-// {'backspace': FaIcon(FontAwesomeIcons.backspace)},
-// {'undo': FaIcon(FontAwesomeIcons.undo)},
-// {'done_all': FaIcon(FontAwesomeIcons.doneAll)},
-// {'do_not_disturb_on': FaIcon(FontAwesomeIcons.doNotDisturbOn)},
-// {'open_in_full': FaIcon(FontAwesomeIcons.openInFull)},
-// {'double_arrow': FaIcon(FontAwesomeIcons.doubleArrow)},
-// {'sync_alt': FaIcon(FontAwesomeIcons.syncAlt)},
-// {'zoom_in': FaIcon(FontAwesomeIcons.zoomIn)},
-// {'done_outline': FaIcon(FontAwesomeIcons.doneOutline)},
-// {'drag_indicator': FaIcon(FontAwesomeIcons.dragIndicator)},
-// {'fullscreen': FaIcon(FontAwesomeIcons.fullscreen)},
-// {'star_half': FaIcon(FontAwesomeIcons.starHalf)},
-// {'settings_accessibility': FaIcon(FontAwesomeIcons.settingsAccessibility)},
-// {'reply': FaIcon(FontAwesomeIcons.reply)},
-// {'exit_to_app': FaIcon(FontAwesomeIcons.exitToApp)},
-// {'unfold_more': FaIcon(FontAwesomeIcons.unfoldMore)},
-// {'library_add': FaIcon(FontAwesomeIcons.libraryAdd)},
-// {'cached': FaIcon(FontAwesomeIcons.cached)},
-// {'select_check_box': FaIcon(FontAwesomeIcons.selectCheckBox)},
-// {'terminal': FaIcon(FontAwesomeIcons.terminal)},
-// {'change_circle': FaIcon(FontAwesomeIcons.changeCircle)},
-// {'disabled_by_default': FaIcon(FontAwesomeIcons.disabledByDefault)},
-// {'swap_horiz': FaIcon(FontAwesomeIcons.swapHoriz)},
-// {'swap_vert': FaIcon(FontAwesomeIcons.swapVert)},
-// {'app_registration': FaIcon(FontAwesomeIcons.appRegistration)},
-// {'download_for_offline': FaIcon(FontAwesomeIcons.downloadForOffline)},
-// {'close_fullscreen': FaIcon(FontAwesomeIcons.closeFullscreen)},
-// {'file_open': FaIcon(FontAwesomeIcons.fileOpen)},
-// {'minimize': FaIcon(FontAwesomeIcons.minimize)},
-// {'open_with': FaIcon(FontAwesomeIcons.openWith)},
-// {'dataset': FaIcon(FontAwesomeIcons.dataset)},
-// {'add_task': FaIcon(FontAwesomeIcons.addTask)},
-// {'start': FaIcon(FontAwesomeIcons.start)},
-// {'keyboard_voice': FaIcon(FontAwesomeIcons.keyboardVoice)},
-// {'create_new_folder': FaIcon(FontAwesomeIcons.createNewFolder)},
-// {'forward': FaIcon(FontAwesomeIcons.forward)},
-// {'download': FaIcon(FontAwesomeIcons.download)},
-// {'settings_applications': FaIcon(FontAwesomeIcons.settingsApplications)},
-// {'compare_arrows': FaIcon(FontAwesomeIcons.compareArrows)},
-// {'redo': FaIcon(FontAwesomeIcons.redo)},
-// {'zoom_out': FaIcon(FontAwesomeIcons.zoomOut)},
-// {'publish': FaIcon(FontAwesomeIcons.publish)},
-// {'html': FaIcon(FontAwesomeIcons.html)},
-// {'token': FaIcon(FontAwesomeIcons.token)},
-// {'switch_access_shortcut': FaIcon(FontAwesomeIcons.switchAccessShortcut)},
-// {'fullscreen_exit': FaIcon(FontAwesomeIcons.fullscreenExit)},
-// {'sort_by_alpha': FaIcon(FontAwesomeIcons.sortByAlpha)},
-
-//   {'delete_sweep': FaIcon(FontAwesomeIcons.deleteSweep)},
-//   {'indeterminate_check_box': FaIcon(FontAwesomeIcons.indeterminateCheckBox)},
-//   {'view_timeline': FaIcon(FontAwesomeIcons.viewTimeline)},
-//   {'settings_backup_restore': FaIcon(FontAwesomeIcons.settingsBackupRestore)},
-//   {'arrow_drop_down_circle': FaIcon(FontAwesomeIcons.arrowDropDownCircle)},
-//   {'assistant_navigation': FaIcon(FontAwesomeIcons.assistantNavigation)},
-//   {'sync_problem': FaIcon(FontAwesomeIcons.syncProblem)},
-//   {'clear_all': FaIcon(FontAwesomeIcons.clearAll)},
-//   {'density_medium': FaIcon(FontAwesomeIcons.densityMedium)},
-//   {'heart_plus': FaIcon(FontAwesomeIcons.heartPlus)},
-//   {'filter_alt_off': FaIcon(FontAwesomeIcons.filterAltOff)},
-//   {'expand': FaIcon(FontAwesomeIcons.expand)},
-//   {'subdirectory_arrow_right': FaIcon(FontAwesomeIcons.subdirectoryArrowRight)},
-//   {'download_done': FaIcon(FontAwesomeIcons.downloadDone)},
-//   {'arrow_outward': FaIcon(FontAwesomeIcons.arrowOutward)},
-//   {'123': FaIcon(FontAwesomeIcons.solid123)},
-//   {'swipe_left': FaIcon(FontAwesomeIcons.swipeLeft)},
-//   {'auto_mode': FaIcon(FontAwesomeIcons.autoMode)},
-//   {'saved_search': FaIcon(FontAwesomeIcons.savedSearch)},
-//   {'place_item': FaIcon(FontAwesomeIcons.placeItem)},
-//   {'system_update_alt': FaIcon(FontAwesomeIcons.systemUpdateAlt)},
-//   {'javascript': FaIcon(FontAwesomeIcons.javascript)},
-//   {'search_off': FaIcon(FontAwesomeIcons.searchOff)},
-//   {'output': FaIcon(FontAwesomeIcons.output)},
-//   {'select_all': FaIcon(FontAwesomeIcons.selectAll)},
-//   {'fit_screen': FaIcon(FontAwesomeIcons.fitScreen)},
-//   {'swipe_up': FaIcon(FontAwesomeIcons.swipeUp)},
-//   {'dynamic_form': FaIcon(FontAwesomeIcons.dynamicForm)},
-//   {'hide_source': FaIcon(FontAwesomeIcons.hideSource)},
-//   {'swipe_right': FaIcon(FontAwesomeIcons.swipeRight)},
-//   {'switch_access_shortcut_add': FaIcon(FontAwesomeIcons.switchAccessShortcutAdd)},
-//   {'browse_gallery': FaIcon(FontAwesomeIcons.browseGallery)},
-//   {'css': FaIcon(FontAwesomeIcons.css)},
-//   {'density_small': FaIcon(FontAwesomeIcons.densitySmall)},
-//   {'assistant_direction': FaIcon(FontAwesomeIcons.assistantDirection)},
-//   {'check_small': FaIcon(FontAwesomeIcons.checkSmall)},
-//   {'youtube_searched_for': FaIcon(FontAwesomeIcons.youtubeSearchedFor)},
-//   {'move_up': FaIcon(FontAwesomeIcons.moveUp)},
-//   {'swap_horizontal_circle': FaIcon(FontAwesomeIcons.swapHorizontalCircle)},
-//   {'data_thresholding': FaIcon(FontAwesomeIcons.dataThresholding)},
-//   {'install_mobile': FaIcon(FontAwesomeIcons.installMobile)},
-//   {'move_down': FaIcon(FontAwesomeIcons.moveDown)},
-//   {'dataset_linked': FaIcon(FontAwesomeIcons.datasetLinked)},
-//   {'keyboard_command_key': FaIcon(FontAwesomeIcons.keyboardCommandKey)},
-//   {'view_kanban': FaIcon(FontAwesomeIcons.viewKanban)},
-//   {'swipe_down': FaIcon(FontAwesomeIcons.swipeDown)},
-//   {'key_off': FaIcon(FontAwesomeIcons.keyOff)},
-//   {'transcribe': FaIcon(FontAwesomeIcons.transcribe)},
-//   {'send_time_extension': FaIcon(FontAwesomeIcons.sendTimeExtension)},
-//   {'swipe_down_alt': FaIcon(FontAwesomeIcons.swipeDownAlt)},
-//   {'swipe_left_alt': FaIcon(FontAwesomeIcons.swipeLeftAlt)},
-//   {'swipe_right_alt': FaIcon(FontAwesomeIcons.swipeRightAlt)},
-//   {'swipe_up_alt': FaIcon(FontAwesomeIcons.swipeUpAlt)},
-//   {'keyboard_option_key': FaIcon(FontAwesomeIcons.keyboardOptionKey)},
-//   {'cycle': FaIcon(FontAwesomeIcons.cycle)},
-//   {'rebase': FaIcon(FontAwesomeIcons.rebase)},
-//   {'rebase_edit': FaIcon(FontAwesomeIcons.rebaseEdit)},
-//   {'empty_dashboard': FaIcon(FontAwesomeIcons.emptyDashboard)},
-//   {'magic_exchange': FaIcon(FontAwesomeIcons.magicExchange)},
-//   {'acute': FaIcon(FontAwesomeIcons.acute)},
-//   {'point_scan': FaIcon(FontAwesomeIcons.pointScan)},
-//   {'step_into': FaIcon(FontAwesomeIcons.stepInto)},
-//   {'cheer': FaIcon(FontAwesomeIcons.cheer)},
-//   {'emoticon': FaIcon(FontAwesomeIcons.emoticon)},
-//   {'explosion': FaIcon(FontAwesomeIcons.explosion)},
-//   {'water_bottle': FaIcon(FontAwesomeIcons.waterBottle)},
-//   {'weather_hail': FaIcon(FontAwesomeIcons.weatherHail)},
-//   {'syringe': FaIcon(FontAwesomeIcons.syringe)},
-//   {'pill': FaIcon(FontAwesomeIcons.pill)},
-//   {'genetics': FaIcon(FontAwesomeIcons.genetics)},
-//   {'allergy': FaIcon(FontAwesomeIcons.allergy)},
-//   {'medical_mask': FaIcon(FontAwesomeIcons.medicalMask)},
-//   {'body_fat': FaIcon(FontAwesomeIcons.bodyFat)},
-//   {'barefoot': FaIcon(FontAwesomeIcons.barefoot)},
-//   {'infrared': FaIcon(FontAwesomeIcons.infrared)},
-//   {'wrist': FaIcon(FontAwesomeIcons.wrist)},
-//   {'metabolism': FaIcon(FontAwesomeIcons.metabolism)},
-//   {'conditions': FaIcon(FontAwesomeIcons.conditions)},
-//   {'taunt': FaIcon(FontAwesomeIcons.taunt)},
-//   {'altitude': FaIcon(FontAwesomeIcons.altitude)},
-//   {'tibia': FaIcon(FontAwesomeIcons.tibia)},
-//   {'footprint': FaIcon(FontAwesomeIcons.footprint)},
-//   {'eyeglasses': FaIcon(FontAwesomeIcons.eyeglasses)},
-//   {'man_3': FaIcon(FontAwesomeIcons.man3)},
-//   {'woman_2': FaIcon(FontAwesomeIcons.woman2)},
-//   {'rheumatology': FaIcon(FontAwesomeIcons.rheumatology)},
-//   {'tornado': FaIcon(FontAwesomeIcons.tornado)},
-//   {'landslide': FaIcon(FontAwesomeIcons.landslide)},
-//   {'foggy': FaIcon(FontAwesomeIcons.foggy)},
-//   {'severe_cold': FaIcon(FontAwesomeIcons.severeCold)},
-//   {'tsunami': FaIcon(FontAwesomeIcons.tsunami)},
-//   {'vape_free': FaIcon(FontAwesomeIcons.vapeFree)},
-//   {'sign_language': FaIcon(FontAwesomeIcons.signLanguage)},
-//   {'emoji_symbols': FaIcon(FontAwesomeIcons.emojiSymbols)},
-//   {'clear_night': FaIcon(FontAwesomeIcons.clearNight)},
-//   {'emoji_food_beverage': FaIcon(FontAwesomeIcons.emojiFoodBeverage)},
-//   {'hive': FaIcon(FontAwesomeIcons.hive)},
-//   {'thunderstorm': FaIcon(FontAwesomeIcons.thunderstorm)},
-//   {'communication': FaIcon(FontAwesomeIcons.communication)},
-//   {'rocket': FaIcon(FontAwesomeIcons.rocket)},
-//   {'pets': FaIcon(FontAwesomeIcons.pets)},
-//   {'public': FaIcon(FontAwesomeIcons.public)},
-//   {'quiz': FaIcon(FontAwesomeIcons.quiz)},
-//   {'mood': FaIcon(FontAwesomeIcons.mood)},
-//   {'gavel': FaIcon(FontAwesomeIcons.gavel)},
-//   {'eco': FaIcon(FontAwesomeIcons.eco)},
-//   {'diamond': FaIcon(FontAwesomeIcons.diamond)},
-//   {'forest': FaIcon(FontAwesomeIcons.forest)},
-//   {'rainy': FaIcon(FontAwesomeIcons.rainy)},
-//   {'skull': FaIcon(FontAwesomeIcons.skull)},
-// ];
-
-
-
- 
-
-
-  
-// ]; 
-
-// //convert this list according to icon name present in FontAwesome Icons
-
+Map<String, IconData> iconList = {
+  'search': Symbols.search,
+  'home': Symbols.home,
+  'menu': Symbols.menu,
+  'close': Symbols.close,
+  'settings': Symbols.settings,
+  'done': Symbols.done,
+  'check_circle': Symbols.check_circle,
+  'favorite': Symbols.favorite,
+  'add': Symbols.add,
+  'delete': Symbols.delete,
+  'arrow_back': Symbols.arrow_back,
+  'star': Symbols.star,
+  'logout': Symbols.logout,
+  'add_circle': Symbols.add_circle,
+  'cancel': Symbols.cancel,
+  'arrow_drop_down': Symbols.arrow_drop_down,
+  'more_vert': Symbols.more_vert,
+  'check': Symbols.check,
+  'check_box': Symbols.check_box,
+  'toggle_on': Symbols.toggle_on,
+  'open_in_new': Symbols.open_in_new,
+  'refresh': Symbols.refresh,
+  'login': Symbols.login,
+  'radio_button_unchecked': Symbols.radio_button_unchecked,
+  'more_horiz': Symbols.more_horiz,
+  'apps': Symbols.apps,
+  'radio_button_checked': Symbols.radio_button_checked,
+  'download': Symbols.download,
+  'remove': Symbols.remove,
+  'toggle_off': Symbols.toggle_off,
+  'bolt': Symbols.bolt,
+  'arrow_upward': Symbols.arrow_upward,
+  'filter_list': Symbols.filter_list,
+  'delete_forever': Symbols.delete_forever,
+  'autorenew': Symbols.autorenew,
+  'key': Symbols.key,
+  'sort': Symbols.sort,
+  'sync': Symbols.sync,
+  'add_box': Symbols.add_box,
+  'block': Symbols.block,
+  'restart_alt': Symbols.restart_alt,
+  'menu_open': Symbols.menu_open,
+  'shopping_cart_checkout': Symbols.shopping_cart_checkout,
+  'expand_circle_down': Symbols.expand_circle_down,
+  'backspace': Symbols.backspace,
+  'undo': Symbols.undo,
+  'done_all': Symbols.done_all,
+  'do_not_disturb_on': Symbols.do_not_disturb_on,
+  'open_in_full': Symbols.open_in_full,
+  'double_arrow': Symbols.double_arrow,
+  'sync_alt': Symbols.sync_alt,
+  'zoom_in': Symbols.zoom_in,
+  'done_outline': Symbols.done_outline,
+  'drag_indicator': Symbols.drag_indicator,
+  'fullscreen': Symbols.fullscreen,
+  'star_half': Symbols.star_half,
+  'settings_accessibility': Symbols.settings_accessibility,
+  'reply': Symbols.reply,
+  'exit_to_app': Symbols.exit_to_app,
+  'unfold_more': Symbols.unfold_more,
+  'library_add': Symbols.library_add,
+  'cached': Symbols.cached,
+  'select_check_box': Symbols.select_check_box,
+  'terminal': Symbols.terminal,
+  'change_circle': Symbols.change_circle,
+  'disabled_by_default': Symbols.disabled_by_default,
+  'swap_horiz': Symbols.swap_horiz,
+  'swap_vert': Symbols.swap_vert,
+  'app_registration': Symbols.app_registration,
+  'download_for_offline': Symbols.download_for_offline,
+  'close_fullscreen': Symbols.close_fullscreen,
+  'file_open': Symbols.file_open,
+  'minimize': Symbols.minimize,
+  'open_with': Symbols.open_with,
+  'dataset': Symbols.dataset,
+  'add_task': Symbols.add_task,
+  'start': Symbols.start,
+  'keyboard_voice': Symbols.keyboard_voice,
+  'create_new_folder': Symbols.create_new_folder,
+  'forward': Symbols.forward,
+  'settings_applications': Symbols.settings_applications,
+  'compare_arrows': Symbols.compare_arrows,
+  'redo': Symbols.redo,
+  'zoom_out': Symbols.zoom_out,
+  'publish': Symbols.publish,
+  'html': Symbols.html,
+  'token': Symbols.token,
+  'switch_access_shortcut': Symbols.switch_access_shortcut,
+  'fullscreen_exit': Symbols.fullscreen_exit,
+  'sort_by_alpha': Symbols.sort_by_alpha,
+  'delete_sweep': Symbols.delete_sweep,
+  'indeterminate_check_box': Symbols.indeterminate_check_box,
+  'view_timeline': Symbols.view_timeline,
+  'settings_backup_restore': Symbols.settings_backup_restore,
+  'arrow_drop_down_circle': Symbols.arrow_drop_down_circle,
+  'assistant_navigation': Symbols.assistant_navigation,
+  'sync_problem': Symbols.sync_problem,
+  'clear_all': Symbols.clear_all,
+  'density_medium': Symbols.density_medium,
+  'heart_plus': Symbols.heart_plus,
+  'filter_alt_off': Symbols.filter_alt_off,
+  'expand': Symbols.expand,
+  'subdirectory_arrow_right': Symbols.subdirectory_arrow_right,
+  'download_done': Symbols.download_done,
+  'arrow_outward': Symbols.arrow_outward,
+  '123': Symbols.numbers,
+  'swipe_left': Symbols.swipe_left,
+  'auto_mode': Symbols.auto_mode,
+  'saved_search': Symbols.saved_search,
+  'place_item': Symbols.place_item,
+  'system_update_alt': Symbols.system_update_alt,
+  'javascript': Symbols.javascript,
+  'search_off': Symbols.search_off,
+  'output': Symbols.output,
+  'select_all': Symbols.select_all,
+  'fit_screen': Symbols.fit_screen,
+  'swipe_up': Symbols.swipe_up,
+  'dynamic_form': Symbols.dynamic_form,
+  'hide_source': Symbols.hide_source,
+  'swipe_right': Symbols.swipe_right,
+  'switch_access_shortcut_add': Symbols.switch_access_shortcut_add,
+  'browse_gallery': Symbols.browse_gallery,
+  'css': Symbols.css,
+  'density_small': Symbols.density_small,
+  'assistant_direction': Symbols.assistant_direction,
+  'check_small': Symbols.check_small,
+  'youtube_searched_for': Symbols.youtube_searched_for,
+  'move_up': Symbols.move_up,
+  'swap_horizontal_circle': Symbols.swap_horizontal_circle,
+  'data_thresholding': Symbols.data_thresholding,
+  'install_mobile': Symbols.install_mobile,
+  'move_down': Symbols.move_down,
+  'dataset_linked': Symbols.dataset_linked,
+  'keyboard_command_key': Symbols.keyboard_command_key,
+  'view_kanban': Symbols.view_kanban,
+  'swipe_down': Symbols.swipe_down,
+  'key_off': Symbols.key_off,
+  'transcribe': Symbols.transcribe,
+  'send_time_extension': Symbols.send_time_extension,
+  'swipe_down_alt': Symbols.swipe_down_alt,
+  'swipe_left_alt': Symbols.swipe_left_alt,
+  'swipe_right_alt': Symbols.swipe_right_alt,
+  'swipe_up_alt': Symbols.swipe_up_alt,
+  'keyboard_option_key': Symbols.keyboard_option_key,
+  'cycle': Symbols.cycle,
+  'rebase': Symbols.rebase,
+  'rebase_edit': Symbols.rebase_edit,
+  'empty_dashboard': Symbols.empty_dashboard,
+  'magic_exchange': Symbols.magic_exchange,
+  'acute': Symbols.acute,
+  'point_scan': Symbols.point_scan,
+  'step_into': Symbols.step_into,
+  'cheer': Symbols.cheer,
+  'emoticon': Symbols.emoticon,
+  'explosion': Symbols.explosion,
+  'water_bottle': Symbols.water_bottle,
+  'weather_hail': Symbols.weather_hail,
+  'syringe': Symbols.syringe,
+  'pill': Symbols.pill,
+  'genetics': Symbols.genetics,
+  'allergy': Symbols.allergy,
+  'medical_mask': Symbols.medical_mask,
+  'body_fat': Symbols.body_fat,
+  'barefoot': Symbols.barefoot,
+  'infrared': Symbols.infrared,
+  'wrist': Symbols.wrist,
+  'metabolism': Symbols.metabolism,
+  'conditions': Symbols.conditions,
+  'taunt': Symbols.taunt,
+  'altitude': Symbols.altitude,
+  'tibia': Symbols.tibia,
+  'footprint': Symbols.footprint,
+  'eyeglasses': Symbols.eyeglasses,
+  'man_3': Symbols.man_3,
+  'woman_2': Symbols.woman_2,
+  'rheumatology': Symbols.rheumatology,
+  'tornado': Symbols.tornado,
+  'landslide': Symbols.landslide,
+  'foggy': Symbols.foggy,
+  'severe_cold': Symbols.severe_cold,
+  'tsunami': Symbols.tsunami,
+  'vape_free': Symbols.vape_free,
+  'sign_language': Symbols.sign_language,
+  'emoji_symbols': Symbols.emoji_symbols,
+  'clear_night': Symbols.clear_night,
+  'emoji_food_beverage': Symbols.emoji_food_beverage,
+  'hive': Symbols.hive,
+  'thunderstorm': Symbols.thunderstorm,
+  'communication': Symbols.communication,
+  'rocket': Symbols.rocket,
+  'pets': Symbols.pets,
+  'public': Symbols.public,
+  'quiz': Symbols.quiz,
+  'mood': Symbols.mood,
+  'gavel': Symbols.gavel,
+  'eco': Symbols.eco,
+  'diamond': Symbols.diamond,
+  'forest': Symbols.forest,
+  'rainy': Symbols.rainy,
+  'skull': Symbols.skull,
+};

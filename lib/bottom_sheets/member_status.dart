@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
 
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class MemberStatus extends ConsumerStatefulWidget {
-  final String firstName;
-  final String lastName;
-  final Map role;
-  final String userId;
-  final bool fromWorkspace;
-  final bool isInviteMembers;
   const MemberStatus(
       {super.key,
       required this.firstName,
@@ -22,7 +15,15 @@ class MemberStatus extends ConsumerStatefulWidget {
       required this.role,
       required this.isInviteMembers,
       required this.fromWorkspace,
-      required this.userId});
+      required this.userId,
+      required this.pendingInvite});
+  final String firstName;
+  final String lastName;
+  final Map role;
+  final String userId;
+  final bool fromWorkspace;
+  final bool isInviteMembers;
+  final bool pendingInvite;
 
   @override
   ConsumerState<MemberStatus> createState() => _MemberStatusState();
@@ -34,41 +35,30 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
     {'role': 'Member', 'value': 15},
     {'role': 'Viewer', 'value': 10},
     {'role': 'Guest', 'value': 5},
-    {'role': 'Remove User', 'value': 0}
   ];
   String name = '';
   int selectedRole = 0;
   @override
   void initState() {
     super.initState();
-    if (widget.isInviteMembers) {
-      options = [
-        {'role': 'Admin', 'value': 20},
-        {'role': 'Member', 'value': 15},
-        {'role': 'Viewer', 'value': 10},
-        {'role': 'Guest', 'value': 5},
-      ];
-    } else {
-      options = [
-        {'role': 'Admin', 'value': 20},
-        {'role': 'Member', 'value': 15},
-        {'role': 'Viewer', 'value': 10},
-        {'role': 'Guest', 'value': 5},
-        {'role': 'Remove User', 'value': 0}
-      ];
-    }
     selectedRole = widget.role['role'];
+
     if (widget.lastName == '') {
       name = "${widget.firstName}'s Role";
     } else {
       name = "${widget.firstName} ${widget.lastName}'s Role";
     }
+
+    if (widget.isInviteMembers) {
+      name = widget.firstName;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Stack(
       children: [
         Wrap(
@@ -76,7 +66,6 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
             Container(
               padding: const EdgeInsets.only(top: 15, left: 5, right: 10),
               decoration: const BoxDecoration(
-                //color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
@@ -85,19 +74,13 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                 children: [
                   Row(
                     children: [
-                      // const Text(
-                      //   'Type',
-                      //   style: TextStyle(
-                      //     fontSize: 24,
-                      //     fontWeight: FontWeight.w600,
-                      //   ),
-                      // ),
                       Container(
                         margin: const EdgeInsets.only(left: 15),
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: CustomText(
-                          name,
-                          type: FontStyle.heading,
+                          widget.pendingInvite ? '' : name,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -108,10 +91,11 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
                           size: 27,
-                          color: Color.fromRGBO(143, 143, 147, 1),
+                          color:
+                              themeProvider.themeManager.placeholderTextColor,
                         ),
                       ),
                     ],
@@ -124,95 +108,219 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                           shrinkWrap: true,
                           primary: false,
                           itemBuilder: (context, index) {
-                            return index == 0 &&
-                                    projectProvider.role != Role.admin
+                            return (widget.fromWorkspace
+                                    ? (index == 0 &&
+                                        workspaceProvider.role != Role.admin)
+                                    : (index == 0 &&
+                                        projectProvider.role != Role.admin))
                                 ? Container()
                                 : Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Radio(
-                                            activeColor: primaryColor,
-                                            value: options[index]['value'],
-                                            groupValue: selectedRole,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedRole = value as int;
-                                                if (widget.isInviteMembers) {
-                                                  widget.role['role'] =
-                                                      selectedRole;
-                                                  ref
-                                                          .read(ProviderList
-                                                              .workspaceProvider)
-                                                          .invitingMembersRole
-                                                          .text =
-                                                      options[index]['role'];
+                                      InkWell(
+                                        onTap: () {
+                                          if (widget.pendingInvite) {
+                                            CustomToast.showToast(context,
+                                                message:
+                                                    'Member hasn\'t joined yet',
+                                                toastType: ToastType.defult);
+                                          } else {
+                                            setState(() {
+                                              selectedRole = options[index]
+                                                  ['value'] as int;
+                                              if (widget.isInviteMembers) {
+                                                workspaceProvider
+                                                        .invitingMembersRole
+                                                        .text =
+                                                    options[index]['role'];
+                                              } else {
+                                                if (widget.fromWorkspace) {
+                                                  workspaceProvider
+                                                      .updateWorkspaceMember(
+                                                    userId: widget.userId,
+                                                    method: selectedRole == 0
+                                                        ? CRUD.delete
+                                                        : CRUD.update,
+                                                    data: {
+                                                      'role': selectedRole
+                                                          .toString()
+                                                    },
+                                                  );
+                                                } else {
+                                                  projectProvider
+                                                      .updateProjectMember(
+                                                    slug: workspaceProvider
+                                                        .selectedWorkspace
+                                                        .workspaceSlug,
+                                                    projId: projectProvider
+                                                        .currentProject['id'],
+                                                    userId: widget.userId,
+                                                    method: selectedRole == 0
+                                                        ? CRUD.delete
+                                                        : CRUD.update,
+                                                    data: {
+                                                      'role': selectedRole
+                                                          .toString()
+                                                    },
+                                                  );
                                                 }
-                                              //  Navigator.pop(context);
-                                              });
-                                            },
-                                          ),
-                                          CustomText(
-                                            options[index]['role'],
-                                            type: FontStyle.subheading,
-                                            color:
-                                                themeProvider.isDarkThemeEnabled
-                                                    ? darkSecondaryTextColor
-                                                    : Colors.black,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ],
+                                              }
+
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Radio(
+                                              activeColor: selectedRole ==
+                                                      options[index]['value']
+                                                  ? null
+                                                  : themeProvider.themeManager
+                                                      .primaryColour,
+                                              fillColor: selectedRole !=
+                                                      options[index]['value']
+                                                  ? MaterialStateProperty
+                                                      .all<Color>(themeProvider
+                                                          .themeManager
+                                                          .borderSubtle01Color)
+                                                  : null,
+                                              value: options[index]['value'],
+                                              groupValue: selectedRole,
+                                              onChanged: (value) {
+                                                if (!widget.pendingInvite) {
+                                                  setState(() {
+                                                    selectedRole =
+                                                        options[index]['value']
+                                                            as int;
+                                                    if (widget
+                                                        .isInviteMembers) {
+                                                      // widget.role['role'] =
+                                                      //     selectedRole;
+                                                      workspaceProvider
+                                                              .invitingMembersRole
+                                                              .text =
+                                                          options[index]
+                                                              ['role'];
+                                                    } else {
+                                                      if (widget
+                                                          .fromWorkspace) {
+                                                        workspaceProvider
+                                                            .updateWorkspaceMember(
+                                                          userId: widget.userId,
+                                                          method:
+                                                              selectedRole == 0
+                                                                  ? CRUD.delete
+                                                                  : CRUD.update,
+                                                          data: {
+                                                            'role': selectedRole
+                                                                .toString()
+                                                          },
+                                                        );
+                                                      } else {
+                                                        projectProvider
+                                                            .updateProjectMember(
+                                                          slug: workspaceProvider
+                                                              .selectedWorkspace
+                                                              .workspaceSlug,
+                                                          projId: projectProvider
+                                                                  .currentProject[
+                                                              'id'],
+                                                          userId: widget.userId,
+                                                          method:
+                                                              selectedRole == 0
+                                                                  ? CRUD.delete
+                                                                  : CRUD.update,
+                                                          data: {
+                                                            'role': selectedRole
+                                                                .toString()
+                                                          },
+                                                        );
+                                                      }
+                                                    }
+
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            CustomText(options[index]['role'],
+                                                type: FontStyle.Small,
+                                                color: widget.pendingInvite
+                                                    ? themeProvider.themeManager
+                                                        .tertiaryTextColor
+                                                    : themeProvider.themeManager
+                                                        .primaryTextColor),
+                                          ],
+                                        ),
                                       ),
-                                      Container(
-                                        height: 2,
-                                        width: double.infinity,
-                                        color: themeProvider.isDarkThemeEnabled
-                                            ? darkThemeBorder
-                                            : strokeColor,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        child: Container(
+                                          height: 1,
+                                          width: double.infinity,
+                                          color: themeProvider
+                                              .themeManager.borderDisabledColor,
+                                        ),
                                       ),
                                     ],
                                   );
                           }),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
-                  widget.isInviteMembers
+                  widget.isInviteMembers ||
+                          ((widget.fromWorkspace &&
+                                  workspaceProvider.role != Role.admin) ||
+                              (!widget.fromWorkspace &&
+                                  projectProvider.role != Role.admin))
                       ? Container()
-                      : Button(
-                          text: 'Update Changes',
-                          ontap: () {
-                            if (widget.fromWorkspace) {
-                              ref
-                                  .watch(ProviderList.workspaceProvider)
-                                  .updateWorkspaceMember(
-                                userId: widget.userId,
-                                method: selectedRole == 0
-                                    ? CRUD.delete
-                                    : CRUD.update,
-                                data: {'role': selectedRole.toString()},
-                              );
-                            } else {
-                              ref
-                                  .watch(ProviderList.projectProvider)
-                                  .updateProjectMember(
-                                slug: ref
-                                    .watch(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                projId: ref
-                                    .watch(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                userId: widget.userId,
-                                method: selectedRole == 0
-                                    ? CRUD.delete
-                                    : CRUD.update,
-                                data: {'role': selectedRole.toString()},
-                              );
-                            }
-                            Navigator.of(context).pop();
-                          },
+                      : Column(
+                          children: [
+                            const SizedBox(height: 25),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (widget.fromWorkspace) {
+                                    if (widget.pendingInvite) {
+                                      workspaceProvider
+                                          .removeWorkspaceMemberInvitations(
+                                              userId: widget.userId)
+                                          .then((value) => workspaceProvider
+                                              .getWorkspaceMemberInvitations());
+                                    } else {
+                                      workspaceProvider.updateWorkspaceMember(
+                                        userId: widget.userId,
+                                        method: CRUD.delete,
+                                        data: {'role': 0},
+                                      );
+                                    }
+                                  } else {
+                                    projectProvider.updateProjectMember(
+                                      slug: workspaceProvider
+                                          .selectedWorkspace.workspaceSlug,
+                                      projId:
+                                          projectProvider.currentProject['id'],
+                                      userId: widget.userId,
+                                      method: CRUD.delete,
+                                      data: {'role': 0},
+                                    );
+                                  }
+
+                                  Navigator.pop(context);
+                                },
+                                child: CustomText(
+                                  "Remove",
+                                  type: FontStyle.H5,
+                                  fontWeight: FontWeightt.Medium,
+                                  color:
+                                      themeProvider.themeManager.textErrorColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                   const SizedBox(
                     height: 20,
@@ -226,9 +334,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
             ? Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   //color: Colors.white,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -246,9 +353,8 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
                         colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor
+                          themeProvider
+                              .themeManager.primaryBackgroundDefaultColor
                         ],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,

@@ -1,25 +1,30 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/models/issues.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/issue_card_widget.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/models/issues.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/issue_card_widget.dart';
 
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
   Ref? ref;
-  StateEnum cyclesState = StateEnum.loading;
+  StateEnum cyclesState = StateEnum.empty;
   StateEnum cyclesDetailState = StateEnum.empty;
   StateEnum cyclesIssueState = StateEnum.loading;
   StateEnum allCyclesState = StateEnum.loading;
@@ -27,6 +32,7 @@ class CyclesProvider with ChangeNotifier {
   StateEnum upcomingCyclesState = StateEnum.loading;
   StateEnum completedCyclesState = StateEnum.loading;
   StateEnum draftCyclesState = StateEnum.loading;
+  StateEnum transferIssuesState = StateEnum.empty;
   List<dynamic> cyclesAllData = [];
   List<dynamic> cycleFavoriteData = [];
   List<dynamic> cycleUpcomingFavoriteData = [];
@@ -40,26 +46,28 @@ class CyclesProvider with ChangeNotifier {
   List<dynamic> cyclesDraftData = [];
   Map<String, dynamic> cyclesDetailsData = {};
   Map currentCycle = {};
+  int cyclesTabIndex = 0;
   Issues issues = Issues.initialize();
   List issuesResponse = [];
   List shrinkStates = [];
   Map filterIssues = {};
   Map issueProperty = {};
-  bool showEmptyStates = false;
+  bool showEmptyStates = true;
   bool isIssuesEmpty = false;
   int cycleDetailSelectedIndex = 0;
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
   List stateOrdering = [];
-  setState() {
+  List<String> loadingCycleId = [];
+  void setState() {
     notifyListeners();
   }
 
-  changeTabIndex(int index) {
+  void changeTabIndex(int index) {
     cycleDetailSelectedIndex = index;
     notifyListeners();
   }
 
-  clearData() {
+  void clearData() {
     cyclesAllData = [];
     cycleFavoriteData = [];
     cycleUpcomingFavoriteData = [];
@@ -79,14 +87,14 @@ class CyclesProvider with ChangeNotifier {
     required String projectId,
     required Map<String, dynamic> data,
   }) async {
-    var url = APIs.dateCheck
+    final url = APIs.dateCheck
         .replaceFirst('\$SLUG', slug)
         .replaceFirst('\$PROJECTID', projectId);
 
     try {
       cyclesState = StateEnum.loading;
       notifyListeners();
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: true,
@@ -106,30 +114,29 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  Future cyclesCrud({
-    bool disableLoading = false,
-    required String slug,
-    required String projectId,
-    required CRUD method,
-    required String query,
-    Map<String, dynamic>? data,
-  }) async {
-
-    if(query=='all'){
+  Future cyclesCrud(
+      {bool disableLoading = false,
+      required String slug,
+      required String projectId,
+      required CRUD method,
+      required String query,
+      Map<String, dynamic>? data,
+      required String cycleId,
+      required WidgetRef ref}) async {
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    if (query == 'all') {
       allCyclesState = StateEnum.loading;
-    }else if(query=='current'){
+    } else if (query == 'current') {
       activeCyclesState = StateEnum.loading;
-    }
-    else if(query=='upcoming'){
+    } else if (query == 'upcoming') {
       upcomingCyclesState = StateEnum.loading;
-    }
-    else if(query=='completed'){
+    } else if (query == 'completed') {
       completedCyclesState = StateEnum.loading;
-    }
-    else if(query=='draft'){
+    } else if (query == 'draft') {
       draftCyclesState = StateEnum.loading;
     }
-    var url = query == ''
+    final url = query == ''
         ? APIs.cycles
             .replaceFirst('\$SLUG', slug)
             .replaceFirst('\$PROJECTID', projectId)
@@ -137,10 +144,10 @@ class CyclesProvider with ChangeNotifier {
 
     try {
       // if (!disableLoading) {
-      //   cyclesState = StateEnum.loading;
+      cyclesState = StateEnum.loading;
       //   notifyListeners();
       // }
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: data != null ? true : false,
@@ -212,6 +219,30 @@ class CyclesProvider with ChangeNotifier {
         draftCyclesState = StateEnum.success;
       }
       cyclesState = StateEnum.success;
+      method == CRUD.read
+          ? null
+          : postHogService(
+              eventName: method == CRUD.create
+                  ? 'CYCLE_CREATE'
+                  : method == CRUD.update
+                      ? 'CYCLE_UPDATE'
+                      : method == CRUD.delete
+                          ? 'CYCLE_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'CYCLE_ID': response.data['id']
+                    },
+              ref: ref);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
@@ -240,10 +271,9 @@ class CyclesProvider with ChangeNotifier {
         cyclesDetailState = StateEnum.loading;
         notifyListeners();
       }
-
-      var url =
+      final url =
           '${APIs.cycles.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$cycleId/';
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: data != null ? true : false,
@@ -257,7 +287,7 @@ class CyclesProvider with ChangeNotifier {
                     : HttpMethod.patch,
       );
       if (method == CRUD.read) {
-        log('CYCLE DETAILS =========> ${response.data.toString()}');
+        // log('CYCLE DETAILS =========> ${response.data.toString()}');
         cyclesDetailsData = response.data;
       }
       if (method == CRUD.update) {
@@ -276,16 +306,17 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  Future updateCycle({
-    required String slug,
-    required String projectId,
-    Map<String, dynamic>? data,
-    required String cycleId,
-    required bool isFavorite,
-    required String query,
-    bool disableLoading = false,
-  }) async {
-    var url = !isFavorite
+  Future updateCycle(
+      {required String slug,
+      required String projectId,
+      Map<String, dynamic>? data,
+      required CRUD method,
+      required String cycleId,
+      required bool isFavorite,
+      required String query,
+      bool disableLoading = false,
+      required WidgetRef ref}) async {
+    final url = !isFavorite
         ? APIs.toggleFavoriteCycle
             .replaceFirst('\$SLUG', slug)
             .replaceFirst('\$PROJECTID', projectId)
@@ -294,10 +325,11 @@ class CyclesProvider with ChangeNotifier {
     try {
       if (!disableLoading) {
         cyclesState = StateEnum.loading;
-        notifyListeners();
       }
+      loadingCycleId.add(cycleId);
+      notifyListeners();
 
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: !isFavorite ? true : false,
@@ -312,52 +344,58 @@ class CyclesProvider with ChangeNotifier {
       if (query == 'all') {
         for (int i = 0; i < queries.length; i++) {
           cyclesCrud(
-            slug: slug,
-            projectId: projectId,
-            method: CRUD.read,
-            query: queries[i],
-          );
+              slug: slug,
+              projectId: projectId,
+              method: CRUD.read,
+              query: queries[i],
+              ref: ref,
+              cycleId: cycleId);
         }
       }
 
       await cyclesCrud(
-        slug: slug,
-        projectId: projectId,
-        method: CRUD.read,
-        query: query,
-      );
+          slug: slug,
+          projectId: projectId,
+          method: CRUD.read,
+          query: query,
+          ref: ref,
+          cycleId: cycleId);
       cyclesCrud(
-        slug: slug,
-        projectId: projectId,
-        method: CRUD.read,
-        query: 'all',
-      );
+          slug: slug,
+          projectId: projectId,
+          method: CRUD.read,
+          query: 'all',
+          ref: ref,
+          cycleId: cycleId);
       cyclesState = StateEnum.success;
+      loadingCycleId.remove(cycleId);
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());
       cyclesState = StateEnum.error;
+      loadingCycleId.remove(cycleId);
       notifyListeners();
     }
   }
 
   List<BoardListsData> initializeBoard() {
-    var themeProvider = ref!.read(ProviderList.themeProvider);
-    var issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final themeProvider = ref!.read(ProviderList.themeProvider);
+    final issuesProvider = ref!.read(ProviderList.issuesProvider);
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
+    issuesResponse = [];
     for (int j = 0; j < stateOrdering.length; j++) {
-      List<Widget> items = [];
+      final List<Widget> items = [];
 
       for (int i = 0;
           filterIssues[stateOrdering[j]] != null &&
               i < filterIssues[stateOrdering[j]]!.length;
           i++) {
         issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
-
         items.add(
           IssueCardWidget(
+            from: PreviousScreen.cycles,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.cycleIssues,
@@ -391,7 +429,7 @@ class CyclesProvider with ChangeNotifier {
         }
       }
       //log('RESPONSE : ' + filterIssues.toString());
-      log(stateOrdering[j]);
+      // log('================================================================ ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
@@ -409,7 +447,9 @@ class CyclesProvider with ChangeNotifier {
         title: issues.groupBY == GroupBY.labels && labelFound
             ? label['name'][0].toString().toUpperCase() +
                 label['name'].toString().substring(1)
-            : userFound && issues.groupBY == GroupBY.createdBY
+            : userFound &&
+                    (issues.groupBY == GroupBY.createdBY ||
+                        issues.groupBY == GroupBY.assignees)
                 ? userName = userName[0].toString().toUpperCase() +
                     userName.toString().substring(1)
                 : title = title[0].toString().toUpperCase() +
@@ -419,54 +459,65 @@ class CyclesProvider with ChangeNotifier {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? darkSecondaryTextColor
-                : lightSecondaryTextColor,
+            color: ref!
+                .read(ProviderList.themeProvider)
+                .themeManager
+                .secondaryTextColor,
           ),
         ),
 
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        backgroundColor:
-            ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+        backgroundColor: ref!
+            .read(ProviderList.themeProvider)
+            .themeManager
+            .secondaryBackgroundDefaultColor,
       ));
     }
 
-    for (var element in issues.issues) {
+    for (final element in issues.issues) {
       //  log(issues.groupBY.toString());
 
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
-              ? Icon(Icons.error_outline,
+              ? Icon(
+                  Icons.error_outline,
                   size: 18,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.white
-                      : Colors.black)
+                  color: Color(int.parse("FF${"#EF4444".replaceAll('#', '')}",
+                      radix: 16)),
+                )
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
                       size: 18,
+                      color: Color(int.parse(
+                          "FF${"#F59E0B".replaceAll('#', '')}",
+                          radix: 16)),
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color: Color(int.parse(
+                              "FF${"#F59E0B".replaceAll('#', '')}",
+                              radix: 16)),
                           size: 18,
                         )
-                      : Icon(
-                          Icons.signal_cellular_alt_1_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
-                          size: 18,
-                        )
-          : issues.groupBY == GroupBY.createdBY
+                      : element.title == 'Low'
+                          ? Icon(
+                              Icons.signal_cellular_alt_1_bar,
+                              color: Color(int.parse(
+                                  "FF${"#22C55E".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.do_disturb_alt_outlined,
+                              color: Color(int.parse(
+                                  "FF${"#A3A3A3".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
+          : issues.groupBY == GroupBY.createdBY ||
+                  issues.groupBY == GroupBY.assignees
               ? Container(
                   height: 22,
                   alignment: Alignment.center,
@@ -479,7 +530,7 @@ class CyclesProvider with ChangeNotifier {
                     element.title.toString().toUpperCase()[0],
                     fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeightt.Medium,
                   ),
                 )
               : issues.groupBY == GroupBY.labels
@@ -494,7 +545,9 @@ class CyclesProvider with ChangeNotifier {
                           // color: Color(int.parse(element.title)),
                           ),
                     )
-                  : issuesProvider.stateIcons[element.id];
+                  : issues.groupBY == GroupBY.stateGroups
+                      ? issuesProvider.defaultStatedetails[element.id]['icon']
+                      : issuesProvider.stateIcons[element.id];
 
       element.header = SizedBox(
         // margin: const EdgeInsets.only(bottom: 10),
@@ -510,9 +563,9 @@ class CyclesProvider with ChangeNotifier {
               width: element.width - 150,
               child: CustomText(
                 element.title.toString(),
-                type: FontStyle.heading,
+                type: FontStyle.Large,
+                fontWeight: FontWeightt.Semibold,
                 textAlign: TextAlign.start,
-                fontSize: 20,
                 maxLines: 3,
               ),
             ),
@@ -523,14 +576,13 @@ class CyclesProvider with ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? const Color.fromRGBO(39, 42, 45, 1)
-                      : const Color.fromRGBO(222, 226, 230, 1)),
+                  color: themeProvider
+                      .themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(
                 element.items.length.toString(),
-                type: FontStyle.subtitle,
+                type: FontStyle.Small,
               ),
             ),
             const Spacer(),
@@ -539,9 +591,9 @@ class CyclesProvider with ChangeNotifier {
                 shrinkStates[element.index] = !shrinkStates[element.index];
                 notifyListeners();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.zoom_in_map,
-                color: Color.fromRGBO(133, 142, 150, 1),
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 20,
               ),
             ),
@@ -558,17 +610,108 @@ class CyclesProvider with ChangeNotifier {
                               cycleId: currentCycle['id'],
                             )));
               },
-              child: const Icon(
+              child: Icon(
                 Icons.add,
-                color: primaryColor,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
             ),
           ],
         ),
       );
     }
-    //   log(issues.issues.toString());
     return issues.issues;
+  }
+
+  Future reorderIssue({
+    required int newCardIndex,
+    required int oldCardIndex,
+    required int newListIndex,
+    required int oldListIndex,
+  }) async {
+    try {
+      if (oldListIndex == newListIndex) {
+        notifyListeners();
+        return;
+      }
+      (filterIssues[stateOrdering[newListIndex]] as List).insert(newCardIndex,
+          filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+
+      notifyListeners();
+      final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      // log(issue.toString());
+      final response = await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.issueDetails
+              .replaceAll(
+                  "\$SLUG",
+                  ref!
+                      .read(ProviderList.workspaceProvider)
+                      .workspaces
+                      .firstWhere((element) =>
+                          element['id'] == issue['workspace'])['slug'])
+              .replaceAll('\$PROJECTID', issue['project_detail']['id'])
+              .replaceAll('\$ISSUEID', issue['id']),
+          hasBody: true,
+          httpMethod: HttpMethod.patch,
+          data: issues.groupBY == GroupBY.state
+              ? {
+                  'state': stateOrdering[newListIndex],
+                  'priority': issue['priority']
+                }
+              : {
+                  'state': issue['state'],
+                  'priority': stateOrdering[newListIndex],
+                });
+      filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
+
+      final List labelDetails = [];
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
+          .forEach((element) {
+        for (int i = 0; i < issuesProvider.labels.length; i++) {
+          if (issuesProvider.labels[i]['id'] == element) {
+            labelDetails.add(issuesProvider.labels[i]);
+            break;
+          }
+        }
+
+        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
+      });
+
+      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
+          labelDetails;
+
+      log(response.data.toString());
+      if (issues.groupBY == GroupBY.priority) {
+        log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
+        filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
+            stateOrdering[newListIndex];
+      }
+      if (issues.orderBY != OrderBY.manual) {
+        (filterIssues[stateOrdering[newListIndex]] as List).sort((a, b) {
+          if (issues.orderBY == OrderBY.priority) {
+            return priorityParser(a['priority'])
+                .compareTo(priorityParser(b['priority']));
+          } else if (issues.orderBY == OrderBY.lastCreated) {
+            return DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at']));
+          } else if (issues.orderBY == OrderBY.lastUpdated) {
+            return DateTime.parse(a['updated_at'])
+                .compareTo(DateTime.parse(b['updated_at']));
+          } else {
+            return 0;
+          }
+        });
+      }
+      log("ISSUE REPOSITIONED");
+      notifyListeners();
+    } on DioException catch (err) {
+      (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,
+          filterIssues[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      log(err.toString());
+      notifyListeners();
+      rethrow;
+    }
   }
 
   Future createCycleIssues(
@@ -578,7 +721,7 @@ class CyclesProvider with ChangeNotifier {
       String? cycleId}) async {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
-    var data = {
+    final data = {
       'issues': issues,
     };
 
@@ -662,26 +805,33 @@ class CyclesProvider with ChangeNotifier {
   Future filterCycleIssues({
     required String slug,
     required String projectId,
+    String? cycleID,
+    String? moduleID,
     // required Map<String, dynamic> data,
   }) async {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
     try {
-      var issuesProvider = ref!.read(ProviderList.issuesProvider);
+      final issuesProvider = ref!.read(ProviderList.issuesProvider);
       filterIssues = await issuesProvider.filterIssues(
         slug: slug,
         projID: projectId,
+        cycleId: cycleID,
+        moduleId: moduleID,
         issueCategory: IssueCategory.cycleIssues,
       );
 
       issuesResponse = [];
       isIssuesEmpty = true;
-      for (var key in filterIssues.keys) {
-        log("KEY=$key");
-        if (filterIssues[key].isNotEmpty) {
-          isIssuesEmpty = false;
-          break;
+      if (issues.groupBY != GroupBY.none) {
+        for (final key in filterIssues.keys) {
+          if (filterIssues[key].isNotEmpty) {
+            isIssuesEmpty = false;
+            break;
+          }
         }
+      } else {
+        isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
       if (issues.groupBY == GroupBY.state) {
         issuesProvider.states.forEach((key, value) {
@@ -692,13 +842,18 @@ class CyclesProvider with ChangeNotifier {
         });
       } else {
         stateOrdering = [];
+        shrinkStates = [];
         filterIssues.forEach((key, value) {
           stateOrdering.add(key);
+          shrinkStates.add(false);
         });
       }
+
+      initializeBoard();
+
       cyclesIssueState = StateEnum.success;
       notifyListeners();
-    } catch (e) {
+    } on DioException catch (e) {
       log(e.toString());
       cyclesIssueState = StateEnum.error;
       notifyListeners();
@@ -714,5 +869,71 @@ class CyclesProvider with ChangeNotifier {
         issues.displayProperties.priority ||
         issues.displayProperties.linkCount ||
         issues.displayProperties.attachmentCount;
+  }
+
+  bool showAddFloatingButton() {
+    switch (cyclesTabIndex) {
+      case 0:
+        return (cyclesAllData.isNotEmpty || cycleFavoriteData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      case 1:
+        return false;
+      case 2:
+        return (cyclesUpcomingData.isNotEmpty ||
+                cycleUpcomingFavoriteData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      case 3:
+        return false;
+      case 4:
+        return (cycleDraftFavoriteData.isNotEmpty &&
+                cyclesDraftData.isNotEmpty) &&
+            cyclesState != StateEnum.loading;
+      default:
+        return cyclesState != StateEnum.loading;
+    }
+  }
+
+  Future transferIssues(
+      {required String newCycleID, required BuildContext context}) async {
+    try {
+      transferIssuesState = StateEnum.loading;
+      notifyListeners();
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.transferIssues
+            .replaceAll(
+              '\$SLUG',
+              ref!
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace
+                  .workspaceSlug,
+            )
+            .replaceAll(
+              '\$PROJECTID',
+              ref!.read(ProviderList.projectProvider).currentProject['id'],
+            )
+            .replaceAll(
+              '\$CYCLEID',
+              currentCycle['id'].toString(),
+            ),
+        hasBody: true,
+        data: {"new_cycle_id": newCycleID},
+        httpMethod: HttpMethod.post,
+      );
+      log(response.data.toString());
+      CustomToast.showToast(context,
+          message: 'Successfully transfered', toastType: ToastType.success);
+      Navigator.pop(context);
+      transferIssuesState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log('cycle transfer Error  ===> ');
+      log(e.error.toString());
+      cyclesIssueState = StateEnum.error;
+      CustomToast.showToast(context,
+          message: 'Failed to transfer', toastType: ToastType.failure);
+      transferIssuesState = StateEnum.failed;
+      notifyListeners();
+    }
   }
 }

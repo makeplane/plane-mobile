@@ -1,11 +1,6 @@
-class WorkspaceModel {
-  String workspaceName;
-  String workspaceSlug;
-  String workspaceSize;
-  String workspaceId;
-  String workspaceLogo;
-  String workspaceUrl;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+class WorkspaceModel {
   WorkspaceModel({
     required this.workspaceName,
     required this.workspaceSlug,
@@ -14,7 +9,6 @@ class WorkspaceModel {
     required this.workspaceLogo,
     required this.workspaceUrl,
   });
-
   factory WorkspaceModel.fromJson(Map<String, dynamic> json) {
     return WorkspaceModel(
       workspaceName: json['name'],
@@ -23,7 +17,30 @@ class WorkspaceModel {
       workspaceId: json['id'],
       workspaceLogo: json['logo'] ?? '',
       // workspaceUrl: json['url'],
-      workspaceUrl: 'https://takeoff.plane.so/${json['slug']}',
+      workspaceUrl: '${dotenv.env['WEB_URL']}${json['slug']}',
+    );
+  }
+  String workspaceName;
+  String workspaceSlug;
+  String workspaceSize;
+  String workspaceId;
+  String workspaceLogo;
+  String workspaceUrl;
+
+  static WorkspaceModel initialize(
+      {String? workspaceName,
+      String? workspaceSlug,
+      String? workspaceSize,
+      String? workspaceId,
+      String? workspaceLogo,
+      String? workspaceUrl}) {
+    return WorkspaceModel(
+      workspaceName: workspaceName ?? '',
+      workspaceSlug: workspaceSlug ?? '',
+      workspaceSize: workspaceSize ?? '',
+      workspaceId: workspaceId ?? '',
+      workspaceLogo: workspaceLogo ?? '',
+      workspaceUrl: workspaceUrl ?? '',
     );
   }
 

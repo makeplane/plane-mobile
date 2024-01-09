@@ -2,16 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import '../utils/enums.dart';
 import 'custom_text.dart';
 
 class ResendCodeButton extends ConsumerStatefulWidget {
-  final bool signUp;
-  final String email;
   const ResendCodeButton({required this.signUp, required this.email, Key? key})
       : super(key: key);
+  final bool signUp;
+  final String email;
 
   @override
   ConsumerState<ResendCodeButton> createState() => _ResendCodeButtonState();
@@ -32,14 +33,16 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
     timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (start == 0) {
-          setState(() {
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            start--;
-          });
+        if (mounted) {
+          if (start == 0) {
+            setState(() {
+              timer.cancel();
+            });
+          } else {
+            setState(() {
+              start--;
+            });
+          }
         }
       },
     );
@@ -47,7 +50,8 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
 
   @override
   Widget build(BuildContext context) {
-    // var resendprov = ref.read(ProviderList.resendOtpCounterProvider);
+    // final resendprov = ref.read(ProviderList.resendOtpCounterProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
     if (start == 0) {
       return Align(
         alignment: Alignment.centerRight,
@@ -55,15 +59,25 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
             onTap: () async {
               await ref
                   .read(ProviderList.authProvider)
-                  .sendMagicCode(widget.email);
-              setState(() {
-                start = 30;
-                startTimer();
+                  .sendMagicCode(
+                    email: widget.email,
+                    resend: true,
+                  )
+                  .then((value) {
+                CustomToast.showToast(context,
+                    message: 'Code sent successfully',
+                    toastType: ToastType.success);
               });
+              if (mounted) {
+                setState(() {
+                  start = 30;
+                  startTimer();
+                });
+              }
             },
             child: const CustomText(
               'Resend code',
-              type: FontStyle.appbarTitle,
+              type: FontStyle.Small,
               color: primaryColor,
             )),
       );
@@ -71,7 +85,8 @@ class _ResendCodeButtonState extends ConsumerState<ResendCodeButton> {
       return Center(
         child: CustomText(
           'Didn’t receive code? Get new code in ${start < 10 ? "0$start" : start} secs.',
-          type: FontStyle.subtitle,
+          type: FontStyle.Small,
+          color: themeProvider.themeManager.placeholderTextColor,
         ),
       );
     }

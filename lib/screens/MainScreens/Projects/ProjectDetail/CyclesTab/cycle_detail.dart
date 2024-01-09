@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,40 +7,53 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/assignee_sheet.dart';
-import 'package:plane_startup/bottom_sheets/filter_sheet.dart';
-import 'package:plane_startup/bottom_sheets/lead_sheet.dart';
-import 'package:plane_startup/bottom_sheets/type_sheet.dart';
-import 'package:plane_startup/bottom_sheets/views_sheet.dart';
-import 'package:plane_startup/kanban/custom/board.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/models/chart_model.dart';
-import 'package:plane_startup/models/issues.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-// import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/completion_percentage.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/empty.dart';
+import 'package:plane/bottom_sheets/assignee_sheet.dart';
+import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
+import 'package:plane/bottom_sheets/lead_sheet.dart';
+import 'package:plane/bottom_sheets/type_sheet.dart';
+import 'package:plane/bottom_sheets/views_sheet.dart';
+import 'package:plane/kanban/custom/board.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/models/chart_model.dart';
+import 'package:plane/models/issues.dart';
+import 'package:plane/provider/modules_provider.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/calender_view.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/spreadsheet_view.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/widgets/completion_percentage.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/empty.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
+import 'package:plane/widgets/square_avatar_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../../../bottom_sheets/add_link_sheet.dart';
+import '../../../../../bottom_sheets/select_cycle_sheet.dart';
+import '../IssuesTab/issue_detail.dart';
+
 class CycleDetail extends ConsumerStatefulWidget {
-  const CycleDetail({
-    super.key,
-    this.cycleId,
-    this.cycleName,
-    this.moduleId,
-    this.moduleName,
-    this.fromModule = false,
-  });
+  const CycleDetail(
+      {super.key,
+      this.cycleId,
+      this.cycleName,
+      this.moduleId,
+      this.moduleName,
+      this.fromModule = false,
+      this.projId,
+      this.from});
   final String? cycleName;
   final String? cycleId;
   final String? moduleName;
   final String? moduleId;
+  final String? projId;
   final bool fromModule;
+  final PreviousScreen? from;
 
   @override
   ConsumerState<CycleDetail> createState() => _CycleDetailState();
@@ -47,14 +62,21 @@ class CycleDetail extends ConsumerStatefulWidget {
 class _CycleDetailState extends ConsumerState<CycleDetail> {
   List<ChartData> chartData = [];
   PageController? pageController = PageController();
+  List tempIssuesList = [];
+
+  DateTime? dueDate;
+  DateTime? startDate;
 
   @override
   void initState() {
-    log('Grouped By: ${ref.read(ProviderList.issuesProvider).issues.groupBY}');
-    log('Cycle Id: ${widget.cycleId}');
-    log('Module Id: ${widget.moduleId}');
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    tempIssuesList = issuesProvider.issuesList;
+    issuesProvider.tempProjectView = issuesProvider.issues.projectView;
+    issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
+    issuesProvider.tempOrderBy = issuesProvider.issues.orderBY;
+    issuesProvider.tempIssueType = issuesProvider.issues.issueType;
+    issuesProvider.tempFilters = issuesProvider.issues.filters;
 
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
     issuesProvider.issues.projectView = ProjectView.kanban;
     issuesProvider.issues.groupBY = GroupBY.state;
 
@@ -62,14 +84,35 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     issuesProvider.issues.issueType = IssueType.all;
     issuesProvider.showEmptyStates = true;
     issuesProvider.issues.filters = Filters(
-        assignees: [], createdBy: [], labels: [], priorities: [], states: []);
+      assignees: [],
+      createdBy: [],
+      labels: [],
+      priorities: [],
+      states: [],
+      targetDate: [],
+      startDate: [],
+      stateGroup: [],
+      subscriber: [],
+    );
+    issuesProvider.filterIssues(
+        cycleId: widget.cycleId,
+        moduleId: widget.moduleId,
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace
+            .workspaceSlug,
+        issueCategory: widget.fromModule
+            ? IssueCategory.moduleIssues
+            : IssueCategory.cycleIssues,
+        projID: widget.projId ??
+            ref.read(ProviderList.projectProvider).currentProject['id']);
     widget.fromModule ? getModuleData() : getCycleData();
     super.initState();
   }
 
   Future getModuleData() async {
-    var modulesProvider = ref.read(ProviderList.modulesProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
+    final modulesProvider = ref.read(ProviderList.modulesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
 
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
@@ -80,7 +123,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .getModuleDetails(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
             projId: ref.read(ProviderList.projectProvider).currentProject['id'],
             moduleId: widget.moduleId!,
@@ -95,7 +138,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .filterModuleIssues(
       slug: ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug,
       projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
     )
@@ -107,13 +150,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Future getCycleData() async {
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-
-    cyclesProvider.changeStateToLoading(cyclesProvider.cyclesDetailState);
-
-    log(cyclesProvider.cycleDetailSelectedIndex.toString());
-
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    cyclesProvider.cyclesDetailState = StateEnum.loading;
     pageController = PageController(
         initialPage: cyclesProvider.cycleDetailSelectedIndex,
         keepPage: true,
@@ -123,11 +162,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .cycleDetailsCrud(
             slug: ref
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug,
-            projectId:
+            projectId: widget.projId ??
                 ref.read(ProviderList.projectProvider).currentProject['id'],
             method: CRUD.read,
+            disableLoading: true,
             cycleId: widget.cycleId!)
         .then((value) => getChartData(cyclesProvider
             .cyclesDetailsData['distribution']['completion_chart']));
@@ -135,14 +175,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     ref
         .read(ProviderList.issuesProvider)
         .getIssueProperties(issueCategory: IssueCategory.cycleIssues);
-    // ref.read(ProviderList.issuesProvider).getProjectView().then((value) {
     cyclesProvider
         .filterCycleIssues(
+      cycleID: widget.cycleId!,
       slug: ref
           .read(ProviderList.workspaceProvider)
-          .selectedWorkspace!
+          .selectedWorkspace
           .workspaceSlug,
-      projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
+      projectId: widget.projId ??
+          ref.read(ProviderList.projectProvider).currentProject['id'],
     )
         .then((value) {
       if (issuesProvider.issues.projectView == ProjectView.list) {
@@ -159,21 +200,26 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var issueProvider = ref.watch(ProviderList.issuesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
-
-    bool isLoading = widget.fromModule
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
+    final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final bool isLoading = widget.fromModule
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
 
-    log(isLoading.toString());
     return WillPopScope(
       onWillPop: () async {
-        // await issueProvider.getProjectView();
+        if (widget.from == PreviousScreen.myIssues) return true;
+        issueProvider.getIssues(
+          slug: ref
+              .read(ProviderList.workspaceProvider)
+              .selectedWorkspace
+              .workspaceSlug,
+          projID: projectProvider.currentProject['id'],
+        );
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
@@ -185,52 +231,99 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         issueProvider.issues.filters = issueProvider.tempFilters;
 
         issueProvider.showEmptyStates =
-            issueProvider.issueView["showEmptyGroups"];
-        log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
+            issueProvider.issueView['display_filters']["show_empty_groups"];
+
+        issueProvider.setsState();
+        issueProvider.filterIssues(
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace
+                .workspaceSlug,
+            projID: projectProvider.currentProject['id']);
         return true;
       },
       child: Scaffold(
-        // backgroundColor: themeProvider.secondaryBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
-          elevation: 0,
+        floatingActionButton: isLoading &&
+                !widget.fromModule &&
+                DateTime.parse(cyclesProvider.cyclesDetailsData['end_date'])
+                    .isBefore(DateTime.now()) &&
+                (cyclesProvider.cyclesDetailsData['backlog_issues'] != 0 &&
+                    cyclesProvider.cyclesDetailsData['started_issues'] != 0 &&
+                    cyclesProvider.cyclesDetailsData['unstarted_issues'] != 0)
+            ? FloatingActionButton(
+                backgroundColor: themeProvider.themeManager.primaryColour,
+                onPressed: () {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      constraints: BoxConstraints(
+                          maxHeight: height * 0.8, minHeight: 250),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return const SelectCycleSheet();
+                      });
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeManager.primaryColour,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Icon(
+                    Icons.error_outline_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : null,
+        appBar: CustomAppBar(
           centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                modulesProvider.selectedIssues = [];
-                cyclesProvider.selectedIssues = [];
-                issueProvider.issues.projectView =
-                    issueProvider.tempProjectView;
-                issueProvider.issues.groupBY = issueProvider.tempGroupBy;
+          onPressed: () {
+            if (widget.from == PreviousScreen.myIssues) {
+              Navigator.pop(context);
+              return;
+            }
+            issueProvider.getIssues(
+              slug: ref
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace
+                  .workspaceSlug,
+              projID: projectProvider.currentProject['id'],
+            );
+            modulesProvider.selectedIssues = [];
+            cyclesProvider.selectedIssues = [];
+            issueProvider.issues.projectView = issueProvider.tempProjectView;
+            issueProvider.issues.groupBY = issueProvider.tempGroupBy;
 
-                issueProvider.issues.orderBY = issueProvider.tempOrderBy;
-                issueProvider.issues.issueType = issueProvider.tempIssueType;
+            issueProvider.issues.orderBY = issueProvider.tempOrderBy;
+            issueProvider.issues.issueType = issueProvider.tempIssueType;
 
-                issueProvider.issues.filters = issueProvider.tempFilters;
+            issueProvider.issues.filters = issueProvider.tempFilters;
+            issueProvider.showEmptyStates =
+                issueProvider.issueView['display_filters'] != null
+                    ? issueProvider.issueView['display_filters']
+                        ["show_empty_groups"]
+                    : false;
 
-                issueProvider.showEmptyStates =
-                    issueProvider.issueView["showEmptyGroups"];
-                log('Temp Grouped By: ${ref.read(ProviderList.issuesProvider).tempGroupBy}');
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.close,
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkPrimaryTextColor
-                    : lightPrimaryTextColor,
-              )),
-          title: Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-            ),
-            child: CustomText(
-              widget.fromModule ? widget.moduleName! : widget.cycleName!,
-              // color: themeProvider.primaryTextColor,
-              type: FontStyle.appbarTitle,
-            ),
-          ),
+            issueProvider.setsState();
+            issueProvider.filterIssues(
+                slug: ref
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace
+                    .workspaceSlug,
+                projID: projectProvider.currentProject['id']);
+            Navigator.pop(context);
+          },
+          text: widget.projId == null
+              ? projectProvider.currentProject['name']
+              : projectProvider.projects.firstWhere(
+                  (element) => element['id'] == widget.projId)['name'],
         ),
         body: isLoading
             ? Center(
@@ -239,9 +332,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     height: 30,
                     child: LoadingIndicator(
                       indicatorType: Indicator.lineSpinFadeLoader,
-                      colors: themeProvider.isDarkThemeEnabled
-                          ? [Colors.white]
-                          : [Colors.black],
+                      colors: [themeProvider.themeManager.primaryTextColor],
                       strokeWidth: 1.0,
                       backgroundColor: Colors.transparent,
                     )),
@@ -249,11 +340,23 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Container(
-                  //   height: 1,
-                  //   width: width,
-                  //   color: strokeColor,
-                  // ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25, top: 20),
+                          child: CustomText(
+                            widget.fromModule
+                                ? widget.moduleName!
+                                : widget.cycleName!,
+                            maxLines: 1,
+                            type: FontStyle.H5,
+                            fontWeight: FontWeightt.Semibold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
@@ -283,43 +386,46 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText(
-                                  'Board',
-                                  // color: selected == 0
-                                  //     ? primaryColor
-                                  // : themeProvider.strokeColor,
-                                  type: FontStyle.subheading,
-                                  color: !themeProvider.isDarkThemeEnabled &&
-                                          (widget.fromModule
+                                  overrride: true,
+                                  'Issues',
+                                  type: FontStyle.Large,
+                                  fontWeight: FontWeightt.Medium,
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              1
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              1)
+                                      ? themeProvider
+                                          .themeManager.placeholderTextColor
+                                      : (widget.fromModule
                                               ? modulesProvider
                                                       .moduleDetailSelectedIndex ==
                                                   1
                                               : cyclesProviderRead
                                                       .cycleDetailSelectedIndex ==
                                                   1)
-                                      ? lightSecondaryTextColor
-                                      : themeProvider.isDarkThemeEnabled &&
-                                              (widget.fromModule
-                                                  ? modulesProvider
-                                                          .moduleDetailSelectedIndex ==
-                                                      1
-                                                  : cyclesProviderRead
-                                                          .cycleDetailSelectedIndex ==
-                                                      1)
-                                          ? darkSecondaryTextColor
-                                          : primaryColor,
+                                          ? themeProvider
+                                              .themeManager.placeholderTextColor
+                                          : themeProvider
+                                              .themeManager.primaryColour,
                                 ),
                               ),
                               Container(
                                 height: 7,
-                                color: (widget.fromModule
-                                        ? modulesProvider
-                                                .moduleDetailSelectedIndex ==
-                                            0
-                                        : cyclesProviderRead
-                                                .cycleDetailSelectedIndex ==
-                                            0)
-                                    ? primaryColor
-                                    : Colors.transparent,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              0
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              0)
+                                      ? themeProvider.themeManager.primaryColour
+                                      : Colors.transparent,
+                                ),
                               ),
                             ],
                           ),
@@ -349,42 +455,45 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: CustomText('Details',
-                                    // color: selected == 1
-                                    //     ? primaryColor
-                                    // : themeProvider.strokeColor,
-                                    type: FontStyle.subheading,
-                                    color: !themeProvider.isDarkThemeEnabled &&
-                                            (widget.fromModule
+                                    overrride: true,
+                                    type: FontStyle.Large,
+                                    fontWeight: FontWeightt.Medium,
+                                    color: (widget.fromModule
+                                            ? modulesProvider
+                                                    .moduleDetailSelectedIndex ==
+                                                0
+                                            : cyclesProviderRead
+                                                    .cycleDetailSelectedIndex ==
+                                                0)
+                                        ? themeProvider
+                                            .themeManager.placeholderTextColor
+                                        : (widget.fromModule
                                                 ? modulesProvider
                                                         .moduleDetailSelectedIndex ==
                                                     0
                                                 : cyclesProviderRead
                                                         .cycleDetailSelectedIndex ==
                                                     0)
-                                        ? lightSecondaryTextColor
-                                        : themeProvider.isDarkThemeEnabled &&
-                                                (widget.fromModule
-                                                    ? modulesProvider
-                                                            .moduleDetailSelectedIndex ==
-                                                        0
-                                                    : cyclesProviderRead
-                                                            .cycleDetailSelectedIndex ==
-                                                        0)
-                                            ? darkSecondaryTextColor
-                                            : primaryColor),
+                                            ? themeProvider.themeManager
+                                                .placeholderTextColor
+                                            : themeProvider
+                                                .themeManager.primaryColour),
                               ),
                               Container(
                                 height: 7,
-                                color: (widget.fromModule
-                                        ? modulesProvider
-                                                .moduleDetailSelectedIndex ==
-                                            1
-                                        : cyclesProviderRead
-                                                .cycleDetailSelectedIndex ==
-                                            1)
-                                    ? primaryColor
-                                    : Colors.transparent,
-                              )
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (widget.fromModule
+                                          ? modulesProvider
+                                                  .moduleDetailSelectedIndex ==
+                                              1
+                                          : cyclesProviderRead
+                                                  .cycleDetailSelectedIndex ==
+                                              1)
+                                      ? themeProvider.themeManager.primaryColour
+                                      : Colors.transparent,
+                                ),
+                              ),
                             ],
                           ),
                         )),
@@ -394,9 +503,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                   Container(
                     height: 2,
                     width: MediaQuery.of(context).size.width,
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkThemeBorder
-                        : const Color(0xFFE5E5E5),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                   ),
                   Expanded(
                     child: PageView(
@@ -417,20 +524,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           children: [
                             Expanded(
                               child:
-                                  ((widget.fromModule &&
-                                              (modulesProvider
-                                                          .moduleIssueState ==
-                                                      StateEnum.loading ||
-                                                  modulesProvider
-                                                          .moduleDetailState ==
-                                                      StateEnum.loading)) ||
-                                          (!widget.fromModule &&
-                                              (cyclesProvider
-                                                          .cyclesIssueState ==
-                                                      StateEnum.loading ||
-                                                  cyclesProvider
-                                                          .cyclesDetailState ==
-                                                      StateEnum.loading)))
+                                  ((widget.fromModule && (modulesProvider.moduleIssueState == StateEnum.loading || modulesProvider.moduleDetailState == StateEnum.loading)) ||
+                                              (!widget.fromModule &&
+                                                  (cyclesProvider.cyclesIssueState ==
+                                                          StateEnum.loading ||
+                                                      cyclesProvider.cyclesDetailState ==
+                                                          StateEnum
+                                                              .loading))) ||
+                                          issueProvider.projectViewState ==
+                                              StateEnum.loading
                                       ? Center(
                                           child: SizedBox(
                                               width: 30,
@@ -438,40 +540,34 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               child: LoadingIndicator(
                                                 indicatorType: Indicator
                                                     .lineSpinFadeLoader,
-                                                colors: themeProvider
-                                                        .isDarkThemeEnabled
-                                                    ? [Colors.white]
-                                                    : [Colors.black],
+                                                colors: [
+                                                  themeProvider.themeManager
+                                                      .primaryTextColor
+                                                ],
                                                 strokeWidth: 1.0,
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                backgroundColor: themeProvider
+                                                    .themeManager
+                                                    .primaryBackgroundDefaultColor,
                                               )),
                                         )
-                                      : ((!widget.fromModule &&
-                                                  cyclesProvider
-                                                      .isIssuesEmpty) ||
+                                      : ((!widget.fromModule && cyclesProvider.isIssuesEmpty) ||
                                               (widget.fromModule &&
                                                   modulesProvider
                                                       .isIssuesEmpty))
-                                          ? EmptyPlaceholder.emptyIssues(
-                                              context,
+                                          ? EmptyPlaceholder.emptyIssues(context,
                                               cycleId: widget.cycleId,
                                               moduleId: widget.moduleId,
-                                            )
-                                          : ((!widget.fromModule &&
-                                                      issueProvider.issues
-                                                              .projectView ==
-                                                          ProjectView.list) ||
+                                              projectId: widget.projId,
+                                              type: IssueCategory.cycleIssues,
+                                              ref: ref)
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
                                                   (widget.fromModule &&
-                                                      issueProvider.issues
-                                                              .projectView ==
+                                                      issueProvider.issues.projectView ==
                                                           ProjectView.list))
                                               ? Container(
                                                   color: themeProvider
-                                                          .isDarkThemeEnabled
-                                                      ? const Color.fromRGBO(
-                                                          29, 30, 32, 1)
-                                                      : lightSecondaryBackgroundColor,
+                                                      .themeManager
+                                                      .secondaryBackgroundDefaultColor,
                                                   margin: const EdgeInsets.only(
                                                       top: 5),
                                                   child: SingleChildScrollView(
@@ -505,10 +601,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                               .start,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 15),
-                                                                          margin:
-                                                                              const EdgeInsets.only(bottom: 10),
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              left: 15),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
                                                                           child:
                                                                               Row(
                                                                             children: [
@@ -517,11 +615,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 padding: const EdgeInsets.only(
                                                                                   left: 10,
                                                                                 ),
+                                                                                width: MediaQuery.of(context).size.width * 0.6,
                                                                                 child: CustomText(
                                                                                   state.title!,
-                                                                                  type: FontStyle.subheading,
-                                                                                  color: themeProvider.isDarkThemeEnabled ? Colors.white : Colors.black,
-                                                                                  fontWeight: FontWeight.w500,
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  maxLines: 1,
+                                                                                  type: FontStyle.Small,
+                                                                                  fontWeight: FontWeightt.Medium,
                                                                                 ),
                                                                               ),
                                                                               Container(
@@ -529,12 +629,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                 margin: const EdgeInsets.only(
                                                                                   left: 15,
                                                                                 ),
-                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: themeProvider.isDarkThemeEnabled ? const Color.fromRGBO(39, 42, 45, 1) : const Color.fromRGBO(222, 226, 230, 1)),
+                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: themeProvider.themeManager.secondaryBackgroundDefaultColor),
                                                                                 height: 25,
                                                                                 width: 30,
                                                                                 child: CustomText(
                                                                                   state.items.length.toString(),
-                                                                                  type: FontStyle.subtitle,
+                                                                                  type: FontStyle.Medium,
                                                                                 ),
                                                                               ),
                                                                               const Spacer(),
@@ -544,7 +644,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                       issueProvider.createIssuedata['state'] = state.id;
                                                                                     } else {
                                                                                       issueProvider.createIssuedata['priority'] = 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
-                                                                                      // createIssuedata['s'] = element.id;
                                                                                     }
                                                                                     Navigator.of(context).push(MaterialPageRoute(
                                                                                         builder: (ctx) => CreateIssue(
@@ -552,9 +651,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                                               cycleId: widget.cycleId,
                                                                                             )));
                                                                                   },
-                                                                                  icon: const Icon(
+                                                                                  icon: Icon(
                                                                                     Icons.add,
-                                                                                    color: primaryColor,
+                                                                                    color: themeProvider.themeManager.primaryColour,
                                                                                   )),
                                                                               const SizedBox(
                                                                                 width: 10,
@@ -570,11 +669,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                             ? Container(
                                                                                 margin: const EdgeInsets.only(bottom: 10),
                                                                                 width: MediaQuery.of(context).size.width,
-                                                                                color: themeProvider.isDarkThemeEnabled ? darkBackgroundColor : Colors.white,
+                                                                                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
                                                                                 padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
                                                                                 child: const CustomText(
                                                                                   'No issues.',
-                                                                                  type: FontStyle.title,
+                                                                                  type: FontStyle.Small,
                                                                                   maxLines: 10,
                                                                                   textAlign: TextAlign.start,
                                                                                 ),
@@ -588,29 +687,110 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8),
-                                                  child: KanbanBoard(
-                                                    widget.fromModule
-                                                        ? modulesProvider
-                                                            .initializeBoard()
-                                                        : cyclesProvider
-                                                            .initializeBoard(),
-                                                    groupEmptyStates:
-                                                        !(widget.fromModule
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                                      (widget.fromModule &&
+                                                          issueProvider.issues.projectView ==
+                                                              ProjectView.kanban))
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8),
+                                                      child: KanbanBoard(
+                                                        widget.fromModule
+                                                            ? modulesProvider
+                                                                .initializeBoard()
+                                                            : cyclesProvider
+                                                                .initializeBoard(),
+                                                        boardID:
+                                                            widget.fromModule
+                                                                ? 'module-board'
+                                                                : 'cycle-board',
+                                                        onItemReorder: (
+                                                            {newCardIndex,
+                                                            newListIndex,
+                                                            oldCardIndex,
+                                                            oldListIndex}) {
+                                                          if (widget
+                                                              .fromModule) {
+                                                            modulesProvider
+                                                                .reorderIssue(
+                                                              newCardIndex:
+                                                                  newCardIndex!,
+                                                              newListIndex:
+                                                                  newListIndex!,
+                                                              oldCardIndex:
+                                                                  oldCardIndex!,
+                                                              oldListIndex:
+                                                                  oldListIndex!,
+                                                            )
+                                                                .catchError(
+                                                                    (err) {
+                                                              CustomToast.showToast(
+                                                                  context,
+                                                                  message:
+                                                                      'Failed to update issue',
+                                                                  toastType:
+                                                                      ToastType
+                                                                          .failure);
+                                                            });
+                                                          } else {
+                                                            cyclesProvider
+                                                                .reorderIssue(
+                                                              newCardIndex:
+                                                                  newCardIndex!,
+                                                              newListIndex:
+                                                                  newListIndex!,
+                                                              oldCardIndex:
+                                                                  oldCardIndex!,
+                                                              oldListIndex:
+                                                                  oldListIndex!,
+                                                            )
+                                                                .catchError(
+                                                                    (err) {
+                                                              log(err
+                                                                  .toString());
+                                                              CustomToast.showToast(
+                                                                  context,
+                                                                  message:
+                                                                      'Failed to update issue',
+                                                                  toastType:
+                                                                      ToastType
+                                                                          .failure);
+                                                            });
+                                                          }
+                                                        },
+                                                        isCardsDraggable:
+                                                            issueProvider
+                                                                .checkIsCardsDaraggable(),
+                                                        groupEmptyStates: !(widget
+                                                                .fromModule
                                                             ? modulesProvider
                                                                 .showEmptyStates
                                                             : issueProvider
                                                                 .showEmptyStates),
-                                                    backgroundColor: themeProvider
-                                                            .isDarkThemeEnabled
-                                                        ? const Color.fromRGBO(
-                                                            29, 30, 32, 1)
-                                                        : lightSecondaryBackgroundColor,
-                                                    listScrollConfig:
-                                                        ScrollConfig(
+                                                        cardPlaceHolderColor:
+                                                            themeProvider
+                                                                .themeManager
+                                                                .primaryBackgroundDefaultColor,
+                                                        cardPlaceHolderDecoration:
+                                                            BoxDecoration(
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .primaryBackgroundDefaultColor,
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 2,
+                                                                color: themeProvider
+                                                                    .themeManager
+                                                                    .borderSubtle01Color,
+                                                                spreadRadius: 0,
+                                                              )
+                                                            ]),
+                                                        backgroundColor:
+                                                            themeProvider
+                                                                .themeManager
+                                                                .secondaryBackgroundDefaultColor,
+                                                        listScrollConfig: ScrollConfig(
                                                             offset: 65,
                                                             duration:
                                                                 const Duration(
@@ -618,27 +798,44 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                         100),
                                                             curve:
                                                                 Curves.linear),
-                                                    listTransitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    cardTransitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 400),
-                                                    textStyle: TextStyle(
-                                                        fontSize: 19,
-                                                        height: 1.3,
-                                                        color: Colors
-                                                            .grey.shade800,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
+                                                        listTransitionDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                        cardTransitionDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    400),
+                                                        textStyle: TextStyle(
+                                                            fontSize: 19,
+                                                            height: 1.3,
+                                                            color: Colors
+                                                                .grey.shade800,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    )
+                                                  : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar))
+                                                      ? const CalendarView()
+                                                      : SpreadSheetView(
+                                                          issueCategory:
+                                                              widget.fromModule
+                                                                  ? IssueCategory
+                                                                      .moduleIssues
+                                                                  : IssueCategory
+                                                                      .cycleIssues,
+                                                        ),
                             ),
                             SafeArea(
                               child: Container(
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
-                                color: darkBackgroundColor,
+                                decoration: BoxDecoration(
+                                    color: themeProvider.themeManager
+                                        .primaryBackgroundDefaultColor,
+                                    boxShadow: themeProvider.themeManager
+                                        .shadowBottomControlButtons),
                                 child: Row(
                                   children: [
                                     projectProvider.role == Role.admin ||
@@ -646,46 +843,37 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                         ? Expanded(
                                             child: GestureDetector(
                                               onTap: () {
-                                                // showModalBottomSheet(
-                                                //     isScrollControlled: true,
-                                                //     enableDrag: true,
-                                                //     constraints: BoxConstraints(
-                                                //         maxHeight:
-                                                //             MediaQuery.of(context).size.height *
-                                                //                 0.85),
-                                                //     shape: const RoundedRectangleBorder(
-                                                //         borderRadius: BorderRadius.only(
-                                                //       topLeft: Radius.circular(30),
-                                                //       topRight: Radius.circular(30),
-                                                //     )),
-                                                //     context: context,
-                                                //     builder: (ctx) {
-                                                //       return const FilterSheet();
-                                                //     });
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         CreateIssue(
+                                                      projectId: widget
+                                                              .projId ??
+                                                          projectProvider
+                                                                  .currentProject[
+                                                              'id'],
+                                                      fromMyIssues: true,
                                                       moduleId: widget.moduleId,
                                                       cycleId: widget.cycleId,
                                                     ),
                                                   ),
                                                 );
                                               },
-                                              child: const SizedBox(
+                                              child: SizedBox(
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Icon(
                                                       Icons.add,
-                                                      color: Colors.white,
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryTextColor,
                                                       size: 20,
                                                     ),
-                                                    CustomText(
+                                                    const CustomText(
                                                       ' Issue',
-                                                      type: FontStyle.subtitle,
-                                                      color: Colors.white,
+                                                      type: FontStyle.Medium,
                                                     )
                                                   ],
                                                 ),
@@ -696,7 +884,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
                                     Expanded(
                                         child: GestureDetector(
@@ -724,20 +913,20 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               );
                                             });
                                       },
-                                      child: const SizedBox(
+                                      child: SizedBox(
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Icon(
                                               Icons.menu,
-                                              color: Colors.white,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
                                               size: 19,
                                             ),
-                                            CustomText(
+                                            const CustomText(
                                               ' Layout',
-                                              type: FontStyle.subtitle,
-                                              color: Colors.white,
+                                              type: FontStyle.Medium,
                                             )
                                           ],
                                         ),
@@ -746,104 +935,126 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
-                                    Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.9),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
-                                            )),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return ViewsSheet(
-                                                issueCategory: widget.fromModule
-                                                    ? IssueCategory.moduleIssues
-                                                    : IssueCategory.cycleIssues,
-                                                cycleId: widget.cycleId,
-                                              );
-                                            });
-                                      },
-                                      child: const SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.view_sidebar,
-                                              color: Colors.white,
-                                              size: 19,
+                                    issueProvider.issues.projectView ==
+                                            ProjectView.calendar
+                                        ? Container()
+                                        : Expanded(
+                                            child: GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  enableDrag: true,
+                                                  constraints: BoxConstraints(
+                                                      maxHeight:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.9),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(30),
+                                                    topRight:
+                                                        Radius.circular(30),
+                                                  )),
+                                                  context: context,
+                                                  builder: (ctx) {
+                                                    return ViewsSheet(
+                                                      projectView: issueProvider
+                                                          .issues.projectView,
+                                                      issueCategory:
+                                                          widget.fromModule
+                                                              ? IssueCategory
+                                                                  .moduleIssues
+                                                              : IssueCategory
+                                                                  .cycleIssues,
+                                                      cycleId: widget.cycleId,
+                                                    );
+                                                  });
+                                            },
+                                            child: SizedBox(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.wysiwyg_outlined,
+                                                    color: themeProvider
+                                                        .themeManager
+                                                        .primaryTextColor,
+                                                    size: 19,
+                                                  ),
+                                                  const CustomText(
+                                                    ' Display',
+                                                    type: FontStyle.Medium,
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                            CustomText(
-                                              ' Views',
-                                              type: FontStyle.subtitle,
-                                              color: Colors.white,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
+                                          )),
                                     Container(
                                       height: 50,
                                       width: 0.5,
-                                      color: greyColor,
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
                                     ),
                                     Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.85),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
-                                            )),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return FilterSheet(
-                                                issueCategory: widget.fromModule
-                                                    ? IssueCategory.moduleIssues
-                                                    : IssueCategory.cycleIssues,
-                                              );
-                                            });
-                                      },
-                                      child: const SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.filter_alt,
-                                              color: Colors.white,
-                                              size: 19,
-                                            ),
-                                            CustomText(
-                                              ' Filters',
-                                              type: FontStyle.subtitle,
-                                              color: Colors.white,
-                                            )
-                                          ],
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              enableDrag: true,
+                                              constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.85),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              )),
+                                              context: context,
+                                              builder: (ctx) {
+                                                return FilterSheet(
+                                                  issueCategory:
+                                                      widget.fromModule
+                                                          ? IssueCategory
+                                                              .moduleIssues
+                                                          : IssueCategory
+                                                              .cycleIssues,
+                                                );
+                                              });
+                                        },
+                                        child: SizedBox(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.filter_list_outlined,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                                size: 19,
+                                              ),
+                                              const CustomText(
+                                                ' Filters',
+                                                type: FontStyle.Medium,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -852,36 +1063,22 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         ),
                         widget.fromModule
                             ? Container(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
-                                padding: const EdgeInsets.all(25),
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                padding:
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: activeCycleDetails(fromModule: true),
                               )
                             : Container(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkBackgroundColor
-                                    : lightBackgroundColor,
-                                padding: const EdgeInsets.all(25),
+                                color: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                padding:
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: activeCycleDetails(),
                               ),
                       ],
                     ),
                   ),
-                  // Expanded(
-                  //     child: (widget.fromModule
-                  //             ? modulesProvider.moduleDetailSelectedIndex == 0
-                  //             : cyclesProviderRead.cycleDetailSelectedIndex ==
-                  //                 0)
-                  //         ? Container()
-                  //         : Container()),
-                  // ((!widget.fromModule &&
-                  //             cyclesProviderRead.cycleDetailSelectedIndex ==
-                  //                 0) ||
-                  //         (widget.fromModule &&
-                  //             modulesProvider.moduleDetailSelectedIndex == 0))
-                  //     ? Container()
-                  //     : Container()
                 ],
               ),
       ),
@@ -889,9 +1086,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget activeCycleDetails({bool fromModule = false}) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
 
     if (widget.fromModule
         ? modulesProvider.moduleDetailState == StateEnum.loading
@@ -902,9 +1099,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           height: 30,
           child: LoadingIndicator(
             indicatorType: Indicator.lineSpinFadeLoader,
-            colors: themeProvider.isDarkThemeEnabled
-                ? [Colors.white]
-                : [Colors.black],
+            colors: [themeProvider.themeManager.primaryTextColor],
             strokeWidth: 1.0,
             backgroundColor: Colors.transparent,
           ),
@@ -913,6 +1108,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     } else {
       return ListView(
         children: [
+          const SizedBox(height: 30),
           datePart(),
           const SizedBox(height: 30),
           detailsPart(),
@@ -924,19 +1120,205 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           statesPart(),
           const SizedBox(height: 30),
           labelsPart(fromModule: widget.fromModule),
+          const SizedBox(height: 30),
+          widget.fromModule ? links() : Container()
         ],
       );
     }
   }
 
+  Widget links() {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final ModuleProvider moduleProvider =
+        ref.watch(ProviderList.modulesProvider);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+            'Links',
+            type: FontStyle.Medium,
+            fontWeight: FontWeightt.Medium,
+            color: themeProvider.themeManager.primaryTextColor,
+          ),
+          GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.85),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: const AddLinkSheet(),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Icon(
+                Icons.add,
+                color: themeProvider.themeManager.primaryTextColor,
+              ))
+        ],
+      ),
+      const SizedBox(height: 10),
+      moduleProvider.moduleDetailsData['link_module'].isNotEmpty
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: themeProvider.themeManager.borderSubtle01Color,
+                ),
+              ),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount:
+                      moduleProvider.moduleDetailsData['link_module'].length,
+                  itemBuilder: (ctx, index) {
+                    return SizedBox(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: Transform.rotate(
+                              angle: -20,
+                              child: Icon(
+                                Icons.link,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              moduleProvider.moduleDetailsData['link_module']
+                                          [index]['title'] !=
+                                      null
+                                  ? CustomText(
+                                      moduleProvider
+                                          .moduleDetailsData['link_module']
+                                              [index]['title']
+                                          .toString(),
+                                      type: FontStyle.Medium,
+                                    )
+                                  : Container(),
+                              CustomText(
+                                'by ${moduleProvider.moduleDetailsData['link_module'][index]['created_by_detail']['display_name']}',
+                                type: FontStyle.Small,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                              )
+                            ],
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.85),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                )),
+                                context: context,
+                                builder: (ctx) {
+                                  return SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      child: AddLinkSheet(
+                                        id: moduleProvider.moduleDetailsData[
+                                            'link_module'][index]['id'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.edit_outlined,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              moduleProvider.handleLinks(
+                                  linkID: moduleProvider
+                                          .moduleDetailsData['link_module']
+                                      [index]['id'],
+                                  data: {},
+                                  method: HttpMethod.delete,
+                                  context: context);
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            )
+          : Container()
+    ]);
+  }
+
   Widget datePart() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var detailData = widget.fromModule
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
-    return Row(
+
+    startDate = DateFormat('yyyy-MM-dd').parse(
+        detailData['start_date'] == null || detailData['start_date'] == ''
+            ? DateTime.now().toString()
+            : detailData['start_date']!);
+
+    dueDate = DateFormat('yyyy-MM-dd').parse(
+        detailData[widget.fromModule ? 'target_date' : 'end_date'] == null ||
+                detailData[widget.fromModule ? 'target_date' : 'end_date'] == ''
+            ? DateTime.now().toString()
+            : detailData[widget.fromModule ? 'target_date' : 'end_date']!);
+
+    return Wrap(
+      runSpacing: 20,
       children: [
         (detailData['start_date'] == null || detailData['start_date'] == '') ||
                 (detailData[widget.fromModule ? 'target_date' : 'end_date'] ==
@@ -947,13 +1329,15 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             ? Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? greenWithOpacity
-                        : lightGreeyColor,
-                    borderRadius: BorderRadius.circular(5)),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
+                ),
                 child: const CustomText(
                   'Draft',
-                  color: greyColor,
+                  type: FontStyle.Small,
                 ),
               )
             : Container(
@@ -965,15 +1349,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date']) ==
                             'Draft'
-                        ? lightGreeyColor
+                        ? themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor
                         : checkDate(
                                     startDate: detailData['start_date'],
                                     endDate: detailData[widget.fromModule
                                         ? 'target_date'
                                         : 'end_date']) ==
                                 'Completed'
-                            ? primaryLightColor
-                            : greenWithOpacity,
+                            ? themeProvider
+                                .themeManager.secondaryBackgroundActiveColor
+                            : themeProvider.themeManager.successBackgroundColor,
                     borderRadius: BorderRadius.circular(5)),
                 child: CustomText(
                   checkDate(
@@ -981,6 +1367,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     endDate: detailData[
                         widget.fromModule ? 'target_date' : 'end_date'],
                   ),
+                  type: FontStyle.Small,
                   color: checkDate(
                             startDate: detailData['start_date'],
                             endDate: detailData[
@@ -995,46 +1382,79 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     : 'end_date'],
                               ) ==
                               'Completed'
-                          ? primaryColor
+                          ? themeProvider.themeManager.primaryColour
                           : greenHighLight,
                 ),
               ),
         const SizedBox(width: 20),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
               onTap: () async {
-                var date = await showDatePicker(
+                if (projectProvider.role != Role.admin &&
+                    projectProvider.role != Role.member) {
+                  CustomToast.showToast(context,
+                      message: accessRestrictedMSG,
+                      toastType: ToastType.failure);
+                  return;
+                }
+                final date = await showDatePicker(
                   builder: (context, child) => Theme(
-                    data: themeProvider.isDarkThemeEnabled
-                        ? ThemeData.dark().copyWith(
-                            colorScheme: const ColorScheme.dark(
-                              primary: primaryColor,
-                            ),
-                          )
-                        : ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: primaryColor,
-                            ),
-                          ),
+                    data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
                   ),
                   context: context,
-                  initialDate: DateFormat('yyyy-MM-dd').parse(
-                      detailData['start_date'] == null ||
-                              detailData['start_date'] == ''
-                          ? DateTime.now().toString()
-                          : detailData['start_date']!),
+                  initialDate: startDate!,
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2025),
                 );
+                if (date != null) {
+                  final bool dateNotConflicted = dueDate == null
+                      ? true
+                      : widget.fromModule
+                          ? true
+                          : await cyclesProvider.dateCheck(
+                              slug: ref
+                                  .read(ProviderList.workspaceProvider)
+                                  .selectedWorkspace
+                                  .workspaceSlug,
+                              projectId: ref
+                                  .read(ProviderList.projectProvider)
+                                  .currentProject["id"],
+                              data: {
+                                "cycle_id": widget.cycleId!,
+                                "start_date":
+                                    DateFormat('yyyy-MM-dd').format(date),
+                                "end_date":
+                                    DateFormat('yyyy-MM-dd').format(dueDate!),
+                              },
+                            );
+                  if (dateNotConflicted) {
+                    if (dueDate != null && date.isAfter(dueDate!)) {
+                      CustomToast.showToast(context,
+                          message: 'Start date cannot be after end date',
+                          toastType: ToastType.failure);
+                      return;
+                    }
+                    setState(() {
+                      startDate = date;
+                    });
+                  } else {
+                    CustomToast.showToast(context,
+                        message: 'Date is conflicted with other cycle',
+                        toastType: ToastType.failure);
+                    return;
+                  }
+                }
+
                 if (date != null) {
                   if (widget.fromModule) {
                     modulesProvider.updateModules(
                         disableLoading: true,
                         slug: ref
                             .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projId: ref
                             .read(ProviderList.projectProvider)
@@ -1042,13 +1462,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                         moduleId: widget.moduleId!,
                         data: {
                           'start_date': DateFormat('yyyy-MM-dd').format(date)
-                        });
+                        },
+                        ref: ref);
                   } else {
                     cyclesProvider.cycleDetailsCrud(
                       disableLoading: true,
                       slug: ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projectId: ref
                           .read(ProviderList.projectProvider)
@@ -1066,8 +1487,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
-                      width: 1, color: getBorderColor(themeProvider)),
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
                 ),
                 child: (detailData['start_date'] == null ||
                             detailData['start_date'] == '') ||
@@ -1079,93 +1504,132 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('Start Date', type: FontStyle.smallText)
+                    ? CustomText(
+                        'Start Date',
+                        type: FontStyle.Small,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor,
+                      )
                     : Row(
                         children: [
-                          const Icon(Icons.calendar_today_outlined,
-                              size: 15, color: Colors.grey),
+                          Icon(Icons.calendar_today_outlined,
+                              size: 15,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
                           const SizedBox(width: 7),
                           CustomText(
                             '${dateFormating(detailData['start_date'])} ',
-                            type: FontStyle.smallText,
+                            type: FontStyle.Small,
+                            fontWeight: FontWeightt.Regular,
+                            color:
+                                themeProvider.themeManager.secondaryTextColor,
                           ),
                         ],
                       ),
               ),
             ),
             //arrow
-            const SizedBox(width: 7),
+            const SizedBox(width: 5),
             Icon(
               Icons.arrow_forward,
               size: 15,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryTextColor
-                  : lightSecondaryTextColor,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 5),
             GestureDetector(
               onTap: () async {
-                var date = await showDatePicker(
+                if (projectProvider.role != Role.admin &&
+                    projectProvider.role != Role.member) {
+                  CustomToast.showToast(context,
+                      message: accessRestrictedMSG,
+                      toastType: ToastType.failure);
+                  return;
+                }
+                final date = await showDatePicker(
                   builder: (context, child) => Theme(
-                    data: themeProvider.isDarkThemeEnabled
-                        ? ThemeData.dark().copyWith(
-                            colorScheme: const ColorScheme.dark(
-                              primary: primaryColor,
-                            ),
-                          )
-                        : ThemeData.light().copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: primaryColor,
-                            ),
-                          ),
+                    data: themeProvider.themeManager.datePickerThemeData,
                     child: child!,
                   ),
                   context: context,
-                  initialDate: DateFormat('yyyy-MM-dd').parse(detailData[
-                                  widget.fromModule
-                                      ? 'target_date'
-                                      : 'end_date'] ==
-                              null ||
-                          detailData[widget.fromModule
-                                  ? 'target_date'
-                                  : 'end_date'] ==
-                              ''
-                      ? DateTime.now().toString()
-                      : detailData[
-                          widget.fromModule ? 'target_date' : 'end_date']!),
-                  firstDate: DateTime(2020),
+                  initialDate: dueDate!,
+                  firstDate: startDate ?? DateTime.now(),
                   lastDate: DateTime(2025),
                 );
 
                 if (date != null) {
-                  if (widget.fromModule) {
-                    modulesProvider.updateModules(
-                        disableLoading: true,
-                        slug: ref
-                            .read(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
-                            .workspaceSlug,
-                        projId: ref
-                            .read(ProviderList.projectProvider)
-                            .currentProject["id"],
-                        moduleId: widget.moduleId!,
-                        data: {
-                          'target_date': DateFormat('yyyy-MM-dd').format(date)
-                        });
+                  if (!date.isAfter(DateTime.now())) {
+                    CustomToast.showToast(context,
+                        message: 'Due date not valid ',
+                        toastType: ToastType.failure);
+                    return;
+                  }
+                  if (date.isAfter(startDate!)) {
+                    final bool dateNotConflicted = widget.fromModule
+                        ? true
+                        : await cyclesProvider.dateCheck(
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projectId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                            data: {
+                              "cycle_id": widget.cycleId!,
+                              "start_date":
+                                  DateFormat('yyyy-MM-dd').format(startDate!),
+                              "end_date": DateFormat('yyyy-MM-dd').format(date),
+                            },
+                          );
+
+                    if (dateNotConflicted) {
+                      setState(() {
+                        dueDate = date;
+                      });
+                      if (widget.fromModule) {
+                        modulesProvider.updateModules(
+                            disableLoading: true,
+                            slug: ref
+                                .read(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projId: ref
+                                .read(ProviderList.projectProvider)
+                                .currentProject["id"],
+                            moduleId: widget.moduleId!,
+                            data: {
+                              'target_date':
+                                  DateFormat('yyyy-MM-dd').format(date)
+                            },
+                            ref: ref);
+                        modulesProvider.changeTabIndex(1);
+                      } else {
+                        cyclesProvider.cycleDetailsCrud(
+                          disableLoading: true,
+                          slug: ref
+                              .read(ProviderList.workspaceProvider)
+                              .selectedWorkspace
+                              .workspaceSlug,
+                          projectId: ref
+                              .read(ProviderList.projectProvider)
+                              .currentProject["id"],
+                          method: CRUD.update,
+                          cycleId: widget.cycleId!,
+                          data: {
+                            'end_date': DateFormat('yyyy-MM-dd').format(date)
+                          },
+                        );
+                        cyclesProvider.changeTabIndex(1);
+                      }
+                    } else {
+                      CustomToast.showToast(context,
+                          message: 'Date is conflicted with other cycle ',
+                          toastType: ToastType.failure);
+                    }
                   } else {
-                    cyclesProvider.cycleDetailsCrud(
-                      disableLoading: true,
-                      slug: ref
-                          .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
-                          .workspaceSlug,
-                      projectId: ref
-                          .read(ProviderList.projectProvider)
-                          .currentProject["id"],
-                      method: CRUD.update,
-                      cycleId: widget.cycleId!,
-                      data: {'end_date': DateFormat('yyyy-MM-dd').format(date)},
-                    );
+                    CustomToast.showToast(context,
+                        message: 'Start date cannot be after end date ',
+                        toastType: ToastType.failure);
                   }
                 }
               },
@@ -1173,9 +1637,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  // color: Colors.white,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   border: Border.all(
-                      width: 1, color: getBorderColor(themeProvider)),
+                    width: 1,
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
                 ),
                 child: (detailData['start_date'] == null ||
                             detailData['start_date'] == '') ||
@@ -1187,15 +1654,23 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                     ? 'target_date'
                                     : 'end_date'] ==
                                 '')
-                    ? const CustomText('End Date', type: FontStyle.smallText)
+                    ? CustomText('End Date',
+                        type: FontStyle.Small,
+                        fontWeight: FontWeightt.Regular,
+                        color: themeProvider.themeManager.secondaryTextColor)
                     : Row(
                         children: [
-                          const Icon(Icons.calendar_today_outlined,
-                              size: 15, color: Colors.grey),
-                          const SizedBox(width: 7),
+                          Icon(Icons.calendar_today_outlined,
+                              size: 15,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor),
+                          const SizedBox(width: 5),
                           CustomText(
                               '${dateFormating(detailData[widget.fromModule ? 'target_date' : 'end_date'])} ',
-                              type: FontStyle.smallText),
+                              type: FontStyle.Small,
+                              fontWeight: FontWeightt.Regular,
+                              color: themeProvider
+                                  .themeManager.secondaryTextColor),
                         ],
                       ),
               ),
@@ -1207,11 +1682,17 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget detailsPart() {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Details', type: FontStyle.heading2)),
+            child: CustomText(
+              'Details',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         stateWidget(),
         const SizedBox(height: 10),
@@ -1230,65 +1711,84 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget progressPart() {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Progress', type: FontStyle.heading2)),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: 200,
-          child: SfCartesianChart(
-            margin: EdgeInsets.zero,
-            primaryYAxis: NumericAxis(
-              majorGridLines:
-                  const MajorGridLines(width: 0), // Remove major grid lines
+            child: CustomText(
+              'Progress',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
+        const SizedBox(height: 10),
+        Container(
+          padding:
+              const EdgeInsets.only(left: 20, right: 30, top: 35, bottom: 20),
+          decoration: BoxDecoration(
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
-            primaryXAxis: CategoryAxis(
-              labelPlacement:
-                  LabelPlacement.betweenTicks, // Adjust label placement
-              interval: chartData.length > 5 ? 3 : 1,
-              majorGridLines: const MajorGridLines(
-                width: 0,
-              ), // Remove major grid lines
-              minorGridLines: const MinorGridLines(width: 0),
-              axisLabelFormatter: (axisLabelRenderArgs) {
-                return ChartAxisLabel(
-                    DateFormat('dd MMM')
-                        .format(DateTime.parse(axisLabelRenderArgs.text)),
-                    const TextStyle(fontWeight: FontWeight.normal));
-              },
+          ),
+          child: SizedBox(
+            height: 200,
+            child: SfCartesianChart(
+              plotAreaBorderColor: Colors.transparent,
+              margin: EdgeInsets.zero,
+              primaryYAxis: NumericAxis(
+                majorGridLines:
+                    const MajorGridLines(width: 0), // Remove major grid lines
+              ),
+              primaryXAxis: CategoryAxis(
+                labelPlacement:
+                    LabelPlacement.betweenTicks, // Adjust label placement
+                interval: chartData.length > 5 ? 3 : 1,
+                majorGridLines: const MajorGridLines(
+                  width: 0,
+                ), // Remove major grid lines
+                minorGridLines: const MinorGridLines(width: 0),
+                axisLabelFormatter: (axisLabelRenderArgs) {
+                  return ChartAxisLabel(
+                      DateFormat('dd MMM')
+                          .format(DateTime.parse(axisLabelRenderArgs.text)),
+                      const TextStyle(fontWeight: FontWeight.normal));
+                },
+              ),
+              series: <ChartSeries>[
+                // Renders area chart
+                AreaSeries<ChartData, DateTime>(
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.transparent,
+                        themeProvider.themeManager.primaryColour
+                            .withOpacity(0.2),
+                        themeProvider.themeManager.primaryColour
+                            .withOpacity(0.3),
+                      ]),
+                  dataSource: chartData,
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
+                ),
+                LineSeries<ChartData, DateTime>(
+                  dashArray: [5.0, 5.0],
+                  dataSource: chartData.isNotEmpty
+                      ? <ChartData>[
+                          ChartData(chartData.first.x,
+                              chartData.first.y), // First data point
+                          ChartData(chartData.last.x,
+                              0.0), // Data point at current time with Y-value of last data point
+                        ]
+                      : [],
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
+                ),
+              ],
             ),
-            series: <ChartSeries>[
-              // Renders area chart
-              AreaSeries<ChartData, DateTime>(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.5),
-                      Colors.white.withOpacity(0.2),
-                      primaryColor.withOpacity(0.2),
-                      primaryColor.withOpacity(0.3),
-                    ]),
-                dataSource: chartData,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y,
-              ),
-              LineSeries<ChartData, DateTime>(
-                dashArray: [5.0, 5.0],
-                dataSource: chartData.isNotEmpty
-                    ? <ChartData>[
-                        ChartData(chartData.first.x,
-                            chartData.first.y), // First data point
-                        ChartData(chartData.last.x,
-                            0.0), // Data point at current time with Y-value of last data point
-                      ]
-                    : [],
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y,
-              ),
-            ],
           ),
         ),
       ],
@@ -1296,38 +1796,36 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget assigneesPart({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    log("assignees : ${detailData['distribution']['assignees']}");
-
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Assignees', type: FontStyle.heading2)),
+            child: CustomText(
+              'Assignees',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
-        detailData['distribution']['assignees'].length == 0 ||
-                (detailData['distribution']['assignees'].length == 1 &&
-                    detailData['distribution']['assignees'][0]['assignee_id'] ==
-                        null)
+        detailData['distribution']['assignees'].length == 0
             ? const CustomText('No data found.')
             : Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkBackgroundColor
-                      : lightBackgroundColor,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color: getBorderColor(themeProvider),
+                    color: themeProvider.themeManager.borderSubtle01Color,
                   ),
                 ),
                 child: Column(
@@ -1335,151 +1833,83 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                     ...List.generate(
                       detailData['distribution']['assignees'].length,
                       (idx) {
-                        return detailData['distribution']['assignees'][idx]
-                                    ['first_name'] !=
-                                null
-                            ? InkWell(
-                                onTap: () async {
-                                  {
-                                    setState(
-                                      () {
-                                        if (issuesProvider
-                                            .issues.filters.assignees
-                                            .contains(detailData['distribution']
-                                                    ['assignees'][idx]
-                                                ['assignee_id'])) {
-                                          issuesProvider
-                                              .issues.filters.assignees
-                                              .remove(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['assignee_id']);
-                                        } else {
-                                          issuesProvider
-                                              .issues.filters.assignees
-                                              .add(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['assignee_id']);
-                                        }
-                                      },
-                                    );
-                                  }
-                                  if (fromModule) {
-                                    modulesProvider.changeTabIndex(0);
-                                    await modulesProvider.filterModuleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    modulesProvider.initializeBoard();
-                                  } else {
-                                    cyclesProviderRead.changeTabIndex(0);
-                                    await cyclesProviderRead.filterCycleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    cyclesProviderRead.initializeBoard();
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 8),
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: themeProvider.isDarkThemeEnabled
-                                        ? (issuesProvider
-                                                .issues.filters.assignees
-                                                .contains(
-                                                    detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['assignee_id'])
-                                            ? darkThemeBorder
-                                            : darkBackgroundColor)
-                                        : (issuesProvider
-                                                .issues.filters.assignees
-                                                .contains(
-                                                    detailData['distribution']
-                                                            ['assignees'][idx]
-                                                        ['assignee_id'])
-                                            ? lightGreeyColor
-                                            : lightBackgroundColor),
-                                    borderRadius: BorderRadius.circular(5),
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 2),
+                          decoration: BoxDecoration(
+                            color: (issuesProvider.issues.filters.assignees
+                                    .contains(detailData['distribution']
+                                        ['assignees'][idx]['assignee_id'])
+                                ? themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor
+                                : themeProvider.themeManager
+                                    .primaryBackgroundDefaultColor),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar'] !=
+                                                  null &&
+                                              detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar'] !=
+                                                  ''
+                                          ? CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage: NetworkImage(
+                                                  detailData['distribution']
+                                                          ['assignees'][idx]
+                                                      ['avatar']),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: themeProvider
+                                                  .themeManager
+                                                  .tertiaryBackgroundDefaultColor,
+                                              child: Center(
+                                                child: CustomText(
+                                                  detailData['distribution'][
+                                                                      'assignees']
+                                                                  [idx]
+                                                              ['first_name'] !=
+                                                          null
+                                                      ? detailData['distribution']
+                                                                      [
+                                                                      'assignees']
+                                                                  [idx]
+                                                              ['first_name'][0]
+                                                          .toString()
+                                                          .toUpperCase()
+                                                      : '',
+                                                  type: FontStyle.Small,
+                                                ),
+                                              ),
+                                            )),
+                                  CustomText(
+                                    detailData['distribution']['assignees'][idx]
+                                            ['display_name'] ??
+                                        'No Assignees',
+                                    color: themeProvider
+                                        .themeManager.secondaryTextColor,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: detailData['distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar'] !=
-                                                          null &&
-                                                      detailData['distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar'] !=
-                                                          ''
-                                                  ? CircleAvatar(
-                                                      radius: 10,
-                                                      backgroundImage:
-                                                          NetworkImage(detailData[
-                                                                      'distribution']
-                                                                  ['assignees']
-                                                              [idx]['avatar']),
-                                                    )
-                                                  : CircleAvatar(
-                                                      radius: 10,
-                                                      backgroundColor:
-                                                          darkSecondaryBGC,
-                                                      child: Center(
-                                                        child: CustomText(
-                                                          detailData['distribution']
-                                                                              ['assignees']
-                                                                          [idx][
-                                                                      'first_name'] !=
-                                                                  null
-                                                              ? detailData['distribution']
-                                                                              [
-                                                                              'assignees']
-                                                                          [idx][
-                                                                      'first_name'][0]
-                                                                  .toString()
-                                                                  .toUpperCase()
-                                                              : '',
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )),
-                                          CustomText(detailData['distribution']
-                                                      ['assignees'][idx]
-                                                  ['first_name'] ??
-                                              'Without Assignees'),
-                                        ],
-                                      ),
-                                      CompletionPercentage(
-                                          value: detailData['distribution']
-                                                  ['assignees'][idx]
-                                              ['completed_issues'],
-                                          totalValue: detailData['distribution']
-                                                  ['assignees'][idx]
-                                              ['total_issues'])
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Container(height: 25);
+                                ],
+                              ),
+                              CompletionPercentage(
+                                  value: detailData['distribution']['assignees']
+                                      [idx]['completed_issues'],
+                                  totalValue: detailData['distribution']
+                                      ['assignees'][idx]['total_issues'])
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -1490,36 +1920,39 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget statesPart() {
-    List states = [
+    final List states = [
       "Backlog",
       "Unstarted",
       "Started",
       "Cancelled",
       "Completed",
     ];
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
     return Column(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('States', type: FontStyle.heading2)),
+            child: CustomText(
+              'States',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: themeProvider.isDarkThemeEnabled
-                ? darkBackgroundColor
-                : lightBackgroundColor,
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: getBorderColor(themeProvider),
+              color: themeProvider.themeManager.borderSubtle01Color,
             ),
           ),
           child: Column(
@@ -1555,7 +1988,12 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               : greenHighLight,
                               BlendMode.srcIn)),
                     ),
-                    CustomText(states[index]),
+                    CustomText(
+                      states[index],
+                      type: FontStyle.Large,
+                      fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.secondaryTextColor,
+                    ),
                     const Spacer(),
                     index == 0
                         ? CompletionPercentage(
@@ -1588,219 +2026,132 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget labelsPart({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var cyclesProviderRead = ref.read(ProviderList.cyclesProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
 
-    var detailData = widget.fromModule
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Align(
+        Align(
             alignment: Alignment.centerLeft,
-            child: CustomText('Labels', type: FontStyle.heading2)),
+            child: CustomText(
+              'Labels',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+              color: themeProvider.themeManager.primaryTextColor,
+            )),
         const SizedBox(height: 10),
-        detailData['distribution']['labels'].length == 1 &&
-                detailData['distribution']['labels'][0]['label_id'] == null
-            ? const Align(
+        detailData['distribution']['labels'].isNotEmpty
+            ? Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color,
+                  ),
+                ),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: detailData['distribution']['labels'].length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 8),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
+                        decoration: BoxDecoration(
+                          color: issuesProvider.issues.filters.labels.contains(
+                                  detailData['distribution']['labels'][index]
+                                      ['label_id'])
+                              ? themeProvider
+                                  .themeManager.secondaryBackgroundDefaultColor
+                              : themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  size: 20,
+                                  color: detailData['distribution']['labels']
+                                              [index]['label_name'] ==
+                                          null
+                                      ? themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor
+                                      : detailData['distribution']['labels']
+                                                      [index]['color'] ==
+                                                  '' ||
+                                              detailData['distribution']
+                                                          ['labels'][index]
+                                                      ['color'] ==
+                                                  null
+                                          ? themeProvider
+                                              .themeManager.placeholderTextColor
+                                          : detailData['distribution']['labels']
+                                                  [index]['color']
+                                              .toString()
+                                              .toColor(),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
+                                  width: width * 0.4,
+                                  child: CustomText(
+                                    detailData['distribution']['labels'][index]
+                                            ['label_name'] ??
+                                        'No Label',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                CompletionPercentage(
+                                    value: detailData['distribution']['labels']
+                                        [index]['completed_issues'],
+                                    totalValue: detailData['distribution']
+                                        ['labels'][index]['total_issues'])
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+              )
+            : const Align(
                 alignment: Alignment.center,
                 child: CustomText('No data found'),
               )
-            : detailData['distribution']['labels'].isNotEmpty
-                ? Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkBackgroundColor
-                          : lightBackgroundColor,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: getBorderColor(themeProvider),
-                      ),
-                    ),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: detailData['distribution']['labels'].length,
-                        itemBuilder: (context, index) {
-                          log('index $index');
-                          return detailData['distribution']['labels'][index]
-                                      ['label_id'] ==
-                                  null
-                              ? Container()
-                              : InkWell(
-                                  onTap: () async {
-                                    setState(() {
-                                      if (issuesProvider.issues.filters.labels
-                                          .contains(detailData['distribution']
-                                              ['labels'][index]['label_id'])) {
-                                        issuesProvider.issues.filters.labels
-                                            .remove(detailData['distribution']
-                                                ['labels'][index]['label_id']);
-                                      } else {
-                                        issuesProvider.issues.filters.labels
-                                            .add(detailData['distribution']
-                                                ['labels'][index]['label_id']);
-                                      }
-                                    });
-                                    if (fromModule) {
-                                      modulesProvider.changeTabIndex(0);
-                                      await modulesProvider.filterModuleIssues(
-                                        slug: ref
-                                            .read(
-                                                ProviderList.workspaceProvider)
-                                            .selectedWorkspace!
-                                            .workspaceSlug,
-                                        projectId: ref
-                                            .read(ProviderList.projectProvider)
-                                            .currentProject["id"],
-                                      );
-                                      modulesProvider.initializeBoard();
-                                    }
-                                    cyclesProviderRead.changeTabIndex(0);
-                                    await cyclesProviderRead.filterCycleIssues(
-                                      slug: ref
-                                          .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
-                                          .workspaceSlug,
-                                      projectId: ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject["id"],
-                                    );
-                                    cyclesProviderRead.initializeBoard();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? (issuesProvider
-                                                  .issues.filters.labels
-                                                  .contains(
-                                                      detailData['distribution']
-                                                              ['labels'][index]
-                                                          ['label_id'])
-                                              ? darkThemeBorder
-                                              : darkBackgroundColor)
-                                          : (issuesProvider
-                                                  .issues.filters.labels
-                                                  .contains(
-                                                      detailData['distribution']
-                                                              ['labels'][index]
-                                                          ['label_id'])
-                                              ? lightGreeyColor
-                                              : lightBackgroundColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              size: 10,
-                                              color: detailData['distribution']
-                                                                      ['labels']
-                                                                  [index]
-                                                              ['color'] ==
-                                                          '' ||
-                                                      detailData['distribution']
-                                                                      ['labels']
-                                                                  [index]
-                                                              ['color'] ==
-                                                          null
-                                                  ? greyColor
-                                                  : Color(
-                                                      int.parse(
-                                                        "FF${detailData['distribution']['labels'][index]['color'].toString().toUpperCase().replaceAll("#", "")}",
-                                                        radix: 16,
-                                                      ),
-                                                    ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            CustomText(
-                                              detailData['distribution']
-                                                          ['labels'][index]
-                                                      ['label_name'] ??
-                                                  '',
-                                              maxLines: 2,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            CompletionPercentage(
-                                                value:
-                                                    detailData['distribution']
-                                                            ['labels'][index]
-                                                        ['completed_issues'],
-                                                totalValue:
-                                                    detailData['distribution']
-                                                            ['labels'][index]
-                                                        ['total_issues'])
-                                            //   CircularPercentIndicator(
-                                            //       radius: 10,
-                                            //       lineWidth: 2,
-                                            //       progressColor: primaryColor,
-                                            //       percent: detailData['distribution']['labels'][index]['completed_issues'] == null ||
-                                            //               detailData['distribution']
-                                            //                               ['labels']
-                                            //                           [index][
-                                            //                       'completed_issues'] ==
-                                            //                   null
-                                            //           ? 1.0
-                                            //           : convertToRatio(
-                                            //               detailData['distribution']
-                                            //                           ['labels']
-                                            //                       [index][
-                                            //                   'completed_issues'],
-                                            //               detailData['distribution']
-                                            //                       ['labels'][index]
-                                            //                   ['total_issues'])),
-                                            //   const SizedBox(width: 5),
-                                            //   CustomText(
-                                            //       '${((detailData['distribution']['labels'][index]['completed_issues'] * 100) / detailData['distribution']['labels'][index]['total_issues']).toString().split('.').first}% of ${detailData['distribution']['labels'][index]['total_issues']}')
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                        }),
-                  )
-                : const Align(
-                    alignment: Alignment.center,
-                    child: CustomText('No data found'),
-                  )
       ],
     );
   }
 
   Widget stateWidget({bool fromModule = false}) {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       height: 45,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: getBorderColor(themeProvider),
+          color: themeProvider.themeManager.borderSubtle01Color,
         ),
       ),
       child: Padding(
@@ -1808,16 +2159,16 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         child: Row(
           children: [
             //icon
-            const Icon(
-              //four squares icon
-              Icons.grid_view_outlined,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
+            Icon(
+                //four squares icon
+                Icons.timelapse_rounded,
+                color: themeProvider.themeManager.placeholderTextColor),
             const SizedBox(width: 15),
-            const CustomText(
+            CustomText(
               'Progress',
-              type: FontStyle.subheading,
-              color: Color.fromRGBO(143, 143, 147, 1),
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Regular,
+              color: themeProvider.themeManager.placeholderTextColor,
             ),
             Expanded(child: Container()),
 
@@ -1835,288 +2186,234 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
   }
 
   Widget membersWidget() {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    return Container(
-      height: 45,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: getBorderColor(themeProvider),
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    return GestureDetector(
+      onTap: () {
+        if (projectProvider.role != Role.admin &&
+            projectProvider.role != Role.member) {
+          CustomToast.showToast(context,
+              message: accessRestrictedMSG, toastType: ToastType.failure);
+          return;
+        }
+        showModalBottomSheet(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.5,
+          ),
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          context: context,
+          builder: (context) => AssigneeSheet(
+            fromModuleDetail: widget.fromModule,
+          ),
+        );
+      },
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: themeProvider.themeManager.borderSubtle01Color,
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Row(
-          children: [
-            //icon
-            const Icon(
-              //two people icon
-              Icons.people_alt_rounded,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
-            const SizedBox(width: 15),
-            // const Text(
-            //   'Assignees',
-            //   style: TextStyle(
-            //     fontSize: 16,
-            //     fontWeight: FontWeight.w400,
-            //     color: Color.fromRGBO(143, 143, 147, 1),
-            //   ),
-            // ),
-            const CustomText(
-              'Members',
-              type: FontStyle.subheading,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
-            Expanded(child: Container()),
-            GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  showBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (ctx) => const AssigneeSheet(
-                            fromModuleDetail: true,
-                          ));
-                },
-                child: (modulesProvider.currentModule['members_detail'] ==
-                            null ||
-                        modulesProvider.currentModule['members_detail'].isEmpty)
-                    ? Row(
-                        children: [
-                          const CustomText(
-                            'No members',
-                            type: FontStyle.title,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryTextColor
-                                : lightSecondaryTextColor,
-                          ),
-                        ],
-                      )
-                    : SizedBox(
-                        height: 30,
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkThemeBorder
-                                      : lightGreeyColor),
-                              borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            children: [
+              //icon
+              Icon(
+                //two people icon
+                Icons.people_alt_rounded,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              const SizedBox(width: 15),
+              CustomText(
+                'Members',
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              Expanded(child: Container()),
+              (modulesProvider.currentModule['members_detail'] == null ||
+                      modulesProvider.currentModule['members_detail'].isEmpty)
+                  ? Row(
+                      children: [
+                        CustomText(
+                          'No members',
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 27,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.center,
+                        child: SizedBox(
                           height: 30,
-                          margin: const EdgeInsets.only(right: 5),
-                          width: (modulesProvider
-                                      .currentModule['members_detail'].length *
-                                  22.0) +
-                              ((modulesProvider.currentModule['members_detail']
-                                          .length) ==
-                                      1
-                                  ? 15
-                                  : 0),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            fit: StackFit.passthrough,
-                            children: (modulesProvider
-                                    .currentModule['members_detail'] as List)
-                                .map((e) => Positioned(
-                                      right: ((modulesProvider.currentModule[
-                                                      'members_detail'] as List)
-                                                  .indexOf(e) *
-                                              15) +
-                                          10,
-                                      child: Container(
-                                        height: 20,
-                                        alignment: Alignment.center,
-                                        width: 20,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color.fromRGBO(55, 65, 81, 1),
-                                          // image: DecorationImage(
-                                          //   image: NetworkImage(
-                                          //       e['profileUrl']),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: CustomText(
-                                          e['first_name'][0]
-                                              .toString()
-                                              .toUpperCase(),
-                                          type: FontStyle.title,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        )))
-          ],
+                          child: SquareAvatarWidget(
+                              borderRadius: 50,
+                              details: modulesProvider
+                                  .currentModule['members_detail']),
+                        ),
+                      ),
+                    )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget assigneeWidget() {
-    var cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var detailData = widget.fromModule
+    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final detailData = widget.fromModule
         ? modulesProvider.moduleDetailsData
         : cyclesProvider.cyclesDetailsData;
 
-    log(detailData.toString());
-
-    return Container(
-      height: 45,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: getBorderColor(themeProvider),
+    return GestureDetector(
+      onTap: widget.fromModule
+          ? () {
+              if (projectProvider.role != Role.admin &&
+                  projectProvider.role != Role.member) {
+                CustomToast.showToast(context,
+                    message: accessRestrictedMSG, toastType: ToastType.failure);
+                return;
+              }
+              showModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                context: context,
+                builder: (context) => LeadSheet(
+                  fromModuleDetail: widget.fromModule,
+                ),
+              );
+            }
+          : () {},
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: themeProvider.themeManager.borderSubtle01Color,
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //icon
-            const Icon(
-              //two people icon
-              Icons.people_outline_outlined,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
-            const SizedBox(width: 15),
-            const CustomText(
-              'Lead',
-              type: FontStyle.subheading,
-              color: Color.fromRGBO(143, 143, 147, 1),
-            ),
-            Expanded(child: Container()),
-            GestureDetector(
-              onTap: widget.fromModule
-                  ? () {
-                      showModalBottomSheet(
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.5,
-                        ),
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        context: context,
-                        builder: (context) => LeadSheet(
-                          fromModuleDetail: widget.fromModule,
-                        ),
-                      );
-                    }
-                  : () {},
-              child: Row(
-                children: [
-                  (detailData[widget.fromModule ? 'lead_detail' : 'owned_by'] !=
-                                  null &&
-                              detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['avatar'] !=
-                                  null) &&
-                          detailData[widget.fromModule
-                                  ? 'lead_detail'
-                                  : 'owned_by']['avatar'] !=
-                              ''
-                      ? CircleAvatar(
-                          backgroundImage: Image.network(detailData[
-                                  widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['avatar'])
-                              .image,
-                          radius: 10,
-                        )
-                      : CircleAvatar(
-                          radius: 10,
-                          backgroundColor: darkSecondaryBGC,
-                          child: Center(
-                            child: CustomText(
-                              (detailData[widget.fromModule
-                                              ? 'lead_detail'
-                                              : 'owned_by'] !=
-                                          null &&
-                                      detailData[widget.fromModule
-                                              ? 'lead_detail'
-                                              : 'owned_by']['email'] !=
-                                          null)
-                                  ? detailData[widget.fromModule
-                                          ? 'lead_detail'
-                                          : 'owned_by']['email'][0]
-                                      .toString()
-                                      .toUpperCase()
-                                  : '',
-                              type: FontStyle.subheading,
-                              textAlign: TextAlign.center,
-                              color: lightSecondaryBackgroundColor,
-                            ),
-                          ),
-                        ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    constraints: BoxConstraints(maxWidth: width * 0.4),
-                    child: CustomText(
-                      (detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by'] !=
-                                  null &&
-                              detailData[widget.fromModule
-                                      ? 'lead_detail'
-                                      : 'owned_by']['first_name'] !=
-                                  null)
-                          ? detailData[widget.fromModule
-                                  ? 'lead_detail'
-                                  : 'owned_by']['first_name'] ??
-                              ''
-                          : '',
-                      type: FontStyle.subheading,
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //icon
+              Icon(
+                //two people icon
+                Icons.people_outline_outlined,
+                color: themeProvider.themeManager.placeholderTextColor,
               ),
-            ),
-          ],
+              const SizedBox(width: 15),
+              CustomText(
+                'Lead',
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.placeholderTextColor,
+              ),
+              const Spacer(),
+              detailData[widget.fromModule ? 'lead_detail' : 'owned_by'] == null
+                  ? CustomText(
+                      'No lead',
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Regular,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )
+                  : Row(
+                      children: [
+                        MemberLogoWidget(
+                            fontType: FontStyle.Small,
+                            boarderRadius: 50,
+                            padding: EdgeInsets.zero,
+                            size: 25,
+                            imageUrl: (detailData[widget.fromModule
+                                ? 'lead_detail'
+                                : 'owned_by']['avatar']),
+                            colorForErrorWidget:
+                                const Color.fromRGBO(55, 65, 81, 1),
+                            memberNameFirstLetterForErrorWidget: detailData[
+                                    widget.fromModule
+                                        ? 'lead_detail'
+                                        : 'owned_by']['display_name'][0]
+                                .toString()),
+                        const SizedBox(width: 5),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: width * 0.4),
+                          child: CustomText(
+                            (detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by'] !=
+                                        null &&
+                                    detailData[widget.fromModule
+                                            ? 'lead_detail'
+                                            : 'owned_by']['display_name'] !=
+                                        null)
+                                ? detailData[widget.fromModule
+                                        ? 'lead_detail'
+                                        : 'owned_by']['display_name'] ??
+                                    ''
+                                : '',
+                            type: FontStyle.Small,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   String dateFormating(String date) {
-    DateTime formatedDate = DateTime.parse(date);
-    String finalDate = DateFormat('dd MMM').format(formatedDate);
+    final DateTime formatedDate = DateTime.parse(date);
+    final String finalDate = DateFormat('dd MMM').format(formatedDate);
     return finalDate;
   }
 
   String checkDate({required String startDate, required String endDate}) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if ((startDate.isEmpty) || (endDate.isEmpty)) {
       return 'Draft';
     } else {
       if (DateTime.parse(startDate).isAfter(now)) {
-        Duration difference =
+        final Duration difference =
             DateTime.parse(startDate.split('+').first).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
@@ -2126,7 +2423,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       }
       if (DateTime.parse(startDate).isBefore(now) &&
           DateTime.parse(endDate).isAfter(now)) {
-        Duration difference = DateTime.parse(endDate).difference(now);
+        final Duration difference = DateTime.parse(endDate).difference(now);
         if (difference.inDays == 0) {
           return 'Today';
         } else {
@@ -2138,12 +2435,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     }
   }
 
-  Color getBorderColor(ThemeProvider themeProvider) =>
-      themeProvider.isDarkThemeEnabled ? darkThemeBorder : Colors.grey.shade200;
-
   String checkTimeDifferenc(String dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(DateTime.parse(dateTime));
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(DateTime.parse(dateTime));
     String? format;
 
     if (difference.inDays > 0) {

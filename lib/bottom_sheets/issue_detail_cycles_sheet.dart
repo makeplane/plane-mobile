@@ -2,19 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+
+import '../utils/enums.dart';
 
 class IssueDetailCyclesList extends ConsumerStatefulWidget {
-  final String cycleId;
-  final String issueId;
-  final String cycleIssueId;
   const IssueDetailCyclesList(
       {required this.cycleId,
       required this.issueId,
       required this.cycleIssueId,
       super.key});
+  final String cycleId;
+  final String issueId;
+  final String cycleIssueId;
 
   @override
   ConsumerState<IssueDetailCyclesList> createState() =>
@@ -30,32 +31,37 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var issuesProvider = ref.read(ProviderList.issuesProvider);
-    var cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    var projectProvider = ref.read(ProviderList.projectProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
 
     return Container(
+      decoration: BoxDecoration(
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       child: Wrap(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const CustomText(
+              CustomText(
                 'Select Cycle',
-                type: FontStyle.heading,
+                type: FontStyle.H4,
+                fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
-                  Icons.close,
-                  color: Color.fromRGBO(143, 143, 147, 1),
-                ),
+                icon: Icon(Icons.close,
+                    color: themeProvider.themeManager.placeholderTextColor),
               )
             ],
           ),
@@ -74,7 +80,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                               ? cyclesProvider.deleteCycleIssue(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)
@@ -84,7 +90,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                               : cyclesProvider.createCycleIssues(
                                   slug: ref
                                       .watch(ProviderList.workspaceProvider)
-                                      .selectedWorkspace!
+                                      .selectedWorkspace
                                       .workspaceSlug,
                                   projId: ref
                                       .read(ProviderList.projectProvider)
@@ -95,19 +101,19 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           .then((value) {
                         log('then called');
                         issueProvider.getIssueDetails(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projID: projectProvider.currentProject['id'],
                           issueID: widget.issueId,
                         );
                         cyclesProvider.filterCycleIssues(
-                          slug: workspaceProvider
-                              .selectedWorkspace!.workspaceSlug,
+                          slug:
+                              workspaceProvider.selectedWorkspace.workspaceSlug,
                           projectId: projectProvider.currentProject['id'],
                         );
                         issuesProvider.filterIssues(
                             slug: workspaceProvider
-                                .selectedWorkspace!.workspaceSlug,
+                                .selectedWorkspace.workspaceSlug,
                             projID: projectProvider.currentProject['id']);
                       });
                       Navigator.of(context).pop();
@@ -119,12 +125,19 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           children: [
                             CustomText(
                               issueProvider.cyclesList[index]['name'],
-                              type: FontStyle.subheading,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Regular,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
                             widget.cycleId != '' &&
                                     widget.cycleId ==
                                         issueProvider.cyclesList[index]['id']
-                                ? const Icon(Icons.check)
+                                ? Icon(
+                                    Icons.check,
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                  )
                                 : Container()
                           ],
                         ),
@@ -132,12 +145,10 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           height: 10,
                         ),
                         Container(
-                          height: 2,
-                          margin: const EdgeInsets.only(top: 10, bottom: 5),
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : Colors.grey.shade300,
-                        )
+                            height: 1,
+                            margin: const EdgeInsets.only(top: 10, bottom: 5),
+                            color:
+                                themeProvider.themeManager.borderDisabledColor)
                       ],
                     ),
                   ),

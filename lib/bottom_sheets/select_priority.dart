@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssuePriority extends ConsumerStatefulWidget {
+  const SelectIssuePriority(
+      {this.issueId, required this.createIssue, super.key});
   final bool createIssue;
   final String? issueId;
-  final int? index;
-  const SelectIssuePriority(
-      {this.index, this.issueId, required this.createIssue, super.key});
 
   @override
   ConsumerState<SelectIssuePriority> createState() =>
@@ -24,23 +24,24 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     {
       'name': 'Urgent',
       'icon': const Icon(Icons.error_outline_rounded),
+      'color': '#EF4444',
     },
     {
       'name': 'High',
       'icon': const Icon(Icons.signal_cellular_alt_outlined),
+      'color': '#F59E0B'
     },
     {
       'name': 'Medium',
       'icon': const Icon(Icons.signal_cellular_alt_2_bar_outlined),
+      'color': '#F59E0B'
     },
     {
       'name': 'Low',
       'icon': const Icon(Icons.signal_cellular_alt_1_bar_outlined),
+      'color': '#22C55E'
     },
-    {
-      'name': 'None',
-      'icon': const Icon(Icons.remove_circle_outline_rounded),
-    }
+    {'name': 'None', 'icon': const Icon(Icons.block), 'color': '#A3A3A3'}
   ];
 
   @override
@@ -51,36 +52,28 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
     //     ref.read(ProviderList.issuesProvider).createIssuedata['priority']
     //         ['name']);
 
-    var themeProvider = ref.read(ProviderList.themeProvider);
-
     for (int i = 0; i < priorities.length; i++) {
       //change color of all icon according to theme
-      priorities[i]['icon'] = Icon(
-        priorities[i]['icon'].icon,
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryTextColor
-            : lightSecondaryTextColor,
-      );
+      priorities[i]['icon'] = Icon(priorities[i]['icon'].icon,
+          color: priorities[i]['color'].toString().toColor());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return WillPopScope(
       onWillPop: () async {
-        var prov = ref.read(ProviderList.issuesProvider);
+        final prov = ref.read(ProviderList.issuesProvider);
         prov.createIssuedata['priority'] = priorities[selectedPriority];
         prov.setsState();
         return true;
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: bottomSheetConstPadding,
         decoration: BoxDecoration(
-          color: themeProvider.isDarkThemeEnabled
-              ? darkBackgroundColor
-              : lightBackgroundColor,
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
@@ -94,22 +87,20 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                   children: [
                     const CustomText(
                       'Select Priority',
-                      type: FontStyle.heading,
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     IconButton(
                         onPressed: () {
-                          var prov = ref.read(ProviderList.issuesProvider);
+                          final prov = ref.read(ProviderList.issuesProvider);
                           prov.createIssuedata['priority'] =
                               priorities[selectedPriority];
                           prov.setsState();
                           Navigator.pop(context);
                         },
-                        icon: Icon(
-                          Icons.close,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkPrimaryTextColor
-                              : lightPrimaryTextColor,
-                        ))
+                        icon: Icon(Icons.close,
+                            color: themeProvider
+                                .themeManager.placeholderTextColor))
                   ],
                 ),
                 Container(
@@ -125,7 +116,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                             setState(() {
                               selectedPriority = index;
                             });
-                            var prov = ref.read(ProviderList.issuesProvider);
+                            final prov = ref.read(ProviderList.issuesProvider);
                             prov.createIssuedata['priority'] =
                                 priorities[selectedPriority];
                             prov.setsState();
@@ -135,33 +126,37 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                               issueDetailSelectedPriorityItem =
                                   priorities[index]['name'];
                             });
-                            await issueProvider.upDateIssue(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
-                                    .workspaceSlug,
-                                index: widget.index!,
-                                refs: ref,
-                                projID: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject['id'],
-                                issueID: widget.issueId!,
-                                data: {
-                                  "priority": priorities[index]['name']
-                                      .toString()
-                                      .replaceAll(
-                                          priorities[index]['name']
-                                              .toString()[0],
-                                          priorities[index]['name']
-                                              .toString()[0]
-                                              .toLowerCase())
-                                }).then((value) {
+                            await issueProvider
+                                .upDateIssue(
+                                    slug: ref
+                                        .read(ProviderList.workspaceProvider)
+                                        .selectedWorkspace
+                                        .workspaceSlug,
+                                    refs: ref,
+                                    projID: ref
+                                        .read(ProviderList.projectProvider)
+                                        .currentProject['id'],
+                                    issueID: widget.issueId!,
+                                    data: index != 4
+                                        ? {
+                                            "priority": priorities[index]
+                                                    ['name']
+                                                .toString()
+                                                .replaceAll(
+                                                    priorities[index]['name']
+                                                        .toString()[0],
+                                                    priorities[index]['name']
+                                                        .toString()[0]
+                                                        .toLowerCase())
+                                          }
+                                        : {"priority": null})
+                                .then((value) {
                               ref
                                   .read(ProviderList.issueProvider)
                                   .getIssueDetails(
                                       slug: ref
                                           .read(ProviderList.workspaceProvider)
-                                          .selectedWorkspace!
+                                          .selectedWorkspace
                                           .workspaceSlug,
                                       projID: ref
                                           .read(ProviderList.projectProvider)
@@ -174,7 +169,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                           slug: ref
                                               .read(ProviderList
                                                   .workspaceProvider)
-                                              .selectedWorkspace!
+                                              .selectedWorkspace
                                               .workspaceSlug,
                                           projID: ref
                                               .read(
@@ -207,21 +202,17 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     alignment: Alignment.center,
-                                    child: index == 4
-                                        ? Transform.rotate(
-                                            angle: 40,
-                                            child: priorities[index]['icon']
-                                                as Widget,
-                                          )
-                                        : priorities[index]['icon'] as Widget,
+                                    child: priorities[index]['icon'] as Widget,
                                   ),
                                   Container(
                                     width: 10,
                                   ),
                                   CustomText(
-                                    priorities[index]['name'].toString(),
-                                    type: FontStyle.subheading,
-                                  ),
+                                      priorities[index]['name'].toString(),
+                                      type: FontStyle.Medium,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor),
                                   const Spacer(),
                                   widget.createIssue
                                       ? createIssueSelectedPriority(index)
@@ -233,10 +224,10 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                height: 1,
-                                width: width,
-                                color: strokeColor,
-                              ),
+                                  height: 1,
+                                  width: width,
+                                  color: themeProvider
+                                      .themeManager.borderDisabledColor),
                             ],
                           ),
                         ),
@@ -260,11 +251,13 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
   }
 
   Widget issueDetailSelectedPriority(int idx) {
-    var issueProvider = ref.watch(ProviderList.issueProvider);
-    return issueProvider.issueDetails['priority'] ==
-            priorities[idx]['name'].toString().replaceAll(
-                priorities[idx]['name'].toString()[0],
-                priorities[idx]['name'].toString()[0].toLowerCase())
+    final issueProvider = ref.watch(ProviderList.issueProvider);
+    String? nameOfThisPriority = priorities[idx]['name'].toString().replaceAll(
+        priorities[idx]['name'].toString()[0],
+        priorities[idx]['name'].toString()[0].toLowerCase());
+    if (idx == 4) nameOfThisPriority = null;
+
+    return issueProvider.issueDetails['priority'] == nameOfThisPriority
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),

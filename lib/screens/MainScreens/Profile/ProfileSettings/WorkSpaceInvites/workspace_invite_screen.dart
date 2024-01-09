@@ -4,15 +4,15 @@
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:plane_startup/provider/provider_list.dart';
-// import 'package:plane_startup/utils/constants.dart';
-// import 'package:plane_startup/utils/custom_toast.dart';
-// import 'package:plane_startup/utils/enums.dart';
-// import 'package:plane_startup/utils/random_colors.dart';
-// import 'package:plane_startup/widgets/custom_app_bar.dart';
-// import 'package:plane_startup/widgets/custom_button.dart';
-// import 'package:plane_startup/widgets/custom_text.dart';
-// import 'package:plane_startup/widgets/loading_widget.dart';
+// import 'package:plane/provider/provider_list.dart';
+// import 'package:plane/utils/constants.dart';
+// import 'package:plane/utils/custom_toast.dart';
+// import 'package:plane/utils/enums.dart';
+// import 'package:plane/utils/random_colors.dart';
+// import 'package:plane/widgets/custom_app_bar.dart';
+// import 'package:plane/widgets/custom_button.dart';
+// import 'package:plane/widgets/custom_text.dart';
+// import 'package:plane/widgets/loading_widget.dart';
 
 // class WorkspaceInviteScreen extends ConsumerStatefulWidget {
 //   const WorkspaceInviteScreen({super.key});
@@ -64,7 +64,7 @@
 //                           width: MediaQuery.of(context).size.width * 0.6,
 //                           child: const CustomText(
 //                             'Currently you have no invited workspaces to join.',
-//                             type: FontStyle.description,
+//                             type: FontStyle.Medium,
 //                             color: greyColor,
 //                             textAlign: TextAlign.center,
 //                           ),
@@ -123,7 +123,7 @@
 //                                                             .toString()
 //                                                             .toUpperCase()
 //                                                             .substring(0, 1),
-//                                                         type: FontStyle.title,
+//                                                         type: FontStyle.Small,
 //                                                         color: Colors.white,
 //                                                         fontWeight:
 //                                                             FontWeight.bold,
@@ -154,7 +154,7 @@
 //                                                   prov.workspaceInvitations[
 //                                                           index]['workspace']
 //                                                       ['name'],
-//                                                   type: FontStyle.title,
+//                                                   type: FontStyle.Small,
 //                                                   fontWeight: FontWeight.bold,
 //                                                 ),
 //                                                 const SizedBox(
@@ -162,7 +162,7 @@
 //                                                 ),
 //                                                 const CustomText(
 //                                                   'Invited',
-//                                                   type: FontStyle.subtitle,
+//                                                   type: FontStyle.Medium,
 //                                                   color: greyColor,
 //                                                 ),
 //                                               ],
@@ -195,7 +195,7 @@
 //                                     }
 //                                     log(data.toString());
 //                                     await prov.joinWorkspaces(data: data);
-//                                     CustomToast().showToast(context,
+//                                     CustomToast.showToast(context,
 //                                         'Joined Workspace Successfully');
 
 //                                     for (var element in selectedWorkspaces) {

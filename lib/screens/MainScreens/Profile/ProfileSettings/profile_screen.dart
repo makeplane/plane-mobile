@@ -1,23 +1,31 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/bottom_sheets/select_workspace.dart';
-import 'package:plane_startup/provider/profile_provider.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
-import 'package:plane_startup/screens/MainScreens/Activity/activity.dart';
-import 'package:plane_startup/screens/billing_plans.dart';
-import 'package:plane_startup/screens/integrations.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/ProfileSettings/profile_detail_screen.dart';
-import 'package:plane_startup/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
-import 'package:plane_startup/screens/on_boarding/auth/join_workspaces.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:plane/bottom_sheets/select_workspace.dart';
+import 'package:plane/provider/profile_provider.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/provider/workspace_provider.dart';
+import 'package:plane/screens/Import%20&%20Export/import_export.dart';
+import 'package:plane/screens/MainScreens/Activity/activity.dart';
+import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
+import 'package:plane/screens/Theming/prefrences.dart';
+import 'package:plane/screens/integrations.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
+import 'package:plane/screens/MainScreens/Profile/ProfileSettings/profile_detail_screen.dart';
+import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
+import 'package:plane/screens/on_boarding/auth/join_workspaces.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
 
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/screens/on_boarding/on_boarding_screen.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/widgets/custom_divider.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/padding_widget.dart';
+import 'package:plane/widgets/shimmer_effect_widget.dart';
+import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -33,11 +41,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       'items': [
         {
           'title': 'General',
-          'icon': Icon(
-            Icons.person_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.person_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -49,11 +53,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Activity',
-          'icon': Icon(
-            Icons.signal_cellular_alt,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.signal_cellular_alt,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -61,6 +61,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 builder: (context) => const Activity(),
               ),
             );
+          }
+        },
+        {
+          'title': 'Preferences',
+          'icon': Icons.tune,
+          'onTap': (context) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PrefrencesScreen()));
           }
         }
       ],
@@ -70,11 +80,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       'items': [
         {
           'title': 'General',
-          'icon': Icon(
-            Icons.workspaces_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.workspaces_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -86,11 +92,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Members',
-          'icon': Icon(
-            Icons.people_outline,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.people_outline,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -102,29 +104,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             );
           }
         },
-        {
-          'title': 'Billing & Plans',
-          'icon': Icon(
-            Icons.credit_card,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
-          'onTap': (context) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BillingPlans(),
-              ),
-            );
-          }
-        },
+        // {
+        //   'title': 'Billing & Plans',
+        //   'icon': Icons.credit_card,
+        //   'onTap': (context) {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => const BillingPlans(),
+        //       ),
+        //     );
+        //   }
+        // },
         {
           'title': 'Integrations',
-          'icon': Icon(
-            Icons.route,
-            size: 18,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.route,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -136,11 +130,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Import/Export',
-          'icon': Icon(
-            Icons.swap_vert_circle_outlined,
-            size: 16,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.swap_vert_circle_outlined,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -152,11 +142,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         },
         {
           'title': 'Workspace Invites',
-          'icon': Icon(
-            Icons.upcoming_outlined,
-            size: 16,
-            color: Const.dark ? darkSecondaryTextColor : Colors.black,
-          ),
+          'icon': Icons.upcoming_outlined,
           'onTap': (context) {
             Navigator.push(
               context,
@@ -169,52 +155,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           }
         },
       ]
+    },
+    {
+      'menu': 'Logout',
     }
   ];
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
 
     return Material(
-      color: themeProvider.isDarkThemeEnabled
-          ? darkBackgroundColor
-          : lightBackgroundColor,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.only(top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                const CustomText(
-                  'Profile',
-                  type: FontStyle.mainHeading,
-                ),
-                const Spacer(),
-                MaterialButton(
-                  onPressed: _showLogoutModelBottomBar,
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.red,
-                        size: 16,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      CustomText(
-                        'Logout',
-                        color: Colors.red,
-                        type: FontStyle.description,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+            headerWidget(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -223,10 +183,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       height: 15,
                     ),
                     profileCard(themeProvider, profileProvider),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    menuItems(themeProvider)
+                    menuItems(themeProvider, workspaceProvider)
                   ],
                 ),
               ),
@@ -237,7 +194,101 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
+  Widget headerWidget() {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
+    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(bottom: 15, left: 16, right: 16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom:
+              BorderSide(color: themeProvider.themeManager.borderSubtle01Color),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                enableDrag: true,
+                constraints: BoxConstraints(
+                    minHeight: height * 0.5,
+                    maxHeight: MediaQuery.of(context).size.height * 0.8),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+                context: context,
+                builder: (ctx) {
+                  return const SelectWorkspace();
+                },
+              );
+            },
+            child: Row(
+              children: [
+                !workspaceProvider.selectedWorkspace.workspaceId.isNotEmpty
+                    ? Container()
+                    : workspaceProvider.selectedWorkspace.workspaceLogo != ''
+                        ? WorkspaceLogoForDiffrentExtensions(
+                            imageUrl: workspaceProvider
+                                .selectedWorkspace.workspaceLogo,
+                            themeProvider: themeProvider,
+                            workspaceName: workspaceProvider
+                                .selectedWorkspace.workspaceName)
+                        : Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: themeProvider.themeManager.primaryColour,
+                            ),
+                            child: Center(
+                              child: CustomText(
+                                workspaceProvider
+                                    .selectedWorkspace.workspaceName[0]
+                                    .toUpperCase(),
+                                type: FontStyle.Medium,
+                                fontWeight: FontWeightt.Bold,
+                                color: Colors.white,
+                                overrride: true,
+                              ),
+                            ),
+                          ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: width * 0.6),
+                      child: CustomText(
+                        workspaceProvider.selectedWorkspace.workspaceName,
+                        type: FontStyle.H4,
+                        fontWeight: FontWeightt.Semibold,
+                      ),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showLogoutModelBottomBar() {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -248,37 +299,55 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(20),
-          height: 300,
+          height: 250,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const CustomText(
+                  CustomText(
                     'Logout',
-                    type: FontStyle.mainHeading,
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 5,
               ),
-              const CustomText(
+              CustomText(
                 'Are you sure you want to logout from your account?',
-                type: FontStyle.subheading,
+                type: FontStyle.H5,
                 textAlign: TextAlign.left,
                 maxLines: 4,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               Button(
                 ontap: _onLogout,
                 text: 'Logout',
+                color: (themeProvider.theme == THEME.dark ||
+                        themeProvider.theme == THEME.darkHighContrast ||
+                        (themeProvider.theme == THEME.systemPreferences &&
+                            SchedulerBinding.instance.platformDispatcher
+                                    .platformBrightness ==
+                                Brightness.dark))
+                    ? const Color.fromRGBO(95, 21, 21, 1)
+                    : const Color.fromRGBO(254, 242, 242, 1),
+                textColor: themeProvider.themeManager.textErrorColor,
+                filledButton: false,
+                borderColor: themeProvider.themeManager.textErrorColor,
               ),
             ],
           ),
@@ -288,6 +357,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _onLogout() {
+    final profileProvider = ref.read(ProviderList.profileProvider);
+    final theme = profileProvider.userProfile.theme;
+    theme!['theme'] = fromTHEME(theme: THEME.light);
+
+    ref.read(ProviderList.bottomNavProvider).setIndex(0);
+
+    ref.read(ProviderList.themeProvider).changeTheme(
+      data: {'theme': theme},
+      context: context,
+      fromLogout: true,
+    );
     ProviderList.clear(ref: ref);
     Navigator.pushAndRemoveUntil(
         context,
@@ -297,241 +377,234 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget profileCard(
       ThemeProvider themeProvider, ProfileProvider profileProvider) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: themeProvider.isDarkThemeEnabled
-            ? darkSecondaryBGC
-            : lightSecondaryBackgroundColor,
-      ),
-      padding: const EdgeInsets.all(15),
-      child: Row(
-        children: [
-          Hero(
-              tag: 'photo',
-              child: profileProvider.userProfile.avatar != null &&
-                      profileProvider.userProfile.avatar != ""
-                  ? CircleAvatar(
-                      radius: 45,
-                      backgroundImage:
-                          NetworkImage(profileProvider.userProfile.avatar!),
-                    )
-                  : Container(
-                      height: 75,
-                      width: 75,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkThemeBorder
-                            : Colors.white,
+    return horizontalPaddingWidget(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
+        ),
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileDetailScreen(),
+                  ),
+                );
+              },
+              child: Hero(
+                  tag: 'photo',
+                  child: profileProvider.userProfile.avatar != null &&
+                          profileProvider.userProfile.avatar != ""
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox(
+                            height: 90,
+                            width: 90,
+                            child: CachedNetworkImage(
+                              imageUrl: profileProvider.userProfile.avatar!,
+                              placeholder: (context, url) =>
+                                  const ShimmerEffectWidget(
+                                      height: 90, width: 90, borderRadius: 10),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 90,
+                          width: 90,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor,
+                          ),
+                          child: Icon(
+                            Icons.person_2_outlined,
+                            color:
+                                themeProvider.themeManager.placeholderTextColor,
+                            size: 35,
+                          ))),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: width * 0.5,
+                  child: CustomText(
+                    profileProvider.userProfile.firstName ?? 'User name',
+                    type: FontStyle.H4,
+                    fontWeight: FontWeightt.Semibold,
+                    maxLines: 1,
+                  ),
+                ),
+                const SizedBox(
+                  height: 0,
+                ),
+                SizedBox(
+                  width: width * 0.5,
+                  child: CustomText(
+                    profileProvider.userProfile.email ?? '',
+                    type: FontStyle.Medium,
+                    color: themeProvider.themeManager.placeholderTextColor,
+                    maxLines: 1,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => UserProfileScreen(
+                          userID: profileProvider.userProfile.id!,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.person_2_outlined,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.grey.shade500
-                            : Colors.grey,
-                        size: 35,
-                      ))),
-          const SizedBox(
-            width: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: width * 0.5,
-                child: CustomText(
-                  profileProvider.userProfile.firstName ?? 'User name',
-                  type: FontStyle.mainHeading,
-                  maxLines: 1,
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    width: width * 0.5,
+                    //color: Colors.red,
+                    child: CustomText(
+                      'View Profile',
+                      type: FontStyle.Medium,
+                      fontWeight: FontWeightt.Medium,
+                      color: themeProvider.themeManager.primaryColour,
+                      maxLines: 1,
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: width * 0.5,
-                child: CustomText(
-                  profileProvider.userProfile.email ??
-                      'rameshkumar2299@gmail.com',
-                  type: FontStyle.secondaryText,
-                  maxLines: 1,
-                ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget menuItems(ThemeProvider themeProvider) {
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+  Widget menuItems(
+      ThemeProvider themeProvider, WorkspaceProvider workspaceProvider) {
     return ListView.builder(
       primary: false,
       shrinkWrap: true,
       itemCount: menus.length,
-      padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: primaryLightColor,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width - 105,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 10),
-                    child: CustomText(
-                      menus[index]['menu'],
-                      type: FontStyle.description,
-                      color: primaryColor,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  menus[index]['menu'] != 'Workspace Settings'
-                      ? Container()
-                      : GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              constraints: BoxConstraints(
-                                  minHeight: height * 0.5,
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height * 0.8),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              )),
-                              context: context,
-                              builder: (ctx) {
-                                return const SelectWorkspace();
-                              },
-                            );
-                          },
-                          child: Container(
-                            height: 35,
-                            width: 65,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              //color: const Color.fromRGBO(48, 0, 240, 1),
-                            ),
-                            child: Row(
-                              children: [
-                                workspaceProvider
-                                            .selectedWorkspace!.workspaceLogo !=
-                                        ''
-                                    ? Container(
-                                        margin: const EdgeInsets.all(5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Image.network(
-                                            workspaceProvider.selectedWorkspace!
-                                                .workspaceLogo,
-                                            width: 25,
-                                            height: 35,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: 25,
-                                        height: 35,
-                                        margin: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
-                                          color: Colors.white,
-                                        ),
-                                        child: Center(
-                                          child: CustomText(
-                                            workspaceProvider.selectedWorkspace!
-                                                .workspaceName[0]
-                                                .toUpperCase(),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: const Color.fromRGBO(
-                                                48, 0, 240, 1),
-                                          ),
-                                        ),
-                                      ),
-                                // Container(
-                                //   margin: const EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
-                                //   height: 35,
-                                //   width: 25,
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(3),
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: primaryColor,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: (menus[index]['items']).length,
-              padding: const EdgeInsets.only(bottom: 15),
-              itemBuilder: (context, idx) {
-                return InkWell(
-                  onTap: () {
-                    menus[index]['items'][idx]['onTap'](context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            menus[index]['items'][idx]['icon'],
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomText(
-                              menus[index]['items'][idx]['title'],
-                              type: FontStyle.title,
-                              color: Const.dark
-                                  ? darkSecondaryTextColor
-                                  : Colors.black,
-                            ),
-                          ],
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 15,
-                          color: greyColor,
-                        )
-                      ],
-                    ),
-                  ),
-                );
+            InkWell(
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                if (index == menus.length - 1) {
+                  _showLogoutModelBottomBar();
+                }
               },
-            )
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    index == menus.length - 1
+                        ? const Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Icon(
+                              Icons.logout,
+                              color: darkPrimaryButtonDangerSelectedColor,
+                              size: 18,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    CustomText(
+                      menus[index]['menu'],
+                      type: index == menus.length - 1
+                          ? FontStyle.Medium
+                          : FontStyle.Small,
+                      color: index == menus.length - 1
+                          ? darkPrimaryButtonDangerSelectedColor
+                          : themeProvider.themeManager.tertiaryTextColor,
+                      textAlign: TextAlign.start,
+                      fontWeight: index == menus.length - 1
+                          ? FontWeightt.Medium
+                          : FontWeightt.Regular,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            index == menus.length - 1
+                ? const SizedBox.shrink()
+                : Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: (menus[index]['items']).length,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        itemBuilder: (context, idx) {
+                          if ((index == 0) ||
+                              (idx == 4 ||
+                                  idx == 0 ||
+                                  workspaceProvider.isAdminOrMember())) {
+                            return InkWell(
+                              onTap: () {
+                                menus[index]['items'][idx]['onTap'](context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          menus[index]['items'][idx]['icon'],
+                                          size: 18,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        CustomText(
+                                          menus[index]['items'][idx]['title'],
+                                          type: FontStyle.Medium,
+                                          color: themeProvider
+                                              .themeManager.primaryTextColor,
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 12,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                      CustomDivider(
+                        themeProvider: themeProvider,
+                        width: 8,
+                      ),
+                    ],
+                  )
           ],
         );
       },

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+import '/utils/enums.dart';
 
 class ImportExportCancel extends ConsumerStatefulWidget {
   const ImportExportCancel({super.key});
@@ -16,10 +15,10 @@ class ImportExportCancel extends ConsumerStatefulWidget {
 }
 
 class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
-  var selected = 0;
+  int selected = 0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       //backgroundColor: Colors.white,
       appBar: CustomAppBar(
@@ -180,7 +179,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                             child: const CustomText(
                               'Github Configure',
                               textAlign: TextAlign.left,
-                              type: FontStyle.subheading,
+                              type: FontStyle.Small,
                             ),
                           ),
                           Container(
@@ -190,7 +189,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                               'Set up your GitHub import.',
                               textAlign: TextAlign.left,
                               maxLines: 3,
-                              type: FontStyle.title,
+                              type: FontStyle.Small,
                               color: Color.fromRGBO(133, 142, 150, 1),
                             ),
                           ),
@@ -209,33 +208,32 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   },
                   itemBuilder: (ctx, index) => selected == 0
                       ? Column(
-                        children: [
-                          const Spacer(),
-                          Container(
-                              height: 45,
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(
-                                  bottom: 20, top: 20, left: 20, right: 20),
-                              decoration: BoxDecoration(
-                                color:
-                                    const Color.fromRGBO(63, 118, 255, 1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Center(
-                                  child: CustomText(
-                                'Connect',
-                                color: Colors.white,
-                                type: FontStyle.buttonText,
-                              ))),
-                        ],
-                      )
+                          children: [
+                            const Spacer(),
+                            Container(
+                                height: 45,
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.only(
+                                    bottom: 20, top: 20, left: 20, right: 20),
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(63, 118, 255, 1),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: const Center(
+                                    child: CustomText(
+                                  'Connect',
+                                  color: Colors.white,
+                                  type: FontStyle.Medium,
+                                ))),
+                          ],
+                        )
                       : upload(themeProvider)))
         ],
       ),
     );
   }
 
-  upload(ThemeProvider themeProvider) {
+  Widget upload(ThemeProvider themeProvider) {
     return Column(
       children: [
         Container(
@@ -245,11 +243,11 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               children: [
                 CustomText(
                   'Select Repository (import from) ',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 CustomText(
                   ' *',
-                  type: FontStyle.appbarTitle,
+                  type: FontStyle.Small,
                   color: Colors.red,
                 ),
               ],
@@ -266,9 +264,8 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               border: Border.all(color: Colors.grey.shade300),
               borderRadius: BorderRadius.circular(4)),
           child: DropdownButtonFormField(
-              dropdownColor: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : Colors.white,
+              dropdownColor:
+                  themeProvider.themeManager.secondaryBackgroundDefaultColor,
               decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
@@ -277,32 +274,28 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   value: 'Admin',
                   child: CustomText(
                     'Admin',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Member',
                   child: CustomText(
                     'Member',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Viewer',
                   child: CustomText(
                     'Viewer',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Guest',
                   child: CustomText(
                     'Guest',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
               ],
@@ -315,11 +308,11 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               children: [
                 CustomText(
                   'Select Project (import to) ',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 CustomText(
                   ' *',
-                  type: FontStyle.appbarTitle,
+                  type: FontStyle.Small,
                   color: Colors.red,
                 ),
               ],
@@ -336,9 +329,8 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               border: Border.all(color: Colors.grey.shade300),
               borderRadius: BorderRadius.circular(4)),
           child: DropdownButtonFormField(
-              dropdownColor: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : Colors.white,
+              dropdownColor:
+                  themeProvider.themeManager.secondaryBackgroundDefaultColor,
               decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
@@ -347,32 +339,28 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
                   value: 'Admin',
                   child: CustomText(
                     'Admin',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Member',
                   child: CustomText(
                     'Member',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Viewer',
                   child: CustomText(
                     'Viewer',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'Guest',
                   child: CustomText(
                     'Guest',
-                    type: FontStyle.subtitle,
-                    fontWeight: FontWeight.bold,
+                    type: FontStyle.H5,
                   ),
                 ),
               ],
@@ -385,11 +373,11 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               children: [
                 CustomText(
                   'Sync Issues ',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 CustomText(
                   ' *',
-                  type: FontStyle.appbarTitle,
+                  type: FontStyle.Small,
                   color: Colors.red,
                 ),
               ],
@@ -409,7 +397,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               alignment: Alignment.center,
               child: const CustomText(
                 'Yes',
-                type: FontStyle.title,
+                type: FontStyle.Small,
               ),
             )),
             Expanded(
@@ -425,7 +413,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               alignment: Alignment.center,
               child: const CustomText(
                 'No',
-                type: FontStyle.title,
+                type: FontStyle.Small,
               ),
             )),
           ],
@@ -447,7 +435,7 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               alignment: Alignment.center,
               child: const CustomText(
                 'Back',
-                type: FontStyle.buttonText,
+                type: FontStyle.Medium,
               ),
             )),
             Expanded(
@@ -458,11 +446,12 @@ class _ImportExportCancelState extends ConsumerState<ImportExportCancel> {
               ),
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               decoration: BoxDecoration(
-                  color: primaryColor, borderRadius: BorderRadius.circular(4)),
+                  color: themeProvider.themeManager.primaryColour,
+                  borderRadius: BorderRadius.circular(4)),
               alignment: Alignment.center,
               child: const CustomText(
                 'Next',
-                type: FontStyle.buttonText,
+                type: FontStyle.Medium,
               ),
             )),
           ],

@@ -1,15 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/services/shared_preference_service.dart';
-
-import 'provider_list.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/startup/dependency_resolver.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/services/shared_preference_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthProvider(ChangeNotifierProviderRef<AuthProvider> this.ref);
@@ -21,11 +22,14 @@ class AuthProvider extends ChangeNotifier {
   StateEnum signUpState = StateEnum.empty;
   StateEnum resetPassState = StateEnum.empty;
 
-  Future sendMagicCode(String email) async {
-    sendCodeState = StateEnum.loading;
-    notifyListeners();
+  Future sendMagicCode({required String email, bool resend = false}) async {
+    if (!resend) {
+      sendCodeState = StateEnum.loading;
+      notifyListeners();
+    }
+
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.baseApi + APIs.generateMagicLink,
         hasBody: true,
@@ -39,191 +43,78 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log(e.toString());
-      sendCodeState = StateEnum.failed;
+      sendCodeState = StateEnum.error;
       notifyListeners();
     }
   }
 
-  Future validateMagicCode({required String key, required token}) async {
+  Future<void> validateMagicCode(
+      {required String key,
+      required String token,
+      required BuildContext context,
+      required WidgetRef ref}) async {
     validateCodeState = StateEnum.loading;
     notifyListeners();
     try {
       log({"key": key, "token": token}.toString());
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: false,
           url: APIs.baseApi + APIs.magicValidate,
           hasBody: true,
           httpMethod: HttpMethod.post,
           data: {"key": key, "token": token});
-      Const.appBearerToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
-      // await ref.read(ProviderList.profileProvider).getProfile();
-      // .userProfile = UserProfile.fromMap(response.data);
+
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+
+      await DependencyResolver.resolve(ref: ref);
       validateCodeState = StateEnum.success;
-
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            ref.read(ProviderList.dashboardProvider).getDashboard();
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
-          });
-        } else {
-          Const.appBearerToken = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
-          validateCodeState = StateEnum.failed;
-          notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
-        }
-      });
       log(response.data.toString());
       notifyListeners();
-    } catch (e) {
-      Object? message;
-      if (e is DioException) {
-        var errorResponse = e.error;
-        message = errorResponse;
-        CustomToast().showSimpleToast(
-          message.toString(),
-        );
-      } else {
-        message = e;
-      }
+    } on DioException catch (error) {
+      log(error.toString());
+      String message = error.response?.data['error'] ?? 'Something went wrong!';
+      CustomToast.showToastWithColors(
+        context,
+        message,
+        toastType: ToastType.failure,
+        maxHeight: 100,
+      );
       validateCodeState = StateEnum.failed;
-
-      log(e.toString());
       notifyListeners();
     }
   }
 
-  Future googleAuth({required Map data, required BuildContext context}) async {
+  Future googleAuth(
+      {required Map data,
+      required BuildContext context,
+      required WidgetRef ref}) async {
     try {
       googleAuthState = StateEnum.loading;
       notifyListeners();
-      Response response = await DioConfig().dioServe(
+      final Response response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.googleAuth,
         hasBody: true,
         httpMethod: HttpMethod.post,
         data: data,
       );
-      Const.appBearerToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       googleAuthState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
-          });
-        } else {
-          Const.appBearerToken = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
-          validateCodeState = StateEnum.failed;
-          notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
-        }
-      });
     } catch (e) {
       log(e.toString());
-      CustomToast().showToast(
+
+      CustomToast.showToast(
         context,
-        'Something went wrong, please try again.',
+        message: 'Something went wrong, please try again.',
+        toastType: ToastType.failure,
       );
       googleAuthState = StateEnum.failed;
       notifyListeners();
@@ -231,11 +122,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future signInWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required BuildContext context,
+      required WidgetRef ref}) async {
     signInState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.signIn,
         hasBody: true,
@@ -246,85 +140,20 @@ class AuthProvider extends ChangeNotifier {
           'medium': 'email',
         },
       );
-      Const.appBearerToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       signInState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
-          });
-        } else {
-          Const.appBearerToken = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
-
-          notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
-        }
-      });
     } on DioException catch (e) {
       log(e.toString());
       signInState = StateEnum.failed;
-      if (e is DioException) {
-        CustomToast().showSimpleToast(
-          e.error.toString(),
-          
-        );
-      } else {
-        CustomToast().showSimpleToast(
-          'Something went wrong, please try again.',
-        );
-      }
       notifyListeners();
+      CustomToast.showToastWithColors(
+          context, e.response!.data['error'].toString(),
+          toastType: ToastType.failure);
     }
   }
 
@@ -333,7 +162,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     log(email);
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.sendForgotPassCode,
         hasBody: true,
@@ -351,11 +180,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      BuildContext? context,
+      required WidgetRef ref}) async {
     signUpState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: false,
         url: APIs.signUp,
         hasBody: true,
@@ -366,89 +198,33 @@ class AuthProvider extends ChangeNotifier {
         },
       );
       log('signUp response: ${response.data}');
-      Const.appBearerToken = response.data["access_token"];
-      SharedPrefrenceServices.sharedPreferences!
-          .setString("token", response.data["access_token"]);
+      SharedPrefrenceServices.setTokens(
+          accessToken: response.data["access_token"],
+          refreshToken: response.data["refresh_token"]);
+      // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
+      await DependencyResolver.resolve(ref: ref);
       signUpState = StateEnum.success;
       notifyListeners();
-      await ref
-          .read(ProviderList.profileProvider)
-          .getProfile()
-          .then((value) async {
-        if (ref.read(ProviderList.profileProvider).getProfileState ==
-            StateEnum.success) {
-          log('no error in getProfile');
-          await ref
-              .read(ProviderList.workspaceProvider)
-              .getWorkspaces()
-              .then((value) {
-            if (ref.read(ProviderList.workspaceProvider).workspaces.isEmpty ||
-                ref
-                        .read(ProviderList.workspaceProvider)
-                        .workspaceInvitationState ==
-                    StateEnum.error ||
-                ref
-                        .read(ProviderList.profileProvider)
-                        .userProfile
-                        .lastWorkspaceId ==
-                    null) {
-              return;
-            }
-            ref.read(ProviderList.dashboardProvider).getDashboard();
-            log(ref
-                .read(ProviderList.profileProvider)
-                .userProfile
-                .lastWorkspaceId
-                .toString());
-
-            ref.read(ProviderList.projectProvider).getProjects(
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug']);
-            ref.read(ProviderList.projectProvider).favouriteProjects(
-                index: 0,
-                slug: ref
-                    .read(ProviderList.workspaceProvider)
-                    .workspaces
-                    .where((element) =>
-                        element['id'] ==
-                        ref
-                            .read(ProviderList.profileProvider)
-                            .userProfile
-                            .lastWorkspaceId)
-                    .first['slug'],
-                method: HttpMethod.get,
-                projectID: "");
-          });
-        } else {
-          Const.appBearerToken = null;
-          SharedPrefrenceServices.sharedPreferences!.clear();
-
-          notifyListeners();
-          CustomToast().showSimpleToast(
-            'Something went wrong while fetching your data, Please try again.',
-          );
-        }
-      });
     } catch (e) {
       log(e.toString());
       signUpState = StateEnum.failed;
       notifyListeners();
       if (e is DioException) {
-        CustomToast().showSimpleToast(
-          e.error.toString(),
-        );
+        if (context != null) {
+          CustomToast.showToast(
+            context,
+            message: e.error.toString(),
+            toastType: ToastType.failure,
+          );
+        }
       } else {
-        CustomToast().showSimpleToast(
-          'Something went wrong, please try again.',
-        );
+        if (context != null) {
+          CustomToast.showToast(
+            context,
+            message: "Something went wrong, please try again.",
+            toastType: ToastType.failure,
+          );
+        }
       }
     }
   }
@@ -458,7 +234,7 @@ class AuthProvider extends ChangeNotifier {
     resetPassState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: false,
           url: APIs.resetPassword
               .replaceAll('\$UID', token)

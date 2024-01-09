@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/Import%20&%20Export/import_export.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class Integrations extends ConsumerStatefulWidget {
   const Integrations({this.fromSettings = false, super.key});
@@ -17,20 +15,20 @@ class Integrations extends ConsumerStatefulWidget {
 }
 
 class _IntegrationsState extends ConsumerState<Integrations> {
-  @override
-  void initState() {
-    var prov = ref.read(ProviderList.integrationProvider);
-    if (prov.integrations.isEmpty) {
-      ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
-    }
+  // @override
+  // void initState() {
+  //   final prov = ref.read(ProviderList.integrationProvider);
+  //   if (prov.integrations.isEmpty) {
+  //     ref.read(ProviderList.integrationProvider).getAllAvailableIntegrations();
+  //   }
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var integrationProvider = ref.watch(ProviderList.integrationProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Scaffold(
       appBar: widget.fromSettings
           ? null
@@ -41,37 +39,31 @@ class _IntegrationsState extends ConsumerState<Integrations> {
               text: 'Integrations',
             ),
       body: LoadingWidget(
-        loading: integrationProvider.getIntegrationState == StateEnum.loading ||
-            integrationProvider.getInstalledIntegrationState ==
-                StateEnum.loading,
+        loading: false,
+        // integrationProvider.getIntegrationState == StateEnum.loading ||
+        //     integrationProvider.getInstalledIntegrationState ==
+        //         StateEnum.loading,
+
         widgetClass: Column(
           children: [
             Container(
               padding: const EdgeInsets.only(left: 16, right: 16),
               height: widget.fromSettings ? 0 : 1,
               width: MediaQuery.of(context).size.width,
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderStrong01Color,
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ImportEport()));
-              },
+              onTap: () {},
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(top: 16, bottom: 16),
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 decoration: BoxDecoration(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? darkSecondaryBGC
-                        : lightSecondaryBackgroundColor,
+                    color: themeProvider
+                        .themeManager.primaryBackgroundDefaultColor,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.transparent
-                            : Colors.grey.shade300)),
+                        color: themeProvider.themeManager.borderSubtle01Color)),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,33 +84,35 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const CustomText(
+                              CustomText(
                                 'Slack',
                                 textAlign: TextAlign.left,
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                               Container(
-                                padding: const EdgeInsets.all(5),
-                                color:integrationProvider.integrations["slack"]
-                                        !=null && integrationProvider.integrations["slack"]
-                                        ["installed"]
-                                    ? const Color.fromRGBO(9, 169, 83, 1)
-                                    : themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : const Color.fromRGBO(
-                                            243, 245, 248, 1),
-                                child: CustomText(
-                               integrationProvider.integrations["slack"]
-                                        !=null &&   integrationProvider.integrations["slack"]
-                                          ["installed"]
-                                      ? "Installed"
-                                      : 'Not Installed',
-                                  type: FontStyle.subtitle,
-                                  color:integrationProvider.integrations["slack"]
-                                        !=null && integrationProvider
-                                          .integrations["slack"]["installed"]
-                                      ? Colors.white
-                                      : const Color.fromRGBO(73, 80, 87, 1),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5, bottom: 8),
+                                decoration: BoxDecoration(
+                                    color: workspaceProvider.slackIntegration ==
+                                            null
+                                        ? themeProvider.themeManager
+                                            .tertiaryBackgroundDefaultColor
+                                        : themeProvider.themeManager
+                                            .successBackgroundColor,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: CustomText(
+                                    workspaceProvider.slackIntegration == null
+                                        ? 'Not Installed'
+                                        : 'Installed',
+                                    type: FontStyle.XSmall,
+                                    color: workspaceProvider.slackIntegration ==
+                                            null
+                                        ? lightPlaceholderTextColor
+                                        : lightTextSuccessColor,
+                                  ),
                                 ),
                               )
                             ],
@@ -127,12 +121,14 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                         Container(
                           margin: const EdgeInsets.only(top: 5),
                           width: MediaQuery.of(context).size.width - 120,
-                          child: const CustomText(
-                            'Connect with Slack with your Plane workspace to sync project issues.',
+                          child: CustomText(
+                            workspaceProvider.slackIntegration == null
+                                ? 'Connect with Slack with your Plane workspace to sync project issues.'
+                                : 'Slack is connected',
                             textAlign: TextAlign.left,
                             maxLines: 3,
-                            type: FontStyle.title,
-                            color: Color.fromRGBO(133, 142, 150, 1),
+                            type: FontStyle.Medium,
+                            color: const Color.fromRGBO(133, 142, 150, 1),
                           ),
                         ),
                       ],
@@ -146,14 +142,11 @@ class _IntegrationsState extends ConsumerState<Integrations> {
               padding: const EdgeInsets.only(top: 16, bottom: 16),
               margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
               decoration: BoxDecoration(
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC
-                      : lightSecondaryBackgroundColor,
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.transparent
-                          : Colors.grey.shade300)),
+                      color: themeProvider.themeManager.borderSubtle01Color)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -174,47 +167,48 @@ class _IntegrationsState extends ConsumerState<Integrations> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const CustomText(
+                            CustomText(
                               'Github',
                               textAlign: TextAlign.left,
-                              type: FontStyle.subheading,
+                              type: FontStyle.Small,
+                              color:
+                                  themeProvider.themeManager.primaryTextColor,
                             ),
-                             Container(
-                                padding: const EdgeInsets.all(5),
-                                color:integrationProvider.integrations["github"]
-                                        !=null && integrationProvider.integrations["github"]
-                                        ["installed"]
-                                    ? const Color.fromRGBO(9, 169, 83, 1)
-                                    : themeProvider.isDarkThemeEnabled
-                                        ? darkBackgroundColor
-                                        : const Color.fromRGBO(
-                                            243, 245, 248, 1),
-                                child: CustomText(
-                                 integrationProvider.integrations["github"]
-                                        !=null && integrationProvider.integrations["github"]
-                                          ["installed"]
-                                      ? "Installed"
-                                      : 'Not Installed',
-                                  type: FontStyle.subtitle,
-                                  color:integrationProvider.integrations["github"]
-                                        !=null && integrationProvider
-                                          .integrations["github"]["installed"]
-                                      ? Colors.white
-                                      : const Color.fromRGBO(73, 80, 87, 1),
-                                ),
-                              )
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 5, bottom: 8),
+                              decoration: BoxDecoration(
+                                  color: workspaceProvider.githubIntegration ==
+                                          null
+                                      ? themeProvider.themeManager
+                                          .tertiaryBackgroundDefaultColor
+                                      : themeProvider
+                                          .themeManager.successBackgroundColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: CustomText(
+                                  workspaceProvider.githubIntegration == null
+                                      ? 'Not Installed'
+                                      : 'Installed',
+                                  type: FontStyle.XSmall,
+                                  color: workspaceProvider.githubIntegration ==
+                                          null
+                                      ? lightPlaceholderTextColor
+                                      : lightTextSuccessColor),
+                            )
                           ],
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 5),
                         width: MediaQuery.of(context).size.width - 120,
-                        child: const CustomText(
-                          'Connect with GitHub with your Plane workspace to sync project issues.',
+                        child: CustomText(
+                          workspaceProvider.githubIntegration == null
+                              ? 'Connect with GitHub with your Plane workspace to sync project issues.'
+                              : 'Github is connected',
                           textAlign: TextAlign.left,
                           maxLines: 3,
-                          type: FontStyle.title,
-                          color: Color.fromRGBO(133, 142, 150, 1),
+                          type: FontStyle.Medium,
+                          color: const Color.fromRGBO(133, 142, 150, 1),
                         ),
                       ),
                     ],

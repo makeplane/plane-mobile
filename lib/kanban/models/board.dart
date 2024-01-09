@@ -5,6 +5,7 @@ import 'inputs.dart';
 
 class BoardState {
   List<BoardList> lists = [];
+  String boardID;
   ScrollController controller;
   VoidCallback? setstate;
   int? dragListIndex = 0;
@@ -25,8 +26,11 @@ class BoardState {
   Function(int? itemIndex, int? listIndex)? onItemLongPress;
   Function(int? listIndex)? onListTap;
   Function(int? listIndex)? onListLongPress;
-  final void Function(int? oldCardIndex, int? newCardIndex, int? oldListIndex,
-      int? newListIndex)? onItemReorder;
+  final void Function(
+      {int? oldCardIndex,
+      int? newCardIndex,
+      int? oldListIndex,
+      int? newListIndex})? onItemReorder;
   final void Function(int? oldListIndex, int? newListIndex)? onListReorder;
   final void Function(String? oldName, String? newName)? onListRename;
   final void Function(String? cardIndex, String? listIndex, String? text)?
@@ -43,14 +47,19 @@ class BoardState {
   TextStyle? textStyle;
   Decoration? listDecoration;
   Decoration? boardDecoration;
+  Decoration? cardPlaceHolderDecoration;
   final bool? groupEmptyStates;
   final Duration cardTransitionDuration;
   final Duration listTransitionDuration;
+  final bool isCardsDraggable;
   BoardState(
       {required this.lists,
+      required this.boardID,
       required this.controller,
       this.dragListIndex,
+      this.isCardsDraggable = true,
       this.groupEmptyStates,
+      this.cardPlaceHolderDecoration,
       this.onItemTap,
       this.onItemLongPress,
       this.boardScrollConfig,

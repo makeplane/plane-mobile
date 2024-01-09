@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/integrations.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
 
 class BillingPlans extends ConsumerStatefulWidget {
   const BillingPlans({super.key});
@@ -18,7 +16,7 @@ class BillingPlans extends ConsumerStatefulWidget {
 class _BillingPlansState extends ConsumerState<BillingPlans> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       // backgroundColor: themeProvider.isDarkThemeEnabled
       //     ? darkSecondaryBackgroundColor
@@ -29,7 +27,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
       //     children: [
       //       CustomText(
       //         'Billings & Plans',
-      //         type: FontStyle.appbarTitle,
+      //         type: FontStyle.Small,
       //       ),
       //       Container(
       //         child: Row(
@@ -39,7 +37,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
       //               color: Color.fromRGBO(63, 118, 255, 1),
       //             ),
       //             CustomText('Add',
-      //                 type: FontStyle.title,
+      //                 type: FontStyle.Small,
       //                 color: const Color.fromRGBO(63, 118, 255, 1)),
       //           ],
       //         ),
@@ -61,20 +59,20 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
           Navigator.of(context).pop();
         },
         text: 'Billings & Plans',
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 15,
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.add,
-                  color: Color.fromRGBO(63, 118, 255, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
                 CustomText('Add',
-                    type: FontStyle.title,
-                    color: Color.fromRGBO(63, 118, 255, 1)),
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.placeholderTextColor),
               ],
             ),
           )
@@ -109,7 +107,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 ),
                 const CustomText(
                   'Free launch Pro Plan',
-                  type: FontStyle.buttonText,
+                  type: FontStyle.Small,
                 )
               ],
             ),
@@ -121,23 +119,21 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryBGC
-                  : lightSecondaryBackgroundColor,
+              color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
                   'Payment Due',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
                   '__',
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 )
               ],
             ),
@@ -148,7 +144,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             child: const CustomText(
               'Current Plan',
               textAlign: TextAlign.left,
-              type: FontStyle.heading,
+              type: FontStyle.H4,
             ),
           ),
           Container(
@@ -157,21 +153,21 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightSecondaryBackgroundColor,
-                border: Border.all(color: Colors.grey.shade300)),
+                color:
+                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
+                border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color)),
             child: Column(
               children: [
                 const CustomText(
                   'You are currently using free plan. ',
                   textAlign: TextAlign.center,
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Integrations()));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => const Integrations()));
                   },
                   child: Container(
                       height: 45,
@@ -179,14 +175,14 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                       margin:
                           const EdgeInsets.only(top: 20, left: 20, right: 20),
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(63, 118, 255, 1),
+                        color: themeProvider.themeManager.primaryColour,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Center(
                           child: CustomText(
                         'View plans & Upgrade',
                         color: Colors.white,
-                        type: FontStyle.buttonText,
+                        type: FontStyle.Medium,
                       ))),
                 ),
               ],
@@ -198,7 +194,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             child: const CustomText(
               'Billing History',
               textAlign: TextAlign.left,
-              type: FontStyle.heading,
+              type: FontStyle.H4,
             ),
           ),
           Container(
@@ -206,11 +202,11 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
             padding: const EdgeInsets.only(top: 40, bottom: 40),
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
-                color: themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryBGC
-                    : lightSecondaryBackgroundColor,
+                color:
+                    themeProvider.themeManager.secondaryBackgroundDefaultColor,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.grey.shade300)),
+                border: Border.all(
+                    color: themeProvider.themeManager.borderSubtle01Color)),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -225,7 +221,7 @@ class _BillingPlansState extends ConsumerState<BillingPlans> {
                 CustomText(
                   'There are no invoices to display',
                   textAlign: TextAlign.center,
-                  type: FontStyle.title,
+                  type: FontStyle.Small,
                 ),
               ],
             ),

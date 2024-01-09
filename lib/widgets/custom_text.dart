@@ -1,47 +1,77 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-// import 'package:google_fonts/google_fonts.dart';
-import 'package:plane_startup/provider/theme_provider.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/theme_provider.dart';
+import 'package:plane/utils/constants.dart';
+import '../utils/enums.dart';
 
+Map<FontStyle, double> fontSIZE = {
+  FontStyle.H1: 36,
+  FontStyle.H2: 32,
+  FontStyle.H3: 28,
+  FontStyle.H4: 24,
+  FontStyle.H5: 20,
+  FontStyle.H6: 18,
+  FontStyle.Large: 18,
+  FontStyle.Medium: 16,
+  FontStyle.Small: 14,
+  FontStyle.XSmall: 12,
+  FontStyle.overline: 12
+};
+Map<FontStyle, double> lineHeight = {
+  FontStyle.H1: 1.222,
+  FontStyle.H2: 1.25,
+  FontStyle.H3: 1.285,
+  FontStyle.H4: 1.333,
+  FontStyle.H5: 1.4,
+  FontStyle.H6: 1.333,
+  FontStyle.Large: 1.444,
+  FontStyle.Medium: 1.5,
+  FontStyle.Small: 1.42,
+  FontStyle.XSmall: 1.66,
+  FontStyle.overline: 1
+};
+Map fontWEIGHT = {
+  FontWeightt.Regular: FontWeight.w400,
+  FontWeightt.Medium: FontWeight.w500,
+  FontWeightt.Semibold: FontWeight.w600,
+  FontWeightt.Bold: FontWeight.w700,
+  FontWeightt.ExtraBold: FontWeight.w800,
+};
+Map<FontStyle, double> fontTRACKING = {
+  FontStyle.H1: -1,
+  FontStyle.H2: -1,
+  FontStyle.H3: -1,
+  FontStyle.H4: -1,
+  FontStyle.H5: -1,
+  FontStyle.H6: -1,
+  FontStyle.Large: 0,
+  FontStyle.Medium: 0,
+  FontStyle.Small: 0,
+  FontStyle.XSmall: 0,
+  FontStyle.overline: 0
+};
 
-
-// ignore: constant_identifier_names
-// const APP_FONT = 'Lexend';
-const appFont = 'Poppins';
-
-enum FontStyle {
-  heading,
-  heading2,
-  subheading,
-  title,
-  subtitle,
-  boldTitle,
-  boldSubtitle,
-  appbarTitle,
-  buttonText,
-  mainHeading,
-  description,
-  text,
-  smallText,
-  secondaryText,
-}
-
-// ignore: non_constant_identifier_names
 Color APP_TEXT_GREY = const Color.fromRGBO(135, 135, 135, 1);
+String APP_FONT = 'Inter';
 
 class CustomText extends ConsumerWidget {
   const CustomText(
     this.text, {
     this.maxLines = 4,
+    this.overrride,
     this.style,
     this.color,
     this.fontSize,
     this.fontWeight,
     this.overflow,
     this.textAlign = TextAlign.start,
-    this.type = FontStyle.title,
+    this.type = FontStyle.Medium,
+    this.letterSpacing,
+    this.height,
     final Key? key,
   }) : super(key: key);
   final String text;
@@ -49,226 +79,41 @@ class CustomText extends ConsumerWidget {
   final TextStyle? style;
   final TextAlign? textAlign;
   final double? fontSize;
-  final FontWeight? fontWeight;
+  final FontWeightt? fontWeight;
   final Color? color;
   final FontStyle? type;
   final TextOverflow? overflow;
+  final bool? overrride;
+  final double? letterSpacing;
+  final double? height;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var style = getStyle(type, themeProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final style = getStyle(themeProvider);
 
     return Text(
       text.toString(),
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
       textAlign: textAlign ?? TextAlign.start,
       overflow: overflow ?? TextOverflow.ellipsis,
       style: style.merge(style),
     );
   }
 
-  TextStyle getStyle(FontStyle? type, ThemeProvider themeProvider) {
-    switch (type) {
-      case FontStyle.mainHeading:
-        return TextStyle(
-            fontSize: fontSize ?? 24,
-            fontWeight: fontWeight ?? FontWeight.w600,
-            fontFamily: 'SF Pro Display',
-            // color: color ?? themeProvider.primaryTextColor,
-            color: color ??
-                (themeProvider.isDarkThemeEnabled
-                    ? darkPrimaryTextColor
-                    : Colors.black));
-
-      case FontStyle.description:
-        return TextStyle(
-            fontSize: fontSize ?? 16,
-            fontWeight: fontWeight ?? FontWeight.w400,
-            fontFamily: 'SF Pro Display',
-            // color: color ?? themeProvider.primaryTextColor,
-            color: color ??
-                (themeProvider.isDarkThemeEnabled
-                    ? darkPrimaryTextColor
-                    : Colors.black));
-
-      case FontStyle.smallText:
-        return TextStyle(
-          fontSize: fontSize ?? 13,
-          fontWeight: fontWeight ?? FontWeight.w400,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-
-      case FontStyle.text:
-        return TextStyle(
-          fontSize: fontSize ?? 16,
-          fontWeight: fontWeight ?? FontWeight.w400,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-
-      case FontStyle.secondaryText:
-        return TextStyle(
-          fontSize: fontSize ?? 16,
-          fontWeight: fontWeight ?? FontWeight.w400,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.secondaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryTextColor
-                  : Colors.black),
-        );
-
-      case FontStyle.heading:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 24,
-        //     color: color ?? Colors.blacklack,
-        //     fontWeight: fontWeight ?? FontWeight.bold);
-        return TextStyle(
-          overflow: overflow ?? TextOverflow.visible,
-          fontSize: fontSize ?? 26,
-          fontWeight: fontWeight ?? FontWeight.w600,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-      case FontStyle.heading2:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 19,
-        //     color: color ?? Colors.blacklack,
-        //     letterSpacing: 0.8,
-        //     fontWeight: fontWeight ?? FontWeight.bold);
-        return TextStyle(
-            fontSize: fontSize ?? 18,
-            fontWeight: fontWeight ?? FontWeight.w500,
-            fontFamily: 'SF Pro Display',
-            // color: color ?? themeProvider.primaryTextColor,
-            color: color ??
-                (themeProvider.isDarkThemeEnabled
-                    ? darkPrimaryTextColor
-                    : Colors.black));
-      case FontStyle.title:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 16,
-        //     color: color ?? themeProvider.secondaryTextColor,
-        //     fontWeight: fontWeight ?? FontWeight.w500);
-        return TextStyle(
-            fontSize: fontSize ?? 16,
-            fontWeight: fontWeight ?? FontWeight.w400,
-            fontFamily: 'SF Pro Display',
-            // color: color ?? themeProvider.secondaryTextColor,
-            color: color ??
-                (themeProvider.isDarkThemeEnabled
-                    ? darkSecondaryTextColor
-                    : lightSecondaryTextColor));
-      case FontStyle.subheading:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 18,
-        //     color: color ??
-        //         (themeProvider.isDarkThemeEnabled
-        //             ? darkSecondaryTextColor
-        //             : lightPrimaryTextColor),
-        //     fontWeight: fontWeight ?? FontWeight.w500);
-        return TextStyle(
-          fontSize: fontSize ?? 18,
-          fontWeight: fontWeight ?? FontWeight.w400,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.secondaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkSecondaryTextColor
-                  : lightSecondaryTextColor),
-        );
-      case FontStyle.boldTitle:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 18,
-        //     color: color ?? Colors.blacklack,
-        //     fontWeight: fontWeight ?? FontWeight.bold);
-        return TextStyle(
-          fontSize: fontSize ?? 18,
-          fontWeight: fontWeight ?? FontWeight.w600,
-          fontFamily: 'SF Pro Display',
-          overflow: overflow ?? TextOverflow.visible,
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-      case FontStyle.subtitle:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 14,
-        //     color: color ?? const Color(0xff222222),
-        //     fontWeight: fontWeight ?? FontWeight.normal);
-        return TextStyle(
-            fontSize: fontSize ?? 14,
-            fontWeight: fontWeight ?? FontWeight.w400,
-            fontFamily: 'SF Pro Display',
-            // color: color ?? themeProvider.strokeColor,
-            color: color ??
-                (themeProvider.isDarkThemeEnabled
-                    ? darkStrokeColor
-                    : Colors.black));
-      case FontStyle.boldSubtitle:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 16,
-        //     color: color ?? const Color(0xff222222),
-        //     fontWeight: fontWeight ?? FontWeight.bold);
-        return TextStyle(
-          fontSize: fontSize ?? 16,
-          fontWeight: fontWeight ?? FontWeight.w600,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-      case FontStyle.buttonText:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 17,
-        //     color: color ?? Colors.white,
-        //     fontWeight: fontWeight ?? FontWeight.w500);
-        return TextStyle(
-          fontSize: fontSize ?? 17,
-          fontWeight: fontWeight ?? FontWeight.w500,
-          fontFamily: 'SF Pro Display',
-          color: color ?? Colors.white,
-        );
-      case FontStyle.appbarTitle:
-        // return GoogleFonts.getFont(APP_FONT).copyWith(
-        //     fontSize: fontSize ?? 18,
-        //     color: color ?? const Color(0xff222222),
-        //     fontWeight: fontWeight ?? FontWeight.bold);
-        return TextStyle(
-          fontSize: fontSize ?? 18,
-          fontWeight: fontWeight ?? FontWeight.w600,
-          fontFamily: 'SF Pro Display',
-          // color: color ?? themeProvider.primaryTextColor,
-          color: color ??
-              (themeProvider.isDarkThemeEnabled
-                  ? darkPrimaryTextColor
-                  : Colors.black),
-        );
-      default:
-        return TextStyle(
-          fontFamily: 'SF Pro Display',
-          color: color ?? Colors.black,
-          fontWeight: fontWeight ?? FontWeight.normal,
-          fontSize: fontSize ?? 17,
-        );
-    }
+  TextStyle getStyle(ThemeProvider themeProvider) {
+    // log(customTextColor.toString());
+    return GoogleFonts.inter(
+        letterSpacing:
+            letterSpacing ?? ((type != null) ? -(fontSIZE[type]! * 0.02) : 0),
+        height: height ?? (type != null ? lineHeight[type] : null),
+        fontSize: fontSize ?? (type != null ? fontSIZE[type] : 18),
+        fontWeight:
+            fontWeight != null ? fontWEIGHT[fontWeight] : FontWeight.normal,
+        color: overrride == true
+            ? color
+            : themeProvider.theme == THEME.custom
+                ? customTextColor
+                : (color ?? themeProvider.themeManager.primaryTextColor));
   }
 }

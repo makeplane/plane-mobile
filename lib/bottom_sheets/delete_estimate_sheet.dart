@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
+import 'package:plane/provider/provider_list.dart';
 
+import '../utils/enums.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text.dart';
 
 class DeleteEstimateSheet extends ConsumerStatefulWidget {
-  final String estimateName;
-  final String estimateId;
   const DeleteEstimateSheet({
     super.key,
     required this.estimateName,
     required this.estimateId,
   });
+  final String estimateName;
+  final String estimateId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -33,7 +34,8 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 children: [
                   const CustomText(
                     'Delete Estimate',
-                    type: FontStyle.heading,
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
                   ),
                   const Spacer(),
                   IconButton(
@@ -52,8 +54,8 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 height: 20,
               ),
               CustomText(
-                'Are you sure you want to delete extimate - ${widget.estimateName}? The estimate will be removed from all the issues.',
-                type: FontStyle.heading2,
+                'Are you sure you want to delete estimate - ${widget.estimateName}? The estimate will be removed from all the issues.',
+                type: FontStyle.H5,
                 fontSize: 20,
               )
             ],
@@ -65,7 +67,7 @@ class _DeleteEstimateSheetState extends ConsumerState<DeleteEstimateSheet> {
                 ref.read(ProviderList.estimatesProvider).deleteEstimates(
                       slug: ref
                           .read(ProviderList.workspaceProvider)
-                          .selectedWorkspace!
+                          .selectedWorkspace
                           .workspaceSlug,
                       projID: ref
                           .read(ProviderList.projectProvider)

@@ -1,19 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane_startup/bottom_sheets/delete_state_sheet.dart';
-import 'package:plane_startup/provider/issues_provider.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
+import 'package:plane/bottom_sheets/delete_state_sheet.dart';
+import 'package:plane/provider/issues_provider.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/widgets/custom_button.dart';
 
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 List states = ['backlog', 'unstarted', 'started', 'completed', 'cancelled'];
 
@@ -28,15 +30,14 @@ class _StatesPageState extends ConsumerState<StatesPage> {
   @override
   void initState() {
     super.initState();
-    log(ref.read(ProviderList.issuesProvider).states.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Container(
-      color: themeProvider.isDarkThemeEnabled ? darkSecondaryBGC : Colors.white,
+      color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: states.length,
@@ -51,7 +52,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                     states[index].toString().replaceFirst(states[index][0],
                         states[index][0].toString().toUpperCase()),
                     // values['group'].replaceFirst(values['group'][0], values['group'][0].toUpperCase()),
-                    type: FontStyle.appbarTitle,
+                    type: FontStyle.H5,
+                    fontWeight: FontWeightt.Medium,
+                    color: themeProvider.themeManager.primaryTextColor,
                   ),
                   IconButton(
                     onPressed: () {
@@ -85,147 +88,181 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                         },
                       );
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add,
-                      color: primaryColor,
+                      color: themeProvider.themeManager.placeholderTextColor,
                     ),
                   )
                 ],
               ),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                primary: false,
-                shrinkWrap: true,
-                itemCount: issuesProvider.statesData[states[index]].length,
-                itemBuilder: (context, idx) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.only(
-                      left: 14,
-                    ),
-                    decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkBackgroundColor
-                            : lightBackgroundColor,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkThemeBorder
-                                : strokeColor)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              states[index] == 'backlog'
-                                  ? 'assets/svg_images/circle.svg'
-                                  : states[index] == 'cancelled'
-                                      ? 'assets/svg_images/cancelled.svg'
-                                      : states[index] == 'completed'
-                                          ? 'assets/svg_images/done.svg'
-                                          : states[index] == 'started'
-                                              ? 'assets/svg_images/in_progress.svg'
-                                              : 'assets/svg_images/circle.svg',
-                              colorFilter: ColorFilter.mode(
-                                  getColorFromIssueProvider(
-                                      issuesProvider, index, idx),
-                                  BlendMode.srcIn),
-                              height: 20,
-                              width: 20,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomText(
-                              issuesProvider.statesData[states[index]][idx]
-                                  ['name'],
-                              type: FontStyle.description,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  constraints:
-                                      BoxConstraints(maxHeight: height * 0.8),
-                                  enableDrag: true,
-                                  isScrollControlled: true,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                              .viewInsets
-                                              .bottom),
-                                      child: AddUpdateState(
-                                        groupIndex: index,
-                                        stateKey: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ["group"],
-                                        method: CRUD.update,
-                                        stateId: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['id'],
-                                        name: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['name'],
-                                        color: issuesProvider
-                                                .statesData[states[index]][idx]
-                                            ['color'],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.edit_outlined,
-                                color: greyColor,
+              issuesProvider.statesData[states[index]] == null
+                  ? const SizedBox.shrink()
+                  : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount:
+                          issuesProvider.statesData[states[index]].length,
+                      itemBuilder: (context, idx) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.only(
+                            left: 14,
+                          ),
+                          decoration: BoxDecoration(
+                              color: themeProvider
+                                  .themeManager.primaryBackgroundDefaultColor,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                  color: themeProvider
+                                      .themeManager.borderSubtle01Color)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    states[index] == 'backlog'
+                                        ? 'assets/svg_images/circle.svg'
+                                        : states[index] == 'cancelled'
+                                            ? 'assets/svg_images/cancelled.svg'
+                                            : states[index] == 'completed'
+                                                ? 'assets/svg_images/done.svg'
+                                                : states[index] == 'started'
+                                                    ? 'assets/svg_images/in_progress.svg'
+                                                    : 'assets/svg_images/circle.svg',
+                                    colorFilter: ColorFilter.mode(
+                                        getColorFromIssueProvider(
+                                            issuesProvider, index, idx),
+                                        BlendMode.srcIn),
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.6,
+                                    child: CustomText(
+                                      issuesProvider.statesData[states[index]]
+                                          [idx]['name'],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      type: FontStyle.Medium,
+                                      color: themeProvider
+                                          .themeManager.primaryTextColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 270),
-                                  enableDrag: true,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  context: context,
-                                  builder: (context) {
-                                    return DeleteStateSheet(
-                                      stateName: issuesProvider
-                                              .statesData[states[index]][idx]
-                                          ['name'],
-                                      stateId: issuesProvider
-                                          .statesData[states[index]][idx]['id'],
-                                    );
-                                  },
-                                );
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg_images/delete_icon.svg',
-                                height: 20,
-                                width: 20,
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.red, BlendMode.srcIn),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        constraints: BoxConstraints(
+                                            maxHeight: height * 0.8),
+                                        enableDrag: true,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20))),
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom),
+                                            child: AddUpdateState(
+                                              groupIndex: index,
+                                              stateKey: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]["group"],
+                                              method: CRUD.update,
+                                              stateId: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['id'],
+                                              name: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['name'],
+                                              color: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['color'],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.edit_outlined,
+                                      color: themeProvider
+                                          .themeManager.placeholderTextColor,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      if (issuesProvider
+                                                  .statesData[states[index]]
+                                              [idx]['default'] ==
+                                          true) {
+                                        CustomToast.showToast(
+                                          context,
+                                          message:
+                                              'Cannot delete the default state',
+                                          toastType: ToastType.failure,
+                                        );
+                                      } else if (issuesProvider
+                                              .statesData[states[index]]
+                                              .length ==
+                                          1) {
+                                        CustomToast.showToast(
+                                          context,
+                                          message: 'Cannot have an empty group',
+                                          toastType: ToastType.failure,
+                                        );
+                                      } else {
+                                        showModalBottomSheet(
+                                          constraints: const BoxConstraints(
+                                              maxHeight: 345),
+                                          enableDrag: true,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20))),
+                                          context: context,
+                                          builder: (context) {
+                                            return DeleteStateSheet(
+                                              stateName: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['name'],
+                                              stateId: issuesProvider
+                                                      .statesData[states[index]]
+                                                  [idx]['id'],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    icon: SvgPicture.asset(
+                                      'assets/svg_images/delete_icon.svg',
+                                      height: 20,
+                                      width: 20,
+                                      colorFilter: ColorFilter.mode(
+                                          themeProvider
+                                              .themeManager.textErrorColor,
+                                          BlendMode.srcIn),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ],
           );
         },
@@ -235,8 +272,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
 
   Color getColorFromIssueProvider(
       IssuesProvider issuesProvider, int index, int idx) {
-    Color colorToReturnOnApiError = const Color.fromARGB(255, 200, 80, 80);
-    String? colorData = issuesProvider.statesData[states[index]][idx]['color'];
+    const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
+    final String? colorData =
+        issuesProvider.statesData[states[index]][idx]['color'];
 
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
@@ -246,12 +284,6 @@ class _StatesPageState extends ConsumerState<StatesPage> {
 
 // ignore: must_be_immutable
 class AddUpdateState extends ConsumerStatefulWidget {
-  final String stateKey;
-  final CRUD method;
-  final String stateId;
-  final String name;
-  int groupIndex;
-  final String color;
   AddUpdateState(
       {required this.stateKey,
       required this.method,
@@ -260,6 +292,12 @@ class AddUpdateState extends ConsumerStatefulWidget {
       required this.name,
       required this.color,
       super.key});
+  final String stateKey;
+  final CRUD method;
+  final String stateId;
+  final String name;
+  int groupIndex;
+  final String color;
 
   @override
   ConsumerState<AddUpdateState> createState() => _AddUpdateStateState();
@@ -267,37 +305,35 @@ class AddUpdateState extends ConsumerStatefulWidget {
 
 class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   TextEditingController nameController = TextEditingController();
-  String color = '';
-  List colors = [
-    '#FF6900',
-    '#FCB900',
-    '#7BDCB5',
-    '#00D084',
-    '#8ED1FC',
-    '#0693E3',
-    '#ABB8C3',
-    '#EB144C',
-    '#F78DA7',
-    '#9900EF'
-  ];
+  final TextEditingController stateController = TextEditingController();
+  final colorController = TextEditingController();
   bool showColoredBox = false;
 
   @override
   void initState() {
     super.initState();
     nameController.text = widget.name.isNotEmpty ? widget.name : '';
-    color = widget.color.isNotEmpty ? widget.color : '#ABB8C3';
+    stateController.text = states[widget.groupIndex];
+
+    if (widget.color.isNotEmpty) {
+      colorController.text = widget.color.replaceAll('#', '');
+    } else {
+      colorController.text =
+          colorsForLabel[Random().nextInt(colorsForLabel.length)]
+              .replaceAll('#', '');
+    }
+
     // log(widget.stateKey);
   }
 
   double height = 0.0;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var box = context.findRenderObject() as RenderBox;
+      final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
     });
     return Container(
@@ -309,105 +345,126 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
               children: [
                 Wrap(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          widget.method == CRUD.update
-                              ? 'Update ${widget.name} state'
-                              : 'Add ${widget.name} state',
-                          type: FontStyle.heading,
-                          fontSize: 22,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.close)),
-                      ],
-                    ),
                     Container(
-                      height: 20,
+                      height: 50,
+                      width: double.infinity,
+                      color: themeProvider
+                          .themeManager.primaryBackgroundDefaultColor,
                     ),
                     const CustomText(
                       'Color',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     Container(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              setState(() {
-                                showColoredBox = !showColoredBox;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(int.parse(
-                                      '0xFF${color.toString().replaceAll('#', '')}'))),
-                            )),
-                        showColoredBox
-                            ? Container(
-                                margin: const EdgeInsets.only(left: 10),
-                                width: 300,
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 10,
+                      children: colorsForLabel
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  colorController.text = e
+                                      .toString()
+                                      .replaceAll('#', '')
+                                      .toUpperCase();
+                                });
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                margin: const EdgeInsets.only(bottom: 10),
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: themeProvider.isDarkThemeEnabled
-                                      ? darkSecondaryBGC
-                                      : lightBackgroundColor,
+                                  color: e.toString().toColor(),
+                                  borderRadius: BorderRadius.circular(5),
                                   boxShadow: const [
                                     BoxShadow(
-                                        blurRadius: 2.0, color: greyColor),
+                                        blurRadius: 1.0, color: greyColor),
                                   ],
-                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: colors
-                                      .map((e) => GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                color = e;
-                                                showColoredBox = false;
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                color: Color(int.parse(
-                                                    '0xFF${e.toString().replaceAll('#', '')}')),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              maxLength: 6,
+                              controller: colorController,
+                              onChanged: (value) {
+                                if (value.length == 6 &&
+                                    value.contains(RegExp("[^0-9a-fA-F]"))) {
+                                  CustomToast.showToast(context,
+                                      message: 'HexCode is not valid',
+                                      toastType: ToastType.warning);
+                                }
+
+                                setState(() {});
+                              },
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3,
+                                      color: themeProvider.themeManager
+                                          .primaryBackgroundSelectedColour),
                                 ),
-                              )
-                            : Container()
-                      ],
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3,
+                                      color: themeProvider.themeManager
+                                          .primaryBackgroundSelectedColour),
+                                ),
+                                filled: true,
+                                fillColor: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
+                                prefixIcon: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  width: 55,
+                                  height: 55,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color:
+                                          '#${colorController.text}'.toColor(),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5))),
+                                  child: CustomText(
+                                    '#',
+                                    color: themeProvider
+                                        .themeManager.placeholderTextColor,
+                                    fontWeight: FontWeightt.Semibold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       height: 15,
                     ),
                     const CustomText(
                       'Name *',
-                      type: FontStyle.title,
+                      type: FontStyle.Small,
                     ),
                     Container(
                       height: 5,
                     ),
                     TextField(
                       controller: nameController,
-                      decoration: kTextFieldDecoration,
+                      decoration:
+                          themeProvider.themeManager.textFieldDecoration,
                     ),
                     Container(
                       height: 20,
@@ -416,58 +473,223 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                         ? Container()
                         : const CustomText(
                             'State *',
-                            type: FontStyle.title,
+                            type: FontStyle.Small,
                           ),
                     widget.method == CRUD.create
                         ? Container()
-                        : Container(
-                            margin: const EdgeInsets.only(top: 4, bottom: 20),
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : strokeColor,
-                              ),
-                            ),
-                            child: IgnorePointer(
-                              ignoring: issuesProvider
-                                          .statesData[states[widget.groupIndex]]
-                                          .length ==
-                                      1
-                                  ? true
-                                  : false,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButtonFormField(
-                                    dropdownColor:
-                                        themeProvider.isDarkThemeEnabled
-                                            ? darkSecondaryBGC
-                                            : lightBackgroundColor,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      border: InputBorder.none,
-                                    ),
-                                    value: states[widget.groupIndex],
-                                    items: states
-                                        .map((e) => DropdownMenuItem(
-                                              value: e.toString(),
-                                              child: CustomText(
-                                                e.toString().replaceFirst(
-                                                    e[0], e[0].toUpperCase()),
-                                                // color: Colors.white,
-                                                type: FontStyle.description,
+                        : GestureDetector(
+                            onTap:
+                                issuesProvider
+                                            .statesData[
+                                                states[widget.groupIndex]]
+                                            .length ==
+                                        1
+                                    ? null
+                                    : () {
+                                        showModalBottomSheet(
+                                          enableDrag: true,
+                                          constraints: BoxConstraints(
+                                              maxHeight: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.5),
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20))),
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom,
                                               ),
-                                            ))
-                                        .toList(),
-                                    onChanged: (item) {
-                                      widget.groupIndex = states.indexOf(item);
-                                      //   log( widget.groupIndex.toString());
-                                    }),
+                                              child: Container(
+                                                padding:
+                                                    bottomSheetConstPadding,
+                                                decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .secondaryBackgroundDefaultColor,
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30)),
+                                                ),
+                                                width: double.infinity,
+                                                child: Stack(
+                                                  children: [
+                                                    SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 50,
+                                                          ),
+                                                          for (int i = 0;
+                                                              i < states.length;
+                                                              i++)
+                                                            GestureDetector(
+                                                              onTap: () async {
+                                                                setState(() {
+                                                                  stateController
+                                                                          .text =
+                                                                      states[i];
+                                                                });
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Container(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Radio(
+                                                                          activeColor: stateController.text == states[i]
+                                                                              ? null
+                                                                              : themeProvider.themeManager.primaryColour,
+                                                                          fillColor: stateController.text != states[i]
+                                                                              ? MaterialStateProperty.all<Color>(themeProvider.themeManager.borderSubtle01Color)
+                                                                              : null,
+                                                                          visualDensity:
+                                                                              VisualDensity.compact,
+                                                                          value:
+                                                                              states[i],
+                                                                          groupValue:
+                                                                              stateController.text,
+                                                                          onChanged:
+                                                                              (value) {
+                                                                            setState(() {
+                                                                              stateController.text = states[i];
+                                                                            });
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              width * 0.7,
+                                                                          child:
+                                                                              CustomText(
+                                                                            states[i],
+                                                                            type:
+                                                                                FontStyle.Medium,
+                                                                            maxLines:
+                                                                                1,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            fontWeight:
+                                                                                FontWeightt.Regular,
+                                                                            color:
+                                                                                themeProvider.themeManager.primaryTextColor,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Container(
+                                                                        width:
+                                                                            width,
+                                                                        height:
+                                                                            1,
+                                                                        color: themeProvider
+                                                                            .themeManager
+                                                                            .borderDisabledColor),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          // : Container(),
+
+                                                          SizedBox(
+                                                              height:
+                                                                  bottomSheetConstBottomPadding),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryBackgroundDefaultColor,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 15),
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.7,
+                                                            child:
+                                                                const CustomText(
+                                                              'Select State',
+                                                              type:
+                                                                  FontStyle.H4,
+                                                              fontWeight:
+                                                                  FontWeightt
+                                                                      .Semibold,
+                                                            ),
+                                                          ),
+                                                          const Spacer(),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.close,
+                                                              size: 27,
+                                                              color: themeProvider
+                                                                  .themeManager
+                                                                  .placeholderTextColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 5, bottom: 20),
+                              child: TextField(
+                                controller: stateController,
+                                style: TextStyle(
+                                    color: themeProvider
+                                        .themeManager.primaryTextColor),
+                                decoration: themeProvider
+                                    .themeManager.textFieldDecoration
+                                    .copyWith(
+                                        suffixIcon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: themeProvider
+                                      .themeManager.primaryTextColor,
+                                )),
+                                enabled: false,
                               ),
                             ),
-                          )
+                          ),
                   ],
                 ),
                 Button(
@@ -479,7 +701,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       await projectProvider.stateCrud(
                           slug: ref
                               .watch(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                           projId: ref
                               .watch(ProviderList.projectProvider)
@@ -489,14 +711,15 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                           context: context,
                           data: {
                             "name": nameController.text,
-                            "color": color,
-                            "group": states[widget.groupIndex],
+                            "color": '#${colorController.text}',
+                            "group": stateController.text.toLowerCase(),
                             "description": ""
-                          });
+                          },
+                          ref: ref);
                       issuesProvider.getStates(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace!
+                            .selectedWorkspace
                             .workspaceSlug,
                         projID: ref
                             .watch(ProviderList.projectProvider)
@@ -513,9 +736,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? darkSecondaryBGC.withOpacity(0.7)
-                      : lightSecondaryBackgroundColor.withOpacity(0.7),
+                  color:
+                      themeProvider.themeManager.primaryBackgroundDefaultColor,
                   // height: 25,
                   // width: 25,
                   child: Center(
@@ -524,11 +746,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       width: 25,
                       child: LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
-                        colors: [
-                          themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black
-                        ],
+                        colors: [themeProvider.themeManager.primaryTextColor],
                         strokeWidth: 1.0,
                         backgroundColor: Colors.transparent,
                       ),
@@ -536,6 +754,34 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                   ),
                 )
               : const SizedBox(),
+          Container(
+            color: themeProvider.themeManager.primaryBackgroundDefaultColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: width * 0.7,
+                  child: CustomText(
+                    widget.method == CRUD.update
+                        ? 'Update ${widget.name} state'
+                        : 'Add ${widget.name} state',
+                    type: FontStyle.H6,
+                    fontWeight: FontWeightt.Semibold,
+                    maxLines: 1,
+                    fontSize: 22,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: themeProvider.themeManager.primaryTextColor,
+                    )),
+              ],
+            ),
+          ),
         ],
       ),
     );

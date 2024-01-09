@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/utils/constants.dart';
 
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 class LeadSheet extends ConsumerStatefulWidget {
-  final bool fromModuleDetail;
-  final bool fromCycleDetail;
   const LeadSheet({
     super.key,
     this.fromModuleDetail = false,
     this.fromCycleDetail = false,
   });
+  final bool fromModuleDetail;
+  final bool fromCycleDetail;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LeadSheetState();
@@ -22,15 +23,13 @@ class LeadSheet extends ConsumerStatefulWidget {
 class _LeadSheetState extends ConsumerState<LeadSheet> {
   @override
   Widget build(BuildContext context) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(50), topRight: Radius.circular(50)),
       ),
@@ -44,26 +43,20 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
               children: [
                 Row(
                   children: [
-                    // const Text(
-                    //   'Type',
-                    //   style: TextStyle(
-                    //     fontSize: 24,
-                    //     fontWeight: FontWeight.w600,
-                    //   ),
-                    // ),
                     const CustomText(
                       'Lead',
-                      type: FontStyle.heading,
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
                     ),
                     const Spacer(),
                     IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         size: 27,
-                        color: Color.fromRGBO(143, 143, 147, 1),
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ),
                     ),
                   ],
@@ -76,9 +69,10 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                     maxHeight: MediaQuery.of(context).size.height * 0.7,
                   ),
                   child: ListView.builder(
+                    padding:
+                        EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
                     itemCount: projectProvider.projectMembers.length,
                     shrinkWrap: true,
-                    // physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () async {
@@ -88,7 +82,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 .cycleDetailsCrud(
                               slug: ref
                                   .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
+                                  .selectedWorkspace
                                   .workspaceSlug,
                               projectId: ref
                                   .read(ProviderList.projectProvider)
@@ -110,7 +104,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                             modulesProvider.updateModules(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projId: ref
                                     .read(ProviderList.projectProvider)
@@ -121,7 +115,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 data: {
                                   'lead': projectProvider.projectMembers[index]
                                       ['member']['id']
-                                });
+                                },
+                                ref: ref);
                             Navigator.pop(context);
                             return;
                           }
@@ -137,30 +132,29 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                             left: 5,
                           ),
                           decoration: BoxDecoration(
-                            color: themeProvider.isDarkThemeEnabled
-                                ? darkSecondaryBGC
-                                : const Color.fromRGBO(248, 249, 250, 1),
+                            color: themeProvider
+                                .themeManager.primaryBackgroundDefaultColor,
                           ),
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Row(
                             children: [
                               Container(
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(55, 65, 81, 1),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                alignment: Alignment.center,
-                                child: CustomText(
-                                  projectProvider.projectMembers[index]
-                                          ['member']['email'][0]
-                                      .toString()
-                                      .toUpperCase(),
-                                  type: FontStyle.subheading,
-                                  color: Colors.white,
-                                ),
-                              ),
+                                  height: 30,
+                                  width: 30,
+                                  alignment: Alignment.center,
+                                  child: MemberLogoWidget(
+                                      size: 30,
+                                      boarderRadius: 50,
+                                      padding: EdgeInsets.zero,
+                                      imageUrl:
+                                          projectProvider.projectMembers[index]
+                                              ['member']['avatar'],
+                                      colorForErrorWidget:
+                                          const Color.fromRGBO(55, 65, 81, 1),
+                                      memberNameFirstLetterForErrorWidget:
+                                          projectProvider.projectMembers[index]
+                                                  ['member']['first_name'][0]
+                                              .toString())),
                               Container(
                                 width: 10,
                               ),
@@ -170,10 +164,13 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                     " " +
                                     projectProvider.projectMembers[index]
                                         ['member']['last_name'],
-                                type: FontStyle.subheading,
+                                type: FontStyle.Small,
                               ),
                               const Spacer(),
-                              createIsseuSelectedMembersWidget(index),
+                              modulesProvider.currentModule['lead_detail'] !=
+                                      null
+                                  ? createIsseuSelectedMembersWidget(index)
+                                  : Container(),
                               const SizedBox(
                                 width: 10,
                               )
@@ -193,8 +190,8 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
   }
 
   Widget createIsseuSelectedMembersWidget(int idx) {
-    var modulesProvider = ref.watch(ProviderList.modulesProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
+    final modulesProvider = ref.watch(ProviderList.modulesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return (widget.fromCycleDetail
             ? (ref.read(ProviderList.cyclesProvider).currentCycle['owned_by']
                     ['id'] ==

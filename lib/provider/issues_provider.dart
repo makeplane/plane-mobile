@@ -5,17 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/kanban/models/inputs.dart';
-import 'package:plane_startup/models/issues.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/MainScreens/Projects/ProjectDetail/IssuesTab/create_issue.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/issue_card_widget.dart';
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/kanban/models/inputs.dart';
+import 'package:plane/models/issues.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/issue_card_widget.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
+import 'package:plane/utils/enums.dart';
+
+import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class IssuesProvider extends ChangeNotifier {
   IssuesProvider(ChangeNotifierProviderRef<IssuesProvider> this.ref);
@@ -28,36 +32,105 @@ class IssuesProvider extends ChangeNotifier {
   StateEnum projectViewState = StateEnum.empty;
   StateEnum issuePropertyState = StateEnum.empty;
   StateEnum joinprojectState = StateEnum.empty;
-  var createIssueState = StateEnum.empty;
+  StateEnum updateIssueState = StateEnum.empty;
+  StateEnum createIssueState = StateEnum.empty;
   String createIssueParent = '';
   String createIssueParentId = '';
-  var issueView = {};
+  Map issueView = {};
   bool showEmptyStates = true;
   bool isISsuesEmpty = true;
   Issues issues = Issues.initialize();
-  var tempGroupBy = GroupBY.state;
-  var tempFilters = Filters(
-      assignees: [], createdBy: [], labels: [], priorities: [], states: []);
-  var tempIssueType = IssueType.all;
-  var tempProjectView = ProjectView.kanban;
-  var tempOrderBy = OrderBY.lastCreated;
-  var stateIcons = {};
-  var issueProperty = {};
-  var createIssuedata = {};
-  var issuesResponse = [];
-  var labels = [];
-  var states = {};
-  var statesData = {};
-  var members = [];
-  var projectView = {};
-  var groupByResponse = {};
-  var shrinkStates = [];
+  GroupBY tempGroupBy = GroupBY.state;
+  Filters tempFilters = Filters(
+    assignees: [],
+    createdBy: [],
+    labels: [],
+    priorities: [],
+    states: [],
+    targetDate: [],
+    startDate: [],
+    stateGroup: [],
+    subscriber: [],
+  );
+  IssueType tempIssueType = IssueType.all;
+  ProjectView tempProjectView = ProjectView.kanban;
+  OrderBY tempOrderBy = OrderBY.lastCreated;
+  Map stateIcons = {};
+  Map issueProperty = {};
+  Map createIssuedata = {};
+  Map createIssueProjectData = {};
+  List issuesResponse = [];
+  List issuesList = [];
+  List labels = [];
+  Map states = {};
+  Map statesData = {};
+  List members = [];
+  Map projectView = {};
+  Map groupByResponse = {};
+  List shrinkStates = [];
   List blockingIssues = [];
   List blockedByIssues = [];
-  List<Map> selectedLabels = [];
+  List selectedLabels = [];
   List blockingIssuesIds = [];
   List blockedByIssuesIds = [];
   List subIssuesIds = [];
+  Map defaultStatedetails = {
+    'backlog': {
+      'name': 'Backlog',
+      'icon': SvgPicture.asset(
+        'assets/svg_images/circle.svg',
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+            Color(int.parse("FF${"#A3A3A3".replaceAll('#', '')}", radix: 16)),
+            BlendMode.srcIn),
+      )
+    },
+    'unstarted': {
+      'name': 'Unstarted',
+      'icon': SvgPicture.asset(
+        'assets/svg_images/unstarted.svg',
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+            Color(int.parse("FF${"#3A3A3A".replaceAll('#', '')}", radix: 16)),
+            BlendMode.srcIn),
+      )
+    },
+    'started': {
+      'name': 'Started',
+      'icon': SvgPicture.asset(
+        'assets/svg_images/in_progress.svg',
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+            Color(int.parse("FF${"#F59E0B".replaceAll('#', '')}", radix: 16)),
+            BlendMode.srcIn),
+      )
+    },
+    'completed': {
+      'name': 'Completed',
+      'icon': SvgPicture.asset(
+        'assets/svg_images/done.svg',
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+            Color(int.parse("FF${"#16A34A".replaceAll('#', '')}", radix: 16)),
+            BlendMode.srcIn),
+      )
+    },
+    'cancelled': {
+      'name': 'Cancelled',
+      'icon': SvgPicture.asset(
+        'assets/svg_images/cancelled.svg',
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+            Color(int.parse("FF${"#DC2626".replaceAll('#', '')}", radix: 16)),
+            BlendMode.srcIn),
+      )
+    },
+  };
   List defaultStateGroups = [
     'backlog',
     'unstarted',
@@ -75,18 +148,23 @@ class IssuesProvider extends ChangeNotifier {
         projectView: ProjectView.kanban,
         groupBY: GroupBY.state,
         orderBY: OrderBY.manual,
+        showSubIssues: true,
         issueType: IssueType.all,
         displayProperties: DisplayProperties(
-            estimate: false,
-            assignee: false,
-            dueDate: false,
-            id: false,
-            label: false,
-            state: false,
-            subIsseCount: false,
-            priority: false,
-            attachmentCount: false,
-            linkCount: false));
+          estimate: false,
+          assignee: false,
+          dueDate: false,
+          startDate: false,
+          id: false,
+          label: false,
+          state: false,
+          subIsseCount: false,
+          priority: false,
+          attachmentCount: false,
+          linkCount: false,
+          createdOn: false,
+          updatedOn: false,
+        ));
     stateIcons = {};
     issueProperty = {};
     createIssuedata = {};
@@ -118,13 +196,30 @@ class IssuesProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
-  List<BoardListsData> initializeBoard() {
-    var themeProvider = ref!.read(ProviderList.themeProvider);
+  bool isFiltersEmpty() {
+    return issues.filters.assignees.isEmpty &&
+        issues.filters.createdBy.isEmpty &&
+        issues.filters.labels.isEmpty &&
+        issues.filters.priorities.isEmpty &&
+        issues.filters.states.isEmpty &&
+        issues.filters.targetDate.isEmpty &&
+        issues.filters.startDate.isEmpty &&
+        issues.filters.stateGroup.isEmpty &&
+        issues.filters.subscriber.isEmpty;
+  }
+
+  List<BoardListsData> initializeBoard(
+      {bool views = false, bool isArchive = false}) {
+    final themeProvider = ref!.read(ProviderList.themeProvider);
     int count = 0;
     //   log(issues.groupBY.name);
+    issuesResponse = [];
     issues.issues = [];
     for (int j = 0; j < stateOrdering.length; j++) {
-      List<Widget> items = [];
+      final List<Widget> items = [];
+      if (groupByResponse[stateOrdering[j]] == null) {
+        continue;
+      }
       // log(states[stateOrdering[j]]["name"]);
       for (int i = 0;
           groupByResponse[stateOrdering[j]] != null &&
@@ -134,6 +229,8 @@ class IssuesProvider extends ChangeNotifier {
 
         items.add(
           IssueCardWidget(
+            from: views ? PreviousScreen.views : PreviousScreen.projectDetail,
+            isArchive: isArchive,
             cardIndex: count++,
             listIndex: j,
             issueCategory: IssueCategory.issues,
@@ -166,8 +263,13 @@ class IssuesProvider extends ChangeNotifier {
           break;
         }
       }
-      // log(label.toString());
-      var title = issues.groupBY == GroupBY.priority
+
+      if (!userFound) {
+        userFound = true;
+        userName = 'None';
+      }
+
+      String title = issues.groupBY == GroupBY.priority
           ? stateOrdering[j]
           : issues.groupBY == GroupBY.state
               ? states[stateOrdering[j]]['name']
@@ -184,7 +286,9 @@ class IssuesProvider extends ChangeNotifier {
         title: issues.groupBY == GroupBY.labels && labelFound
             ? label['name'][0].toString().toUpperCase() +
                 label['name'].toString().substring(1)
-            : userFound && issues.groupBY == GroupBY.createdBY
+            : userFound &&
+                    (issues.groupBY == GroupBY.createdBY ||
+                        issues.groupBY == GroupBY.assignees)
                 ? userName = userName[0].toString().toUpperCase() +
                     userName.toString().substring(1)
                 : title = title[0].toString().toUpperCase() +
@@ -194,54 +298,63 @@ class IssuesProvider extends ChangeNotifier {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? darkSecondaryTextColor
-                : lightSecondaryTextColor,
+            color: ref!
+                .read(ProviderList.themeProvider)
+                .themeManager
+                .secondaryTextColor,
           ),
         ),
 
         // backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        backgroundColor:
-            ref!.read(ProviderList.themeProvider).isDarkThemeEnabled
-                ? const Color.fromRGBO(29, 30, 32, 1)
-                : lightSecondaryBackgroundColor,
+        backgroundColor: ref!
+            .read(ProviderList.themeProvider)
+            .themeManager
+            .secondaryBackgroundDefaultColor,
       ));
     }
 
-    for (var element in issues.issues) {
-      //  log(issues.groupBY.toString());
-
+    for (final element in issues.issues) {
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
-              ? Icon(Icons.error_outline,
+              ? Icon(
+                  Icons.error_outline,
                   size: 18,
-                  color: themeProvider.isDarkThemeEnabled
-                      ? Colors.white
-                      : Colors.black)
+                  color: Color(int.parse("FF${"#EF4444".replaceAll('#', '')}",
+                      radix: 16)),
+                )
               : element.title == 'High'
                   ? Icon(
                       Icons.signal_cellular_alt,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? Colors.white
-                          : Colors.black,
                       size: 18,
+                      color: Color(int.parse(
+                          "FF${"#F59E0B".replaceAll('#', '')}",
+                          radix: 16)),
                     )
                   : element.title == 'Medium'
                       ? Icon(
                           Icons.signal_cellular_alt_2_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
+                          color: Color(int.parse(
+                              "FF${"#F59E0B".replaceAll('#', '')}",
+                              radix: 16)),
                           size: 18,
                         )
-                      : Icon(
-                          Icons.signal_cellular_alt_1_bar,
-                          color: themeProvider.isDarkThemeEnabled
-                              ? Colors.white
-                              : Colors.black,
-                          size: 18,
-                        )
-          : issues.groupBY == GroupBY.createdBY
+                      : element.title == 'Low'
+                          ? Icon(
+                              Icons.signal_cellular_alt_1_bar,
+                              color: Color(int.parse(
+                                  "FF${"#22C55E".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.do_disturb_alt_outlined,
+                              color: Color(int.parse(
+                                  "FF${"#A3A3A3".replaceAll('#', '')}",
+                                  radix: 16)),
+                              size: 18,
+                            )
+          : issues.groupBY == GroupBY.createdBY ||
+                  issues.groupBY == GroupBY.assignees
               ? Container(
                   height: 22,
                   alignment: Alignment.center,
@@ -254,7 +367,7 @@ class IssuesProvider extends ChangeNotifier {
                     element.title.toString().toUpperCase()[0],
                     fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeightt.Medium,
                   ),
                 )
               : issues.groupBY == GroupBY.labels
@@ -269,7 +382,9 @@ class IssuesProvider extends ChangeNotifier {
                           // color: Color(int.parse(element.title)),
                           ),
                     )
-                  : stateIcons[element.id];
+                  : issues.groupBY == GroupBY.stateGroups
+                      ? defaultStatedetails[element.id]['icon']
+                      : stateIcons[element.id];
 
       element.header = SizedBox(
         // margin: const EdgeInsets.only(bottom: 10),
@@ -285,10 +400,11 @@ class IssuesProvider extends ChangeNotifier {
               width: element.width - 150,
               child: CustomText(
                 element.title.toString(),
-                type: FontStyle.heading,
+                type: FontStyle.Large,
+                fontWeight: FontWeightt.Semibold,
                 textAlign: TextAlign.start,
                 fontSize: 20,
-                maxLines: 3,
+                maxLines: 1,
               ),
             ),
             Container(
@@ -298,14 +414,13 @@ class IssuesProvider extends ChangeNotifier {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: themeProvider.isDarkThemeEnabled
-                      ? const Color.fromRGBO(39, 42, 45, 1)
-                      : const Color.fromRGBO(222, 226, 230, 1)),
+                  color: themeProvider
+                      .themeManager.tertiaryBackgroundDefaultColor),
               height: 25,
               width: 35,
               child: CustomText(
                 element.items.length.toString(),
-                type: FontStyle.subtitle,
+                type: FontStyle.Small,
               ),
             ),
             const Spacer(),
@@ -318,9 +433,9 @@ class IssuesProvider extends ChangeNotifier {
 
                 notifyListeners();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.zoom_in_map,
-                color: Color.fromRGBO(133, 142, 150, 1),
+                color: themeProvider.themeManager.placeholderTextColor,
                 size: 20,
               ),
             ),
@@ -344,7 +459,10 @@ class IssuesProvider extends ChangeNotifier {
                           MaterialPageRoute(
                               builder: (ctx) => const CreateIssue()));
                     },
-                    child: const Icon(Icons.add, color: primaryColor))
+                    child: Icon(
+                      Icons.add,
+                      color: themeProvider.themeManager.placeholderTextColor,
+                    ))
                 : Container(),
           ],
         ),
@@ -352,6 +470,111 @@ class IssuesProvider extends ChangeNotifier {
     }
 
     return issues.issues;
+  }
+
+  bool checkIsCardsDaraggable() {
+    final projProv = ref!.read(ProviderList.projectProvider);
+
+    return (issues.groupBY == GroupBY.state ||
+            issues.groupBY == GroupBY.priority) &&
+        (projProv.role == Role.admin || projProv.role == Role.member);
+  }
+
+  Future reorderIssue({
+    required BuildContext context,
+    required int newCardIndex,
+    required int oldCardIndex,
+    required int newListIndex,
+    required int oldListIndex,
+  }) async {
+    try {
+      if (oldListIndex == newListIndex) {
+        notifyListeners();
+        return;
+      }
+      (groupByResponse[stateOrdering[newListIndex]] as List).insert(
+          newCardIndex,
+          groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+      updateIssueState = StateEnum.loading;
+      notifyListeners();
+      final issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
+      final response = await DioConfig().dioServe(
+          hasAuth: true,
+          url: APIs.issueDetails
+              .replaceAll("\$SLUG", issue['workspace_detail']['slug'])
+              .replaceAll('\$PROJECTID', issue['project_detail']['id'])
+              .replaceAll('\$ISSUEID', issue['id']),
+          hasBody: true,
+          httpMethod: HttpMethod.patch,
+          data: issues.groupBY == GroupBY.state
+              ? {
+                  'state': stateOrdering[newListIndex],
+                  'priority': issue['priority']
+                }
+              : {
+                  'state': issue['state'],
+                  'priority': stateOrdering[newListIndex],
+                });
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex] =
+          response.data;
+
+      final List labelDetails = [];
+
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex]['labels']
+          .forEach((element) {
+        for (int i = 0; i < labels.length; i++) {
+          if (labels[i]['id'] == element) {
+            labelDetails.add(labels[i]);
+            break;
+          }
+        }
+
+        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
+      });
+
+      groupByResponse[stateOrdering[newListIndex]][newCardIndex]
+          ['label_details'] = labelDetails;
+
+      log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]
+          .toString());
+      updateIssueState = StateEnum.success;
+      // log(response.data.toString());
+      if (issues.groupBY == GroupBY.priority) {
+        //  log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
+        groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
+            stateOrdering[newListIndex];
+      }
+      if (issues.orderBY != OrderBY.manual) {
+        (groupByResponse[stateOrdering[newListIndex]] as List).sort((a, b) {
+          if (issues.orderBY == OrderBY.priority) {
+            return priorityParser(a['priority'])
+                .compareTo(priorityParser(b['priority']));
+          } else if (issues.orderBY == OrderBY.lastCreated) {
+            return DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at']));
+          } else if (issues.orderBY == OrderBY.lastUpdated) {
+            return DateTime.parse(a['updated_at'])
+                .compareTo(DateTime.parse(b['updated_at']));
+          } else {
+            return 0;
+          }
+        });
+      }
+      log("ISSUE REPOSITIONED");
+      notifyListeners();
+      // ignore: unused_catch_clause
+    } on DioException catch (err) {
+      (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
+          oldCardIndex,
+          groupByResponse[stateOrdering[newListIndex]].removeAt(newCardIndex));
+
+      // ignore: use_build_context_synchronously
+      CustomToast.showToast(context,
+          message: 'Failed to update issue', toastType: ToastType.failure);
+      updateIssueState = StateEnum.error;
+      notifyListeners();
+      rethrow;
+    }
   }
 
   bool isTagsEnabled() {
@@ -370,7 +593,7 @@ class IssuesProvider extends ChangeNotifier {
     // notifyListeners();
 
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         // url: APIs.issueLabels
         //     .replaceAll("\$SLUG", slug)
@@ -393,23 +616,25 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future issueLabels({
-    required String slug,
-    required String projID,
-    required dynamic data,
-    CRUD? method,
-    String? labelId,
-  }) async {
+  Future issueLabels(
+      {required String slug,
+      required String projID,
+      required dynamic data,
+      CRUD? method,
+      String? labelId,
+      required WidgetRef ref}) async {
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
     labelState = StateEnum.loading;
     notifyListeners();
-    String url = method == CRUD.update || method == CRUD.delete
+    final String url = method == CRUD.update || method == CRUD.delete
         ? '${APIs.issueLabels.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID)}$labelId/'
         : APIs.issueLabels
             .replaceAll("\$SLUG", slug)
             .replaceAll('\$PROJECTID', projID);
 
     try {
-      await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -420,6 +645,30 @@ class IssuesProvider extends ChangeNotifier {
                   : HttpMethod.post,
           data: data);
       //   log(response.data.toString());
+      method != CRUD.read
+          ? postHogService(
+              eventName: method == CRUD.create
+                  ? 'ISSUE_LABEL_CREATE'
+                  : method == CRUD.update
+                      ? 'ISSUE_LABEL_UPDATE'
+                      : method == CRUD.delete
+                          ? 'ISSUE_LABEL_DELETE'
+                          : '',
+              properties: method == CRUD.delete
+                  ? {}
+                  : {
+                      'WORKSPACE_ID':
+                          workspaceProvider.selectedWorkspace.workspaceId,
+                      'WORKSPACE_SLUG':
+                          workspaceProvider.selectedWorkspace.workspaceSlug,
+                      'WORKSPACE_NAME':
+                          workspaceProvider.selectedWorkspace.workspaceName,
+                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
+                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'LABEL_ID': response.data['id']
+                    },
+              ref: ref)
+          : null;
       await getLabels(slug: slug, projID: projID);
       labelState = StateEnum.success;
       notifyListeners();
@@ -430,11 +679,17 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getStates({required String slug, required String projID}) async {
-    statesState = StateEnum.loading;
-    // notifyListeners();
+  Future getStates({
+    required String slug,
+    required String projID,
+    bool showLoading = true,
+  }) async {
+    if (showLoading) {
+      statesState = StateEnum.loading;
+      notifyListeners();
+    }
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.states
             .replaceAll("\$SLUG", slug)
@@ -446,7 +701,7 @@ class IssuesProvider extends ChangeNotifier {
       statesData = response.data;
       states = {};
       for (int i = 0; i < response.data.length; i++) {
-        String state = response.data.keys.elementAt(i);
+        final String state = response.data.keys.elementAt(i);
         for (int j = 0; j < response.data[state].length; j++) {
           states[response.data[state][j]['id']] = response.data[state][j];
           stateIcons[response.data[state][j]['id']] = SvgPicture.asset(
@@ -458,7 +713,7 @@ class IssuesProvider extends ChangeNotifier {
                           ? 'assets/svg_images/done.svg'
                           : state == 'started'
                               ? 'assets/svg_images/in_progress.svg'
-                              : 'assets/svg_images/circle.svg',
+                              : 'assets/svg_images/unstarted.svg',
               height: 22,
               width: 22,
               colorFilter: int.tryParse(
@@ -471,16 +726,23 @@ class IssuesProvider extends ChangeNotifier {
                           radix: 16)),
                       BlendMode.srcIn)
                   : null);
+
+          if (response.data[state][j]['default'] == true) {
+            defaultStatedetails[state] = {
+              'name': response.data[state][j]['name'],
+              'icon': stateIcons[response.data[state][j]['id']]
+            };
+          }
         }
       }
       stateOrdering = [];
-      for (var element in defaultStateGroups) {
-        //  log(element);
-        for (var element in (statesData[element] as List)) {
-          stateOrdering.add(element['id']);
+      for (final element in defaultStateGroups) {
+        if (statesData[element] != null) {
+          for (final element in (statesData[element] as List)) {
+            stateOrdering.add(element['id']);
+          }
         }
       }
-      //  log(states.toString());
       statesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -495,17 +757,16 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future createIssue({
-    required String slug,
-    required String projID,
-    required Enum issueCategory,
-  }) async {
+  Future createIssue(
+      {required String slug,
+      required String projID,
+      required Enum issueCategory,
+      required WidgetRef ref}) async {
     createIssueState = StateEnum.loading;
-    log(createIssuedata.toString());
-
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
           hasAuth: true,
           url: APIs.projectIssues
               .replaceAll("\$SLUG", slug)
@@ -520,6 +781,7 @@ class IssuesProvider extends ChangeNotifier {
                 ? []
                 : (createIssuedata["members"] as Map).keys.toList(),
             "cycle": null,
+            "description_html": createIssuedata['description_html'] ?? '',
             "estimate_point": null,
             "labels": createIssuedata["labels"] == null
                 ? []
@@ -532,16 +794,15 @@ class IssuesProvider extends ChangeNotifier {
                     .map((e) => e["id"])
                     .toList(),
             "name": createIssuedata['title'],
-            "priority": createIssuedata['priority']['name'] == 'None'
-                ? null
-                : createIssuedata['priority']['name'].toString().toLowerCase(),
+            "priority":
+                createIssuedata['priority']['name'].toString().toLowerCase(),
             "project": projID,
             "state": createIssuedata['state'],
             if (createIssuedata['module'] != null)
               "module": createIssuedata['module'],
             if (createIssuedata['cycle'] != null)
               "cycle": createIssuedata['cycle'],
-            if (ref!
+            if (ref
                     .read(ProviderList.projectProvider)
                     .currentProject['estimate'] !=
                 null)
@@ -549,71 +810,77 @@ class IssuesProvider extends ChangeNotifier {
             if (createIssuedata['due_date'] != null)
               "target_date":
                   DateFormat('yyyy-MM-dd').format(createIssuedata['due_date']),
+            if (createIssuedata['start_date'] != null)
+              "start_date": DateFormat('yyyy-MM-dd')
+                  .format(createIssuedata['start_date']),
             if (createIssueParentId.isNotEmpty) "parent": createIssueParentId
           });
-      log(response.data.toString());
-
+      postHogService(
+          eventName: 'ISSUE_CREATE',
+          properties: {
+            'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
+            'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
+            'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
+            'PROJECT_ID': projID,
+            'PROJECT_NAME': ref
+                .read(ProviderList.projectProvider)
+                .projects
+                .firstWhere((element) => element['id'] == projID)['name'],
+            'ISSUE_ID': response.data['id']
+          },
+          ref: ref);
       // issuesResponse.add(response.data);
       if (issueCategory == IssueCategory.moduleIssues) {
-        await ref!.read(ProviderList.modulesProvider).createModuleIssues(
-          slug: ref!
+        await ref.read(ProviderList.modulesProvider).createModuleIssues(
+          slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
+          projID: ref.read(ProviderList.projectProvider).currentProject["id"],
           issues: [response.data['id']],
         );
 
-        ref!.read(ProviderList.modulesProvider).filterModuleIssues(
+        ref.read(ProviderList.modulesProvider).filterModuleIssues(
               slug: slug,
               projectId:
-                  ref!.read(ProviderList.projectProvider).currentProject["id"],
+                  ref.read(ProviderList.projectProvider).currentProject["id"],
             );
         filterIssues(
-          slug: ref!
+          slug: ref
               .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
+              .selectedWorkspace
               .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
-          // issueCategory: IssueCategory.moduleIssues,
+          projID: ref.read(ProviderList.projectProvider).currentProject["id"],
+          issueCategory: IssueCategory.moduleIssues,
         );
       }
       if (issueCategory == IssueCategory.cycleIssues) {
-        await ref!.read(ProviderList.cyclesProvider).createCycleIssues(
-          slug: ref!
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projId: ref!.read(ProviderList.projectProvider).currentProject["id"],
+        await ref.read(ProviderList.cyclesProvider).createCycleIssues(
+          slug: slug,
+          projId: projID,
           issues: [response.data['id']],
         );
-        ref!.read(ProviderList.cyclesProvider).filterCycleIssues(
+        ref.read(ProviderList.cyclesProvider).filterCycleIssues(
               slug: slug,
-              projectId:
-                  ref!.read(ProviderList.projectProvider).currentProject["id"],
+              projectId: projID,
             );
-        filterIssues(
-          slug: ref!
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace!
-              .workspaceSlug,
-          projID: ref!.read(ProviderList.projectProvider).currentProject["id"],
-          // issueCategory: IssueCategory.cycleIssues,
-        );
-      }
-      await ref!.read(ProviderList.myIssuesProvider).getMyIssues(
-            slug: ref!
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
-                .workspaceSlug,
-          );
-      if (issueCategory == IssueCategory.issues) {
         filterIssues(
           slug: slug,
           projID: projID,
+          issueCategory: IssueCategory.cycleIssues,
         );
+      }
+      await ref.read(ProviderList.myIssuesProvider).filterIssues();
+      if (issueCategory == IssueCategory.issues) {
+        if (projID ==
+            ref.read(ProviderList.projectProvider).currentProject["id"]) {
+          filterIssues(
+            slug: slug,
+            projID: projID,
+          );
 
-        isISsuesEmpty = issuesResponse.isEmpty;
+          isISsuesEmpty = issuesResponse.isEmpty;
+        }
       }
 
       createIssueState = StateEnum.success;
@@ -626,9 +893,9 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future getIssues({required String slug, required String projID}) async {
-    issueState = StateEnum.loading;
+    // issueState = StateEnum.loading;
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectIssues
             .replaceAll("\$SLUG", slug)
@@ -638,8 +905,8 @@ class IssuesProvider extends ChangeNotifier {
       );
 
       log("DONE");
-
       issuesResponse = response.data;
+      issuesList = response.data;
       isISsuesEmpty = issuesResponse.isEmpty;
       issueState = StateEnum.success;
       notifyListeners();
@@ -687,7 +954,7 @@ class IssuesProvider extends ChangeNotifier {
     membersState = StateEnum.loading;
     //notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectMembers
             .replaceAll("\$SLUG", slug)
@@ -697,7 +964,7 @@ class IssuesProvider extends ChangeNotifier {
       );
       // log('Project Members    ${response.data.toString()}');
       members = response.data;
-      for (var element in members) {
+      for (final element in members) {
         if (element["member"]['id'] ==
             ref!.read(ProviderList.profileProvider).userProfile.id) {
           ref!.read(ProviderList.projectProvider).role =
@@ -709,6 +976,7 @@ class IssuesProvider extends ChangeNotifier {
       membersState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
+      log('Error in getProjectMembers ');
       log(e.response.toString());
       membersState = StateEnum.error;
       notifyListeners();
@@ -716,15 +984,15 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future getIssueProperties({required Enum issueCategory}) async {
-    var cyclesProvider = ref!.read(ProviderList.cyclesProvider);
-    var modulesProvider = ref!.read(ProviderList.modulesProvider);
+    final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
+    final modulesProvider = ref!.read(ProviderList.modulesProvider);
     issueState = StateEnum.loading;
     log(APIs.issueProperties
         .replaceAll(
             "\$SLUG",
             ref!
                 .read(ProviderList.workspaceProvider)
-                .selectedWorkspace!
+                .selectedWorkspace
                 .workspaceSlug)
         .replaceAll('\$PROJECTID',
             ref!.read(ProviderList.projectProvider).currentProject['id']));
@@ -736,7 +1004,7 @@ class IssuesProvider extends ChangeNotifier {
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
@@ -752,7 +1020,7 @@ class IssuesProvider extends ChangeNotifier {
                     "\$SLUG",
                     ref!
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug)
                 .replaceAll(
                     '\$PROJECTID',
@@ -764,15 +1032,18 @@ class IssuesProvider extends ChangeNotifier {
             data: {
               "properties": {
                 "assignee": true,
-                "attachment_count": false,
-                "due_date": false,
-                "estimate": false,
+                "attachment_count": true,
+                "due_date": true,
+                "estimate": true,
                 "key": true,
-                "labels": false,
+                "labels": true,
                 "link": true,
-                "priority": false,
+                "priority": true,
                 "state": true,
                 "sub_issue_count": false,
+                "start_date": false,
+                "created_on": false,
+                "updated_on": false,
               },
             });
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -781,6 +1052,30 @@ class IssuesProvider extends ChangeNotifier {
           modulesProvider.issueProperty = response.data;
         } else {
           issueProperty = response.data;
+          issues.displayProperties.assignee =
+              issueProperty['properties']['assignee'];
+          issues.displayProperties.dueDate =
+              issueProperty['properties']['due_date'];
+          issues.displayProperties.id = issueProperty['properties']['key'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
+          issues.displayProperties.state = issueProperty['properties']['state'];
+          issues.displayProperties.subIsseCount =
+              issueProperty['properties']['sub_issue_count'];
+          issues.displayProperties.linkCount =
+              issueProperty['properties']['link'];
+          issues.displayProperties.attachmentCount =
+              issueProperty['properties']['attachment_count'];
+          issues.displayProperties.priority =
+              issueProperty['properties']['priority'];
+          issues.displayProperties.estimate =
+              issueProperty['properties']['estimate'];
+          issues.displayProperties.startDate =
+              issueProperty['properties']['start_date'];
+          issues.displayProperties.createdOn =
+              issueProperty['properties']['created_on'];
+          issues.displayProperties.updatedOn =
+              issueProperty['properties']['updated_on'];
         }
       } else {
         if (issueCategory == IssueCategory.cycleIssues) {
@@ -791,7 +1086,8 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['due_date'];
           cyclesProvider.issues.displayProperties.id =
               cyclesProvider.issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          cyclesProvider.issues.displayProperties.label =
+              cyclesProvider.issueProperty['properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
               cyclesProvider.issueProperty['properties']['state'];
           cyclesProvider.issues.displayProperties.subIsseCount =
@@ -804,6 +1100,13 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['priority'];
           cyclesProvider.issues.displayProperties.estimate =
               cyclesProvider.issueProperty['properties']['estimate'];
+          cyclesProvider.issues.displayProperties.startDate =
+              cyclesProvider.issueProperty['properties']['start_date'];
+          cyclesProvider.issues.displayProperties.createdOn =
+              cyclesProvider.issueProperty['properties']?['created_on'] ??
+                  false;
+          cyclesProvider.issues.displayProperties.updatedOn =
+              cyclesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
               cyclesProvider.issues.displayProperties;
         } else if (issueCategory == IssueCategory.moduleIssues) {
@@ -814,7 +1117,8 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issueProperty['properties']['due_date'];
           modulesProvider.issues.displayProperties.id =
               modulesProvider.issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
           modulesProvider.issues.displayProperties.state =
               modulesProvider.issueProperty['properties']['state'];
           modulesProvider.issues.displayProperties.subIsseCount =
@@ -827,6 +1131,13 @@ class IssuesProvider extends ChangeNotifier {
               modulesProvider.issueProperty['properties']['priority'];
           modulesProvider.issues.displayProperties.estimate =
               modulesProvider.issueProperty['properties']['estimate'];
+          modulesProvider.issues.displayProperties.startDate =
+              modulesProvider.issueProperty['properties']['start_date'];
+          modulesProvider.issues.displayProperties.createdOn =
+              modulesProvider.issueProperty['properties']?['created_on'] ??
+                  false;
+          modulesProvider.issues.displayProperties.updatedOn =
+              modulesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =
               modulesProvider.issues.displayProperties;
         } else {
@@ -836,7 +1147,8 @@ class IssuesProvider extends ChangeNotifier {
           issues.displayProperties.dueDate =
               issueProperty['properties']['due_date'];
           issues.displayProperties.id = issueProperty['properties']['key'];
-          //issues.displayProperties. label= issueProperty['properties']['labels'];
+          issues.displayProperties.label =
+              issueProperty['properties']['labels'];
           issues.displayProperties.state = issueProperty['properties']['state'];
           issues.displayProperties.subIsseCount =
               issueProperty['properties']['sub_issue_count'];
@@ -848,6 +1160,13 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['properties']['priority'];
           issues.displayProperties.estimate =
               issueProperty['properties']['estimate'];
+          issues.displayProperties.startDate =
+              issueProperty['properties']['start_date'] ?? false;
+          issues.displayProperties.createdOn =
+              issueProperty['properties']['created_on'] ?? false;
+          issues.displayProperties.updatedOn =
+              issueProperty['properties']['updated_on'] ?? false;
+
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
         //log('ISSUE PROPERTY =====  > $issueProperty');
@@ -866,13 +1185,13 @@ class IssuesProvider extends ChangeNotifier {
     required DisplayProperties properties,
     required Enum issueCategory,
   }) async {
-    var cyclesProvider = ref!.read(ProviderList.cyclesProvider);
-    var modulesProvider = ref!.read(ProviderList.modulesProvider);
+    final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
+    final modulesProvider = ref!.read(ProviderList.modulesProvider);
     issuePropertyState = StateEnum.loading;
     notifyListeners();
     log(issueProperty.toString());
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
             ("${APIs.issueProperties}${issueCategory == IssueCategory.cycleIssues ? cyclesProvider.issueProperty['id'] : issueCategory == IssueCategory.moduleIssues ? modulesProvider.issueProperty['id'] : issueProperty['id']}/")
@@ -880,7 +1199,7 @@ class IssuesProvider extends ChangeNotifier {
                     "\$SLUG",
                     ref!
                         .read(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
+                        .selectedWorkspace
                         .workspaceSlug)
                 .replaceAll(
                     '\$PROJECTID',
@@ -900,6 +1219,9 @@ class IssuesProvider extends ChangeNotifier {
             "priority": properties.priority,
             "state": properties.state,
             "sub_issue_count": properties.subIsseCount,
+            'updated_on': properties.updatedOn,
+            'created_on': properties.createdOn,
+            'start_date': properties.startDate,
           },
           "user": ref!.read(ProviderList.profileProvider).userProfile.id
         },
@@ -923,55 +1245,70 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future updateProjectView() async {
-    log(Issues.fromGroupBY(issues.groupBY));
-    dynamic filterPriority;
-    if (issues.filters.priorities.isNotEmpty) {
-      filterPriority = issues.filters.priorities
-          .map((element) => element == 'none' ? null : element)
-          .toList();
+  Future updateProjectView(
+      {bool isArchive = false, bool setDefault = false}) async {
+    log(tempProjectView.toString());
+    final Map<String, dynamic> view = {
+      "view_props": {
+        "calendarDateRange": "",
+        "collapsed": false,
+        "filterIssue": null,
+        "filters": {
+          // 'type': null,
+          // "priority": filterPriority,
+          if (issues.filters.priorities.isNotEmpty)
+            "priority": issues.filters.priorities,
+          if (issues.filters.states.isNotEmpty) "state": issues.filters.states,
+          if (issues.filters.assignees.isNotEmpty)
+            "assignees": issues.filters.assignees,
+          if (issues.filters.createdBy.isNotEmpty)
+            "created_by": issues.filters.createdBy,
+          if (issues.filters.labels.isNotEmpty) "labels": issues.filters.labels,
+          if (issues.filters.targetDate.isNotEmpty)
+            "target_date": issues.filters.targetDate,
+          if (issues.filters.startDate.isNotEmpty)
+            "start_date": issues.filters.startDate,
+          if (issues.filters.subscriber.isNotEmpty)
+            "subscriber": issues.filters.subscriber,
+          if (issues.filters.stateGroup.isNotEmpty)
+            "state_group": issues.filters.stateGroup,
+        },
+        "display_filters": {
+          "group_by": Issues.fromGroupBY(issues.groupBY),
+          "order_by": Issues.fromOrderBY(issues.orderBY),
+          "type": Issues.fromIssueType(issues.issueType),
+          "show_empty_groups": showEmptyStates,
+          if (!isArchive)
+            "layout": issues.projectView == ProjectView.kanban
+                ? 'kanban'
+                : issues.projectView == ProjectView.list
+                    ? 'list'
+                    : issues.projectView == ProjectView.calendar
+                        ? 'calendar'
+                        : 'spreadsheet',
+          "sub_issue": false,
+        },
+      }
+    };
+    if (setDefault) {
+      view['default_props'] = view['view_props'];
     }
     try {
-      var response = await DioConfig().dioServe(
+      await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.projectViews
             .replaceAll(
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
         hasBody: true,
-        data: {
-          "view_props": {
-            "calendarDateRange": "",
-            "collapsed": false,
-            "filterIssue": null,
-            "filters": {
-              'type': null,
-              "priority": filterPriority,
-              if (issues.filters.states.isNotEmpty)
-                "state": issues.filters.states,
-              if (issues.filters.assignees.isNotEmpty)
-                "assignees": issues.filters.assignees,
-              if (issues.filters.createdBy.isNotEmpty)
-                "created_by": issues.filters.createdBy,
-              if (issues.filters.labels.isNotEmpty)
-                "labels": issues.filters.labels,
-            },
-            "type": null,
-            "groupByProperty": Issues.fromGroupBY(issues.groupBY),
-            'issueView':
-                issues.projectView == ProjectView.kanban ? 'kanban' : 'list',
-            "orderBy": Issues.fromGroupBY(issues.groupBY),
-            "showEmptyGroups": showEmptyStates
-          }
-        },
+        data: view,
         httpMethod: HttpMethod.post,
       );
-      log('project view => ${response.data}');
       projectViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -982,38 +1319,63 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getProjectView() async {
+  Future getProjectView({bool reset = false}) async {
     projectViewState = StateEnum.loading;
+    if (reset) {
+      notifyListeners();
+    }
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: APIs.userIssueView
             .replaceAll(
                 "\$SLUG",
                 ref!
                     .read(ProviderList.workspaceProvider)
-                    .selectedWorkspace!
+                    .selectedWorkspace
                     .workspaceSlug)
             .replaceAll('\$PROJECTID',
                 ref!.read(ProviderList.projectProvider).currentProject['id']),
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      issueView = response.data["view_props"];
-      log("project view=>${response.data["view_props"]}");
-      issues.projectView = issueView["issueView"] == 'list'
+      issueView =
+          reset ? response.data["default_props"] : response.data["view_props"];
+      log(issueView.toString());
+      issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
-          : ProjectView.kanban;
-      issues.groupBY = Issues.toGroupBY(issueView["groupByProperty"]);
-      issues.orderBY = Issues.toOrderBY(issueView["orderBy"]);
-      issues.issueType = Issues.toIssueType(issueView["filters"]["type"]);
-      issues.filters.priorities = issueView["filters"]["priority"] ?? [];
+          : issueView['display_filters']['layout'] == 'calendar'
+              ? ProjectView.calendar
+              : issueView['display_filters']['layout'] == 'spreadsheet'
+                  ? ProjectView.spreadsheet
+                  : ProjectView.kanban;
+      issues.showSubIssues = issueView['display_filters']['sub_issue'] ?? true;
+      issues.groupBY =
+          Issues.toGroupBY(issueView["display_filters"]["group_by"]);
+      issues.orderBY =
+          Issues.toOrderBY(issueView["display_filters"]["order_by"]);
+      issues.issueType =
+          Issues.toIssueType(issueView["display_filters"]["type"]);
+      issues.filters.priorities = (issueView["filters"]["priority"] == 'none'
+              ? []
+              : issueView["filters"]["priority"]) ??
+          [];
       issues.filters.states = issueView["filters"]["state"] ?? [];
       issues.filters.assignees = issueView["filters"]["assignees"] ?? [];
       issues.filters.createdBy = issueView["filters"]["created_by"] ?? [];
       issues.filters.labels = issueView["filters"]["labels"] ?? [];
-      showEmptyStates = issueView["showEmptyGroups"];
+      issues.filters.targetDate = issueView["filters"]["target_date"] ?? [];
+      issues.filters.startDate = issueView["filters"]["start_date"] ?? [];
+      issues.filters.subscriber = issueView["filters"]["subscriber"] ?? [];
+      issues.filters.stateGroup = issueView["filters"]["state_group"] ?? [];
+      showEmptyStates = issueView["display_filters"]["show_empty_groups"];
 
+      if (issues.groupBY == GroupBY.none) {
+        issues.projectView = ProjectView.list;
+      }
+      if (reset) {
+        updateProjectView();
+      }
       projectViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -1027,12 +1389,14 @@ class IssuesProvider extends ChangeNotifier {
   Future filterIssues({
     required String slug,
     required String projID,
-    // String? cycleId,
-    // String? moduleId,
+    bool fromViews = false,
+    bool isArchived = false,
+    String? cycleId,
+    String? moduleId,
     Enum issueCategory = IssueCategory.issues,
   }) async {
-    var cyclesProvider = ref!.read(ProviderList.cyclesProvider);
-    var modulesProvider = ref!.read(ProviderList.modulesProvider);
+    final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
+    final modulesProvider = ref!.read(ProviderList.modulesProvider);
     if (issueCategory == IssueCategory.issues) {
       orderByState = StateEnum.loading;
       notifyListeners();
@@ -1056,12 +1420,16 @@ class IssuesProvider extends ChangeNotifier {
       getLabels(slug: slug, projID: projID);
     } else if (issues.groupBY == GroupBY.createdBY) {
       getProjectMembers(slug: slug, projID: projID);
+    } else if (issues.groupBY == GroupBY.state) {
+      getStates(
+        slug: slug,
+        projID: projID,
+        showLoading: false,
+      );
     }
 
     String url;
-    // log(issues.issueType.toString());
-    if (issueCategory == IssueCategory.issues) {
-      log('Updating temp GroupBy');
+    if (issueCategory == IssueCategory.issues && !fromViews && !isArchived) {
       tempGroupBy = issues.groupBY;
       tempFilters = issues.filters;
       tempOrderBy = issues.orderBY;
@@ -1073,11 +1441,15 @@ class IssuesProvider extends ChangeNotifier {
               ? APIs.orderByGroupByCycleIssues
               : issueCategory == IssueCategory.moduleIssues
                   ? APIs.orderByGroupByModuleIssues
-                  : APIs.orderByGroupByTypeIssues)
+                  : isArchived
+                      ? APIs.orderByGroupByTypeArchivedIssues
+                      : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID', cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID', modulesProvider.currentModule['id'] ?? '')
+          .replaceAll(
+              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',
+              moduleId ?? modulesProvider.currentModule['id'] ?? '')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
@@ -1103,6 +1475,14 @@ class IssuesProvider extends ChangeNotifier {
         url =
             '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
         // print(url);
+      }
+      if (issues.filters.targetDate.isNotEmpty) {
+        url =
+            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }
@@ -1111,11 +1491,15 @@ class IssuesProvider extends ChangeNotifier {
               ? APIs.orderByGroupByCycleIssues
               : issueCategory == IssueCategory.moduleIssues
                   ? APIs.orderByGroupByModuleIssues
-                  : APIs.orderByGroupByTypeIssues)
+                  : isArchived
+                      ? APIs.orderByGroupByTypeArchivedIssues
+                      : APIs.orderByGroupByTypeIssues)
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projID)
-          .replaceAll('\$CYCLEID', cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID', modulesProvider.currentModule['id'] ?? '')
+          .replaceAll(
+              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
+          .replaceAll('\$MODULEID',
+              moduleId ?? modulesProvider.currentModule['id'] ?? '')
           .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
           .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
           .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
@@ -1138,15 +1522,29 @@ class IssuesProvider extends ChangeNotifier {
       if (issues.filters.labels.isNotEmpty) {
         url =
             '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.targetDate.isNotEmpty) {
+        url =
+            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
+      }
+      if (issues.filters.startDate.isNotEmpty) {
+        url =
+            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
       } else {
         url = url;
       }
     }
-    dynamic temp;
+    url = '$url&sub_issue=${issues.showSubIssues}';
+    if (issues.groupBY == GroupBY.none) {
+      url = url.replaceAll('&group_by=none', '');
+      stateOrdering = ['All Issues'];
+    }
     log('URL: $url');
+
+    dynamic temp;
     try {
       //  log('====CAME TO CYCLES TRY');
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -1154,52 +1552,102 @@ class IssuesProvider extends ChangeNotifier {
       );
       if (issueCategory == IssueCategory.cycleIssues) {
         // log('Cycle Issues :::: ${response.data}');
-        temp = response.data;
+        issuesList = [];
+
+        if (issues.groupBY != GroupBY.none) {
+          temp = response.data;
+          for (final key in response.data.keys) {
+            issuesList.addAll(response.data[key]);
+          }
+        } else {
+          temp = {'All Issues': response.data};
+        }
       } else if (issueCategory == IssueCategory.moduleIssues) {
         // log('Module Issues :::: ${response.data}');
-        temp = response.data;
+
+        issuesList = [];
+        if (issues.groupBY != GroupBY.none) {
+          temp = response.data;
+          for (final key in response.data.keys) {
+            issuesList.addAll(response.data[key]);
+          }
+        } else {
+          temp = {'All Issues': response.data};
+        }
       }
 
       if (issueCategory == IssueCategory.issues) {
         // log('Issues :::: ${response.data}');
+
         issuesResponse = [];
         isISsuesEmpty = true;
         shrinkStates = [];
-        for (var key in response.data.keys) {
-          //  log("KEY=$key");
-          if (response.data[key].isNotEmpty) {
+        issuesList = [];
+        if (issues.groupBY == GroupBY.none) {
+          if (response.data.isNotEmpty) {
             isISsuesEmpty = false;
+          }
+          issuesList = response.data;
+        } else {
+          for (final key in response.data.keys) {
+            if (response.data[key].isNotEmpty) {
+              isISsuesEmpty = false;
+            }
+            issuesList.addAll(response.data[key]);
           }
         }
       }
+
+      // if(issueCategory == IssueCategory.archivedIssues){
+      //   archivedIssueResponse = [];
+      //   isArchivedIssuesEmpty = true;
+      //   archivedIssuesList = [];
+
+      //   for (final key in response.data.keys) {
+      //     //  log("KEY=$key");
+      //     if (response.data[key].isNotEmpty) {
+      //       isArchivedIssuesEmpty = false;
+      //     }
+
+      //     archivedIssuesList.addAll(response.data[key]);
+      //   }
+
+      // }
 
       //log("shrink states=${shrinkStates.toString()}");
       if (issueCategory == IssueCategory.issues) {
         if (issues.groupBY == GroupBY.state) {
           groupByResponse = {};
-          states.forEach((key, value) {
-            if (response.data[key] != null) {
-              groupByResponse[key] = response.data[key];
-            } else if (issues.filters.states.isEmpty) {
-              if (issues.issueType == IssueType.all) {
-                groupByResponse[key] = [];
+
+          if (issues.filters.states.isNotEmpty) {
+            for (final element in issues.filters.states) {
+              if (response.data[element] == null) {
+                groupByResponse[element] = [];
+              } else {
+                groupByResponse[element] = response.data[element];
               }
-              // groupByResponse[key] = [];
             }
-            shrinkStates.add(false);
-          });
+          } else {
+            for (final element in stateOrdering) {
+              groupByResponse[element] = response.data[element] ?? [];
+            }
+          }
+          shrinkStates = List.generate(stateOrdering.length, (index) => false);
+        } else if (issues.groupBY == GroupBY.none) {
+          stateOrdering = ['All Issues'];
+          groupByResponse['All Issues'] = response.data;
         } else {
           stateOrdering = [];
           response.data.forEach((key, value) {
             stateOrdering.add(key);
           });
           groupByResponse = response.data;
+          shrinkStates = List.generate(stateOrdering.length, (index) => false);
         }
       }
 
       if (issueCategory == IssueCategory.cycleIssues ||
           issueCategory == IssueCategory.moduleIssues) {
-        log(stateOrdering.toString());
         cyclesProvider.stateOrdering = stateOrdering;
         modulesProvider.stateOrdering = stateOrdering;
         return temp;
@@ -1214,7 +1662,8 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future joinProject({String? projectId, String? slug}) async {
+  Future joinProject(
+      {String? projectId, String? slug, required WidgetRef refs}) async {
     try {
       joinprojectState = StateEnum.loading;
       notifyListeners();
@@ -1231,7 +1680,7 @@ class IssuesProvider extends ChangeNotifier {
       ref!.read(ProviderList.projectProvider).projects[ref!
           .read(ProviderList.projectProvider)
           .currentProject["index"]]["is_member"] = true;
-      ref!.read(ProviderList.projectProvider).initializeProject();
+      ref!.read(ProviderList.projectProvider).initializeProject(ref: refs);
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());

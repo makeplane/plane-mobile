@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/widgets/custom_text.dart';
 
-
+import '../../utils/enums.dart';
 
 class BoardListsData {
   final String? title;
@@ -58,12 +58,12 @@ class BoardListsData {
               //       fontSize: 19,
               //       fontWeight: FontWeight.bold),
               // ),
-              CustomText(
-                'NEW',
-                type: FontStyle.heading2,
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-              )
+              // CustomText(
+              //   'NEW',
+              //   type: FontStyle.H5,
+              //   fontSize: 19,
+              //   fontWeight: FontWeight.bold,
+              // )
             ],
           ),
         );
@@ -85,14 +85,16 @@ class BoardListsData {
               // ),
               CustomText(
                 title ?? '',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeightt.Semibold,
               ),
               GestureDetector(
                 child: const SizedBox(
                     // padding: const EdgeInsets.all(5),
-                    child: Icon(Icons.more_vert)),
+                    child: Icon(
+                  Icons.more_vert,
+                )),
               ),
             ],
           ),

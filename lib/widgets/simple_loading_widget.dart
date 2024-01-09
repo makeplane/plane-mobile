@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-
+import 'package:plane/utils/constants.dart';
 
 class SimpleLoadingWidget extends ConsumerStatefulWidget {
   const SimpleLoadingWidget(

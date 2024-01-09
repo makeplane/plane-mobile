@@ -1,15 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/custom_text.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 class CreateState extends ConsumerStatefulWidget {
   const CreateState({super.key});
@@ -19,28 +21,22 @@ class CreateState extends ConsumerStatefulWidget {
 }
 
 class _CreateStateState extends ConsumerState<CreateState> {
-  var selectedState = 'Backlog';
+  String selectedState = 'Backlog';
   TextEditingController colorController = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List lables = [
-    '#B71F1F',
-    '#08AB22',
-    '#BC009E',
-    '#F15700',
-    '#290CDE',
-    '#B1700D',
-    '#08BECA',
-    '#6500CA',
-    '#E98787',
-    '#ADC57C',
-    '#75A0C8',
-    '#E96B6B'
-    // {'lable': 'Lable 1', 'color': Colors.orange},
-    // {'lable': 'Lable 2', 'color': Colors.purple},
-    // {'lable': 'Lable 3', 'color': Colors.blue},
-    // {'lable': 'Lable 4', 'color': Colors.pink}
+    "#FF6900",
+    "#FCB900",
+    "#7BDCB5",
+    "#00D084",
+    "#8ED1FC",
+    "#0693E3",
+    "#ABB8C3",
+    "#EB144C",
+    "#F78DA7",
+    "#9900EF",
   ];
   @override
   void initState() {
@@ -50,8 +46,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -66,41 +62,35 @@ class _CreateStateState extends ConsumerState<CreateState> {
             key: formKey,
             child: Container(
               alignment: Alignment.center,
-              //   color: Colors.black.withOpacity(0.5),
               child: Container(
-                // padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                    //  color: Colors.white,
-                    ),
+                decoration: const BoxDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       height: 1,
-                      color: themeProvider.isDarkThemeEnabled
-                          ? darkThemeBorder
-                          : strokeColor,
+                      color: themeProvider.themeManager.borderStrong01Color,
                     ),
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 15, bottom: 5),
-                        child: const Row(
+                        child: Row(
                           children: [
                             CustomText(
                               'Name ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
                             ),
                           ],
                         )),
                     Container(
                       margin: const EdgeInsets.only(left: 15, right: 15),
-                      // height: 45,
                       child: TextFormField(
                         controller: name,
                         validator: (value) {
@@ -109,7 +99,9 @@ class _CreateStateState extends ConsumerState<CreateState> {
                           }
                           return null;
                         },
-                        decoration: kTextFieldDecoration.copyWith(
+                        decoration: themeProvider
+                            .themeManager.textFieldDecoration
+                            .copyWith(
                           border: InputBorder.none,
                           errorStyle: const TextStyle(
                               fontSize: 16,
@@ -117,25 +109,22 @@ class _CreateStateState extends ConsumerState<CreateState> {
                               fontWeight: FontWeight.w600),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled
-                                    ? darkThemeBorder
-                                    : Colors.grey.shade300,
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
                                 width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryBGC
-                              : lightBackgroundColor,
+                          fillColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           filled: true,
                         ),
                       ),
@@ -143,17 +132,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             left: 15, right: 20, top: 20, bottom: 5),
-                        child: const Row(
+                        child: Row(
                           children: [
                             CustomText(
                               'State ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
                             ),
                           ],
                         )),
@@ -163,14 +153,11 @@ class _CreateStateState extends ConsumerState<CreateState> {
                       padding: const EdgeInsets.only(left: 10),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkThemeBorder
-                              : Colors.grey.shade300,
+                          color: themeProvider.themeManager.borderStrong01Color,
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -180,7 +167,6 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             border: InputBorder.none,
                           ),
                           alignment: Alignment.centerLeft,
-                          focusColor: Colors.amber,
                           items: const [
                             DropdownMenuItem<String>(
                               value: 'Backlog',
@@ -205,6 +191,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                               child: CustomText('Unstarted'),
                             ),
                           ],
+                          dropdownColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           onChanged: (value) {
                             selectedState = value!;
                           },
@@ -217,17 +205,18 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     Container(
                         margin: const EdgeInsets.only(
                             right: 20, left: 15, bottom: 10),
-                        child: const Row(
+                        child: Row(
                           children: [
                             CustomText(
                               'Color ',
-                              // color: themeProvider.secondaryTextColor,
-                              type: FontStyle.subheading,
+                              color:
+                                  themeProvider.themeManager.tertiaryTextColor,
+                              type: FontStyle.Small,
                             ),
                             CustomText(
                               '*',
-                              type: FontStyle.appbarTitle,
-                              color: Colors.red,
+                              color: themeProvider.themeManager.textErrorColor,
+                              type: FontStyle.Small,
                             ),
                           ],
                         )),
@@ -243,7 +232,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                     colorController.text = e
                                         .toString()
                                         .toUpperCase()
-                                        .replaceAll("#", "");
+                                        .replaceAll('#', '');
                                   });
                                 },
                                 child: Container(
@@ -252,9 +241,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                   margin: const EdgeInsets.only(bottom: 20),
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Color(int.parse(
-                                        "FF${e.toString().toUpperCase().replaceAll("#", "")}",
-                                        radix: 16)),
+                                    color: e.toString().toColor(),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: const [
                                       BoxShadow(
@@ -269,25 +256,23 @@ class _CreateStateState extends ConsumerState<CreateState> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 15, right: 15),
-                      // height: 50,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             width: 55,
-                            height: 55,
+                            height: 50,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: Color(int.parse(
-                                    "FF${colorController.text.toString().toUpperCase().replaceAll("#", "")}",
-                                    radix: 16)),
+                                color: "#${colorController.text.toString()}"
+                                    .toColor(),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     bottomLeft: Radius.circular(8))),
                             child: const CustomText(
                               '#',
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeightt.Semibold,
                               fontSize: 20,
                             ),
                           ),
@@ -299,15 +284,25 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 }
                                 return null;
                               },
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9a-zA-Z]")),
+                              ],
                               controller: colorController,
                               maxLength: 6,
-                              onChanged: (val) {
-                                colorController.text = val.toUpperCase();
-                                colorController.selection =
-                                    TextSelection.fromPosition(TextPosition(
-                                        offset: colorController.text.length));
+                              onChanged: (value) {
+                                if (value.length == 6 &&
+                                    value.contains(RegExp("[^0-9a-fA-F]"))) {
+                                  CustomToast.showToast(context,
+                                      message: 'HexCode is not valid',
+                                      toastType: ToastType.warning);
+                                }
+
+                                setState(() {});
                               },
-                              decoration: kTextFieldDecoration.copyWith(
+                              decoration: themeProvider
+                                  .themeManager.textFieldDecoration
+                                  .copyWith(
                                 counterText: '',
                                 errorStyle: const TextStyle(
                                     fontSize: 16,
@@ -331,9 +326,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : Colors.grey.shade300,
+                                      color: themeProvider
+                                          .themeManager.borderStrong01Color,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(6),
@@ -342,18 +336,16 @@ class _CreateStateState extends ConsumerState<CreateState> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: themeProvider.isDarkThemeEnabled
-                                          ? darkThemeBorder
-                                          : Colors.grey.shade300,
+                                      color: themeProvider
+                                          .themeManager.borderStrong01Color,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(6),
                                     bottomRight: Radius.circular(6),
                                   ),
                                 ),
-                                fillColor: themeProvider.isDarkThemeEnabled
-                                    ? darkSecondaryBGC
-                                    : const Color.fromRGBO(250, 250, 250, 1),
+                                fillColor: themeProvider.themeManager
+                                    .secondaryBackgroundDefaultColor,
                                 filled: true,
                               ),
                             ),
@@ -362,34 +354,39 @@ class _CreateStateState extends ConsumerState<CreateState> {
                       ),
                     ),
                     Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 5,left: 15),
+                        margin:
+                            const EdgeInsets.only(top: 20, bottom: 5, left: 15),
                         child: const CustomText(
                           'Description ',
-                          // color: themeProvider.secondaryTextColor,
-                          type: FontStyle.subheading,
+                          type: FontStyle.Small,
                         )),
                     Container(
-                      // height: 45,
                       margin: const EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         controller: description,
                         maxLines: 5,
-                        decoration: kTextFieldDecoration.copyWith(
+                        decoration: themeProvider
+                            .themeManager.textFieldDecoration
+                            .copyWith(
+                          contentPadding: const EdgeInsets.all(10),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: themeProvider.isDarkThemeEnabled?darkThemeBorder:Colors.grey.shade300, width: 1.0),
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
+                                width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:  themeProvider.isDarkThemeEnabled?darkThemeBorder:Colors.grey.shade300, width: 1.0),
+                                color: themeProvider
+                                    .themeManager.borderStrong01Color,
+                                width: 1.0),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                           ),
-                          fillColor: themeProvider.isDarkThemeEnabled
-                              ? darkSecondaryBGC
-                              : lightBackgroundColor,
+                          fillColor: themeProvider
+                              .themeManager.secondaryBackgroundDefaultColor,
                           filled: true,
                         ),
                       ),
@@ -406,7 +403,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                             await issuesProvider.createState(
                                 slug: ref
                                     .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace!
+                                    .selectedWorkspace
                                     .workspaceSlug,
                                 projID: ref
                                     .read(ProviderList.projectProvider)

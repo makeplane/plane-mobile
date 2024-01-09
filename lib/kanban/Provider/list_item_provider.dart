@@ -1,13 +1,15 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/kanban/models/item_state.dart';
+import 'package:plane/kanban/models/item_state.dart';
 
 import 'provider_list.dart';
 
 class ListItemProvider extends ChangeNotifier {
-  ListItemProvider(ChangeNotifierProviderRef<ListItemProvider> this.ref);
+  ListItemProvider(ChangeNotifierProviderRef<ListItemProvider> this.ref,
+      {required this.boardID});
   Ref ref;
+  String boardID;
   TextEditingController newCardTextController = TextEditingController();
   void calculateCardPositionSize(
       {required int listIndex,
@@ -15,8 +17,8 @@ class ListItemProvider extends ChangeNotifier {
       required BuildContext context,
       required VoidCallback setsate}) {
     if (!context.mounted) return;
-    var prov = ref.read(ProviderList.boardProvider);
-    
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
+
     prov.board.lists[listIndex].items[itemIndex].context = context;
     var box = context.findRenderObject() as RenderBox;
     var location = box.localToGlobal(Offset.zero);
@@ -31,22 +33,22 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void resetCardWidget() {
-    var prov = ref.read(ProviderList.boardProvider);
-    prov.board.lists[prov.board.dragItemOfListIndex!]
-        .items[prov.board.dragItemIndex!].bottomPlaceholder = false;
-    prov.board.lists[prov.board.dragItemOfListIndex!]
-        .items[prov.board.dragItemIndex!].containsPlaceholder = false;
-    prov.board.lists[prov.board.dragItemOfListIndex!]
-            .items[prov.board.dragItemIndex!].child =
-        prov.board.lists[prov.board.dragItemOfListIndex!]
-            .items[prov.board.dragItemIndex!].prevChild;
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
+    var dragItemIndex = prov.board.dragItemIndex!;
+    var dragItemOfListIndex = prov.board.dragItemOfListIndex!;
+    prov.board.lists[dragItemOfListIndex].items[dragItemIndex]
+        .bottomPlaceholder = false;
+    prov.board.lists[dragItemOfListIndex].items[dragItemIndex]
+        .containsPlaceholder = false;
+    prov.board.lists[dragItemOfListIndex].items[dragItemIndex].child =
+        prov.board.lists[dragItemOfListIndex].items[dragItemIndex].prevChild;
   }
 
   bool calculateSizePosition({
     required int listIndex,
     required int itemIndex,
   }) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var list = prov.board.lists[listIndex];
     if (item.context == null ||
@@ -66,7 +68,6 @@ class ListItemProvider extends ChangeNotifier {
 
     item.actualSize ??= box.size;
 
-    // log("EXECUTED");
     item.width = box.size.width;
     item.height = box.size.height;
 
@@ -76,48 +77,37 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void addPlaceHolder({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     item.containsPlaceholder = true;
     item.child = Column(
       children: [
         !item.bottomPlaceholder!
             ? Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade100),
-                  borderRadius: BorderRadius.circular(6),
-                  color: item.backgroundColor ?? Colors.white,
-                ),
+                decoration: prov.board.cardPlaceHolderDecoration ??
+                    BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(6),
+                      color: item.backgroundColor ?? Colors.white,
+                    ),
                 margin: const EdgeInsets.only(
-                    bottom: 15, left: 10, right: 10, top: 15),
+                    bottom: 15, left: 0, right: 0, top: 5),
                 width: prov.draggedItemState!.width,
                 height: prov.draggedItemState!.height,
-                // child: Center(
-                //   child: Text(
-                //     itemIndex.toString(),
-                //     style: GoogleFonts.firaSans(
-                //         fontSize: 20, fontWeight: FontWeight.bold),
-                //   ),
-                // ),
               )
             : Container(),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade100),
-            borderRadius: BorderRadius.circular(6),
-            color: item.backgroundColor ?? Colors.white,
-          ),
-          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        SizedBox(
           width: item.actualSize!.width,
           child: item.prevChild,
         ),
         item.bottomPlaceholder!
             ? Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade100),
-                  borderRadius: BorderRadius.circular(6),
-                  color: item.backgroundColor ?? Colors.white,
-                ),
+                decoration: prov.board.cardPlaceHolderDecoration ??
+                    BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(6),
+                      color: item.backgroundColor ?? Colors.white,
+                    ),
                 margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                 width: prov.draggedItemState!.width,
                 height: prov.draggedItemState!.height,
@@ -128,7 +118,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool isPrevSystemCard({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var isItemHidden = itemIndex - 1 >= 0 &&
         prov.draggedItemState!.itemIndex == itemIndex - 1 &&
@@ -158,14 +148,16 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void checkForYAxisMovement({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
 
+    // To check whether the placeholder should be placed at the top or bottom of the card //
+    // If item is last in the list then it will be placed at the bottom, else at the top of next card //
     var willPlaceHolderAtBottom = ((itemIndex ==
-                prov.board.lists[listIndex].items.length - 1 
-           ) &&
+            prov.board.lists[listIndex].items.length - 1) &&
         ((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy >
-            item.y! + item.height!));
+            item.y! + item.height!) &&
+        item.addedBySystem != true);
 
     var willPlaceHolderAtTop =
         (((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy <
@@ -173,15 +165,18 @@ class ListItemProvider extends ChangeNotifier {
             (prov.draggedItemState!.height + prov.valueNotifier.value.dy >
                 item.y! + item.height!));
 
-    if (((willPlaceHolderAtTop || willPlaceHolderAtBottom) &&
-            prov.board.dragItemOfListIndex! == listIndex) &&
-        (prov.board.dragItemIndex != itemIndex ||
+    if (((willPlaceHolderAtTop ||
+                willPlaceHolderAtBottom) && // EITHER PLACEHOLDER AT TOP OR BOTTOM
+            prov.board.dragItemOfListIndex! ==
+                listIndex) && // PLACEHOLDER NEEDS TO BE IN SAME LIST
+        (prov.board.dragItemIndex !=
+                itemIndex || // EITHER CARD IS NOT SAME || PLACEHOLDER CAN BE AT BOTTOM & BOTTOM PLACEHOLDER IS NOT PRESENT || PLACEHOLDER CAN BE AT BOTTOM & ELEMENT IS LAST IN THE LIST
             (willPlaceHolderAtBottom &&
                 !prov.board.lists[listIndex].items[itemIndex]
                     .bottomPlaceholder!) ||
             (prov.board.lists[listIndex].items[itemIndex].bottomPlaceholder! &&
                 (itemIndex == prov.board.lists[listIndex].items.length - 1)))) {
-     // log("UP/DOWNN");
+      // IF : PLACEHOLDER CAN BE AT BOTTOM & BOTTOM PLACEHOLDER IS ALREADY PRESENT -> RETURN;
       if (willPlaceHolderAtBottom && item.bottomPlaceholder!) return;
 
       if (prov.board.dragItemIndex! < itemIndex && prov.move != 'other') {
@@ -225,7 +220,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool isLastItemDragged({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     if (prov.draggedItemState!.itemIndex == itemIndex &&
         prov.draggedItemState!.listIndex == listIndex &&
@@ -235,13 +230,15 @@ class ListItemProvider extends ChangeNotifier {
       return true;
     }
 
+    // CASE:
+
     if ((prov.draggedItemState!.itemIndex == itemIndex &&
         prov.draggedItemState!.listIndex == listIndex &&
         prov.board.dragItemOfListIndex == listIndex &&
         prov.board.lists[listIndex].items.length - 1 == itemIndex &&
         ((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy >
             item.y! + item.height!))) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+      log("LAST ITEM");
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         //     log("PREVIOUS |${prov.board.dragItemOfListIndex}| LIST= ${prov.board.dragItemIndex}");
 
@@ -266,21 +263,21 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool getYAxisCondition({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
     var willPlaceHolderAtBottom = ((itemIndex ==
-                prov.board.lists[listIndex].items.length - 1 
-           ) &&
+            prov.board.lists[listIndex].items.length - 1) &&
         ((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy >
-            item.y! + item.height!));
-
+            item.y! + item.height!) &&
+        item.addedBySystem != true);
+    //log("WILL PLACE HOLDER AT BOTTOM $willPlaceHolderAtBottom");
     var willPlaceHolderAtTop =
         (((prov.draggedItemState!.height * 0.6) + prov.valueNotifier.value.dy <
                 item.y! + item.height!) &&
             (prov.draggedItemState!.height + prov.valueNotifier.value.dy >
                 item.y! + item.height!));
 
-  //  log("$willPlaceHolderAtBottom === $willPlaceHolderAtTop");
+    //  log("$willPlaceHolderAtBottom === $willPlaceHolderAtTop");
 
     return (((willPlaceHolderAtTop || willPlaceHolderAtBottom) &&
             prov.board.dragItemOfListIndex! == listIndex) && //true
@@ -295,7 +292,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   bool getXAxisCondition({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
 
     var right = ((prov.draggedItemState!.width * 0.6) +
                 prov.valueNotifier.value.dx >
@@ -315,7 +312,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void checkForXAxisMovement({required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
     var item = prov.board.lists[listIndex].items[itemIndex];
 
     var canReplaceCurrent = ((prov.valueNotifier.value.dy >= item.y!) &&
@@ -327,7 +324,7 @@ class ListItemProvider extends ChangeNotifier {
             item.y! + item.height!));
 
     if (canReplaceCurrent || willPlaceHolderAtBottom) {
-   //   log("X AXIS");
+      //   log("X AXIS");
       prov.move = "other";
 
       resetCardWidget();
@@ -335,7 +332,7 @@ class ListItemProvider extends ChangeNotifier {
       item.bottomPlaceholder = willPlaceHolderAtBottom;
       if (willPlaceHolderAtBottom) {
         prov.move = "LAST";
-       // log("BOTTOM PLACEHOLDER X AXIS");
+        // log("BOTTOM PLACEHOLDER X AXIS");
       }
 
       var isItemHidden = itemIndex - 1 >= 0 &&
@@ -366,7 +363,11 @@ class ListItemProvider extends ChangeNotifier {
       required int itemIndex,
       required BuildContext context,
       required VoidCallback setsate}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
+    if (prov.board.isCardsDraggable == false) {
+      log("CARD DRAGGABLE IS FALSE");
+      return;
+    }
     var box = context.findRenderObject() as RenderBox;
     var location = box.localToGlobal(Offset.zero);
     prov.board.lists[listIndex].items[itemIndex].x =
@@ -382,26 +383,24 @@ class ListItemProvider extends ChangeNotifier {
     prov.board.dragItemOfListIndex = listIndex;
     prov.board.isElementDragged = true;
     prov.draggedItemState = DraggedItemState(
-        child: Container(
-          color: prov.board.lists[listIndex].items[itemIndex].backgroundColor ??
-              Colors.white,
-          width: box.size.width - 20,
-          child: prov.board.lists[listIndex].items[itemIndex].child,
-        ),
+        child: SizedBox(
+            width: box.size.width, // issue card margin -(left+right)
+            child: prov.board.lists[listIndex].items[itemIndex].child),
         listIndex: listIndex,
         itemIndex: itemIndex,
-        height: box.size.height,
-        width: box.size.width,
+        height: box.size.height - 20, // issue card margin -(top+bottom)
+        width: box.size.width-15, // issue card margin -(left+right)
         x: location.dx,
         y: location.dy);
     prov.draggedItemState!.setState = setsate;
+    prov.move = "";
     // log("${listIndex} ${itemIndex}");
     setsate();
   }
 
   bool isCurrentElementDragged(
       {required int listIndex, required int itemIndex}) {
-    var prov = ref.read(ProviderList.boardProvider);
+    var prov = ref.read(ProviderList.boardProviders[boardID]!);
 
     return prov.board.isElementDragged &&
         prov.draggedItemState!.itemIndex == itemIndex &&
@@ -409,7 +408,7 @@ class ListItemProvider extends ChangeNotifier {
   }
 
   void saveNewCard() {
-    var boardProv = ref.read(ProviderList.boardProvider);
+    var boardProv = ref.read(ProviderList.boardProviders[boardID]!);
     boardProv.board.lists[boardProv.board.newCardListIndex!]
         .items[boardProv.board.newCardIndex!].child = Container(
       decoration: BoxDecoration(
@@ -437,8 +436,17 @@ class ListItemProvider extends ChangeNotifier {
     log("TAPPED");
   }
 
-  void reorderCard() {
-    var boardProv = ref.read(ProviderList.boardProvider);
+  // LAST -> //
+  // REPLACE -> USED WHEN PLACEHOLDER IS ADDED IN EMPTY LIST, SO FIRST CLEAR SYSTEM ADDED PLACEHOLDER, AND THEN MOVE THE CARD //
+  // DOWN -> //
+  void reorderCard(
+      {required Function(
+              {int? newCardIndex,
+              int? newListIndex,
+              int? oldCardIndex,
+              int? oldListIndex})
+          onItemReorder}) {
+    var boardProv = ref.read(ProviderList.boardProviders[boardID]!);
     boardProv.board.lists[boardProv.board.dragItemOfListIndex!]
             .items[boardProv.board.dragItemIndex!].child =
         boardProv.board.lists[boardProv.board.dragItemOfListIndex!]
@@ -475,5 +483,10 @@ class ListItemProvider extends ChangeNotifier {
       // "LENGTH= ${prov.board.lists[prov.board.dragItemOfListIndex!].items.length}");
     }
     // prov.board.lists[prov.board.dragItemOfListIndex!].setState! ();
+    onItemReorder(
+        oldCardIndex: boardProv.draggedItemState!.itemIndex!,
+        newCardIndex: boardProv.board.dragItemIndex!,
+        oldListIndex: boardProv.draggedItemState!.listIndex!,
+        newListIndex: boardProv.board.dragItemOfListIndex!);
   }
 }

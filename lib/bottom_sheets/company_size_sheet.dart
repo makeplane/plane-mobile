@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_divider.dart';
+import 'package:plane/widgets/custom_text.dart';
 
+import '../utils/enums.dart';
 
 class CompanySize extends ConsumerStatefulWidget {
   const CompanySize({super.key});
@@ -13,286 +14,84 @@ class CompanySize extends ConsumerStatefulWidget {
 }
 
 class _CompanySizeState extends ConsumerState<CompanySize> {
+  final List<String> companySizeData = [
+    "Just myself",
+    "2-10",
+    "11-50",
+    "51-200",
+    "201-500",
+    "500+"
+  ];
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     return Padding(
-      padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
+      padding: const EdgeInsets.all(23),
       child: Column(
         children: [
           Row(
             children: [
-              const CustomText(
+              CustomText(
                 'Company Size',
-                type: FontStyle.heading,
+                type: FontStyle.H4,
+                fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
           ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: 'Just myself');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == 'Just myself'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: 'Just myself',
-                      onChanged: (val) {
-                        //workspaceProvider.changeCompanySize(size: 'Just myself');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    'Just myself',
-                    type: FontStyle.subheading,
+          Expanded(
+            child: ListView.separated(
+              itemCount: companySizeData.length,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    onTap: () {
+                      workspaceProvider.changeCompanySize(
+                          size: companySizeData[index]);
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          workspaceProvider.companySize ==
+                                  companySizeData[index]
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          color: workspaceProvider.companySize ==
+                                  companySizeData[index]
+                              ? themeProvider.themeManager.primaryColour
+                              : themeProvider.themeManager.borderSubtle01Color,
+                        ),
+                        const SizedBox(width: 10),
+                        CustomText(
+                          companySizeData[index],
+                          type: FontStyle.Medium,
+                          fontWeight: FontWeightt.Regular,
+                          color: themeProvider.themeManager.primaryTextColor,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '2-10');
-                Navigator.pop(context);
+                );
               },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '2-10'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: '2-10',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '2-10');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    '2-10',
-                    type: FontStyle.subheading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '11-50');
-                Navigator.pop(context);
+              separatorBuilder: (context, index) {
+                return CustomDivider(
+                    themeProvider: themeProvider,
+                    color: themeProvider.themeManager.borderDisabledColor);
               },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '11-50'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: '11-50',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '11-50');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    '11-50',
-                    type: FontStyle.subheading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '51-200');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '51-200'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: '51-200',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '51-200');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    '51-200',
-                    type: FontStyle.subheading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '201-500');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '201-500'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: '201-500',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '201-500');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    '201-500',
-                    type: FontStyle.subheading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            width: double.infinity,
-            child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: InkWell(
-              onTap: () {
-                workspaceProvider.changeCompanySize(size: '500+');
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: [
-                  Radio(
-                      visualDensity: const VisualDensity(
-                        horizontal: VisualDensity.minimumDensity,
-                        vertical: VisualDensity.minimumDensity,
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fillColor: workspaceProvider.companySize == '500+'
-                          ? null
-                          : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
-                      groupValue: workspaceProvider.companySize,
-                      activeColor: primaryColor,
-                      value: '500+',
-                      onChanged: (val) {
-                        // workspaceProvider.changeCompanySize(size: '500+');
-                      }),
-                  const SizedBox(width: 10),
-                  const CustomText(
-                    '500+',
-                    type: FontStyle.subheading,
-                  ),
-                ],
-              ),
             ),
           ),
         ],

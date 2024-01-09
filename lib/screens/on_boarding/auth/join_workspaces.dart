@@ -3,22 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/screens/home_screen.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/on_boarding/auth/setup_workspace.dart';
+import 'package:plane/utils/color_manager.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../utils/constants.dart';
-import '../../../utils/random_colors.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 
 class JoinWorkspaces extends ConsumerStatefulWidget {
+  const JoinWorkspaces({required this.fromOnboard, super.key});
   final bool fromOnboard;
-  const JoinWorkspaces(
-      {required this.fromOnboard, super.key});
 
   @override
   ConsumerState<JoinWorkspaces> createState() => _JoinWorkspacesState();
@@ -29,14 +28,17 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
 
   @override
   void initState() {
-    ref.read(ProviderList.workspaceProvider).getWorkspaceInvitations();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(ProviderList.workspaceProvider).getWorkspaceInvitations();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var prov = ref.watch(ProviderList.workspaceProvider);
-    var profileProvider = ref.watch(ProviderList.profileProvider);
+    final prov = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       appBar: !widget.fromOnboard
           ? CustomAppBar(
@@ -66,9 +68,11 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                         )
                       : Container(),
                   widget.fromOnboard
-                      ? const CustomText(
+                      ? CustomText(
                           'Join Workspaces',
-                          type: FontStyle.heading,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryTextColor,
                         )
                       : Container(),
                   const SizedBox(
@@ -79,10 +83,11 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                         ? Center(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.6,
-                              child: const CustomText(
+                              child: CustomText(
                                 'Currently you have no invited workspaces to join.',
-                                type: FontStyle.description,
-                                color: greyColor,
+                                type: FontStyle.Small,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -127,47 +132,46 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                                               ['workspace']
                                                           ['logo'] ==
                                                       null
-                                                  ? RandomColors()
-                                                      .getRandomColor()
+                                                  ? ColorManager
+                                                      .getColorWithIndex(index)
                                                   : Colors.white,
                                             ),
                                             margin: const EdgeInsets.only(
                                                 bottom: 15),
                                             // padding: const EdgeInsets.symmetric(
                                             //     horizontal: 15, vertical: 10),
-                                            child:
-                                                prov.workspaceInvitations[index]
-                                                                ['workspace']
-                                                            ['logo'] ==
-                                                        null
-                                                    ? Center(
-                                                        child: CustomText(
-                                                          prov.workspaceInvitations[
-                                                                  index]
-                                                                  ['workspace']
-                                                                  ['name']
-                                                              .toString()
-                                                              .toUpperCase()
-                                                              .substring(0, 1),
-                                                          type: FontStyle.title,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    : ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        child: Image.network(
-                                                          prov.workspaceInvitations[
-                                                                  index]
-                                                                  ['workspace']
-                                                                  ['logo']
-                                                              .toString(),
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
+                                            child: prov.workspaceInvitations[
+                                                            index]['workspace']
+                                                        ['logo'] ==
+                                                    null
+                                                ? Center(
+                                                    child: CustomText(
+                                                      prov.workspaceInvitations[
+                                                              index]
+                                                              ['workspace']
+                                                              ['name']
+                                                          .toString()
+                                                          .toUpperCase()
+                                                          .substring(0, 1),
+                                                      type: FontStyle.Small,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeightt.Semibold,
+                                                    ),
+                                                  )
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    child: Image.network(
+                                                      prov.workspaceInvitations[
+                                                              index]
+                                                              ['workspace']
+                                                              ['logo']
+                                                          .toString(),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
                                           ),
                                           const SizedBox(
                                             width: 10,
@@ -179,16 +183,18 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                               CustomText(
                                                 prov.workspaceInvitations[index]
                                                     ['workspace']['name'],
-                                                type: FontStyle.title,
-                                                fontWeight: FontWeight.bold,
+                                                type: FontStyle.Small,
+                                                fontWeight: FontWeightt.Medium,
                                               ),
                                               const SizedBox(
                                                 height: 3,
                                               ),
-                                              const CustomText(
+                                              CustomText(
                                                 'Invited',
-                                                type: FontStyle.subtitle,
-                                                color: greyColor,
+                                                type: FontStyle.XSmall,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .placeholderTextColor,
                                               ),
                                             ],
                                           )
@@ -197,14 +203,16 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                       selectedWorkspaces.contains(
                                               prov.workspaceInvitations[index]
                                                   ['id'])
-                                          ? const Icon(
+                                          ? Icon(
                                               Icons.check_circle,
                                               size: 24,
-                                              color: primaryColor,
+                                              color: themeProvider
+                                                  .themeManager.primaryColour,
                                             )
-                                          : const Icon(
+                                          : Icon(
                                               Icons.check_circle_outline,
-                                              color: greyColor,
+                                              color: themeProvider.themeManager
+                                                  .placeholderTextColor,
                                             )
                                     ],
                                   ),
@@ -217,13 +225,13 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                   //     ? Container()
                   //     : Button(
                   //         ontap: () async {
-                  //           var data = [];
-                  //           for (var element in selectedWorkspaces) {
+                  //           final data = [];
+                  //           for (final element in selectedWorkspaces) {
                   //             data.add(
                   //                 prov.workspaceInvitations[element]['id']);
                   //           }
                   //           await prov.joinWorkspaces(data: data);
-                  //           for (var element in selectedWorkspaces) {
+                  //           for (final element in selectedWorkspaces) {
                   //             prov.workspaceInvitations.removeAt(element);
                   //           }
                   //           selectedWorkspaces.clear();
@@ -256,8 +264,8 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                   'onboarding_step': {
                                     "workspace_join": true,
                                     "profile_complete": true,
-                                    "workspace_create": true,
-                                    "workspace_invite": true
+                                    "workspace_create": false,
+                                    "workspace_invite": false
                                   }
                                 });
                                 await ref
@@ -266,17 +274,19 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(
-                                      fromSignUp: true,
-                                    ),
+                                    builder: (context) => const SetupWorkspace(
+                                        // fromSignUp: true,
+                                        ),
                                   ),
                                 );
                               } else {
                                 Navigator.of(context).pop();
                               }
                             } else {
-                              CustomToast().showToast(context,
-                                  'Please select atleast one workspace');
+                              CustomToast.showToast(context,
+                                  message:
+                                      'Please select atleast one workspace',
+                                  toastType: ToastType.defult);
                             }
                           },
                         )
@@ -288,14 +298,68 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
                       : Container(),
                   widget.fromOnboard
                       ? Button(
+                          text: 'Skip',
+                          filledButton: false,
+                          removeStroke: true,
+                          textColor: greyColor,
+                          ontap: () async {
+                            // await prov.getWorkspaceInvitations();
+                            // if (prov.workspaceInvitations.isNotEmpty) {
+                            //   profileProvider.updateProfile(data: {
+                            //     'onboarding_step': {
+                            //       "workspace_join": false,
+                            //       "profile_complete": true,
+                            //       "workspace_create": true,
+                            //       "workspace_invite": true
+                            //     }
+                            //   });
+                            //   Navigator.pushAndRemoveUntil(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => const JoinWorkspaces(
+                            //         fromOnboard: true,
+                            //       ),
+                            //     ),
+                            //     (Route<dynamic> route) => false,
+                            //   );
+                            // } else {
+                            // await prov.ref!
+                            //     .read(ProviderList.profileProvider)
+                            //     .updateIsOnBoarded(val: true);
+                            await profileProvider.updateProfile(data: {
+                              'onboarding_step': {
+                                "workspace_join": true,
+                                "profile_complete": true,
+                                "workspace_create": false,
+                                "workspace_invite": false
+                              }
+                            });
+                            await ref
+                                .read(ProviderList.workspaceProvider)
+                                .getWorkspaces();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SetupWorkspace(
+                                    // fromSignUp: true,
+                                    ),
+                              ),
+                            );
+                            // }
+                          },
+                        )
+                      : Container(),
+                  widget.fromOnboard
+                      ? Button(
                           ontap: () {
                             Navigator.of(context).pop();
                           },
-                          widget: const Padding(
-                            padding: EdgeInsets.only(right: 10),
+                          widget: Padding(
+                            padding: const EdgeInsets.only(right: 10),
                             child: Icon(
                               Icons.arrow_back,
-                              color: greyColor,
+                              color: themeProvider
+                                  .themeManager.placeholderTextColor,
                               size: 20,
                             ),
                           ),

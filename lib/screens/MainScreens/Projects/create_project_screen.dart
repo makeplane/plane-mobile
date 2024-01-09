@@ -1,19 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/config/const.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_app_bar.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/bottom_sheets/project_select_cover_image.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/bottom_sheets/emoji_sheet.dart';
+import 'package:plane/config/const.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_app_bar.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/bottom_sheets/project_select_cover_image.dart';
+import 'package:plane/widgets/loading_widget.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class CreateProject extends ConsumerStatefulWidget {
   const CreateProject({super.key});
@@ -26,17 +27,20 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   final TextEditingController emojiController = TextEditingController();
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
 
-  var showEMOJI = false;
+  // final showEMOJI = false;
+  bool isEmoji = true;
+  String selectedColor = "#3A3A3A";
   List<String> emojisWidgets = [];
   String selectedEmoji = (emojis[855]);
-  var emoji = emojis[855];
-  var selectedVal = 2;
+  IconData? selectedIcon;
+  final emoji = emojis[855];
+  int selectedVal = 2;
   File? coverImage;
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController identifier = TextEditingController();
 
-  generateEmojis() {
+  void generateEmojis() {
     for (int i = 0; i < emojis.length; i++) {
       setState(() {
         emojisWidgets.add(emojis[i]);
@@ -52,7 +56,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
 
   TextEditingController? getIdentifier(String? id) {
     setState(() {
-      identifier.text = id!.toUpperCase().replaceAll(" ", "");
+      identifier.text = id!.trim().toUpperCase().replaceAll(" ", "");
     });
     return identifier;
   }
@@ -61,562 +65,489 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProvider = ref.watch(ProviderList.projectProvider);
-    return Scaffold(
-      // backgroundColor: themeProvider.backgroundColor,
-      appBar: CustomAppBar(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        text: 'Create Project',
-      ),
-      body: LoadingWidget(
-        loading: projectProvider.createProjectState == StateEnum.loading,
-        widgetClass: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            // color: themeProvider.backgroundColor,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Stack(
-                    children: [
-                      Form(
-                        key: gkey,
-                        child: Column(
-                          children: [
-                            //cover image
-                            Stack(
-                              children: [
-                                Container(
-                                  height: 157,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      image: coverImage != null
-                                          ? DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image:
-                                                  Image.file(coverImage!).image)
-                                          : null),
-                                  child: coverImage == null
-                                      ? Image.network(
-                                          projectProvider.coverUrl,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : null,
-                                ),
-                                //edit button on top right corner rounded
-                                Positioned(
-                                  top: 15,
-                                  right: 15,
-                                  child: GestureDetector(
-                                      onTap: () async {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.75),
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(30),
-                                                topRight: Radius.circular(30),
-                                              ),
-                                            ),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return const SelectCoverImage(
-                                                creatProject: true,
-                                              );
-                                            });
-                                        // var file = await ImagePicker.platform
-                                        //     .pickImage(source: ImageSource.gallery);
-                                        // if (file != null) {
-                                        //   setState(() {
-                                        //     coverImage = File(file.path);
-                                        //   });
-                                        // }
-                                      },
-                                      child: const CircleAvatar(
-                                        backgroundColor: Color(0xFFF5F5F5),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 17,
-                            ),
-                            //row containing circle avatar with an emoji and text
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final BuildContext mainContext = context;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        // backgroundColor: themeProvider.backgroundColor,
+        appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'Create Project',
+          fontType: FontStyle.H6,
+        ),
+        body: LoadingWidget(
+          loading: projectProvider.createProjectState == StateEnum.loading,
+          widgetClass: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            return SingleChildScrollView(
+              // color: themeProvider.backgroundColor,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Stack(
+                      children: [
+                        Form(
+                          key: gkey,
+                          child: Column(
+                            children: [
+                              //cover image
+                              Stack(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          isScrollControlled: true,
+                                  Container(
+                                    height: 157,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        image: coverImage != null
+                                            ? DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: Image.file(coverImage!)
+                                                    .image)
+                                            : null),
+                                    child: coverImage == null
+                                        ? Image.network(
+                                            projectProvider.coverUrl,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : null,
+                                  ),
+                                  //edit button on top right corner rounded
+                                  Positioned(
+                                    top: 15,
+                                    right: 15,
+                                    child: GestureDetector(
+                                        onTap: () async {
+                                          final Map<String, dynamic> url = {};
+                                          await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              enableDrag: true,
+                                              constraints: BoxConstraints(
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.85),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight: Radius.circular(30),
+                                                ),
+                                              ),
+                                              context: context,
+                                              builder: (ctx) {
+                                                return SelectCoverImage(
+                                                  uploadedUrl: url,
+                                                );
+                                              });
+                                          setState(() {
+                                            projectProvider.coverUrl =
+                                                url['url'];
+                                          });
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundColor: themeProvider
+                                              .themeManager
+                                              .primaryBackgroundDefaultColor,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: themeProvider.themeManager
+                                                  .primaryTextColor,
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 17,
+                              ),
+                              //row containing circle avatar with an emoji and text
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
                                           enableDrag: true,
+                                          isScrollControlled: true,
+                                          constraints: BoxConstraints(
+                                            maxHeight: height *
+                                                0.8,
+                                          ),
                                           shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
                                             ),
                                           ),
-                                          constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.75,
-                                          ),
                                           context: context,
-                                          builder: (ctx) {
-                                            return Stack(
-                                              children: [
-                                                ListView(
-                                                  shrinkWrap: true,
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 15,
-                                                      vertical: 10),
-                                                  // physics: NeverScrollableScrollPhysics(),
-                                                  children: [
-                                                    const SizedBox(
-                                                      height: 60,
-                                                    ),
-                                                    selected == 0
-                                                        ? Wrap(
-                                                            alignment:
-                                                                WrapAlignment
-                                                                    .center,
-                                                            spacing: 6,
-                                                            runSpacing: 6,
-                                                            children:
-                                                                emojisWidgets
-                                                                    .map(
-                                                                      (e) =>
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedEmoji =
-                                                                                e;
-                                                                            showEMOJI =
-                                                                                false;
-                                                                          });
-
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              40,
-                                                                          height:
-                                                                              40,
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                CustomText(
-                                                                              String.fromCharCode(int.parse(e)),
-                                                                              type: FontStyle.heading2,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                    .toList(),
-                                                          )
-                                                        : Container(),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(20),
-                                                      topRight:
-                                                          Radius.circular(20),
-                                                    ),
-                                                    color: Colors.white,
-                                                  ),
-
-                                                  // height: 80,
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 25),
-                                                            child: CustomText(
-                                                              'Choose your project icon',
-                                                              type: FontStyle
-                                                                  .heading,
-                                                            ),
-                                                          ),
-                                                          // const Spacer(),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 15),
-                                                            child: IconButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                size: 27,
-                                                                color: themeProvider
-                                                                        .isDarkThemeEnabled
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(context)
+                                                      .viewInsets
+                                                      .bottom),
+                                              child: const EmojiSheet(),
                                             );
-                                            // return ListView(
-                                            //   padding:
-                                            //       const EdgeInsets.symmetric(
-                                            //           horizontal: 5),
-                                            //   children: [
-                                            //     Wrap(
-                                            //       spacing: 10,
-                                            //       runSpacing: 1,
-                                            //       children: emojisWidgets
-                                            //           .map(
-                                            //             (e) => InkWell(
-                                            //               onTap: () {
-                                            //                 setState(() {
-                                            //                   selectedEmoji = e;
-                                            //                   showEMOJI = false;
-                                            //                 });
-                                            //               },
-                                            //               child: CustomText(
-                                            //                 e,
-                                            //                 type: FontStyle
-                                            //                     .heading,
-                                            //               ),
-                                            //             ),
-                                            //           )
-                                            //           .toList(),
-                                            //     ),
-                                            //   ],
-                                            // );
+                                          },
+                                        ).then((value) {
+                                          setState(() {
+                                            selectedEmoji = value['name'];
+                                            isEmoji = value['is_emoji'];
+                                            selectedColor =
+                                                value['color'] ?? "#3A3A3A";
                                           });
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: const Color(0xFFF5F5F5),
-                                      child: CustomText(
-                                        String.fromCharCode(
-                                            int.parse(selectedEmoji)),
-                                        type: FontStyle.heading,
-                                      ),
+                                        });
+                                      },
+                                      child: CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: themeProvider
+                                              .themeManager
+                                              .secondaryBackgroundDefaultColor,
+                                          child: isEmoji
+                                              ? CustomText(
+                                                  String.fromCharCode(
+                                                      int.parse(selectedEmoji)),
+                                                  type: FontStyle.H5,
+                                                )
+                                              : Icon(
+                                                  iconList[selectedEmoji],
+                                                  color: Color(
+                                                    int.parse(
+                                                      selectedColor
+                                                          .toString()
+                                                          .replaceAll(
+                                                              '#', '0xFF'),
+                                                    ),
+                                                  ),
+                                                )),
                                     ),
-                                  ),
-
-                                  //text with a dropdown button infront of it
-                                  // SizedBox(
-                                  //   height: 50,
-                                  //   width: 81,
-                                  //   child: DropdownButtonFormField(
-                                  //       dropdownColor:
-                                  //           themeProvider.isDarkThemeEnabled
-                                  //               ? darkSecondaryBackgroundColor
-                                  //               : Colors.white,
-                                  //       icon: Icon(
-                                  //         Icons.arrow_drop_down,
-                                  //         color:
-                                  //             themeProvider.isDarkThemeEnabled
-                                  //                 ? darkPrimaryTextColor
-                                  //                 : lightPrimaryTextColor,
-                                  //       ),
-                                  //       decoration: const InputDecoration(
-                                  //         border: InputBorder.none,
-                                  //       ),
-                                  //       value: 2,
-                                  //       items: [
-                                  //         DropdownMenuItem(
-                                  //           value: 2,
-                                  //           child: CustomText(
-                                  //             'Public',
-                                  //             type: FontStyle.title,
-                                  //             fontWeight: FontWeight.bold,
-                                  //           ),
-                                  //         ),
-                                  //         DropdownMenuItem(
-                                  //           value: 0,
-                                  //           child: CustomText(
-                                  //             'Private',
-                                  //             type: FontStyle.title,
-                                  //             fontWeight: FontWeight.bold,
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //       onChanged: (val) {
-                                  //         setState(() {
-                                  //           selectedVal = val!;
-                                  //         });
-                                  //       }),
-                                  // ),
-
-                                  //conver the abpve dropdown into a row of two radio buttons
-                                  Row(
-                                    children: [
-                                      Radio(
-                                        activeColor: primaryColor,
-                                        visualDensity: const VisualDensity(
-                                          horizontal:
-                                              VisualDensity.minimumDensity,
-                                          vertical:
-                                              VisualDensity.minimumDensity,
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedVal = 2;
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Radio(
+                                                activeColor: themeProvider
+                                                    .themeManager.primaryColour,
+                                                fillColor: selectedVal != 2
+                                                    ? MaterialStateProperty.all<
+                                                            Color>(
+                                                        themeProvider
+                                                            .themeManager
+                                                            .placeholderTextColor)
+                                                    : null,
+                                                visualDensity:
+                                                    const VisualDensity(
+                                                  horizontal: VisualDensity
+                                                      .minimumDensity,
+                                                  vertical: VisualDensity
+                                                      .minimumDensity,
+                                                ),
+                                                value: 2,
+                                                groupValue: selectedVal,
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    selectedVal = val as int;
+                                                  });
+                                                },
+                                              ),
+                                              CustomText(
+                                                'Public',
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Medium,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        value: 2,
-                                        groupValue: selectedVal,
-                                        onChanged: (val) {
-                                          setState(() {
-                                            selectedVal = val as int;
-                                          });
-                                        },
-                                      ),
-                                      const CustomText(
-                                        'Public',
-                                        type: FontStyle.title,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Radio(
-                                        activeColor: primaryColor,
-                                        visualDensity: const VisualDensity(
-                                          horizontal:
-                                              VisualDensity.minimumDensity,
-                                          vertical:
-                                              VisualDensity.minimumDensity,
+                                        const SizedBox(
+                                          width: 10,
                                         ),
-                                        value: 0,
-                                        groupValue: selectedVal,
-                                        onChanged: (val) {
-                                          setState(() {
-                                            selectedVal = val as int;
-                                          });
-                                        },
-                                      ),
-                                      const CustomText(
-                                        'Secret',
-                                        type: FontStyle.title,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedVal = 0;
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Radio(
+                                                activeColor: themeProvider
+                                                    .themeManager.primaryColour,
+                                                fillColor: selectedVal != 0
+                                                    ? MaterialStateProperty.all<
+                                                            Color>(
+                                                        themeProvider
+                                                            .themeManager
+                                                            .placeholderTextColor)
+                                                    : null,
+                                                visualDensity:
+                                                    const VisualDensity(
+                                                  horizontal: VisualDensity
+                                                      .minimumDensity,
+                                                  vertical: VisualDensity
+                                                      .minimumDensity,
+                                                ),
+                                                value: 0,
+                                                groupValue: selectedVal,
+                                                onChanged: (val) {
+                                                  log(val.toString());
+                                                  setState(() {
+                                                    selectedVal = val as int;
+                                                  });
+                                                },
+                                              ),
+                                              CustomText(
+                                                'Private',
+                                                type: FontStyle.Medium,
+                                                fontWeight: FontWeightt.Medium,
+                                                color: themeProvider
+                                                    .themeManager
+                                                    .primaryTextColor,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 17,
-                            ),
-                            //text field for title with grey border
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
+                              const SizedBox(
+                                height: 17,
                               ),
-                              child: TextFormField(
-                                controller: name,
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter project name'),
-                                onChanged: (value) {
-                                  if (value.length < 6) {
-                                    getIdentifier(name.text);
-                                  }
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Name is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 17),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: TextFormField(
-                                controller: identifier,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(5),
-                                ],
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter project identifier'),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Identifier is required';
-                                  }
-                                  if (!value.contains(RegExp(
-                                    r'^[A-Z]+$',
-                                  ))) {
-                                    return 'Identifier must be uppercase text.';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 17),
-                            //large text field for description with grey border.
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: TextFormField(
-                                controller: description,
-                                maxLines: 5,
-                                decoration: kTextFieldDecoration.copyWith(
-                                    labelText: 'Enter description'),
-                              ),
-                            ),
-                            // const SizedBox(
-                            //   height: 50,
-                            // ),
-                            //    const Spacer(),
-                            //blue button with white text at the bottom
-                            // Padding(
-                            //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                            //   child: Button(
-                            //     text: 'Create Project',
-                            //     textColor: Colors.white,
-                            //     ontap: () async {
-                            //       if (validateSave()) {
-                            //         if (coverImage != null) {
-                            //           await ref
-                            //               .read(ProviderList.fileUploadProvider)
-                            //               .uploadFile(coverImage!,
-                            //                   coverImage!.path.split('.').last);
-                            //         }
+                              //text field for title with grey border
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: TextFormField(
+                                  controller: name,
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
+                                          labelText: 'Enter project name'),
+                                  onChanged: (value) {
+                                    String tempVal =
+                                        value.trim().replaceAll(" ", "");
+                                    //replace all special characters
+                                    tempVal = tempVal.replaceAll(
+                                        RegExp(r'[^\w\s]+'), '');
 
-                            //         await projectProvider.createProjects(
-                            //             slug: ref
-                            //                 .read(ProviderList.workspaceProvider)
-                            //                 .workspaces
-                            //                 .where((element) =>
-                            //                     element['id'] ==
-                            //                     ref
-                            //                         .read(
-                            //                             ProviderList.profileProvider)
-                            //                         .userProfile
-                            //                         .last_workspace_id)
-                            //                 .first['slug'],
-                            //             data: {
-                            //               "cover_image": projectProvider.coverUrl,
-                            //               "name": name.text,
-                            //               "identifier": identifier.text,
-                            //               "emoji": selectedEmoji,
-                            //               "description": description.text,
-                            //               "network": selectedVal
-                            //             });
-                            //         if (projectProvider.createProjectState ==
-                            //             AuthStateEnum.success) {
-                            //           Navigator.pop(context);
-                            //         }
-                            //       }
-                            //     },
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 10),
-                          ],
+                                    if (tempVal.length < 6) {
+                                      getIdentifier(tempVal);
+                                    }
+                                  },
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Name is required';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 17),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: TextFormField(
+                                  controller: identifier,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12),
+                                    //replace all special characters allow alphanumeric
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z0-9]')),
+                                  ],
+                                  onChanged: (value) {
+                                    //if the entered character is in lowercase then convert it to uppercase
+                                    if (value.isNotEmpty) {
+                                      if (value[value.length - 1] !=
+                                          value[value.length - 1]
+                                              .toUpperCase()) {
+                                        identifier.text = value.toUpperCase();
+                                        identifier.selection =
+                                            TextSelection.fromPosition(
+                                                TextPosition(
+                                                    offset: identifier
+                                                        .text.length));
+                                      }
+                                    }
+                                  },
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
+                                          labelText:
+                                              'Enter project identifier'),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Identifier is required';
+                                    }
+                                    //condition for containing lowercase
+                                    else if (value.contains(RegExp(
+                                      r'[a-z]+',
+                                    ))) {
+                                      return 'Identifier must not contain lowercase.';
+                                    }
+
+                                    // condition for containing special characters
+                                    else if (value.contains(RegExp(
+                                      r'[^\w\s]+',
+                                    ))) {
+                                      return 'Identifier must not contain special characters.';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 17),
+                              //large text field for description with grey border.
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: TextFormField(
+                                  controller: description,
+                                  maxLines: 5,
+                                  decoration: themeProvider
+                                      .themeManager.textFieldDecoration
+                                      .copyWith(
+                                          labelText: 'Enter description',
+                                          contentPadding:
+                                              const EdgeInsets.all(15)),
+                                ),
+                              ),
+                              // const SizedBox(
+                              //   height: 50,
+                              // ),
+                              //    const Spacer(),
+                              //blue button with white text at the bottom
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                              //   child: Button(
+                              //     text: 'Create Project',
+                              //     textColor: Colors.white,
+                              //     ontap: () async {
+                              //       if (validateSave()) {
+                              //         if (coverImage != null) {
+                              //           await ref
+                              //               .read(ProviderList.fileUploadProvider)
+                              //               .uploadFile(coverImage!,
+                              //                   coverImage!.path.split('.').last);
+                              //         }
+
+                              //         await projectProvider.createProjects(
+                              //             slug: ref
+                              //                 .read(ProviderList.workspaceProvider)
+                              //                 .workspaces
+                              //                 .where((element) =>
+                              //                     element['id'] ==
+                              //                     ref
+                              //                         .read(
+                              //                             ProviderList.profileProvider)
+                              //                         .userProfile
+                              //                         .last_workspace_id)
+                              //                 .first['slug'],
+                              //             data: {
+                              //               "cover_image": projectProvider.coverUrl,
+                              //               "name": name.text,
+                              //               "identifier": identifier.text,
+                              //               "emoji": selectedEmoji,
+                              //               "description": description.text,
+                              //               "network": selectedVal
+                              //             });
+                              //         if (projectProvider.createProjectState ==
+                              //             AuthStateEnum.success) {
+                              //           Navigator.pop(context);
+                              //         }
+                              //       }
+                              //     },
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 10),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Button(
-                      text: 'Create Project',
-                      textColor: Colors.white,
-                      ontap: () async {
-                        if (validateSave()) {
-                          if (coverImage != null) {
-                            await ref
-                                .read(ProviderList.fileUploadProvider)
-                                .uploadFile(coverImage!,
-                                    coverImage!.path.split('.').last);
-                          }
-
-                          await projectProvider.createProjects(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace!
-                                  .workspaceSlug,
-                              data: {
-                                "cover_image": projectProvider.coverUrl,
-                                "name": name.text,
-                                "identifier": identifier.text,
-                                "emoji": selectedEmoji,
-                                "description": description.text,
-                                "network": selectedVal
-                              });
-                          if (projectProvider.createProjectState ==
-                              StateEnum.success) {
-                            Navigator.pop(Const.globalKey.currentContext!);
-                          }
-                          //Navigator.pop(Const.globalKey.currentContext!);
-                        }
-                      },
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Button(
+                        text: 'Create Project',
+                        textColor: themeProvider.themeManager.textonColor,
+                        ontap: () async {
+                          if (validateSave()) {
+                            if (coverImage != null) {
+                              await ref
+                                  .read(ProviderList.fileUploadProvider)
+                                  .uploadFile(coverImage!,
+                                      coverImage!.path.split('.').last);
+                            }
+
+                            await projectProvider.createProjects(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace
+                                    .workspaceSlug,
+                                context: mainContext,
+                                data: {
+                                  "cover_image": projectProvider.coverUrl,
+                                  "name": name.text,
+                                  "identifier": identifier.text,
+                                  "emoji": isEmoji ? selectedEmoji : null,
+                                  "description": description.text,
+                                  "network": selectedVal,
+                                  "icon_prop": !isEmoji
+                                      ? {
+                                          "name": selectedEmoji,
+                                          "color": selectedColor,
+                                        }
+                                      : null
+                                },
+                                ref: ref);
+                            if (projectProvider.createProjectState ==
+                                StateEnum.success) {
+                              Navigator.pop(Const.globalKey.currentContext!);
+                            }
+                            //Navigator.pop(Const.globalKey.currentContext!);
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

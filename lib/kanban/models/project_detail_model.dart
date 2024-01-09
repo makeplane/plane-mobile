@@ -3,6 +3,7 @@ class ProjectDetailModel {
   Workspace? workspace;
   Map<String, dynamic>? defaultAssignee;
   Map<String, dynamic>? projectLead;
+  Map<String, dynamic>? iconProp;
   bool? isFavorite;
   String? createdAt;
   String? updatedAt;
@@ -13,7 +14,6 @@ class ProjectDetailModel {
   int? network;
   String? identifier;
   String? emoji;
-  dynamic iconProp;
   bool? moduleView;
   bool? cycleView;
   bool? issueViewsView;
@@ -23,32 +23,39 @@ class ProjectDetailModel {
   String? createdBy;
   String? updatedBy;
   String? estimate;
+  int? closeIn;
+  int? archiveIn;
+  String? defaultState;
 
-  ProjectDetailModel(
-      {this.id,
-      this.workspace,
-      this.defaultAssignee,
-      this.projectLead,
-      this.isFavorite,
-      this.createdAt,
-      this.updatedAt,
-      this.name,
-      this.description,
-      this.descriptionText,
-      this.descriptionHtml,
-      this.network,
-      this.identifier,
-      this.emoji,
-      this.iconProp,
-      this.moduleView,
-      this.cycleView,
-      this.issueViewsView,
-      this.pageView,
-      this.inboxView,
-      this.coverImage,
-      this.createdBy,
-      this.updatedBy,
-      this.estimate});
+  ProjectDetailModel({
+    this.id,
+    this.workspace,
+    this.defaultAssignee,
+    this.projectLead,
+    this.isFavorite,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    this.description,
+    this.descriptionText,
+    this.descriptionHtml,
+    this.network,
+    this.identifier,
+    this.emoji,
+    this.iconProp,
+    this.moduleView,
+    this.cycleView,
+    this.issueViewsView,
+    this.pageView,
+    this.inboxView,
+    this.coverImage,
+    this.createdBy,
+    this.updatedBy,
+    this.closeIn,
+    this.defaultState,
+    this.estimate,
+    this.archiveIn,
+  });
 
   ProjectDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -77,6 +84,9 @@ class ProjectDetailModel {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
     estimate = json['estimate'];
+    closeIn = json['close_in'];
+    defaultState = json['default_state'];
+    archiveIn = json['archive_in'];
   }
 
   Map<String, dynamic> toJson() {
@@ -107,25 +117,36 @@ class ProjectDetailModel {
     data['created_by'] = createdBy;
     data['updated_by'] = updatedBy;
     data['estimate'] = estimate;
+    data['close_in'] = closeIn;
+    data['default_state'] = defaultState;
+    data['archive_in'] = archiveIn;
     return data;
   }
 
   factory ProjectDetailModel.fromMap(Map<String, dynamic> map) {
     return ProjectDetailModel(
-        id: map['id'],
-        cycleView: map['cycle_view'],
-        moduleView: map['module_view'],
-        emoji: map['emoji'],
-        name: map['name'],
-        description: map['description'],
-        coverImage: map['cover_image'],
-        identifier: map['identifier'],
-        defaultAssignee: map['default_assignee'] is Map<String, dynamic>
-            ? map['default_assignee']
-            : null,
-        projectLead:map['project_lead'] is Map<String, dynamic>
-            ? map['project_lead']
-            : null);
+      id: map['id'],
+      cycleView: map['cycle_view'],
+      moduleView: map['module_view'],
+      issueViewsView: map['issue_views_view'],
+      emoji: map['emoji'],
+      name: map['name'],
+      network: map['network'],
+      description: map['description'],
+      coverImage: map['cover_image'],
+      identifier: map['identifier'],
+      defaultAssignee: map['default_assignee'] is Map<String, dynamic>
+          ? map['default_assignee']
+          : null,
+      projectLead: map['project_lead'] is Map<String, dynamic>
+          ? map['project_lead']
+          : null,
+      iconProp:
+          map['icon_prop'] is Map<String, dynamic> ? map['icon_prop'] : null,
+      closeIn: map['close_in'] ?? 0,
+      defaultState: map['default_state'],
+      archiveIn: map['archive_in'] ?? 0,
+    );
   }
 }
 

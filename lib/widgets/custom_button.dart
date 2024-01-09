@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 
+import '../utils/enums.dart';
 import 'custom_text.dart';
 
-class Button extends StatefulWidget {
-  final String text;
-  final bool filledButton;
-  final bool disable;
-  final bool removeStroke;
-  final VoidCallback? ontap;
-  final Color? textColor;
-  final double? width;
-  final Color? color;
-  final Widget? widget;
+class Button extends ConsumerStatefulWidget {
   const Button(
       {required this.text,
       this.filledButton = true,
@@ -23,55 +17,66 @@ class Button extends StatefulWidget {
       this.textColor,
       this.color,
       this.widget,
+      this.borderColor,
       super.key});
+  final String text;
+  final bool filledButton;
+  final bool disable;
+  final bool removeStroke;
+  final VoidCallback? ontap;
+  final Color? textColor;
+  final double? width;
+  final Color? color;
+  final Widget? widget;
+  final Color? borderColor;
 
   @override
-  State<Button> createState() => _ButtonState();
+  ConsumerState<Button> createState() => _ButtonState();
 }
 
-class _ButtonState extends State<Button> {
+class _ButtonState extends ConsumerState<Button> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: widget.ontap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          height: 48,
           width: widget.width ?? MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             border: widget.filledButton
                 ? const Border()
                 : widget.removeStroke
                     ? const Border()
-                    : Border.all(color: Colors.grey.shade500),
-            borderRadius: BorderRadius.circular(8),
+                    : Border.all(
+                        color: widget.borderColor ??
+                            themeProvider.themeManager.borderSubtle01Color),
+            borderRadius: BorderRadius.circular(buttonBorderRadiusLarge),
             color: widget.color ??
                 ((widget.filledButton && !widget.disable)
-                    ? primaryColor
+                    ? themeProvider.themeManager.primaryColour
                     : widget.disable
                         ? lightGreeyColor
                         : Colors.transparent),
           ),
           child: Center(
-            // child: Text(
-            //   widget.text,
-            //   style: TextStylingWidget.buttonText.copyWith(
-            //       color: (widget.filledButton && !widget.disable)
-            //           ? Colors.white
-            //           : widget.disable
-            //               ? greyColor
-            //               : widget.textColor ?? Colors.black),
-            // ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 widget.widget ?? Container(),
                 CustomText(
                   widget.text,
-                  type: FontStyle.buttonText,
-                  color: widget.textColor ?? Colors.white,
-                  fontWeight: FontWeight.w600,
+                  type: FontStyle.Medium,
+                  color: widget.textColor ??
+                      ((widget.filledButton && !widget.disable)
+                          ? Colors.white
+                          : themeProvider.themeManager.textonColor),
+                  overrride: true,
+                  fontWeight: FontWeightt.Semibold,
                 ),
               ],
             ),

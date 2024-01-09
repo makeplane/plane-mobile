@@ -1,25 +1,24 @@
 import 'dart:developer';
-
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:plane_startup/models/user_profile_model.dart';
-import 'package:plane_startup/utils/enums.dart';
+import 'package:plane/models/user_profile_model.dart';
+import 'package:plane/models/user_setting_model.dart';
+import 'package:plane/repository/profile_provider_service.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/config/apis.dart';
+import 'package:plane/services/dio_service.dart';
 
-import 'package:plane_startup/config/apis.dart';
-import 'package:plane_startup/services/dio_service.dart';
-
+import '../services/shared_preference_service.dart';
+import '../utils/timezone_manager.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  // ProfileProvider(ChangeNotifierProviderRef<ProfileProvider> re) {
-  //   if (re.exists(ProviderList.profileProvider)) {
-  //     return;
-  //   }
-  //   ref = re;
-  //   print("Called");
-  // }
-  // static Ref? ref;
+  ProfileProvider({required this.profileService});
+  ProfileService profileService;
   String? dropDownValue;
+  String selectedTimeZone = 'UTC';
   String? slug;
+
   List<String> dropDownItems = [
     'Founder or learship team',
     'Product manager',
@@ -36,10 +35,15 @@ class ProfileProvider extends ChangeNotifier {
   StateEnum getProfileState = StateEnum.empty;
   StateEnum updateProfileState = StateEnum.empty;
   UserProfile userProfile = UserProfile.initialize();
+  UserSettingModel userSetting = UserSettingModel.initialize();
 
   void changeIndex(int index) {
     roleIndex = index;
     dropDownValue = dropDownItems[index];
+    notifyListeners();
+  }
+
+  void setState() {
     notifyListeners();
   }
 
@@ -52,65 +56,67 @@ class ProfileProvider extends ChangeNotifier {
     firstName.clear();
     lastName.clear();
     dropDownValue = null;
-    slug = null;
     userProfile = UserProfile.initialize();
   }
 
-  Future getProfile() async {
-    getProfileState = StateEnum.loading;
-
-    try {
-      var response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: '${APIs.baseApi}${APIs.profile}',
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      userProfile = UserProfile.fromMap(response.data);
-
-      firstName.text = userProfile.firstName!;
-      lastName.text = userProfile.lastName!;
-      // dropDownValue = userProfile.role!;
-      //  await Future.delayed(Duration(seconds: 1));
-      getProfileState = StateEnum.success;
-      slug = response.data["slug"];
-      //log('----- SUCCESS ------ $slug');
-      // log("DONE" + response.data.toString());
-      notifyListeners();
-
-      // return response.data;
-    } catch (e) {
-      // ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Something went wrong, please try again'),
-      //   ),
-      // );
-      log(e.toString());
-      getProfileState = StateEnum.error;
-      notifyListeners();
-    }
+  void setName() {
+    userProfile = UserProfile.initialize(firstName: 'TESTER');
+    notifyListeners();
   }
 
-  Future updateProfile({required Map data}) async {
+  Future<Either<UserProfile, DioException>> getProfile() async {
+    getProfileState = StateEnum.loading;
+    final response = await profileService.getProfile();
+
+    return response.fold((userProfile) {
+      this.userProfile = userProfile;
+      SharedPrefrenceServices.setTheme(userProfile.theme!);
+      SharedPrefrenceServices.setUserID(userProfile.id!);
+      firstName.text = userProfile.firstName!;
+      lastName.text = userProfile.lastName!;
+      getProfileState = StateEnum.success;
+      selectedTimeZone = userProfile.userTimezone.toString();
+      TimeZoneManager.findLabelFromTimeZonesList(selectedTimeZone) ??
+          'UTC, GMT';
+      notifyListeners();
+      return Left(userProfile);
+    }, (error) {
+      log(error.toString());
+      getProfileState = StateEnum.error;
+      notifyListeners();
+      return Right(error);
+    });
+  }
+
+  Future<Either<UserSettingModel, DioException>> getProfileSetting() async {
+    final response = await profileService.getProfileSetting();
+    return response.fold((userSetting) {
+      this.userSetting = userSetting;
+      return Left(userSetting);
+    }, (error) {
+      log(error.toString());
+      return Right(error);
+    });
+  }
+
+  Future<Either<UserProfile, DioException>> updateProfile(
+      {required Map data}) async {
     updateProfileState = StateEnum.loading;
     notifyListeners();
-    try {
-      var response = await DioConfig().dioServe(
-          hasAuth: true,
-          url: APIs.baseApi + APIs.profile,
-          hasBody: true,
-          httpMethod: HttpMethod.patch,
-          data: data);
-      log(response.data.toString());
-      userProfile = UserProfile.fromMap(response.data);
+    final response = await profileService.updateProfile(data: data);
+    if (response.isLeft()) {
+      userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
+      SharedPrefrenceServices.setTheme(userProfile.theme!);
       updateProfileState = StateEnum.success;
       notifyListeners();
-    } on DioException catch (e) {
-      log(e.error.toString());
+    } else {
+      log(response.fold((l) => l.toString(), (r) => r.toString()));
       updateProfileState = StateEnum.error;
       notifyListeners();
     }
+    return response;
   }
+
   Future updateIsOnBoarded({required bool val}) async {
     try {
       await DioConfig().dioServe(
@@ -118,11 +124,9 @@ class ProfileProvider extends ChangeNotifier {
           url: APIs.isOnboarded,
           hasBody: true,
           httpMethod: HttpMethod.patch,
-          data: {
-            "is_onboarded": val
-      
-          });
+          data: {"is_onboarded": val});
       userProfile.isOnboarded = val;
+      return val;
     } on DioException catch (e) {
       log(e.error.toString());
     }
@@ -132,7 +136,7 @@ class ProfileProvider extends ChangeNotifier {
     updateProfileState = StateEnum.loading;
     notifyListeners();
     try {
-      var response = await DioConfig().dioServe(
+      final response = await DioConfig().dioServe(
         hasAuth: true,
         url: "${APIs.fileUpload}${userProfile.avatar!.split('/').last}/",
         hasBody: false,

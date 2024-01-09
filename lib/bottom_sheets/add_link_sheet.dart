@@ -1,34 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/modules_provider.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+
+import '../mixins/widget_state_mixin.dart';
 
 class AddLinkSheet extends ConsumerStatefulWidget {
-  final String issueId;
-  final int index;
-  const AddLinkSheet({required this.issueId, required this.index, super.key});
-
+  const AddLinkSheet({this.id, super.key});
+  final String? id;
   @override
   ConsumerState<AddLinkSheet> createState() => _AddLinkSheetState();
 }
 
-class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
+class _AddLinkSheetState extends ConsumerState<AddLinkSheet>
+    with WidgetStateMixin {
   TextEditingController title = TextEditingController();
   TextEditingController url = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    var themeProvider = ref.read(ProviderList.themeProvider);
-    var issueProvider = ref.watch(ProviderList.issueProvider);
+  LoadingType getLoading(WidgetRef ref) {
+    return setWidgetState(
+        [ref.read(ProviderList.modulesProvider).moduleLinkState],
+        loadingType: LoadingType.wrap);
+  }
+
+  @override
+  void initState() {
+    if (widget.id != null) {
+      final moduleProvider = ref.read(ProviderList.modulesProvider);
+      final link = moduleProvider.moduleDetailsData['link_module']
+          ?.firstWhere((element) => element['id'] == widget.id);
+      title.text = link['title'] ?? '';
+      url.text = link['url'] ?? '';
+    }
+    super.initState();
+  }
+
+  @override
+  Widget render(BuildContext context) {
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final ModuleProvider moduleProvider =
+        ref.watch(ProviderList.modulesProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
-        color: themeProvider.isDarkThemeEnabled
-            ? darkBackgroundColor
-            : lightBackgroundColor,
+        color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),
@@ -41,29 +60,28 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CustomText(
-                    'Add Link',
-                    type: FontStyle.heading,
-                    // color: themeProvider.secondaryTextColor,
-                  ),
+                  CustomText('Add Link',
+                      type: FontStyle.H4,
+                      fontWeight: FontWeightt.Semibold,
+                      color: themeProvider.themeManager.primaryTextColor),
                   IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       icon: Icon(
                         Icons.close,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightBackgroundColor
-                            : darkBackgroundColor,
+                        color: themeProvider.themeManager.placeholderTextColor,
                       ))
                 ],
               ),
               const SizedBox(
                 height: 10,
               ),
-              const CustomText(
+              CustomText(
                 'Title',
-                type: FontStyle.description,
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.primaryTextColor,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -71,14 +89,16 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               TextFormField(
                 controller: title,
-                decoration: kTextFieldDecoration,
+                decoration: themeProvider.themeManager.textFieldDecoration,
               ),
               const SizedBox(
                 height: 20,
               ),
-              const CustomText(
+              CustomText(
                 'URL',
-                type: FontStyle.description,
+                type: FontStyle.Medium,
+                fontWeight: FontWeightt.Regular,
+                color: themeProvider.themeManager.primaryTextColor,
                 // color: themeProvider.secondaryTextColor,
               ),
               const SizedBox(
@@ -86,7 +106,7 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
               ),
               TextFormField(
                 controller: url,
-                decoration: kTextFieldDecoration,
+                decoration: themeProvider.themeManager.textFieldDecoration,
               ),
             ],
           ),
@@ -94,28 +114,16 @@ class _AddLinkSheetState extends ConsumerState<AddLinkSheet> {
             height: 30,
           ),
           Button(
-            text: 'Add Link',
+            text: widget.id != null ? 'Update Link' : 'Add Link',
             ontap: () {
-              if (title.text.isNotEmpty && url.text.isNotEmpty) {
-                issueProvider.addLink(
-                    projectId: ref
-                        .watch(ProviderList.projectProvider)
-                        .currentProject['id'],
-                    slug: ref
-                        .watch(ProviderList.workspaceProvider)
-                        .selectedWorkspace!
-                        .workspaceSlug,
-                    issueId: widget.issueId,
-                    index: widget.index,
-                    data: {
-                      'metadata': {},
-                      'title': title.text.trim(),
-                      'url': url.text.trim(),
-                    },
-                    method: CRUD.create,
-                    linkId: '');
-                Navigator.of(context).pop();
-              }
+              moduleProvider.handleLinks(
+                  data: {
+                    'title': title.text,
+                    'url': url.text,
+                  },
+                  linkID: widget.id,
+                  method: widget.id != null ? HttpMethod.put : HttpMethod.post,
+                  context: context);
             },
           )
         ],

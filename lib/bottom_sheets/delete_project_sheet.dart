@@ -2,14 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/custom_toast.dart';
-import 'package:plane_startup/utils/enums.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/global_functions.dart';
+import 'package:plane/widgets/custom_text.dart';
 
 class DeleteProjectSheet extends ConsumerStatefulWidget {
-  const DeleteProjectSheet({super.key});
+  const DeleteProjectSheet({required this.data, super.key});
+  final Map<String, dynamic> data;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -22,8 +24,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    var themeProvider = ref.watch(ProviderList.themeProvider);
-    var projectProviderRead = ref.watch(ProviderList.projectProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProviderRead = ref.watch(ProviderList.projectProvider);
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -35,14 +37,15 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
             children: [
               const CustomText(
                 'Delete Project',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
               ),
               Container(
                 height: 20,
               ),
               const CustomText(
                 'Are you sure you want to delete this project?',
-                type: FontStyle.heading2,
+                type: FontStyle.H5,
                 fontSize: 20,
               ),
               Container(
@@ -53,9 +56,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                 text: TextSpan(
                   text: 'Enter the project name ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -63,9 +64,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: projectProviderRead.currentProject['name'],
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -73,9 +72,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: ' to continue.',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -86,7 +83,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
                   // hintText: 'Enter project name',
                   labelText: 'Project Name',
                   //avaid the label text from floating
@@ -106,16 +104,14 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 20),
               // CustomText(
               //   'To confirm, type "delete my project".',
-              //   type: FontStyle.subheading,
+              //   type: FontStyle.Small,
               // ),
               //use textspan to bold "delete my project"
               RichText(
                 text: TextSpan(
                   text: 'To confirm, type ',
                   style: TextStyle(
-                    color: themeProvider.isDarkThemeEnabled
-                        ? lightGreeyColor
-                        : Colors.grey[700],
+                    color: themeProvider.themeManager.tertiaryTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -123,9 +119,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: '"Delete my project"',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        color: themeProvider.themeManager.primaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -133,9 +127,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                     TextSpan(
                       text: '.',
                       style: TextStyle(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? lightGreeyColor
-                            : Colors.grey[700],
+                        color: themeProvider.themeManager.tertiaryTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -146,11 +138,12 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
               Container(height: 8),
               TextFormField(
                 // controller: projectName,
-                decoration: kTextFieldDecoration.copyWith(
-                    // hintText: 'Enter detele my project',
-                    labelText: 'Enter "Delete my project"',
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    filled: true),
+                decoration:
+                    themeProvider.themeManager.textFieldDecoration.copyWith(
+                        // hintText: 'Enter detele my project',
+                        labelText: 'Enter "Delete my project"',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        filled: true),
                 validator: (value) {
                   if (value!.trim().toLowerCase() != 'delete my project') {
                     return 'Please enter "Delete my project"';
@@ -170,22 +163,18 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: themeProvider.isDarkThemeEnabled
-                            ? darkSecondaryBGC
-                            : lightSecondaryBackgroundColor,
+                        color: themeProvider
+                            .themeManager.secondaryBackgroundDefaultColor,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: themeProvider.isDarkThemeEnabled
-                              ? darkStrokeColor
-                              : lightStrokeColor,
+                          color: themeProvider.themeManager.borderSubtle01Color,
                         ),
                       ),
                       child: CustomText(
                         'Cancel',
-                        type: FontStyle.boldTitle,
-                        color: themeProvider.isDarkThemeEnabled
-                            ? Colors.white
-                            : Colors.black,
+                        type: FontStyle.Medium,
+                        fontWeight: FontWeightt.Semibold,
+                        color: themeProvider.themeManager.primaryTextColor,
                       ),
                     ),
                   ),
@@ -201,15 +190,28 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                         if (projectProviderRead.role != Role.admin &&
                             projectProviderRead.role != Role.member) {
                           Navigator.of(context).pop();
-                          CustomToast().showToast(context, accessRestrictedMSG);
+                          CustomToast.showToast(context,
+                              message: accessRestrictedMSG,
+                              toastType: ToastType.failure);
                           return;
                         }
-                        await projectProviderRead.deleteProject(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
-                                .workspaceSlug,
-                            projId: projectProviderRead.currentProject['id']);
+                        await projectProviderRead
+                            .deleteProject(
+                                slug: ref
+                                    .read(ProviderList.workspaceProvider)
+                                    .selectedWorkspace
+                                    .workspaceSlug,
+                                projId:
+                                    projectProviderRead.currentProject['id'])
+                            .then((value) {
+                          if (projectProviderRead.deleteProjectState ==
+                              StateEnum.success) {
+                            postHogService(
+                                eventName: 'DELETE_PROJECT',
+                                properties: widget.data,
+                                ref: ref);
+                          }
+                        });
                         Navigator.of(context)
                           ..pop()
                           ..pop()
@@ -217,19 +219,19 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                         projectProviderRead.getProjects(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                         );
                         projectProviderRead.getProjects(
                           slug: ref
                               .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace!
+                              .selectedWorkspace
                               .workspaceSlug,
                         );
                         projectProviderRead.favouriteProjects(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
-                                .selectedWorkspace!
+                                .selectedWorkspace
                                 .workspaceSlug,
                             method: HttpMethod.get,
                             projectID: "",
@@ -245,14 +247,16 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                       ),
                       child: projectProviderRead.projectDetailState ==
                               StateEnum.loading
-                          ? const Center(
+                          ? Center(
                               child: CircularProgressIndicator(
-                                color: Colors.white,
+                                color:
+                                    themeProvider.themeManager.primaryTextColor,
                               ),
                             )
                           : const CustomText(
                               'Delete Project',
-                              type: FontStyle.boldTitle,
+                              type: FontStyle.Medium,
+                              fontWeight: FontWeightt.Semibold,
                               color: Colors.white,
                             ),
                     ),

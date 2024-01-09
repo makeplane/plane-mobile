@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane_startup/provider/provider_list.dart';
-import 'package:plane_startup/utils/constants.dart';
-import 'package:plane_startup/widgets/custom_text.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_text.dart';
+
+import '../utils/enums.dart';
 
 class RoleSheet extends ConsumerStatefulWidget {
   const RoleSheet({super.key});
@@ -23,39 +24,33 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var profileProvider = ref.watch(ProviderList.profileProvider);
-    var themeProvider = ref.watch(ProviderList.themeProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
-      child: Wrap(
+      child: ListView(
         children: [
           Row(
             children: [
-              // const Text(
-              //   'Type',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.w600,
-              //   ),
-              // ),
-              const CustomText(
+              CustomText(
                 'Role',
-                type: FontStyle.heading,
+                type: FontStyle.H6,
+                fontWeight: FontWeightt.Semibold,
+                color: themeProvider.themeManager.primaryTextColor,
               ),
               const Spacer(),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 27,
-                  color: Color.fromRGBO(143, 143, 147, 1),
+                  color: themeProvider.themeManager.placeholderTextColor,
                 ),
               ),
             ],
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -75,13 +70,14 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 0
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[0],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(0);
+                        profileProvider.changeIndex(0);
+                        Navigator.pop(context);
                       }),
 
                   // Text(
@@ -94,7 +90,8 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[0],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -104,9 +101,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
           SizedBox(
@@ -128,24 +123,19 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 1
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[1],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(1);
+                        profileProvider.changeIndex(1);
+                        Navigator.pop(context);
                       }),
-                  // Text(
-                  //   'List View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[1],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
@@ -155,9 +145,7 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
           SizedBox(
@@ -179,41 +167,32 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 2
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300,
+                              themeProvider.themeManager.borderSubtle01Color,
                             ),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[2],
                       onChanged: (val) {
-                        //profileProvider.changeIndex(2);
+                        profileProvider.changeIndex(2);
+                        Navigator.pop(context);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[2],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -234,40 +213,32 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 3
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[3],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(3);
+                        profileProvider.changeIndex(3);
+
+                        Navigator.pop(context);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[3],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -287,40 +258,31 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 4
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[4],
                       onChanged: (val) {
-                        //profileProvider.changeIndex(4);
+                        profileProvider.changeIndex(4);
+                        Navigator.pop(context);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[4],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
             ),
           ),
-
           SizedBox(
             height: 1,
             width: double.infinity,
             child: Container(
-              color: themeProvider.isDarkThemeEnabled
-                  ? darkThemeBorder
-                  : Colors.grey[300],
+              color: themeProvider.themeManager.borderDisabledColor,
             ),
           ),
-
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -340,38 +302,28 @@ class _RoleSheetState extends ConsumerState<RoleSheet> {
                       fillColor: profileProvider.roleIndex == 5
                           ? null
                           : MaterialStateProperty.all<Color>(
-                              Colors.grey.shade300),
+                              themeProvider.themeManager.borderSubtle01Color),
                       groupValue: profileProvider.dropDownValue,
-                      activeColor: primaryColor,
+                      activeColor: themeProvider.themeManager.primaryColour,
                       value: dropDownItems[5],
                       onChanged: (val) {
-                        // profileProvider.changeIndex(5);
+                        profileProvider.changeIndex(5);
+                        Navigator.pop(context);
                       }),
-                  // Text(
-                  //   'Calendar View',
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
                   const SizedBox(width: 10),
                   CustomText(
                     dropDownItems[5],
-                    type: FontStyle.subheading,
+                    type: FontStyle.Small,
+                    color: themeProvider.themeManager.tertiaryTextColor,
                   ),
                 ],
               ),
             ),
           ),
-
           const SizedBox(
             height: 10,
             width: double.infinity,
           ),
-
-          //  Expanded(child: Container()),
-
-          //long blue button to apply filter
         ],
       ),
     );

@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:plane_startup/utils/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/widgets/member_logo_widget.dart';
 
 import 'custom_text.dart';
 
-class ProfileCircleAvatarsWidget extends StatefulWidget {
-  final List details;
+class ProfileCircleAvatarsWidget extends ConsumerStatefulWidget {
   const ProfileCircleAvatarsWidget({required this.details, super.key});
+  final List details;
 
   @override
-  State<ProfileCircleAvatarsWidget> createState() =>
+  ConsumerState<ProfileCircleAvatarsWidget> createState() =>
       _ProfileCircleAvatarsWidgetState();
 }
 
 class _ProfileCircleAvatarsWidgetState
-    extends State<ProfileCircleAvatarsWidget> {
+    extends ConsumerState<ProfileCircleAvatarsWidget> {
   @override
   Widget build(BuildContext context) {
+    var themeProvider = ref.watch(ProviderList.themeProvider);
     return SizedBox(
-      width: widget.details.length == 1 ? 20 : widget.details.length == 2 ? 35 : 50,
-      height: 20,
+      width: widget.details.length == 1
+          ? 22
+          : widget.details.length == 2
+              ? 39
+              : 55,
+      height: 22,
       child: Stack(
         children: [
           Positioned(
@@ -26,20 +35,43 @@ class _ProfileCircleAvatarsWidgetState
             child: widget.details[0]['avatar'] != "" &&
                     widget.details[0]['avatar'] != null
                 ? CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.orange,
-                    backgroundImage: NetworkImage(widget.details[0]['avatar']),
+                    radius: 11,
+                    backgroundColor:
+                        themeProvider.themeManager.placeholderTextColor,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Colors.orange,
+                      child: MemberLogoWidget(
+                        imageUrl: widget.details[0]['avatar'],
+                        colorForErrorWidget: themeProvider
+                            .themeManager.tertiaryBackgroundDefaultColor,
+                        memberNameFirstLetterForErrorWidget: widget.details[0]
+                                ['display_name'][0]
+                            .toString()
+                            .toUpperCase(),
+                        size: 20,
+                        padding: EdgeInsets.zero,
+                      ),
+                    ),
                   )
                 : CircleAvatar(
-                    radius: 10,
-                    backgroundColor: darkSecondaryBGC,
-                    child: Center(
-                        child: CustomText(
-                      widget.details[0]['first_name'][0]
-                              .toString()
-                              .toUpperCase(),
-                      color: Colors.white,
-                    )),
+                    radius: 11,
+                    backgroundColor:
+                        themeProvider.themeManager.placeholderTextColor,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: darkSecondaryBGC,
+                      child: Center(
+                          child: CustomText(
+                        widget.details[0]['display_name'] != null
+                            ? widget.details[0]['display_name'][0]
+                                .toString()
+                                .toUpperCase()
+                            : "",
+                        type: FontStyle.Small,
+                        color: Colors.white,
+                      )),
+                    ),
                   ),
           ),
           widget.details.length >= 2
@@ -48,20 +80,44 @@ class _ProfileCircleAvatarsWidgetState
                   child: widget.details[1]['avatar'] != "" &&
                           widget.details[1]['avatar'] != null
                       ? CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.blueAccent,
-                          backgroundImage:
-                              NetworkImage(widget.details[1]['avatar']),
+                          radius: 11,
+                          backgroundColor:
+                              themeProvider.themeManager.placeholderTextColor,
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.blueAccent,
+                            child: MemberLogoWidget(
+                              padding: EdgeInsets.zero,
+                              imageUrl: widget.details[1]['avatar'],
+                              colorForErrorWidget: themeProvider
+                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              memberNameFirstLetterForErrorWidget: widget
+                                  .details[1]['display_name'][0]
+                                  .toString()
+                                  .toUpperCase(),
+                              size: 20,
+                            ),
+                          ),
                         )
                       : CircleAvatar(
-                          radius: 10,
-                          backgroundColor: darkSecondaryBGC,
-                          child: Center(
+                          radius: 11,
+                          backgroundColor:
+                              themeProvider.themeManager.placeholderTextColor,
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor,
+                            child: Center(
                               child: CustomText(
-                                  widget.details[1]['first_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
-                                  color: Colors.white)),
+                                widget.details[1]['display_name'][0]
+                                    .toString()
+                                    .toUpperCase(),
+                                type: FontStyle.Small,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                              ),
+                            ),
+                          ),
                         ),
                 )
               : Container(),
@@ -71,20 +127,44 @@ class _ProfileCircleAvatarsWidgetState
                   child: widget.details[2]['avatar'] != "" &&
                           widget.details[2]['avatar'] != null
                       ? CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.red,
-                          backgroundImage:
-                              NetworkImage(widget.details[2]['avatar']),
+                          radius: 11,
+                          backgroundColor: themeProvider
+                              .themeManager.tertiaryBackgroundDefaultColor,
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.red,
+                            child: MemberLogoWidget(
+                              padding: EdgeInsets.zero,
+                              imageUrl: widget.details[2]['avatar'],
+                              colorForErrorWidget: themeProvider
+                                  .themeManager.tertiaryBackgroundDefaultColor,
+                              memberNameFirstLetterForErrorWidget: widget
+                                  .details[2]['display_name'][0]
+                                  .toString()
+                                  .toUpperCase(),
+                              size: 20,
+                            ),
+                          ),
                         )
                       : CircleAvatar(
-                          radius: 10,
-                          backgroundColor: darkSecondaryBGC,
-                          child: Center(
+                          radius: 11,
+                          backgroundColor:
+                              themeProvider.themeManager.placeholderTextColor,
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: themeProvider
+                                .themeManager.tertiaryBackgroundDefaultColor,
+                            child: Center(
                               child: CustomText(
-                                  widget.details[2]['first_name'][0]
-                                          .toString()
-                                          .toUpperCase(),
-                                  color: Colors.white)),
+                                widget.details[2]['display_name'][0]
+                                    .toString()
+                                    .toUpperCase(),
+                                type: FontStyle.Small,
+                                color: themeProvider
+                                    .themeManager.placeholderTextColor,
+                              ),
+                            ),
+                          ),
                         ),
                 )
               : Container(),

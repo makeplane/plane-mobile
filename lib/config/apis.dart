@@ -29,7 +29,6 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/estimates/';
   static String favouriteModules =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-modules/';
-
   static String createProjects = '$baseApi/api/workspaces/\$SLUG/projects/';
   static String favouriteProjects =
       '$baseApi/api/workspaces/\$SLUG/user-favorite-projects/';
@@ -37,18 +36,28 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/states/';
   static String orderByGroupByTypeIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
+  static String orderByGroupByTypeArchivedIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/archived-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String orderByGroupByIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY';
   static String projectMembers =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/';
   static String userIssueView =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
+  static String myIssuesView =
+      '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
+  static String updateMyIssuesView =
+      '$baseApi/api/workspaces/\$SLUG/workspace-views/';
   static String projectIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/';
   static String moduleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/';
+  static String moduleLinks =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-links/';
   static String cycleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/';
+  static String transferIssues =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/transfer-issues/';
   static String issueAttachments =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/issue-attachments/';
   static String issuelinks =
@@ -76,14 +85,67 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
   static String orderByGroupByModuleIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
-  static String myIssues = '$baseApi/api/workspaces/\$SLUG/my-issues/';
+  static String myIssues =
+      '$baseApi/api/workspaces/\$SLUG/my-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String projectIdentifier =
       "$baseApi/api/workspaces/\$SLUG/project-identifiers/?name=\$IDENTIFIER";
-  static String activity = '$baseApi/api/users/activities/';
+  static String activity = '$baseApi/api/users/workspaces/\$SLUG/activities/';
   static String isOnboarded = '$baseApi/api/users/me/onboard/';
-  static String dashboard = "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
-  static String integrations= "$baseApi/api/integrations/";
-  static String wokspaceIntegrations= "$baseApi/api/workspaces/\$SLUG/workspace-integrations/";
-  static String sendForgotPassCode= "$baseApi/api/forgot-password/";
-  static String resetPassword= "$baseApi/api/reset-password/\$UID/\$TOKEN/";
+  static String dashboard =
+      "$baseApi/api/users/me/workspaces/\$SLUG/dashboard/";
+  static String integrations = "$baseApi/api/integrations/";
+  static String wokspaceIntegrations =
+      "$baseApi/api/workspaces/\$SLUG/workspace-integrations/";
+  static String sendForgotPassCode = "$baseApi/api/forgot-password/";
+  static String resetPassword = "$baseApi/api/reset-password/\$UID/\$TOKEN/";
+  static String views =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/views/";
+  static String viewsFavourite =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-views/";
+  static String globalSearch = "$baseApi/api/workspaces/\$SLUG/search/";
+  static String listAllPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=all";
+  static String listAllFavoritePages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=favorite";
+  static String listAllRecentPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/?page_view=recent";
+  static String getPages =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/";
+  static String pageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/";
+  static String createPage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/";
+  static String favouritePage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-pages/";
+  static String updatePageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/\$BLOCKID/";
+  static String deletePageBlock =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/page-blocks/\$BLOCKID/";
+  static String deletePage =
+      "$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/pages/\$PAGEID/";
+  static String notifications =
+      "$baseApi/api/workspaces/\$SLUG/users/notifications/";
+  static String retrieveWorkspaceIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/workspace-integrations/';
+  static String retrieveGithubIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/github-repository-sync/';
+  static String retrieveSlackIntegrations =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/workspace-integrations/\$INTEGRATIONID/project-slack-sync/';
+  static String memberProfile =
+      '$baseApi/api/workspaces/\$SLUG/user-profile/\$USERID/';
+  static String leaveWorkspace =
+      '$baseApi/api/workspaces/\$SLUG/members/leave/';
+  static String leaveProject =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/leave/';
+  static String releaseNotes = '$baseApi/api/release-notes/';
+  static String userStats =
+      '$baseApi/api/workspaces/\$SLUG/user-stats/\$USERID/';
+  static String userActivity =
+      '$baseApi/api/workspaces/\$SLUG/user-activity/\$USERID/?per_page=15';
+
+  static String userIssues =
+      '$baseApi/api/workspaces/\$SLUG/user-issues/\$USERID/';
+  static String pendingInvites = '$baseApi/api/workspaces/\$SLUG/invitations/';
+  static String retrieveUserRoleOnWorkspace =
+      '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
 }

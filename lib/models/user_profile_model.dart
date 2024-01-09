@@ -1,9 +1,105 @@
 import 'dart:convert';
 
 class UserProfile {
+  UserProfile({
+    required this.id,
+    required this.lastLogin,
+    required this.username,
+    required this.displayName,
+    required this.mobileNumber,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.avatar,
+    required this.dateJoined,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.lastLocation,
+    required this.createdLocation,
+    required this.isSuperuser,
+    required this.isManaged,
+    required this.isPasswordExpired,
+    required this.isActive,
+    required this.isStaff,
+    required this.isEmailVerified,
+    required this.isPasswordAutoset,
+    required this.isOnboarded,
+    required this.token,
+    required this.billingAddressCountry,
+    required this.billingAddress,
+    required this.hasBillingAddress,
+    required this.userTimezone,
+    required this.lastActive,
+    required this.lastLoginTime,
+    required this.lastLogoutTime,
+    required this.lastLoginIp,
+    required this.lastLogoutIp,
+    required this.lastLoginMedium,
+    required this.lastLoginUagent,
+    required this.tokenUpdatedAt,
+    required this.lastWorkspaceId,
+    required this.myissuesprop,
+    required this.role,
+    required this.isBot,
+    required this.theme,
+    required this.groups,
+    required this.userPermissions,
+    required this.onboardingStep,
+    required this.workspace,
+  });
+  factory UserProfile.fromMap(Map<String, dynamic> map) {
+    return UserProfile(
+        id: map['id'],
+        lastLogin: map['last_login'],
+        username: map['username'],
+        mobileNumber: map['mobile_number'],
+        email: map['email'],
+        firstName: map['first_name'],
+        lastName: map['last_name'],
+        avatar: map['avatar'],
+        dateJoined: map['date_joined'],
+        createdAt: map['created_at'],
+        updatedAt: map['updated_at'],
+        lastLocation: map['last_location'],
+        createdLocation: map['created_location'],
+        isSuperuser: map['is_superuser'],
+        isManaged: map['is_managed'],
+        isPasswordExpired: map['is_password_expired'],
+        isActive: map['is_active'],
+        isStaff: map['is_staff'],
+        isEmailVerified: map['is_email_verified'],
+        isPasswordAutoset: map['is_password_autoset'],
+        isOnboarded: map['is_onboarded'],
+        token: map['access_token'],
+        billingAddressCountry: map['billing_address_country'],
+        billingAddress: map['billing_address'],
+        hasBillingAddress: map['has_billing_address'],
+        userTimezone: map['user_timezone'],
+        lastActive: map['last_active'],
+        lastLoginTime: map['last_login_time'],
+        lastLogoutTime: map['last_logout_time'],
+        lastLoginIp: map['last_login_ip'],
+        lastLogoutIp: map['last_logout_ip'],
+        lastLoginMedium: map['last_login_medium'],
+        lastLoginUagent: map['last_login_uagent'],
+        tokenUpdatedAt: map['token_updated_at'],
+        lastWorkspaceId: map['last_workspace_id'],
+        myissuesprop: map['my_issues_prop'],
+        role: map['role'],
+        isBot: map['is_bot'],
+        theme: map['theme'],
+        groups: map['groups'],
+        userPermissions: map['user_permissions'],
+        onboardingStep: map['onboarding_step'],
+        workspace: map['workspace'],
+        displayName: map['display_name']);
+  }
+  factory UserProfile.fromJson(String source) =>
+      UserProfile.fromMap(json.decode(source) as Map<String, dynamic>);
   final String? id;
   final String? lastLogin;
   final String? username;
+  final String? displayName;
   final String? mobileNumber;
   final String? email;
   final String? firstName;
@@ -44,60 +140,21 @@ class UserProfile {
   final List<dynamic>? userPermissions;
   final Map<String, dynamic>? onboardingStep;
   final Map<String, dynamic>? workspace;
-  UserProfile(
-      {required this.id,
-      required this.lastLogin,
-      required this.username,
-      required this.mobileNumber,
-      required this.email,
-      required this.firstName,
-      required this.lastName,
-      required this.avatar,
-      required this.dateJoined,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.lastLocation,
-      required this.createdLocation,
-      required this.isSuperuser,
-      required this.isManaged,
-      required this.isPasswordExpired,
-      required this.isActive,
-      required this.isStaff,
-      required this.isEmailVerified,
-      required this.isPasswordAutoset,
-      required this.isOnboarded,
-      required this.token,
-      required this.billingAddressCountry,
-      required this.billingAddress,
-      required this.hasBillingAddress,
-      required this.userTimezone,
-      required this.lastActive,
-      required this.lastLoginTime,
-      required this.lastLogoutTime,
-      required this.lastLoginIp,
-      required this.lastLogoutIp,
-      required this.lastLoginMedium,
-      required this.lastLoginUagent,
-      required this.tokenUpdatedAt,
-      required this.lastWorkspaceId,
-      required this.myissuesprop,
-      required this.role,
-      required this.isBot,
-      required this.theme,
-      required this.groups,
-      required this.userPermissions,
-      required this.onboardingStep,
-      required this.workspace,
-      });
-  static UserProfile initialize() {
+
+  static UserProfile initialize(
+      {String? firstName,
+      String? lastName,
+      String? id,
+      String? lastWorkspaceId}) {
     return UserProfile(
-        id: '',
+        id: id ?? '',
         lastLogin: '',
         username: '',
+        displayName: '',
         mobileNumber: '',
         email: '',
-        firstName: '',
-        lastName: '',
+        firstName: firstName ?? '',
+        lastName: lastName ?? '',
         avatar: '',
         dateJoined: '',
         createdAt: '',
@@ -125,7 +182,7 @@ class UserProfile {
         lastLoginMedium: '',
         lastLoginUagent: '',
         tokenUpdatedAt: '',
-        lastWorkspaceId: '',
+        lastWorkspaceId: lastWorkspaceId ?? '',
         myissuesprop: '',
         role: null,
         isBot: false,
@@ -140,6 +197,7 @@ class UserProfile {
     String? id,
     String? lastLogin,
     String? username,
+    String? displayName,
     String? mobileNumber,
     String? email,
     String? firstName,
@@ -185,6 +243,7 @@ class UserProfile {
         id: id ?? this.id,
         lastLogin: lastLogin ?? this.lastLogin,
         username: username ?? this.username,
+        displayName: displayName ?? this.displayName,
         mobileNumber: mobileNumber ?? this.mobileNumber,
         email: email ?? this.email,
         firstName: firstName ?? this.firstName,
@@ -225,8 +284,7 @@ class UserProfile {
         groups: groups ?? this.groups,
         userPermissions: userPermissions ?? this.userPermissions,
         onboardingStep: onboardingStep ?? this.onboardingStep,
-        workspace: workspace ?? this.workspace
-        );
+        workspace: workspace ?? this.workspace);
   }
 
   Map<String, dynamic> toMap() {
@@ -234,6 +292,7 @@ class UserProfile {
       'id': id,
       'last_login': lastLogin,
       'username': username,
+      'display_name': displayName,
       'mobile_number': mobileNumber,
       'email': email,
       'first_name': firstName,
@@ -277,61 +336,10 @@ class UserProfile {
     };
   }
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
-    return UserProfile(
-        id: map['id'],
-        lastLogin: map['last_login'],
-        username: map['username'],
-        mobileNumber: map['mobile_number'],
-        email: map['email'],
-        firstName: map['first_name'],
-        lastName: map['last_name'],
-        avatar: map['avatar'],
-        dateJoined: map['date_joined'],
-        createdAt: map['created_at'],
-        updatedAt: map['updated_at'],
-        lastLocation: map['last_location'],
-        createdLocation: map['created_location'],
-        isSuperuser: map['is_superuser'],
-        isManaged: map['is_managed'],
-        isPasswordExpired: map['is_password_expired'],
-        isActive: map['is_active'],
-        isStaff: map['is_staff'],
-        isEmailVerified: map['is_email_verified'],
-        isPasswordAutoset: map['is_password_autoset'],
-        isOnboarded: map['is_onboarded'],
-        token: map['access_token'],
-        billingAddressCountry: map['billing_address_country'],
-        billingAddress: map['billing_address'],
-        hasBillingAddress: map['has_billing_address'],
-        userTimezone: map['user_timezone'],
-        lastActive: map['last_active'],
-        lastLoginTime: map['last_login_time'],
-        lastLogoutTime: map['last_logout_time'],
-        lastLoginIp: map['last_login_ip'],
-        lastLogoutIp: map['last_logout_ip'],
-        lastLoginMedium: map['last_login_medium'],
-        lastLoginUagent: map['last_login_uagent'],
-        tokenUpdatedAt: map['token_updated_at'],
-        lastWorkspaceId: map['last_workspace_id'],
-        myissuesprop: map['my_issues_prop'],
-        role: map['role'],
-        isBot: map['is_bot'],
-        theme: map['theme'],
-        groups: map['groups'],
-        userPermissions: map['user_permissions'],
-        onboardingStep: map['onboarding_step'],
-        workspace: map['workspace']
-        );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory UserProfile.fromJson(String source) =>
-      UserProfile.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, last_login: $lastLogin, username: $username, mobile_number: $mobileNumber, email: $email, first_name: $firstName, last_name: $lastName, avatar: $avatar, date_joined: $dateJoined, created_at: $createdAt, updated_at: $updatedAt, last_location: $lastLocation, created_location: $createdLocation, is_superuser: $isSuperuser, is_managed: $isManaged, is_password_expired: $isPasswordExpired, is_active: $isActive, is_staff: $isStaff, is_email_verified: $isEmailVerified, is_password_autoset: $isPasswordAutoset, is_onboarded: $isOnboarded, token: $token, billing_address_country: $billingAddressCountry, billing_address: $billingAddress, has_billing_address: $hasBillingAddress, user_timezone: $userTimezone, last_active: $lastActive, last_login_time: $lastLoginTime, last_logout_time: $lastLogoutTime, last_login_ip: $lastLoginIp, last_logout_ip: $lastLogoutIp, last_login_medium: $lastLoginMedium, last_login_uagent: $lastLoginUagent, token_updated_at: $tokenUpdatedAt, last_workspace_id: $lastWorkspaceId, my_issues_prop: $myissuesprop, role: $role, is_bot: $isBot, theme: $theme, groups: $groups, user_permissions: $userPermissions, onboarding_step: $onboardingStep, workspaceL $workspace)';
+    return 'UserProfile(id: $id, last_login: $lastLogin, username: $username, displayName: $displayName, mobile_number: $mobileNumber, email: $email, first_name: $firstName, last_name: $lastName, avatar: $avatar, date_joined: $dateJoined, created_at: $createdAt, updated_at: $updatedAt, last_location: $lastLocation, created_location: $createdLocation, is_superuser: $isSuperuser, is_managed: $isManaged, is_password_expired: $isPasswordExpired, is_active: $isActive, is_staff: $isStaff, is_email_verified: $isEmailVerified, is_password_autoset: $isPasswordAutoset, is_onboarded: $isOnboarded, token: $token, billing_address_country: $billingAddressCountry, billing_address: $billingAddress, has_billing_address: $hasBillingAddress, user_timezone: $userTimezone, last_active: $lastActive, last_login_time: $lastLoginTime, last_logout_time: $lastLogoutTime, last_login_ip: $lastLoginIp, last_logout_ip: $lastLogoutIp, last_login_medium: $lastLoginMedium, last_login_uagent: $lastLoginUagent, token_updated_at: $tokenUpdatedAt, last_workspace_id: $lastWorkspaceId, my_issues_prop: $myissuesprop, role: $role, is_bot: $isBot, theme: $theme, groups: $groups, user_permissions: $userPermissions, onboarding_step: $onboardingStep, workspaceL $workspace)';
   }
 }

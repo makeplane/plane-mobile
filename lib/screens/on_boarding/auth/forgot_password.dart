@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane_startup/widgets/custom_button.dart';
-import 'package:plane_startup/widgets/loading_widget.dart';
+import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/widgets/custom_button.dart';
+import 'package:plane/widgets/loading_widget.dart';
 
 import '../../../provider/provider_list.dart';
-import '../../../utils/constants.dart';
 import '../../../utils/enums.dart';
 import '../../../widgets/custom_rich_text.dart';
 import '../../../widgets/custom_text.dart';
@@ -19,12 +19,13 @@ class ForgotPassword extends ConsumerStatefulWidget {
 }
 
 class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
-  var email = TextEditingController();
+  final email = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    var authProvider = ref.watch(ProviderList.authProvider);
+    final authProvider = ref.watch(ProviderList.authProvider);
+    final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
@@ -45,16 +46,18 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Row(
+                    Row(
                       children: [
-                        CustomText(
+                        const CustomText(
                           'Forgot Password',
-                          type: FontStyle.heading,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
                         ),
                         CustomText(
                           '',
-                          type: FontStyle.heading,
-                          color: primaryColor,
+                          type: FontStyle.H4,
+                          fontWeight: FontWeightt.Semibold,
+                          color: themeProvider.themeManager.primaryColour,
                         ),
                       ],
                     ),
@@ -66,14 +69,15 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                         TextSpan(text: 'Email'),
                         TextSpan(text: '*', style: TextStyle(color: Colors.red))
                       ],
-                      type: RichFontStyle.text,
+                      type: FontStyle.Small,
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     TextFormField(
                       controller: email,
-                      decoration: kTextFieldDecoration.copyWith(),
+                      decoration: themeProvider.themeManager.textFieldDecoration
+                          .copyWith(),
                       validator: (val) {
                         if (val!.isEmpty) {
                           return '*Enter your email';
@@ -109,10 +113,8 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                                   builder: (context) => const ResetPassword()));
                             } else {
                               // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Please check the email')));
+                              CustomToast.showToast(context,
+                                  message: 'Please check the email');
                             }
                           }
                         }),

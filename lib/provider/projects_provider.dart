@@ -570,7 +570,7 @@ class ProjectsProvider extends ChangeNotifier {
   }
 
   String? getProjectMemberImage({required String userId}) {
-    for (var member in projectMembers) {
+    for (final member in projectMembers) {
       if (member['member']['id'] == userId) {
         return member['member']['avatar'];
       }

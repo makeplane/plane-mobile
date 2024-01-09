@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/plane_keys.dart';
 import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
 import 'package:plane/services/shared_preference_service.dart';
@@ -22,7 +23,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 late String selectedTheme;
 void main() async {
-  final widgetsBinding=WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(const Duration(milliseconds: 300));
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
@@ -103,10 +104,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   bool checkPostHog() {
     bool enablePostHog = false;
-    if (dotenv.env['ENABLE_TRACK_EVENTS'] != null &&
-        dotenv.env['ENABLE_TRACK_EVENTS'] == '1' &&
-        dotenv.env['POSTHOG_API'] != null &&
-        dotenv.env['POSTHOG_API'] != '') {
+    if (Config.posthogApiKey != null && Config.posthogApiKey != '') {
       enablePostHog = true;
     } else {
       enablePostHog = false;

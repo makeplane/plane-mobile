@@ -1,4 +1,5 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:plane/config/config_variables.dart';
 
 class WorkspaceModel {
   WorkspaceModel({
@@ -17,7 +18,7 @@ class WorkspaceModel {
       workspaceId: json['id'],
       workspaceLogo: json['logo'] ?? '',
       // workspaceUrl: json['url'],
-      workspaceUrl: '${dotenv.env['WEB_URL']}${json['slug']}',
+      workspaceUrl: '${Config.webUrl}${json['slug']}',
     );
   }
   String workspaceName;

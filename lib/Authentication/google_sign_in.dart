@@ -1,14 +1,12 @@
 import 'dart:io';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:plane/config/config_variables.dart';
 
 class GoogleSignInApi {
   static final _googleSingIn = GoogleSignIn(
-    serverClientId: dotenv.env['GOOGLE_SERVER_CLIENT_ID'],
-    clientId: Platform.isIOS
-        ? dotenv.env['GOOGLE_IOS_CLIENT_ID']
-        : dotenv.env['GOOGLE_SERVER_CLIENT_ID'],
+    serverClientId: Config.googleServerClientId,
+    clientId:
+        Platform.isIOS ? Config.googleIosClientId :Config.googleServerClientId,
     scopes: ['email', 'profile'],
   );
 

@@ -3,7 +3,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +14,7 @@ import 'package:plane/bottom_sheets/select_issue_labels.dart';
 import 'package:plane/bottom_sheets/select_priority.dart';
 import 'package:plane/bottom_sheets/select_project_members.dart';
 import 'package:plane/bottom_sheets/select_states.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -466,7 +466,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                             webviewController,
                                                         title: 'Description',
                                                         url:
-                                                            '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
+                                                            '${Config.webUrl!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                       )));
                                         },
                                         child: Container(
@@ -566,7 +566,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                         initialUrlRequest:
                                                             URLRequest(
                                                                 url: Uri.parse(
-                                                                    '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=false'))),
+                                                                    '${Config.webUrl!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=false'))),
                                                     descriptionLoading
                                                         ? Container(
                                                             alignment: Alignment
@@ -608,7 +608,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                             title:
                                                                                 'Description',
                                                                             url:
-                                                                                '${dotenv.env['WEB_URL']!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
+                                                                                '${Config.webUrl!}m/${ref.read(ProviderList.workspaceProvider).selectedWorkspace.workspaceSlug}/editor?editable=true',
                                                                           )));
                                                             },
                                                             child: Container(
@@ -688,7 +688,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                                 .keyboard_arrow_down,
 
                                                         color: const Color
-                                                                .fromRGBO(
+                                                            .fromRGBO(
                                                             63, 118, 255, 1),
                                                       ),
                                                     ),
@@ -745,7 +745,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           //icon
                                           Icon(
                                             //four squares icon
-                                            Icons.view_cozy_outlined,
+                                            Icons.grid_view,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
                                           ),

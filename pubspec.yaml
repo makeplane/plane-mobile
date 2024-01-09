@@ -65,7 +65,7 @@ dependencies:
   flutter_html: any
   calendar_date_picker2: ^0.5.2
   material_symbols_icons: ^4.2668.0
-  sentry_flutter: ^7.10.1
+  sentry_flutter: ^7.14.0
   shimmer: ^3.0.0
   posthog_flutter: ^3.1.0
   flutter_inappwebview: ^5.8.0

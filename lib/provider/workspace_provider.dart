@@ -669,7 +669,7 @@ class WorkspaceProvider extends ChangeNotifier {
   }
 
   String? getWorkspaceMemberImage({required String userId}) {
-    for (var member in workspaceMembers) {
+    for (final member in workspaceMembers) {
       if (member['member']['id'] == userId) {
         return member['member']['avatar'];
       }

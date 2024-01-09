@@ -206,7 +206,7 @@ class EmptyPlaceholder {
       WidgetRef? ref,
       IssueCategory? type}) {
     final themeProvider = ref!.watch(ProviderList.themeProvider);
-    final projectProvider = ref!.watch(ProviderList.projectProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       child: Column(

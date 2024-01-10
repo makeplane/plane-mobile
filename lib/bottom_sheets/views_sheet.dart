@@ -999,18 +999,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                               .currentProject["id"],
                         );
                       } else {
-                        issueProvider.filterIssues(
-                          fromViews: widget.fromView,
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace
-                              .workspaceSlug,
-                          projID: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                          issueCategory: IssueCategory.issues,
-                          isArchived: widget.isArchived,
-                        );
+                        issueProvider.applyIssueView();
                       }
                     }
 

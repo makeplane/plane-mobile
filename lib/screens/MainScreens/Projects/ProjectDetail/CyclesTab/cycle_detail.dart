@@ -131,7 +131,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
         .then((value) => getChartData(modulesProvider
             .moduleDetailsData['distribution']['completion_chart']));
 
-    issuesProvider.getIssueProperties(
+    issuesProvider.getIssueDisplayProperties(
         issueCategory: IssueCategory.moduleIssues);
 
     modulesProvider
@@ -174,7 +174,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
 
     ref
         .read(ProviderList.issuesProvider)
-        .getIssueProperties(issueCategory: IssueCategory.cycleIssues);
+        .getIssueDisplayProperties(issueCategory: IssueCategory.cycleIssues);
     cyclesProvider
         .filterCycleIssues(
       cycleID: widget.cycleId!,
@@ -209,17 +209,9 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     final bool isLoading = widget.fromModule
         ? modulesProvider.moduleState == StateEnum.loading
         : cyclesProvider.cyclesState == StateEnum.loading;
-
     return WillPopScope(
       onWillPop: () async {
         if (widget.from == PreviousScreen.myIssues) return true;
-        issueProvider.getIssues(
-          slug: ref
-              .read(ProviderList.workspaceProvider)
-              .selectedWorkspace
-              .workspaceSlug,
-          projID: projectProvider.currentProject['id'],
-        );
         modulesProvider.selectedIssues = [];
         cyclesProvider.selectedIssues = [];
         issueProvider.issues.projectView = issueProvider.tempProjectView;
@@ -289,13 +281,6 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               Navigator.pop(context);
               return;
             }
-            issueProvider.getIssues(
-              slug: ref
-                  .read(ProviderList.workspaceProvider)
-                  .selectedWorkspace
-                  .workspaceSlug,
-              projID: projectProvider.currentProject['id'],
-            );
             modulesProvider.selectedIssues = [];
             cyclesProvider.selectedIssues = [];
             issueProvider.issues.projectView = issueProvider.tempProjectView;

@@ -511,6 +511,14 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                     state.leading ??
                                                         const SizedBox.shrink(),
                                                     Container(
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.65,
+                                                      ),
                                                       padding: EdgeInsets.only(
                                                         left: issueProvider
                                                                     .issues
@@ -519,11 +527,6 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                             ? 0
                                                             : 10,
                                                       ),
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.6,
                                                       child: CustomText(
                                                         state.title!,
                                                         overflow: TextOverflow

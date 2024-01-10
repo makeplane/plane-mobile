@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/config/config_variables.dart';
 import 'package:plane/screens/on_boarding/auth/invite_co_workers.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_rich_text.dart';
@@ -231,23 +232,12 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       key: const Key('companySize'),
                                       onTap: () {
                                         FocusScope.of(context).unfocus();
-                                        showModalBottomSheet(
-                                            context: context,
-                                            constraints: BoxConstraints(
-                                              maxHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.5,
-                                            ),
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
-                                              ),
-                                            ),
-                                            builder: (context) {
-                                              return const CompanySize();
-                                            });
+                                        BottomSheetHelper.showBottomSheet(
+                                            context,
+                                            const CompanySize(),
+                                            constraints: const BoxConstraints(
+                                              maxHeight: 400,
+                                            ));
                                       },
                                       child: Container(
                                         height: 50,

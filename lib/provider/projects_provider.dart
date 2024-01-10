@@ -110,7 +110,7 @@ class ProjectsProvider extends ChangeNotifier {
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
-    prov.getIssueProperties(issueCategory: IssueCategory.issues);
+    prov.getIssueDisplayProperties(issueCategory: IssueCategory.issues);
     prov.getProjectView().then((value) {
       if (filters != null) {
         prov.issues.filters = filters;

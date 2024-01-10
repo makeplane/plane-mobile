@@ -141,6 +141,8 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                   .themeManager.placeholderTextColor,
                               labelColor:
                                   themeProvider.themeManager.primaryColour,
+                              dividerColor: themeProvider
+                                  .themeManager.borderSubtle01Color,
                               tabs: const [
                                 Tab(
                                   text: 'Projects',
@@ -152,12 +154,12 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                                   text: 'Unjoined',
                                 ),
                               ]),
-                          Container(
-                            height: 1,
-                            width: double.infinity,
-                            color:
-                                themeProvider.themeManager.borderSubtle01Color,
-                          ),
+                          // Container(
+                          //   height: 1,
+                          //   width: double.infinity,
+                          //   color:
+                          //       Colors.amber
+                          // ),
                           Expanded(
                             child: Padding(
                               padding:

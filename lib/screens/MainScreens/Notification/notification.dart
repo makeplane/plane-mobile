@@ -153,6 +153,7 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
               unselectedLabelColor:
                   themeProvider.themeManager.placeholderTextColor,
               labelColor: themeProvider.themeManager.primaryColour,
+              dividerColor: themeProvider.themeManager.borderSubtle01Color,
               tabs: const [
                 Tab(
                   text: 'My Issues',

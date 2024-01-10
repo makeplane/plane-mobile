@@ -35,7 +35,7 @@ class APIs {
   static String states =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/states/';
   static String orderByGroupByTypeIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?type=\$TYPE';
   static String orderByGroupByTypeArchivedIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/archived-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String orderByGroupByIssues =
@@ -66,8 +66,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-labels/';
   static String projectViews =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-views/';
-  static String issueProperties =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-properties/';
+  static String issueDisplayProperties =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-display-properties/';
   static String issueDetails =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/';
   static String subIssues =

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
@@ -805,9 +807,6 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
     issueProvider.initializeBoard(views: isViews);
   }
 
-  // log('Project Issues');
-  // log(issueProvider.issues.projectView.toString());
-
   return LoadingWidget(
     loading: issueProvider.issuePropertyState == StateEnum.loading ||
         issueProvider.issueState == StateEnum.loading ||
@@ -833,7 +832,8 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                     issueProvider.projectViewState == StateEnum.loading ||
                     issueProvider.orderByState == StateEnum.loading
                 ? Container()
-                : issueProvider.isISsuesEmpty
+                : issueProvider.groupByResponse.isEmpty &&
+                        issueProvider.issueState == StateEnum.success
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -976,7 +976,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       ? Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                           width: MediaQuery.of(
                                                                   context)
@@ -987,7 +987,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                               .primaryBackgroundDefaultColor,
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   top: 15,
                                                                   bottom: 15,
                                                                   left: 15),
@@ -1004,7 +1004,7 @@ Widget issues(BuildContext context, WidgetRef ref, {bool isViews = false}) {
                                                       : Container(
                                                           margin:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   bottom: 10),
                                                         )
                                                 ],

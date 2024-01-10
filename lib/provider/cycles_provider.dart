@@ -16,6 +16,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
+import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
@@ -51,12 +52,12 @@ class CyclesProvider with ChangeNotifier {
   List issuesResponse = [];
   List shrinkStates = [];
   Map filterIssues = {};
+  List<dynamic> cycleIssuesList = [];
   Map issueProperty = {};
   bool showEmptyStates = true;
   bool isIssuesEmpty = false;
   int cycleDetailSelectedIndex = 0;
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
-  List stateOrdering = [];
   List<String> loadingCycleId = [];
   void setState() {
     notifyListeners();
@@ -385,14 +386,12 @@ class CyclesProvider with ChangeNotifier {
     // log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
-    for (int j = 0; j < stateOrdering.length; j++) {
+    for (int j = 0; j < filterIssues.length; j++) {
       final List<Widget> items = [];
-
-      for (int i = 0;
-          filterIssues[stateOrdering[j]] != null &&
-              i < filterIssues[stateOrdering[j]]!.length;
-          i++) {
-        issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
+      final groupedIssues = filterIssues.values.toList()[j];
+      final groupID = filterIssues.keys.elementAt(j);
+      for (int i = 0; i < groupedIssues.length; i++) {
+        issuesResponse.add(groupedIssues[i]);
         items.add(
           IssueCardWidget(
             from: PreviousScreen.cycles,
@@ -409,7 +408,7 @@ class CyclesProvider with ChangeNotifier {
       bool userFound = false;
 
       for (int i = 0; i < issuesProvider.labels.length; i++) {
-        if (stateOrdering[j] == issuesProvider.labels[i]['id']) {
+        if (groupID == issuesProvider.labels[i]['id']) {
           label = issuesProvider.labels[i];
           labelFound = true;
           break;
@@ -417,7 +416,7 @@ class CyclesProvider with ChangeNotifier {
       }
 
       for (int i = 0; i < issuesProvider.members.length; i++) {
-        if (stateOrdering[j] == issuesProvider.members[i]['member']['id']) {
+        if (groupID == issuesProvider.members[i]['member']['id']) {
           userName = issuesProvider.members[i]['member']['first_name'] +
               ' ' +
               issuesProvider.members[i]['member']['last_name'];
@@ -431,12 +430,12 @@ class CyclesProvider with ChangeNotifier {
       //log('RESPONSE : ' + filterIssues.toString());
       // log('================================================================ ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
-          ? stateOrdering[j]
+          ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[stateOrdering[j]]['name']
-              : stateOrdering[j];
+              ? issuesProvider.states[groupID]['name']
+              : groupID;
       issues.issues.add(BoardListsData(
-        id: stateOrdering[j],
+        id: groupID,
         items: items,
         shrink: shrinkStates[j],
         index: j,
@@ -455,7 +454,7 @@ class CyclesProvider with ChangeNotifier {
                 : title = title[0].toString().toUpperCase() +
                     title.toString().substring(1),
         header: Text(
-          stateOrdering[j],
+          groupID,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -633,11 +632,14 @@ class CyclesProvider with ChangeNotifier {
         notifyListeners();
         return;
       }
-      (filterIssues[stateOrdering[newListIndex]] as List).insert(newCardIndex,
-          filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+
+      final List newList = filterIssues.values.toList()[newListIndex];
+      final List oldList = filterIssues.values.toList()[oldListIndex];
+
+      newList.insert(newCardIndex, oldList.removeAt(oldCardIndex));
 
       notifyListeners();
-      final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      final issue = newList[newCardIndex];
       // log(issue.toString());
       final response = await DioConfig().dioServe(
           hasAuth: true,
@@ -655,19 +657,18 @@ class CyclesProvider with ChangeNotifier {
           httpMethod: HttpMethod.patch,
           data: issues.groupBY == GroupBY.state
               ? {
-                  'state': stateOrdering[newListIndex],
+                  'state': filterIssues.keys.elementAt(newListIndex),
                   'priority': issue['priority']
                 }
               : {
                   'state': issue['state'],
-                  'priority': stateOrdering[newListIndex],
+                  'priority': filterIssues.keys.elementAt(newListIndex)
                 });
-      filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
+      newList[newCardIndex] = response.data;
 
       final List labelDetails = [];
       final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
-          .forEach((element) {
+      newList[newCardIndex]['labels'].forEach((element) {
         for (int i = 0; i < issuesProvider.labels.length; i++) {
           if (issuesProvider.labels[i]['id'] == element) {
             labelDetails.add(issuesProvider.labels[i]);
@@ -678,17 +679,16 @@ class CyclesProvider with ChangeNotifier {
         // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
       });
 
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
-          labelDetails;
+      newList[newCardIndex]['label_details'] = labelDetails;
 
       log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
-        log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
-        filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
-            stateOrdering[newListIndex];
+        log(newList[newCardIndex]['name']);
+        newList[newCardIndex]['priority'] =
+            filterIssues.keys.elementAt(newListIndex);
       }
       if (issues.orderBY != OrderBY.manual) {
-        (filterIssues[stateOrdering[newListIndex]] as List).sort((a, b) {
+        newList.sort((a, b) {
           if (issues.orderBY == OrderBY.priority) {
             return priorityParser(a['priority'])
                 .compareTo(priorityParser(b['priority']));
@@ -706,8 +706,8 @@ class CyclesProvider with ChangeNotifier {
       log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
-      (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,
-          filterIssues[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      filterIssues.values.elementAt(oldListIndex).insert(oldCardIndex,
+          filterIssues.values.elementAt(newListIndex).removeAt(newCardIndex));
       log(err.toString());
       notifyListeners();
       rethrow;
@@ -802,6 +802,16 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
+  void applyCycleIssuesView() {
+    final issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final labelIds = issuesProvider.labels.map((e) => e['id']).toList();
+    filterIssues = IssueFilterHelper.organizeIssues(
+        cycleIssuesList, issues.groupBY, issues.orderBY,
+        labels: labelIds,
+        members: issuesProvider.members,
+        states: issuesProvider.states);
+  }
+
   Future filterCycleIssues({
     required String slug,
     required String projectId,
@@ -841,10 +851,8 @@ class CyclesProvider with ChangeNotifier {
           shrinkStates.add(false);
         });
       } else {
-        stateOrdering = [];
         shrinkStates = [];
         filterIssues.forEach((key, value) {
-          stateOrdering.add(key);
           shrinkStates.add(false);
         });
       }

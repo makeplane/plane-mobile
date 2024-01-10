@@ -13,6 +13,7 @@ import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/Creat
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/custom_toast.dart';
+import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 import 'package:plane/config/apis.dart';
@@ -214,16 +215,12 @@ class IssuesProvider extends ChangeNotifier {
     int count = 0;
     issuesResponse = [];
     issues.issues = [];
-    for (int j = 0; j < stateOrdering.length; j++) {
+    for (int j = 0; j < groupByResponse.length; j++) {
       final List<Widget> items = [];
-      if (groupByResponse[stateOrdering[j]] == null) {
-        continue;
-      }
-      for (int i = 0;
-          groupByResponse[stateOrdering[j]] != null &&
-              i < groupByResponse[stateOrdering[j]]!.length;
-          i++) {
-        issuesResponse.add(groupByResponse[stateOrdering[j]]![i]);
+      final groupedIssues = groupByResponse.values.elementAt(j);
+      final groupID = groupByResponse.keys.elementAt(j);
+      for (int i = 0; i < groupedIssues.length; i++) {
+        issuesResponse.add(groupedIssues[i]);
 
         items.add(
           IssueCardWidget(
@@ -242,7 +239,7 @@ class IssuesProvider extends ChangeNotifier {
       bool userFound = false;
 
       for (int i = 0; i < labels.length; i++) {
-        if (stateOrdering[j] == labels[i]['id']) {
+        if (groupID == labels[i]['id']) {
           label = labels[i];
           labelFound = true;
           break;
@@ -250,7 +247,7 @@ class IssuesProvider extends ChangeNotifier {
       }
 
       for (int i = 0; i < members.length; i++) {
-        if (stateOrdering[j] == members[i]['member']['id']) {
+        if (groupID == members[i]['member']['id']) {
           userName = members[i]['member']['first_name'] +
               ' ' +
               members[i]['member']['last_name'];
@@ -268,12 +265,12 @@ class IssuesProvider extends ChangeNotifier {
       }
 
       String title = issues.groupBY == GroupBY.priority
-          ? stateOrdering[j]
+          ? groupID
           : issues.groupBY == GroupBY.state
-              ? states[stateOrdering[j]]['name']
-              : stateOrdering[j];
+              ? states[groupID]['name']
+              : groupID;
       issues.issues.add(BoardListsData(
-        id: stateOrdering[j],
+        id: groupID,
         items: items,
         shrink: j >= shrinkStates.length ? false : shrinkStates[j],
         index: j,
@@ -292,7 +289,7 @@ class IssuesProvider extends ChangeNotifier {
                 : title = title[0].toString().toUpperCase() +
                     title.toString().substring(1),
         header: Text(
-          stateOrdering[j],
+          groupID,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -462,7 +459,6 @@ class IssuesProvider extends ChangeNotifier {
         ),
       );
     }
-
     return issues.issues;
   }
 
@@ -682,41 +678,40 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      statesData = response.data;
+      //   log(response.data.toString());
+      statesData = {for (final value in response.data) value['id']: value};
       states = {};
-      for (int i = 0; i < response.data.length; i++) {
-        final String state = response.data.keys.elementAt(i);
-        for (int j = 0; j < response.data[state].length; j++) {
-          states[response.data[state][j]['id']] = response.data[state][j];
-          stateIcons[response.data[state][j]['id']] = SvgPicture.asset(
-              state == 'backlog'
-                  ? 'assets/svg_images/circle.svg'
-                  : state == 'cancelled'
-                      ? 'assets/svg_images/cancelled.svg'
-                      : state == 'completed'
-                          ? 'assets/svg_images/done.svg'
-                          : state == 'started'
-                              ? 'assets/svg_images/in_progress.svg'
-                              : 'assets/svg_images/unstarted.svg',
-              height: 22,
-              width: 22,
-              colorFilter: int.tryParse(
-                          "FF${response.data[state][j]['color'].toString().replaceAll('#', '')}",
-                          radix: 16) !=
-                      null
-                  ? ColorFilter.mode(
-                      Color(int.parse(
-                          "FF${response.data[state][j]['color'].toString().replaceAll('#', '')}",
-                          radix: 16)),
-                      BlendMode.srcIn)
-                  : null);
+      for (int i = 0; i < statesData.length; i++) {
+        final String stateId = statesData.keys.elementAt(i);
+        states[stateId] = statesData[stateId];
+        stateIcons[stateId] = SvgPicture.asset(
+            stateId == 'backlog'
+                ? 'assets/svg_images/circle.svg'
+                : stateId == 'cancelled'
+                    ? 'assets/svg_images/cancelled.svg'
+                    : stateId == 'completed'
+                        ? 'assets/svg_images/done.svg'
+                        : stateId == 'started'
+                            ? 'assets/svg_images/in_progress.svg'
+                            : 'assets/svg_images/unstarted.svg',
+            height: 22,
+            width: 22,
+            colorFilter: int.tryParse(
+                        "FF${statesData[stateId]['color'].toString().replaceAll('#', '')}",
+                        radix: 16) !=
+                    null
+                ? ColorFilter.mode(
+                    Color(int.parse(
+                        "FF${statesData[stateId]['color'].toString().replaceAll('#', '')}",
+                        radix: 16)),
+                    BlendMode.srcIn)
+                : null);
 
-          if (response.data[state][j]['default'] == true) {
-            defaultStatedetails[state] = {
-              'name': response.data[state][j]['name'],
-              'icon': stateIcons[response.data[state][j]['id']]
-            };
-          }
+        if (statesData[stateId]['default'] == true) {
+          defaultStatedetails[stateId] = {
+            'name': statesData[stateId]['name'],
+            'icon': stateIcons[statesData[stateId]['id']]
+          };
         }
       }
       stateOrdering = [];
@@ -877,7 +872,6 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   Future getIssues({required String slug, required String projID}) async {
-    // issueState = StateEnum.loading;
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
@@ -887,7 +881,6 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
       issuesResponse = response.data;
       issuesList = response.data;
       isISsuesEmpty = issuesResponse.isEmpty;
@@ -963,14 +956,14 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getIssueProperties({required Enum issueCategory}) async {
+  Future getIssueDisplayProperties({required Enum issueCategory}) async {
     final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
     final modulesProvider = ref!.read(ProviderList.modulesProvider);
     issueState = StateEnum.loading;
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
-        url: APIs.issueProperties
+        url: APIs.issueDisplayProperties
             .replaceAll(
                 "\$SLUG",
                 ref!
@@ -985,7 +978,7 @@ class IssuesProvider extends ChangeNotifier {
       if (response.data.isEmpty) {
         response = await DioConfig().dioServe(
             hasAuth: true,
-            url: APIs.issueProperties
+            url: APIs.issueDisplayProperties
                 .replaceAll(
                     "\$SLUG",
                     ref!
@@ -1072,11 +1065,6 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['properties']['estimate'];
           cyclesProvider.issues.displayProperties.startDate =
               cyclesProvider.issueProperty['properties']['start_date'];
-          cyclesProvider.issues.displayProperties.createdOn =
-              cyclesProvider.issueProperty['properties']?['created_on'] ??
-                  false;
-          cyclesProvider.issues.displayProperties.updatedOn =
-              cyclesProvider.issueProperty['properties']['updated_on'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
               cyclesProvider.issues.displayProperties;
         } else if (issueCategory == IssueCategory.moduleIssues) {
@@ -1156,13 +1144,11 @@ class IssuesProvider extends ChangeNotifier {
   }) async {
     final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
     final modulesProvider = ref!.read(ProviderList.modulesProvider);
-    issuePropertyState = StateEnum.loading;
-    notifyListeners();
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
         url:
-            ("${APIs.issueProperties}${issueCategory == IssueCategory.cycleIssues ? cyclesProvider.issueProperty['id'] : issueCategory == IssueCategory.moduleIssues ? modulesProvider.issueProperty['id'] : issueProperty['id']}/")
+            ("${APIs.issueDisplayProperties}${issueCategory == IssueCategory.cycleIssues ? cyclesProvider.issueProperty['id'] : issueCategory == IssueCategory.moduleIssues ? modulesProvider.issueProperty['id'] : issueProperty['id']}/")
                 .replaceAll(
                     "\$SLUG",
                     ref!
@@ -1350,6 +1336,13 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
+  void applyIssueView() {
+    final labelIds = labels.map((e) => e['id']).toList();
+    groupByResponse = IssueFilterHelper.organizeIssues(
+        issuesList, issues.groupBY, issues.orderBY,
+        labels: labelIds, members: members, states: states);
+  }
+
   Future filterIssues({
     required String slug,
     required String projID,
@@ -1359,27 +1352,9 @@ class IssuesProvider extends ChangeNotifier {
     String? moduleId,
     Enum issueCategory = IssueCategory.issues,
   }) async {
-    final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
-    final modulesProvider = ref!.read(ProviderList.modulesProvider);
-    if (issueCategory == IssueCategory.issues) {
-      orderByState = StateEnum.loading;
-      notifyListeners();
-    }
+    orderByState = StateEnum.loading;
+    notifyListeners();
 
-    // if(cycleIssues){
-    //   issues.groupBY = cyclesProvider.issues.groupBY;
-    //   issues.orderBY = cyclesProvider.issues.orderBY;
-    //   issues.issueType = cyclesProvider.issues.issueType;
-    // }
-    // else {
-    cyclesProvider.issues.groupBY = issues.groupBY;
-    cyclesProvider.issues.orderBY = issues.orderBY;
-    cyclesProvider.issues.issueType = issues.issueType;
-
-    modulesProvider.issues.groupBY = issues.groupBY;
-    modulesProvider.issues.orderBY = issues.orderBY;
-    modulesProvider.issues.issueType = issues.issueType;
-    // }
     if (issues.groupBY == GroupBY.labels) {
       getLabels(slug: slug, projID: projID);
     } else if (issues.groupBY == GroupBY.createdBY) {
@@ -1400,111 +1375,14 @@ class IssuesProvider extends ChangeNotifier {
       tempIssueType = issues.issueType;
       tempProjectView = issues.projectView;
     }
-    if (issues.issueType != IssueType.all) {
-      url = (issueCategory == IssueCategory.cycleIssues
-              ? APIs.orderByGroupByCycleIssues
-              : issueCategory == IssueCategory.moduleIssues
-                  ? APIs.orderByGroupByModuleIssues
-                  : isArchived
-                      ? APIs.orderByGroupByTypeArchivedIssues
-                      : APIs.orderByGroupByTypeIssues)
-          .replaceAll("\$SLUG", slug)
-          .replaceAll('\$PROJECTID', projID)
-          .replaceAll(
-              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID',
-              moduleId ?? modulesProvider.currentModule['id'] ?? '')
-          .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
-          .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
-          .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
-      if (issues.filters.priorities.isNotEmpty) {
-        url =
-            '$url&priority=${issues.filters.priorities.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.states.isNotEmpty) {
-        url =
-            '$url&state=${issues.filters.states.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-        //  print(url);
-      }
-      if (issues.filters.assignees.isNotEmpty) {
-        url =
-            '$url&assignees=${issues.filters.assignees.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-        //   print(url);
-      }
-      if (issues.filters.createdBy.isNotEmpty) {
-        url =
-            '$url&created_by=${issues.filters.createdBy.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.labels.isNotEmpty) {
-        url =
-            '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-        // print(url);
-      }
-      if (issues.filters.targetDate.isNotEmpty) {
-        url =
-            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.startDate.isNotEmpty) {
-        url =
-            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      } else {
-        url = url;
-      }
-    } else {
-      url = (issueCategory == IssueCategory.cycleIssues
-              ? APIs.orderByGroupByCycleIssues
-              : issueCategory == IssueCategory.moduleIssues
-                  ? APIs.orderByGroupByModuleIssues
-                  : isArchived
-                      ? APIs.orderByGroupByTypeArchivedIssues
-                      : APIs.orderByGroupByTypeIssues)
-          .replaceAll("\$SLUG", slug)
-          .replaceAll('\$PROJECTID', projID)
-          .replaceAll(
-              '\$CYCLEID', cycleId ?? cyclesProvider.currentCycle['id'] ?? '')
-          .replaceAll('\$MODULEID',
-              moduleId ?? modulesProvider.currentModule['id'] ?? '')
-          .replaceAll('\$ORDERBY', Issues.fromOrderBY(issues.orderBY))
-          .replaceAll('\$GROUPBY', Issues.fromGroupBY(issues.groupBY))
-          .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
-      if (issues.filters.priorities.isNotEmpty) {
-        url =
-            '$url&priority=${issues.filters.priorities.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.states.isNotEmpty) {
-        url =
-            '$url&state=${issues.filters.states.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.assignees.isNotEmpty) {
-        url =
-            '$url&assignees=${issues.filters.assignees.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.createdBy.isNotEmpty) {
-        url =
-            '$url&created_by=${issues.filters.createdBy.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.labels.isNotEmpty) {
-        url =
-            '$url&labels=${issues.filters.labels.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.targetDate.isNotEmpty) {
-        url =
-            '$url&target_date=${issues.filters.targetDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      }
-      if (issues.filters.startDate.isNotEmpty) {
-        url =
-            '$url&start_date=${issues.filters.startDate.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}';
-      } else {
-        url = url;
-      }
-    }
-    url = '$url&sub_issue=${issues.showSubIssues}';
-    if (issues.groupBY == GroupBY.none) {
-      url = url.replaceAll('&group_by=none', '');
-      stateOrdering = ['All Issues'];
-    }
 
-    dynamic temp;
+    url = APIs.orderByGroupByTypeIssues
+        .replaceAll("\$SLUG", slug)
+        .replaceAll('\$PROJECTID', projID)
+        .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+    url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
+    url = '$url&sub_issue=${issues.showSubIssues}';
+    log('URL: $url');
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1512,102 +1390,18 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      if (issueCategory == IssueCategory.cycleIssues) {
-        issuesList = [];
-
-        if (issues.groupBY != GroupBY.none) {
-          temp = response.data;
-          for (final key in response.data.keys) {
-            issuesList.addAll(response.data[key]);
-          }
-        } else {
-          temp = {'All Issues': response.data};
-        }
-      } else if (issueCategory == IssueCategory.moduleIssues) {
-        issuesList = [];
-        if (issues.groupBY != GroupBY.none) {
-          temp = response.data;
-          for (final key in response.data.keys) {
-            issuesList.addAll(response.data[key]);
-          }
-        } else {
-          temp = {'All Issues': response.data};
-        }
-      }
+      issuesList = response.data.values.toList();
+      final organizedIssues = IssueFilterHelper.organizeIssues(
+          issuesList, issues.groupBY, issues.orderBY,
+          labels: labels.map((e) => e['id']).toList(),
+          members: members,
+          states: states);
 
       if (issueCategory == IssueCategory.issues) {
-        issuesResponse = [];
-        isISsuesEmpty = true;
-        shrinkStates = [];
-        issuesList = [];
-        if (issues.groupBY == GroupBY.none) {
-          if (response.data.isNotEmpty) {
-            isISsuesEmpty = false;
-          }
-          issuesList = response.data;
-        } else {
-          for (final key in response.data.keys) {
-            if (response.data[key].isNotEmpty) {
-              isISsuesEmpty = false;
-            }
-            issuesList.addAll(response.data[key]);
-          }
-        }
-      }
-
-      // if(issueCategory == IssueCategory.archivedIssues){
-      //   archivedIssueResponse = [];
-      //   isArchivedIssuesEmpty = true;
-      //   archivedIssuesList = [];
-
-      //   for (final key in response.data.keys) {
-      //     //  log("KEY=$key");
-      //     if (response.data[key].isNotEmpty) {
-      //       isArchivedIssuesEmpty = false;
-      //     }
-
-      //     archivedIssuesList.addAll(response.data[key]);
-      //   }
-
-      // }
-
-      //log("shrink states=${shrinkStates.toString()}");
-      if (issueCategory == IssueCategory.issues) {
-        if (issues.groupBY == GroupBY.state) {
-          groupByResponse = {};
-
-          if (issues.filters.states.isNotEmpty) {
-            for (final element in issues.filters.states) {
-              if (response.data[element] == null) {
-                groupByResponse[element] = [];
-              } else {
-                groupByResponse[element] = response.data[element];
-              }
-            }
-          } else {
-            for (final element in stateOrdering) {
-              groupByResponse[element] = response.data[element] ?? [];
-            }
-          }
-          shrinkStates = List.generate(stateOrdering.length, (index) => false);
-        } else if (issues.groupBY == GroupBY.none) {
-          stateOrdering = ['All Issues'];
-          groupByResponse['All Issues'] = response.data;
-        } else {
-          stateOrdering = [];
-          response.data.forEach((key, value) {
-            stateOrdering.add(key);
-          });
-          groupByResponse = response.data;
-          shrinkStates = List.generate(stateOrdering.length, (index) => false);
-        }
-      }
-
-      if (issueCategory == IssueCategory.cycleIssues ||
+        groupByResponse = organizedIssues;
+      } else if (issueCategory == IssueCategory.cycleIssues ||
           issueCategory == IssueCategory.moduleIssues) {
-        cyclesProvider.stateOrdering = stateOrdering;
-        modulesProvider.stateOrdering = stateOrdering;
-        return temp;
+        return organizedIssues;
       }
       orderByState = StateEnum.success;
       notifyListeners();

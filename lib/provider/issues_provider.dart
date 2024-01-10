@@ -212,7 +212,6 @@ class IssuesProvider extends ChangeNotifier {
       {bool views = false, bool isArchive = false}) {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     int count = 0;
-    //   log(issues.groupBY.name);
     issuesResponse = [];
     issues.issues = [];
     for (int j = 0; j < stateOrdering.length; j++) {
@@ -220,7 +219,6 @@ class IssuesProvider extends ChangeNotifier {
       if (groupByResponse[stateOrdering[j]] == null) {
         continue;
       }
-      // log(states[stateOrdering[j]]["name"]);
       for (int i = 0;
           groupByResponse[stateOrdering[j]] != null &&
               i < groupByResponse[stateOrdering[j]]!.length;
@@ -427,10 +425,6 @@ class IssuesProvider extends ChangeNotifier {
             GestureDetector(
               onTap: () {
                 shrinkStates[element.index] = !shrinkStates[element.index];
-
-                // log(element.index.toString() +
-                //     shrinkStates[element.index].toString());
-
                 notifyListeners();
               },
               child: Icon(
@@ -534,13 +528,8 @@ class IssuesProvider extends ChangeNotifier {
 
       groupByResponse[stateOrdering[newListIndex]][newCardIndex]
           ['label_details'] = labelDetails;
-
-      log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]
-          .toString());
       updateIssueState = StateEnum.success;
-      // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
-        //  log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
         groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
             stateOrdering[newListIndex];
       }
@@ -560,7 +549,6 @@ class IssuesProvider extends ChangeNotifier {
           }
         });
       }
-      log("ISSUE REPOSITIONED");
       notifyListeners();
       // ignore: unused_catch_clause
     } on DioException catch (err) {
@@ -603,13 +591,11 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('getLabels' + response.data.toString());
       labels = response.data;
       labelState = StateEnum.success;
 
       notifyListeners();
     } on DioException catch (e) {
-      log('Error in getLabels  ${e.message}');
       log(e.error.toString());
       labelState = StateEnum.error;
       notifyListeners();
@@ -644,7 +630,6 @@ class IssuesProvider extends ChangeNotifier {
                   ? HttpMethod.delete
                   : HttpMethod.post,
           data: data);
-      //   log(response.data.toString());
       method != CRUD.read
           ? postHogService(
               eventName: method == CRUD.create
@@ -697,7 +682,6 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      //   log(response.data.toString());
       statesData = response.data;
       states = {};
       for (int i = 0; i < response.data.length; i++) {
@@ -904,7 +888,6 @@ class IssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
 
-      log("DONE");
       issuesResponse = response.data;
       issuesList = response.data;
       isISsuesEmpty = issuesResponse.isEmpty;
@@ -962,21 +945,18 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('Project Members    ${response.data.toString()}');
       members = response.data;
       for (final element in members) {
         if (element["member"]['id'] ==
             ref!.read(ProviderList.profileProvider).userProfile.id) {
           ref!.read(ProviderList.projectProvider).role =
               roleParser(role: element["role"]);
-          log('Role ${ref!.read(ProviderList.projectProvider).role}');
           break;
         }
       }
       membersState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log('Error in getProjectMembers ');
       log(e.response.toString());
       membersState = StateEnum.error;
       notifyListeners();
@@ -987,15 +967,6 @@ class IssuesProvider extends ChangeNotifier {
     final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
     final modulesProvider = ref!.read(ProviderList.modulesProvider);
     issueState = StateEnum.loading;
-    log(APIs.issueProperties
-        .replaceAll(
-            "\$SLUG",
-            ref!
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace
-                .workspaceSlug)
-        .replaceAll('\$PROJECTID',
-            ref!.read(ProviderList.projectProvider).currentProject['id']));
     try {
       var response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1011,7 +982,6 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('Issue Properties    ${response.data.toString()}');
       if (response.data.isEmpty) {
         response = await DioConfig().dioServe(
             hasAuth: true,
@@ -1169,7 +1139,6 @@ class IssuesProvider extends ChangeNotifier {
 
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
-        //log('ISSUE PROPERTY =====  > $issueProperty');
       }
 
       issueState = StateEnum.success;
@@ -1189,7 +1158,6 @@ class IssuesProvider extends ChangeNotifier {
     final modulesProvider = ref!.read(ProviderList.modulesProvider);
     issuePropertyState = StateEnum.loading;
     notifyListeners();
-    log(issueProperty.toString());
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1228,7 +1196,6 @@ class IssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.patch,
       );
 
-      // log(response.data.toString());
       if (issueCategory == IssueCategory.cycleIssues) {
         cyclesProvider.issueProperty = response.data;
       } else if (issueCategory == IssueCategory.moduleIssues) {
@@ -1247,7 +1214,6 @@ class IssuesProvider extends ChangeNotifier {
 
   Future updateProjectView(
       {bool isArchive = false, bool setDefault = false}) async {
-    log(tempProjectView.toString());
     final Map<String, dynamic> view = {
       "view_props": {
         "calendarDateRange": "",
@@ -1312,7 +1278,6 @@ class IssuesProvider extends ChangeNotifier {
       projectViewState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log("ERROR");
       log(e.response.toString());
       projectViewState = StateEnum.error;
       notifyListeners();
@@ -1341,7 +1306,6 @@ class IssuesProvider extends ChangeNotifier {
       );
       issueView =
           reset ? response.data["default_props"] : response.data["view_props"];
-      log(issueView.toString());
       issues.projectView = issueView['display_filters']['layout'] == 'list'
           ? ProjectView.list
           : issueView['display_filters']['layout'] == 'calendar'
@@ -1539,11 +1503,9 @@ class IssuesProvider extends ChangeNotifier {
       url = url.replaceAll('&group_by=none', '');
       stateOrdering = ['All Issues'];
     }
-    log('URL: $url');
 
     dynamic temp;
     try {
-      //  log('====CAME TO CYCLES TRY');
       final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
@@ -1551,7 +1513,6 @@ class IssuesProvider extends ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       if (issueCategory == IssueCategory.cycleIssues) {
-        // log('Cycle Issues :::: ${response.data}');
         issuesList = [];
 
         if (issues.groupBY != GroupBY.none) {
@@ -1563,8 +1524,6 @@ class IssuesProvider extends ChangeNotifier {
           temp = {'All Issues': response.data};
         }
       } else if (issueCategory == IssueCategory.moduleIssues) {
-        // log('Module Issues :::: ${response.data}');
-
         issuesList = [];
         if (issues.groupBY != GroupBY.none) {
           temp = response.data;
@@ -1577,8 +1536,6 @@ class IssuesProvider extends ChangeNotifier {
       }
 
       if (issueCategory == IssueCategory.issues) {
-        // log('Issues :::: ${response.data}');
-
         issuesResponse = [];
         isISsuesEmpty = true;
         shrinkStates = [];
@@ -1655,7 +1612,6 @@ class IssuesProvider extends ChangeNotifier {
       orderByState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
-      log('filter issue error');
       log(e.message.toString());
       orderByState = StateEnum.error;
       notifyListeners();

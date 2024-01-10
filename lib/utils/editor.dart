@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
@@ -36,7 +36,7 @@ class EDITOR extends ConsumerStatefulWidget {
 class _EDITORState extends ConsumerState<EDITOR> {
   bool isLoading = true;
   late InAppWebViewController controller;
-  Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
+  Uri baseWebUrl = Uri.parse(Config.webUrl!);
   final cookieManager = CookieManager.instance();
 
   @override

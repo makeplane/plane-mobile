@@ -4,12 +4,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/Authentication/google_sign_in.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -334,11 +334,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                           const SizedBox(
                             height: 30,
                           ),
-                          (Platform.isIOS &&
-                                      dotenv.env['GOOGLE_SERVER_CLIENT_ID'] ==
-                                          null) ||
-                                  (Platform.isAndroid &&
-                                      dotenv.env['GOOGLE_CLIENT_ID'] == null)
+                          (Platform.isIOS && Config.googleServerClientId == null) ||
+                                  (Platform.isAndroid && Config.googleClientId == null)
                               ? Container()
                               : Column(
                                   children: [
@@ -358,11 +355,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                     ),
                                   ],
                                 ),
-                          (Platform.isIOS &&
-                                      dotenv.env['GOOGLE_SERVER_CLIENT_ID'] ==
-                                          null) ||
-                                  (Platform.isAndroid &&
-                                      dotenv.env['GOOGLE_CLIENT_ID'] == null)
+                          (Platform.isIOS && Config.googleServerClientId == null) ||
+                                  (Platform.isAndroid && Config.googleClientId == null)
                               ? Container()
                               : (authProvider.googleAuthState ==
                                       StateEnum.loading
@@ -414,8 +408,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                           ref
                                               .watch(ProviderList.authProvider)
                                               .googleAuth(data: {
-                                            "clientId": dotenv
-                                                .env['GOOGLE_SERVER_CLIENT_ID'],
+                                            "clientId": Config.googleServerClientId,
                                             "credential": googleAuth.idToken,
                                             "medium": "google"
                                           }, context: context, ref: ref).then(
@@ -425,7 +418,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                 profileProvider
                                                         .getProfileState ==
                                                     StateEnum.success) {
-
                                               if (profileProvider
                                                   .userProfile.isOnboarded!) {
                                                 Navigator.pushAndRemoveUntil(

@@ -19,54 +19,60 @@ import '../utils/theme_manager.dart';
 
 class DependencyResolver {
   static Future<void> resolve({required WidgetRef ref}) async {
-    if (Const.accessToken == null) {
-      CustomToast(manager: ThemeManager(THEME.light));
-      FlutterNativeSplash.remove();
-      return;
-    }
-    final ProfileProvider profileProvider =
-        ref.read(ProviderList.profileProvider);
-    final WorkspaceProvider workspaceProvider =
-        ref.read(ProviderList.workspaceProvider);
-
-    await _resolveUserProfile(ref).then((value) {
-      value.fold((userProfile) => null, (error) {
+    await _resolveConfig(ref).then((_) async {
+      if (Const.accessToken == null) {
+        CustomToast(manager: ThemeManager(THEME.light));
         FlutterNativeSplash.remove();
-        OverlayEntry entry = OverlayEntry(builder: (context) {
-          return Positioned(
-            width: MediaQuery.of(context).size.width,
-            bottom: 0,
-            child: CustomToast.getToastWithColorWidget(
-                'Something went wrong while fetching your data, Please try again.',
-                toastType: ToastType.failure),
-          );
-        });
-        Overlay.of(ref.context).insert(entry);
-        Future.delayed(const Duration(seconds: 1), () {
-          entry.remove();
-        });
         return;
+      }
+      final ProfileProvider profileProvider =
+          ref.read(ProviderList.profileProvider);
+      final WorkspaceProvider workspaceProvider =
+          ref.read(ProviderList.workspaceProvider);
+
+      await _resolveUserProfile(ref).then((value) {
+        value.fold((userProfile) => null, (error) {
+          FlutterNativeSplash.remove();
+          OverlayEntry entry = OverlayEntry(builder: (context) {
+            return Positioned(
+              width: MediaQuery.of(context).size.width,
+              bottom: 0,
+              child: CustomToast.getToastWithColorWidget(
+                  'Something went wrong while fetching your data, Please try again.',
+                  toastType: ToastType.failure),
+            );
+          });
+          Overlay.of(ref.context).insert(entry);
+          Future.delayed(const Duration(seconds: 1), () {
+            entry.remove();
+          });
+          return;
+        });
       });
+      if (profileProvider.userProfile.isOnboarded == false) {
+        FlutterNativeSplash.remove();
+        return;
+      }
+
+      await _resolveProfileSetting(ref);
+
+      await _resolveWorkspaces(ref);
+      if (workspaceProvider.workspaces.isEmpty) {
+        FlutterNativeSplash.remove();
+        return;
+      }
+      _resolveTheme(ref);
+      _resolveDashBoard(ref);
+      _resolveProjects(ref);
+      _resolveMyIssues(ref);
+      _resolveNotifications(ref);
+      _resolveWhatsNew(ref);
+      FlutterNativeSplash.remove();
     });
-    if (profileProvider.userProfile.isOnboarded == false) {
-      FlutterNativeSplash.remove();
-      return;
-    }
+  }
 
-    await _resolveProfileSetting(ref);
-
-    await _resolveWorkspaces(ref);
-    if (workspaceProvider.workspaces.isEmpty) {
-      FlutterNativeSplash.remove();
-      return;
-    }
-    _resolveTheme(ref);
-    _resolveDashBoard(ref);
-    _resolveProjects(ref);
-    _resolveMyIssues(ref);
-    _resolveNotifications(ref);
-    _resolveWhatsNew(ref);
-    FlutterNativeSplash.remove();
+  static Future<void> _resolveConfig(WidgetRef ref) async {
+    return await ref.read(ProviderList.configProvider.notifier).getConfig();
   }
 
   static Future<void> _resolveDashBoard(WidgetRef ref) async {

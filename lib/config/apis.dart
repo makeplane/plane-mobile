@@ -148,4 +148,5 @@ class APIs {
   static String pendingInvites = '$baseApi/api/workspaces/\$SLUG/invitations/';
   static String retrieveUserRoleOnWorkspace =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
+  static String configApi = '$baseApi/api/mobile-configs';
 }

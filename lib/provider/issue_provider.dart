@@ -3,12 +3,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
@@ -459,7 +459,7 @@ class IssueProvider with ChangeNotifier {
 
   Future setCookies({required String key, required String value}) async {
     if (value.isEmpty) return;
-    final Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
+    final Uri baseWebUrl = Uri.parse(Config.webUrl!);
     final cookieManager = CookieManager.instance();
     await cookieManager.setCookie(
       url: baseWebUrl,
@@ -478,7 +478,7 @@ class IssueProvider with ChangeNotifier {
       cookiesState = StateEnum.loading;
       final cookieManager = CookieManager.instance();
       cookieManager.deleteAllCookies();
-      final Uri baseWebUrl = Uri.parse(dotenv.env['WEB_URL']!);
+      final Uri baseWebUrl = Uri.parse(Config.webUrl!);
       if (data.isNotEmpty) {
         await cookieManager.setCookie(
           url: baseWebUrl,

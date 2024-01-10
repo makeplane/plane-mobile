@@ -28,9 +28,11 @@ class _AppState extends ConsumerState<App> {
     final ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
     final WorkspaceProvider workspaceProv =
         ref.watch(ProviderList.workspaceProvider);
+    final configProvider = ref.watch(ProviderList.configProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
-        body: (profileProv.getProfileState == StateEnum.loading ||
+        body: (configProvider.getConfigState == StateEnum.loading ||
+                profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
             ? Center(
                 child: SizedBox(

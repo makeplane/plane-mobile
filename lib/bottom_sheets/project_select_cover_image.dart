@@ -63,7 +63,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
 
   List images = [];
   final dio = Dio();
-  final unspalshApi = dotenv.env['UNSPLASH_API'];
+  // final unspalshApi = dotenv.env['UNSPLASH_API'];
 
   Future getImages(bool isFirstReq) async {
     if (!isFirstReq) {
@@ -83,8 +83,8 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
 
     try {
       final url = searchController.text.isEmpty
-          ? 'https://api.unsplash.com/photos/?client_id=$unspalshApi&page=$page&per_page=$perPage'
-          : 'https://api.unsplash.com/search/photos/?client_id=$unspalshApi&query=${searchController.text}&page=$page&per_page=$perPage ';
+          ? 'https://api/unsplash/&page=$page&per_page=$perPage'
+          : 'https://api.unsplash/&query=${searchController.text}&page=$page&per_page=$perPage ';
       log(url);
       final response = await DioConfig().dioServe(
         hasAuth: false,
@@ -267,6 +267,9 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
                                 .themeManager.textFieldDecoration
                                 .copyWith(
                                     hintText: 'Search for images',
+                                    hintStyle: TextStyle(
+                                        color: themeProvider
+                                            .themeManager.placeholderTextColor),
                                     suffixIcon: searchController.text.isNotEmpty
                                         ? GestureDetector(
                                             onTap: () => setState(() {

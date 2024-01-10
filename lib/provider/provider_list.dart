@@ -4,6 +4,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/provider/activity_provider.dart';
 import 'package:plane/provider/auth_provider.dart';
 import 'package:plane/provider/bottom_nav_provider.dart';
+import 'package:plane/provider/config_provider.dart';
 import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/file_upload_provider.dart';
@@ -93,6 +94,10 @@ class ProviderList {
   static StateNotifierProvider<WhatsNewNotifier, WhatsNew> whatsNewProvider =
       StateNotifierProvider<WhatsNewNotifier, WhatsNew>(
           (ref) => WhatsNewNotifier(WhatsNew(null)));
+          
+  static StateNotifierProvider<ConfigProvider, ConfigModel> configProvider =
+      StateNotifierProvider<ConfigProvider, ConfigModel>(
+          (ref) => ConfigProvider(ref));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

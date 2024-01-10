@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/config/config_variables.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/my_issues_provider.dart';
 import 'package:plane/utils/enums.dart';
@@ -161,7 +161,7 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
       body: EDITOR(
         from: widget.from,
         url:
-            '${dotenv.env['WEB_URL']}m/$workspaceSlug/projects/$projID/issues/${widget.issueId}${widget.isArchive ? '?archive=true' : ''}',
+            '${Config.webUrl}m/$workspaceSlug/projects/$projID/issues/${widget.issueId}${widget.isArchive ? '?archive=true' : ''}',
         title: widget.appBarTitle,
       ),
     );

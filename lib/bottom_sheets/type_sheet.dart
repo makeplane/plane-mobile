@@ -20,11 +20,11 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
     final dynamic prov = widget.issueCategory == IssueCategory.myIssues
         ? ref.read(ProviderList.myIssuesProvider)
         : ref.read(ProviderList.issuesProvider);
-    selected = prov.issues.projectView == ProjectView.kanban
+    selected = prov.issues.projectView == IssueLayout.kanban
         ? 0
-        : prov.issues.projectView == ProjectView.list
+        : prov.issues.projectView == IssueLayout.list
             ? 1
-            : prov.issues.projectView == ProjectView.calendar
+            : prov.issues.projectView == IssueLayout.calendar
                 ? 2
                 : 3;
     super.initState();
@@ -80,13 +80,13 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                         .workspaceSlug;
 
                     if (widget.issueCategory == IssueCategory.myIssues) {
-                      myIssuesProv.issues.projectView = ProjectView.kanban;
+                      myIssuesProv.issues.projectView = IssueLayout.kanban;
                       myIssuesProv.setState();
                       myIssuesProv.updateMyIssueView();
                     } else {
-                      prov.issues.projectView = ProjectView.kanban;
+                      prov.issues.projectView = IssueLayout.kanban;
                       if (widget.issueCategory == IssueCategory.issues) {
-                        prov.tempProjectView = ProjectView.kanban;
+                        prov.tempProjectView = IssueLayout.kanban;
                       }
                       if (prov.issues.groupBY == GroupBY.none) {
                         prov.issues.groupBY = GroupBY.state;
@@ -108,7 +108,7 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           prov.filterIssues(slug: worspaceSlug, projID: projID);
                         }
                       }
-                      // prov.tempProjectView = ProjectView.kanban;
+                      // prov.tempProjectView = IssueLayout.kanban;
                       prov.setsState();
                       if (widget.issueCategory == IssueCategory.issues) {
                         prov.updateProjectView();
@@ -137,12 +137,12 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                             if (widget.issueCategory ==
                                 IssueCategory.myIssues) {
                               myIssuesProv.issues.projectView =
-                                  ProjectView.kanban;
+                                  IssueLayout.kanban;
                               myIssuesProv.setState();
                               myIssuesProv.updateMyIssueView();
                             } else {
-                              prov.issues.projectView = ProjectView.kanban;
-                              prov.tempProjectView = ProjectView.kanban;
+                              prov.issues.projectView = IssueLayout.kanban;
+                              prov.tempProjectView = IssueLayout.kanban;
                               prov.setsState();
                               if (widget.issueCategory ==
                                   IssueCategory.issues) {
@@ -174,13 +174,13 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                 child: InkWell(
                   onTap: () {
                     if (widget.issueCategory == IssueCategory.myIssues) {
-                      myIssuesProv.issues.projectView = ProjectView.list;
+                      myIssuesProv.issues.projectView = IssueLayout.list;
                       myIssuesProv.setState();
                       myIssuesProv.updateMyIssueView();
                     } else {
-                      prov.issues.projectView = ProjectView.list;
+                      prov.issues.projectView = IssueLayout.list;
                       if (widget.issueCategory == IssueCategory.issues) {
-                        prov.tempProjectView = ProjectView.list;
+                        prov.tempProjectView = IssueLayout.list;
                       }
                       prov.setsState();
 
@@ -211,12 +211,12 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                             if (widget.issueCategory ==
                                 IssueCategory.myIssues) {
                               myIssuesProv.issues.projectView =
-                                  ProjectView.list;
+                                  IssueLayout.list;
                               myIssuesProv.setState();
                               myIssuesProv.updateMyIssueView();
                             } else {
-                              prov.issues.projectView = ProjectView.list;
-                              prov.tempProjectView = ProjectView.list;
+                              prov.issues.projectView = IssueLayout.list;
+                              prov.tempProjectView = IssueLayout.list;
                               prov.setsState();
                               if (widget.issueCategory ==
                                   IssueCategory.issues) {
@@ -252,10 +252,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () {
-                          prov.issues.projectView = ProjectView.calendar;
+                          prov.issues.projectView = IssueLayout.calendar;
 
                           if (widget.issueCategory == IssueCategory.issues) {
-                            prov.tempProjectView = ProjectView.calendar;
+                            prov.tempProjectView = IssueLayout.calendar;
                           }
 
                           prov.setsState();
@@ -285,8 +285,8 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 value: 2,
                                 onChanged: (val) {
                                   prov.issues.projectView =
-                                      ProjectView.calendar;
-                                  prov.tempProjectView = ProjectView.calendar;
+                                      IssueLayout.calendar;
+                                  prov.tempProjectView = IssueLayout.calendar;
 
                                   prov.setsState();
                                   if (widget.issueCategory ==
@@ -322,10 +322,10 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () {
-                          prov.issues.projectView = ProjectView.spreadsheet;
+                          prov.issues.projectView = IssueLayout.spreadsheet;
 
                           if (widget.issueCategory == IssueCategory.issues) {
-                            prov.tempProjectView = ProjectView.spreadsheet;
+                            prov.tempProjectView = IssueLayout.spreadsheet;
                           }
 
                           prov.setsState();
@@ -355,9 +355,9 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                                 value: 3,
                                 onChanged: (val) {
                                   prov.issues.projectView =
-                                      ProjectView.spreadsheet;
+                                      IssueLayout.spreadsheet;
                                   prov.tempProjectView =
-                                      ProjectView.spreadsheet;
+                                      IssueLayout.spreadsheet;
 
                                   prov.setsState();
                                   if (widget.issueCategory ==
@@ -388,25 +388,25 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
           //     ontap: () {
           //       if (widget.issueCategory == IssueCategory.myIssues) {
           //         if (selected == 0) {
-          //           myIssuesProv.issues.projectView = ProjectView.kanban;
+          //           myIssuesProv.issues.projectView = IssueLayout.kanban;
           //         } else if (selected == 1) {
-          //           myIssuesProv.issues.projectView = ProjectView.list;
+          //           myIssuesProv.issues.projectView = IssueLayout.list;
           //         }
           //         myIssuesProv.setState();
           //         myIssuesProv.updateMyIssueView();
           //       } else {
           //         if (selected == 0) {
-          //           prov.issues.projectView = ProjectView.kanban;
-          //           prov.tempProjectView = ProjectView.kanban;
+          //           prov.issues.projectView = IssueLayout.kanban;
+          //           prov.tempProjectView = IssueLayout.kanban;
           //         } else if (selected == 1) {
-          //           prov.issues.projectView = ProjectView.list;
-          //           prov.tempProjectView = ProjectView.list;
+          //           prov.issues.projectView = IssueLayout.list;
+          //           prov.tempProjectView = IssueLayout.list;
           //         } else if (selected == 2) {
-          //           prov.issues.projectView = ProjectView.calendar;
-          //           prov.tempProjectView = ProjectView.calendar;
+          //           prov.issues.projectView = IssueLayout.calendar;
+          //           prov.tempProjectView = IssueLayout.calendar;
           //         } else if (selected == 3) {
-          //           prov.issues.projectView = ProjectView.spreadsheet;
-          //           prov.tempProjectView = ProjectView.spreadsheet;
+          //           prov.issues.projectView = IssueLayout.spreadsheet;
+          //           prov.tempProjectView = IssueLayout.spreadsheet;
           //         }
           //         prov.setsState();
           //         if (widget.issueCategory == IssueCategory.issues) {

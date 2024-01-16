@@ -444,7 +444,7 @@ class CyclesProvider with ChangeNotifier {
         items: items,
         shrink: shrinkStates[j],
         index: j,
-        width: issuesProvider.issues.projectView == ProjectView.list
+        width: issuesProvider.issues.projectView == IssueLayout.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],
@@ -831,12 +831,12 @@ class CyclesProvider with ChangeNotifier {
       log(response.toString());
       cycleView = response.data;
       issues.projectView = cycleView['display_filters']['layout'] == 'list'
-          ? ProjectView.list
+          ? IssueLayout.list
           : cycleView['display_filters']['layout'] == 'calendar'
-              ? ProjectView.calendar
+              ? IssueLayout.calendar
               : cycleView['display_filters']['layout'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
       issues.showSubIssues = cycleView['display_filters']['sub_issue'] ?? true;
       issues.groupBY =
           Issues.toGroupBY(cycleView["display_filters"]["group_by"]);
@@ -859,7 +859,7 @@ class CyclesProvider with ChangeNotifier {
       showEmptyStates = cycleView["display_filters"]["show_empty_groups"];
 
       if (issues.groupBY == GroupBY.none) {
-        issues.projectView = ProjectView.list;
+        issues.projectView = IssueLayout.list;
       }
       if (reset) {
         updateCycleView();
@@ -868,7 +868,7 @@ class CyclesProvider with ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
-      issues.projectView = ProjectView.kanban;
+      issues.projectView = IssueLayout.kanban;
       cycleViewState = StateEnum.error;
       notifyListeners();
     }
@@ -1001,11 +1001,11 @@ class CyclesProvider with ChangeNotifier {
           "type": Issues.fromIssueType(issues.issueType),
           "show_empty_groups": showEmptyStates,
           if (!isArchive)
-            "layout": issues.projectView == ProjectView.kanban
+            "layout": issues.projectView == IssueLayout.kanban
                 ? 'kanban'
-                : issues.projectView == ProjectView.list
+                : issues.projectView == IssueLayout.list
                     ? 'list'
-                    : issues.projectView == ProjectView.calendar
+                    : issues.projectView == IssueLayout.calendar
                         ? 'calendar'
                         : 'spreadsheet',
           "sub_issue": false,

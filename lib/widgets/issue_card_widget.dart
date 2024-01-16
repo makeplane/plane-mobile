@@ -90,12 +90,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             .watch(ProviderList.myIssuesProvider)
                             .issues
                             .projectView ==
-                        ProjectView.list
+                        IssueLayout.list
                     : ref
                             .watch(ProviderList.issuesProvider)
                             .issues
                             .projectView ==
-                        ProjectView.list)
+                        IssueLayout.list)
                 ? const EdgeInsets.only(bottom: 1)
                 : const EdgeInsets.only(bottom: 15, right: 5, left: 5, top: 5),
             decoration: BoxDecoration(
@@ -105,12 +105,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                               .watch(ProviderList.myIssuesProvider)
                               .issues
                               .projectView ==
-                          ProjectView.kanban
+                          IssueLayout.kanban
                       : ref
                               .watch(ProviderList.issuesProvider)
                               .issues
                               .projectView ==
-                          ProjectView.kanban)
+                          IssueLayout.kanban)
                   ? [
                       BoxShadow(
                         blurRadius: 2,
@@ -126,7 +126,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 .watch(ProviderList.issuesProvider)
                                 .issues
                                 .projectView ==
-                            ProjectView.list
+                            IssueLayout.list
                     ? width
                     : widget.issueCategory == IssueCategory.moduleIssues
                         ? width
@@ -152,12 +152,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 .watch(ProviderList.myIssuesProvider)
                                 .issues
                                 .projectView ==
-                            ProjectView.list
+                            IssueLayout.list
                         : ref
                                 .watch(ProviderList.issuesProvider)
                                 .issues
                                 .projectView ==
-                            ProjectView.list)
+                            IssueLayout.list)
                     ? listCard()
                     : kanbanCard()),
           ),
@@ -166,9 +166,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                           .watch(ProviderList.myIssuesProvider)
                           .issues
                           .projectView ==
-                      ProjectView.list
+                      IssueLayout.list
                   : ref.watch(ProviderList.issuesProvider).issues.projectView ==
-                      ProjectView.list)
+                      IssueLayout.list)
               ? Divider(
                   height: 1,
                   thickness: 1,

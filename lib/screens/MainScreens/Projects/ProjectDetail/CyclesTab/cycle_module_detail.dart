@@ -77,7 +77,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     issuesProvider.tempIssueType = issuesProvider.issues.issueType;
     issuesProvider.tempFilters = issuesProvider.issues.filters;
 
-    issuesProvider.issues.projectView = ProjectView.kanban;
+    issuesProvider.issues.projectView = IssueLayout.kanban;
     issuesProvider.issues.groupBY = GroupBY.state;
 
     issuesProvider.issues.orderBY = OrderBY.lastCreated;
@@ -138,7 +138,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 ref.read(ProviderList.projectProvider).currentProject['id'],
             ref: ref)
         .then((value) {
-      if (modulesProvider.issues.projectView == ProjectView.list) {
+      if (modulesProvider.issues.projectView == IssueLayout.list) {
         modulesProvider.initializeBoard();
       }
     });
@@ -183,7 +183,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 ref.read(ProviderList.projectProvider).currentProject['id'],
             ref: ref)
         .then((value) {
-      if (issuesProvider.issues.projectView == ProjectView.list) {
+      if (issuesProvider.issues.projectView == IssueLayout.list) {
         cyclesProvider.initializeBoard();
       }
     });
@@ -547,10 +547,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               projectId: widget.projId,
                                               type: IssueCategory.cycleIssues,
                                               ref: ref)
-                                          : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.list) ||
+                                          : ((!widget.fromModule && issueProvider.issues.projectView == IssueLayout.list) ||
                                                   (widget.fromModule &&
                                                       issueProvider.issues.projectView ==
-                                                          ProjectView.list))
+                                                          IssueLayout.list))
                                               ? Container(
                                                   color: themeProvider
                                                       .themeManager
@@ -674,10 +674,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                             .toList()),
                                                   ),
                                                 )
-                                              : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.kanban) ||
+                                              : ((!widget.fromModule && issueProvider.issues.projectView == IssueLayout.kanban) ||
                                                       (widget.fromModule &&
                                                           issueProvider.issues.projectView ==
-                                                              ProjectView.kanban))
+                                                              IssueLayout.kanban))
                                                   ? Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -803,7 +803,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                                     .w500),
                                                       ),
                                                     )
-                                                  : ((!widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar) || (widget.fromModule && issueProvider.issues.projectView == ProjectView.calendar))
+                                                  : ((!widget.fromModule && issueProvider.issues.projectView == IssueLayout.calendar) || (widget.fromModule && issueProvider.issues.projectView == IssueLayout.calendar))
                                                       ? const CalendarView()
                                                       : SpreadSheetView(
                                                           issueCategory:
@@ -926,7 +926,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                           .themeManager.borderSubtle01Color,
                                     ),
                                     issueProvider.issues.projectView ==
-                                            ProjectView.calendar
+                                            IssueLayout.calendar
                                         ? Container()
                                         : Expanded(
                                             child: GestureDetector(

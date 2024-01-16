@@ -21,7 +21,7 @@ class ViewsSheet extends ConsumerStatefulWidget {
     super.key,
   });
   final Enum issueCategory;
-  final ProjectView projectView;
+  final IssueLayout projectView;
   final bool fromView;
   final String? cycleId;
   final bool isArchived;
@@ -173,12 +173,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
               Column(
                 children: [
                   const SizedBox(height: 10),
-                  issueProvider.issues.projectView != ProjectView.spreadsheet
+                  issueProvider.issues.projectView != IssueLayout.spreadsheet
                       ? const SizedBox(
                           height: 40,
                         )
                       : Container(),
-                  issueProvider.issues.projectView != ProjectView.spreadsheet
+                  issueProvider.issues.projectView != IssueLayout.spreadsheet
                       ? CustomExpansionTile(
                           title: 'Group by',
                           child: Wrap(
@@ -377,7 +377,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                                           ListTileControlAffinity.leading,
                                       activeColor: themeProvider
                                           .themeManager.primaryColour),
-                              widget.projectView == ProjectView.list
+                              widget.projectView == IssueLayout.list
                                   ? RadioListTile(
                                       fillColor: groupBy == 'none'
                                           ? null
@@ -415,12 +415,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                 ],
               ),
 
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? customHorizontalLine()
                   : Container(),
 
               //expansion tile for order by having two checkboxes last created and last updated
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? CustomExpansionTile(
                       title: 'Order by',
                       child: Wrap(
@@ -560,12 +560,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     )
                   : Container(),
 
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? customHorizontalLine()
                   : Container(),
 
               //expansion tile for issue type having three checkboxes all issues, active issues and backlog issues
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? CustomExpansionTile(
                       title: 'Issue type',
                       child: Wrap(
@@ -650,11 +650,11 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     )
                   : Container(),
 
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? customHorizontalLine()
                   : Container(),
 
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? InkWell(
                       onTap: () {
                         setState(() {
@@ -703,10 +703,10 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                     )
                   : Container(),
 
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? customHorizontalLine()
                   : Container(),
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? InkWell(
                       onTap: () {
                         setState(() {
@@ -754,13 +754,13 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       ),
                     )
                   : Container(),
-              issueProvider.issues.projectView != ProjectView.spreadsheet
+              issueProvider.issues.projectView != IssueLayout.spreadsheet
                   ? Container(
                       height: 20,
                     )
                   : Container(),
 
-              issueProvider.issues.projectView == ProjectView.spreadsheet
+              issueProvider.issues.projectView == IssueLayout.spreadsheet
                   ? Container(
                       height: 45,
                     )
@@ -873,18 +873,18 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                           : (((tag['name'] == 'Created on' ||
                                           tag['name'] == 'Updated on') &&
                                       issueProvider.issues.projectView !=
-                                          ProjectView.spreadsheet) ||
+                                          IssueLayout.spreadsheet) ||
                                   ((tag['name'] == 'ID' ||
                                           tag['name'] == 'Attachment Count' ||
                                           tag['name'] == 'Link' ||
                                           tag['name'] == 'Sub Issue Count') &&
                                       issueProvider.issues.projectView ==
-                                          ProjectView.spreadsheet) ||
+                                          IssueLayout.spreadsheet) ||
                                   ((tag['name'] != 'Priority' &&
                                           tag['name'] != 'ID' &&
                                           tag['name'] != 'Assignee') &&
                                       issueProvider.issues.projectView ==
-                                          ProjectView.list))
+                                          IssueLayout.list))
                               ? const SizedBox()
                               : GestureDetector(
                                   onTap: () {

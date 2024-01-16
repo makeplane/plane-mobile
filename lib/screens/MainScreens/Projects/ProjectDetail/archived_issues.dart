@@ -25,7 +25,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
     super.initState();
     final issueProvider = ref.read(ProviderList.issuesProvider);
     issueProvider.tempProjectView = issueProvider.issues.projectView;
-    issueProvider.issues.projectView = ProjectView.list;
+    issueProvider.issues.projectView = IssueLayout.list;
 
     issueProvider.setsState();
     issueProvider.filterIssues(
@@ -44,7 +44,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
     final issueProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     // log(issueProvider.issueState.name);
-    if (issueProvider.issues.projectView == ProjectView.list) {
+    if (issueProvider.issues.projectView == IssueLayout.list) {
       issueProvider.initializeBoard(
         isArchive: true,
       );
@@ -315,7 +315,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                                                   .borderSubtle01Color,
                                             ),
                                             issueProvider.issues.projectView ==
-                                                    ProjectView.calendar
+                                                    IssueLayout.calendar
                                                 ? Container()
                                                 : Expanded(
                                                     child: InkWell(
@@ -350,7 +350,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                                                                       .issues,
                                                               isArchived: true,
                                                               projectView:
-                                                                  ProjectView
+                                                                  IssueLayout
                                                                       .list,
                                                             );
                                                           });

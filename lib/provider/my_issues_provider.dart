@@ -73,7 +73,7 @@ class MyIssuesProvider extends ChangeNotifier {
     issues = Issues(
         showSubIssues: true,
         issues: [],
-        projectView: ProjectView.kanban,
+        projectView: IssueLayout.kanban,
         groupBY: GroupBY.state,
         orderBY: OrderBY.manual,
         issueType: IssueType.all,
@@ -141,12 +141,12 @@ class MyIssuesProvider extends ChangeNotifier {
       );
       myIssueView = response.data["view_props"];
       issues.projectView = myIssueView["display_filters"]['layout'] == 'list'
-          ? ProjectView.list
+          ? IssueLayout.list
           : myIssueView["display_filters"]['layout'] == 'calendar'
-              ? ProjectView.calendar
+              ? IssueLayout.calendar
               : myIssueView["display_filters"]['layout'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
       issues.groupBY =
           Issues.toGroupBY(myIssueView["display_filters"]['group_by']);
       issues.orderBY =
@@ -195,7 +195,7 @@ class MyIssuesProvider extends ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log("MY ISSUES:${e.response}");
-      issues.projectView = ProjectView.kanban;
+      issues.projectView = IssueLayout.kanban;
       myIssuesViewState = StateEnum.error;
       notifyListeners();
     }
@@ -519,7 +519,7 @@ class MyIssuesProvider extends ChangeNotifier {
           items: items,
           shrink: j >= shrinkStates.length ? false : shrinkStates[j],
           index: j,
-          width: issues.projectView == ProjectView.list
+          width: issues.projectView == IssueLayout.list
               ? MediaQuery.of(Const.globalKey.currentContext!).size.width
               : (width > 500 ? 400 : width * 0.8),
           // shrink: shrinkStates[count++],
@@ -860,11 +860,11 @@ class MyIssuesProvider extends ChangeNotifier {
                 "start_date": issues.filters.startDate,
             },
             "display_filters": {
-              "layout": issues.projectView == ProjectView.kanban
+              "layout": issues.projectView == IssueLayout.kanban
                   ? 'kanban'
-                  : issues.projectView == ProjectView.list
+                  : issues.projectView == IssueLayout.list
                       ? 'list'
-                      : issues.projectView == ProjectView.calendar
+                      : issues.projectView == IssueLayout.calendar
                           ? 'calendar'
                           : 'spreadsheet',
               "group_by": Issues.fromGroupBY(issues.groupBY),

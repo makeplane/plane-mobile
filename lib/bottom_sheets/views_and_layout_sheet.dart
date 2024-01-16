@@ -141,11 +141,11 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
     final dynamic prov = widget.issueCategory == IssueCategory.myIssues
         ? ref.read(ProviderList.myIssuesProvider)
         : ref.read(ProviderList.issuesProvider);
-    selected = prov.issues.projectView == ProjectView.kanban
+    selected = prov.issues.projectView == IssueLayout.kanban
         ? 0
-        : prov.issues.projectView == ProjectView.list
+        : prov.issues.projectView == IssueLayout.list
             ? 1
-            : prov.issues.projectView == ProjectView.calendar
+            : prov.issues.projectView == IssueLayout.calendar
                 ? 2
                 : 3;
 
@@ -298,7 +298,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                         child: InkWell(
                           onTap: () {
                             myIssuesProvider.issues.projectView =
-                                ProjectView.list;
+                                IssueLayout.list;
                             myIssuesProvider.setState();
                             myIssuesProvider.updateMyIssueView();
                             Navigator.of(context).pop();
@@ -340,7 +340,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                         child: InkWell(
                           onTap: () {
                             myIssuesProvider.issues.projectView =
-                                ProjectView.kanban;
+                                IssueLayout.kanban;
                             myIssuesProvider.setState();
                             myIssuesProvider.updateMyIssueView();
                             Navigator.of(context).pop();
@@ -636,7 +636,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                             .themeManager.primaryColour),
 
                                 myIssuesProvider.issues.projectView ==
-                                        ProjectView.list
+                                        IssueLayout.list
                                     ? RadioListTile(
                                         fillColor: groupBy == 'none'
                                             ? null
@@ -980,7 +980,7 @@ class _ViewsAndLayoutSheetState extends ConsumerState<ViewsAndLayoutSheet> {
                                           tag['name'] != 'ID' &&
                                           tag['name'] != 'Assignee') &&
                                       myIssuesProvider.issues.projectView ==
-                                          ProjectView.list)
+                                          IssueLayout.list)
                                   ? const SizedBox()
                                   : GestureDetector(
                                       onTap: () {

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -64,7 +63,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     issuesProvider.tempIssueType = issuesProvider.issues.issueType;
     issuesProvider.tempFilters = issuesProvider.issues.filters;
 
-    issuesProvider.issues.projectView = ProjectView.kanban;
+    issuesProvider.issues.projectView = IssueLayout.kanban;
     issuesProvider.issues.groupBY = GroupBY.state;
 
     issuesProvider.issues.orderBY = OrderBY.lastCreated;
@@ -330,7 +329,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 color: themeProvider.themeManager.borderSubtle01Color,
                 width: double.infinity,
               ),
-              Expanded(child: issues(context, ref, isViews: true)),
+              // TODO: Add views here
+              // Expanded(child: issues(context, ref, isViews: true)),
               SafeArea(
                 child: Container(
                   height: 50,

@@ -61,7 +61,7 @@ class Issues {
       required this.showSubIssues,
       required this.displayProperties});
   List<BoardListsData> issues = [];
-  ProjectView projectView;
+  IssueLayout projectView;
   GroupBY groupBY = GroupBY.state;
   OrderBY orderBY = OrderBY.manual;
   bool showSubIssues = true;
@@ -84,7 +84,7 @@ class Issues {
     return Issues(
       issues: [],
       showSubIssues: true,
-      projectView: ProjectView.kanban,
+      projectView: IssueLayout.kanban,
       groupBY: GroupBY.state,
       orderBY: OrderBY.lastCreated,
       issueType: IssueType.all,

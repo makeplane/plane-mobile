@@ -446,7 +446,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
     // log(issueProvider.issueState.name);
-    if (issueProvider.issues.projectView == ProjectView.list) {
+    if (issueProvider.issues.projectView == IssueLayout.list) {
       issueProvider.initializeBoard();
     }
 
@@ -455,7 +455,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
           issueProvider.myIssuesFilterState == StateEnum.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
-        padding: issueProvider.issues.projectView == ProjectView.kanban
+        padding: issueProvider.issues.projectView == IssueLayout.kanban
             ? const EdgeInsets.only(top: 15, left: 0)
             : null,
         child: issueProvider.myIssuesViewState == StateEnum.loading
@@ -484,7 +484,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                             ),
                     ],
                   )
-                : issueProvider.issues.projectView == ProjectView.list
+                : issueProvider.issues.projectView == IssueLayout.list
                     ? Container(
                         color: themeProvider
                             .themeManager.secondaryBackgroundDefaultColor,

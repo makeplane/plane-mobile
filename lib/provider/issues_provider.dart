@@ -53,7 +53,7 @@ class IssuesProvider extends ChangeNotifier {
     subscriber: [],
   );
   IssueType tempIssueType = IssueType.all;
-  ProjectView tempProjectView = ProjectView.kanban;
+  IssueLayout tempProjectView = IssueLayout.kanban;
   OrderBY tempOrderBy = OrderBY.lastCreated;
   Map stateIcons = {};
   Map issueProperty = {};
@@ -145,7 +145,7 @@ class IssuesProvider extends ChangeNotifier {
     showEmptyStates = true;
     issues = Issues(
         issues: [],
-        projectView: ProjectView.kanban,
+        projectView: IssueLayout.kanban,
         groupBY: GroupBY.state,
         orderBY: OrderBY.manual,
         showSubIssues: true,
@@ -272,7 +272,7 @@ class IssuesProvider extends ChangeNotifier {
         items: items,
         shrink: j >= shrinkStates.length ? false : shrinkStates[j],
         index: j,
-        width: issues.projectView == ProjectView.list
+        width: issues.projectView == IssueLayout.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : (width > 500 ? 400 : width * 0.8),
         // shrink: shrinkStates[count++],
@@ -1195,11 +1195,11 @@ class IssuesProvider extends ChangeNotifier {
           "type": Issues.fromIssueType(issues.issueType),
           "show_empty_groups": showEmptyStates,
           if (!isArchive)
-            "layout": issues.projectView == ProjectView.kanban
+            "layout": issues.projectView == IssueLayout.kanban
                 ? 'kanban'
-                : issues.projectView == ProjectView.list
+                : issues.projectView == IssueLayout.list
                     ? 'list'
-                    : issues.projectView == ProjectView.calendar
+                    : issues.projectView == IssueLayout.calendar
                         ? 'calendar'
                         : 'spreadsheet',
           "sub_issue": false,
@@ -1257,12 +1257,12 @@ class IssuesProvider extends ChangeNotifier {
       issueView =
           reset ? response.data["default_props"] : response.data["view_props"];
       issues.projectView = issueView['display_filters']['layout'] == 'list'
-          ? ProjectView.list
+          ? IssueLayout.list
           : issueView['display_filters']['layout'] == 'calendar'
-              ? ProjectView.calendar
+              ? IssueLayout.calendar
               : issueView['display_filters']['layout'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
       issues.showSubIssues = issueView['display_filters']['sub_issue'] ?? true;
       issues.groupBY =
           Issues.toGroupBY(issueView["display_filters"]["group_by"]);
@@ -1285,7 +1285,7 @@ class IssuesProvider extends ChangeNotifier {
       showEmptyStates = issueView["display_filters"]["show_empty_groups"];
 
       if (issues.groupBY == GroupBY.none) {
-        issues.projectView = ProjectView.list;
+        issues.projectView = IssueLayout.list;
       }
       if (reset) {
         updateProjectView();
@@ -1294,7 +1294,7 @@ class IssuesProvider extends ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
-      issues.projectView = ProjectView.kanban;
+      issues.projectView = IssueLayout.kanban;
       projectViewState = StateEnum.error;
       notifyListeners();
     }

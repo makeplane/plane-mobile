@@ -553,7 +553,7 @@ class ModuleProvider with ChangeNotifier {
         items: items,
         shrink: shrinkStates[j],
         index: j,
-        width: issuesProvider.issues.projectView == ProjectView.list
+        width: issuesProvider.issues.projectView == IssueLayout.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],

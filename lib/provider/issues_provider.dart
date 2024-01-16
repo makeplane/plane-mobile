@@ -26,7 +26,6 @@ class IssuesProvider extends ChangeNotifier {
   IssuesProvider(ChangeNotifierProviderRef<IssuesProvider> this.ref);
   Ref? ref;
   StateEnum statesState = StateEnum.empty;
-  StateEnum membersState = StateEnum.empty;
   StateEnum issueState = StateEnum.empty;
   StateEnum labelState = StateEnum.empty;
   StateEnum orderByState = StateEnum.empty;
@@ -65,7 +64,7 @@ class IssuesProvider extends ChangeNotifier {
   List labels = [];
   Map states = {};
   Map statesData = {};
-  List members = [];
+  // List members = [];
   Map projectView = {};
   Map groupByResponse = {};
   List shrinkStates = [];
@@ -176,7 +175,6 @@ class IssuesProvider extends ChangeNotifier {
     labels = [];
     states = {};
     statesData = {};
-    members = [];
     projectView = {};
     groupByResponse = {};
 
@@ -215,6 +213,8 @@ class IssuesProvider extends ChangeNotifier {
     int count = 0;
     issuesResponse = [];
     issues.issues = [];
+    final projectMembers =
+        ref!.read(ProviderList.projectProvider).projectMembers;
     for (int j = 0; j < groupByResponse.length; j++) {
       final List<Widget> items = [];
       final groupedIssues = groupByResponse.values.elementAt(j);
@@ -246,13 +246,11 @@ class IssuesProvider extends ChangeNotifier {
         }
       }
 
-      for (int i = 0; i < members.length; i++) {
-        if (groupID == members[i]['member']['id']) {
-          userName = members[i]['member']['first_name'] +
-              ' ' +
-              members[i]['member']['last_name'];
+      for (int i = 0; i < projectMembers.length; i++) {
+        if (groupID == projectMembers[i]['member']) {
+          userName = projectMembers[i]['member']['display_name'];
           userName = userName.trim().isEmpty
-              ? members[i]['member']['email']
+              ? projectMembers[i]['member']['email']
               : userName;
           userFound = true;
           break;
@@ -820,10 +818,10 @@ class IssuesProvider extends ChangeNotifier {
         );
 
         ref.read(ProviderList.modulesProvider).filterModuleIssues(
-              slug: slug,
-              projectId:
-                  ref.read(ProviderList.projectProvider).currentProject["id"],
-            );
+            slug: slug,
+            projectId:
+                ref.read(ProviderList.projectProvider).currentProject["id"],
+            ref: ref);
         filterIssues(
           slug: ref
               .read(ProviderList.workspaceProvider)
@@ -839,10 +837,9 @@ class IssuesProvider extends ChangeNotifier {
           projId: projID,
           issues: [response.data['id']],
         );
-        ref.read(ProviderList.cyclesProvider).filterCycleIssues(
-              slug: slug,
-              projectId: projID,
-            );
+        ref
+            .read(ProviderList.cyclesProvider)
+            .filterCycleIssues(slug: slug, projectId: projID, ref: ref);
         filterIssues(
           slug: slug,
           projID: projID,
@@ -923,39 +920,6 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getProjectMembers({
-    required String slug,
-    required String projID,
-  }) async {
-    membersState = StateEnum.loading;
-    //notifyListeners();
-    try {
-      final response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.projectMembers
-            .replaceAll("\$SLUG", slug)
-            .replaceAll('\$PROJECTID', projID),
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      members = response.data;
-      for (final element in members) {
-        if (element["member"]['id'] ==
-            ref!.read(ProviderList.profileProvider).userProfile.id) {
-          ref!.read(ProviderList.projectProvider).role =
-              roleParser(role: element["role"]);
-          break;
-        }
-      }
-      membersState = StateEnum.success;
-      notifyListeners();
-    } on DioException catch (e) {
-      log(e.response.toString());
-      membersState = StateEnum.error;
-      notifyListeners();
-    }
-  }
-
   Future getIssueDisplayProperties({required Enum issueCategory}) async {
     final cyclesProvider = ref!.read(ProviderList.cyclesProvider);
     final modulesProvider = ref!.read(ProviderList.modulesProvider);
@@ -1016,114 +980,114 @@ class IssuesProvider extends ChangeNotifier {
         } else {
           issueProperty = response.data;
           issues.displayProperties.assignee =
-              issueProperty['properties']['assignee'];
+              issueProperty['display_properties']['assignee'];
           issues.displayProperties.dueDate =
-              issueProperty['properties']['due_date'];
-          issues.displayProperties.id = issueProperty['properties']['key'];
+              issueProperty['display_properties']['due_date'];
+          issues.displayProperties.id = issueProperty['display_properties']['key'];
           issues.displayProperties.label =
-              issueProperty['properties']['labels'];
-          issues.displayProperties.state = issueProperty['properties']['state'];
+              issueProperty['display_properties']['labels'];
+          issues.displayProperties.state = issueProperty['display_properties']['state'];
           issues.displayProperties.subIsseCount =
-              issueProperty['properties']['sub_issue_count'];
+              issueProperty['display_properties']['sub_issue_count'];
           issues.displayProperties.linkCount =
-              issueProperty['properties']['link'];
+              issueProperty['display_properties']['link'];
           issues.displayProperties.attachmentCount =
-              issueProperty['properties']['attachment_count'];
+              issueProperty['display_properties']['attachment_count'];
           issues.displayProperties.priority =
-              issueProperty['properties']['priority'];
+              issueProperty['display_properties']['priority'];
           issues.displayProperties.estimate =
-              issueProperty['properties']['estimate'];
+              issueProperty['display_properties']['estimate'];
           issues.displayProperties.startDate =
-              issueProperty['properties']['start_date'];
+              issueProperty['display_properties']['start_date'];
           issues.displayProperties.createdOn =
-              issueProperty['properties']['created_on'];
+              issueProperty['display_properties']['created_on'];
           issues.displayProperties.updatedOn =
-              issueProperty['properties']['updated_on'];
+              issueProperty['display_properties']['updated_on'];
         }
       } else {
         if (issueCategory == IssueCategory.cycleIssues) {
           cyclesProvider.issueProperty = response.data;
           issues.displayProperties.assignee =
-              cyclesProvider.issueProperty['properties']['assignee'];
+              cyclesProvider.issueProperty['display_properties']['assignee'];
           cyclesProvider.issues.displayProperties.dueDate =
-              cyclesProvider.issueProperty['properties']['due_date'];
+              cyclesProvider.issueProperty['display_properties']['due_date'];
           cyclesProvider.issues.displayProperties.id =
-              cyclesProvider.issueProperty['properties']['key'];
+              cyclesProvider.issueProperty['display_properties']['key'];
           cyclesProvider.issues.displayProperties.label =
-              cyclesProvider.issueProperty['properties']['labels'];
+              cyclesProvider.issueProperty['display_properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
-              cyclesProvider.issueProperty['properties']['state'];
+              cyclesProvider.issueProperty['display_properties']['state'];
           cyclesProvider.issues.displayProperties.subIsseCount =
-              cyclesProvider.issueProperty['properties']['sub_issue_count'];
+              cyclesProvider.issueProperty['display_properties']['sub_issue_count'];
           cyclesProvider.issues.displayProperties.linkCount =
-              cyclesProvider.issueProperty['properties']['link'];
+              cyclesProvider.issueProperty['display_properties']['link'];
           cyclesProvider.issues.displayProperties.attachmentCount =
-              cyclesProvider.issueProperty['properties']['attachment_count'];
+              cyclesProvider.issueProperty['display_properties']['attachment_count'];
           cyclesProvider.issues.displayProperties.priority =
-              cyclesProvider.issueProperty['properties']['priority'];
+              cyclesProvider.issueProperty['display_properties']['priority'];
           cyclesProvider.issues.displayProperties.estimate =
-              cyclesProvider.issueProperty['properties']['estimate'];
+              cyclesProvider.issueProperty['display_properties']['estimate'];
           cyclesProvider.issues.displayProperties.startDate =
-              cyclesProvider.issueProperty['properties']['start_date'];
+              cyclesProvider.issueProperty['display_properties']['start_date'];
           ref!.read(ProviderList.cyclesProvider).issues.displayProperties =
               cyclesProvider.issues.displayProperties;
         } else if (issueCategory == IssueCategory.moduleIssues) {
           modulesProvider.issueProperty = response.data;
           issues.displayProperties.assignee =
-              modulesProvider.issueProperty['properties']['assignee'];
+              modulesProvider.issueProperty['display_properties']['assignee'];
           modulesProvider.issues.displayProperties.dueDate =
-              modulesProvider.issueProperty['properties']['due_date'];
+              modulesProvider.issueProperty['display_properties']['due_date'];
           modulesProvider.issues.displayProperties.id =
-              modulesProvider.issueProperty['properties']['key'];
+              modulesProvider.issueProperty['display_properties']['key'];
           issues.displayProperties.label =
-              issueProperty['properties']['labels'];
+              issueProperty['display_properties']['labels'];
           modulesProvider.issues.displayProperties.state =
-              modulesProvider.issueProperty['properties']['state'];
+              modulesProvider.issueProperty['display_properties']['state'];
           modulesProvider.issues.displayProperties.subIsseCount =
-              modulesProvider.issueProperty['properties']['sub_issue_count'];
+              modulesProvider.issueProperty['display_properties']['sub_issue_count'];
           modulesProvider.issues.displayProperties.linkCount =
-              modulesProvider.issueProperty['properties']['link'];
+              modulesProvider.issueProperty['display_properties']['link'];
           modulesProvider.issues.displayProperties.attachmentCount =
-              modulesProvider.issueProperty['properties']['attachment_count'];
+              modulesProvider.issueProperty['display_properties']['attachment_count'];
           modulesProvider.issues.displayProperties.priority =
-              modulesProvider.issueProperty['properties']['priority'];
+              modulesProvider.issueProperty['display_properties']['priority'];
           modulesProvider.issues.displayProperties.estimate =
-              modulesProvider.issueProperty['properties']['estimate'];
+              modulesProvider.issueProperty['display_properties']['estimate'];
           modulesProvider.issues.displayProperties.startDate =
-              modulesProvider.issueProperty['properties']['start_date'];
+              modulesProvider.issueProperty['display_properties']['start_date'];
           modulesProvider.issues.displayProperties.createdOn =
-              modulesProvider.issueProperty['properties']?['created_on'] ??
+              modulesProvider.issueProperty['display_properties']?['created_on'] ??
                   false;
           modulesProvider.issues.displayProperties.updatedOn =
-              modulesProvider.issueProperty['properties']['updated_on'];
+              modulesProvider.issueProperty['display_properties']['updated_on'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =
               modulesProvider.issues.displayProperties;
         } else {
           issueProperty = response.data;
           issues.displayProperties.assignee =
-              issueProperty['properties']['assignee'];
+              issueProperty['display_properties']['assignee'];
           issues.displayProperties.dueDate =
-              issueProperty['properties']['due_date'];
-          issues.displayProperties.id = issueProperty['properties']['key'];
+              issueProperty['display_properties']['due_date'];
+          issues.displayProperties.id = issueProperty['display_properties']['key'];
           issues.displayProperties.label =
-              issueProperty['properties']['labels'];
-          issues.displayProperties.state = issueProperty['properties']['state'];
+              issueProperty['display_properties']['labels'];
+          issues.displayProperties.state = issueProperty['display_properties']['state'];
           issues.displayProperties.subIsseCount =
-              issueProperty['properties']['sub_issue_count'];
+              issueProperty['display_properties']['sub_issue_count'];
           issues.displayProperties.linkCount =
-              issueProperty['properties']['link'];
+              issueProperty['display_properties']['link'];
           issues.displayProperties.attachmentCount =
-              issueProperty['properties']['attachment_count'];
+              issueProperty['display_properties']['attachment_count'];
           issues.displayProperties.priority =
-              issueProperty['properties']['priority'];
+              issueProperty['display_properties']['priority'];
           issues.displayProperties.estimate =
-              issueProperty['properties']['estimate'];
+              issueProperty['display_properties']['estimate'];
           issues.displayProperties.startDate =
-              issueProperty['properties']['start_date'] ?? false;
+              issueProperty['display_properties']['start_date'] ?? false;
           issues.displayProperties.createdOn =
-              issueProperty['properties']['created_on'] ?? false;
+              issueProperty['display_properties']['created_on'] ?? false;
           issues.displayProperties.updatedOn =
-              issueProperty['properties']['updated_on'] ?? false;
+              issueProperty['display_properties']['updated_on'] ?? false;
 
           // ref!.read(ProviderList.cyclesProvider).issues.displayProperties = issues.displayProperties;
         }
@@ -1337,10 +1301,12 @@ class IssuesProvider extends ChangeNotifier {
   }
 
   void applyIssueView() {
+    final projectMembers =
+        ref!.read(ProviderList.projectProvider).projectMembers;
     final labelIds = labels.map((e) => e['id']).toList();
     groupByResponse = IssueFilterHelper.organizeIssues(
         issuesList, issues.groupBY, issues.orderBY,
-        labels: labelIds, members: members, states: states);
+        labels: labelIds, members: projectMembers, states: states);
   }
 
   Future filterIssues({
@@ -1348,17 +1314,19 @@ class IssuesProvider extends ChangeNotifier {
     required String projID,
     bool fromViews = false,
     bool isArchived = false,
-    String? cycleId,
-    String? moduleId,
     Enum issueCategory = IssueCategory.issues,
   }) async {
+    final projectProvider = ref!.read(ProviderList.projectProvider);
     orderByState = StateEnum.loading;
     notifyListeners();
 
     if (issues.groupBY == GroupBY.labels) {
       getLabels(slug: slug, projID: projID);
     } else if (issues.groupBY == GroupBY.createdBY) {
-      getProjectMembers(slug: slug, projID: projID);
+      projectProvider.getProjectMembers(
+        slug: slug,
+        projId: projID,
+      );
     } else if (issues.groupBY == GroupBY.state) {
       getStates(
         slug: slug,
@@ -1382,7 +1350,6 @@ class IssuesProvider extends ChangeNotifier {
         .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
     url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
     url = '$url&sub_issue=${issues.showSubIssues}';
-    log('URL: $url');
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
@@ -1390,13 +1357,12 @@ class IssuesProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      issuesList = response.data.values.toList();
+      issuesList = response.data;
       final organizedIssues = IssueFilterHelper.organizeIssues(
           issuesList, issues.groupBY, issues.orderBY,
           labels: labels.map((e) => e['id']).toList(),
-          members: members,
+          members: projectProvider.projectMembers,
           states: states);
-
       if (issueCategory == IssueCategory.issues) {
         groupByResponse = organizedIssues;
       } else if (issueCategory == IssueCategory.cycleIssues ||

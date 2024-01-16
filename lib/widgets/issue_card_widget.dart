@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
@@ -198,16 +201,17 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
             ? Container(
                 margin: const EdgeInsets.only(top: 15),
                 child: CustomRichText(
-                    type: FontStyle.Small,
-                    color: themeProvider.themeManager.placeholderTextColor,
-                    widgets: [
-                      TextSpan(
-                          text: provider.issuesResponse[widget.cardIndex]
-                              ['project_detail']['identifier']),
-                      TextSpan(
-                          text:
-                              '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'),
-                    ]))
+                  type: FontStyle.Small,
+                  color: themeProvider.themeManager.placeholderTextColor,
+                  widgets: [
+                    TextSpan(
+                        text: projectProvider.currentProject['identifier']),
+                    TextSpan(
+                        text:
+                            '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'),
+                  ],
+                ),
+              )
             : Container(),
         const SizedBox(
           height: 10,
@@ -329,156 +333,116 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             width: 0,
                           ),
                     (provider.issues.displayProperties.label == true &&
-                            provider.issuesResponse[widget.cardIndex]
-                                    ['label_details'] !=
-                                null &&
                             provider
-                                .issuesResponse[widget.cardIndex]
-                                    ['label_details']
+                                .issuesResponse[widget.cardIndex]['label_ids']
                                 .isNotEmpty)
-                        ? SizedBox(
-                            height: 30,
-                            child: provider
-                                        .issuesResponse[widget.cardIndex]
-                                            ['label_details']
-                                        .length >
-                                    1
-                                ? Container(
-                                    width: 80,
-                                    margin: const EdgeInsets.only(right: 5),
-                                    padding: const EdgeInsets.only(
-                                      left: 8,
-                                      right: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: themeProvider
-                                              .themeManager.borderSubtle01Color,
-                                        ),
-                                        borderRadius: BorderRadius.circular(4)),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 5,
-                                          backgroundColor: provider
-                                              .issuesResponse[widget.cardIndex]
-                                                  ['label_details'][0]['color']
-                                              .toString()
-                                              .toColor(),
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        CustomText(
-                                          '${provider.issuesResponse[widget.cardIndex]['label_details'].length} Labels',
-                                          type: FontStyle.XSmall,
-                                          height: 1,
-                                          color: themeProvider
-                                              .themeManager.tertiaryTextColor,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    margin: const EdgeInsets.only(right: 5),
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.horizontal,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['label_details']
-                                          .length,
-                                      itemBuilder: (context, idx) {
-                                        return Container(
-                                          height: 30,
-                                          padding: const EdgeInsets.only(
-                                            left: 8,
-                                            right: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .borderSubtle01Color),
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 5,
-                                                backgroundColor: provider
-                                                    .issuesResponse[
-                                                        widget.cardIndex]
-                                                        ['label_details'][idx]
-                                                        ['color']
-                                                    .toString()
-                                                    .toColor(),
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Container(
-                                                constraints:
-                                                    const BoxConstraints(
-                                                        maxWidth: 120),
-                                                child: CustomText(
-                                                  provider.issuesResponse[
-                                                              widget.cardIndex]
-                                                          ['label_details'][idx]
-                                                      ['name'],
-                                                  type: FontStyle.XSmall,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  height: 1,
-                                                  color: themeProvider
-                                                      .themeManager
-                                                      .tertiaryTextColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                          )
-                        : (provider.issues.displayProperties.label == true &&
-                                provider
-                                    .issuesResponse[widget.cardIndex]
-                                        ['label_details']
-                                    .isEmpty)
+                        ? provider.issuesResponse[widget.cardIndex]['label_ids']
+                                    .length ==
+                                1
                             ? Container(
-                                height: 30,
+                                width: 80,
                                 margin: const EdgeInsets.only(right: 5),
-                                alignment: Alignment.center,
                                 padding: const EdgeInsets.only(
                                   left: 8,
                                   right: 8,
                                 ),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: themeProvider
-                                            .themeManager.borderSubtle01Color),
+                                      color: themeProvider
+                                          .themeManager.borderSubtle01Color,
+                                    ),
                                     borderRadius: BorderRadius.circular(4)),
-                                child: CustomText(
-                                  'No Label',
-                                  type: FontStyle.XSmall,
-                                  height: 1,
-                                  color: themeProvider
-                                      .themeManager.tertiaryTextColor,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 5,
+                                      backgroundColor: getLabelDetail(
+                                              provider.issuesResponse[
+                                                      widget.cardIndex]
+                                                  ['label_ids'][0])['color']
+                                          .toString()
+                                          .toColor(),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    CustomText(
+                                      '${provider.issuesResponse[widget.cardIndex]['label_ids'].length} Labels',
+                                      type: FontStyle.XSmall,
+                                      height: 1,
+                                      color: themeProvider
+                                          .themeManager.tertiaryTextColor,
+                                    ),
+                                  ],
                                 ),
                               )
                             : Container(
-                                width: 0,
-                              ),
+                                margin: const EdgeInsets.only(right: 5),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: provider
+                                      .issuesResponse[widget.cardIndex]
+                                          ['label_ids']
+                                      .length,
+                                  itemBuilder: (context, idx) {
+                                    return Container(
+                                      height: 30,
+                                      padding: const EdgeInsets.only(
+                                        left: 8,
+                                        right: 8,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: themeProvider.themeManager
+                                                  .borderSubtle01Color),
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: getLabelDetail(
+                                                    provider.issuesResponse[
+                                                                widget
+                                                                    .cardIndex]
+                                                            ['label_details']
+                                                        [idx])['color']
+                                                .toString()
+                                                .toColor(),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Container(
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 120),
+                                            child: CustomText(
+                                              getLabelDetail(
+                                                  provider.issuesResponse[
+                                                              widget.cardIndex]
+                                                          ['label_details']
+                                                      [idx])['name'],
+                                              type: FontStyle.XSmall,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              height: 1,
+                                              color: themeProvider.themeManager
+                                                  .tertiaryTextColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                        : Container(),
                     provider.issues.displayProperties.dueDate == true
                         ? Container(
                             height: 30,
@@ -902,5 +866,16 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         ],
       ),
     );
+  }
+
+  Map getLabelDetail(String issueId) {
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    Map? issueDetail;
+    for (final label in issuesProvider.labels) {
+      if (issueId == label['id']) {
+        log(issueId);
+      }
+    }
+    return issueDetail!;
   }
 }

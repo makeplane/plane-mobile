@@ -26,18 +26,19 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
 
   @override
   void initState() {
-    if (ref.read(ProviderList.issuesProvider).members.isEmpty ||
+    if (ref.read(ProviderList.projectProvider).projectMembers.isEmpty ||
         widget.createIssue) {
-      ref.read(ProviderList.issuesProvider).getProjectMembers(
+      ref.read(ProviderList.projectProvider).getProjectMembers(
           slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace
               .workspaceSlug,
-          projID: widget.createIssue
+          projId: widget.createIssue
               ? ref
                   .read(ProviderList.issuesProvider)
                   .createIssueProjectData['id']
-              : ref.read(ProviderList.projectProvider).currentProject['id']);
+              : ref.read(ProviderList.projectProvider).currentProject['id'],
+          );
     }
     selectedMembers =
         ref.read(ProviderList.issuesProvider).createIssuedata['members'] ?? {};
@@ -60,6 +61,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final issueProvider = ref.watch(ProviderList.issueProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return WillPopScope(
       onWillPop: () async {
         issuesProvider.createIssuedata['members'] =
@@ -106,7 +108,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                     child: ListView(
                       children: [
                         ListView.builder(
-                            itemCount: issuesProvider.members.length,
+                            itemCount: projectProvider.projectMembers.length,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
@@ -115,37 +117,42 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                 onTap: () {
                                   if (widget.createIssue) {
                                     setState(() {
-                                      if (selectedMembers[
-                                              issuesProvider.members[index]
-                                                  ['member']['id']] ==
+                                      if (selectedMembers[projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['id']] ==
                                           null) {
-                                        selectedMembers[issuesProvider
-                                            .members[index]['member']['id']] = {
-                                          "avatar":
-                                              issuesProvider.members[index]
-                                                  ['member']['avatar'],
-                                          "display_name":
-                                              issuesProvider.members[index]
-                                                  ['member']['display_name'],
-                                          "id": issuesProvider.members[index]
+                                        selectedMembers[projectProvider
+                                                .projectMembers[index]['member']
+                                            ['id']] = {
+                                          "avatar": projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['avatar'],
+                                          "display_name": projectProvider
+                                                  .projectMembers[index]
+                                              ['member']['display_name'],
+                                          "id": projectProvider
+                                                  .projectMembers[index]
                                               ['member']['id']
                                         };
                                       } else {
-                                        selectedMembers.remove(issuesProvider
-                                            .members[index]['member']['id']);
+                                        selectedMembers.remove(projectProvider
+                                                .projectMembers[index]['member']
+                                            ['id']);
                                       }
                                     });
                                   } else {
                                     setState(() {
                                       if (issueDetailSelectedMembers.contains(
-                                          issuesProvider.members[index]
+                                          projectProvider.projectMembers[index]
                                               ['member']['id'])) {
                                         issueDetailSelectedMembers.remove(
-                                            issuesProvider.members[index]
+                                            projectProvider
+                                                    .projectMembers[index]
                                                 ['member']['id']);
                                       } else {
                                         issueDetailSelectedMembers.add(
-                                            issuesProvider.members[index]
+                                            projectProvider
+                                                    .projectMembers[index]
                                                 ['member']['id']);
                                       }
                                     });
@@ -166,14 +173,15 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                             width: 30,
                                             child: MemberLogoWidget(
                                               padding: EdgeInsets.zero,
-                                              imageUrl:
-                                                  issuesProvider.members[index]
-                                                      ['member']['avatar'],
+                                              imageUrl: projectProvider
+                                                      .projectMembers[index]
+                                                  ['member']['avatar'],
                                               colorForErrorWidget:
                                                   const Color.fromRGBO(
                                                       55, 65, 81, 1),
                                               memberNameFirstLetterForErrorWidget:
-                                                  issuesProvider.members[index]
+                                                  projectProvider
+                                                      .projectMembers[index]
                                                           ['member']
                                                           ['display_name'][0]
                                                       .toString()
@@ -186,7 +194,8 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                                           SizedBox(
                                             width: width * 0.7,
                                             child: CustomText(
-                                              issuesProvider.members[index]
+                                              projectProvider
+                                                      .projectMembers[index]
                                                   ['member']['display_name'],
                                               type: FontStyle.Medium,
                                               fontWeight: FontWeightt.Regular,
@@ -222,7 +231,7 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
                       ],
                     ),
                   ),
-                  issuesProvider.membersState == StateEnum.loading
+                  projectProvider.projectMembersState == StateEnum.loading
                       ? Container(
                           alignment: Alignment.center,
                           color: themeProvider
@@ -292,8 +301,10 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
   }
 
   Widget createIsseuSelectedMembersWidget(int idx) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    return selectedMembers[issuesProvider.members[idx]['member']['id']] != null
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    return selectedMembers[projectProvider.projectMembers[idx]['member']
+                ['id']] !=
+            null
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),
@@ -302,9 +313,9 @@ class _SelectProjectMembersState extends ConsumerState<SelectProjectMembers> {
   }
 
   Widget issueDetailSelectedMembersWidget(int idx) {
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return issueDetailSelectedMembers
-            .contains(issuesProvider.members[idx]['member']['id'])
+            .contains(projectProvider.projectMembers[idx]['member']['id'])
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),

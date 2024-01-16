@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/delete_module_sheet.dart';
 
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/utils/constants.dart';
 import '/utils/enums.dart';

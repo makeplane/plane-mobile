@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
@@ -66,14 +64,6 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       ref.read(ProviderList.projectProvider).initializeProject(ref: ref);
       //issueProvider.statesState = StateEnum.restricted;
     });
-
-    // pages = [
-    //   cycles(),
-    //   cycles(),
-    //   const ModuleScreen(),
-    //   const Views(),
-    //   //const PageScreen()
-    // ];
 
     super.initState();
   }

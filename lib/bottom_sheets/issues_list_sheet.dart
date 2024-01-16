@@ -490,6 +490,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                     .watch(ProviderList
                                                         .projectProvider)
                                                     .currentProject['id'],
+                                                ref: ref
                                               );
                                           issuesProvider.filterIssues(
                                               slug: ref
@@ -536,6 +537,7 @@ class _IssuesListSheetState extends ConsumerState<IssuesListSheet> {
                                                     .read(ProviderList
                                                         .projectProvider)
                                                     .currentProject['id'],
+                                                ref: ref
                                               );
                                           issuesProvider.filterIssues(
                                               slug: ref

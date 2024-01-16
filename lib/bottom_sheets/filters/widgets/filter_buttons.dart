@@ -18,7 +18,7 @@ Widget _clearFilterButton(
         stateGroup: [],
         subscriber: [],
       );
-      state._applyFilters(ref.context);
+      state._applyFilters(context: ref.context);
     },
     child: Container(
         height: 35,
@@ -97,6 +97,7 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
 Widget _applyFilterButton({
   required _FilterState state,
   required BuildContext context,
+  String? cycleOrModuleId
 }) {
   return Container(
     height: 50,
@@ -107,7 +108,7 @@ Widget _applyFilterButton({
     child: Button(
       text: state.fromCreateView ? 'Add Filter' : 'Apply Filter',
       ontap: () {
-        state._applyFilters(context);
+        state._applyFilters(context:context, cycleOrModuleId: cycleOrModuleId ?? '');
       },
       textColor: Colors.white,
     ),

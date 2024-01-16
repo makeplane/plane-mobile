@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/models/global_search_modal.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/models/issues.dart';
@@ -780,14 +781,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       issueProvider.getProjectView(reset: true).then((value) {
                         if (widget.issueCategory == IssueCategory.cycleIssues) {
                           cyclesProvider.filterCycleIssues(
-                            slug: slug,
-                            projectId: projID,
-                          );
+                              slug: slug, projectId: projID, ref: ref);
                         } else if (widget.issueCategory ==
                             IssueCategory.moduleIssues) {
                           modulesProvider.filterModuleIssues(
                             slug: slug,
-                            projectId: projID,
+                            projectId: projID, ref: ref,
                           );
                         } else {
                           issueProvider.filterIssues(
@@ -827,14 +826,13 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
 
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
                         cyclesProvider.filterCycleIssues(
-                          slug: slug,
-                          projectId: projID,
-                        );
+                            slug: slug, projectId: projID, ref: ref);
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
                         modulesProvider.filterModuleIssues(
                           slug: slug,
                           projectId: projID,
+                          ref: ref
                         );
                       } else {
                         issueProvider.filterIssues(
@@ -959,14 +957,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         });
                         myIssuesProvider.filterIssues();
                       }
-                    } else if (issueProvider.issues.groupBY !=
-                            Issues.toGroupBY(groupBy) ||
-                        issueProvider.issues.orderBY !=
-                            Issues.toOrderBY(orderBy) ||
-                        issueProvider.issues.issueType !=
-                            Issues.toIssueType(issueType) ||
-                        issueProvider.showEmptyStates != showEmptyStates ||
-                        issueProvider.issues.showSubIssues != showSubIssues) {
+                    } else {
                       setState(() {
                         issueProvider.issues.orderBY =
                             Issues.toOrderBY(orderBy);
@@ -978,26 +969,16 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueProvider.issues.showSubIssues = showSubIssues;
                       });
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
-                        cyclesProvider.filterCycleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        );
+                        setState(() {
+                          cyclesProvider.issues.groupBY =
+                              Issues.toGroupBY(groupBy);
+                          cyclesProvider.issues.orderBY =
+                              Issues.toOrderBY(orderBy);
+                        });
+                        cyclesProvider.applyCycleIssuesView(ref: ref);
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
-                        modulesProvider.filterModuleIssues(
-                          slug: ref
-                              .read(ProviderList.workspaceProvider)
-                              .selectedWorkspace
-                              .workspaceSlug,
-                          projectId: ref
-                              .read(ProviderList.projectProvider)
-                              .currentProject["id"],
-                        );
+                        modulesProvider.applyModuleIssuesView(ref: ref);
                       } else {
                         issueProvider.applyIssueView();
                       }
@@ -1028,12 +1009,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       myIssuesProvider.updateMyIssueView();
                     } else {
                       if (widget.issueCategory == IssueCategory.cycleIssues) {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        cyclesProvider.issues.displayProperties = properties;
-                        cyclesProvider.showEmptyStates = showEmptyStates;
+                        // issueProvider.updateIssueProperties(
+                        //   properties: properties,
+                        //   issueCategory: widget.issueCategory,
+                        // );
+                        // cyclesProvider.issues.displayProperties = properties;
+                        // cyclesProvider.showEmptyStates = showEmptyStates;
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
                         issueProvider.updateIssueProperties(
@@ -1055,9 +1036,6 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         issueProvider.updateProjectView();
                       }
                     }
-
-                    log(displayProperties.toString());
-
                     Navigator.of(context).pop();
                   },
                   textColor: Colors.white,

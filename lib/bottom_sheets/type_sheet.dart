@@ -95,13 +95,13 @@ class _TypeSheetState extends ConsumerState<TypeSheet> {
                           ref
                               .read(ProviderList.modulesProvider)
                               .filterModuleIssues(
-                                  slug: worspaceSlug, projectId: projID);
+                                  slug: worspaceSlug, projectId: projID, ref: ref);
                         } else if (widget.issueCategory ==
                             IssueCategory.cycleIssues) {
                           ref
                               .read(ProviderList.cyclesProvider)
                               .filterCycleIssues(
-                                  slug: worspaceSlug, projectId: projID);
+                                  slug: worspaceSlug, projectId: projID, ref: ref);
                         } else if (widget.issueCategory ==
                                 IssueCategory.issues ||
                             widget.issueCategory == IssueCategory.views) {

@@ -6,7 +6,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';

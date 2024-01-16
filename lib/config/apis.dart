@@ -44,6 +44,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/';
   static String userIssueView =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
+  static String cycleIssueView =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/user-properties/';
   static String myIssuesView =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
   static String updateMyIssuesView =
@@ -67,7 +69,7 @@ class APIs {
   static String projectViews =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-views/';
   static String issueDisplayProperties =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-display-properties/';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-properties/';
   static String issueDetails =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/';
   static String subIssues =
@@ -82,9 +84,9 @@ class APIs {
   static String toggleFavoriteCycle =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-cycles/';
   static String orderByGroupByCycleIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?type=\$TYPE/';
   static String orderByGroupByModuleIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?type=\$TYPE/';
   static String myIssues =
       '$baseApi/api/workspaces/\$SLUG/my-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String projectIdentifier =

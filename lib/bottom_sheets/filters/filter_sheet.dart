@@ -36,18 +36,21 @@ part 'widgets/labels_filter.dart';
 
 // ignore: must_be_immutable
 class FilterSheet extends ConsumerStatefulWidget {
-  FilterSheet(
-      {super.key,
-      required this.issueCategory,
-      this.filtersData,
-      this.fromViews = false,
-      this.isArchived = false,
-      this.fromCreateView = false});
+  FilterSheet({
+    super.key,
+    required this.issueCategory,
+    this.filtersData,
+    this.fromViews = false,
+    this.isArchived = false,
+    this.fromCreateView = false,
+    this.cycleOrModuleId,
+  });
   final IssueCategory issueCategory;
   final bool fromCreateView;
   final bool fromViews;
   final bool isArchived;
   dynamic filtersData;
+  String? cycleOrModuleId;
   @override
   ConsumerState<FilterSheet> createState() => _FilterSheetState();
 }
@@ -158,6 +161,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   _applyFilterButton(
                     state: state,
                     context: context,
+                    cycleOrModuleId: widget.cycleOrModuleId
                   )
                 ],
               ),

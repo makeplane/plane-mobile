@@ -1,3 +1,4 @@
+
 import 'package:plane/utils/enums.dart';
 
 class IssuesGroupBYHelper {
@@ -19,10 +20,11 @@ class IssuesGroupBYHelper {
       stateGroups[state]!
           .sort((a, b) => a['sequence'].compareTo(b['sequence']));
     }
+
     for (final stateGroup in stateGroups.keys) {
       for (final state in stateGroups[stateGroup]!) {
         groupedIssues[state['id']] =
-            issues.where((issue) => issue['state'] == state['id']).toList();
+            issues.where((issue) => issue['state_id'] == state['id']).toList();
       }
     }
     return groupedIssues;

@@ -343,8 +343,8 @@ class _ProjectInviteMembersSheetState
                             projectProvider.getProjectMembers(
                                 slug: workspaceProvider
                                     .selectedWorkspace.workspaceSlug,
-                                projId:
-                                    projectProvider.projectDetailModel!.id!);
+                                projId: projectProvider.projectDetailModel!.id!,
+                              );
                           } else {
                             CustomToast.showToast(
                               mainBuildContext,

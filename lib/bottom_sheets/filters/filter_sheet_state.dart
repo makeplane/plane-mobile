@@ -185,7 +185,8 @@ class _FilterState {
     }
   }
 
-  void _applyFilters(BuildContext context) {
+  void _applyFilters(
+      {required BuildContext context, String? cycleOrModuleId}) async {
     final MyIssuesProvider myIssuesProvider =
         ref.read(ProviderList.myIssuesProvider);
     final IssuesProvider issuesProvider = ref.read(ProviderList.issuesProvider);
@@ -207,20 +208,18 @@ class _FilterState {
     }
     issueCategory == IssueCategory.myIssues
         ? myIssuesProvider.issues.filters = filters
-        : issuesProvider.issues.filters = filters;
+        : issueCategory == IssueCategory.cycleIssues
+            ? cyclesProvider.issues.filters = filters
+            : issueCategory == IssueCategory.moduleIssues
+                ? modulesProvider.issues.filters = filters
+                : issuesProvider.issues.filters = filters;
     if (issueCategory == IssueCategory.cycleIssues) {
-      cyclesProvider
-          .filterCycleIssues(
-            slug: slug,
-            projectId: projID,
-          )
-          .then((value) => cyclesProvider.initializeBoard());
+      // cyclesProvider.updateProjectView();
+      cyclesProvider.filterCycleIssues(
+          slug: slug, projectId: projID, ref: ref, cycleID: cycleOrModuleId);
     } else if (issueCategory == IssueCategory.moduleIssues) {
       modulesProvider
-          .filterModuleIssues(
-            slug: slug,
-            projectId: projID,
-          )
+          .filterModuleIssues(slug: slug, projectId: projID, ref: ref)
           .then((value) => modulesProvider.initializeBoard());
     } else if (issueCategory == IssueCategory.myIssues) {
       myIssuesProvider.updateMyIssueView();

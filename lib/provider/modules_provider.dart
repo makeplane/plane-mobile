@@ -16,6 +16,7 @@ import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/global_functions.dart';
+import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
@@ -70,6 +71,7 @@ class ModuleProvider with ChangeNotifier {
   List shrinkStates = [];
   List stateOrdering = [];
   Map filterIssues = {};
+  List<dynamic> moduleIssuesList = [];
   Map issueProperty = {};
   bool showEmptyStates = true;
   bool isIssuesEmpty = false;
@@ -297,7 +299,6 @@ class ModuleProvider with ChangeNotifier {
     required String moduleId,
     bool disableLoading = false,
   }) async {
-    log('${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/');
     if (!disableLoading) {
       moduleDetailState = StateEnum.loading;
       notifyListeners();
@@ -315,7 +316,6 @@ class ModuleProvider with ChangeNotifier {
       moduleDetailState = StateEnum.success;
       currentModule = response.data;
       notifyListeners();
-      log('Module Details  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
       moduleDetailState = StateEnum.error;
@@ -401,21 +401,63 @@ class ModuleProvider with ChangeNotifier {
     }
   }
 
-  Future filterModuleIssues({
-    required String slug,
-    required String projectId,
-    // required Map<String, dynamic> data,
-  }) async {
+  void applyModuleIssuesView({required WidgetRef ref}) {
+    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final labelIds = issuesProvider.labels.map((e) => e['id']).toList();
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    filterIssues = IssueFilterHelper.organizeIssues(
+        moduleIssuesList, issues.groupBY, issues.orderBY,
+        labels: labelIds,
+        members: projectProvider.projectMembers,
+        states: issuesProvider.states);
+    notifyListeners();
+  }
+
+  Future filterModuleIssues(
+      {required String slug,
+      required String projectId,
+      String? moduleID,
+      required WidgetRef ref
+      // required Map<String, dynamic> data,
+      }) async {
     moduleIssueState = StateEnum.loading;
     notifyListeners();
-    try {
-      final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      filterIssues = await issuesProvider.filterIssues(
+    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+    if (issues.groupBY == GroupBY.labels) {
+      issuesProvider.getLabels(slug: slug, projID: projectId);
+    } else if (issues.groupBY == GroupBY.createdBY) {
+      projectProvider.getProjectMembers(slug: slug, projId: projectId);
+    } else if (issues.groupBY == GroupBY.state) {
+      issuesProvider.getStates(
         slug: slug,
         projID: projectId,
-        issueCategory: IssueCategory.moduleIssues,
+        showLoading: false,
       );
+    }
 
+    String url;
+    url = APIs.orderByGroupByModuleIssues
+        .replaceAll("\$SLUG", slug)
+        .replaceAll('\$PROJECTID', projectId)
+        .replaceAll('\$MODULEID', moduleID!)
+        .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+    url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
+    url = '$url&sub_issue=${issues.showSubIssues}&show_empty_groups=true';
+    try {
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: url,
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      moduleIssuesList = response.data.values.toList();
+      final organizedIssues = IssueFilterHelper.organizeIssues(
+          moduleIssuesList, issues.groupBY, issues.orderBY,
+          labels: issuesProvider.labels.map((e) => e['id']).toList(),
+          members: projectProvider.projectMembers,
+          states: issuesProvider.states);
+      filterIssues = organizedIssues;
       issuesResponse = [];
       isIssuesEmpty = true;
       if (issues.groupBY != GroupBY.none) {
@@ -428,7 +470,6 @@ class ModuleProvider with ChangeNotifier {
       } else {
         isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
-
       if (issues.groupBY == GroupBY.state) {
         issuesProvider.states.forEach((key, value) {
           if (issues.filters.states.isEmpty && filterIssues[key] == null) {
@@ -436,14 +477,13 @@ class ModuleProvider with ChangeNotifier {
           }
           shrinkStates.add(false);
         });
-      } else if (issues.groupBY != GroupBY.none) {
-        stateOrdering = [];
+      } else {
         shrinkStates = [];
         filterIssues.forEach((key, value) {
-          stateOrdering.add(key);
           shrinkStates.add(false);
         });
       }
+
       initializeBoard();
       moduleIssueState = StateEnum.success;
       notifyListeners();
@@ -457,18 +497,17 @@ class ModuleProvider with ChangeNotifier {
   List<BoardListsData> initializeBoard() {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     final issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final projectProvider = ref!.read(ProviderList.projectProvider);
     int count = 0;
-    issuesResponse = [];
+    // log(issues.groupBY.name);
     issues.issues = [];
+    issuesResponse = [];
     for (int j = 0; j < filterIssues.length; j++) {
       final List<Widget> items = [];
-
-      for (int i = 0;
-          filterIssues[stateOrdering[j]] != null &&
-              i < filterIssues[stateOrdering[j]]!.length;
-          i++) {
-        issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
-
+      final groupedIssues = filterIssues.values.toList()[j];
+      final groupID = filterIssues.keys.elementAt(j);
+      for (int i = 0; i < groupedIssues.length; i++) {
+        issuesResponse.add(groupedIssues[i]);
         items.add(
           IssueCardWidget(
             from: PreviousScreen.modules,
@@ -485,32 +524,32 @@ class ModuleProvider with ChangeNotifier {
       bool userFound = false;
 
       for (int i = 0; i < issuesProvider.labels.length; i++) {
-        if (stateOrdering[j] == issuesProvider.labels[i]['id']) {
+        if (groupID == issuesProvider.labels[i]['id']) {
           label = issuesProvider.labels[i];
           labelFound = true;
           break;
         }
       }
 
-      for (int i = 0; i < issuesProvider.members.length; i++) {
-        if (stateOrdering[j] == issuesProvider.members[i]['member']['id']) {
-          userName = issuesProvider.members[i]['member']['first_name'] +
+      for (int i = 0; i < projectProvider.projectMembers.length; i++) {
+        if (groupID == projectProvider.projectMembers[i]['member']['id']) {
+          userName = projectProvider.projectMembers[i]['member']['first_name'] +
               ' ' +
-              issuesProvider.members[i]['member']['last_name'];
+              projectProvider.projectMembers[i]['member']['last_name'];
           userName = userName.trim().isEmpty
-              ? issuesProvider.members[i]['member']['email']
+              ? projectProvider.projectMembers[i]['member']['email']
               : userName;
           userFound = true;
           break;
         }
       }
       var title = issues.groupBY == GroupBY.priority
-          ? stateOrdering[j]
+          ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[stateOrdering[j]]['name']
-              : stateOrdering[j];
+              ? issuesProvider.states[groupID]['name']
+              : groupID;
       issues.issues.add(BoardListsData(
-        id: stateOrdering[j],
+        id: groupID,
         items: items,
         shrink: shrinkStates[j],
         index: j,
@@ -529,7 +568,7 @@ class ModuleProvider with ChangeNotifier {
                 : title = title[0].toString().toUpperCase() +
                     title.toString().substring(1),
         header: Text(
-          stateOrdering[j],
+          groupID,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -549,6 +588,8 @@ class ModuleProvider with ChangeNotifier {
     }
 
     for (final element in issues.issues) {
+      //  log(issues.groupBY.toString());
+
       element.leading = issues.groupBY == GroupBY.priority
           ? element.title == 'Urgent'
               ? Icon(
@@ -602,7 +643,7 @@ class ModuleProvider with ChangeNotifier {
                     element.title.toString().toUpperCase()[0],
                     fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeightt.Semibold,
+                    fontWeight: FontWeightt.Medium,
                   ),
                 )
               : issues.groupBY == GroupBY.labels
@@ -679,7 +720,7 @@ class ModuleProvider with ChangeNotifier {
                     Const.globalKey.currentContext!,
                     MaterialPageRoute(
                         builder: (ctx) => CreateIssue(
-                              moduleId: currentModule['id'],
+                              cycleId: currentModule['id'],
                             )));
               },
               child: Icon(
@@ -752,7 +793,6 @@ class ModuleProvider with ChangeNotifier {
       filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
           labelDetails;
 
-      log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
         log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
         filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
@@ -774,7 +814,6 @@ class ModuleProvider with ChangeNotifier {
           }
         });
       }
-      log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
       (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,

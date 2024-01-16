@@ -117,12 +117,12 @@ class _IssueDetailState extends ConsumerState<IssueDetail> {
         case PreviousScreen.cycles:
           reff
               .read(ProviderList.cyclesProvider)
-              .filterCycleIssues(slug: workspaceSlug, projectId: projID);
+              .filterCycleIssues(slug: workspaceSlug, projectId: projID, ref: ref);
           break;
         case PreviousScreen.modules:
           reff
               .read(ProviderList.modulesProvider)
-              .filterModuleIssues(slug: workspaceSlug, projectId: projID);
+              .filterModuleIssues(slug: workspaceSlug, projectId: projID, ref: ref);
           break;
         case PreviousScreen.views:
           reff

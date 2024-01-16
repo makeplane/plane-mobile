@@ -79,7 +79,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     tempStatesIcons = prov.stateIcons;
     tempLabels = prov.labels;
     tempIssues = ref.read(ProviderList.searchIssueProvider).issues;
-    tempAssignees = prov.members;
+    tempAssignees = projectProvider.projectMembers;
 
     if (widget.fromMyIssues) {
       prov.statesState = StateEnum.loading;
@@ -174,14 +174,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     }
     return WillPopScope(
       onWillPop: () async {
-        log('WillPopScope');
         issuesProvider.createIssuedata = {};
         issuesProvider.statesData = tempStatesData;
         issuesProvider.states = tempStates;
         issuesProvider.stateOrdering = tempStateOrdering;
         issuesProvider.stateIcons = tempStatesIcons;
         issuesProvider.labels = tempLabels;
-        issuesProvider.members = tempAssignees;
+        projectProvider.projectMembers = tempAssignees;
         issuesProvider.setsState();
         ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
         ref.read(ProviderList.issueProvider).clearCookies();
@@ -200,7 +199,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
               issuesProvider.stateOrdering = tempStateOrdering;
               issuesProvider.stateIcons = tempStatesIcons;
               issuesProvider.labels = tempLabels;
-              issuesProvider.members = tempAssignees;
+              projectProvider.projectMembers = tempAssignees;
               issuesProvider.setsState();
               ref.read(ProviderList.issueProvider).clearCookies();
               ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
@@ -1840,7 +1839,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                           issuesProvider.stateOrdering = tempStateOrdering;
                           issuesProvider.stateIcons = tempStatesIcons;
                           issuesProvider.labels = tempLabels;
-                          issuesProvider.members = tempAssignees;
+                          projectProvider.projectMembers = tempAssignees;
                           issuesProvider.setsState();
                           ref.read(ProviderList.searchIssueProvider).issues =
                               tempIssues;
@@ -1877,7 +1876,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                               tempIssues = ref
                                   .read(ProviderList.searchIssueProvider)
                                   .issues;
-                              tempAssignees = issuesProvider.members;
+                              tempAssignees = projectProvider.projectMembers;
 
                               if (widget.fromMyIssues) {
                                 issuesProvider

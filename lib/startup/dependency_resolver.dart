@@ -19,7 +19,7 @@ import '../utils/theme_manager.dart';
 
 class DependencyResolver {
   static Future<void> resolve({required WidgetRef ref}) async {
-    await _resolveConfig(ref).then((_) async {
+    // await _resolveConfig(ref).then((_) async {
       if (Const.accessToken == null) {
         CustomToast(manager: ThemeManager(THEME.light));
         FlutterNativeSplash.remove();
@@ -68,7 +68,7 @@ class DependencyResolver {
       _resolveNotifications(ref);
       _resolveWhatsNew(ref);
       FlutterNativeSplash.remove();
-    });
+    // });
   }
 
   static Future<void> _resolveConfig(WidgetRef ref) async {

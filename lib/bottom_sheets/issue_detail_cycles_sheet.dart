@@ -110,6 +110,7 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           slug:
                               workspaceProvider.selectedWorkspace.workspaceSlug,
                           projectId: projectProvider.currentProject['id'],
+                          ref: ref
                         );
                         issuesProvider.filterIssues(
                             slug: workspaceProvider

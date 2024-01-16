@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/kanban/models/project_detail_model.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
@@ -16,8 +17,8 @@ import 'package:plane/utils/global_functions.dart';
 import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
-  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider>? this.ref);
-  final Ref? ref;
+  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
+  final Ref ref;
   List projects = [];
   List starredProjects = [];
   StateEnum joinprojectState = StateEnum.empty;
@@ -91,7 +92,7 @@ class ProjectsProvider extends ChangeNotifier {
     final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     final intergrationProvider = ref.read(ProviderList.integrationProvider);
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    final pageProv = ref.read(ProviderList.pageProvider);
+    // final pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
@@ -102,9 +103,9 @@ class ProjectsProvider extends ChangeNotifier {
         .workspaceSlug;
 
     prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
-    prov.getProjectMembers(
+    getProjectMembers(
       slug: workspaceSlug,
-      projID: currentProject['id'],
+      projId: currentProject['id'],
     );
     ref.read(ProviderList.estimatesProvider).getEstimates(
           slug: workspaceSlug,
@@ -172,10 +173,10 @@ class ProjectsProvider extends ChangeNotifier {
         cycleId: '',
         ref: ref);
 
-    pageProv.updatepageList(
-      slug: workspaceSlug,
-      projectId: projectID,
-    );
+    // pageProv.updatepageList(
+    //   slug: workspaceSlug,
+    //   projectId: projectID,
+    // );
 
     if (workspaceProvider.githubIntegration != null) {
       intergrationProvider.getSlackIntegration(
@@ -545,8 +546,10 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future getProjectMembers(
-      {required String slug, required String projId}) async {
+  Future getProjectMembers({
+    required String slug,
+    required String projId,
+  }) async {
     // projectDetailState = AuthStateEnum.loading;
     // notifyListeners();
     try {
@@ -558,8 +561,21 @@ class ProjectsProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
       projectMembers = response.data;
+
+      for (final element in projectMembers) {
+        for (final workspace
+            in ref.watch(ProviderList.workspaceProvider).workspaceMembers) {
+          if (element['member'] == workspace['member']['id']) {
+            // Replace the map in projectMembers with the one from workspaceMembers
+            projectMembers[projectMembers.indexOf(element)] = workspace;
+          }
+          if (element["member"] ==
+              ref.read(ProviderList.profileProvider).userProfile.id) {
+            role = roleParser(role: element["role"]);
+          }
+        }
+      }
       projectMembersState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {

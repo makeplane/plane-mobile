@@ -792,7 +792,6 @@ class MyIssuesProvider extends ChangeNotifier {
             'priority': stateOrdering[newListIndex].toString().toLowerCase(),
           });
 
-      // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
         log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
         groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
@@ -816,7 +815,6 @@ class MyIssuesProvider extends ChangeNotifier {
         });
       }
 
-      log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(

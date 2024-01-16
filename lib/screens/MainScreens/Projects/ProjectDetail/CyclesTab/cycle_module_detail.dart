@@ -94,19 +94,14 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
       stateGroup: [],
       subscriber: [],
     );
-    issuesProvider.filterIssues(
-        cycleId: widget.cycleId,
-        moduleId: widget.moduleId,
-        slug: ref
-            .read(ProviderList.workspaceProvider)
-            .selectedWorkspace
-            .workspaceSlug,
-        issueCategory: widget.fromModule
-            ? IssueCategory.moduleIssues
-            : IssueCategory.cycleIssues,
-        projID: widget.projId ??
-            ref.read(ProviderList.projectProvider).currentProject['id']);
-    widget.fromModule ? getModuleData() : getCycleData();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (widget.fromModule) {
+        getModuleData();
+      } else {
+        getCycleData();
+      }
+    });
     super.initState();
   }
 
@@ -130,18 +125,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             disableLoading: true)
         .then((value) => getChartData(modulesProvider
             .moduleDetailsData['distribution']['completion_chart']));
-
     issuesProvider.getIssueDisplayProperties(
         issueCategory: IssueCategory.moduleIssues);
-
     modulesProvider
         .filterModuleIssues(
-      slug: ref
-          .read(ProviderList.workspaceProvider)
-          .selectedWorkspace
-          .workspaceSlug,
-      projectId: ref.read(ProviderList.projectProvider).currentProject['id'],
-    )
+            moduleID: widget.moduleId,
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace
+                .workspaceSlug,
+            projectId:
+                ref.read(ProviderList.projectProvider).currentProject['id'],
+            ref: ref)
         .then((value) {
       if (modulesProvider.issues.projectView == ProjectView.list) {
         modulesProvider.initializeBoard();
@@ -175,16 +170,18 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     ref
         .read(ProviderList.issuesProvider)
         .getIssueDisplayProperties(issueCategory: IssueCategory.cycleIssues);
+    await cyclesProvider
+        .getCycleView(cycleId: widget.cycleId!);
     cyclesProvider
         .filterCycleIssues(
-      cycleID: widget.cycleId!,
-      slug: ref
-          .read(ProviderList.workspaceProvider)
-          .selectedWorkspace
-          .workspaceSlug,
-      projectId: widget.projId ??
-          ref.read(ProviderList.projectProvider).currentProject['id'],
-    )
+            cycleID: widget.cycleId!,
+            slug: ref
+                .read(ProviderList.workspaceProvider)
+                .selectedWorkspace
+                .workspaceSlug,
+            projectId: widget.projId ??
+                ref.read(ProviderList.projectProvider).currentProject['id'],
+            ref: ref)
         .then((value) {
       if (issuesProvider.issues.projectView == ProjectView.list) {
         cyclesProvider.initializeBoard();
@@ -280,6 +277,11 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
             if (widget.from == PreviousScreen.myIssues) {
               Navigator.pop(context);
               return;
+            }
+            if (widget.fromModule) {
+              modulesProvider.changeTabIndex(0);
+            } else {
+              cyclesProvider.changeTabIndex(0);
             }
             modulesProvider.selectedIssues = [];
             cyclesProvider.selectedIssues = [];
@@ -1016,6 +1018,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                               .moduleIssues
                                                           : IssueCategory
                                                               .cycleIssues,
+                                                  cycleOrModuleId:
+                                                      widget.fromModule
+                                                          ? widget.moduleId
+                                                          : widget.cycleId,
                                                 );
                                               });
                                         },
@@ -1046,21 +1052,13 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                             ),
                           ],
                         ),
-                        widget.fromModule
-                            ? Container(
-                                color: themeProvider.themeManager
-                                    .secondaryBackgroundDefaultColor,
-                                padding:
-                                    const EdgeInsets.only(left: 25, right: 25),
-                                child: activeCycleDetails(fromModule: true),
-                              )
-                            : Container(
-                                color: themeProvider.themeManager
-                                    .secondaryBackgroundDefaultColor,
-                                padding:
-                                    const EdgeInsets.only(left: 25, right: 25),
-                                child: activeCycleDetails(),
-                              ),
+                        // Container(
+                        //   color: themeProvider
+                        //       .themeManager.secondaryBackgroundDefaultColor,
+                        //   padding: const EdgeInsets.only(left: 25, right: 25),
+                        //   child: activeCycleDetails(
+                        //       fromModule: widget.fromModule ? true : false),
+                        // ),
                       ],
                     ),
                   ),
@@ -1075,9 +1073,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
     final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
 
-    if (widget.fromModule
-        ? modulesProvider.moduleDetailState == StateEnum.loading
-        : cyclesProvider.cyclesDetailState == StateEnum.loading) {
+    if (modulesProvider.moduleDetailState == StateEnum.loading ||
+        cyclesProvider.cyclesDetailState == StateEnum.loading) {
       return Center(
         child: SizedBox(
           width: 30,
@@ -1106,7 +1103,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
           const SizedBox(height: 30),
           labelsPart(fromModule: widget.fromModule),
           const SizedBox(height: 30),
-          widget.fromModule ? links() : Container()
+          // widget.fromModule ? links() : Container()
         ],
       );
     }
@@ -1801,7 +1798,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
               color: themeProvider.themeManager.primaryTextColor,
             )),
         const SizedBox(height: 10),
-        detailData['distribution']['assignees'].length == 0
+        detailData['assignees'].length == 0
             ? const CustomText('No data found.')
             : Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -1816,7 +1813,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                 child: Column(
                   children: [
                     ...List.generate(
-                      detailData['distribution']['assignees'].length,
+                      detailData['assignees'].length,
                       (idx) {
                         return Container(
                           padding: const EdgeInsets.symmetric(
@@ -1824,8 +1821,8 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                           margin: const EdgeInsets.symmetric(vertical: 2),
                           decoration: BoxDecoration(
                             color: (issuesProvider.issues.filters.assignees
-                                    .contains(detailData['distribution']
-                                        ['assignees'][idx]['assignee_id'])
+                                    .contains(detailData['assignees'][idx]
+                                        ['assignee_id'])
                                 ? themeProvider.themeManager
                                     .secondaryBackgroundDefaultColor
                                 : themeProvider.themeManager
@@ -1839,19 +1836,16 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 children: [
                                   Padding(
                                       padding: const EdgeInsets.only(right: 10),
-                                      child: detailData['distribution']
-                                                          ['assignees'][idx]
+                                      child: detailData['assignees'][idx]
                                                       ['avatar'] !=
                                                   null &&
-                                              detailData['distribution']
-                                                          ['assignees'][idx]
+                                              detailData['assignees'][idx]
                                                       ['avatar'] !=
                                                   ''
                                           ? CircleAvatar(
                                               radius: 10,
                                               backgroundImage: NetworkImage(
-                                                  detailData['distribution']
-                                                          ['assignees'][idx]
+                                                  detailData['assignees'][idx]
                                                       ['avatar']),
                                             )
                                           : CircleAvatar(
@@ -1861,14 +1855,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                                   .tertiaryBackgroundDefaultColor,
                                               child: Center(
                                                 child: CustomText(
-                                                  detailData['distribution'][
-                                                                      'assignees']
-                                                                  [idx]
+                                                  detailData['assignees'][idx]
                                                               ['first_name'] !=
                                                           null
-                                                      ? detailData['distribution']
-                                                                      [
-                                                                      'assignees']
+                                                      ? detailData['assignees']
                                                                   [idx]
                                                               ['first_name'][0]
                                                           .toString()
@@ -1879,7 +1869,7 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                               ),
                                             )),
                                   CustomText(
-                                    detailData['distribution']['assignees'][idx]
+                                    detailData['assignees'][idx]
                                             ['display_name'] ??
                                         'No Assignees',
                                     color: themeProvider
@@ -1888,10 +1878,10 @@ class _CycleDetailState extends ConsumerState<CycleDetail> {
                                 ],
                               ),
                               CompletionPercentage(
-                                  value: detailData['distribution']['assignees']
-                                      [idx]['completed_issues'],
-                                  totalValue: detailData['distribution']
-                                      ['assignees'][idx]['total_issues'])
+                                  value: detailData['assignees'][idx]
+                                      ['completed_issues'],
+                                  totalValue: detailData['assignees'][idx]
+                                      ['total_issues'])
                             ],
                           ),
                         );

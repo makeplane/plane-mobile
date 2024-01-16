@@ -31,7 +31,9 @@ class _AppState extends ConsumerState<App> {
     final configProvider = ref.watch(ProviderList.configProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Scaffold(
-        body: (configProvider.getConfigState == StateEnum.loading ||
+        body: (
+          // TODO -> Config API should be re-initiated once the API added in this base API
+          // configProvider.getConfigState == StateEnum.loading ||
                 profileProv.getProfileState == StateEnum.loading ||
                 workspaceProv.workspaceInvitationState == StateEnum.loading)
             ? Center(

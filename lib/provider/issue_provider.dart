@@ -19,7 +19,7 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
 import '../utils/global_functions.dart';
 // import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 

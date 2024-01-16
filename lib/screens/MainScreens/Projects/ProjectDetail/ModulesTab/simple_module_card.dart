@@ -7,7 +7,7 @@ import 'package:plane/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
 
 class SimpleModuleCard extends ConsumerStatefulWidget {
   const SimpleModuleCard({

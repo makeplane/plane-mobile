@@ -156,8 +156,8 @@ class Issues {
     switch (groupBY) {
       case "state":
         return GroupBY.state;
-      case "state_detail.group":
-        return GroupBY.stateGroups;
+      // case "state_detail.group":
+      //   return GroupBY.stateGroups;
       case "priority":
         return GroupBY.priority;
       case "labels":

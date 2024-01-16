@@ -82,7 +82,7 @@ class BoardProvider extends ChangeNotifier {
       required bool groupEmptyStates}) {
     var themeProvider = ref.read(ProviderList.themeProvider);
     board = BoardState(
-      boardID: boardID,
+        boardID: boardID,
         textStyle: textStyle,
         lists: [],
         isCardsDraggable: isCardsDraggable,
@@ -110,7 +110,6 @@ class BoardProvider extends ChangeNotifier {
         cardPlaceHolderDecoration: cardPlaceHolderDecoration,
         listDecoration: listDecoration,
         boardDecoration: boardDecoration);
-    // log("LENGTH=${data.length}");
     BoardList emptyStates = BoardList(
         // footer: data[i].footer,
         index: double.maxFinite.toInt(),

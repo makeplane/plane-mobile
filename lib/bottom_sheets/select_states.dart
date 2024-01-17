@@ -23,13 +23,14 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
   @override
   void initState() {
     final prov = ref.read(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
     if (prov.states.isEmpty) {
-      prov.getStates(
+      statesProvider.getStates(
           slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace
               .workspaceSlug,
-          projID: ref
+          projectId: ref
               .read(ProviderList.issuesProvider)
               .createIssueProjectData['id']);
     }
@@ -268,16 +269,18 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                   IconButton(
                       onPressed: () {
                         final prov = ref.read(ProviderList.issuesProvider);
+                        final statesProvider =
+                            ref.watch(ProviderList.statesProvider.notifier);
                         //   if (selectedState.isNotEmpty) {
                         prov.createIssuedata['state'] = selectedState;
                         // print('state');
                         // print(prov.createIssuedata['state'].toString());
-                        prov.getStates(
+                        statesProvider.getStates(
                             slug: ref
                                 .read(ProviderList.workspaceProvider)
                                 .selectedWorkspace
                                 .workspaceSlug,
-                            projID: ref
+                            projectId: ref
                                 .read(ProviderList.projectProvider)
                                 .currentProject['id']);
                         prov.setsState();

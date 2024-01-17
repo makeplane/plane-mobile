@@ -10,6 +10,7 @@ import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/provider/my_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/states_provider.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/constants.dart';

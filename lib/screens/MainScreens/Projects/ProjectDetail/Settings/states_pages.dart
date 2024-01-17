@@ -9,6 +9,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/delete_state_sheet.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/provider/states_provider.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -16,8 +17,6 @@ import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 
 import 'package:plane/widgets/custom_text.dart';
-
-List states = ['backlog', 'unstarted', 'started', 'completed', 'cancelled'];
 
 class StatesPage extends ConsumerStatefulWidget {
   const StatesPage({super.key});
@@ -35,12 +34,13 @@ class _StatesPageState extends ConsumerState<StatesPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    // final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: states.length,
+        itemCount: statesProvider.stateGroups.length,
         itemBuilder: (context, index) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,8 +49,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    states[index].toString().replaceFirst(states[index][0],
-                        states[index][0].toString().toUpperCase()),
+                    statesProvider.stateGroups.keys
+                        .toList()[index]
+                        .fistLetterToUpper(),
                     // values['group'].replaceFirst(values['group'][0], values['group'][0].toUpperCase()),
                     type: FontStyle.H5,
                     fontWeight: FontWeightt.Medium,
@@ -76,9 +77,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                             ),
                             child: AddUpdateState(
                               groupIndex: index,
-                              stateKey: states[index].toString().replaceFirst(
-                                  states[index][0],
-                                  states[index][0].toString().toUpperCase()),
+                              stateKey: statesProvider.stateGroups.keys
+                                  .toList()[index]
+                                  .fistLetterToUpper(),
                               method: CRUD.create,
                               stateId: '',
                               name: '',
@@ -95,14 +96,15 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                   )
                 ],
               ),
-              issuesProvider.statesData[states[index]] == null
+              statesProvider.stateGroups.values.toList()[index].isEmpty
                   ? const SizedBox.shrink()
                   : ListView.builder(
                       padding: EdgeInsets.zero,
                       primary: false,
                       shrinkWrap: true,
-                      itemCount:
-                          issuesProvider.statesData[states[index]].length,
+                      itemCount: statesProvider.stateGroups.values
+                          .toList()[index]
+                          .length,
                       itemBuilder: (context, idx) {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 16),
@@ -122,18 +124,26 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               Row(
                                 children: [
                                   SvgPicture.asset(
-                                    states[index] == 'backlog'
+                                    statesProvider.stateGroups.keys
+                                                .toList()[index] ==
+                                            'backlog'
                                         ? 'assets/svg_images/circle.svg'
-                                        : states[index] == 'cancelled'
+                                        : statesProvider.stateGroups.keys
+                                                    .toList()[index] ==
+                                                'cancelled'
                                             ? 'assets/svg_images/cancelled.svg'
-                                            : states[index] == 'completed'
+                                            : statesProvider.stateGroups.keys
+                                                        .toList()[index] ==
+                                                    'completed'
                                                 ? 'assets/svg_images/done.svg'
-                                                : states[index] == 'started'
+                                                : statesProvider
+                                                            .stateGroups.keys
+                                                            .toList()[index] ==
+                                                        'started'
                                                     ? 'assets/svg_images/in_progress.svg'
                                                     : 'assets/svg_images/circle.svg',
                                     colorFilter: ColorFilter.mode(
-                                        getColorFromIssueProvider(
-                                            issuesProvider, index, idx),
+                                        getColorFromIssueProvider(index, idx),
                                         BlendMode.srcIn),
                                     height: 20,
                                     width: 20,
@@ -144,8 +154,10 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                   SizedBox(
                                     width: width * 0.6,
                                     child: CustomText(
-                                      issuesProvider.statesData[states[index]]
-                                          [idx]['name'],
+                                      statesProvider.stateGroups.values
+                                          .toList()[index][idx]
+                                          .name
+                                          .toString(),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       type: FontStyle.Medium,
@@ -177,19 +189,25 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                                     .bottom),
                                             child: AddUpdateState(
                                               groupIndex: index,
-                                              stateKey: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]["group"],
+                                              stateKey: statesProvider
+                                                  .stateGroups.keys
+                                                  .toList()[index],
                                               method: CRUD.update,
-                                              stateId: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]['id'],
-                                              name: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]['name'],
-                                              color: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]['color'],
+                                              stateId: statesProvider
+                                                  .stateGroups.values
+                                                  .toList()[index][idx]
+                                                  .id
+                                                  .toString(),
+                                              name: statesProvider
+                                                  .stateGroups.values
+                                                  .toList()[index][idx]
+                                                  .name
+                                                  .toString(),
+                                              color: statesProvider
+                                                  .stateGroups.values
+                                                  .toList()[index][idx]
+                                                  .color
+                                                  .toString(),
                                             ),
                                           );
                                         },
@@ -203,9 +221,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      if (issuesProvider
-                                                  .statesData[states[index]]
-                                              [idx]['default'] ==
+                                      if (statesProvider.stateGroups.values
+                                              .toList()[index][idx]
+                                              .isDefault ==
                                           true) {
                                         CustomToast.showToast(
                                           context,
@@ -213,8 +231,9 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                               'Cannot delete the default state',
                                           toastType: ToastType.failure,
                                         );
-                                      } else if (issuesProvider
-                                              .statesData[states[index]]
+                                      } else if (statesProvider
+                                              .stateGroups.values
+                                              .toList()[index]
                                               .length ==
                                           1) {
                                         CustomToast.showToast(
@@ -235,12 +254,16 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                           context: context,
                                           builder: (context) {
                                             return DeleteStateSheet(
-                                              stateName: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]['name'],
-                                              stateId: issuesProvider
-                                                      .statesData[states[index]]
-                                                  [idx]['id'],
+                                              stateName: statesProvider
+                                                  .stateGroups.values
+                                                  .toList()[index][idx]
+                                                  .name
+                                                  .toString(),
+                                              stateId: statesProvider
+                                                  .stateGroups.values
+                                                  .toList()[index][idx]
+                                                  .id
+                                                  .toString(),
                                             );
                                           },
                                         );
@@ -270,21 +293,19 @@ class _StatesPageState extends ConsumerState<StatesPage> {
     );
   }
 
-  Color getColorFromIssueProvider(
-      IssuesProvider issuesProvider, int index, int idx) {
+  Color getColorFromIssueProvider(int index, int idx) {
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
     final String? colorData =
-        issuesProvider.statesData[states[index]][idx]['color'];
-
+        statesProvider.stateGroups.values.toList()[index][idx].color;
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
         : Color(int.parse("FF${colorData.replaceAll('#', '')}", radix: 16));
   }
 }
 
-// ignore: must_be_immutable
 class AddUpdateState extends ConsumerStatefulWidget {
-  AddUpdateState(
+  const AddUpdateState(
       {required this.stateKey,
       required this.method,
       required this.groupIndex,
@@ -296,7 +317,7 @@ class AddUpdateState extends ConsumerStatefulWidget {
   final CRUD method;
   final String stateId;
   final String name;
-  int groupIndex;
+  final int groupIndex;
   final String color;
 
   @override
@@ -313,7 +334,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   void initState() {
     super.initState();
     nameController.text = widget.name.isNotEmpty ? widget.name : '';
-    stateController.text = states[widget.groupIndex];
+    stateController.text = widget.stateKey;
 
     if (widget.color.isNotEmpty) {
       colorController.text = widget.color.replaceAll('#', '');
@@ -322,8 +343,6 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
           colorsForLabel[Random().nextInt(colorsForLabel.length)]
               .replaceAll('#', '');
     }
-
-    // log(widget.stateKey);
   }
 
   double height = 0.0;
@@ -331,7 +350,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
+    final statesProviderRead = ref.watch(ProviderList.statesProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
@@ -479,9 +499,8 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                         ? Container()
                         : GestureDetector(
                             onTap:
-                                issuesProvider
-                                            .statesData[
-                                                states[widget.groupIndex]]
+                                statesProvider.stateGroups.values
+                                            .toList()[widget.groupIndex]
                                             .length ==
                                         1
                                     ? null
@@ -533,23 +552,31 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                                             height: 50,
                                                           ),
                                                           for (int i = 0;
-                                                              i < states.length;
+                                                              i <
+                                                                  statesProvider
+                                                                      .stateGroups
+                                                                      .keys
+                                                                      .length;
                                                               i++)
                                                             GestureDetector(
                                                               onTap: () async {
                                                                 setState(() {
                                                                   stateController
                                                                           .text =
-                                                                      states[i];
+                                                                      statesProvider
+                                                                          .stateGroups
+                                                                          .keys
+                                                                          .toList()[i];
                                                                 });
                                                                 Navigator.pop(
                                                                     context);
                                                               },
                                                               child: Container(
-                                                                padding: const EdgeInsets
+                                                                padding:
+                                                                    const EdgeInsets
                                                                         .symmetric(
-                                                                    vertical:
-                                                                        2),
+                                                                        vertical:
+                                                                            2),
                                                                 child: Column(
                                                                   children: [
                                                                     Row(
@@ -558,22 +585,24 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                                                               .center,
                                                                       children: [
                                                                         Radio(
-                                                                          activeColor: stateController.text == states[i]
+                                                                          activeColor: stateController.text == statesProvider.stateGroups.keys.toList()[i]
                                                                               ? null
                                                                               : themeProvider.themeManager.primaryColour,
-                                                                          fillColor: stateController.text != states[i]
+                                                                          fillColor: stateController.text != statesProvider.stateGroups.keys.toList()[i]
                                                                               ? MaterialStateProperty.all<Color>(themeProvider.themeManager.borderSubtle01Color)
                                                                               : null,
                                                                           visualDensity:
                                                                               VisualDensity.compact,
-                                                                          value:
-                                                                              states[i],
+                                                                          value: statesProvider
+                                                                              .stateGroups
+                                                                              .keys
+                                                                              .toList()[i],
                                                                           groupValue:
                                                                               stateController.text,
                                                                           onChanged:
                                                                               (value) {
                                                                             setState(() {
-                                                                              stateController.text = states[i];
+                                                                              stateController.text = statesProvider.stateGroups.keys.toList()[i];
                                                                             });
                                                                             Navigator.pop(context);
                                                                           },
@@ -583,7 +612,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                                                               width * 0.7,
                                                                           child:
                                                                               CustomText(
-                                                                            states[i],
+                                                                            statesProvider.stateGroups.keys.toList()[i],
                                                                             type:
                                                                                 FontStyle.Medium,
                                                                             maxLines:
@@ -630,7 +659,7 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                                                           Container(
                                                             margin:
                                                                 const EdgeInsets
-                                                                        .only(
+                                                                    .only(
                                                                     left: 15),
                                                             width: MediaQuery.of(
                                                                         context)
@@ -698,33 +727,65 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                       : 'Update State',
                   ontap: () async {
                     if (nameController.text.isNotEmpty) {
-                      await projectProvider.stateCrud(
-                          slug: ref
-                              .watch(ProviderList.workspaceProvider)
-                              .selectedWorkspace
-                              .workspaceSlug,
-                          projId: ref
-                              .watch(ProviderList.projectProvider)
-                              .currentProject['id'],
-                          stateId: widget.stateId.isEmpty ? '' : widget.stateId,
-                          method: widget.method,
-                          context: context,
-                          data: {
-                            "name": nameController.text,
-                            "color": '#${colorController.text}',
-                            "group": stateController.text.toLowerCase(),
-                            "description": ""
-                          },
-                          ref: ref);
-                      issuesProvider.getStates(
-                        slug: ref
-                            .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace
-                            .workspaceSlug,
-                        projID: ref
-                            .watch(ProviderList.projectProvider)
-                            .currentProject['id'],
-                      );
+                      if (widget.method == CRUD.create) {
+                        statesProviderRead.addState(
+                            data: {
+                              "name": nameController.text,
+                              "color": '#${colorController.text}',
+                              "group": stateController.text.toLowerCase(),
+                              "description": ""
+                            },
+                            slug: ref
+                                .watch(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projectId: ref
+                                .watch(ProviderList.projectProvider)
+                                .currentProject['id']);
+                      } else {
+                        statesProviderRead.updateState(
+                            data: {
+                              "name": nameController.text,
+                              "color": '#${colorController.text}',
+                              "group": stateController.text.toLowerCase(),
+                              "description": ""
+                            },
+                            slug: ref
+                                .watch(ProviderList.workspaceProvider)
+                                .selectedWorkspace
+                                .workspaceSlug,
+                            projectId: ref
+                                .watch(ProviderList.projectProvider)
+                                .currentProject['id'],
+                            stateId: widget.stateId);
+                      }
+                      // await projectProvider.stateCrud(
+                      //     slug: ref
+                      //         .watch(ProviderList.workspaceProvider)
+                      //         .selectedWorkspace
+                      //         .workspaceSlug,
+                      //     projId: ref
+                      //         .watch(ProviderList.projectProvider)
+                      //         .currentProject['id'],
+                      //     stateId: widget.stateId.isEmpty ? '' : widget.stateId,
+                      //     method: widget.method,
+                      //     context: context,
+                      //     data: {
+                      //       "name": nameController.text,
+                      //       "color": '#${colorController.text}',
+                      //       "group": stateController.text.toLowerCase(),
+                      //       "description": ""
+                      //     },
+                      //     ref: ref);
+                      // statesProviderRead.getStates(
+                      //   slug: ref
+                      //       .watch(ProviderList.workspaceProvider)
+                      //       .selectedWorkspace
+                      //       .workspaceSlug,
+                      //   projectId: ref
+                      //       .watch(ProviderList.projectProvider)
+                      //       .currentProject['id'],
+                      // );
                     }
                     Navigator.of(context).pop();
                   },

@@ -21,11 +21,11 @@ class DeleteStateSheet extends ConsumerStatefulWidget {
 class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
   @override
   Widget build(BuildContext context) {
-    final projectProvider = ref.watch(ProviderList.projectProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
+    final statesProviderRead = ref.watch(ProviderList.statesProvider.notifier);
     return LoadingWidget(
-      loading: projectProvider.stateCrudState == StateEnum.loading,
+      loading: statesProvider.deleteState == StateEnum.loading,
       allowBorderRadius: true,
       widgetClass: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
@@ -70,31 +70,11 @@ class _DeleteStateSheetState extends ConsumerState<DeleteStateSheet> {
                 Button(
                   color: const Color.fromRGBO(254, 242, 242, 1),
                   textColor: themeProvider.themeManager.textErrorColor,
-                  filledButton: false,
                   borderColor: themeProvider.themeManager.textErrorColor,
                   text: 'Delete',
                   ontap: () async {
-                    await projectProvider.stateCrud(
-                        slug: ref
-                            .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace
-                            .workspaceSlug,
-                        projId: ref
-                            .watch(ProviderList.projectProvider)
-                            .currentProject['id'],
-                        method: CRUD.delete,
-                        stateId: widget.stateId,
-                        context: context,
-                        data: {},
-                        ref: ref);
-                    issuesProvider.getStates(
-                      slug: ref
-                          .watch(ProviderList.workspaceProvider)
-                          .selectedWorkspace
-                          .workspaceSlug,
-                      projID: ref
-                          .watch(ProviderList.projectProvider)
-                          .currentProject['id'],
+                    await statesProviderRead.deleteState(
+                      stateId: widget.stateId,
                     );
                     Navigator.of(context).pop();
                   },

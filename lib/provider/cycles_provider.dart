@@ -437,7 +437,7 @@ class CyclesProvider with ChangeNotifier {
       var title = issues.groupBY == GroupBY.priority
           ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[groupID]['name']
+              ? issuesProvider.states[groupID]!.name
               : groupID;
       issues.issues.add(BoardListsData(
         id: groupID,
@@ -897,15 +897,15 @@ class CyclesProvider with ChangeNotifier {
     notifyListeners();
     final issuesProvider = ref.read(ProviderList.issuesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider.notifier);
     if (issues.groupBY == GroupBY.labels) {
       issuesProvider.getLabels(slug: slug, projID: projectId);
     } else if (issues.groupBY == GroupBY.createdBY) {
       projectProvider.getProjectMembers(slug: slug, projId: projectId);
     } else if (issues.groupBY == GroupBY.state) {
-      issuesProvider.getStates(
+      statesProvider.getStates(
         slug: slug,
-        projID: projectId,
-        showLoading: false,
+        projectId: projectId,
       );
     }
 

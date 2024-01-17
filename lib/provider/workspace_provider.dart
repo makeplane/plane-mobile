@@ -88,7 +88,7 @@ class WorkspaceProvider extends ChangeNotifier {
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
-        url: APIs.baseApi + APIs.listWorkspaceInvitaion,
+        url: APIs.listWorkspaceInvitaion,
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
@@ -111,7 +111,7 @@ class WorkspaceProvider extends ChangeNotifier {
     try {
       await DioConfig().dioServe(
         hasAuth: true,
-        url: (APIs.joinWorkspace),
+        url: APIs.listWorkspaceInvitaion,
         hasBody: true,
         data: {"invitations": data},
         httpMethod: HttpMethod.post,
@@ -318,7 +318,6 @@ class WorkspaceProvider extends ChangeNotifier {
         }
         selectedWorkspace = WorkspaceModel.fromJson(workspaces[0]);
         final slug = selectedWorkspace.workspaceSlug;
-        log('AFTER DELETE WORKSPACE ${selectedWorkspace.workspaceName} }');
         ref!.read(ProviderList.dashboardProvider).getDashboard();
         projectProv.projects = [];
         projectProv.getProjects(slug: slug);

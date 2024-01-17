@@ -92,6 +92,7 @@ class ProjectsProvider extends ChangeNotifier {
     final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     final intergrationProvider = ref.read(ProviderList.integrationProvider);
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
     // final pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
@@ -102,7 +103,7 @@ class ProjectsProvider extends ChangeNotifier {
         .selectedWorkspace
         .workspaceSlug;
 
-    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
+    statesProvider.getStates(slug: workspaceSlug, projectId: currentProject['id']);
     getProjectMembers(
       slug: workspaceSlug,
       projId: currentProject['id'],
@@ -673,73 +674,4 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future stateCrud(
-      {required String slug,
-      required String projId,
-      required String stateId,
-      required CRUD method,
-      required BuildContext context,
-      required WidgetRef ref,
-      required Map data}) async {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
-    try {
-      final url = method == CRUD.update || method == CRUD.delete
-          ? '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projId)}$stateId/'
-          : APIs.states
-              .replaceFirst('\$SLUG', slug)
-              .replaceFirst('\$PROJECTID', projId);
-      stateCrudState = StateEnum.loading;
-      notifyListeners();
-      final response = await DioConfig().dioServe(
-          hasAuth: true,
-          url: url,
-          hasBody: true,
-          httpMethod: method == CRUD.create
-              ? HttpMethod.post
-              : method == CRUD.update
-                  ? HttpMethod.put
-                  : method == CRUD.delete
-                      ? HttpMethod.delete
-                      : HttpMethod.patch,
-          data: data);
-      stateCrudState = StateEnum.success;
-      method != CRUD.read
-          ? postHogService(
-              eventName: method == CRUD.create
-                  ? 'STATE_CREATE'
-                  : method == CRUD.update
-                      ? 'STATE_UPDATE'
-                      : method == CRUD.delete
-                          ? 'STATE_DELETE'
-                          : '',
-              properties: method == CRUD.delete
-                  ? {}
-                  : {
-                      'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace.workspaceId,
-                      'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace.workspaceSlug,
-                      'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace.workspaceName,
-                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-                      'STATE_ID':
-                          method == CRUD.create ? response.data['id'] : stateId
-                    },
-              ref: ref)
-          : null;
-      notifyListeners();
-    } catch (e) {
-      if (e is DioException) {
-        log(e.message.toString());
-      }
-      CustomToast.showToast(context,
-          message: 'Something went wrong, Please try again.',
-          toastType: ToastType.failure);
-      log(e.toString());
-      stateCrudState = StateEnum.error;
-      notifyListeners();
-    }
-  }
 }

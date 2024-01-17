@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
+import 'package:plane/models/states_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
 import 'package:plane/utils/constants.dart';
@@ -62,7 +63,7 @@ class IssuesProvider extends ChangeNotifier {
   List issuesResponse = [];
   List issuesList = [];
   List labels = [];
-  Map states = {};
+  Map<String, StatesModel> states = {};
   Map statesData = {};
   // List members = [];
   Map projectView = {};
@@ -265,7 +266,7 @@ class IssuesProvider extends ChangeNotifier {
       String title = issues.groupBY == GroupBY.priority
           ? groupID
           : issues.groupBY == GroupBY.state
-              ? states[groupID]['name']
+              ? states[groupID]!.name
               : groupID;
       issues.issues.add(BoardListsData(
         id: groupID,
@@ -658,82 +659,6 @@ class IssuesProvider extends ChangeNotifier {
     }
   }
 
-  Future getStates({
-    required String slug,
-    required String projID,
-    bool showLoading = true,
-  }) async {
-    if (showLoading) {
-      statesState = StateEnum.loading;
-      notifyListeners();
-    }
-    try {
-      final response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.states
-            .replaceAll("\$SLUG", slug)
-            .replaceAll('\$PROJECTID', projID),
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      //   log(response.data.toString());
-      statesData = {for (final value in response.data) value['id']: value};
-      states = {};
-      for (int i = 0; i < statesData.length; i++) {
-        final String stateId = statesData.keys.elementAt(i);
-        states[stateId] = statesData[stateId];
-        stateIcons[stateId] = SvgPicture.asset(
-            stateId == 'backlog'
-                ? 'assets/svg_images/circle.svg'
-                : stateId == 'cancelled'
-                    ? 'assets/svg_images/cancelled.svg'
-                    : stateId == 'completed'
-                        ? 'assets/svg_images/done.svg'
-                        : stateId == 'started'
-                            ? 'assets/svg_images/in_progress.svg'
-                            : 'assets/svg_images/unstarted.svg',
-            height: 22,
-            width: 22,
-            colorFilter: int.tryParse(
-                        "FF${statesData[stateId]['color'].toString().replaceAll('#', '')}",
-                        radix: 16) !=
-                    null
-                ? ColorFilter.mode(
-                    Color(int.parse(
-                        "FF${statesData[stateId]['color'].toString().replaceAll('#', '')}",
-                        radix: 16)),
-                    BlendMode.srcIn)
-                : null);
-
-        if (statesData[stateId]['default'] == true) {
-          defaultStatedetails[stateId] = {
-            'name': statesData[stateId]['name'],
-            'icon': stateIcons[statesData[stateId]['id']]
-          };
-        }
-      }
-      stateOrdering = [];
-      for (final element in defaultStateGroups) {
-        if (statesData[element] != null) {
-          for (final element in (statesData[element] as List)) {
-            stateOrdering.add(element['id']);
-          }
-        }
-      }
-      statesState = StateEnum.success;
-      notifyListeners();
-    } on DioException catch (e) {
-      log(e.response!.statusCode.toString());
-      if (e.response!.statusCode == 403) {
-        statesState = StateEnum.restricted;
-        notifyListeners();
-      } else {
-        statesState = StateEnum.error;
-        notifyListeners();
-      }
-    }
-  }
-
   Future createIssue(
       {required String slug,
       required String projID,
@@ -910,7 +835,7 @@ class IssuesProvider extends ChangeNotifier {
           hasBody: true,
           httpMethod: HttpMethod.post,
           data: data);
-      getStates(slug: slug, projID: projID);
+      ref!.read(ProviderList.statesProvider.notifier).getStates(slug: slug, projectId: projID);
       statesState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -983,10 +908,12 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['display_properties']['assignee'];
           issues.displayProperties.dueDate =
               issueProperty['display_properties']['due_date'];
-          issues.displayProperties.id = issueProperty['display_properties']['key'];
+          issues.displayProperties.id =
+              issueProperty['display_properties']['key'];
           issues.displayProperties.label =
               issueProperty['display_properties']['labels'];
-          issues.displayProperties.state = issueProperty['display_properties']['state'];
+          issues.displayProperties.state =
+              issueProperty['display_properties']['state'];
           issues.displayProperties.subIsseCount =
               issueProperty['display_properties']['sub_issue_count'];
           issues.displayProperties.linkCount =
@@ -1017,12 +944,13 @@ class IssuesProvider extends ChangeNotifier {
               cyclesProvider.issueProperty['display_properties']['labels'];
           cyclesProvider.issues.displayProperties.state =
               cyclesProvider.issueProperty['display_properties']['state'];
-          cyclesProvider.issues.displayProperties.subIsseCount =
-              cyclesProvider.issueProperty['display_properties']['sub_issue_count'];
+          cyclesProvider.issues.displayProperties.subIsseCount = cyclesProvider
+              .issueProperty['display_properties']['sub_issue_count'];
           cyclesProvider.issues.displayProperties.linkCount =
               cyclesProvider.issueProperty['display_properties']['link'];
           cyclesProvider.issues.displayProperties.attachmentCount =
-              cyclesProvider.issueProperty['display_properties']['attachment_count'];
+              cyclesProvider.issueProperty['display_properties']
+                  ['attachment_count'];
           cyclesProvider.issues.displayProperties.priority =
               cyclesProvider.issueProperty['display_properties']['priority'];
           cyclesProvider.issues.displayProperties.estimate =
@@ -1044,20 +972,22 @@ class IssuesProvider extends ChangeNotifier {
           modulesProvider.issues.displayProperties.state =
               modulesProvider.issueProperty['display_properties']['state'];
           modulesProvider.issues.displayProperties.subIsseCount =
-              modulesProvider.issueProperty['display_properties']['sub_issue_count'];
+              modulesProvider.issueProperty['display_properties']
+                  ['sub_issue_count'];
           modulesProvider.issues.displayProperties.linkCount =
               modulesProvider.issueProperty['display_properties']['link'];
           modulesProvider.issues.displayProperties.attachmentCount =
-              modulesProvider.issueProperty['display_properties']['attachment_count'];
+              modulesProvider.issueProperty['display_properties']
+                  ['attachment_count'];
           modulesProvider.issues.displayProperties.priority =
               modulesProvider.issueProperty['display_properties']['priority'];
           modulesProvider.issues.displayProperties.estimate =
               modulesProvider.issueProperty['display_properties']['estimate'];
           modulesProvider.issues.displayProperties.startDate =
               modulesProvider.issueProperty['display_properties']['start_date'];
-          modulesProvider.issues.displayProperties.createdOn =
-              modulesProvider.issueProperty['display_properties']?['created_on'] ??
-                  false;
+          modulesProvider.issues.displayProperties.createdOn = modulesProvider
+                  .issueProperty['display_properties']?['created_on'] ??
+              false;
           modulesProvider.issues.displayProperties.updatedOn =
               modulesProvider.issueProperty['display_properties']['updated_on'];
           ref!.read(ProviderList.modulesProvider).issues.displayProperties =
@@ -1068,10 +998,12 @@ class IssuesProvider extends ChangeNotifier {
               issueProperty['display_properties']['assignee'];
           issues.displayProperties.dueDate =
               issueProperty['display_properties']['due_date'];
-          issues.displayProperties.id = issueProperty['display_properties']['key'];
+          issues.displayProperties.id =
+              issueProperty['display_properties']['key'];
           issues.displayProperties.label =
               issueProperty['display_properties']['labels'];
-          issues.displayProperties.state = issueProperty['display_properties']['state'];
+          issues.displayProperties.state =
+              issueProperty['display_properties']['state'];
           issues.displayProperties.subIsseCount =
               issueProperty['display_properties']['sub_issue_count'];
           issues.displayProperties.linkCount =
@@ -1328,10 +1260,10 @@ class IssuesProvider extends ChangeNotifier {
         projId: projID,
       );
     } else if (issues.groupBY == GroupBY.state) {
+      ref!.read(ProviderList.statesProvider.notifier).
       getStates(
         slug: slug,
-        projID: projID,
-        showLoading: false,
+        projectId: projID,
       );
     }
 

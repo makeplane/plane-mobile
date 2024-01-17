@@ -12,13 +12,13 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
-    final IssuesProvider issuesProvider = ref.read(ProviderList.issuesProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider);
     return CustomExpansionTile(
       title: 'State',
       child: Wrap(
           children: (widget.state.issueCategory == IssueCategory.myIssues
                   ? widget.state.states
-                  : issuesProvider.states.values)
+                  : statesProvider.projectStates.values)
               .map((e) {
         final String key = widget.state.issueCategory == IssueCategory.myIssues
             ? 'id'

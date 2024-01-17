@@ -337,7 +337,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                         child:
                                                                             filterWidget(
                                                                           color: issuesProvider
-                                                                              .states[e]['color']
+                                                                              .states[e]!.color
                                                                               .toString()
                                                                               .toColor(),
                                                                           icon: SizedBox(
@@ -345,8 +345,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                               width: 15,
                                                                               child: issuesProvider.stateIcons[e]),
                                                                           text: issuesProvider.states[e]
-                                                                              [
-                                                                              'name'],
+                                                                              !.name!,
                                                                         ),
                                                                       )
                                                                     : filterKeys[index] == 'Assignees:' || filterKeys[index] == 'Created By:'

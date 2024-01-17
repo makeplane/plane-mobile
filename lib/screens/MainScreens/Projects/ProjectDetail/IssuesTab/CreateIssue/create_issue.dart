@@ -67,6 +67,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   void initCreateIssue() {
     final prov = ref.read(ProviderList.issuesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider.notifier);
     ref.read(ProviderList.issueProvider).initCookies();
     prov.createIssueProjectData = widget.projectId != null
         ? projectProvider.projects
@@ -83,14 +84,13 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
 
     if (widget.fromMyIssues) {
       prov.statesState = StateEnum.loading;
-      prov
+      statesProvider
           .getStates(
-              showLoading: false,
               slug: ref
                   .read(ProviderList.workspaceProvider)
                   .selectedWorkspace
                   .workspaceSlug,
-              projID: widget.projectId ??
+              projectId: widget.projectId ??
                   ref.read(ProviderList.projectProvider).currentProject['id'])
           .then((value) {
         prov.createIssuedata['state'] =
@@ -165,6 +165,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
     final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
     final BuildContext baseContext = context;
     if (issuesProvider.createIssuedata['state'] == null &&
@@ -176,7 +177,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
       onWillPop: () async {
         issuesProvider.createIssuedata = {};
         issuesProvider.statesData = tempStatesData;
-        issuesProvider.states = tempStates;
+        // issuesProvider.states = tempStates;
         issuesProvider.stateOrdering = tempStateOrdering;
         issuesProvider.stateIcons = tempStatesIcons;
         issuesProvider.labels = tempLabels;
@@ -195,7 +196,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
             onPressed: () {
               issuesProvider.createIssuedata = {};
               issuesProvider.statesData = tempStatesData;
-              issuesProvider.states = tempStates;
+              // issuesProvider.states = tempStates;
               issuesProvider.stateOrdering = tempStateOrdering;
               issuesProvider.stateIcons = tempStatesIcons;
               issuesProvider.labels = tempLabels;
@@ -270,14 +271,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           builder: (ctx) =>
                                               const SelectProject()).then(
                                           (value) {
-                                        issuesProvider
+                                        statesProvider
                                             .getStates(
                                                 slug: ref
                                                     .read(ProviderList
                                                         .workspaceProvider)
                                                     .selectedWorkspace
                                                     .workspaceSlug,
-                                                projID: issuesProvider
+                                                projectId: issuesProvider
                                                         .createIssueProjectData[
                                                     'id'])
                                             .then((value) {
@@ -773,20 +774,21 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                           issuesProvider
                                                                   .createIssuedata[
                                                               'state']]),
-                                              CustomText(
-                                                issuesProvider.createIssuedata[
-                                                            'state'] ==
-                                                        null
-                                                    ? 'Select'
-                                                    : issuesProvider
-                                                        .states[issuesProvider
-                                                            .createIssuedata[
-                                                        'state']]['name'],
-                                                type: FontStyle.Small,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryTextColor,
-                                              ),
+                                              // CustomText(
+                                              //   issuesProvider.createIssuedata[
+                                              //               'state'] ==
+                                              //           null
+                                              //       ? 'Select'
+                                              //       : issuesProvider
+                                              //           .states[issuesProvider
+                                              //               .createIssuedata[
+                                              //           'state']]['name'],
+                                              //   type: FontStyle.Small,
+                                              //   color: themeProvider
+                                              //       .themeManager
+                                              //       .primaryTextColor,
+                                              // ),
+                                              
                                               issuesProvider.createIssuedata[
                                                           'state'] ==
                                                       null
@@ -1835,7 +1837,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
 
                           issuesProvider.createIssuedata = {};
                           issuesProvider.statesData = tempStatesData;
-                          issuesProvider.states = tempStates;
+                          // issuesProvider.states = tempStates;
                           issuesProvider.stateOrdering = tempStateOrdering;
                           issuesProvider.stateIcons = tempStatesIcons;
                           issuesProvider.labels = tempLabels;
@@ -1879,14 +1881,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                               tempAssignees = projectProvider.projectMembers;
 
                               if (widget.fromMyIssues) {
-                                issuesProvider
+                                statesProvider
                                     .getStates(
                                         slug: ref
                                             .read(
                                                 ProviderList.workspaceProvider)
                                             .selectedWorkspace
                                             .workspaceSlug,
-                                        projID: widget.projectId ??
+                                        projectId: widget.projectId ??
                                             ref
                                                 .read(ProviderList
                                                     .projectProvider)

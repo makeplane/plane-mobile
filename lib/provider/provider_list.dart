@@ -16,8 +16,10 @@ import 'package:plane/provider/notification_provider.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/search_issue_provider.dart';
+import 'package:plane/provider/states_provider.dart';
 import 'package:plane/provider/whats_new_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
+import 'package:plane/repository/states_service.dart';
 import 'package:plane/services/shared_preference_service.dart';
 
 import '../repository/dashboard_service.dart';
@@ -98,6 +100,10 @@ class ProviderList {
   static StateNotifierProvider<ConfigProvider, ConfigModel> configProvider =
       StateNotifierProvider<ConfigProvider, ConfigModel>(
           (ref) => ConfigProvider(ref));
+  
+  static StateNotifierProvider<StatesProvider, StatesData> statesProvider =
+      StateNotifierProvider<StatesProvider, StatesData>(
+          (ref) => StatesProvider(ref, StatesService()));
 
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();

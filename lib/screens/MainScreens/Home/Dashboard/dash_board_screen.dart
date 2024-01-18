@@ -109,8 +109,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             context, profileProvider, themeProvider),
                         const SizedBox(height: 20),
                         dashboardProvider.hideGithubBlock == false
-                            ? starUsOnGitHubWidget(
-                                themeProvider, context, dashboardProvider)
+                            ? starUsOnGitHubWidget(themeProvider, context,
+                                dashboardProvider, profileProvider)
                             : Container(),
                         const SizedBox(height: 20),
                         projectProvider.projects.isEmpty &&
@@ -242,7 +242,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   }
 
   Stack starUsOnGitHubWidget(ThemeProvider themeProvider, BuildContext context,
-      DashBoardProvider dashboardProvider) {
+      DashBoardProvider dashboardProvider, ProfileProvider profileProvider) {
     return Stack(
       children: [
         Container(
@@ -304,7 +304,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             postHogService(
                                 eventName: 'STAR_US_ON_GITHIB',
                                 properties: {},
-                                ref: ref);
+                                userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

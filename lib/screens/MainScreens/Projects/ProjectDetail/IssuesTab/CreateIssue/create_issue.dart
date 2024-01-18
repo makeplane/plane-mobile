@@ -56,7 +56,6 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   Map tempStates = {};
   List tempStateOrdering = [];
   Map tempStatesIcons = {};
-  List tempLabels = [];
   List tempIssues = [];
   List tempAssignees = [];
   bool descriptionExpanded = false;
@@ -67,7 +66,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   void initCreateIssue() {
     final prov = ref.read(ProviderList.issuesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
-    final statesProvider = ref.read(ProviderList.statesProvider.notifier);
+    final statesNotifier = ref.read(ProviderList.statesProvider.notifier);
+    final statesProvider = ref.read(ProviderList.statesProvider);
+
     ref.read(ProviderList.issueProvider).initCookies();
     prov.createIssueProjectData = widget.projectId != null
         ? projectProvider.projects
@@ -75,16 +76,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
         : projectProvider.currentProject;
     final themeProvider = ref.read(ProviderList.themeProvider);
     tempStatesData = prov.statesData;
-    tempStates = prov.states;
-    tempStateOrdering = prov.stateOrdering;
+    tempStates = statesProvider.projectStates;
     tempStatesIcons = prov.stateIcons;
-    tempLabels = prov.labels;
     tempIssues = ref.read(ProviderList.searchIssueProvider).issues;
     tempAssignees = projectProvider.projectMembers;
 
     if (widget.fromMyIssues) {
-      prov.statesState = StateEnum.loading;
-      statesProvider
+      statesProvider.statesState = StateEnum.loading;
+      statesNotifier
           .getStates(
               slug: ref
                   .read(ProviderList.workspaceProvider)
@@ -93,8 +92,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
               projectId: widget.projectId ??
                   ref.read(ProviderList.projectProvider).currentProject['id'])
           .then((value) {
-        prov.createIssuedata['state'] =
-            (prov.states.isNotEmpty ? prov.states.keys.first : null);
+        prov.createIssuedata['state'] = (statesProvider.projectStates.isNotEmpty
+            ? statesProvider.projectStates.keys.first
+            : null);
       });
 
       ref.read(ProviderList.estimatesProvider).getEstimates(
@@ -106,14 +106,14 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
               ref.read(ProviderList.projectProvider).currentProject['id']);
     } else {
       bool found = false;
-      for (final element in prov.states.keys) {
+      for (final element in statesProvider.projectStates.keys) {
         if (element == prov.createIssuedata['state']) {
           found = true;
         }
       }
 
       if (!found) {
-        prov.createIssuedata['state'] = prov.states.keys.first;
+        prov.createIssuedata['state'] = statesProvider.projectStates.keys.first;
       }
     }
 
@@ -141,7 +141,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
   LoadingType getLoading(WidgetRef ref) {
     return setWidgetState([
       ref.read(ProviderList.issuesProvider).createIssueState,
-      ref.read(ProviderList.issuesProvider).statesState,
+      ref.read(ProviderList.statesProvider).statesState,
     ], loadingType: LoadingType.wrap);
   }
 
@@ -165,22 +165,21 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
-    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
+    final statesNotifier = ref.watch(ProviderList.statesProvider.notifier);
     final estimatesProvider = ref.watch(ProviderList.estimatesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     final BuildContext baseContext = context;
     if (issuesProvider.createIssuedata['state'] == null &&
-        issuesProvider.states.isNotEmpty) {
+        statesProvider.projectStates.isNotEmpty) {
       issuesProvider.createIssuedata['state'] =
-          issuesProvider.states.keys.first;
+          statesProvider.projectStates.keys.first;
     }
     return WillPopScope(
       onWillPop: () async {
         issuesProvider.createIssuedata = {};
         issuesProvider.statesData = tempStatesData;
         // issuesProvider.states = tempStates;
-        issuesProvider.stateOrdering = tempStateOrdering;
         issuesProvider.stateIcons = tempStatesIcons;
-        issuesProvider.labels = tempLabels;
         projectProvider.projectMembers = tempAssignees;
         issuesProvider.setsState();
         ref.read(ProviderList.searchIssueProvider).issues = tempIssues;
@@ -197,9 +196,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
               issuesProvider.createIssuedata = {};
               issuesProvider.statesData = tempStatesData;
               // issuesProvider.states = tempStates;
-              issuesProvider.stateOrdering = tempStateOrdering;
               issuesProvider.stateIcons = tempStatesIcons;
-              issuesProvider.labels = tempLabels;
               projectProvider.projectMembers = tempAssignees;
               issuesProvider.setsState();
               ref.read(ProviderList.issueProvider).clearCookies();
@@ -271,7 +268,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                           builder: (ctx) =>
                                               const SelectProject()).then(
                                           (value) {
-                                        statesProvider
+                                        statesNotifier
                                             .getStates(
                                                 slug: ref
                                                     .read(ProviderList
@@ -284,7 +281,8 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                             .then((value) {
                                           issuesProvider
                                                   .createIssuedata['state'] =
-                                              issuesProvider.states.keys.first;
+                                              statesProvider
+                                                  .projectStates.keys.first;
                                         });
                                         ref
                                             .read(
@@ -788,7 +786,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                               //       .themeManager
                                               //       .primaryTextColor,
                                               // ),
-                                              
+
                                               issuesProvider.createIssuedata[
                                                           'state'] ==
                                                       null
@@ -1838,9 +1836,7 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                           issuesProvider.createIssuedata = {};
                           issuesProvider.statesData = tempStatesData;
                           // issuesProvider.states = tempStates;
-                          issuesProvider.stateOrdering = tempStateOrdering;
                           issuesProvider.stateIcons = tempStatesIcons;
-                          issuesProvider.labels = tempLabels;
                           projectProvider.projectMembers = tempAssignees;
                           issuesProvider.setsState();
                           ref.read(ProviderList.searchIssueProvider).issues =
@@ -1871,17 +1867,15 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                               final themeProvider =
                                   ref.read(ProviderList.themeProvider);
                               tempStatesData = issuesProvider.statesData;
-                              tempStates = issuesProvider.states;
-                              tempStateOrdering = issuesProvider.stateOrdering;
+                              tempStates = statesProvider.projectStates;
                               tempStatesIcons = issuesProvider.stateIcons;
-                              tempLabels = issuesProvider.labels;
                               tempIssues = ref
                                   .read(ProviderList.searchIssueProvider)
                                   .issues;
                               tempAssignees = projectProvider.projectMembers;
 
                               if (widget.fromMyIssues) {
-                                statesProvider
+                                statesNotifier
                                     .getStates(
                                         slug: ref
                                             .read(
@@ -1895,8 +1889,9 @@ class _CreateIssueState extends ConsumerState<CreateIssue>
                                                 .currentProject['id'])
                                     .then((value) {
                                   issuesProvider.createIssuedata['state'] =
-                                      (issuesProvider.states.isNotEmpty
-                                          ? issuesProvider.states.keys.first
+                                      (statesProvider.projectStates.isNotEmpty
+                                          ? statesProvider
+                                              .projectStates.keys.first
                                           : null);
                                 });
 

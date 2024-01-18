@@ -41,7 +41,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final labelProvider = ref.watch(ProviderList.labelProvider);
     final pageProvider = ref.watch(ProviderList.pageProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
@@ -84,16 +84,17 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               ),
               Container(height: 20),
               Wrap(
-                children: issuesProvider.labels.map((label) {
-                  return search.text.toLowerCase().contains(
-                              label["name"].toString().toLowerCase()) ||
+                children: labelProvider.projectLabels.values.map((label) {
+                  return search.text
+                              .toLowerCase()
+                              .contains(label.name.toLowerCase()) ||
                           search.text.trim().isEmpty
                       ? GestureDetector(
                           onTap: () {
-                            if (selectedLabels.contains(label["id"])) {
-                              selectedLabels.remove(label["id"]);
+                            if (selectedLabels.contains(label.id)) {
+                              selectedLabels.remove(label.id);
                             } else {
-                              selectedLabels.add(label["id"]);
+                              selectedLabels.add(label.id);
                             }
                             setState(() {});
                           },
@@ -103,7 +104,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
-                              color: selectedLabels.contains(label["id"])
+                              color: selectedLabels.contains(label.id)
                                   ? themeProvider.themeManager.primaryColour
                                   : (themeProvider.themeManager
                                       .primaryBackgroundDefaultColor),
@@ -118,16 +119,15 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                               children: [
                                 CircleAvatar(
                                     radius: 6,
-                                    backgroundColor:
-                                        label["color"].toString().toColor()),
+                                    backgroundColor: label.color.toColor()),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 CustomText(
-                                  label["name"],
+                                  label.name,
                                   type: FontStyle.Small,
                                   overrride: true,
-                                  color: selectedLabels.contains(label["id"])
+                                  color: selectedLabels.contains(label.id)
                                       ? Colors.white
                                       : (themeProvider
                                           .themeManager.primaryTextColor),

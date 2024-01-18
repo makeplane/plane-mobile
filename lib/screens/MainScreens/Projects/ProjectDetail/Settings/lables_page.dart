@@ -22,9 +22,9 @@ class LablesPage extends ConsumerStatefulWidget {
 class _LablesPageState extends ConsumerState<LablesPage> {
   List expanded = [];
   bool isChildAvailable(String id) {
-    final issuesProv = ref.read(ProviderList.issuesProvider);
-    for (final element in issuesProv.labels) {
-      if (element["parent"] == id) return true;
+    final labelProvider = ref.read(ProviderList.labelProvider);
+    for (final label in labelProvider.projectLabels.values) {
+      if (label.parent == id) return true;
     }
     return false;
   }
@@ -32,21 +32,24 @@ class _LablesPageState extends ConsumerState<LablesPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final labelProvider = ref.watch(ProviderList.labelProvider);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
+
     return LoadingWidget(
-      loading: issuesProvider.labelState == StateEnum.loading,
+      loading: labelProvider.labelState == StateEnum.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-        child: issuesProvider.labels.isEmpty
+        child: labelProvider.projectLabels.isEmpty
             ? EmptyPlaceholder.emptyLabels(context, ref)
             : ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                itemCount: issuesProvider.labels.length,
+                itemCount: labelProvider.projectLabels.length,
                 itemBuilder: (context, index) {
-                  final isChildAvail =
-                      isChildAvailable(issuesProvider.labels[index]["id"]);
-                  return issuesProvider.labels[index]["parent"] == null
+                  final label =
+                      labelProvider.projectLabels.values.elementAt(index);
+                  final isChildAvail = isChildAvailable(label.id);
+                  return label.parent == null
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
@@ -71,18 +74,13 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                         !isChildAvail
                                             ? CircleAvatar(
                                                 radius: 6,
-                                                backgroundColor: issuesProvider
-                                                    .labels[index]['color']
-                                                    .toString()
-                                                    .toColor(),
+                                                backgroundColor:
+                                                    label.color.toColor(),
                                               )
                                             : SvgPicture.asset(
                                                 "assets/svg_images/label_group.svg",
                                                 colorFilter: ColorFilter.mode(
-                                                    issuesProvider.labels[index]
-                                                            ['color']
-                                                        .toString()
-                                                        .toColor(),
+                                                    label.color.toColor(),
                                                     BlendMode.srcIn),
                                               ),
                                         const SizedBox(
@@ -94,8 +92,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                   .width *
                                               0.7,
                                           child: CustomText(
-                                            issuesProvider.labels[index]
-                                                ['name'],
+                                            label.name,
                                             type: FontStyle.H5,
                                             maxLines: 1,
                                             color: themeProvider
@@ -145,14 +142,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                             .viewInsets
                                                             .bottom),
                                                     child: CreateLabel(
-                                                      label: issuesProvider
-                                                              .labels[index]
-                                                          ['name'],
-                                                      labelColor: issuesProvider
-                                                              .labels[index]
-                                                          ['color'],
-                                                      labelId: issuesProvider
-                                                          .labels[index]['id'],
+                                                      label: label.name,
+                                                      labelColor: label.color,
+                                                      labelId: label.id,
                                                       method: CRUD.update,
                                                     ),
                                                   );
@@ -182,8 +174,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                 context: context,
                                                 builder: (context) {
                                                   return SingleLabelSelect(
-                                                    labelID: issuesProvider
-                                                        .labels[index]["id"],
+                                                    labelID: label.id,
                                                   );
                                                 },
                                               );
@@ -212,11 +203,8 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                             .viewInsets
                                                             .bottom),
                                                     child: DeleteLabelSheet(
-                                                      labelName: issuesProvider
-                                                              .labels[index]
-                                                          ['name'],
-                                                      labelId: issuesProvider
-                                                          .labels[index]['id'],
+                                                      labelName: label.name,
+                                                      labelId: label.id,
                                                     ),
                                                   );
                                                 },
@@ -347,11 +335,9 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                               ),
                               Column(
                                   children: expanded.contains(index)
-                                      ? issuesProvider.labels.map(
-                                          (e) {
-                                            return e["parent"] ==
-                                                    issuesProvider.labels[index]
-                                                        ["id"]
+                                      ? labelProvider.projectLabels.values.map(
+                                          (childLabel) {
+                                            return childLabel.parent == label.id
                                                 ? Container(
                                                     margin:
                                                         const EdgeInsets.only(
@@ -383,16 +369,16 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                           children: [
                                                             CircleAvatar(
                                                               radius: 6,
-                                                              backgroundColor: e[
-                                                                      'color']
-                                                                  .toString()
-                                                                  .toColor(),
+                                                              backgroundColor:
+                                                                  childLabel
+                                                                      .color
+                                                                      .toColor(),
                                                             ),
                                                             const SizedBox(
                                                               width: 10,
                                                             ),
                                                             CustomText(
-                                                              e['name'],
+                                                              childLabel.name,
                                                               type: FontStyle
                                                                   .Medium,
                                                               maxLines: 3,
@@ -448,12 +434,14 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                             .bottom),
                                                                     child:
                                                                         CreateLabel(
-                                                                      label: e[
-                                                                          'name'],
+                                                                      label: childLabel
+                                                                          .name,
                                                                       labelColor:
-                                                                          e['color'],
-                                                                      labelId: e[
-                                                                          'id'],
+                                                                          childLabel
+                                                                              .color,
+                                                                      labelId:
+                                                                          childLabel
+                                                                              .id,
                                                                       method: CRUD
                                                                           .update,
                                                                     ),
@@ -462,27 +450,10 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                               );
                                                             } else if (val ==
                                                                 'CONVERT') {
-                                                              issuesProvider
-                                                                  .issueLabels(
-                                                                      slug: ref
-                                                                          .watch(ProviderList
-                                                                              .workspaceProvider)
-                                                                          .selectedWorkspace
-                                                                          .workspaceSlug,
-                                                                      projID: ref
-                                                                              .watch(ProviderList
-                                                                                  .projectProvider)
-                                                                              .currentProject[
-                                                                          'id'],
-                                                                      method: CRUD
-                                                                          .update,
-                                                                      data: {
-                                                                        "parent":
-                                                                            null,
-                                                                      },
-                                                                      labelId: e[
-                                                                          "id"],
-                                                                      ref: ref);
+                                                              labelNotifier
+                                                                  .updateLabel({
+                                                                "parent": null,
+                                                              });
                                                             } else {
                                                               showModalBottomSheet(
                                                                 constraints:
@@ -516,9 +487,11 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                     child:
                                                                         DeleteLabelSheet(
                                                                       labelName:
-                                                                          e['name'],
-                                                                      labelId: e[
-                                                                          'id'],
+                                                                          childLabel
+                                                                              .name,
+                                                                      labelId:
+                                                                          childLabel
+                                                                              .id,
                                                                     ),
                                                                   );
                                                                 },
@@ -627,34 +600,36 @@ class SingleLabelSelect extends ConsumerStatefulWidget {
 class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
   double height = 0.0;
   bool isChildAvailable(String id) {
-    final issuesProv = ref.read(ProviderList.issuesProvider);
-    for (final element in issuesProv.labels) {
-      if (element["parent"] == id) return true;
+    final labelProv = ref.read(ProviderList.labelProvider);
+    for (final label in labelProv.projectLabels.values) {
+      if (label.parent == id) return true;
     }
     return false;
   }
 
   bool isLabelsAvailable({int index = 0, bool iterate = false}) {
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final labelProv = ref.read(ProviderList.labelProvider);
     if (iterate) {
-      for (final element in issuesProvider.labels) {
-        if (!(element["id"] == widget.labelID ||
-            element["parent"] == widget.labelID ||
-            element["parent"] != null ||
-            isChildAvailable(element["id"]))) return false;
+      for (final label in labelProv.projectLabels.values) {
+        if (!(label.id == widget.labelID ||
+            label.parent == widget.labelID ||
+            label.parent != null ||
+            isChildAvailable(label.id))) return false;
       }
       return true;
     }
-    return issuesProvider.labels[index]["id"] == widget.labelID ||
-        issuesProvider.labels[index]["parent"] == widget.labelID ||
-        issuesProvider.labels[index]["parent"] != null ||
-        isChildAvailable(issuesProvider.labels[index]["id"]);
+    final label = labelProv.projectLabels.values.elementAt(index);
+    return label.id == widget.labelID ||
+        label.parent == widget.labelID ||
+        label.parent != null ||
+        isChildAvailable(label.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final labelProvider = ref.read(ProviderList.labelProvider);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final box = context.findRenderObject() as RenderBox;
       height = box.size.height;
@@ -695,29 +670,20 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                 isLabelsAvailable(iterate: true)
                     ? EmptyPlaceholder.emptyLabels(context, ref)
                     : ListView.builder(
-                        itemCount: issuesProvider.labels.length,
+                        itemCount: labelProvider.projectLabels.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          final label =
+                              labelProvider.projectLabels.values.elementAt(
+                            index,
+                          );
                           return isLabelsAvailable(index: index)
                               ? Container()
                               : InkWell(
                                   onTap: () {
-                                    issuesProvider.issueLabels(
-                                        slug: ref
-                                            .watch(
-                                                ProviderList.workspaceProvider)
-                                            .selectedWorkspace
-                                            .workspaceSlug,
-                                        projID: ref
-                                            .watch(ProviderList.projectProvider)
-                                            .currentProject['id'],
-                                        method: CRUD.update,
-                                        data: {
-                                          "parent": widget.labelID,
-                                        },
-                                        labelId: issuesProvider.labels[index]
-                                            ["id"],
-                                        ref: ref);
+                                    labelNotifier.updateLabel({
+                                      "parent": null,
+                                    });
 
                                     Navigator.pop(context);
                                   },
@@ -731,16 +697,12 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
                                           children: [
                                             CircleAvatar(
                                               radius: 8,
-                                              backgroundColor: issuesProvider
-                                                  .labels[index]['color']
-                                                  .toString()
-                                                  .toColor(),
+                                              backgroundColor:
+                                                  label.color.toColor(),
                                             ),
                                             Container(width: 10),
                                             CustomText(
-                                              issuesProvider.labels[index]
-                                                      ['name']
-                                                  .toString(),
+                                              label.name,
                                               type: FontStyle.Small,
                                             ),
                                             const Spacer(),
@@ -761,7 +723,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
               ],
             ),
           ),
-          issuesProvider.labelState == StateEnum.loading
+          labelProvider.labelState == StateEnum.loading
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,

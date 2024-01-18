@@ -43,7 +43,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issueProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
-    // log(issueProvider.issueState.name);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     if (issueProvider.issues.projectView == IssueLayout.list) {
       issueProvider.initializeBoard(
         isArchive: true,
@@ -86,10 +86,10 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
         body: LoadingWidget(
           loading: issueProvider.issuePropertyState == StateEnum.loading ||
               issueProvider.issueState == StateEnum.loading ||
-              issueProvider.statesState == StateEnum.loading ||
+              statesProvider.statesState == StateEnum.loading ||
               issueProvider.projectViewState == StateEnum.loading ||
               issueProvider.orderByState == StateEnum.loading,
-          widgetClass: issueProvider.statesState == StateEnum.restricted
+          widgetClass: statesProvider.statesState == StateEnum.restricted
               ? EmptyPlaceholder.joinProject(
                   context,
                   ref,
@@ -102,7 +102,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                   color: themeProvider
                       .themeManager.secondaryBackgroundDefaultColor,
                   child: issueProvider.issueState == StateEnum.loading ||
-                          issueProvider.statesState == StateEnum.loading ||
+                          statesProvider.statesState == StateEnum.loading ||
                           issueProvider.projectViewState == StateEnum.loading ||
                           issueProvider.orderByState == StateEnum.loading
                       ? Container()
@@ -291,7 +291,7 @@ class _ArchivedIssuesState extends ConsumerState<ArchivedIssues> {
                                     ),
                                   ),
                                 ),
-                                issueProvider.statesState ==
+                                statesProvider.statesState ==
                                             StateEnum.loading ||
                                         issueProvider.issueState ==
                                             StateEnum.loading

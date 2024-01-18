@@ -47,6 +47,7 @@ class _ProjectInviteMembersSheetState
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     final BuildContext mainBuildContext = context;
     return LoadingWidget(
       loading: projectProvider.projectInvitationState == StateEnum.loading,
@@ -333,7 +334,8 @@ class _ProjectInviteMembersSheetState
                                       projectProvider.projectDetailModel!.name,
                                   'INVITED_PROJECT_MEMBER': emailController.text
                                 },
-                                ref: ref);
+                                     userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                             //show success snackbar
 
                             CustomToast.showToast(mainBuildContext,

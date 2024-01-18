@@ -22,19 +22,17 @@ class IssueFilterHelper {
     GroupBY groupBY,
     OrderBY orderBY, {
     Map<String, dynamic>? filter,
-    dynamic labels,
-    dynamic members,
-    dynamic projects,
-    dynamic states,
+    required List<String> labelIDs,
+    required List<String> memberIDs,
+    required dynamic states,
   }) {
     Map<String, List<dynamic>> groupedIssues = IssuesGroupBYHelper.groupIssues(
       issues,
       groupBY,
       filter: filter,
-      labels: labels,
-      members: members,
-      projects: projects,
-      states: states,
+      labelIDs: labelIDs,
+      memberIDs: memberIDs,
+      stateIDs: states,
     );
     Map<String, dynamic> organizedIssues =
         IssuesOrderBYHelper.orderIssues(groupedIssues, orderBY);

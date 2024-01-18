@@ -50,8 +50,8 @@ class _ProjectDetailRootState extends ConsumerState<ProjectDetailRoot> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issueProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
 
     return projectProvider.projectDetailState == StateEnum.error
         ? errorState(
@@ -63,7 +63,7 @@ class _ProjectDetailRootState extends ConsumerState<ProjectDetailRoot> {
             })
         : Column(
             children: [
-              issueProvider.statesState != StateEnum.loading
+              statesProvider.statesState != StateEnum.loading
                   ? ProjectDetailTabs(
                       selectedTab: widget.selectedTab,
                       onTabChange: widget.onTabChange,

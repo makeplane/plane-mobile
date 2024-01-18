@@ -199,6 +199,7 @@ class IssueProvider with ChangeNotifier {
       BuildContext? buildContext}) async {
     final workspaceProvider = refs.watch(ProviderList.workspaceProvider);
     final projectProvider = refs.watch(ProviderList.projectProvider);
+    final profileProvider = refs.watch(ProviderList.profileProvider);
     try {
       updateIssueState = StateEnum.loading;
       notifyListeners();
@@ -223,7 +224,8 @@ class IssueProvider with ChangeNotifier {
                 .firstWhere((element) => element['id'] == projID)['name'],
             'ISSUE_ID': issueID
           },
-          ref: refs);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       await getIssueDetails(slug: slug, projID: projID, issueID: issueID);
       await getIssueActivity(slug: slug, projID: projID, issueID: issueID);
       await ref.read(ProviderList.myIssuesProvider.notifier).getMyIssues(

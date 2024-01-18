@@ -1,18 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
-
 import 'package:plane/widgets/square_avatar_widget.dart';
-
 import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 import 'custom_rich_text.dart';
 import 'custom_text.dart';
@@ -184,6 +179,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
     final themeProvider = ref.read(ProviderList.themeProvider);
     dynamic provider;
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final labelProvider = ref.watch(ProviderList.labelProvider);
 
     if (widget.issueCategory == IssueCategory.cycleIssues) {
       provider = ref.watch(ProviderList.cyclesProvider);
@@ -194,6 +190,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
     } else {
       provider = ref.watch(ProviderList.issuesProvider);
     }
+    final issue = provider.issuesResponse[widget.cardIndex];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -206,9 +204,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   widgets: [
                     TextSpan(
                         text: projectProvider.currentProject['identifier']),
-                    TextSpan(
-                        text:
-                            '-${provider.issuesResponse[widget.cardIndex]['sequence_id']}'),
+                    TextSpan(text: '-${issue['sequence_id']}'),
                   ],
                 ),
               )
@@ -240,9 +236,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                         ? Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: provider.issuesResponse[widget.cardIndex]
-                                            ['priority'] ==
-                                        'urgent'
+                                color: issue['priority'] == 'urgent'
                                     ? Colors.red
                                     : null,
                                 border: Border.all(
@@ -252,34 +246,28 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             margin: const EdgeInsets.only(right: 5),
                             height: 30,
                             width: 30,
-                            child: provider.issuesResponse[widget.cardIndex]['priority'] == null ||
-                                    provider.issuesResponse[widget.cardIndex]
-                                            ['priority'] ==
-                                        'none'
+                            child: issue['priority'] == null ||
+                                    issue['priority'] == 'none'
                                 ? Icon(
                                     Icons.do_disturb_alt_outlined,
                                     size: 18,
                                     color: themeProvider
                                         .themeManager.tertiaryTextColor,
                                   )
-                                : provider.issuesResponse[widget.cardIndex]
-                                            ['priority'] ==
-                                        'urgent'
+                                : issue['priority'] == 'urgent'
                                     ? const Icon(
                                         Icons.error_outline_rounded,
                                         color: Colors.white,
                                         size: 18,
                                       )
-                                    : provider.issuesResponse[widget.cardIndex]
-                                                ['priority'] ==
-                                            'high'
+                                    : issue['priority'] == 'high'
                                         ? const Icon(
                                             Icons.signal_cellular_alt,
                                             color:
                                                 Color.fromRGBO(249, 115, 23, 1),
                                             size: 18,
                                           )
-                                        : provider.issuesResponse[widget.cardIndex]['priority'] == 'medium'
+                                        : issue['priority'] == 'medium'
                                             ? const Icon(
                                                 Icons.signal_cellular_alt_2_bar,
                                                 color: Color.fromRGBO(
@@ -296,19 +284,12 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             width: 0,
                           ),
                     provider.issues.displayProperties.assignee == true
-                        ? (provider.issuesResponse[widget.cardIndex]
-                                        ['assignee_details'] !=
-                                    null &&
-                                provider
-                                    .issuesResponse[widget.cardIndex]
-                                        ['assignee_details']
-                                    .isNotEmpty)
+                        ? (issue['assignee_details'] != null &&
+                                issue['assignee_details'].isNotEmpty)
                             ? Container(
                                 margin: const EdgeInsets.only(right: 5),
                                 child: SquareAvatarWidget(
-                                  details:
-                                      provider.issuesResponse[widget.cardIndex]
-                                          ['assignee_details'],
+                                  details: issue['assignee_details'],
                                 ),
                               )
                             : Container(
@@ -333,12 +314,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                             width: 0,
                           ),
                     (provider.issues.displayProperties.label == true &&
-                            provider
-                                .issuesResponse[widget.cardIndex]['label_ids']
-                                .isNotEmpty)
-                        ? provider.issuesResponse[widget.cardIndex]['label_ids']
-                                    .length ==
-                                1
+                            issue['label_ids'].isNotEmpty)
+                        ? issue['label_ids'].length == 1
                             ? Container(
                                 width: 80,
                                 margin: const EdgeInsets.only(right: 5),
@@ -357,18 +334,17 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   children: [
                                     CircleAvatar(
                                       radius: 5,
-                                      backgroundColor: getLabelDetail(
-                                              provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['label_ids'][0])['color']
-                                          .toString()
-                                          .toColor(),
+                                      backgroundColor:
+                                          (labelProvider.projectLabels[
+                                                  issue['label_ids'][0]])!
+                                              .color
+                                              .toColor(),
                                     ),
                                     const SizedBox(
                                       width: 5,
                                     ),
                                     CustomText(
-                                      '${provider.issuesResponse[widget.cardIndex]['label_ids'].length} Labels',
+                                      '${issue['label_ids'].length} Labels',
                                       type: FontStyle.XSmall,
                                       height: 1,
                                       color: themeProvider
@@ -384,11 +360,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   scrollDirection: Axis.horizontal,
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: provider
-                                      .issuesResponse[widget.cardIndex]
-                                          ['label_ids']
-                                      .length,
+                                  itemCount: issue['label_ids'].length,
                                   itemBuilder: (context, idx) {
+                                    final label = labelProvider
+                                        .projectLabels.values
+                                        .elementAt(idx);
                                     return Container(
                                       height: 30,
                                       padding: const EdgeInsets.only(
@@ -407,14 +383,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         children: [
                                           CircleAvatar(
                                             radius: 5,
-                                            backgroundColor: getLabelDetail(
-                                                    provider.issuesResponse[
-                                                                widget
-                                                                    .cardIndex]
-                                                            ['label_details']
-                                                        [idx])['color']
-                                                .toString()
-                                                .toColor(),
+                                            backgroundColor:
+                                                label.color.toColor(),
                                           ),
                                           const SizedBox(
                                             width: 5,
@@ -423,11 +393,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                             constraints: const BoxConstraints(
                                                 maxWidth: 120),
                                             child: CustomText(
-                                              getLabelDetail(
-                                                  provider.issuesResponse[
-                                                              widget.cardIndex]
-                                                          ['label_details']
-                                                      [idx])['name'],
+                                              label.name,
                                               type: FontStyle.XSmall,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
@@ -459,15 +425,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
-                              provider.issuesResponse[widget.cardIndex]
-                                          ['start_date'] !=
-                                      null
+                              issue['start_date'] != null
                                   ?
                                   //convert yyyy-mm-dd to Aug 12, 2021
                                   DateFormat('MMM dd, yyyy').format(
-                                      DateTime.parse(provider
-                                              .issuesResponse[widget.cardIndex]
-                                          ['start_date']))
+                                      DateTime.parse(issue['start_date']))
                                   : 'Start date',
                               type: FontStyle.XSmall,
                               height: 1,
@@ -490,15 +452,11 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                         .themeManager.borderSubtle01Color),
                                 borderRadius: BorderRadius.circular(4)),
                             child: CustomText(
-                              provider.issuesResponse[widget.cardIndex]
-                                          ['target_date'] !=
-                                      null
+                              issue['target_date'] != null
                                   ?
                                   //convert yyyy-mm-dd to Aug 12, 2021
                                   DateFormat('MMM dd, yyyy').format(
-                                      DateTime.parse(provider
-                                              .issuesResponse[widget.cardIndex]
-                                          ['target_date']))
+                                      DateTime.parse(issue['target_date']))
                                   : 'Due date',
                               type: FontStyle.XSmall,
                               height: 1,
@@ -537,17 +495,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['sub_issues_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['sub_issues_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['sub_issues_count']
-                                          .toString()
+                                  issue['sub_issues_count'] != '' &&
+                                          issue['sub_issues_count'] != null
+                                      ? issue['sub_issues_count'].toString()
                                       : '0',
                                   type: FontStyle.XSmall,
                                   height: 1,
@@ -585,16 +535,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['link_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[widget
-                                                  .cardIndex]['link_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['link_count']
-                                          .toString()
+                                  issue['link_count'] != '' &&
+                                          issue['link_count'] != null
+                                      ? issue['link_count'].toString()
                                       : '0',
                                   type: FontStyle.XSmall,
                                   height: 1,
@@ -633,17 +576,9 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['attachment_count'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['attachment_count'] !=
-                                              null
-                                      ? provider
-                                          .issuesResponse[widget.cardIndex]
-                                              ['attachment_count']
-                                          .toString()
+                                  issue['attachment_count'] != '' &&
+                                          issue['attachment_count'] != null
+                                      ? issue['attachment_count'].toString()
                                       : '0',
                                   type: FontStyle.XSmall,
                                   height: 1,
@@ -683,13 +618,8 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                   width: 5,
                                 ),
                                 CustomText(
-                                  provider.issuesResponse[widget.cardIndex]
-                                                  ['estimate_point'] !=
-                                              '' &&
-                                          provider.issuesResponse[
-                                                      widget.cardIndex]
-                                                  ['estimate_point'] !=
-                                              null
+                                  issue['estimate_point'] != '' &&
+                                          issue['estimate_point'] != null
                                       ? ref
                                           .read(ProviderList.estimatesProvider)
                                           .estimates
@@ -699,8 +629,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                                                   .currentProject['estimate'];
                                         })['points'].firstWhere((element) {
                                           return element['key'] ==
-                                              provider.issuesResponse[widget
-                                                  .cardIndex]['estimate_point'];
+                                              issue['estimate_point'];
                                         })['value']
                                       : 'Estimate',
                                   type: FontStyle.XSmall,
@@ -866,16 +795,5 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
         ],
       ),
     );
-  }
-
-  Map getLabelDetail(String issueId) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    Map? issueDetail;
-    for (final label in issuesProvider.labels) {
-      if (issueId == label['id']) {
-        log(issueId);
-      }
-    }
-    return issueDetail!;
   }
 }

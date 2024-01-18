@@ -7,9 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom_sheets/delete_state_sheet.dart';
-import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/provider/states_provider.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -223,7 +221,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                                     onPressed: () {
                                       if (statesProvider.stateGroups.values
                                               .toList()[index][idx]
-                                              .isDefault ==
+                                              .is_default ==
                                           true) {
                                         CustomToast.showToast(
                                           context,
@@ -296,7 +294,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
   Color getColorFromIssueProvider(int index, int idx) {
     final statesProvider = ref.watch(ProviderList.statesProvider);
     const Color colorToReturnOnApiError = Color.fromARGB(255, 200, 80, 80);
-    final String? colorData =
+    final String colorData =
         statesProvider.stateGroups.values.toList()[index][idx].color;
     return (colorData == null || colorData[0] != '#')
         ? colorToReturnOnApiError
@@ -728,20 +726,14 @@ class _AddUpdateStateState extends ConsumerState<AddUpdateState> {
                   ontap: () async {
                     if (nameController.text.isNotEmpty) {
                       if (widget.method == CRUD.create) {
-                        statesProviderRead.addState(
-                            data: {
-                              "name": nameController.text,
-                              "color": '#${colorController.text}',
-                              "group": stateController.text.toLowerCase(),
-                              "description": ""
-                            },
-                            slug: ref
-                                .watch(ProviderList.workspaceProvider)
-                                .selectedWorkspace
-                                .workspaceSlug,
-                            projectId: ref
-                                .watch(ProviderList.projectProvider)
-                                .currentProject['id']);
+                        statesProviderRead.createState(
+                          data: {
+                            "name": nameController.text,
+                            "color": '#${colorController.text}',
+                            "group": stateController.text.toLowerCase(),
+                            "description": ""
+                          },
+                        );
                       } else {
                         statesProviderRead.updateState(
                             data: {

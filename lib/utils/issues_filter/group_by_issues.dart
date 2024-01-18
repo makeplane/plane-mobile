@@ -1,4 +1,3 @@
-
 import 'package:plane/utils/enums.dart';
 
 class IssuesGroupBYHelper {
@@ -30,8 +29,7 @@ class IssuesGroupBYHelper {
     return groupedIssues;
   }
 
-  static Map<String, List<dynamic>> _groupByStateGroups(
-      List<dynamic> issues, Map<String, dynamic> states) {
+  static Map<String, List<dynamic>> _groupByStateGroups(List<dynamic> issues) {
     Map<String, List<dynamic>> groupedIssues = {};
 
     for (final stateGroup in defaultStateGroups) {
@@ -55,43 +53,41 @@ class IssuesGroupBYHelper {
   }
 
   static Map<String, List<dynamic>> _groupByLabels(
-      List<dynamic> issues, List<dynamic> labels) {
+      List<dynamic> issues, List<String> labelIDs) {
     Map<String, List<dynamic>> groupedIssues = {};
-    for (final label in labels) {
+    for (final label in labelIDs) {
       groupedIssues[label] = issues
-          .where((issue) => (issue['labels'] as List).contains(label))
+          .where((issue) => (issue['label_ids'] as List).contains(label))
           .toList();
     }
     return groupedIssues;
   }
 
   static Map<String, List<dynamic>> _groupByAssignees(
-      List<dynamic> issues, List<dynamic> assignees) {
+      List<dynamic> issues, List<String> memberIDs) {
     Map<String, List<dynamic>> groupedIssues = {};
-    for (final assignee in assignees) {
-      groupedIssues[assignee['member']['id']] = issues
-          .where((issue) =>
-              (issue['assignees'] as List).contains(assignee['member']['id']))
+    for (final memberID in memberIDs) {
+      groupedIssues[memberID] = issues
+          .where((issue) => (issue['assignee_ids'] as List).contains(memberID))
           .toList();
     }
     return groupedIssues;
   }
 
   static Map<String, List<dynamic>> _groupByCreator(
-      List<dynamic> issues, List<dynamic> members) {
+      List<dynamic> issues, List<String> memberIDs) {
     Map<String, List<dynamic>> groupedIssues = {};
-    for (final member in members) {
-      groupedIssues[member['member']['id']] = issues
-          .where((issue) => (issue['created_by'] == member['member']['id']))
-          .toList();
+    for (final memberID in memberIDs) {
+      groupedIssues[memberID] =
+          issues.where((issue) => (issue['created_by'] == memberID)).toList();
     }
     return groupedIssues;
   }
 
   static Map<String, List<dynamic>> _groupByProject(
-      List<dynamic> issues, List<dynamic> projects) {
+      List<dynamic> issues, List<dynamic> projectIDs) {
     Map<String, List<dynamic>> groupedIssues = {};
-    for (final project in projects) {
+    for (final project in projectIDs) {
       groupedIssues[project['id']] =
           issues.where((issue) => (issue['project'] == project['id'])).toList();
     }
@@ -108,34 +104,33 @@ class IssuesGroupBYHelper {
     List<dynamic> issues,
     GroupBY groupBY, {
     Map<String, dynamic>? filter,
-    dynamic labels,
-    dynamic members,
-    dynamic projects,
-    dynamic states,
+    required List<String> labelIDs,
+    required List<String> memberIDs,
+    required dynamic stateIDs,
   }) {
     Map<String, List<dynamic>> groupedIssues = {};
     switch (groupBY) {
       case GroupBY.state:
-        groupedIssues = _groupByState(issues, states);
+        groupedIssues = _groupByState(issues, stateIDs);
         break;
       case GroupBY.stateGroups:
-        groupedIssues = _groupByStateGroups(issues, states);
+        groupedIssues = _groupByStateGroups(issues);
         break;
       case GroupBY.priority:
         groupedIssues = _groupByPriority(issues);
         break;
       case GroupBY.labels:
-        groupedIssues = _groupByLabels(issues, labels);
+        groupedIssues = _groupByLabels(issues, labelIDs);
         break;
       case GroupBY.assignees:
-        groupedIssues = _groupByAssignees(issues, members);
+        groupedIssues = _groupByAssignees(issues, memberIDs);
         break;
       case GroupBY.createdBY:
-        groupedIssues = _groupByCreator(issues, members);
+        groupedIssues = _groupByCreator(issues, memberIDs);
         break;
-      case GroupBY.project:
-        groupedIssues = _groupByProject(issues, projects);
-        break;
+      // case GroupBY.project:
+      //   groupedIssues = _groupByProject(issues, projectIDs);
+      // break;
       case GroupBY.none:
         groupedIssues = _groupByNone(issues);
         break;

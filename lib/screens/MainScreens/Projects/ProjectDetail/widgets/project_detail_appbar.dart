@@ -14,8 +14,7 @@ PreferredSizeWidget ProjectDetailAppbar(
 }) {
   final themeProvider = ref.read(ProviderList.themeProvider);
   final projectProvider = ref.read(ProviderList.projectProvider);
-  final issueProvider = ref.read(ProviderList.issuesProvider);
-
+  final statesProvider = ref.watch(ProviderList.statesProvider);
   return CustomAppBar(
     elevation: false,
     onPressed: () {
@@ -26,7 +25,7 @@ PreferredSizeWidget ProjectDetailAppbar(
       (projectProvider.currentProject['archive_in'] > 0 &&
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
-              (issueProvider.statesState == StateEnum.success))
+              (statesProvider.statesState == StateEnum.success))
           ? IconButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -40,7 +39,7 @@ PreferredSizeWidget ProjectDetailAppbar(
                 color: themeProvider.themeManager.placeholderTextColor,
               ))
           : Container(),
-      (issueProvider.statesState == StateEnum.success)
+      (statesProvider.statesState == StateEnum.success)
           ? IconButton(
               onPressed: () {
                 Navigator.push(
@@ -52,7 +51,7 @@ PreferredSizeWidget ProjectDetailAppbar(
                   settingsOntap();
                 });
               },
-              icon: issueProvider.statesState == StateEnum.restricted
+              icon: statesProvider.statesState == StateEnum.restricted
                   ? Container()
                   : Icon(
                       Icons.settings_outlined,

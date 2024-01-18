@@ -43,6 +43,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     final BuildContext mainBuildContext = context;
     return GestureDetector(
       onTap: () {
@@ -459,7 +460,9 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 properties: {
                                   'INVITED_USER_EMAIL': emailController.text,
                                 },
-                                ref: ref);
+                                userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
+
                             if (workspaceProvider.workspaceInvitationState ==
                                 StateEnum.success) {
                               CustomToast.showToast(mainBuildContext,

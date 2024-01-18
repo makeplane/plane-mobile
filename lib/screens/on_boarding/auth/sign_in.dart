@@ -288,7 +288,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                                   'Source': 'Magic Code',
                                                   'Email': email.text,
                                                 },
-                                                ref: ref);
+                                                userEmail: profileProvider
+                                                    .userProfile.email!,
+                                                userID: profileProvider
+                                                    .userProfile.id!);
                                             Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(

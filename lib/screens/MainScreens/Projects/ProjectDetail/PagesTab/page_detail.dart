@@ -56,12 +56,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
             .workspaceSlug,
         projectId: ref.read(ProviderList.projectProvider).currentProject["id"],
         ref: ref);
-    ref.read(ProviderList.issuesProvider).getLabels(
-        slug: ref
-            .read(ProviderList.workspaceProvider)
-            .selectedWorkspace
-            .workspaceSlug,
-        projID: ref.read(ProviderList.projectProvider).currentProject["id"]);
+    ref.read(ProviderList.labelProvider.notifier).getProjectLabels();
     for (final element in (prov.pages[prov.selectedFilter]![widget.index]
         ['label_details'] as List)) {
       prov.selectedLabels.add(element['id']);

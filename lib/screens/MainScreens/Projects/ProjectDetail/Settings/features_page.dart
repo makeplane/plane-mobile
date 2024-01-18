@@ -54,6 +54,7 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectsProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     return Container(
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: ListView.builder(
@@ -152,10 +153,10 @@ class _FeaturesPageState extends ConsumerState<FeaturesPage> {
                                       : 'OFF';
 
                               postHogService(
-                                eventName: prefix + suffix,
-                                properties: {},
-                                ref: ref,
-                              );
+                                  eventName: prefix + suffix,
+                                  properties: {},
+                                  userEmail: profileProvider.userProfile.email!,
+                                  userID: profileProvider.userProfile.id!);
                             }
                           : () {
                               CustomToast.showToast(context,

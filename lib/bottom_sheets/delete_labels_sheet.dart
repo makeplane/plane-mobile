@@ -20,7 +20,7 @@ class DeleteLabelSheet extends ConsumerStatefulWidget {
 class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
   @override
   Widget build(BuildContext context) {
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Column(
@@ -62,20 +62,7 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
             padding: const EdgeInsets.only(bottom: 20),
             child: Button(
               ontap: () async {
-                await issuesProvider
-                    .issueLabels(
-                        slug: ref
-                            .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace
-                            .workspaceSlug,
-                        projID: ref
-                            .watch(ProviderList.projectProvider)
-                            .currentProject['id'],
-                        method: CRUD.delete,
-                        data: {},
-                        labelId: widget.labelId,
-                        ref: ref)
-                    .then((value) {
+                await labelNotifier.deleteLabel(widget.labelId).then((value) {
                   ref.read(ProviderList.issuesProvider).filterIssues(
                         slug: ref
                             .watch(ProviderList.workspaceProvider)

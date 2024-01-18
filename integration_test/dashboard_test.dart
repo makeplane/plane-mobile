@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:plane/bottom_sheets/global_search_sheet.dart';
 import 'package:plane/bottom_sheets/select_workspace.dart';
 import 'package:plane/models/user_profile_model.dart';
-import 'package:plane/models/workspace_model.dart';
+import 'package:plane/models/Workspace/workspace_model.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/global_search_provider.dart';
 import 'package:plane/provider/profile_provider.dart';

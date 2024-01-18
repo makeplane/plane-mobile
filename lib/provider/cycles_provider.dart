@@ -130,6 +130,7 @@ class CyclesProvider with ChangeNotifier {
       required WidgetRef ref}) async {
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     if (query == 'all') {
       allCyclesState = StateEnum.loading;
     } else if (query == 'current') {
@@ -247,7 +248,8 @@ class CyclesProvider with ChangeNotifier {
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'CYCLE_ID': response.data['id']
                     },
-              ref: ref);
+              userEmail: profileProvider.userProfile.email!,
+              userID: profileProvider.userProfile.id!);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
@@ -386,13 +388,15 @@ class CyclesProvider with ChangeNotifier {
   List<BoardListsData> initializeBoard() {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     final issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final labelNotifier = ref!.read(ProviderList.labelProvider.notifier);
+    final statesProvider = ref!.read(ProviderList.statesProvider);
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
     final projectMembers =
         ref!.read(ProviderList.projectProvider).projectMembers;
- 
+
     for (int j = 0; j < filterIssues.length; j++) {
       final List<Widget> items = [];
       final groupedIssues = filterIssues.values.toList()[j];
@@ -408,19 +412,9 @@ class CyclesProvider with ChangeNotifier {
           ),
         );
       }
-      Map label = {};
       String userName = '';
-
-      bool labelFound = false;
       bool userFound = false;
-
-      for (int i = 0; i < issuesProvider.labels.length; i++) {
-        if (groupID == issuesProvider.labels[i]['id']) {
-          label = issuesProvider.labels[i];
-          labelFound = true;
-          break;
-        }
-      }
+      final label = labelNotifier.getLabelById(groupID);
 
       for (int i = 0; i < projectMembers.length; i++) {
         if (groupID == projectMembers[i]['member']['id']) {
@@ -437,7 +431,7 @@ class CyclesProvider with ChangeNotifier {
       var title = issues.groupBY == GroupBY.priority
           ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[groupID]!.name
+              ? statesProvider.projectStates[groupID]!.name
               : groupID;
       issues.issues.add(BoardListsData(
         id: groupID,
@@ -448,9 +442,8 @@ class CyclesProvider with ChangeNotifier {
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],
-        title: issues.groupBY == GroupBY.labels && labelFound
-            ? label['name'][0].toString().toUpperCase() +
-                label['name'].toString().substring(1)
+        title: issues.groupBY == GroupBY.labels && label != null
+            ? label.name[0].toUpperCase() + label.name.toString().substring(1)
             : userFound &&
                     (issues.groupBY == GroupBY.createdBY ||
                         issues.groupBY == GroupBY.assignees)
@@ -670,22 +663,6 @@ class CyclesProvider with ChangeNotifier {
                   'priority': filterIssues.keys.elementAt(newListIndex)
                 });
       newList[newCardIndex] = response.data;
-
-      final List labelDetails = [];
-      final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      newList[newCardIndex]['labels'].forEach((element) {
-        for (int i = 0; i < issuesProvider.labels.length; i++) {
-          if (issuesProvider.labels[i]['id'] == element) {
-            labelDetails.add(issuesProvider.labels[i]);
-            break;
-          }
-        }
-
-        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
-      });
-
-      newList[newCardIndex]['label_details'] = labelDetails;
-
       if (issues.groupBY == GroupBY.priority) {
         log(newList[newCardIndex]['name']);
         newList[newCardIndex]['priority'] =
@@ -875,14 +852,18 @@ class CyclesProvider with ChangeNotifier {
   }
 
   void applyCycleIssuesView({required WidgetRef ref}) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
-    final labelIds = issuesProvider.labels.map((e) => e['id']).toList();
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider);
+
+    final labelIds =
+        ref.read(ProviderList.labelProvider.notifier).getLabelIds();
     filterIssues = IssueFilterHelper.organizeIssues(
         cycleIssuesList, issues.groupBY, issues.orderBY,
-        labels: labelIds,
-        members: projectProvider.projectMembers,
-        states: issuesProvider.states);
+        labelIDs: labelIds,
+        memberIDs: projectProvider.projectMembers
+            .map((e) => e['member']['id'].toString())
+            .toList(),
+        states: statesProvider.projectStates);
     notifyListeners();
   }
 
@@ -895,11 +876,13 @@ class CyclesProvider with ChangeNotifier {
       }) async {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     final statesProvider = ref.read(ProviderList.statesProvider.notifier);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
+    final states = ref.read(ProviderList.statesProvider).projectStates;
+
     if (issues.groupBY == GroupBY.labels) {
-      issuesProvider.getLabels(slug: slug, projID: projectId);
+      labelNotifier.getProjectLabels();
     } else if (issues.groupBY == GroupBY.createdBY) {
       projectProvider.getProjectMembers(slug: slug, projId: projectId);
     } else if (issues.groupBY == GroupBY.state) {
@@ -927,9 +910,11 @@ class CyclesProvider with ChangeNotifier {
       cycleIssuesList = response.data;
       final organizedIssues = IssueFilterHelper.organizeIssues(
           cycleIssuesList, issues.groupBY, issues.orderBY,
-          labels: issuesProvider.labels.map((e) => e['id']).toList(),
-          members: projectProvider.projectMembers,
-          states: issuesProvider.states);
+          labelIDs: labelNotifier.getLabelIds(),
+          memberIDs: projectProvider.projectMembers
+              .map((e) => e['member']['id'].toString())
+              .toList(),
+          states: states);
       filterIssues = organizedIssues;
       issuesResponse = [];
       isIssuesEmpty = true;
@@ -944,7 +929,7 @@ class CyclesProvider with ChangeNotifier {
         isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
       if (issues.groupBY == GroupBY.state) {
-        issuesProvider.states.forEach((key, value) {
+        states.forEach((key, value) {
           if (issues.filters.states.isEmpty && filterIssues[key] == null) {
             filterIssues[key] = [];
           }

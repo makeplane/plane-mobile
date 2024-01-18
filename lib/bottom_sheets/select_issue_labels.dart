@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:plane/models/Project/Label/label.model.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -50,6 +51,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
   Widget build(BuildContext context) {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final labelProvider = ref.watch(ProviderList.labelProvider);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
     return Container(
       padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
       height: MediaQuery.of(context).size.height * 0.8,
@@ -86,22 +89,25 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                 ),
                 Container(height: 15),
                 Expanded(
-                  child: issuesProvider.labels.isNotEmpty
+                  child: labelProvider.projectLabels.isNotEmpty
                       ? ListView.builder(
-                          itemCount: issuesProvider.labels.length,
+                          itemCount: labelProvider.projectLabels.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
+                            final labelId = labelProvider.projectLabels.keys
+                                .elementAt(index);
+                            final label = labelProvider.projectLabels.values
+                                .elementAt(index);
                             return InkWell(
                               onTap: () {
                                 // setState(() {
                                 if (widget.createIssue) {
                                   if (issuesProvider.selectedLabels
-                                      .contains(issuesProvider.labels[index])) {
+                                      .contains(labelId)) {
                                     issuesProvider.selectedLabels
-                                        .remove(issuesProvider.labels[index]);
+                                        .remove(labelId);
                                   } else {
-                                    issuesProvider.selectedLabels
-                                        .add(issuesProvider.labels[index]);
+                                    issuesProvider.selectedLabels.add(labelId);
                                   }
                                   final prov =
                                       ref.watch(ProviderList.issuesProvider);
@@ -112,43 +118,36 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   prov.setsState();
                                 } else {
                                   setState(() {
-                                    if (issueDetailsLabels.contains(
-                                        issuesProvider.labels[index]['id'])) {
-                                      issueDetailsLabels.remove(
-                                          issuesProvider.labels[index]['id']);
+                                    if (issueDetailsLabels.contains(labelId)) {
+                                      issueDetailsLabels.remove(labelId);
                                     } else {
-                                      issueDetailsLabels.add(
-                                          issuesProvider.labels[index]['id']);
+                                      issueDetailsLabels.add(labelId);
                                     }
                                   });
                                 }
-                                // });
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10,
                                 ),
-                                margin:
-                                    issuesProvider.labels.length == index + 1
-                                        ? const EdgeInsets.only(bottom: 35)
-                                        : null,
+                                margin: labelProvider.projectLabels.length ==
+                                        index + 1
+                                    ? const EdgeInsets.only(bottom: 35)
+                                    : null,
                                 child: Column(
                                   children: [
                                     Row(
                                       children: [
                                         CircleAvatar(
                                           radius: 8,
-                                          backgroundColor: issuesProvider
-                                              .labels[index]['color']
-                                              .toString()
-                                              .toColor(),
+                                          backgroundColor:
+                                              label.color.toColor(),
                                         ),
                                         Container(width: 10),
                                         SizedBox(
                                           width: width * 0.7,
                                           child: CustomText(
-                                            issuesProvider.labels[index]['name']
-                                                .toString(),
+                                            label.name.toString(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             type: FontStyle.Medium,
@@ -160,9 +159,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                         const Spacer(),
                                         widget.createIssue
                                             ? createIssueSelectedIconsWidget(
-                                                issuesProvider.labels[index])
+                                                label)
                                             : issueDetailSelectedIconsWidget(
-                                                index),
+                                                label),
                                         const SizedBox(width: 10)
                                       ],
                                     ),
@@ -316,7 +315,7 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
               ],
             ),
           ),
-          issuesProvider.labelState == StateEnum.loading
+          labelProvider.labelState == StateEnum.loading
               ? Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -369,23 +368,12 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                   message: 'Color is not valid',
                                   toastType: ToastType.failure);
                             } else {
-                              await issuesProvider.issueLabels(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace
-                                      .workspaceSlug,
-                                  projID: widget.createIssue
-                                      ? ref
-                                          .read(ProviderList.issuesProvider)
-                                          .createIssueProjectData['id']
-                                      : ref
-                                          .read(ProviderList.projectProvider)
-                                          .currentProject['id'],
-                                  data: {
-                                    "name": labelContrtoller.text,
-                                    "color": "#${colorController.text}"
-                                  },
-                                  ref: ref);
+                              await labelNotifier.updateLabel(
+                                {
+                                  'name': labelContrtoller.text,
+                                  'color': colorController.text,
+                                },
+                              );
                               setState(() {
                                 createNew = false;
                                 colorController.clear();
@@ -439,9 +427,9 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
     );
   }
 
-  Widget createIssueSelectedIconsWidget(Map<String, dynamic> data) {
+  Widget createIssueSelectedIconsWidget(LabelModel label) {
     var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    return issuesProvider.selectedLabels.contains(data)
+    return issuesProvider.selectedLabels.contains(label.id)
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),
@@ -449,9 +437,8 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         : const SizedBox.shrink();
   }
 
-  Widget issueDetailSelectedIconsWidget(int idx) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    return issueDetailsLabels.contains(issuesProvider.labels[idx]['id'])
+  Widget issueDetailSelectedIconsWidget(LabelModel label) {
+    return issueDetailsLabels.contains(label.id)
         ? const Icon(
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),

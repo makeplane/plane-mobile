@@ -26,17 +26,18 @@ class _PDBottomActionsState extends ConsumerState<ProjectDetailBottomActions> {
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final issueProvider = ref.watch(ProviderList.issuesProvider);
     final pageProvider = ref.watch(ProviderList.pageProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
 
     return Row(
       children: [
-        issueProvider.statesState == StateEnum.loading ||
+        statesProvider.statesState == StateEnum.loading ||
                 issueProvider.issueState == StateEnum.loading
             ? Container()
             : widget.selectedTab == 0 &&
-                    issueProvider.statesState == StateEnum.restricted
+                    statesProvider.statesState == StateEnum.restricted
                 ? Container()
                 : widget.selectedTab == 0 &&
-                        issueProvider.statesState == StateEnum.success
+                        statesProvider.statesState == StateEnum.success
                     ? Container(
                         decoration: BoxDecoration(
                           color: themeProvider
@@ -54,7 +55,7 @@ class _PDBottomActionsState extends ConsumerState<ProjectDetailBottomActions> {
                                     child: InkWell(
                                       onTap: () {
                                         issueProvider.createIssuedata['state'] =
-                                            issueProvider.states.keys.first;
+                                            statesProvider.projectStates.keys.first;
 
                                         Navigator.of(context).push(
                                           MaterialPageRoute(

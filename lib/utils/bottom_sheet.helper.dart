@@ -13,7 +13,7 @@ class BottomSheetHelper {
   }) {
     showModalBottomSheet(
         constraints: constraints ??
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+            BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.8),
         shape: shape ??
             const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(

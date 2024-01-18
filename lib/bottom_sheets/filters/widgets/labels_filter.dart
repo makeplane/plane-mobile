@@ -11,16 +11,14 @@ class _LabelFilter extends ConsumerStatefulWidget {
 class __LabelFilterState extends ConsumerState<_LabelFilter> {
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
-    final IssuesProvider issuesProvider =
-        ref.watch(ProviderList.issuesProvider);
-    final MyIssuesProvider myIssuesProvider =
-        ref.watch(ProviderList.myIssuesProvider);
+    final themeProvider = ref.read(ProviderList.themeProvider);
+    final labelsProvider = ref.watch(ProviderList.labelProvider);
+    
     return CustomExpansionTile(
       title: 'Labels',
       child: (widget.state.issueCategory == IssueCategory.myIssues
-                  ? myIssuesProvider.labels
-                  : issuesProvider.labels)
+                  ? labelsProvider.workspaceLabels
+                  : labelsProvider.projectLabels)
               .isEmpty
           ? Container(
               padding: const EdgeInsets.only(left: 25),
@@ -31,14 +29,15 @@ class __LabelFilterState extends ConsumerState<_LabelFilter> {
             )
           : Wrap(
               children: (widget.state.issueCategory == IssueCategory.myIssues
-                      ? myIssuesProvider.labels
-                      : issuesProvider.labels)
-                  .map((e) => GestureDetector(
+                      ? labelsProvider.workspaceLabels
+                      : labelsProvider.projectLabels)
+                  .values
+                  .map((label) => GestureDetector(
                         onTap: () {
-                          if (widget.state.filters.labels.contains(e['id'])) {
-                            widget.state.filters.labels.remove(e['id']);
+                          if (widget.state.filters.labels.contains(label.id)) {
+                            widget.state.filters.labels.remove(label.id);
                           } else {
-                            widget.state.filters.labels.add(e['id']);
+                            widget.state.filters.labels.add(label.id);
                           }
                           widget.state.setState();
                         },
@@ -46,11 +45,11 @@ class __LabelFilterState extends ConsumerState<_LabelFilter> {
                           ref: ref,
                           icon: CircleAvatar(
                               radius: 5,
-                              backgroundColor: e['color'].toString().toColor()),
-                          text: e['name'],
+                              backgroundColor: label.color.toColor()),
+                          text: label.name,
                           selected:
-                              widget.state.filters.labels.contains(e['id']),
-                          color: widget.state.filters.labels.contains(e['id'])
+                              widget.state.filters.labels.contains(label.id),
+                          color: widget.state.filters.labels.contains(label.id)
                               ? themeProvider.themeManager.primaryColour
                               : themeProvider
                                   .themeManager.secondaryBackgroundDefaultColor,

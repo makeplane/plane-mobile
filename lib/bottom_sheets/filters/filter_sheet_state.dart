@@ -64,12 +64,57 @@ class _FilterState {
     {'icon': Icons.do_disturb_alt_outlined, 'text': 'none', 'color': '#A3A3A3'}
   ];
 
-  List states = [
-    {'id': 'backlog', 'name': 'Backlog', 'color': '#5e6ad2'},
-    {'id': 'unstarted', 'name': 'Unstarted', 'color': '#eb5757'},
-    {'id': 'started', 'name': 'Started', 'color': '#26b5ce'},
-    {'id': 'completed', 'name': 'Completed', 'color': '#f2c94c'},
-    {'id': 'cancelled', 'name': 'Cancelled', 'color': '#4cb782'}
+  List<StatesModel> states = [
+    StatesModel.initialize().copyWith(
+        group: 'backlog',
+        name: 'Backlog',
+        color: '#5e6ad2',
+        stateIcon: SvgPicture.asset(
+          'assets/svg_images/circle.svg',
+          color: '#5e6ad2'.toColor(),
+          height: 20,
+          width: 20,
+        )),
+    StatesModel.initialize().copyWith(
+        group: 'unstarted',
+        name: 'Unstarted',
+        color: '#eb5757',
+        stateIcon: SvgPicture.asset(
+          'assets/svg_images/unstarted.svg',
+          color: '#eb5757'.toColor(),
+          height: 20,
+          width: 20,
+        )),
+    StatesModel.initialize().copyWith(
+        group: 'started',
+        name: 'Started',
+        color: '#26b5ce',
+        stateIcon: SvgPicture.asset(
+          'assets/svg_images/in_progress.svg',
+          color: '#26b5ce'.toColor(),
+          height: 20,
+          width: 20,
+        )),
+    StatesModel.initialize().copyWith(
+        group: 'completed',
+        name: 'Completed',
+        color: '#f2c94c',
+        stateIcon: SvgPicture.asset(
+          'assets/svg_images/done.svg',
+          color: '#f2c94c'.toColor(),
+          height: 20,
+          width: 20,
+        )),
+    StatesModel.initialize().copyWith(
+        group: 'cancelled',
+        name: 'Cancelled',
+        color: '#4cb782',
+        stateIcon: SvgPicture.asset(
+          'assets/svg_images/cancelled.svg',
+          color: '#4cb782'.toColor(),
+          height: 20,
+          width: 20,
+        ))
   ];
 
   Filters filters = Filters(

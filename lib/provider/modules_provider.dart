@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +17,6 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-
 import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class ModuleProvider with ChangeNotifier {
@@ -152,8 +149,9 @@ class ModuleProvider with ChangeNotifier {
       String? moduleId,
       required WidgetRef ref}) async {
     createModuleState = StateEnum.loading;
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     try {
       final response = await DioConfig().dioServe(
@@ -176,7 +174,8 @@ class ModuleProvider with ChangeNotifier {
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'MODULE_ID': response.data['id']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       getModules(slug: slug, projId: projId);
       createModule.clear();
       notifyListeners();
@@ -195,8 +194,9 @@ class ModuleProvider with ChangeNotifier {
       required Map data,
       bool disableLoading = false,
       required WidgetRef ref}) async {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     if (!disableLoading) {
       moduleDetailState = StateEnum.loading;
       notifyListeners();
@@ -222,7 +222,8 @@ class ModuleProvider with ChangeNotifier {
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'MODULE_ID': response.data['id']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       getModuleDetails(
           slug: slug,
           projId: projId,
@@ -402,14 +403,18 @@ class ModuleProvider with ChangeNotifier {
   }
 
   void applyModuleIssuesView({required WidgetRef ref}) {
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
-    final labelIds = issuesProvider.labels.map((e) => e['id']).toList();
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final labelIds =
+        ref.read(ProviderList.labelProvider.notifier).getLabelIds();
+    final projectMembers =
+        ref.read(ProviderList.projectProvider).projectMembers;
+
+    final states = ref.read(ProviderList.statesProvider).projectStates;
     filterIssues = IssueFilterHelper.organizeIssues(
         moduleIssuesList, issues.groupBY, issues.orderBY,
-        labels: labelIds,
-        members: projectProvider.projectMembers,
-        states: issuesProvider.states);
+        labelIDs: labelIds,
+        memberIDs:
+            projectMembers.map((e) => e['member']['id'].toString()).toList(),
+        states: states);
     notifyListeners();
   }
 
@@ -422,11 +427,13 @@ class ModuleProvider with ChangeNotifier {
       }) async {
     moduleIssueState = StateEnum.loading;
     notifyListeners();
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
-    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider.notifier);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
+
+    final states = ref.read(ProviderList.statesProvider).projectStates;
     if (issues.groupBY == GroupBY.labels) {
-      issuesProvider.getLabels(slug: slug, projID: projectId);
+      labelNotifier.getProjectLabels();
     } else if (issues.groupBY == GroupBY.createdBY) {
       projectProvider.getProjectMembers(slug: slug, projId: projectId);
     } else if (issues.groupBY == GroupBY.state) {
@@ -454,9 +461,11 @@ class ModuleProvider with ChangeNotifier {
       moduleIssuesList = response.data.values.toList();
       final organizedIssues = IssueFilterHelper.organizeIssues(
           moduleIssuesList, issues.groupBY, issues.orderBY,
-          labels: issuesProvider.labels.map((e) => e['id']).toList(),
-          members: projectProvider.projectMembers,
-          states: issuesProvider.states);
+          labelIDs: labelNotifier.getLabelIds(),
+          memberIDs: projectProvider.projectMembers
+              .map((e) => e['member']['id'].toString())
+              .toList(),
+          states: states);
       filterIssues = organizedIssues;
       issuesResponse = [];
       isIssuesEmpty = true;
@@ -471,7 +480,7 @@ class ModuleProvider with ChangeNotifier {
         isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
       if (issues.groupBY == GroupBY.state) {
-        issuesProvider.states.forEach((key, value) {
+        states.forEach((key, value) {
           if (issues.filters.states.isEmpty && filterIssues[key] == null) {
             filterIssues[key] = [];
           }
@@ -498,6 +507,7 @@ class ModuleProvider with ChangeNotifier {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     final issuesProvider = ref!.read(ProviderList.issuesProvider);
     final projectProvider = ref!.read(ProviderList.projectProvider);
+    final states = ref!.read(ProviderList.statesProvider).projectStates;
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
@@ -517,19 +527,10 @@ class ModuleProvider with ChangeNotifier {
           ),
         );
       }
-      Map label = {};
       String userName = '';
-
-      bool labelFound = false;
       bool userFound = false;
-
-      for (int i = 0; i < issuesProvider.labels.length; i++) {
-        if (groupID == issuesProvider.labels[i]['id']) {
-          label = issuesProvider.labels[i];
-          labelFound = true;
-          break;
-        }
-      }
+      final label =
+          ref!.read(ProviderList.labelProvider.notifier).getLabelById(groupID);
 
       for (int i = 0; i < projectProvider.projectMembers.length; i++) {
         if (groupID == projectProvider.projectMembers[i]['member']['id']) {
@@ -546,7 +547,7 @@ class ModuleProvider with ChangeNotifier {
       var title = issues.groupBY == GroupBY.priority
           ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[groupID]!.name
+              ? states[groupID]!.name
               : groupID;
       issues.issues.add(BoardListsData(
         id: groupID,
@@ -557,9 +558,8 @@ class ModuleProvider with ChangeNotifier {
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],
-        title: issues.groupBY == GroupBY.labels && labelFound
-            ? label['name'][0].toString().toUpperCase() +
-                label['name'].toString().substring(1)
+        title: issues.groupBY == GroupBY.labels && label != null
+            ? label.name[0].toUpperCase() + label.name.substring(1)
             : userFound &&
                     (issues.groupBY == GroupBY.createdBY ||
                         issues.groupBY == GroupBY.assignees)
@@ -775,23 +775,6 @@ class ModuleProvider with ChangeNotifier {
                   'priority': stateOrdering[newListIndex],
                 });
       filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
-
-      final List labelDetails = [];
-      final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
-          .forEach((element) {
-        for (int i = 0; i < issuesProvider.labels.length; i++) {
-          if (issuesProvider.labels[i]['id'] == element) {
-            labelDetails.add(issuesProvider.labels[i]);
-            break;
-          }
-        }
-
-        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
-      });
-
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
-          labelDetails;
 
       if (issues.groupBY == GroupBY.priority) {
         log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);

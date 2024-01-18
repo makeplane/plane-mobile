@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/models/workspace_model.dart';
+import 'package:plane/models/Workspace/workspace_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -163,7 +163,8 @@ class WorkspaceProvider extends ChangeNotifier {
             'WORKSPACE_NAME': response.data['name'],
             'WORKSPACE_SLUG': response.data['slug']
           },
-          ref: refs);
+               userEmail: profileProv.userProfile.email!,
+                                userID: profileProv.userProfile.id!);
       await profileProv.updateProfile(data: {
         "last_workspace_id": response.data['id'],
       });
@@ -480,6 +481,7 @@ class WorkspaceProvider extends ChangeNotifier {
   }
 
   Future updateWorkspace({required Map data, required WidgetRef ref}) async {
+    final profileProvider = ref.read(ProviderList.profileProvider);
     updateWorkspaceState = StateEnum.loading;
     notifyListeners();
     try {
@@ -501,7 +503,8 @@ class WorkspaceProvider extends ChangeNotifier {
             'WORKSPACE_NAME': response.data['name'],
             'WORKSPACE_SLUG': response.data['slug']
           },
-          ref: ref);
+           userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
       tempLogo = selectedWorkspace.workspaceLogo;
 

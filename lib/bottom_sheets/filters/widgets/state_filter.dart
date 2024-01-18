@@ -19,50 +19,47 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
           children: (widget.state.issueCategory == IssueCategory.myIssues
                   ? widget.state.states
                   : statesProvider.projectStates.values)
-              .map((e) {
-        final String key = widget.state.issueCategory == IssueCategory.myIssues
-            ? 'id'
-            : 'group';
+              .map((state) {
         return (widget.state.isArchived &&
-                (e[key] == 'backlog' ||
-                    e[key] == 'unstarted' ||
-                    e[key] == 'started'))
+                (state.group == 'backlog' ||
+                    state.group == 'unstarted' ||
+                    state.group == 'started'))
             ? Container()
             : GestureDetector(
                 onTap: () {
-                  if (widget.state.filters.states.contains(e['id'])) {
-                    widget.state.filters.states.remove(e['id']);
+                  if (widget.state.filters.states.contains(state.group)) {
+                    widget.state.filters.states.remove(state.group);
                   } else {
-                    widget.state.filters.states.add(e['id']);
+                    widget.state.filters.states.add(state.group);
                   }
                   widget.state.setState();
                 },
                 child: RectangularChip(
                   ref: ref,
                   icon: SvgPicture.asset(
-                    e[key] == 'backlog'
+                    state.group == 'backlog'
                         ? 'assets/svg_images/circle.svg'
-                        : e[key] == 'cancelled'
+                        : state.group == 'cancelled'
                             ? 'assets/svg_images/cancelled.svg'
-                            : e[key] == 'started'
+                            : state.group == 'started'
                                 ? 'assets/svg_images/in_progress.svg'
-                                : e[key] == 'completed'
+                                : state.group == 'completed'
                                     ? 'assets/svg_images/done.svg'
                                     : 'assets/svg_images/unstarted.svg',
                     colorFilter: ColorFilter.mode(
-                        widget.state.filters.states.contains(e['id'])
+                        widget.state.filters.states.contains(state.group)
                             ? (Colors.white)
-                            : e['color'].toString().toColor(),
+                            : state.color.toColor(),
                         BlendMode.srcIn),
                     height: 20,
                     width: 20,
                   ),
-                  text: e['name'],
-                  color: widget.state.filters.states.contains(e['id'])
+                  text: state.name,
+                  color: widget.state.filters.states.contains(state.group)
                       ? themeProvider.themeManager.primaryColour
                       : themeProvider
                           .themeManager.secondaryBackgroundDefaultColor,
-                  selected: widget.state.filters.states.contains(e['id']),
+                  selected: widget.state.filters.states.contains(state.group),
                 ),
               );
       }).toList()),

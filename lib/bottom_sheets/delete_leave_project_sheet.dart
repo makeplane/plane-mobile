@@ -28,6 +28,8 @@ class _DeleteLeaveProjectSheetState
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -234,7 +236,8 @@ class _DeleteLeaveProjectSheetState
                             postHogService(
                                 eventName: 'LEAVE_PROJECT',
                                 properties: widget.data,
-                                ref: ref);
+                                userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                             Navigator.of(context)
                               ..pop()
                               ..pop()
@@ -260,7 +263,9 @@ class _DeleteLeaveProjectSheetState
                                 postHogService(
                                     eventName: 'DELETE_PROJECT',
                                     properties: widget.data,
-                                    ref: ref);
+                                    userEmail:
+                                        profileProvider.userProfile.email!,
+                                    userID: profileProvider.userProfile.id!);
                               }
                             });
                             Navigator.of(context)

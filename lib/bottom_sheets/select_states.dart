@@ -23,9 +23,10 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
   @override
   void initState() {
     final prov = ref.read(ProviderList.issuesProvider);
-    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
-    if (prov.states.isEmpty) {
-      statesProvider.getStates(
+    final statesNotifier = ref.watch(ProviderList.statesProvider.notifier);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
+    if (statesProvider.projectStates.isEmpty) {
+      statesNotifier.getStates(
           slug: ref
               .read(ProviderList.workspaceProvider)
               .selectedWorkspace
@@ -43,7 +44,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
     //         ? prov.states['state']['id']
     //         : '';
     // log(prov.createIssuedata['state'].toString());
-    selectedState = prov.createIssuedata['state'] ?? prov.states.keys.first;
+    selectedState = prov.createIssuedata['state'] ?? statesProvider.projectStates.keys.first;
     super.initState();
   }
 
@@ -65,6 +66,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final issueProvider = ref.watch(ProviderList.issueProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return WillPopScope(
       onWillPop: () async {
         final prov = ref.read(ProviderList.issuesProvider);
@@ -293,7 +295,7 @@ class _SelectStatesState extends ConsumerState<SelectStates> {
                 ],
               ),
             ),
-            issuesProvider.statesState == StateEnum.loading
+            statesProvider.statesState == StateEnum.loading
                 ? Container(
                     alignment: Alignment.center,
                     color: Colors.white.withOpacity(0.7),

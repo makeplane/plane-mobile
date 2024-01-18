@@ -13,7 +13,6 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
-
 import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
@@ -87,7 +86,7 @@ class ProjectsProvider extends ChangeNotifier {
       {Filters? filters,
       bool fromViews = false,
       required WidgetRef ref}) async {
-    final prov = ref.read(ProviderList.issuesProvider);
+    final issuesProv = ref.read(ProviderList.issuesProvider);
     final moduleProv = ref.read(ProviderList.modulesProvider);
     final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     final intergrationProvider = ref.read(ProviderList.integrationProvider);
@@ -112,12 +111,12 @@ class ProjectsProvider extends ChangeNotifier {
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
-    prov.getIssueDisplayProperties(issueCategory: IssueCategory.issues);
-    prov.getProjectView().then((value) {
+    issuesProv.getIssueDisplayProperties(issueCategory: IssueCategory.issues);
+    issuesProv.getProjectView().then((value) {
       if (filters != null) {
-        prov.issues.filters = filters;
+        issuesProv.issues.filters = filters;
       }
-      prov.filterIssues(
+      issuesProv.filterIssues(
         fromViews: fromViews,
         slug: workspaceSlug,
         projID: currentProject['id'],
@@ -130,7 +129,8 @@ class ProjectsProvider extends ChangeNotifier {
     );
     viewsProvider.getViews();
 
-    prov.getLabels(slug: workspaceSlug, projID: currentProject['id']);
+    // Fetching labels
+    ref.read(ProviderList.labelProvider.notifier).getProjectLabels();
 
     getProjectDetails(slug: workspaceSlug, projId: currentProject['id']);
 
@@ -345,7 +345,8 @@ class ProjectsProvider extends ChangeNotifier {
       WidgetRef? ref,
       BuildContext? context}) async {
     createProjectState = StateEnum.loading;
-    final workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref!.read(ProviderList.workspaceProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     try {
       final response = await DioConfig().dioServe(
@@ -364,7 +365,8 @@ class ProjectsProvider extends ChangeNotifier {
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       await getProjects(slug: slug);
       createProjectState = StateEnum.success;
       notifyListeners();
@@ -439,7 +441,8 @@ class ProjectsProvider extends ChangeNotifier {
       required Map data,
       required WidgetRef ref}) async {
     updateProjectState = StateEnum.loading;
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     log("${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/");
     try {
@@ -481,7 +484,8 @@ class ProjectsProvider extends ChangeNotifier {
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());

@@ -26,6 +26,7 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -240,7 +241,8 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                   properties: {
                                     'WORKSPACE_NAME': widget.workspaceName
                                   },
-                                  ref: ref);
+                                      userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                               await ref
                                   .watch(ProviderList.profileProvider)
                                   .updateProfile(data: {
@@ -279,7 +281,8 @@ class _DeleteOrLeaveWorkpaceState extends ConsumerState<DeleteOrLeaveWorkpace> {
                                     properties: {
                                       'WORKSPACE_NAME': widget.workspaceName
                                     },
-                                    ref: ref);
+                                        userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                                 await ref
                                     .watch(ProviderList.profileProvider)
                                     .updateProfile(data: {

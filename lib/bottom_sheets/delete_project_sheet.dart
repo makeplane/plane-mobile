@@ -26,6 +26,7 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProviderRead = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -209,7 +210,8 @@ class _DeleteProjectSheetState extends ConsumerState<DeleteProjectSheet> {
                             postHogService(
                                 eventName: 'DELETE_PROJECT',
                                 properties: widget.data,
-                                ref: ref);
+                                userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
                           }
                         });
                         Navigator.of(context)

@@ -97,10 +97,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final viewsProv = ref.watch(ProviderList.viewsProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-
-    // viewData = viewsProv.viewDetail;
-
-    log(issuesProvider.issues.filters.priorities.toString());
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return WillPopScope(
       onWillPop: () async {
         if (!widget.fromGlobalSearch) {
@@ -176,7 +173,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
         body: LoadingWidget(
           loading: issuesProvider.issuePropertyState == StateEnum.loading ||
               issuesProvider.issueState == StateEnum.loading ||
-              issuesProvider.statesState == StateEnum.loading ||
+              statesProvider.statesState == StateEnum.loading ||
               issuesProvider.projectViewState == StateEnum.loading ||
               issuesProvider.orderByState == StateEnum.loading ||
               viewsProv.viewsState == StateEnum.loading,

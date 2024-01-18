@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -45,7 +44,7 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -210,21 +209,11 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             message: "Color is not valid",
                             toastType: ToastType.failure);
                       } else {
-                        issuesProvider.issueLabels(
-                            slug: ref
-                                .watch(ProviderList.workspaceProvider)
-                                .selectedWorkspace
-                                .workspaceSlug,
-                            projID: ref
-                                .watch(ProviderList.projectProvider)
-                                .currentProject['id'],
-                            method: widget.method,
-                            data: {
-                              "name": lableController.text,
-                              "color": '#${colorController.text}',
-                            },
-                            labelId: widget.labelId,
-                            ref: ref);
+                        
+                        labelNotifier.createLabel({
+                          "name": lableController.text,
+                          "color": '#${colorController.text}',
+                        });
                         Navigator.of(context).pop();
                       }
                     },

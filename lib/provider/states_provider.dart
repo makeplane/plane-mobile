@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/models/states_model.dart';
+import 'package:plane/models/Project/State/states_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/repository/states_service.dart';
 import 'package:plane/utils/enums.dart';
@@ -89,10 +89,13 @@ class StatesProvider extends StateNotifier<StatesData> {
     });
   }
 
-  Future addState(
-      {required Map data,
-      required String slug,
-      required String projectId}) async {
+  Future createState({required Map data}) async {
+    final projectId =
+        ref.read(ProviderList.projectProvider).currentProject['id'];
+    final slug = ref
+        .read(ProviderList.workspaceProvider)
+        .selectedWorkspace
+        .workspaceSlug;
     state = state.copyWith(createStateLoading: StateEnum.loading);
     final newState = await statesService.createState(
         data: data, slug: slug, projectId: projectId);
@@ -101,7 +104,7 @@ class StatesProvider extends StateNotifier<StatesData> {
       final newStateGroupData = state.stateGroups;
       projectStates.addEntries({addedState.id: addedState}.entries);
       newStateGroupData.update(
-        addedState.group!,
+        addedState.group,
         (existingStates) => [...existingStates, addedState],
         ifAbsent: () => [addedState],
       );
@@ -130,7 +133,7 @@ class StatesProvider extends StateNotifier<StatesData> {
       final Map<String, List<StatesModel>> updatedGroups = {
         ...state.stateGroups
       };
-      final String groupId = updateState.group!;
+      final String groupId = updateState.group;
       final List<StatesModel>? groupStates = updatedGroups[groupId];
       if (groupStates != null) {
         final int indexToUpdate =
@@ -164,19 +167,21 @@ class StatesProvider extends StateNotifier<StatesData> {
     delete.fold((deleted) {
       final projectStates = state.projectStates;
       projectStates.removeWhere((key, value) => key == stateId);
-        final Map<String, List<StatesModel>> updatedGroups = {
-          ...state.stateGroups
-        };
-        updatedGroups.forEach((groupId, groupStates) {
-          final int indexToRemove =
-              groupStates.indexWhere((s) => s.id == stateId);
-          if (indexToRemove != -1) {
-            groupStates.removeAt(indexToRemove);
-            updatedGroups[groupId] = groupStates;
-          }
-        });
-      state =
-          state.copyWith(states: projectStates, stateGroups: updatedGroups, deleteState: StateEnum.success);
+      final Map<String, List<StatesModel>> updatedGroups = {
+        ...state.stateGroups
+      };
+      updatedGroups.forEach((groupId, groupStates) {
+        final int indexToRemove =
+            groupStates.indexWhere((s) => s.id == stateId);
+        if (indexToRemove != -1) {
+          groupStates.removeAt(indexToRemove);
+          updatedGroups[groupId] = groupStates;
+        }
+      });
+      state = state.copyWith(
+          states: projectStates,
+          stateGroups: updatedGroups,
+          deleteState: StateEnum.success);
     }, (err) {
       state = state.copyWith(deleteState: StateEnum.error);
       log(err.response.toString());

@@ -47,7 +47,8 @@ class _CreateStateState extends ConsumerState<CreateState> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
+    final statesNotifier = ref.read(ProviderList.statesProvider.notifier);
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -56,7 +57,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
         text: 'Create State',
       ),
       body: LoadingWidget(
-        loading: issuesProvider.statesState == StateEnum.loading,
+        loading: statesProvider.statesState == StateEnum.loading,
         widgetClass: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -400,14 +401,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
                           text: 'Create State',
                           ontap: () async {
                             if (!formKey.currentState!.validate()) return;
-                            await issuesProvider.createState(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projID: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
+                            await statesNotifier.createState(
                                 data: {
                                   "name": name.text,
                                   "color": "#${colorController.text}",

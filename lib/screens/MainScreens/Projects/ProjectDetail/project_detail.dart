@@ -46,11 +46,12 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
   @override
   void initState() {
     final issueProvider = ref.read(ProviderList.issuesProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider);
     issueProvider.orderByState = StateEnum.loading;
-    issueProvider.statesState = StateEnum.restricted;
+    statesProvider.statesState = StateEnum.restricted;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       issueProvider.setsState();
-      issueProvider.statesState = StateEnum.restricted;
+      statesProvider.statesState = StateEnum.restricted;
       ref.read(ProviderList.projectProvider).initializeProject(ref: ref);
     });
 
@@ -59,8 +60,8 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final issueProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
 
     return Scaffold(
       appBar: ProjectDetailAppbar(
@@ -71,7 +72,7 @@ class _ProjectDetailState extends ConsumerState<ProjectDetail> {
       floatingActionButton:
           FLActionButton(context, ref: ref, selected: selectedTab),
       body: SafeArea(
-          child: issueProvider.statesState == StateEnum.restricted
+          child: statesProvider.statesState == StateEnum.restricted
               ? EmptyPlaceholder.joinProject(
                   context,
                   ref,

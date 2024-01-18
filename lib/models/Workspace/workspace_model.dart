@@ -1,5 +1,7 @@
-
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:plane/config/config_variables.dart';
+part 'workspace_model.freezed.dart';
+part 'workspace_model.g.dart';
 
 class WorkspaceModel {
   WorkspaceModel({
@@ -53,4 +55,15 @@ class WorkspaceModel {
         'logo': workspaceLogo,
         'url': workspaceUrl,
       };
+}
+
+@freezed
+class WorkspaceLiteModel with _$WorkspaceLiteModel {
+  const factory WorkspaceLiteModel({
+    required final String id,
+    required final String name,
+    required final String slug,
+  }) = _WorkspaceLiteModel;
+  factory WorkspaceLiteModel.fromJson(Map<String, dynamic> json) =>
+      _$WorkspaceLiteModelFromJson(json);
 }

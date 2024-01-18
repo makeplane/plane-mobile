@@ -16,10 +16,11 @@ class _IssuesTabState extends ConsumerState<IssuesTab> {
   @override
   Widget build(BuildContext context) {
     final issueProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return LoadingWidget(
         loading: issueProvider.issuePropertyState == StateEnum.loading ||
             issueProvider.issueState == StateEnum.loading ||
-            issueProvider.statesState == StateEnum.loading ||
+            statesProvider.statesState == StateEnum.loading ||
             issueProvider.projectViewState == StateEnum.loading ||
             issueProvider.orderByState == StateEnum.loading,
         widgetClass: IssueLayoutHandler(
